@@ -1,0 +1,17 @@
+{
+ "version": "1.7.5",
+ "compilerOptions": {
+ "target": "es6",
+ "module": "commonjs",
+ "emitDecoratorMetadata": true,
+ "experimentalDecorators": true,
+ "outDir": "build",
+ "rootDir": ".",
+ "jsx": "react",
+ "reactNamespace": "tsx",
+ "sourceMap": true
+},
+"exclude": [
+   "node_modules"
+ ]
+}
