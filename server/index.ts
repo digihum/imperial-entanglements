@@ -1,10 +1,12 @@
 /**
- * @fileOverview Various tool functions.
- * @author <a href="mailto:jd@example.com">John Doe</a>
- * @version 3.1.2
+ * @fileOverview Entry point for server application
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.0.1
  */
 
 import { Server } from './core/server';
+
+import * as knex from 'knex';
 
 const server = new Server();
 

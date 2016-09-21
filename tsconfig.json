@@ -9,9 +9,12 @@
  "rootDir": ".",
  "jsx": "react",
  "reactNamespace": "tsx",
- "sourceMap": true
+ "sourceMap": true,
+ "strictNullChecks": true,
+ "noImplicitThis": true
 },
 "exclude": [
-   "node_modules"
+   "node_modules",
+   "build"
  ]
 }

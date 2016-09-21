@@ -17,3 +17,6 @@ storage/backups/backup*
 
 #ignore extracted dump file
 dump.rdb
+
+# database files
+*.sqlite
