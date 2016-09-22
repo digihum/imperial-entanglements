@@ -1,0 +1,70 @@
+[
+    {
+        "Term Name": "contributor",
+        "URI": "http://purl.org/dc/elements/1.1/contributor" ,
+        "Label": "Contributor" ,
+        "Definition": "An entity responsible for making contributions to the resource." ,
+        "Comment":	"Examples of a Contributor include a person, an organization, or a service. Typically, the name of a Contributor should be used to indicate the entity." ,
+        "Type of Term":	"Property",
+        "Version":	"http://dublincore.org/usage/terms/history/#contributor-006",
+        "Note":	"A second property with the same name as this property has been declared in the dcterms namespace (http://purl.org/dc/terms/). See the Introduction to the document 'DCMI Metadata Terms' (http://dublincore.org/documents/dcmi-terms/) for an explanation."
+    },
+
+    {
+        "Term Name" : "coverage" ,
+        "URI":	"http://purl.org/dc/elements/1.1/coverage" ,
+        "Label":	"Coverage",
+        "Definition":	"The spatial or temporal topic of the resource, the spatial applicability of the resource, or the jurisdiction under which the resource is relevant." ,
+        "Comment":	"Spatial topic and spatial applicability may be a named place or a location specified by its geographic coordinates. Temporal topic may be a named period, date, or date range. A jurisdiction may be a named administrative entity or a geographic place to which the resource applies. Recommended best practice is to use a controlled vocabulary such as the Thesaurus of Geographic Names [TGN]. Where appropriate, named places or time periods can be used in preference to numeric identifiers such as sets of coordinates or date ranges." ,
+        "References": "[TGN] http://www.getty.edu/research/tools/vocabulary/tgn/index.html" ,
+        "Type of Term":	"Property" ,
+        "Version":	"http://dublincore.org/usage/terms/history/#coverage-006" ,
+        "Note":	"A second property with the same name as this property has been declared in the dcterms namespace (http://purl.org/dc/terms/). See the Introduction to the document 'DCMI Metadata Terms' (http://dublincore.org/documents/dcmi-terms/) for an explanation."
+    },
+
+    {
+        "Term Name" : "creator ",
+        "URI": "http://purl.org/dc/elements/1.1/creator" ,
+        "Label": "Creator" ,
+        "Definition":	"An entity primarily responsible for making the resource." ,
+        "Comment":	"Examples of a Creator include a person, an organization, or a service. Typically, the name of a Creator should be used to indicate the entity." ,
+        "Type of Term":	"Property" ,
+        "Version":	"http://dublincore.org/usage/terms/history/#creator-006" ,
+        "Note": "A second property with the same name as this property has been declared in the dcterms namespace (http://purl.org/dc/terms/). See the Introduction to the document 'DCMI Metadata Terms' (http://dublincore.org/documents/dcmi-terms/) for an explanation."
+    },
+
+    {
+        "Term Name" :   "date" ,
+        "URI":	"http://purl.org/dc/elements/1.1/date" ,
+        "Label":	"Date" ,
+        "Definition":	"A point or period of time associated with an event in the lifecycle of the resource." ,
+        "Comment":	"Date may be used to express temporal information at any level of granularity. Recommended best practice is to use an encoding scheme, such as the W3CDTF profile of ISO 8601 [W3CDTF]." ,
+        "References":	"[W3CDTF] http://www.w3.org/TR/Note-datetime.html" ,
+        "Type of Term":	"Property" ,
+        "Version":	"http://dublincore.org/usage/terms/history/#date-006" ,
+        "Note":	"A second property with the same name as this property has been declared in the dcterms namespace (http://purl.org/dc/terms/). See the Introduction to the document 'DCMI Metadata Terms' (http://dublincore.org/documents/dcmi-terms/) for an explanation."
+    },
+
+    {
+        "Term Name" :   "description" ,
+        "URI":	"http://purl.org/dc/elements/1.1/description" ,
+        "Label":	"Description" ,
+        "Definition":	"An account of the resource." ,
+        "Comment":	"Description may include but is not limited to; an abstract, a table of contents, a graphical representation, or a free-text account of the resource." ,
+        "Type of Term":	"Property" ,
+        "Version":	"http://dublincore.org/usage/terms/history/#description-006" ,
+        "Note":	"A second property with the same name as this property has been declared in the dcterms namespace (http://purl.org/dc/terms/). See the Introduction to the document 'DCMI Metadata Terms' (http://dublincore.org/documents/dcmi-terms/) for an explanation."
+    },
+
+    {
+        "Term Name" :   "format" ,
+        "URI":	"http://purl.org/dc/elements/1.1/format" ,
+        "Label": "Format" ,
+        "Definition": "The file format, physical medium, or dimensions of the resource." ,
+        "Comment": "Examples of dimensions include size and duration. Recommended best practice is to use a controlled vocabulary such as the list of Internet Media Types [MIME]." ,
+        "References":	"[MIME] http://www.iana.org/assignments/media-types/" ,
+        "Type of Term":	"Property" ,
+        "Version":	"http://dublincore.org/usage/terms/history/#format-007" ,
+        "Note":	"A second property with the same name as this property has been declared in the dcterms namespace (http://purl.org/dc/terms/). See the Introduction to the document 'DCMI Metadata Terms' (http://dublincore.org/documents/dcmi-terms/) for an explanation."
+    }
+]

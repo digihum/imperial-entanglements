@@ -22,4 +22,5 @@ interface AbstractSource {
     creationDate: Date;
     tags: SourceTag[];
     location: FuzzyLocation;
+    name: string;
 }
