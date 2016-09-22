@@ -1,0 +1,10 @@
+// Architecture uses the 7-1 pattern
+// https://sass-guidelin.es/#the-7-1-pattern
+
+@import 'abstracts/all';
+@import 'vendors/all';
+@import 'base/all';
+@import 'layout/all';
+@import 'components/all';
+@import 'pages/all';
+@import 'themes/all';
