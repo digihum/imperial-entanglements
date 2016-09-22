@@ -6,8 +6,6 @@
 
 import { Server } from './core/server';
 
-import * as knex from 'knex';
-
 const server = new Server();
 
 server.init();
