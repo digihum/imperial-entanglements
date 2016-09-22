@@ -1,2 +1,4 @@
 install_deps:
-  script: npm install
+  script: 
+  - npm install
+  - npm test
