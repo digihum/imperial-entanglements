@@ -4,9 +4,9 @@
  * @version 3.1.2
  */
 
-import * as tsx from '../custom_tsx';
+import * as React from 'react';
 
-export const home = (
+export const home = (props) => (
     <div id='main'>
         <header>
         </header>
@@ -14,4 +14,4 @@ export const home = (
             <h1>hi</h1>
         </section>
     </div>
-);
+) ;

@@ -4,6 +4,7 @@
     "koa": "registry:dt/koa#2.0.0+20160724024233",
     "lodash": "registry:dt/lodash#4.14.0+20160830145422",
     "react": "registry:dt/react#0.14.0+20160829191040",
+    "react-dom": "registry:dt/react-dom#0.14.0+20160412154040",
     "then-redis": "file:typings/custom/then-redis.d.ts"
   },
   "dependencies": {

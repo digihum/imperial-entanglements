@@ -18,12 +18,11 @@ var config = {
             exclude: /node_modules/
           }
 	    ]
+    },
+    externals: {
+        "react": "React",
+        "react-dom": "ReactDOM",
+        "lodash": "_"
     }
-	//   },
-    // externals: {
-    //     "react": "React",
-    //     "react-dom": "ReactDOM",
-    //     "lodash": "_"
-    // }
 }
 module.exports = config;

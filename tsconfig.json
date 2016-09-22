@@ -8,7 +8,6 @@
  "outDir": "build",
  "rootDir": ".",
  "jsx": "react",
- "reactNamespace": "tsx",
  "sourceMap": true,
  "strictNullChecks": true,
  "noImplicitThis": true

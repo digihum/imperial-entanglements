@@ -1,4 +1,5 @@
-import * as Mithril from 'mithril';
+import {render} from 'react-dom';
+import {createElement} from 'react';
 import { home } from '../common/views/home';
 
-Mithril.render(document.getElementById("main"), home);
+render(createElement(home, null), document.getElementById("main"));
