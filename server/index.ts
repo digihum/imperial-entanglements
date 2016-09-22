@@ -10,3 +10,7 @@ const server = new Server();
 
 server.init();
 server.listen();
+
+import { ElementSet } from './datamodel/AbstractSource';
+
+const a = new ElementSet();

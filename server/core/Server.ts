@@ -14,7 +14,6 @@ import { renderToStaticMarkup } from 'react-dom/server';
 import { template } from 'lodash';
 import { readFileSync } from 'fs';
 
-// import { ElementSet } from '../datamodel/AbstractSource';
 import { api } from '../routes/api';
 
 export class Server {
@@ -22,6 +21,8 @@ export class Server {
     private app: Koa;
     private skeleton: _.TemplateExecutor;
     private apiRoute: string;
+    private adminRoute: string;
+    private adminEditRoute: string;
 
     public init() : void {
 
@@ -30,16 +31,28 @@ export class Server {
 
         this.skeleton = template(readFileSync('./common/index.html', 'utf8'));
 
-        this.apiRoute = '/api/v1';
+        this.apiRoute = 'api/v1';
+        this.adminRoute = 'admin';
+        this.adminEditRoute = 'edit';
 
         const router = new koaRouter();
 
         router.use(koaJSON());
 
         for (var [route, controller] of api) {
-            router.get(`${this.apiRoute}/${route}/:id`, function* (next : koaRouter.IRouterContext) {
+            router.get(`/${this.apiRoute}/${route}/:id`, function* (next : koaRouter.IRouterContext) {
                 try {
                     this.body = await controller.getItemJson(this.params.id);
+                    console.log(this.body);
+                } catch(err) {
+                    this.status = 404;
+                    this.body = err;
+                }
+            });
+
+            router.get(`/${this.adminRoute}/${this.adminEditRoute}/${route}/:id`, function* (next : koaRouter.IRouterContext) {
+                try {
+                    this.body = await controller.getItemEditPage(this.params.id);
                 } catch(err) {
                     this.status = 404;
                     this.body = err;

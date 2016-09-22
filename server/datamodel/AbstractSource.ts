@@ -5,38 +5,23 @@
  */
 
 import { FuzzyLocation } from './FuzzyLocation';
-import * as Knex from 'knex';
+import { PersistentObject } from './PersistentObject';
 
-const knex = Knex({
-  client: 'sqlite3',
-  connection: {
-    filename: './mydb.sqlite'
-  }
-});
-
-export class ElementSet {
+export class ElementSet implements PersistentObject {
 
     public uid: number;
     public uri: URL;
     public name: string;
     public description: string;
 
-    public static columnNames : Map<string, string> = new Map([
+    public readonly tableName : string = 'element_sets';
+
+    public readonly columnNames : Map<string, string> = new Map([
         ['uid', 'uid'],
         ['uri', 'uri'],
         ['name', 'name'],
         ['description', 'description']
     ]);
-
-    public static LOAD(id: number) : Promise<ElementSet> {
-        return knex.select()
-        .from('element_sets')
-        .where({ uid: id })
-        .first()
-        .then((result) => result === undefined ? Promise.reject('Not Found') :
-            Object.keys(result).reduce((prev, curr) =>
-                ElementSet.columnNames.has(curr) ? Object.assign(prev, {[ElementSet.columnNames.get(curr)]: result[curr]}) : prev, {}));
-    }
 }
 
 class Element {
