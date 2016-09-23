@@ -2,12 +2,14 @@
   "globalDependencies": {
     "bluebird": "registry:dt/bluebird#3.0.0+20160907110115",
     "dotenv": "registry:dt/dotenv#2.0.0+20160327131627",
+    "jsonschema": "registry:dt/jsonschema#0.0.0+20160811135847",
     "koa": "registry:dt/koa#2.0.0+20160724024233",
     "koa-json": "registry:dt/koa-json#2.0.0+20160412125208",
     "koa-router": "registry:dt/koa-router#7.0.0+20160907102352",
     "lodash": "registry:dt/lodash#4.14.0+20160830145422",
     "react": "registry:dt/react#0.14.0+20160829191040",
     "react-dom": "registry:dt/react-dom#0.14.0+20160412154040",
+    "react-jsonschema-form": "registry:dt/react-jsonschema-form#0.30.1+20160720001748",
     "then-redis": "file:typings/custom/then-redis.d.ts"
   },
   "dependencies": {

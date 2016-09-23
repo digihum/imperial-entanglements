@@ -6,6 +6,7 @@
 
 import * as Knex from 'knex';
 import { mapGet } from '../core/MapGet';
+import { omit } from 'lodash';
 
 const knex = Knex({
   client: 'sqlite3',
@@ -16,27 +17,32 @@ const knex = Knex({
 
 export interface PersistentObject {
     readonly tableName : string;
-    readonly columnNames : Map<string, string>;
 }
 
-export function load<T>(a: PersistentObject, uid: number) : Promise<T> {
+export function loadItem<T>(a: PersistentObject, uid: number) : Promise<T> {
     return knex.select()
         .from(a.tableName)
         .where({ uid: uid })
         .first()
         .then((result) => result === undefined ? Promise.reject('Not Found') :
             Object.keys(result).reduce((prev, curr) =>
-                a.columnNames.has(curr) ? Object.assign(prev, {[mapGet(a.columnNames, curr)]: result[curr]}) : prev, {}));
+                Object.assign(prev, {[curr]: result[curr]}), {}));
 }
 
-export function create<T>(a: PersistentObject) : Promise<T> {
+export function createItem<T>(a: PersistentObject) : Promise<T> {
+    // throw warning if called with uid
+    // validate that everything else has been sent
+    return knex(a.tableName).insert(omit(a, ['uid']), 'uid');
+}
+
+export function replaceItem<T>(a: PersistentObject) : Promise<T> {
+    // assert - must have uid
+    // validation?
     return knex(a.tableName).insert(a, 'uid');
 }
 
-export function replace<T>(a: PersistentObject) : Promise<T> {
-    return knex(a.tableName).insert(a, 'uid');
-}
-
-export function update<T>(a: PersistentObject) : Promise<T> {
+export function deleteItem<T>(a: PersistentObject) : Promise<T> {
+    // assert - must have uid
+    // warning if anything else
     return knex(a.tableName).insert(a, 'uid');
 }

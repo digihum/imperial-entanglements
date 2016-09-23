@@ -7,6 +7,10 @@
 import { FuzzyLocation } from './FuzzyLocation';
 import { PersistentObject } from './PersistentObject';
 
+// function mirror(arr: string[][]) : string[][] {
+//     return arr.concat(arr.map(([a, b]) => [b, a]));
+// }
+
 export class ElementSet implements PersistentObject {
 
     public uid: number;
@@ -15,13 +19,6 @@ export class ElementSet implements PersistentObject {
     public description: string;
 
     public readonly tableName : string = 'element_sets';
-
-    public readonly columnNames : Map<string, string> = new Map([
-        ['uid', 'uid'],
-        ['uri', 'uri'],
-        ['name', 'name'],
-        ['description', 'description']
-    ]);
 }
 
 class Element {

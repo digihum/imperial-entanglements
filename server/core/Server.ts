@@ -52,7 +52,7 @@ export class Server {
 
             router.get(`/${this.adminRoute}/${this.adminEditRoute}/${route}/:id`, function* (next : koaRouter.IRouterContext) {
                 try {
-                    this.body = await controller.getItemEditPage(this.params.id);
+                    this.body = self.skeleton({ body: await controller.getItemEditPage(this.params.id) });
                 } catch(err) {
                     this.status = 404;
                     this.body = err;

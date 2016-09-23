@@ -7,7 +7,7 @@ import { renderToStaticMarkup } from 'react-dom/server';
 
 import { IController } from './IController';
 import { ElementSet } from '../datamodel/AbstractSource';
-import { load } from '../datamodel/PersistentObject';
+import { loadItem } from '../datamodel/PersistentObject';
 import { view, edit } from '../../common/views/ElementSets';
 
 export class ElementSetController implements IController {
@@ -23,7 +23,7 @@ export class ElementSetController implements IController {
     }
 
     public getItemJson(uid: number) : PromiseLike<string> {
-        return load(new ElementSet(), uid);
+        return loadItem(new ElementSet(), uid);
     }
 
     public getCollectionPage() : PromiseLike<string> {

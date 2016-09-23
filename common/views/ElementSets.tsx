@@ -5,6 +5,8 @@
  */
 
 import * as React from 'react';
+import Form from 'react-jsonschema-form';
+import { elementSetsSchema } from '../../data/schema/elementSetsSchema';
 
 export const view = (props) => (
     <div id='main'>
@@ -16,27 +18,28 @@ export const view = (props) => (
     </div>
 );
 
-export const edit = (props) => (
-    <div id='main'>
+const log = (t) => console.log.bind(console, t);
+
+export const edit = (props) => {
+
+    const uiSchema = {
+        'uid': {
+            'ui:readonly': true
+        },
+        'description': {
+            'ui:widget': 'textarea'
+        }
+    };
+
+    return (<div id='main'>
         <section>
-            <h1>Editing { props.name }</h1>
-            <form>
-                <p>
-                    <label for="size_1">Name</label>
-                    <input type="text" name="name" id="size_1" value={ props.name } />
-                </p>
-                <p>
-                    <label for="size_2">URI</label>
-                    <input type="url" name="name" id="size_2" value={ props.uri } />
-                </p>
-                <p>
-                    <label for="size_3">Description</label>
-                    <textarea name="name" id="size_3" value={ props.description }>
-                    </textarea>
-                </p>
-            </form>
+            <Form schema={elementSetsSchema()}
+                uiSchema={uiSchema}
+                onChange={log('changed')}
+                onSubmit={log('submitted')}
+                onError={log('errors')} />
         </section>
-    </div>
-);
+    </div>);
+};
 
 export const ElementSets = { view, edit };
