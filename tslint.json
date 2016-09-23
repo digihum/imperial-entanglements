@@ -129,7 +129,7 @@
     "no-unused-expression": true,
     "no-unused-imports": false,
     "no-unused-new": true,
-    "no-unused-variable": true,
+    "no-unused-variable": [true, "react"],
     "no-use-before-declare": true,
     "no-var-keyword": true,
     "no-var-requires": true,

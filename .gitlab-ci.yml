@@ -1,5 +1,10 @@
 run_tests:
   script: 
+
+  # print versions
+  - node --version
+  - npm --version
+
   # install dependencies
   - npm install
 

@@ -9,8 +9,7 @@
  "rootDir": ".",
  "jsx": "react",
  "sourceMap": true,
- "strictNullChecks": true,
- "noImplicitThis": true
+ "strictNullChecks": true
 },
 "exclude": [
    "node_modules",

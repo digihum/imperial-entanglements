@@ -41,12 +41,11 @@ export class Server {
         router.use(koaJSON());
         router.use(koaBodyParser());
 
-        for (var [route, controller] of api) {
+        for (const [route, controller] of api) {
             router.get(`/${this.apiRoute}/${route}/:id`, function* (next : koaRouter.IRouterContext) {
                 try {
                     this.body = await controller.getItemJson(this.params.id);
-                    console.log(this.body);
-                } catch(err) {
+                } catch (err) {
                     this.status = 404;
                     this.body = err;
                 }
@@ -55,7 +54,7 @@ export class Server {
             router.get(`/${this.adminRoute}/${this.adminEditRoute}/${route}/:id`, function* (next : koaRouter.IRouterContext) {
                 try {
                     this.body = self.skeleton({ body: await controller.getItemEditPage(this.params.id) });
-                } catch(err) {
+                } catch (err) {
                     this.status = 404;
                     this.body = err;
                 }
@@ -64,7 +63,7 @@ export class Server {
             router.get(`/${route}/:id`, function* (next : koaRouter.IRouterContext) {
                 try {
                     this.body = await controller.getItemPage(this.params.id);
-                } catch(err) {
+                } catch (err) {
                     this.status = 404;
                     this.body = err;
                 }
