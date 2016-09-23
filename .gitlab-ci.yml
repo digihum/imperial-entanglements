@@ -12,8 +12,5 @@ run_tests:
   # run sql migrations
   - npm run migrate
 
-  # install mocha
-  - npm install -g mocha
-
   # ready to test!
   - npm test
