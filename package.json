@@ -6,7 +6,8 @@
   "scripts": {
     "tsc": "./node_modules/.bin/tsc --watch",
     "electron": "./node_modules/.bin/electron ./build/app",
-    "test": "./node_modules/.bin/mocha"
+    "test": "./node_modules/.bin/mocha",
+    "migrate": "./node_modules/.bin/knex migrate:latest"
   },
   "repository": {
     "type": "git",

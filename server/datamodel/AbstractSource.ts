@@ -13,7 +13,7 @@ import { PersistentObject } from './PersistentObject';
 
 export interface IElementSet {
     uid: number | null;
-    uri: URL | null;
+    uri: string | null;
     name: string;
     description: string | null;
 }
@@ -21,7 +21,7 @@ export interface IElementSet {
 export class ElementSet implements PersistentObject, IElementSet {
 
     public uid: number | null;
-    public uri: URL | null;
+    public uri: string | null;
     public name: string;
     public description: string | null;
 

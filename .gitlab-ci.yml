@@ -1,4 +1,16 @@
-install_deps:
+run_tests:
   script: 
+  # install dependencies
   - npm install
+
+  # build typescript
+  - npm run tsc
+  
+  # copy test db
+  - cp blank.sqlite mydb.sqlite
+
+  # run sql migrations
+  - npm run migrate
+
+  # ready to test!
   - npm test
