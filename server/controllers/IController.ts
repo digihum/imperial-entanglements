@@ -15,6 +15,6 @@ export interface IController {
     getCollectionJson() : PromiseLike<string>;
 
     postItem(data: any) : PromiseLike<string>;
-    pushItem(uid: number, data: any) : PromiseLike<string>;
-    deleteItem(uid: number) : PromiseLike<string>;
+    putItem(data: any) : PromiseLike<string>;
+    deleteItem(data: any) : PromiseLike<string>;
 }

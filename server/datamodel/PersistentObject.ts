@@ -32,10 +32,11 @@ export function loadItem<T>(a: PersistentObject, uid: number) : Promise<T> {
 export function createItem<T>(a: PersistentObject) : Promise<T> {
     // throw warning if called with uid
     // validate that everything else has been sent
-    return knex(a.tableName).insert(omit(a, ['uid']), 'uid');
+    const withoutUid = omit(a, ['uid']);
+    return knex.insert(withoutUid, 'uid').into(a.tableName);
 }
 
-export function replaceItem<T>(a: PersistentObject) : Promise<T> {
+export function updateItem<T>(a: PersistentObject) : Promise<T> {
     // assert - must have uid
     // validation?
     return knex(a.tableName).insert(a, 'uid');

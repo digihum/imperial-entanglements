@@ -8,6 +8,7 @@ import * as Koa from 'koa';
 import * as koaStatic from 'koa-static';
 import * as koaRouter from 'koa-router';
 import * as koaJSON from 'koa-json';
+import * as koaBodyParser from 'koa-bodyparser';
 
 import { home } from '../../common/views/home';
 import { renderToStaticMarkup } from 'react-dom/server';
@@ -38,6 +39,7 @@ export class Server {
         const router = new koaRouter();
 
         router.use(koaJSON());
+        router.use(koaBodyParser());
 
         for (var [route, controller] of api) {
             router.get(`/${this.apiRoute}/${route}/:id`, function* (next : koaRouter.IRouterContext) {
@@ -66,6 +68,18 @@ export class Server {
                     this.status = 404;
                     this.body = err;
                 }
+            });
+
+            router.post(`/${this.apiRoute}/${route}`, function* (next : koaRouter.IRouterContext) {
+                this.body = await controller.postItem(this.request.body);
+            });
+
+            router.put(`/${this.apiRoute}/${route}/:id`, function* (next : koaRouter.IRouterContext) {
+                this.body = await controller.putItem(this.request.body);
+            });
+
+            router.del(`/${this.apiRoute}/${route}/:id`, function* (next : koaRouter.IRouterContext) {
+                this.body = await controller.deleteItem(this.request.body);
             });
         }
 

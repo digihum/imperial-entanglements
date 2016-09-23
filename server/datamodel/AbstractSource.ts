@@ -11,14 +11,28 @@ import { PersistentObject } from './PersistentObject';
 //     return arr.concat(arr.map(([a, b]) => [b, a]));
 // }
 
-export class ElementSet implements PersistentObject {
+export interface IElementSet {
+    uid: number | null;
+    uri: URL | null;
+    name: string;
+    description: string | null;
+}
 
-    public uid: number;
-    public uri: URL;
+export class ElementSet implements PersistentObject, IElementSet {
+
+    public uid: number | null;
+    public uri: URL | null;
     public name: string;
-    public description: string;
+    public description: string | null;
 
     public readonly tableName : string = 'element_sets';
+
+    constructor(data: IElementSet) {
+        this.uid = 'uid' in data ? data.uid : null;
+        this.uri = 'uri' in data ? data.uri : null;
+        this.name = data.name;
+        this.description = 'description' in data ? data.description : null;
+    }
 }
 
 class Element {

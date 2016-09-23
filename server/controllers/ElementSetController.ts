@@ -6,8 +6,8 @@
 import { renderToStaticMarkup } from 'react-dom/server';
 
 import { IController } from './IController';
-import { ElementSet } from '../datamodel/AbstractSource';
-import { loadItem } from '../datamodel/PersistentObject';
+import { IElementSet, ElementSet } from '../datamodel/AbstractSource';
+import { loadItem, createItem, deleteItem, updateItem } from '../datamodel/PersistentObject';
 import { view, edit } from '../../common/views/ElementSets';
 
 export class ElementSetController implements IController {
@@ -23,7 +23,7 @@ export class ElementSetController implements IController {
     }
 
     public getItemJson(uid: number) : PromiseLike<string> {
-        return loadItem(new ElementSet(), uid);
+        return loadItem(new ElementSet({ uid: null, description: null, uri: null, name: 'dunno'}), uid);
     }
 
     public getCollectionPage() : PromiseLike<string> {
@@ -38,15 +38,15 @@ export class ElementSetController implements IController {
         return Promise.resolve('');
     }
 
-    public postItem(data: any) : PromiseLike<string> {
-        return Promise.resolve('');
+    public postItem(data: IElementSet) : PromiseLike<string> {
+        return createItem(new ElementSet(data));
     }
 
-    public pushItem(uid: number, data: any) : PromiseLike<string> {
-        return Promise.resolve('');
+    public putItem(data: ElementSet) : PromiseLike<string> {
+        return updateItem(data);
     }
 
-    public deleteItem(uid: number) : PromiseLike<string> {
-        return Promise.resolve('');
+    public deleteItem(data: ElementSet) : PromiseLike<string> {
+        return deleteItem(data);
     }
 }
