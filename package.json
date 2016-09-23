@@ -4,7 +4,8 @@
   "description": "VRE for Imperial Entanglements project",
   "main": "index.js",
   "scripts": {
-    "tsc": "./node_modules/.bin/tsc --watch",
+    "tsc": "./node_modules/.bin/tsc",
+    "tsc:watch": "./node_modules/.bin/tsc --watch",
     "electron": "./node_modules/.bin/electron ./build/app",
     "test": "./node_modules/.bin/mocha",
     "migrate": "./node_modules/.bin/knex migrate:latest"
