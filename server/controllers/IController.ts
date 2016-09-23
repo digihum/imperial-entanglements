@@ -16,5 +16,5 @@ export interface IController {
 
     postItem(data: any) : PromiseLike<string>;
     putItem(data: any) : PromiseLike<string>;
-    deleteItem(data: any) : PromiseLike<string>;
+    deleteItem(uid: number) : PromiseLike<string>;
 }

@@ -46,7 +46,7 @@ export class ElementSetController implements IController {
         return updateItem(data);
     }
 
-    public deleteItem(data: ElementSet) : PromiseLike<string> {
-        return deleteItem(data);
+    public deleteItem(uid: number) : PromiseLike<string> {
+        return deleteItem('element_sets', uid);
     }
 }

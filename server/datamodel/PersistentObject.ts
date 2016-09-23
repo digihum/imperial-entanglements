@@ -5,7 +5,6 @@
  */
 
 import * as Knex from 'knex';
-import { mapGet } from '../core/MapGet';
 import { omit } from 'lodash';
 
 const knex = Knex({
@@ -17,6 +16,7 @@ const knex = Knex({
 
 export interface PersistentObject {
     readonly tableName : string;
+    uid: number | null;
 }
 
 export function loadItem<T>(a: PersistentObject, uid: number) : Promise<T> {
@@ -39,11 +39,13 @@ export function createItem<T>(a: PersistentObject) : Promise<T> {
 export function updateItem<T>(a: PersistentObject) : Promise<T> {
     // assert - must have uid
     // validation?
-    return knex(a.tableName).insert(a, 'uid');
+    return knex(a.tableName)
+        .where({ 'uid': a.uid })
+        .update(omit(a, ['tableName']));
 }
 
-export function deleteItem<T>(a: PersistentObject) : Promise<T> {
-    // assert - must have uid
-    // warning if anything else
-    return knex(a.tableName).insert(a, 'uid');
+export function deleteItem<T>(tableName: string, uid: number) : Promise<T> {
+    return knex(tableName)
+        .where({ uid })
+        .del();
 }
