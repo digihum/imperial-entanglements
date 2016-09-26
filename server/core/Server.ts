@@ -62,7 +62,7 @@ export class Server {
 
             router.get(`/${route}/:id`, function* (next : koaRouter.IRouterContext) {
                 try {
-                    this.body = await controller.getItemPage(this.params.id);
+                    this.body = self.skeleton({ body: await controller.getItemPage(this.params.id)});
                 } catch (err) {
                     this.status = 404;
                     this.body = err;

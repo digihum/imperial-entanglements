@@ -5,6 +5,12 @@ exports.up = function(knex, Promise) {
         table.string('type')
             .references('slug')
             .inTable('entity_types');
+        table.integer('parent')
+            .references('uid')
+            .inTable('entities')
+            .nullable();
+        table.boolean('readonly')
+            .defaultTo(false);
     });
 };
 

@@ -1,0 +1,24 @@
+i.big-icon {
+    font-size: 100pt;
+}
+
+#select-entity-type {
+    text-align: center;
+    transform: translateY(100%);
+
+    label {
+        font-family: 'Roboto', sans-serif;
+    }
+}
+
+#entity-editor {
+
+    #sidebar {
+        background-color: #3f51b5;
+        flex: 0 0 20em;
+    }
+
+    #workspace {
+        flex: 1;
+    }
+}

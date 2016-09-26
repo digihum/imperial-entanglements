@@ -2,6 +2,7 @@
 exports.up = function(knex, Promise) {
   return knex.schema.createTable('entity_types', function(table) {
         table.string('slug').primary();
+        table.string('name');
         table.string('description');
         table.string('parent')
             .references('slug')
@@ -9,6 +10,8 @@ exports.up = function(knex, Promise) {
         table.string('same_as');
         table.string('colour');
         table.string('icon');   
+        table.boolean('readonly')
+            .defaultTo(false);
     });
 };
 

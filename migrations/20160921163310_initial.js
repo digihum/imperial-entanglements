@@ -5,6 +5,8 @@ exports.up = function(knex, Promise) {
       knex.schema.createTable('sources', function(table) {
         table.increments('uid').primary();
         table.string('name');
+        table.boolean('readonly')
+            .defaultTo(false);
       }),
 
       knex.schema.createTable('element_sets', function(table) {

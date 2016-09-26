@@ -41,6 +41,8 @@ exports.up = function(knex, Promise) {
 
 exports.down = function(knex, Promise) {
   return Promise.all([
-      knex.schema.dropTable('records')
+      knex.schema.dropTable('records'),
+      knex.schema.dropTable('records_ref'),
+      knex.schema.dropTable('records_val')
   ]);
 };

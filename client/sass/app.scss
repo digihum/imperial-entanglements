@@ -1,6 +1,8 @@
 // Architecture uses the 7-1 pattern
 // https://sass-guidelin.es/#the-7-1-pattern
 
+@import 'normalize.css/normalize';
+
 @import 'abstracts/all';
 @import 'vendors/all';
 @import 'base/all';
@@ -8,3 +10,4 @@
 @import 'components/all';
 @import 'pages/all';
 @import 'themes/all';
+ 

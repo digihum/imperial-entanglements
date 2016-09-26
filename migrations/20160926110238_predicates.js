@@ -7,9 +7,12 @@ exports.up = function(knex, Promise) {
             table.increments('uid').primary();
             table.string('name');
             table.string('description');
+            table.string('same_as');
             table.string('domain')
                 .references('slug')
                 .inTable('entity_types');
+            table.boolean('readonly')
+                .defaultTo(false);
         }),
 
         knex.schema.createTable('predicates_ref', function(table) {

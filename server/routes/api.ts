@@ -6,7 +6,9 @@
 
 import { IController } from '../controllers/IController';
 import { ElementSetController } from '../controllers/ElementSetController';
+import { EntityController } from '../controllers/EntityController';
 
 export const api : Map<string, IController> = new Map([
-    ['element_sets', new ElementSetController()]
+    ['element_sets', new ElementSetController()],
+    ['entity', new EntityController()]
 ]);
