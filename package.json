@@ -8,7 +8,8 @@
     "tsc:watch": "./node_modules/.bin/tsc --watch",
     "electron": "./node_modules/.bin/electron ./build/app",
     "test": "./node_modules/.bin/mocha",
-    "migrate": "./node_modules/.bin/knex migrate:latest"
+    "migrate": "./node_modules/.bin/knex migrate:latest",
+    "seed": "./node_modules/.bin/knex seed:run"
   },
   "repository": {
     "type": "git",

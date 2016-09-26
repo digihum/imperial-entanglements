@@ -21,3 +21,5 @@ dump.rdb
 # database files
 *.sqlite
 !blank.sqlite
+
+npm-debug.log
