@@ -8,8 +8,10 @@ import { expect } from 'chai';
 import * as Knex from 'knex';
 import { isNumber } from 'lodash';
 
-import { ElementSetController } from '../server/controllers/ElementSetController';
+import { GenericController } from '../server/controllers/GenericController';
 import { ElementSet } from '../server/datamodel/AbstractSource';
+
+import { view, edit } from '../common/views/ElementSets';
 
 let knex;
 
@@ -33,7 +35,7 @@ describe('A simple test', () => {
     });
 
     it('to check things work', (done) => {
-      const controller = new ElementSetController();
+      const controller = new GenericController<ElementSet>('element_sets', view, edit);
       controller.postItem(new ElementSet({
         uri: 'example.com',
         name: 'example',
