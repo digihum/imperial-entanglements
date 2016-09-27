@@ -4,7 +4,7 @@
  * @version 0.0.1
  */
 
-class Entity {
+export class Entity {
     public readonly id: number | null;
     public readonly entityType: string;
     public parent: number | Entity | null;

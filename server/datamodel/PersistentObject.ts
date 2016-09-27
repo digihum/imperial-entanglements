@@ -19,14 +19,25 @@ export interface PersistentObject {
     uid: number | null;
 }
 
-export function loadItem<T>(a: PersistentObject, uid: number) : Promise<T> {
-    return knex.select()
-        .from(a.tableName)
+export function loadItem<T>(a: string, uid: number) : Promise<T> {
+    const query = knex.select()
+        .from(a)
         .where({ uid: uid })
-        .first()
-        .then((result) => result === undefined ? Promise.reject('Not Found') :
-            Object.keys(result).reduce((prev, curr) =>
-                Object.assign(prev, {[curr]: result[curr]}), {}));
+        .first();
+
+    return query.then((result) => result === undefined ? Promise.reject('Not Found') :
+        Object.keys(result).reduce((prev, curr) =>
+            Object.assign(prev, {[curr]: result[curr]}), {}));
+}
+
+export function loadCollection<T>(a: string, params: Object) : Promise<T[]> {
+    const query = knex.select()
+        .from(a)
+        .where(params);
+
+    return query.then((results) => results === undefined ? Promise.reject('Not Found') : results.map((result) =>
+        Object.keys(result).reduce((prev, curr) =>
+            Object.assign(prev, {[curr]: result[curr]}), {})));
 }
 
 export function createItem<T>(a: PersistentObject) : Promise<T> {

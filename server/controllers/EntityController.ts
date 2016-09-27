@@ -3,26 +3,27 @@
  * @author <a href='mailto:tim.hollies@warwick.ac.uk'>Tim Hollies</a>
  * @version 0.0.1
  */
+
 import * as React from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 
 import { IController } from './IController';
-import { IElementSet, ElementSet } from '../datamodel/AbstractSource';
+import { Entity } from '../datamodel/Entity';
 import { loadItem, createItem, deleteItem, updateItem } from '../datamodel/PersistentObject';
 import { EntityEditor } from '../../common/views/entityEditor';
 
-export class EntityController implements IController {
+export class EntityController implements IController<Entity> {
 
     public getItemPage(uid: number) : PromiseLike<string> {
-        return Promise.resolve(renderToStaticMarkup(<EntityEditor id={1} />));
+         return Promise.resolve(renderToStaticMarkup(React.createElement(EntityEditor, {id: 1})));
     }
 
     public getItemEditPage(uid: number) : PromiseLike<string> {
-        return Promise.resolve(renderToStaticMarkup(<EntityEditor id={1} />));
+        return Promise.resolve(renderToStaticMarkup(React.createElement(EntityEditor, {id: 1})));
     }
 
-    public getItemJson(uid: number) : PromiseLike<string> {
-        return Promise.resolve('');
+    public getItemJson(uid: number) : PromiseLike<Entity> {
+        return loadItem<Entity>('entities', uid);
     }
 
     public getCollectionPage() : PromiseLike<string> {
@@ -33,15 +34,19 @@ export class EntityController implements IController {
         return Promise.resolve('');
     }
 
-    public getCollectionJson() : PromiseLike<string> {
+    public getCollectionJson(params: Object = {}) : PromiseLike<string> {
         return Promise.resolve('');
     }
 
-    public postItem(data: IElementSet) : PromiseLike<string> {
+    public postItem(data: Entity) : PromiseLike<string> {
         return Promise.resolve('');
     }
 
-    public putItem(data: ElementSet) : PromiseLike<string> {
+    public putItem(uid: number, data: Entity) : PromiseLike<string> {
+        return Promise.resolve('');
+    }
+
+    public patchItem(uid: number, data: Entity) : PromiseLike<string> {
         return Promise.resolve('');
     }
 

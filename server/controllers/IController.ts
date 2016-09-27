@@ -4,17 +4,25 @@
  * @version 0.0.1
  */
 
-export interface IController {
+export interface IController<T> {
 
     getItemPage(uid: number) : PromiseLike<string>;
     getItemEditPage(uid: number) : PromiseLike<string>;
-    getItemJson(uid: number) : PromiseLike<string>;
+    getItemJson(uid: number) : PromiseLike<T>;
 
     getCollectionPage() : PromiseLike<string>;
     getCollectionEditPage() : PromiseLike<string>;
-    getCollectionJson() : PromiseLike<string>;
+    getCollectionJson(params: Object) : PromiseLike<string>;
 
+    // create
     postItem(data: any) : PromiseLike<string>;
-    putItem(data: any) : PromiseLike<string>;
+
+    // replace
+    putItem(uid: number, data: any) : PromiseLike<string>;
+
+    // delete
     deleteItem(uid: number) : PromiseLike<string>;
+
+    // update
+    patchItem(uid: number, data: any);
 }

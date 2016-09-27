@@ -9,6 +9,7 @@ import * as koaStatic from 'koa-static';
 import * as koaRouter from 'koa-router';
 import * as koaJSON from 'koa-json';
 import * as koaBodyParser from 'koa-bodyparser';
+import * as koaQs from 'koa-qs';
 
 import { home } from '../../common/views/home';
 import { renderToStaticMarkup } from 'react-dom/server';
@@ -28,6 +29,7 @@ export class Server {
     public init() : void {
 
         this.app = new Koa();
+        koaQs(this.app, 'first');
         this.app.use(koaStatic('build/static'));
 
         this.skeleton = template(readFileSync('./common/index.html', 'utf8'));
@@ -67,6 +69,10 @@ export class Server {
                     this.status = 404;
                     this.body = err;
                 }
+            });
+
+            router.get(`/${this.apiRoute}/${route}`, function* (next : koaRouter.IRouterContext) {
+                this.body = await controller.getCollectionJson(this.query);
             });
 
             router.post(`/${this.apiRoute}/${route}`, function* (next : koaRouter.IRouterContext) {
