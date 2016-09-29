@@ -13,7 +13,6 @@
     "seed": "./node_modules/.bin/knex seed:run",
     "style": "./node_modules/.bin/node-sass ./client/sass/app.scss --include-path node_modules -o build/static",
     "style:watch": "./node_modules/.bin/node-sass --watch ./client/sass/app.scss --include-path node_modules -o build/static",
-    "snyk-protect": "snyk protect",
     "prepublish": "npm run snyk-protect"
   },
   "repository": {
