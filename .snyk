@@ -1,0 +1,21 @@
+version: v1.5.2
+ignore: {}
+patch:
+  'npm:minimatch:20160620':
+    - sqlite3 > node-pre-gyp > tar-pack > tar > fstream > rimraf > glob > minimatch:
+        patched: '2016-09-29T09:27:13.075Z'
+    - sqlite3 > node-pre-gyp > tar-pack > fstream > rimraf > glob > minimatch:
+        patched: '2016-09-29T09:27:13.075Z'
+    - sqlite3 > node-pre-gyp > tar-pack > fstream-ignore > fstream > rimraf > glob > minimatch:
+        patched: '2016-09-29T09:27:13.075Z'
+    - sqlite3 > node-pre-gyp > tar-pack > rimraf > glob > minimatch:
+        patched: '2016-09-29T09:27:13.075Z'
+    - sqlite3 > node-pre-gyp > tar-pack > fstream-ignore > minimatch:
+        patched: '2016-09-29T09:27:13.075Z'
+    - sqlite3 > node-pre-gyp > rimraf > glob > minimatch:
+        patched: '2016-09-29T09:27:13.075Z'
+    - sqlite3 > node-pre-gyp > tar > fstream > rimraf > glob > minimatch:
+        patched: '2016-09-29T09:27:13.075Z'
+  'npm:tough-cookie:20160722':
+    - sqlite3 > node-pre-gyp > request > tough-cookie:
+        patched: '2016-09-29T09:27:13.075Z'

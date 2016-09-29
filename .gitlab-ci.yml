@@ -8,6 +8,9 @@ run_tests:
   # install dependencies
   - npm install
 
+  # check packages
+  - npm snyk
+
   # build typescript
   - npm run tsc && exit 0
   
