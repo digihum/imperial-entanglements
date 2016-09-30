@@ -9,7 +9,7 @@ run_tests:
   - npm install
 
   # check packages
-  - npm snyk
+  - npm run snyk
 
   # build typescript
   - npm run tsc && exit 0
