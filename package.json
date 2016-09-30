@@ -12,8 +12,7 @@
     "migrate": "./node_modules/.bin/knex migrate:latest",
     "seed": "./node_modules/.bin/knex seed:run",
     "style": "./node_modules/.bin/node-sass ./client/sass/app.scss --include-path node_modules -o build/static",
-    "style:watch": "./node_modules/.bin/node-sass --watch ./client/sass/app.scss --include-path node_modules -o build/static",
-    "prepublish": "npm run snyk-protect"
+    "style:watch": "./node_modules/.bin/node-sass --watch ./client/sass/app.scss --include-path node_modules -o build/static"
   },
   "repository": {
     "type": "git",
