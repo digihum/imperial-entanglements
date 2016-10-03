@@ -9,10 +9,10 @@ import { IController } from '../controllers/IController';
 import { EntityController } from '../controllers/EntityController';
 import { GenericController } from '../controllers/GenericController';
 
-import { ElementSet } from '../datamodel/AbstractSource';
+import { ElementSet } from '../../common/datamodel/AbstractSource';
 import { view, edit } from '../../common/views/ElementSets';
 
-import { Record } from '../datamodel/Record';
+import { Record } from '../../common/datamodel/Record';
 
 export const api : Map<string, IController<any>> = new Map<string, IController<any>>([
     ['element_set', new GenericController<ElementSet>('element_sets', view, edit)],

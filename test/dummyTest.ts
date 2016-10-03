@@ -9,7 +9,7 @@ import * as Knex from 'knex';
 import { isNumber } from 'lodash';
 
 import { GenericController } from '../server/controllers/GenericController';
-import { ElementSet } from '../server/datamodel/AbstractSource';
+import { ElementSet } from '../common/datamodel/AbstractSource';
 
 import { view, edit } from '../common/views/ElementSets';
 

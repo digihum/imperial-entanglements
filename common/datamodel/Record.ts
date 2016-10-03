@@ -14,4 +14,5 @@ export class Record implements PersistentObject {
     public predicate: number;
     public entity: number;
     public score: number;
+    public value: string | null;
 }

@@ -8,8 +8,8 @@ import * as React from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 
 import { IController } from './IController';
-import { Entity } from '../datamodel/Entity';
-import { loadItem, createItem, deleteItem, updateItem } from '../datamodel/PersistentObject';
+import { Entity } from '../../common/datamodel/Entity';
+import { loadItem, createItem, deleteItem, updateItem } from '../../common/datamodel/PersistentObject';
 import { EntityEditor } from '../../common/views/entityEditor';
 
 export class EntityController implements IController<Entity> {
