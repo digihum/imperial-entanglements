@@ -9,7 +9,7 @@ import { renderToStaticMarkup } from 'react-dom/server';
 
 import { IController } from './IController';
 import { Entity } from '../../common/datamodel/Entity';
-import { loadItem, createItem, deleteItem, updateItem } from '../../common/datamodel/PersistentObject';
+import { loadItem, createItem, deleteItem, updateItem } from '../core/Database';
 import { EntityEditor } from '../../common/views/entityEditor';
 
 export class EntityController implements IController<Entity> {

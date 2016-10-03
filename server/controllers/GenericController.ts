@@ -7,7 +7,8 @@ import * as React from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 
 import { IController } from './IController';
-import { loadItem, createItem, deleteItem, updateItem, PersistentObject, loadCollection } from '../../common/datamodel/PersistentObject';
+import { PersistentObject } from '../../common/datamodel/PersistentObject';
+import { loadItem, createItem, deleteItem, updateItem, loadCollection } from '../core/Database';
 
 export class GenericController<T extends PersistentObject> implements IController<T> {
 
