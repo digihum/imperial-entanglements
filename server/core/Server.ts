@@ -44,9 +44,10 @@ export class Server {
         router.use(koaBodyParser());
 
         for (const [route, controller] of api) {
-            router.get(`/${this.apiRoute}/${route}/:id`, function* (next : koaRouter.IRouterContext) {
+            // TODO: this route should use React Router!
+            router.get(`/${route}/:id`, function* (next : koaRouter.IRouterContext) {
                 try {
-                    this.body = await controller.getItemJson(this.params.id);
+                    this.body = self.skeleton({ body: await controller.getItemPage(this.params.id)});
                 } catch (err) {
                     this.status = 404;
                     this.body = err;
@@ -62,9 +63,9 @@ export class Server {
                 }
             });
 
-            router.get(`/${route}/:id`, function* (next : koaRouter.IRouterContext) {
+            router.get(`/${this.apiRoute}/${route}/:id`, function* (next : koaRouter.IRouterContext) {
                 try {
-                    this.body = self.skeleton({ body: await controller.getItemPage(this.params.id)});
+                    this.body = await controller.getItemJson(this.params.id);
                 } catch (err) {
                     this.status = 404;
                     this.body = err;
