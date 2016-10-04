@@ -10,12 +10,8 @@ import { PersistentObject } from '../../common/datamodel/PersistentObject';
 
 export interface IController<T extends PersistentObject> {
 
-    getItemPage(uid: number) : PromiseLike<string>;
-    getItemEditPage(uid: number) : PromiseLike<string>;
     getItemJson(uid: number) : PromiseLike<T>;
 
-    getCollectionPage() : PromiseLike<string>;
-    getCollectionEditPage() : PromiseLike<string>;
     getCollectionJson(params: Object) : PromiseLike<string>;
 
     // create
@@ -39,12 +35,8 @@ export abstract class AbstractController<T extends PersistentObject> implements 
         this.db = new Database<T>(databaseConfig);
     }
 
-    public abstract getItemPage(uid: number) : PromiseLike<string>;
-    public abstract getItemEditPage(uid: number) : PromiseLike<string>;
     public abstract getItemJson(uid: number) : PromiseLike<T>;
 
-    public abstract getCollectionPage() : PromiseLike<string>;
-    public abstract getCollectionEditPage() : PromiseLike<string>;
     public abstract getCollectionJson(params: Object) : PromiseLike<string>;
 
     // create

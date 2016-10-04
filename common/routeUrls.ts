@@ -5,8 +5,11 @@
  */
 
 import * as React from 'react';
+import { RouteNotFound } from './views/RouteNotFound';
 
-interface PageProps {
+import { EntityEditor } from './views/EntityEditor';
+
+export interface PageProps {
     url: string;
 }
 
@@ -27,7 +30,28 @@ interface RouteUrls {
 }
 
 export const routeUrls : RouteUrls = {
-    elementSet: { 'element_set',
-    record: 'record',
-    entity: 'entity'
+
+    elementSet: {
+        url: 'element_set',
+        itemView: RouteNotFound,
+        itemEdit: RouteNotFound
+        collectionView: RouteNotFound,
+        collectionEdit: RouteNotFound
+    },
+
+    record: {
+        url: 'record',
+        itemView: RouteNotFound,
+        itemEdit: RouteNotFound
+        collectionView: RouteNotFound,
+        collectionEdit: RouteNotFound
+    },
+
+    entity:  {
+        url: 'entity',
+        itemView: EntityEditor,
+        itemEdit: EntityEditor
+        collectionView: RouteNotFound,
+        collectionEdit: RouteNotFound
+    }
 };

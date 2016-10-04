@@ -7,11 +7,14 @@
 //https://react-router.now.sh/Match
 
 import * as React from 'react';
-import { BrowserRouter, Match, Link } from 'react-router';
+import { Match, Miss, createServerRenderContext  } from 'react-router';
+
+import { RouteNotFound } from './views/RouteNotFound';
 
 import { ApiService } from './ApiService';
 
 import { routeUrls } from './routeUrls';
+import { home } from './views/home';
 
 interface FalconAppProps {
     router: any;
@@ -19,21 +22,44 @@ interface FalconAppProps {
     location: string;
 }
 
-export const FalconApp = (props) => (
-    <props.router>
+const context = createServerRenderContext();
+
+export const FalconApp = (props : FalconAppProps) => (
+    <props.router location={props.location} context={context}>
         <div>
-            <h1>Header!</h1>
+            <div>
+                <h1>Header!</h1>
+            </div>
+
+            <Match exactly pattern='/' component={home} />
+
+            {Object.keys(routeUrls).map((name) => ([
+
+                    <Match
+                        exactly key={`${name}-cv`}
+                        pattern={`/${routeUrls[name].url}`}
+                        component={routeUrls[name].collectionView}
+                        api={props.api}
+                        url={props.location} />,
+
+                    <Match
+                        exactly key={`${name}-iv`}
+                        pattern={`/${routeUrls[name].url}/:id`}
+                        component={routeUrls[name].itemView} />,
+
+                    <Match
+                        exactly key={`${name}-ce`}
+                        pattern={`/admin/edit/${routeUrls[name].url}`}
+                        component={routeUrls[name].collectionEdit} />,
+
+                    <Match
+                        exactly key={`${name}-ie`}
+                        pattern={`/admin/edit/${routeUrls[name].url}`}
+                        component={routeUrls[name].itemEdit} />
+            ]
+            ))}
+
+            <Miss component={RouteNotFound} url={props.location} />
         </div>
-
-        {Object.keys(routeUrls).map((name) => (
-            <span>
-                <Match pattern={`/${routeUrls[name].url}`} component={routeUrls[name].collectionView} />
-                <Match pattern={`/${routeUrls[name].url}/:id`} component={routeUrls[name].itemView} />
-
-                <Match pattern={`/admin/edit/${routeUrls[name].url}`} component={routeUrls[name].collectionEdit} />
-                <Match pattern={`/admin/edit/${routeUrls[name].url}`} component={routeUrls[name].itemEdit} />
-            </span>
-        ))}
-
     </props.router>
 );

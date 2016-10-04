@@ -13,12 +13,15 @@ import * as koaQs from 'koa-qs';
 
 import { Config as KnexConfig } from 'knex';
 
-import { home } from '../../common/views/home';
+import { FalconApp } from '../../common/FalconApp';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { template } from 'lodash';
 import { readFileSync } from 'fs';
 
 import { api } from '../routes/api';
+
+import { ServerRouter } from 'react-router';
+import { ServerApiService } from './ServerApiService';
 
 export class Server {
 
@@ -49,23 +52,6 @@ export class Server {
 
         for (const [route, controller] of routes) {
             // TODO: this route should use React Router!
-            router.get(`/${route}/:id`, function* (next : koaRouter.IRouterContext) {
-                try {
-                    this.body = self.skeleton({ body: await controller.getItemPage(this.params.id)});
-                } catch (err) {
-                    this.status = 404;
-                    this.body = err;
-                }
-            });
-
-            router.get(`/${this.adminRoute}/${this.adminEditRoute}/${route}/:id`, function* (next : koaRouter.IRouterContext) {
-                try {
-                    this.body = self.skeleton({ body: await controller.getItemEditPage(this.params.id) });
-                } catch (err) {
-                    this.status = 404;
-                    this.body = err;
-                }
-            });
 
             router.get(`/${this.apiRoute}/${route}/:id`, function* (next : koaRouter.IRouterContext) {
                 try {
@@ -96,8 +82,12 @@ export class Server {
         this.app.use(router.middleware());
 
         const self = this;
-        this.app.use(function* (){
-            this.body = self.skeleton({ body: renderToStaticMarkup(home({})) + '<script src="home.dist.js"></script>'});
+        this.app.use(function* (next) {
+            this.body = self.skeleton({ body: renderToStaticMarkup(FalconApp({
+                location: this.request.url,
+                router: ServerRouter,
+                api: ServerApiService
+            }))});
         });
     }
 
