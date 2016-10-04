@@ -4,11 +4,17 @@
  * @version 0.0.1
  */
 
-import {render} from 'react-dom';
-import {createElement} from 'react';
-import { home } from '../common/views/home';
+import { render } from 'react-dom';
+import { createElement } from 'react';
+import { FalconApp } from '../common/FalconApp';
+import { ClientApiService } from './ClientApiService';
+import { BrowserRouter } from 'react-router';
 
 document.addEventListener('DOMContentLoaded', (event) => {
-    render(createElement(home, null), document.getElementById('main'));
+    render(createElement(FalconApp, {
+        api: ClientApiService,
+        router: BrowserRouter,
+        location: window.location
+    }), document.getElementById('main'));
 });
 

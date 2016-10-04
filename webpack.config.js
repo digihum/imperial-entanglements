@@ -1,7 +1,7 @@
 var config = {
     devtool: 'inline-source-map',
     entry: {
-        home: './build/client/render.js', 
+        app: './build/client/render.js', 
 	},
     output: {  
         path: 'build/static',                 // output folder

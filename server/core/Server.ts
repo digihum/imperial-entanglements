@@ -87,7 +87,7 @@ export class Server {
                 location: this.request.url,
                 router: ServerRouter,
                 api: ServerApiService
-            }))});
+            })) + '<script src="/app.dist.js"></script>'});
         });
     }
 

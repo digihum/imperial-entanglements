@@ -5,5 +5,5 @@
  */
 
 export interface ApiService {
-    getCanonicalName : (uid: number) => Promise<string>;
+    getCanonicalName(uid: number) : Promise<string>;
 }

@@ -5,6 +5,7 @@
  */
 
 import * as React from 'react';
+import { Link } from 'react-router';
 
 interface EntityEditorProps {
     id: number;
@@ -33,6 +34,7 @@ export class EntityEditor extends React.Component<EntityEditorProps, EntityEdito
             return (
                 <section id='entity-editor' className='flex-fill'>
                     <section id='sidebar'>
+                        <Link to='/'>Home</Link>
                     </section>
                     <section id='workspace'>
                         <h2>Predicates <i className='fa fa-plus-circle' aria-hidden='true'></i></h2>
