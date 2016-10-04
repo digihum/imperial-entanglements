@@ -1,5 +1,5 @@
 
-const dublinCoreData = require('../data/reference/dublin_core.json');
+const dublinCoreData = require('../reference/dublin_core.json');
 
 // dublin core: http://dublincore.org/documents/2012/06/14/dcmi-terms/
 

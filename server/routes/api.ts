@@ -16,8 +16,10 @@ import { view, edit } from '../../common/views/ElementSets';
 
 import { Record } from '../../common/datamodel/Record';
 
+import { routeUrls as routes } from '../../common/RouteUrls';
+
 export const api : (s: KnexConfig) => Map<string, IController<any>> = (databaseConfig: KnexConfig) => new Map<string, IController<any>>([
-    ['element_set', new GenericController<ElementSet>(databaseConfig, 'element_sets', view, edit)],
-    ['record', new GenericController<Record>(databaseConfig, 'records', view, edit)],
-    ['entity', new EntityController(databaseConfig)]
+    [routes.elementSet, new GenericController<ElementSet>(databaseConfig, 'element_sets', view, edit)],
+    [routes.record, new GenericController<Record>(databaseConfig, 'records', view, edit)],
+    [routes.entity, new EntityController(databaseConfig)]
 ]);

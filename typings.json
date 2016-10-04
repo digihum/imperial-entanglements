@@ -13,6 +13,7 @@
     "react": "registry:dt/react#0.14.0+20160829191040",
     "react-dom": "registry:dt/react-dom#0.14.0+20160412154040",
     "react-jsonschema-form": "registry:dt/react-jsonschema-form#0.30.1+20160720001748",
+    "redis": "registry:dt/redis#0.12.1+20160818110030",
     "then-redis": "file:typings/custom/then-redis.d.ts",
     "whatwg-fetch": "registry:dt/whatwg-fetch#0.0.0+20160829180742"
   },
