@@ -11,6 +11,8 @@ import { BrowserRouter, Match, Link } from 'react-router';
 
 import { ApiService } from './ApiService';
 
+import { routeUrls } from './routeUrls';
+
 interface FalconAppProps {
     router: any;
     api: ApiService;
@@ -18,5 +20,20 @@ interface FalconAppProps {
 }
 
 export const FalconApp = (props) => (
-    <props.router />
+    <props.router>
+        <div>
+            <h1>Header!</h1>
+        </div>
+
+        {Object.keys(routeUrls).map((name) => (
+            <span>
+                <Match pattern={`/${routeUrls[name].url}`} component={routeUrls[name].collectionView} />
+                <Match pattern={`/${routeUrls[name].url}/:id`} component={routeUrls[name].itemView} />
+
+                <Match pattern={`/admin/edit/${routeUrls[name].url}`} component={routeUrls[name].collectionEdit} />
+                <Match pattern={`/admin/edit/${routeUrls[name].url}`} component={routeUrls[name].itemEdit} />
+            </span>
+        ))}
+
+    </props.router>
 );
