@@ -1,7 +1,8 @@
 var config = {
     devtool: 'inline-source-map',
     entry: {
-        app: './build/client/render.js', 
+        "app.frontend": './build/client/app.frontend.js', 
+        "app.electron": './build/app/app.electron.js'
 	},
     output: {  
         path: 'build/static',                 // output folder

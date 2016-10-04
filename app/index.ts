@@ -7,8 +7,6 @@
 import {app, BrowserWindow} from 'electron';
 import {readFileSync} from 'fs';
 
-let jsCode = readFileSync('./build/static/home.dist.js', 'utf8');
-
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let win;
@@ -18,7 +16,7 @@ function createWindow () {
   win = new BrowserWindow({width: 800, height: 600});
 
   // and load the index.html of the app.
-  win.loadURL(`file://${__dirname}/../common/index.html`)
+  win.loadURL(`file://${__dirname}/index.html`)
 
   //
 
@@ -30,12 +28,7 @@ function createWindow () {
     // Dereference the window object, usually you would store windows
     // in an array if your app supports multi windows, this is the time
     // when you should delete the corresponding element.
-    win = null
-  })
-
-  win.on('ready-to-show', () => {
-    console.log("ready");
-    win.webContents.executeJavaScript(jsCode);
+    win = null;
   });
 }
 

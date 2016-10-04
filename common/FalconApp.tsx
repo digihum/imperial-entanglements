@@ -20,13 +20,12 @@ interface FalconAppProps {
     router: any;
     api: ApiService;
     location: string;
+    routerSettings: any;
 }
-
-const context = createServerRenderContext();
 
 export const FalconApp = (props : FalconAppProps) => (
     <div id='main'>
-        <props.router location={props.location} context={context}>
+        <props.router {...props.routerSettings}>
             <div>
                 <div>
                     <h1>Header!</h1>

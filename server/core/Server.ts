@@ -20,7 +20,7 @@ import { readFileSync } from 'fs';
 
 import { api } from '../routes/api';
 
-import { ServerRouter } from 'react-router';
+import { ServerRouter, createServerRenderContext } from 'react-router';
 import { ServerApiService } from './ServerApiService';
 
 export class Server {
@@ -31,17 +31,22 @@ export class Server {
     private adminRoute: string;
     private adminEditRoute: string;
 
+    // TODO: type this properly
+    private routingContext: any;
+
     public init(databaseConfig: KnexConfig) : void {
 
         this.app = new Koa();
         koaQs(this.app, 'first');
         this.app.use(koaStatic('build/static'));
 
-        this.skeleton = template(readFileSync('./common/index.html', 'utf8'));
+        this.skeleton = template(readFileSync('./build/common/index.html', 'utf8'));
 
         this.apiRoute = 'api/v1';
         this.adminRoute = 'admin';
         this.adminEditRoute = 'edit';
+
+        this.routingContext = createServerRenderContext();
 
         const router = new koaRouter();
 
@@ -100,8 +105,12 @@ export class Server {
             this.body = self.skeleton({ body: renderToStaticMarkup(FalconApp({
                 location: this.request.url,
                 router: ServerRouter,
-                api: ServerApiService
-            })) + '<script src="/app.dist.js"></script>'});
+                api: ServerApiService,
+                routerSettings: {
+                    context: self.routingContext,
+                    location: this.request.url
+                }
+            }))});
         });
     }
 
