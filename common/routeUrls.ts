@@ -34,7 +34,7 @@ export const routeUrls : RouteUrls = {
     elementSet: {
         url: 'element_set',
         itemView: RouteNotFound,
-        itemEdit: RouteNotFound
+        itemEdit: RouteNotFound,
         collectionView: RouteNotFound,
         collectionEdit: RouteNotFound
     },
@@ -42,7 +42,7 @@ export const routeUrls : RouteUrls = {
     record: {
         url: 'record',
         itemView: RouteNotFound,
-        itemEdit: RouteNotFound
+        itemEdit: RouteNotFound,
         collectionView: RouteNotFound,
         collectionEdit: RouteNotFound
     },
@@ -50,7 +50,7 @@ export const routeUrls : RouteUrls = {
     entity:  {
         url: 'entity',
         itemView: EntityEditor,
-        itemEdit: EntityEditor
+        itemEdit: EntityEditor,
         collectionView: RouteNotFound,
         collectionEdit: RouteNotFound
     }
