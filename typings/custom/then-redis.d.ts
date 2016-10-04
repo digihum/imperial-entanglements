@@ -8,6 +8,8 @@
 /// <reference path="../globals/node/index.d.ts" />
 /// <reference path="../globals/redis/index.d.ts" />
 
+import { RedisClient } from 'redis';
+
 declare module "then-redis" {
     export function createClient(port_arg:number, host_arg?:string, options?:ClientOpts):ThenRedisClient;
     export function createClient(unix_socket:string, options?:ClientOpts):ThenRedisClient;

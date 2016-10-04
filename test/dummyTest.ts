@@ -14,16 +14,17 @@ import { ElementSet } from '../common/datamodel/AbstractSource';
 import { view, edit } from '../common/views/ElementSets';
 
 let knex;
+const knexConfig = {
+  client: 'sqlite3',
+  connection: {
+    filename: './mydb.sqlite'
+  }
+};
 
 describe('A simple test', () => {
 
   before(() => {
-    knex = Knex({
-      client: 'sqlite3',
-      connection: {
-        filename: './mydb.sqlite'
-      }
-    });
+    knex = Knex(knexConfig);
   });
 
   describe('on the element_sets table', () => {
@@ -35,7 +36,7 @@ describe('A simple test', () => {
     });
 
     it('to check things work', (done) => {
-      const controller = new GenericController<ElementSet>('element_sets', view, edit);
+      const controller = new GenericController<ElementSet>(knexConfig, 'element_sets');
       controller.postItem(new ElementSet({
         uri: 'example.com',
         name: 'example',
