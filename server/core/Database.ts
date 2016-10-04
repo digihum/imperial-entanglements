@@ -10,6 +10,8 @@ import { omit } from 'lodash';
 
 import { PersistentObject } from '../../common/datamodel/PersistentObject';
 
+import { KeyNotFoundException } from './Exceptions';
+
 export class Database<T extends PersistentObject> {
 
     private knex : Knex;
@@ -24,7 +26,7 @@ export class Database<T extends PersistentObject> {
             .where({ uid: uid })
             .first();
 
-        return query.then((result) => result === undefined ? Promise.reject('Not Found') :
+        return query.then((result) => result === undefined ? Promise.reject(new KeyNotFoundException()) :
             Object.keys(result).reduce((prev, curr) =>
                 Object.assign(prev, {[curr]: result[curr]}), {}));
     }
@@ -34,7 +36,7 @@ export class Database<T extends PersistentObject> {
             .from(a)
             .where(params);
 
-        return query.then((results) => results === undefined ? Promise.reject('Not Found') : results.map((result) =>
+        return query.then((results) => results === undefined ? Promise.reject(new KeyNotFoundException()) : results.map((result) =>
             Object.keys(result).reduce((prev, curr) =>
                 Object.assign(prev, {[curr]: result[curr]}), {})));
     }

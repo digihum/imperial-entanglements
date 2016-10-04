@@ -51,31 +51,45 @@ export class Server {
         const routes = api(databaseConfig);
 
         for (const [route, controller] of routes) {
-            // TODO: this route should use React Router!
 
-            router.get(`/${this.apiRoute}/${route}/:id`, function* (next : koaRouter.IRouterContext) {
+            router.use(function* (next){
                 try {
-                    this.body = await controller.getItemJson(this.params.id);
+                    yield next;
                 } catch (err) {
-                    this.status = 404;
-                    this.body = err;
+                    switch (err.constructor.name) {
+                        case 'KeyNotFoundException':
+                            this.status = 404;
+                            break;
+                        default:
+                            this.status = 500;
+                    }
+                    this.body = err.message;
                 }
             });
 
+            router.get(`/${this.apiRoute}/${route}/:id`, function* (next : koaRouter.IRouterContext) {
+                yield controller.getItemJson(this.params.id)
+                .then((data) => this.body = data);
+            });
+
             router.get(`/${this.apiRoute}/${route}`, function* (next : koaRouter.IRouterContext) {
-                this.body = await controller.getCollectionJson(this.query);
+                 yield controller.getCollectionJson(this.query)
+                .then((data) => this.body = data);
             });
 
             router.post(`/${this.apiRoute}/${route}`, function* (next : koaRouter.IRouterContext) {
-                this.body = await controller.postItem(this.request.body);
+                yield controller.postItem(this.request.body)
+                .then((data) => this.body = data);
             });
 
             router.put(`/${this.apiRoute}/${route}/:id`, function* (next : koaRouter.IRouterContext) {
-                this.body = await controller.putItem(this.request.body);
+                yield controller.putItem(this.params.id, this.request.body)
+                .then((data) => this.body = data);
             });
 
             router.del(`/${this.apiRoute}/${route}/:id`, function* (next : koaRouter.IRouterContext) {
-                this.body = await controller.deleteItem(this.request.body);
+                yield controller.deleteItem(this.request.body)
+                .then((data) => this.body = data);
             });
         }
 

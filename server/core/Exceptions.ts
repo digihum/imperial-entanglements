@@ -4,10 +4,10 @@
  * @version 3.1.2
  */
 
-export class KeyNotFoundException {
+export class KeyNotFoundException extends Error {
     public readonly message: string;
     constructor(message: string = 'Could not find the given key') {
-        this.message = message;
+        super(message);
     }
 }
 
