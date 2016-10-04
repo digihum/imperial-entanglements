@@ -4,6 +4,8 @@
  * @version 0.0.1
  */
 
+import { Config as KnexConfig } from 'knex';
+
 import { IController } from '../controllers/IController';
 // import { ElementSetController } from '../controllers/ElementSetController';
 import { EntityController } from '../controllers/EntityController';
@@ -14,8 +16,8 @@ import { view, edit } from '../../common/views/ElementSets';
 
 import { Record } from '../../common/datamodel/Record';
 
-export const api : Map<string, IController<any>> = new Map<string, IController<any>>([
-    ['element_set', new GenericController<ElementSet>('element_sets', view, edit)],
-    ['record', new GenericController<Record>('records', view, edit)],
-    ['entity', new EntityController()]
+export const api : (s: KnexConfig) => Map<string, IController<any>> = (databaseConfig: KnexConfig) => new Map<string, IController<any>>([
+    ['element_set', new GenericController<ElementSet>(databaseConfig, 'element_sets', view, edit)],
+    ['record', new GenericController<Record>(databaseConfig, 'records', view, edit)],
+    ['entity', new EntityController(databaseConfig)]
 ]);

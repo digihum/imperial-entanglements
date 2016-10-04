@@ -3,22 +3,27 @@
  * @author <a href='mailto:tim.hollies@warwick.ac.uk'>Tim Hollies</a>
  * @version 0.0.1
  */
+
 import * as React from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 
-import { IController } from './IController';
-import { PersistentObject } from '../../common/datamodel/PersistentObject';
-import { loadItem, createItem, deleteItem, updateItem, loadCollection } from '../core/Database';
+import { Config as KnexConfig } from 'knex';
 
-export class GenericController<T extends PersistentObject> implements IController<T> {
+import { AbstractController } from './IController';
+import { PersistentObject } from '../../common/datamodel/PersistentObject';
+
+export class GenericController<T extends PersistentObject> extends AbstractController<T> {
 
     private tableName: string;
     private viewComponent : React.ComponentClass<T> | React.StatelessComponent<T>;
     private editComponent : React.ComponentClass<T> | React.StatelessComponent<T>;
 
-    constructor(table: string,
+    constructor(
+        databaseConfig: KnexConfig,
+        table: string,
         view: React.ComponentClass<T> | React.StatelessComponent<T>,
         edit: React.ComponentClass<T> | React.StatelessComponent<T>) {
+        super(databaseConfig);
         this.tableName = table;
         this.viewComponent = view;
         this.editComponent = edit;
@@ -36,7 +41,7 @@ export class GenericController<T extends PersistentObject> implements IControlle
     }
 
     public getItemJson(uid: number) : PromiseLike<T> {
-        return loadItem(this.tableName, uid);
+        return this.db.loadItem(this.tableName, uid);
     }
 
     public getCollectionPage() : PromiseLike<string> {
@@ -48,15 +53,15 @@ export class GenericController<T extends PersistentObject> implements IControlle
     }
 
     public getCollectionJson(params: Object = {}) : PromiseLike<string> {
-        return loadCollection(this.tableName, params);
+        return this.db.loadCollection(this.tableName, params);
     }
 
     public postItem(data: T) : PromiseLike<string> {
-        return createItem(data);
+        return this.db.createItem(data);
     }
 
     public putItem(uid: number, data: T) : PromiseLike<string> {
-        return updateItem(data);
+        return this.db.updateItem(data);
     }
 
     public patchItem(uid: number, data: T) : PromiseLike<string> {
@@ -64,6 +69,6 @@ export class GenericController<T extends PersistentObject> implements IControlle
     }
 
     public deleteItem(uid: number) : PromiseLike<string> {
-        return deleteItem(this.tableName, uid);
+        return this.db.deleteItem(this.tableName, uid);
     }
 }

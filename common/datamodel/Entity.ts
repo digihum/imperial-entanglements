@@ -5,8 +5,10 @@
  */
 
 export class Entity {
-    public readonly id: number | null;
+    public readonly uid: number | null;
     public readonly entityType: string;
     public parent: number | Entity | null;
     public readonly readonly: boolean;
+
+    public tableName: string = 'entities';
 }

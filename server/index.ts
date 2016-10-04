@@ -8,5 +8,11 @@ import { Server } from './core/server';
 
 const server = new Server();
 
-server.init();
+server.init({
+  client: 'sqlite3',
+  connection: {
+    filename: './mydb.sqlite'
+  }
+});
+
 server.listen();

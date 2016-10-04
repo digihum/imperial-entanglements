@@ -7,12 +7,17 @@
 import * as React from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 
-import { IController } from './IController';
+import { Config as KnexConfig } from 'knex';
+
+import { AbstractController } from './IController';
 import { Entity } from '../../common/datamodel/Entity';
-import { loadItem, createItem, deleteItem, updateItem } from '../core/Database';
 import { EntityEditor } from '../../common/views/entityEditor';
 
-export class EntityController implements IController<Entity> {
+export class EntityController extends AbstractController<Entity> {
+
+    constructor(databaseConfig: KnexConfig) {
+        super(databaseConfig);
+    }
 
     public getItemPage(uid: number) : PromiseLike<string> {
          return Promise.resolve(renderToStaticMarkup(React.createElement(EntityEditor, {id: 1})));
@@ -23,7 +28,7 @@ export class EntityController implements IController<Entity> {
     }
 
     public getItemJson(uid: number) : PromiseLike<Entity> {
-        return loadItem<Entity>('entities', uid);
+        return this.db.loadItem<Entity>('entities', uid);
     }
 
     public getCollectionPage() : PromiseLike<string> {

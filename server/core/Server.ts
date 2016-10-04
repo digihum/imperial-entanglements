@@ -11,6 +11,8 @@ import * as koaJSON from 'koa-json';
 import * as koaBodyParser from 'koa-bodyparser';
 import * as koaQs from 'koa-qs';
 
+import { Config as KnexConfig } from 'knex';
+
 import { home } from '../../common/views/home';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { template } from 'lodash';
@@ -26,7 +28,7 @@ export class Server {
     private adminRoute: string;
     private adminEditRoute: string;
 
-    public init() : void {
+    public init(databaseConfig: KnexConfig) : void {
 
         this.app = new Koa();
         koaQs(this.app, 'first');
@@ -43,7 +45,9 @@ export class Server {
         router.use(koaJSON());
         router.use(koaBodyParser());
 
-        for (const [route, controller] of api) {
+        const routes = api(databaseConfig);
+
+        for (const [route, controller] of routes) {
             // TODO: this route should use React Router!
             router.get(`/${route}/:id`, function* (next : koaRouter.IRouterContext) {
                 try {
