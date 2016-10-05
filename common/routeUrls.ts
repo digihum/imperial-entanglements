@@ -9,6 +9,15 @@ import { RouteNotFound } from './views/RouteNotFound';
 
 import { EntityEditor } from './views/EntityEditor';
 
+export class AppUrls {
+    public static elementSet: string = 'element_set';
+    public static record: string = 'record';
+    public static entity: string = 'entity';
+    public static entityType: string = 'entityType';
+
+    public tmp: string;
+}
+
 export interface PageProps {
     url: string;
 }
@@ -24,15 +33,12 @@ interface ComponentRoute {
 }
 
 interface RouteUrls {
-    elementSet: ComponentRoute;
-    record: ComponentRoute;
-    entity: ComponentRoute;
-    entityType: ComponentRoute;
+    (key: string) : ComponentRoute;
 }
 
 export const routeUrls : RouteUrls = {
 
-    elementSet: {
+    [AppUrls.elementSet]: {
         url: 'element_set',
         itemView: RouteNotFound,
         itemEdit: RouteNotFound,
@@ -40,7 +46,7 @@ export const routeUrls : RouteUrls = {
         collectionEdit: RouteNotFound
     },
 
-    record: {
+    [AppUrls.record]: {
         url: 'record',
         itemView: RouteNotFound,
         itemEdit: RouteNotFound,
@@ -48,7 +54,7 @@ export const routeUrls : RouteUrls = {
         collectionEdit: RouteNotFound
     },
 
-    entity:  {
+    [AppUrls.entity]:  {
         url: 'entity',
         itemView: EntityEditor,
         itemEdit: EntityEditor,
@@ -56,11 +62,11 @@ export const routeUrls : RouteUrls = {
         collectionEdit: RouteNotFound
     },
 
-    entityType: {
+    [AppUrls.entityType]: {
         url: 'entity_type',
         itemView: RouteNotFound,
         itemEdit: RouteNotFound,
         collectionView: RouteNotFound,
         collectionEdit: RouteNotFound
-    },
+    }
 };

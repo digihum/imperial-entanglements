@@ -16,4 +16,8 @@ export class EntityType implements PersistentObject {
     public icon: string;
     public color: string;
     public sameAs: string[];
+
+    public fromJson(data: any) {
+        //this.uid = this.uid;
+    }
 }

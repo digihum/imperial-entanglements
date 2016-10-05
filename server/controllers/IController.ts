@@ -4,50 +4,49 @@
  * @version 0.0.1
  */
 
-import { Config as KnexConfig } from 'knex';
 import { Database } from '../core/Database';
 import { PersistentObject } from '../../common/datamodel/PersistentObject';
 
-export interface IController<T extends PersistentObject> {
+export interface IController {
 
-    getItemJson(uid: number) : PromiseLike<T>;
+    getItemJson<T extends PersistentObject>(obj: { new(): T; }, uid: number) : Promise<T>;
 
-    getCollectionJson(params: Object) : PromiseLike<string>;
+    getCollectionJson<T extends PersistentObject>(obj: { new(): T; }, params: Object) : Promise<T[]>;
 
     // create
-    postItem(data: any) : PromiseLike<string>;
+    postItem<T extends PersistentObject>(data: any) : Promise<boolean>;
 
     // replace
-    putItem(uid: number, data: any) : PromiseLike<string>;
+    putItem<T extends PersistentObject>(uid: number, data: any) : Promise<boolean>;
 
     // delete
-    deleteItem(uid: number) : PromiseLike<string>;
+    deleteItem<T extends PersistentObject>(uid: number) : Promise<boolean>;
 
     // update
-    patchItem(uid: number, data: any);
+    patchItem<T extends PersistentObject>(uid: number, data: any) : Promise<boolean>;
 }
 
-export abstract class AbstractController<T extends PersistentObject> implements IController<T> {
+export abstract class AbstractController implements IController {
 
-    protected db : Database<T>;
+    protected db : Database;
 
-    constructor(databaseConfig: KnexConfig) {
-        this.db = new Database<T>(databaseConfig);
+    constructor(db: Database) {
+        this.db = db;
     }
 
-    public abstract getItemJson(uid: number) : PromiseLike<T>;
+    public abstract getItemJson<T extends PersistentObject>(obj: { new(): T; }, uid: number) : Promise<T>;
 
-    public abstract getCollectionJson(params: Object) : PromiseLike<string>;
+    public abstract getCollectionJson<T extends PersistentObject>(obj: { new(): T; }, params: Object) : Promise<T[]>;
 
     // create
-    public abstract postItem(data: any) : PromiseLike<string>;
+    public abstract postItem<T extends PersistentObject>(data: any) : Promise<string>;
 
     // replace
-    public abstract putItem(uid: number, data: any) : PromiseLike<string>;
+    public abstract putItem<T extends PersistentObject>(uid: number, data: any) : Promise<string>;
 
     // delete
-    public abstract deleteItem(uid: number) : PromiseLike<string>;
+    public abstract deleteItem<T extends PersistentObject>(uid: number) : Promise<string>;
 
     // update
-    public abstract patchItem(uid: number, data: any);
+    public abstract patchItem<T extends PersistentObject>(uid: number, data: any);
 }

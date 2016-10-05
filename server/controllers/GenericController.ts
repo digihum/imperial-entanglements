@@ -4,44 +4,45 @@
  * @version 0.0.1
  */
 
-import { Config as KnexConfig } from 'knex';
-
 import { AbstractController } from './IController';
 import { PersistentObject } from '../../common/datamodel/PersistentObject';
+import { Database } from '../core/Database';
 
-export class GenericController<T extends PersistentObject> extends AbstractController<T> {
+export class GenericController<T extends PersistentObject> extends AbstractController {
 
     private tableName: string;
 
     constructor(
-        databaseConfig: KnexConfig,
+        db: Database,
         table: string) {
-        super(databaseConfig);
+        super(db);
         this.tableName = table;
     }
 
 
-    public getItemJson(uid: number) : PromiseLike<T> {
-        return this.db.loadItem(this.tableName, uid);
+    public getItemJson(obj: { new(): T; }, uid: number) : Promise<T> {
+        return this.db.loadItem(this.tableName, uid)
+        .then((data) => new obj().fromJson(data));
     }
 
-    public getCollectionJson(params: Object = {}) : PromiseLike<string> {
-        return this.db.loadCollection(this.tableName, params);
+    public getCollectionJson(obj: { new(): T; }, params: Object = {}) : Promise<T[]> {
+        return this.db.loadCollection(this.tableName, params)
+         .then((data) => data.map((datum) => new obj().fromJson(datum)));
     }
 
-    public postItem(data: T) : PromiseLike<string> {
+    public postItem(data: T) : Promise<string> {
         return this.db.createItem(data);
     }
 
-    public putItem(uid: number, data: T) : PromiseLike<string> {
+    public putItem(uid: number, data: T) : Promise<string> {
         return this.db.updateItem(data);
     }
 
-    public patchItem(uid: number, data: T) : PromiseLike<string> {
+    public patchItem(uid: number, data: T) : Promise<string> {
         return Promise.resolve('');
     }
 
-    public deleteItem(uid: number) : PromiseLike<string> {
+    public deleteItem(uid: number) : Promise<string> {
         return this.db.deleteItem(this.tableName, uid);
     }
 }

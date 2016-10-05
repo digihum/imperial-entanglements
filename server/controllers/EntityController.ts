@@ -4,37 +4,37 @@
  * @version 0.0.1
  */
 
-import { Config as KnexConfig } from 'knex';
-
+import { Database } from '../core/Database';
 import { AbstractController } from './IController';
 import { Entity } from '../../common/datamodel/Entity';
-export class EntityController extends AbstractController<Entity> {
 
-    constructor(databaseConfig: KnexConfig) {
-        super(databaseConfig);
+export class EntityController extends AbstractController {
+
+    constructor(db: Database) {
+        super(db);
     }
 
-    public getItemJson(uid: number) : PromiseLike<Entity> {
-        return this.db.loadItem<Entity>('entities', uid);
+    public getItemJson<Entity>(obj: { new(): Entity; }, uid: number) : Promise<Entity> {
+        return this.db.loadItem('entities', uid);
     }
 
-    public getCollectionJson(params: Object = {}) : PromiseLike<string> {
+    public getCollectionJson(obj: { new(): Entity; }, params: Object = {}) : Promise<Entity[]> {
         return Promise.resolve('');
     }
 
-    public postItem(data: Entity) : PromiseLike<string> {
+    public postItem(data: Entity) : Promise<string> {
         return Promise.resolve('');
     }
 
-    public putItem(uid: number, data: Entity) : PromiseLike<string> {
+    public putItem(uid: number, data: Entity) : Promise<string> {
         return Promise.resolve('');
     }
 
-    public patchItem(uid: number, data: Entity) : PromiseLike<string> {
+    public patchItem(uid: number, data: Entity) : Promise<string> {
         return Promise.resolve('');
     }
 
-    public deleteItem(uid: number) : PromiseLike<string> {
+    public deleteItem(uid: number) : Promise<string> {
         return Promise.resolve('');
     }
 }

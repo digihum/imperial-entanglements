@@ -27,6 +27,13 @@ export class ElementSet implements PersistentObject, IElementSet {
 
     public readonly tableName : string = 'element_sets';
 
+    public fromJson(data: any) : ElementSet {
+        this.name = data.name;
+        this.uid = data.uid;
+        this.description = data.description;
+        return this;
+    }
+
     constructor(data: IElementSet = {
         uid: null,
         uri: null,

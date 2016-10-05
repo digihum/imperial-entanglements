@@ -7,8 +7,10 @@
 import * as React from 'react';
 import { Link } from 'react-router';
 import { ApiService } from '../ApiService';
+import { AppUrls } from '../routeUrls';
+import * as Select from 'react-select';
 
-var Select = require('react-select');
+import { ElementSet } from '../datamodel/AbstractSource';
 
 function logChange(val) {
     console.log("Selected: " + val);
@@ -27,8 +29,9 @@ export class EntityEditor extends React.Component<EntityEditorProps, EntityEdito
 
 
     private getData(input, callback)  {
-        this.props.api.getCanonicalName(2)
+        this.props.api.getItem(ElementSet, AppUrls.elementSet, 1)
         .then((data) => {
+            console.log(data.description);
             callback(null, {
                 options: [
                     { value: 'one', label: 'One' },
@@ -65,8 +68,8 @@ export class EntityEditor extends React.Component<EntityEditorProps, EntityEdito
                     <section id='workspace'>
                         <h2>Predicates <i className='fa fa-plus-circle' aria-hidden='true'></i></h2>
                         <Select.Async
-                            name="form-field-name"
-                            value="one"
+                            name='form-field-name'
+                            value='one'
                             onChange={logChange}
                             loadOptions={getData}
                         />

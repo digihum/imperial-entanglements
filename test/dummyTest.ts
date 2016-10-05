@@ -6,14 +6,15 @@
 
 import { expect } from 'chai';
 import * as Knex from 'knex';
-import { isNumber } from 'lodash';
 
-import { GenericController } from '../server/controllers/GenericController';
+import { ServerApiService } from '../server/core/ServerApiService';
 import { ElementSet } from '../common/datamodel/AbstractSource';
-
-import { view, edit } from '../common/views/ElementSets';
+import { AppUrls } from '../common/routeUrls';
+import { wrapDatabase } from '../server/routes/api';
+import { Database } from '../server/core/Database';
 
 let knex;
+let apiService : ServerApiService;
 const knexConfig = {
   client: 'sqlite3',
   connection: {
@@ -25,6 +26,7 @@ describe('A simple test', () => {
 
   before(() => {
     knex = Knex(knexConfig);
+    apiService = wrapDatabase(new Database(knexConfig));
   });
 
   describe('on the element_sets table', () => {
@@ -36,16 +38,15 @@ describe('A simple test', () => {
     });
 
     it('to check things work', (done) => {
-      const controller = new GenericController<ElementSet>(knexConfig, 'element_sets');
-      controller.postItem(new ElementSet({
+
+      apiService.postItem(AppUrls.elementSet, new ElementSet().fromJson({
         uri: 'example.com',
         name: 'example',
         description: 'a example set',
         uid: null
       }))
-      .then((result) => {
-
-        expect(isNumber(result[0])).to.be.equal(true, 'insert query returned a non-numeric value');
+      .then((success) => {
+       // expect(isNumber(result[0])).to.be.equal(true, 'insert query returned a non-numeric value');
 
         knex('element_sets')
         .count()
@@ -56,6 +57,5 @@ describe('A simple test', () => {
         });
       });
     });
-
   });
 });

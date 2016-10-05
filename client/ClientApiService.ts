@@ -5,10 +5,34 @@
  */
 
 import { ApiService } from '../common/ApiService';
+import { PersistentObject } from '../common/datamodel/PersistentObject';
 
 export class ClientApiService implements ApiService {
-    public getCanonicalName(uid: number) : Promise<string> {
-        return fetch('/noidea')
-        .then((response) => response.text());
+    public getItem<T extends PersistentObject>(obj: { new(): T; }, baseUrl : string, uid: number) : Promise<T> {
+        return fetch(`/api/v1/${baseUrl}/${uid}`)
+            .then((response) => response.json())
+            .then((data) => new obj().fromJson(data));
+    }
+
+    public getCollection<T extends PersistentObject>(obj: { new(): T; }, baseUrl : string) : Promise<T[]> {
+        return fetch(`/api/v1/${baseUrl}`)
+            .then((response) => response.json())
+            .then((data) => data.map((datum) => new obj().fromJson(data)));
+    }
+
+    public postItem<T extends PersistentObject>(baseUrl : string, data: T)  : Promise<boolean> {
+        return Promise.resolve(true);
+    }
+
+    public putItem<T extends PersistentObject>(baseUrl : string, uid: number, data: T) : Promise<boolean> {
+        return Promise.resolve(true);
+    }
+
+    public patchItem<T extends PersistentObject>(baseUrl : string, uid: number, data : T) : Promise<boolean> {
+        return Promise.resolve(true);
+    }
+
+    public delItem<T extends PersistentObject>(baseUrl : string, uid: number) {
+        return Promise.resolve(true);
     }
 }

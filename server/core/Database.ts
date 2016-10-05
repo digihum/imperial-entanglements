@@ -12,7 +12,7 @@ import { PersistentObject } from '../../common/datamodel/PersistentObject';
 
 import { KeyNotFoundException } from './Exceptions';
 
-export class Database<T extends PersistentObject> {
+export class Database {
 
     private knex : Knex;
 
@@ -20,7 +20,7 @@ export class Database<T extends PersistentObject> {
         this.knex = Knex(config);
     }
 
-    public loadItem<T>(a: string, uid: number) : Promise<T> {
+    public loadItem(a: string, uid: number) : Promise<any> {
         const query = this.knex.select()
             .from(a)
             .where({ uid: uid })
@@ -31,7 +31,7 @@ export class Database<T extends PersistentObject> {
                 Object.assign(prev, {[curr]: result[curr]}), {}));
     }
 
-    public loadCollection<T>(a: string, params: Object) : Promise<T[]> {
+    public loadCollection(a: string, params: Object) : Promise<any[]> {
         const query = this.knex.select()
             .from(a)
             .where(params);
@@ -41,14 +41,14 @@ export class Database<T extends PersistentObject> {
                 Object.assign(prev, {[curr]: result[curr]}), {})));
     }
 
-    public createItem<T>(a: PersistentObject) : Promise<T> {
+    public createItem(a: PersistentObject) : Promise<any> {
         // throw warning if called with uid
         // validate that everything else has been sent
         const withoutUid = omit(a, ['uid', 'tableName']);
         return this.knex.insert(withoutUid, 'uid').into(a.tableName);
     }
 
-    public updateItem<T>(a: PersistentObject) : Promise<T> {
+    public updateItem(a: PersistentObject) : Promise<any> {
         // assert - must have uid
         // validation?
         return this.knex(a.tableName)
@@ -56,7 +56,7 @@ export class Database<T extends PersistentObject> {
             .update(omit(a, ['tableName']));
     }
 
-    public deleteItem<T>(tableName: string, uid: number) : Promise<T> {
+    public deleteItem(tableName: string, uid: number) : Promise<any> {
         return this.knex(tableName)
             .where({ uid })
             .del();
