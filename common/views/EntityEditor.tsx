@@ -6,9 +6,17 @@
 
 import * as React from 'react';
 import { Link } from 'react-router';
+import { ApiService } from '../ApiService';
+
+var Select = require('react-select');
+
+function logChange(val) {
+    console.log("Selected: " + val);
+}
 
 interface EntityEditorProps {
     id: number;
+    api: ApiService;
 }
 
 interface EntityEditorState {
@@ -16,8 +24,26 @@ interface EntityEditorState {
 }
 
 export class EntityEditor extends React.Component<EntityEditorProps, EntityEditorState> {
+
+
+    private getData(input, callback)  {
+        this.props.api.getCanonicalName(2)
+        .then((data) => {
+            callback(null, {
+                options: [
+                    { value: 'one', label: 'One' },
+                    { value: 'two', label: 'Two' }
+                ],
+                // CAREFUL! Only set this to true when there are no more options,
+                // or more specific queries will not be sent to the server.
+                complete: true
+            });
+        });
+    }
+
     public render() {
         const woo = 1;
+        const getData = this.getData.bind(this);
         if (woo === 2) {
             return (
                 <section id='select-entity-type'>
@@ -38,6 +64,12 @@ export class EntityEditor extends React.Component<EntityEditorProps, EntityEdito
                     </section>
                     <section id='workspace'>
                         <h2>Predicates <i className='fa fa-plus-circle' aria-hidden='true'></i></h2>
+                        <Select.Async
+                            name="form-field-name"
+                            value="one"
+                            onChange={logChange}
+                            loadOptions={getData}
+                        />
                     </section>
                 </section>
             );

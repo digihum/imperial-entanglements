@@ -49,6 +49,7 @@
     "react-router": "^4.0.0-alpha.4",
     "react-select": "^1.0.0-rc.2",
     "react-toolbox": "^1.2.1",
+    "reflect-metadata": "^0.1.8",
     "sqlite3": "^3.1.4"
   },
   "devDependencies": {

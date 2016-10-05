@@ -32,28 +32,35 @@ export const FalconApp = (props : FalconAppProps) => (
 
                 <Match exactly pattern='/' component={Home} />
 
-                {Object.keys(routeUrls).map((name) => ([
+                {Object.keys(routeUrls).map((name) => [name, routeUrls[name]]).map(([name, routeUrl]) => ([
 
                         <Match
                             exactly key={`${name}-cv`}
-                            pattern={`/${routeUrls[name].url}`}
-                            component={routeUrls[name].collectionView}
-                            api={props.api} />,
+                            pattern={`/${routeUrl.url}`}
+                            render={
+                                (matchProps) => (<routeUrl.collectionView api={props.api} {...matchProps} />)
+                            } />,
 
                         <Match
                             exactly key={`${name}-iv`}
-                            pattern={`/${routeUrls[name].url}/:id`}
-                            component={routeUrls[name].itemView} />,
+                            pattern={`/${routeUrl.url}/:id`}
+                            render={
+                                (matchProps) => (<routeUrl.itemView api={props.api} {...matchProps} />)
+                            } />,
 
                         <Match
                             exactly key={`${name}-ce`}
-                            pattern={`/admin/edit/${routeUrls[name].url}`}
-                            component={routeUrls[name].collectionEdit} />,
+                            pattern={`/admin/edit/${routeUrl.url}`}
+                             render={
+                                (matchProps) => (<routeUrl.collectionEdit api={props.api} {...matchProps} />)
+                            }/>,
 
                         <Match
                             exactly key={`${name}-ie`}
-                            pattern={`/admin/edit/${routeUrls[name].url}`}
-                            component={routeUrls[name].itemEdit} />
+                            pattern={`/admin/edit/${routeUrl.url}`}
+                            render={
+                                (matchProps) => (<routeUrl.itemEdit api={props.api} {...matchProps} />)
+                            } />
                 ]
                 ))}
 

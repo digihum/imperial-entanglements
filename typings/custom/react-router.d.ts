@@ -26,7 +26,8 @@ declare module 'react-router' {
 
 
     export interface MatchProps extends React.HTMLAttributes{
-        component: React.ComponentClass<any> | React.StatelessComponent<any>
+        component?: React.ComponentClass<any> | React.StatelessComponent<any>
+        render?: React.StatelessComponent<any>
     }
 
     export interface MatchElement extends React.ComponentClass<MatchProps> {}
