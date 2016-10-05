@@ -16,17 +16,18 @@ export interface PageProps {
 interface ComponentRoute {
     url: string;
 
-    itemView: React.ComponentClass<PageProps>;
-    itemEdit: React.ComponentClass<PageProps>;
+    itemView: React.ComponentClass<PageProps> | React.StatelessComponent<PageProps>;
+    itemEdit: React.ComponentClass<PageProps> | React.StatelessComponent<PageProps>;
 
-    collectionView: React.ComponentClass<PageProps>;
-    collectionEdit: React.ComponentClass<PageProps>;
+    collectionView: React.ComponentClass<PageProps> | React.StatelessComponent<PageProps>;
+    collectionEdit: React.ComponentClass<PageProps> | React.StatelessComponent<PageProps>;
 }
 
 interface RouteUrls {
     elementSet: ComponentRoute;
     record: ComponentRoute;
     entity: ComponentRoute;
+    entityType: ComponentRoute;
 }
 
 export const routeUrls : RouteUrls = {
@@ -53,5 +54,13 @@ export const routeUrls : RouteUrls = {
         itemEdit: EntityEditor,
         collectionView: RouteNotFound,
         collectionEdit: RouteNotFound
-    }
+    },
+
+    entityType: {
+        url: 'entity_type',
+        itemView: RouteNotFound,
+        itemEdit: RouteNotFound,
+        collectionView: RouteNotFound,
+        collectionEdit: RouteNotFound
+    },
 };

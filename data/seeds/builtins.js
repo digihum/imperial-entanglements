@@ -7,6 +7,7 @@ exports.seed = function(knex, Promise) {
     .then(function () {
        return knex(ENTITY_TYPES_TABLE_NAME).insert(
           {
+            slug: 'any',
             name: 'Any',
             description: 'Represents a single thing',
             same_as: '',

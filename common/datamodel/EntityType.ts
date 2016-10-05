@@ -4,8 +4,15 @@
  * @version 0.0.1
  */
 
-export class EntityType {
+import { PersistentObject } from './PersistentObject';
+
+export class EntityType implements PersistentObject {
+
+    public readonly tableName: string;
+
+    public uid: number | null;
     public name: string;
+    public description: string;
     public icon: string;
     public color: string;
     public sameAs: string[];
