@@ -4,7 +4,13 @@
  * @version 0.0.1
  */
 
-export class Property {
+import { PersistentObject } from './PersistentObject';
+
+export class Predicate implements PersistentObject {
+
+    public readonly tableName: string;
+
+    public uid: number | null;
     public domain : 'Any';
     public range: 'Any';
     public name: string;

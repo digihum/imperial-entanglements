@@ -4,7 +4,9 @@
  * @version 0.0.1
  */
 
-export class Entity {
+import { PersistentObject } from './PersistentObject';
+
+export class Entity implements PersistentObject {
     public readonly uid: number | null;
     public readonly entityType: string;
     public parent: number | Entity | null;
