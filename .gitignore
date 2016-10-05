@@ -5,6 +5,7 @@ public/js
 # Generated
 .sass-cache
 build
+dist
 
 # Modules
 node_modules

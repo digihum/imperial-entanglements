@@ -7,6 +7,7 @@
     "tsc": "./node_modules/.bin/tsc",
     "tsc:watch": "./node_modules/.bin/tsc --watch",
     "electron": "./node_modules/.bin/electron ./build/app",
+    "asar": "asar pack build bin/falcon.asar",
     "test": "./node_modules/.bin/mocha",
     "snyk": "snyk test",
     "migrate": "./node_modules/.bin/knex migrate:latest",
@@ -17,6 +18,15 @@
   "repository": {
     "type": "git",
     "url": "https://actechlab.warwick.ac.uk/u1572229/imperial-entanglements"
+  },
+  "build": {
+    "appId": "Imperial Entanglements",
+    "mac": {
+      "category": "public.app-category.education"
+    },
+    "win": {
+      "iconUrl": "http://www.iconarchive.com/download/i43620/treetog/junior/folder-documents.ico"
+    }
   },
   "author": "",
   "license": "ISC",
@@ -42,6 +52,7 @@
     "babel-preset-es2015": "^6.14.0",
     "chai": "^3.5.0",
     "electron": "^1.4.0",
+    "electron-builder": "^7.10.2",
     "gulp": "^3.9.1",
     "gulp-typescript": "^2.14.1",
     "mocha": "^3.0.2",
