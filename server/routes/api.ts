@@ -25,7 +25,7 @@ import { EntityType } from '../../common/datamodel/EntityType';
 import { Entity } from '../../common/datamodel/Entity';
 
 // Routes
-import { AppUrls } from '../../common/RouteUrls';
+import { AppUrls } from '../../common/routeUrls';
 
 export const wrapDatabase : (s: Database) => ServerApiService = (db: Database) => {
     const routes = new Map<string, IController>([
