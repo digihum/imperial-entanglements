@@ -7,7 +7,7 @@
 //https://react-router.now.sh/Match
 
 import * as React from 'react';
-import { Match, Miss, createServerRenderContext  } from 'react-router';
+import { Match, Miss } from 'react-router';
 
 import { RouteNotFound } from './views/RouteNotFound';
 
@@ -19,7 +19,6 @@ import { Home } from './views/Home';
 interface FalconAppProps {
     router: any;
     api: ApiService;
-    location: string;
     routerSettings: any;
 }
 
@@ -39,8 +38,7 @@ export const FalconApp = (props : FalconAppProps) => (
                             exactly key={`${name}-cv`}
                             pattern={`/${routeUrls[name].url}`}
                             component={routeUrls[name].collectionView}
-                            api={props.api}
-                            url={props.location} />,
+                            api={props.api} />,
 
                         <Match
                             exactly key={`${name}-iv`}
@@ -59,7 +57,7 @@ export const FalconApp = (props : FalconAppProps) => (
                 ]
                 ))}
 
-                <Miss component={RouteNotFound} url={props.location} />
+                <Miss component={RouteNotFound} />
             </div>
         </props.router>
     </div>

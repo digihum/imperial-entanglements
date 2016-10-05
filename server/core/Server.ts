@@ -57,7 +57,7 @@ export class Server {
 
         for (const [route, controller] of routes) {
 
-            router.use(function* (next){
+            router.use(function* (next: Koa.Context){
                 try {
                     yield next;
                 } catch (err) {
@@ -101,11 +101,10 @@ export class Server {
         this.app.use(router.middleware());
 
         const self = this;
-        this.app.use(function* (next) {
+        this.app.use(function* (next: Koa.Context) {
             this.body = self.skeleton({ body: renderToStaticMarkup(FalconApp({
-                location: this.request.url,
                 router: ServerRouter,
-                api: ServerApiService,
+                api: new ServerApiService(),
                 routerSettings: {
                     context: self.routingContext,
                     location: this.request.url

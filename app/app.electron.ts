@@ -12,13 +12,12 @@ import { MemoryRouter } from 'react-router';
 
 document.addEventListener('DOMContentLoaded', (event) => {
     render(createElement(FalconApp, {
-        api: ServerApiService,
+        api: new ServerApiService(),
         router: MemoryRouter,
-        location: window.location,
         routerSettings: {
            initialEntries: ['/'],
-           initialIndex: 0 
+           initialIndex: 0
         }
-    }), document.getElementById('main'));
+    }), <Element>document.getElementById('main'));
 });
 

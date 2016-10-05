@@ -7,11 +7,8 @@
 import { ApiService } from '../common/ApiService';
 
 export class ClientApiService implements ApiService {
-
     public getCanonicalName(uid: number) : Promise<string> {
         return fetch('/noidea')
         .then((response) => response.text());
     }
-
-
 }

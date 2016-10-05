@@ -12,10 +12,9 @@ import { BrowserRouter } from 'react-router';
 
 document.addEventListener('DOMContentLoaded', (event) => {
     render(createElement(FalconApp, {
-        api: ClientApiService,
+        api: new ClientApiService(),
         router: BrowserRouter,
-        location: window.location,
         routerSettings: {}
-    }), document.getElementById('main'));
+    }), <Element>document.getElementById('main'));
 });
 

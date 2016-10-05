@@ -3,21 +3,24 @@
     "bluebird": "registry:dt/bluebird#3.0.0+20160907110115",
     "chai": "registry:dt/chai#3.4.0+20160601211834",
     "dotenv": "registry:dt/dotenv#2.0.0+20160327131627",
+    "electron": "registry:env/electron#0.37.6+20160909065630",
     "jsonschema": "registry:dt/jsonschema#0.0.0+20160811135847",
     "koa": "registry:dt/koa#2.0.0+20160724024233",
     "koa-bodyparser": "registry:dt/koa-bodyparser#3.0.0+20160414124440",
     "koa-json": "registry:dt/koa-json#2.0.0+20160412125208",
-    "koa-router": "registry:dt/koa-router#7.0.0+20160907102352",
+    "koa-qs": "file:typings/custom/koa-qs.d.ts",
+    "koa-router": "file:typings/custom/koa-router.d.ts",
     "lodash": "registry:dt/lodash#4.14.0+20160830145422",
     "mocha": "registry:dt/mocha#2.2.5+20160720003353",
     "react": "registry:dt/react#0.14.0+20160829191040",
     "react-dom": "registry:dt/react-dom#0.14.0+20160412154040",
     "react-jsonschema-form": "registry:dt/react-jsonschema-form#0.30.1+20160720001748",
     "redis": "registry:dt/redis#0.12.1+20160818110030",
-    "then-redis": "file:typings/custom/then-redis.d.ts",
     "whatwg-fetch": "registry:dt/whatwg-fetch#0.0.0+20160829180742"
   },
   "dependencies": {
-    "slug": "registry:npm/slug#0.9.0+20160723033700"
+    "react-router": "file:typings/custom/react-router.d.ts",
+    "slug": "registry:npm/slug#0.9.0+20160723033700",
+    "then-redis": "file:typings/custom/then-redis.d.ts"
   }
 }
