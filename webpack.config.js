@@ -1,8 +1,7 @@
-var config = {
+var frontendConfig = {
     devtool: 'inline-source-map',
     entry: {
         "app.frontend": './build/client/app.frontend.js', 
-        "app.electron": './build/app/app.electron.js'
 	},
     output: {  
         path: 'build/static',                 // output folder
@@ -26,4 +25,23 @@ var config = {
         "lodash": "_"
     }
 }
-module.exports = config;
+
+var electronConfig = {
+    devtool: 'inline-source-map',
+    entry: {
+        "app.electron": './build/app/app.electron.js'
+	},
+    output: {  
+        path: 'build/static',                 // output folder
+        filename: '[name].dist.js'     // file name
+    },
+    resolve: {
+        extensions: ['', '.js']
+    },
+    target: 'node',
+    externals: {
+        "knex": "commonjs knex"
+    }
+}
+
+module.exports = [frontendConfig, electronConfig];

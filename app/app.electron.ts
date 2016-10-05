@@ -7,12 +7,20 @@
 import { render } from 'react-dom';
 import { createElement } from 'react';
 import { FalconApp } from '../common/FalconApp';
-import { ServerApiService } from '../server/core/ServerApiService';
+import { Database } from '../server/core/Database';
+import { wrapDatabase } from '../server/routes/api';
 import { MemoryRouter } from 'react-router';
+
+const db = new Database({
+  client: 'sqlite3',
+  connection: {
+    filename: './mydb.sqlite'
+  }
+});
 
 document.addEventListener('DOMContentLoaded', (event) => {
     render(createElement(FalconApp, {
-        api: new ServerApiService(),
+        api: wrapDatabase(db),
         router: MemoryRouter,
         routerSettings: {
            initialEntries: ['/'],
