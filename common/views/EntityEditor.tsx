@@ -11,6 +11,7 @@ import { AppUrls } from '../routeUrls';
 import * as Select from 'react-select';
 
 import { ElementSet } from '../datamodel/AbstractSource';
+import { EntityType } from '../datamodel/EntityType';
 
 function logChange(val) {
     console.log("Selected: " + val);
@@ -29,14 +30,11 @@ export class EntityEditor extends React.Component<EntityEditorProps, EntityEdito
 
 
     private getData(input, callback)  {
-        this.props.api.getCollection(ElementSet, AppUrls.elementSet)
+        this.props.api.getCollection(EntityType, AppUrls.entityType)
         .then((data) => {
-            console.log(data[0].description);
+            console.log(data[0]);
             callback(null, {
-                options: [
-                    { value: 'one', label: 'One' },
-                    { value: 'two', label: 'Two' }
-                ],
+                options: data.map((entityType) => ({ label: entityType.name, value: entityType.name })),
                 // CAREFUL! Only set this to true when there are no more options,
                 // or more specific queries will not be sent to the server.
                 complete: true
