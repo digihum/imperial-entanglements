@@ -6,6 +6,7 @@
 
 import { ApiService } from '../common/ApiService';
 import { PersistentObject } from '../common/datamodel/PersistentObject';
+import * as queryString from 'query-string';
 
 export { AppUrls } from '../common/ApiService';
 
@@ -17,7 +18,7 @@ export class ClientApiService implements ApiService {
     }
 
     public getCollection<T extends PersistentObject>(obj: { new(): T; }, baseUrl : string, params: any) : Promise<T[]> {
-        return fetch(`/api/v1/${baseUrl}`)
+        return fetch(`/api/v1/${baseUrl}?` + queryString.stringify(params))
             .then((response) => response.json())
             .then((data) => data.map((datum) => new obj().fromJson(datum)));
     }

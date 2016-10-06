@@ -28,7 +28,7 @@ export const FalconApp = (props : FalconAppProps) => (
     <div id='main' className="flex-fill">
         <props.router {...props.routerSettings} className="flex-fill">
             <div className="flex-fill" style={{ flexDirection: 'column' }}>
-                <div style={{ backgroundColor: '#0099e6', padding: '0.2em 1em'}}>
+                <div className='header'>
                     <h1>Header!</h1>
                     <Link to='/'>Home</Link>
                 </div>

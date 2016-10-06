@@ -13,6 +13,9 @@ import { ElementSet } from '../datamodel/AbstractSource';
 import { EntityType } from '../datamodel/EntityType';
 import { Entity } from '../datamodel/Entity';
 
+
+import { RecordsEditor } from '../components/entity_editor/records/RecordsEditor';
+
 interface ExpectedParams {
     id: number;
 }
@@ -106,6 +109,7 @@ export class EntityEditor extends React.Component<EntityEditorProps, EntityEdito
                             onChange={this.setSelectedEntityType.bind(this)}
                             options={this.state.options}
                         />
+                        <RecordsEditor dimension='predicates' entityExists={true} id={this.props.params.id} api={this.props.api} />
                     </section>
                 </section>
             );

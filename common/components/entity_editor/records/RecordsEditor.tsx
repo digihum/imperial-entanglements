@@ -5,7 +5,7 @@
  */
 
 import * as React from 'react';
-import { ApiService } from '../../../ApiService';
+import { ApiService, AppUrls } from '../../../ApiService';
 import { Record } from '../../../datamodel/Record';
 
 import { RecordRow } from './RecordRow';
@@ -49,7 +49,10 @@ export class RecordsEditor extends React.Component<RecordsEditorProps, RecordsEd
 	// }
 
 	public componentDidMount() {
-		//this.props.api.getCollection(Record, AppUrls.records)
+		this.props.api.getCollection(Record, AppUrls.record, { entity: this.props.id })
+		.then((data) => {
+			this.setState({ records: data });
+		})
 	}
 
 	// public postChange(updatedRecord) {
