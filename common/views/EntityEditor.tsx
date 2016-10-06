@@ -6,8 +6,7 @@
 
 import * as React from 'react';
 import { Link } from 'react-router';
-import { ApiService } from '../ApiService';
-import { AppUrls } from '../routeUrls';
+import { ApiService, AppUrls } from '../ApiService';
 import * as Select from 'react-select';
 
 import { ElementSet } from '../datamodel/AbstractSource';

@@ -7,6 +7,8 @@
 import { ApiService } from '../common/ApiService';
 import { PersistentObject } from '../common/datamodel/PersistentObject';
 
+export { AppUrls } from '../common/ApiService';
+
 export class ClientApiService implements ApiService {
     public getItem<T extends PersistentObject>(obj: { new(): T; }, baseUrl : string, uid: number) : Promise<T> {
         return fetch(`/api/v1/${baseUrl}/${uid}`)

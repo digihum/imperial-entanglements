@@ -12,7 +12,7 @@ import { RecordRow } from './RecordRow';
 
 interface RecordsEditorProps {
     id: number;
-	service: ApiService;
+	api: ApiService;
 	dimension: string;
 	entityExists: boolean;
 }
@@ -48,9 +48,9 @@ export class RecordsEditor extends React.Component<RecordsEditorProps, RecordsEd
 	// 	});
 	// }
 
-	// public componentDidMount() {
-	// 	this.updateRecords();
-	// }
+	public componentDidMount() {
+		//this.props.api.getCollection(Record, AppUrls.records)
+	}
 
 	// public postChange(updatedRecord) {
 	// 	return this.props.service.changeRecord(this.props.id, updatedRecord)

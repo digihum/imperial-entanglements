@@ -6,6 +6,15 @@
 
 import { PersistentObject } from './datamodel/PersistentObject';
 
+export class AppUrls {
+    public static elementSet: string = 'element_set';
+    public static record: string = 'record';
+    public static entity: string = 'entity';
+    public static entityType: string = 'entity_type';
+
+    public tmp: string;
+}
+
 export interface ApiService {
     getItem<T extends PersistentObject>(obj: { new(): T; }, baseUrl : string, uid: number) : Promise<T>;
     getCollection<T extends PersistentObject>(obj: { new(): T; }, baseUrl : string, params: any) : Promise<T[]>;

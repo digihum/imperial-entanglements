@@ -9,6 +9,8 @@ import { PersistentObject } from '../../common/datamodel/PersistentObject';
 import { IController } from '../controllers/IController';
 import { CollectionNotFoundException } from './Exceptions';
 
+export { AppUrls } from '../../common/ApiService';
+
 export class ServerApiService implements ApiService {
 
     private controllerMap: Map<string, IController>;

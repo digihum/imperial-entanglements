@@ -7,9 +7,8 @@
 import { expect } from 'chai';
 import * as Knex from 'knex';
 
-import { ServerApiService } from '../server/core/ServerApiService';
+import { ServerApiService, AppUrls } from '../server/core/ServerApiService';
 import { ElementSet } from '../common/datamodel/AbstractSource';
-import { AppUrls } from '../common/routeUrls';
 import { wrapDatabase } from '../server/routes/api';
 import { Database } from '../server/core/Database';
 
