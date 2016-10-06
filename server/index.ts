@@ -4,7 +4,7 @@
  * @version 0.0.1
  */
 
-import { Server } from './core/server';
+import { Server } from './core/Server';
 
 const server = new Server();
 
