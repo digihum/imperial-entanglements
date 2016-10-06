@@ -7,15 +7,16 @@
 import { PersistentObject } from './PersistentObject';
 
 export class Entity implements PersistentObject {
-    public readonly uid: number | null;
-    public readonly entityType: string;
+    public uid: number | null;
+    public entityType: string; // TODO: ideally this should be readonly
     public parent: number | Entity | null;
     public readonly readonly: boolean;
 
     public tableName: string = 'entities';
 
     public fromJson(data: any) : Entity {
-       // this.parent = this.uid;
+       this.uid = data.uid;
+       this.entityType = data.type;
        return this;
     }
 }

@@ -32,7 +32,7 @@ export const wrapDatabase : (s: Database) => ServerApiService = (db: Database) =
         [AppUrls.elementSet, new GenericController<ElementSet>(db, 'element_sets')],
         [AppUrls.record, new GenericController<Record>(db, 'records')],
         [AppUrls.entityType, new GenericController<EntityType>(db, 'entity_types')],
-        [AppUrls.entity, new EntityController(db)]
+        [AppUrls.entity, new GenericController<Entity>(db, 'entities')]
     ]);
 
     return new ServerApiService(routes);
