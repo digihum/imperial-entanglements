@@ -12,21 +12,43 @@ import * as Select from 'react-select';
 
 import { ElementSet } from '../datamodel/AbstractSource';
 import { EntityType } from '../datamodel/EntityType';
+import { Entity } from '../datamodel/Entity';
 
 function logChange(val) {
     console.log("Selected: " + val);
 }
 
+interface ExpectedParams {
+    id: number;
+}
+
 interface EntityEditorProps {
     id: number;
     api: ApiService;
+    params: ExpectedParams;
 }
 
 interface EntityEditorState {
     dimension: 'predicates' | 'time' | 'source';
+    entity: Entity;
 }
 
 export class EntityEditor extends React.Component<EntityEditorProps, EntityEditorState> {
+
+    constructor() {
+        super();
+        this.state = {
+            dimension: 'predicates',
+            entity: new Entity()
+        };
+    }
+
+    public componentDidMount() {
+        this.props.api.getItem(Entity, AppUrls.entity, this.props.params.id)
+        .then((data) => {
+            this.setState({ entity: data });
+        });
+    }
 
 
     private getData(input, callback)  {
@@ -61,7 +83,7 @@ export class EntityEditor extends React.Component<EntityEditorProps, EntityEdito
             return (
                 <section id='entity-editor' className='flex-fill'>
                     <section id='sidebar'>
-                        <Link to='/'>Home</Link>
+                    <h2>Entity #{this.props.params.id}<br /><small>{this.state.entity.entityType}</small></h2>
                     </section>
                     <section id='workspace'>
                         <h2>Predicates <i className='fa fa-plus-circle' aria-hidden='true'></i></h2>

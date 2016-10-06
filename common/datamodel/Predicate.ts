@@ -21,4 +21,9 @@ export class Predicate implements PersistentObject {
        // this.uid = this.uid;
        return this;
     }
+
+    public fromDatabase(data: any) : Predicate {
+       // this.uid = this.uid;
+       return this;
+    }
 }

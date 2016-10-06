@@ -20,4 +20,9 @@ export class Record implements PersistentObject {
         //this.uid = this.uid;
         return this;
     }
+
+    public fromDatabase(data: any) : Record {
+        //this.uid = this.uid;
+        return this;
+    }
 }

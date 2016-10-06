@@ -13,12 +13,16 @@ i.big-icon {
 
 #entity-editor {
 
+    flex-direction: row;
+
     #sidebar {
         background-color: #3f51b5;
         flex: 0 0 20em;
+        padding: 0.5em 1em;
     }
 
     #workspace {
         flex: 1;
+        padding: 0.5em 1em;
     }
 }

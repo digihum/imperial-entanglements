@@ -16,6 +16,8 @@ import { ApiService } from './ApiService';
 import { routeUrls } from './routeUrls';
 import { Home } from './views/Home';
 
+import { Link } from 'react-router';
+
 interface FalconAppProps {
     router: any;
     api: ApiService;
@@ -23,11 +25,12 @@ interface FalconAppProps {
 }
 
 export const FalconApp = (props : FalconAppProps) => (
-    <div id='main'>
-        <props.router {...props.routerSettings}>
-            <div>
-                <div>
+    <div id='main' className="flex-fill">
+        <props.router {...props.routerSettings} className="flex-fill">
+            <div className="flex-fill" style={{ flexDirection: 'column' }}>
+                <div style={{ backgroundColor: '#0099e6', padding: '0.2em 1em'}}>
                     <h1>Header!</h1>
+                    <Link to='/'>Home</Link>
                 </div>
 
                 <Match exactly pattern='/' component={Home} />
@@ -44,6 +47,7 @@ export const FalconApp = (props : FalconAppProps) => (
                         <Match
                             exactly key={`${name}-iv`}
                             pattern={`/${routeUrl.url}/:id`}
+                            className="flex-fill"
                             render={
                                 (matchProps) => (<routeUrl.itemView api={props.api} {...matchProps} />)
                             } />,

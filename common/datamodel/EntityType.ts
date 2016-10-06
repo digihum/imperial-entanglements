@@ -26,4 +26,14 @@ export class EntityType implements PersistentObject {
         this.sameAs = data.sameAs;
         return this;
     }
+
+    public fromDatabase(data: any) : EntityType {
+        this.uid = data.uid;
+        this.name = data.name;
+        this.description = data.description;
+        this.icon = data.icon;
+        this.color = data.color;
+        this.sameAs = data.sameAs;
+        return this;
+    }
 }

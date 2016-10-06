@@ -16,6 +16,12 @@ export class Entity implements PersistentObject {
 
     public fromJson(data: any) : Entity {
        this.uid = data.uid;
+       this.entityType = data.entityType;
+       return this;
+    }
+
+    public fromDatabase(data: any) : Entity {
+       this.uid = data.uid;
        this.entityType = data.type;
        return this;
     }

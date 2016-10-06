@@ -8,4 +8,5 @@ export interface PersistentObject {
     readonly tableName : string;
     uid: number | null;
     fromJson(data: any) : PersistentObject;
+    fromDatabase(data: any) : PersistentObject;
 }

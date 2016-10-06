@@ -26,6 +26,6 @@ document.addEventListener('DOMContentLoaded', (event) => {
            initialEntries: ['/'],
            initialIndex: 0
         }
-    }), <Element>document.getElementById('main'));
+    }), <Element>document.getElementById('falcon-container'));
 });
 

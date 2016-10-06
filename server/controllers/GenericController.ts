@@ -22,12 +22,12 @@ export class GenericController<T extends PersistentObject> extends AbstractContr
 
     public getItemJson(obj: { new(): T; }, uid: number) : Promise<T> {
         return this.db.loadItem(this.tableName, uid)
-        .then((data) => new obj().fromJson(data));
+        .then((data) => new obj().fromDatabase(data));
     }
 
     public getCollectionJson(obj: { new(): T; }, params: Object = {}) : Promise<T[]> {
         return this.db.loadCollection(this.tableName, params)
-         .then((data) => data.map((datum) =>  new obj().fromJson(datum)));
+         .then((data) => data.map((datum) =>  new obj().fromDatabase(datum)));
     }
 
     public postItem(data: T) : Promise<string> {
