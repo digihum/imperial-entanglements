@@ -14,7 +14,7 @@ export class ClientApiService implements ApiService {
             .then((data) => new obj().fromJson(data));
     }
 
-    public getCollection<T extends PersistentObject>(obj: { new(): T; }, baseUrl : string) : Promise<T[]> {
+    public getCollection<T extends PersistentObject>(obj: { new(): T; }, baseUrl : string, params: any) : Promise<T[]> {
         return fetch(`/api/v1/${baseUrl}`)
             .then((response) => response.json())
             .then((data) => data.map((datum) => new obj().fromJson(datum)));

@@ -25,12 +25,12 @@ export class ServerApiService implements ApiService {
         return controller.getItemJson<T>(obj, uid);
     }
 
-    public getCollection<T extends PersistentObject>(obj: { new(): T; }, baseUrl : string) : Promise<T[]> {
+    public getCollection<T extends PersistentObject>(obj: { new(): T; }, baseUrl : string, params: any) : Promise<T[]> {
         const controller = this.controllerMap.get(baseUrl);
         if (controller === undefined) {
             return Promise.reject(new CollectionNotFoundException('Controller not found'));
         }
-        return controller.getCollectionJson<T>(obj, {});
+        return controller.getCollectionJson<T>(obj, params);
     }
 
     public postItem<T extends PersistentObject>(baseUrl : string, data: T)  : Promise<boolean> {

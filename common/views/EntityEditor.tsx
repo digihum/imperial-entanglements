@@ -14,10 +14,6 @@ import { ElementSet } from '../datamodel/AbstractSource';
 import { EntityType } from '../datamodel/EntityType';
 import { Entity } from '../datamodel/Entity';
 
-function logChange(val) {
-    console.log("Selected: " + val);
-}
-
 interface ExpectedParams {
     id: number;
 }
@@ -31,6 +27,9 @@ interface EntityEditorProps {
 interface EntityEditorState {
     dimension: 'predicates' | 'time' | 'source';
     entity: Entity;
+    tmp: string;
+    entityTypes: EntityType[];
+    options: any[];
 }
 
 export class EntityEditor extends React.Component<EntityEditorProps, EntityEditorState> {
@@ -39,7 +38,10 @@ export class EntityEditor extends React.Component<EntityEditorProps, EntityEdito
         super();
         this.state = {
             dimension: 'predicates',
-            entity: new Entity()
+            entity: new Entity(),
+            tmp: '',
+            entityTypes: [],
+            options: []
         };
     }
 
@@ -48,25 +50,37 @@ export class EntityEditor extends React.Component<EntityEditorProps, EntityEdito
         .then((data) => {
             this.setState({ entity: data });
         });
-    }
 
-
-    private getData(input, callback)  {
         this.props.api.getCollection(EntityType, AppUrls.entityType)
         .then((data) => {
-            console.log(data[0]);
-            callback(null, {
-                options: data.map((entityType) => ({ label: entityType.name, value: entityType.name })),
-                // CAREFUL! Only set this to true when there are no more options,
-                // or more specific queries will not be sent to the server.
-                complete: true
-            });
+            this.setState({entityTypes: data, options: this.getOptions(data)});
         });
+    }
+
+    public getOptions(baseData: any) {
+        return [{ label: '+ Add new Entity Type', value: 'ADD_NEW_ENTITY_TYPE'}]
+            .concat(baseData.map((entityType) => ({ label: entityType.name, value: entityType.name })));
+    }
+
+    public setSelectedEntityType(data) {
+        if (data.value === 'ADD_NEW_ENTITY_TYPE') {
+            const newName = prompt('What do you want your new entity type to be called?');
+            if (newName === null) {
+                this.setState({ tmp: this.state.tmp });
+            } else {
+                this.setState({
+                    options: this.state.options.concat([{ label: newName, value: newName}]),
+                    tmp: newName                
+                });
+            }
+
+        } else {
+            this.setState({ tmp: data.value })
+        }
     }
 
     public render() {
         const woo = 1;
-        const getData = this.getData.bind(this);
         if (woo === 2) {
             return (
                 <section id='select-entity-type'>
@@ -87,11 +101,11 @@ export class EntityEditor extends React.Component<EntityEditorProps, EntityEdito
                     </section>
                     <section id='workspace'>
                         <h2>Predicates <i className='fa fa-plus-circle' aria-hidden='true'></i></h2>
-                        <Select.Async
+                        <Select
                             name='form-field-name'
-                            value='one'
-                            onChange={logChange}
-                            loadOptions={getData}
+                            value={this.state.tmp}
+                            onChange={this.setSelectedEntityType.bind(this)}
+                            options={this.state.options}
                         />
                     </section>
                 </section>

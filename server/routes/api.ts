@@ -74,7 +74,7 @@ export const api : (router: KoaRouter, s: ServerApiService) => KoaRouter
 
     router.get(`/api/v1/:route`, function* (next : Koa.Context) {
         yield serverApiContext
-            .getCollection<any>(typeMap[this.params.route], this.params.route)
+            .getCollection<any>(typeMap[this.params.route], this.params.route, this.query)
             .then((data) => this.body = data);
     });
 

@@ -8,7 +8,7 @@ import { PersistentObject } from './datamodel/PersistentObject';
 
 export interface ApiService {
     getItem<T extends PersistentObject>(obj: { new(): T; }, baseUrl : string, uid: number) : Promise<T>;
-    getCollection<T extends PersistentObject>(obj: { new(): T; }, baseUrl : string) : Promise<T[]>;
+    getCollection<T extends PersistentObject>(obj: { new(): T; }, baseUrl : string, params: any) : Promise<T[]>;
 
     postItem<T extends PersistentObject>(baseUrl : string, data: T) : Promise<boolean>;
     putItem<T extends PersistentObject>(baseUrl : string, uid: number, data: T) : Promise<boolean>;
