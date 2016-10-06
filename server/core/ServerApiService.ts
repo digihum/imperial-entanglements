@@ -7,6 +7,7 @@
 import { ApiService } from '../../common/ApiService';
 import { PersistentObject } from '../../common/datamodel/PersistentObject';
 import { IController } from '../controllers/IController';
+import { CollectionNotFoundException } from './Exceptions';
 
 export class ServerApiService implements ApiService {
 
@@ -19,7 +20,7 @@ export class ServerApiService implements ApiService {
     public getItem<T extends PersistentObject>(obj: { new(): T; }, baseUrl : string, uid: number) : Promise<T> {
         const controller = this.controllerMap.get(baseUrl);
         if (controller === undefined) {
-            return Promise.reject('Controller not found');
+            return Promise.reject(new CollectionNotFoundException('Controller not found'));
         }
         return controller.getItemJson<T>(obj, uid);
     }
@@ -27,7 +28,7 @@ export class ServerApiService implements ApiService {
     public getCollection<T extends PersistentObject>(obj: { new(): T; }, baseUrl : string) : Promise<T[]> {
         const controller = this.controllerMap.get(baseUrl);
         if (controller === undefined) {
-            return Promise.reject('Controller not found');
+            return Promise.reject(new CollectionNotFoundException('Controller not found'));
         }
         return controller.getCollectionJson<T>(obj, {});
     }
@@ -35,7 +36,7 @@ export class ServerApiService implements ApiService {
     public postItem<T extends PersistentObject>(baseUrl : string, data: T)  : Promise<boolean> {
         const controller = this.controllerMap.get(baseUrl);
         if (controller === undefined) {
-            return Promise.reject('Controller not found');
+            return Promise.reject(new CollectionNotFoundException('Controller not found'));
         }
         return controller.postItem<T>(data);
     }

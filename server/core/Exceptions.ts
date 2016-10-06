@@ -11,6 +11,14 @@ export class KeyNotFoundException extends Error {
     }
 }
 
+export class CollectionNotFoundException extends Error {
+    public readonly message: string;
+    constructor(message: string = 'Could not find the given collection') {
+        super(message);
+    }
+}
+
+
 export const exceptions = {
     KeyNotFoundException
 };

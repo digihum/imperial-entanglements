@@ -14,4 +14,4 @@ export interface ApiService {
     putItem<T extends PersistentObject>(baseUrl : string, uid: number, data: T) : Promise<boolean>;
     patchItem<T extends PersistentObject>(baseUrl : string, uid: number, data : T) : Promise<boolean>;
     delItem<T extends PersistentObject>(baseUrl : string, uid: number) : Promise<boolean>;
-}
+} 

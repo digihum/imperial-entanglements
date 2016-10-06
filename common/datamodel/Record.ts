@@ -16,7 +16,8 @@ export class Record implements PersistentObject {
     public score: number;
     public value: string | null;
 
-    public fromJson(data: any) {
+    public fromJson(data: any) : Record {
         //this.uid = this.uid;
+        return this;
     }
 }

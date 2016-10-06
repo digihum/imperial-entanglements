@@ -49,11 +49,14 @@ export const api : (router: KoaRouter, s: ServerApiService) => KoaRouter
     };
 
     router.use(function* (next: Koa.Context){
-    try {
-           yield next;
+        try {
+            yield next;
         } catch (err) {
             switch (err.constructor.name) {
                 case 'KeyNotFoundException':
+                    this.status = 404;
+                    break;
+                case 'CollectionNotFoundException':
                     this.status = 404;
                     break;
                 default:
@@ -64,7 +67,7 @@ export const api : (router: KoaRouter, s: ServerApiService) => KoaRouter
     });
 
     router.get(`/api/v1/:route/:id`, function* (next : Koa.Context) {
-        return yield serverApiContext
+        yield serverApiContext
             .getItem<any>(typeMap[this.params.route], this.params.route, this.params.id)
             .then((data) => this.body = data);
     });

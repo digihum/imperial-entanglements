@@ -7,5 +7,5 @@
 export interface PersistentObject {
     readonly tableName : string;
     uid: number | null;
-    fromJson(data: any);
+    fromJson(data: any) : PersistentObject;
 }

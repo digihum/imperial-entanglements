@@ -17,7 +17,7 @@ export class ClientApiService implements ApiService {
     public getCollection<T extends PersistentObject>(obj: { new(): T; }, baseUrl : string) : Promise<T[]> {
         return fetch(`/api/v1/${baseUrl}`)
             .then((response) => response.json())
-            .then((data) => data.map((datum) => new obj().fromJson(data)));
+            .then((data) => data.map((datum) => new obj().fromJson(datum)));
     }
 
     public postItem<T extends PersistentObject>(baseUrl : string, data: T)  : Promise<boolean> {

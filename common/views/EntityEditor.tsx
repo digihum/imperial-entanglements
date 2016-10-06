@@ -29,9 +29,9 @@ export class EntityEditor extends React.Component<EntityEditorProps, EntityEdito
 
 
     private getData(input, callback)  {
-        this.props.api.getItem(ElementSet, AppUrls.elementSet, 1)
+        this.props.api.getCollection(ElementSet, AppUrls.elementSet)
         .then((data) => {
-            console.log(data.description);
+            console.log(data[0].description);
             callback(null, {
                 options: [
                     { value: 'one', label: 'One' },

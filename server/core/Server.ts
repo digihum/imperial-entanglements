@@ -10,6 +10,7 @@ import * as KoaRouter from 'koa-router';
 import * as koaJSON from 'koa-json';
 import * as koaBodyParser from 'koa-bodyparser';
 import * as koaQs from 'koa-qs';
+import * as koaLogger from 'koa-logger';
 
 import { Config as KnexConfig } from 'knex';
 import { Database } from './Database';
@@ -37,6 +38,7 @@ export class Server {
     public init(databaseConfig: KnexConfig) : void {
 
         this.app = new Koa();
+        this.app.use(koaLogger());
         koaQs(this.app, 'first');
         this.app.use(koaStatic('build/static'));
 

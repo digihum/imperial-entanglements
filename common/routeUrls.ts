@@ -13,7 +13,7 @@ export class AppUrls {
     public static elementSet: string = 'element_set';
     public static record: string = 'record';
     public static entity: string = 'entity';
-    public static entityType: string = 'entityType';
+    public static entityType: string = 'entity_type';
 
     public tmp: string;
 }

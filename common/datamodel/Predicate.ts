@@ -17,7 +17,8 @@ export class Predicate implements PersistentObject {
     public description: string;
     public sameAs: string[];
 
-    public fromJson(data: any) {
+    public fromJson(data: any) : Predicate {
        // this.uid = this.uid;
+       return this;
     }
 }

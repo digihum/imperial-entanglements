@@ -14,7 +14,8 @@ export class Entity implements PersistentObject {
 
     public tableName: string = 'entities';
 
-    public fromJson(data: any) {
+    public fromJson(data: any) : Entity {
        // this.parent = this.uid;
+       return this;
     }
 }

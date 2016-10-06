@@ -27,7 +27,7 @@ export class GenericController<T extends PersistentObject> extends AbstractContr
 
     public getCollectionJson(obj: { new(): T; }, params: Object = {}) : Promise<T[]> {
         return this.db.loadCollection(this.tableName, params)
-         .then((data) => data.map((datum) => new obj().fromJson(datum)));
+         .then((data) => data.map((datum) =>  new obj().fromJson(datum)));
     }
 
     public postItem(data: T) : Promise<string> {
