@@ -11,6 +11,7 @@ export class AppUrls {
     public static record: string = 'record';
     public static entity: string = 'entity';
     public static entityType: string = 'entity_type';
+    public static predicate: string = 'predicate';
 
     public tmp: string;
 }

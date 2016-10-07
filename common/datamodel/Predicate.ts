@@ -18,12 +18,18 @@ export class Predicate implements PersistentObject {
     public sameAs: string[];
 
     public fromJson(data: any) : Predicate {
-       // this.uid = this.uid;
+       this.uid = data.uid;
+       this.domain = data.domain;
+       this.name = data.name;
+       this.description = data.description;
        return this;
     }
 
     public fromDatabase(data: any) : Predicate {
-       // this.uid = this.uid;
+       this.uid = data.uid;
+       this.domain = data.domain;
+       this.name = data.name;
+       this.description = data.description;
        return this;
     }
 }

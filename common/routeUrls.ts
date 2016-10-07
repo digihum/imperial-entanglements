@@ -61,5 +61,13 @@ export const routeUrls : RouteUrls = {
         itemEdit: RouteNotFound,
         collectionView: RouteNotFound,
         collectionEdit: RouteNotFound
+    },
+
+    [AppUrls.predicate]: {
+        url: 'entity_type',
+        itemView: RouteNotFound,
+        itemEdit: RouteNotFound,
+        collectionView: RouteNotFound,
+        collectionEdit: RouteNotFound
     }
 };

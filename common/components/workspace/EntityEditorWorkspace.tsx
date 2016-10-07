@@ -11,6 +11,8 @@ import { ApiService, AppUrls } from '../../ApiService';
 
 import { Entity } from '../../datamodel/Entity';
 
+import { Predicate } from '../../datamodel/Predicate';
+
 interface EntityEditorProps {
     api: ApiService;
     id: number;
@@ -18,6 +20,7 @@ interface EntityEditorProps {
 
 interface EntityEditorState {
     entity : Entity | null;
+    predicates : Predicate[] | null;
 }
 
 // What can I do?
@@ -34,20 +37,25 @@ export class EntityEditorWorkspace extends React.Component<EntityEditorProps, En
     constructor() {
         super();
         this.state = {
-            entity: null
+            entity: null,
+            predicates: null
         };
     }
 
     public componentDidMount() {
-        this.props.api.getItem(Entity, AppUrls.entity, this.props.id)
-        .then((data) => {
+
+        this.props.api.getItem(Entity, AppUrls.entity, this.props.id).then((data) => {
             this.setState({ entity: data });
+            this.props.api.getCollection(Predicate, AppUrls.predicate, { domain: data.entityType})
+            .then((predicateData) => {
+                this.setState({ predicates: predicateData });
+            });
         });
     }
 
     public render() {
 
-        if (this.state.entity === null) {
+        if (this.state.entity === null || this.state.predicates === null) {
             return (<div>Loading..</div>);
         }
 

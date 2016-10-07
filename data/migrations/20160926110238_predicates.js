@@ -16,7 +16,7 @@ exports.up = function(knex, Promise) {
         }),
 
         knex.schema.createTable('predicates_ref', function(table) {
-            table.increments('uid')
+            table.integer('uid')
                 .primary()
                 .references('uid')
                 .inTable('predicates');
@@ -26,7 +26,7 @@ exports.up = function(knex, Promise) {
         }),
 
         knex.schema.createTable('predicates_val', function(table) {
-            table.increments('uid')
+            table.integer('uid')
                 .primary()
                 .references('uid')
                 .inTable('predicates');
