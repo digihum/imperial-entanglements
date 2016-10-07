@@ -8,7 +8,7 @@ import { expect } from 'chai';
 import * as Knex from 'knex';
 
 import { ServerApiService, AppUrls } from '../server/core/ServerApiService';
-import { ElementSet } from '../common/datamodel/AbstractSource';
+import { ElementSetPersistable } from '../server/controllers/ElementSetController';
 import { wrapDatabase } from '../server/routes/api';
 import { Database } from '../server/core/Database';
 
@@ -38,7 +38,7 @@ describe('A simple test', () => {
 
     it('to check things work', (done) => {
 
-      apiService.postItem(AppUrls.elementSet, new ElementSet().fromJson({
+      apiService.postItem(AppUrls.elementSet, new ElementSetPersistable().fromSchema({
         uri: 'example.com',
         name: 'example',
         description: 'a example set',

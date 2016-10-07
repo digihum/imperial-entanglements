@@ -11,27 +11,28 @@ import * as KoaRouter from 'koa-router';
 // Database
 import { Database } from '../core/Database';
 import { ServerApiService, AppUrls } from '../core/ServerApiService';
+import { Persistable } from '../core/Persistable';
 
 // Controllers
 import { IController } from '../controllers/IController';
 
-import { GenericController } from '../controllers/GenericController';
-
-// Models
-import { ElementSet, Source } from '../../common/datamodel/AbstractSource';
-import { Record } from '../../common/datamodel/Record';
-import { EntityType } from '../../common/datamodel/EntityType';
-import { Entity } from '../../common/datamodel/Entity';
-import { Predicate } from '../../common/datamodel/Predicate';
+import {
+    EntityController, EntityPersistable,
+    EntityTypeController, EntityTypePersistable,
+    ElementSetController, ElementSetPersistable,
+    PredicateController, PredicatePersistable,
+    SourceController, SourcePersistable,
+    RecordController, RecordPersistable
+} from '../controllers/controllers';
 
 export const wrapDatabase : (s: Database) => ServerApiService = (db: Database) => {
     const routes = new Map<string, IController>([
-        [AppUrls.elementSet, new GenericController<ElementSet>(db, 'element_sets')],
-        [AppUrls.record, new GenericController<Record>(db, 'records')],
-        [AppUrls.entityType, new GenericController<EntityType>(db, 'entity_types')],
-        [AppUrls.entity, new GenericController<Entity>(db, 'entities')],
-        [AppUrls.predicate, new GenericController<Predicate>(db, 'predicates')],
-        [AppUrls.source, new GenericController<Source>(db, 'sources')]
+        [AppUrls.elementSet, new ElementSetController(db)],
+        [AppUrls.record, new RecordController(db)],
+        [AppUrls.entityType, new EntityTypeController(db)],
+        [AppUrls.entity, new EntityController(db)],
+        [AppUrls.predicate, new PredicateController(db)],
+        [AppUrls.source, new SourceController(db)]
     ]);
 
     return new ServerApiService(routes);
@@ -41,12 +42,12 @@ export const api : (router: KoaRouter, s: ServerApiService) => KoaRouter
     = (router: KoaRouter, serverApiContext: ServerApiService) => {
 
     const typeMap = {
-        [AppUrls.elementSet]: ElementSet,
-        [AppUrls.record]: Record,
-        [AppUrls.entityType]: EntityType,
-        [AppUrls.entity]: Entity,
-        [AppUrls.predicate] : Predicate,
-        [AppUrls.source] : Source
+        [AppUrls.elementSet]: ElementSetPersistable,
+        [AppUrls.record]: RecordPersistable,
+        [AppUrls.entityType]: EntityTypePersistable,
+        [AppUrls.entity]: EntityPersistable,
+        [AppUrls.predicate] : PredicatePersistable,
+        [AppUrls.source] : SourcePersistable
     };
 
     router.use(function* (next: Koa.Context){
@@ -69,37 +70,37 @@ export const api : (router: KoaRouter, s: ServerApiService) => KoaRouter
 
     router.get('/api/v1/:route/:id', function* (next : Koa.Context) {
         yield serverApiContext
-            .getItem<any>(typeMap[this.params.route], this.params.route, this.params.id)
-            .then((data) => this.body = data);
+            .getItem<Persistable>(typeMap[this.params.route], this.params.route, this.params.id)
+            .then((data) => this.body = data.serialize());
     });
 
     router.get('/api/v1/:route', function* (next : Koa.Context) {
         yield serverApiContext
-            .getCollection<any>(typeMap[this.params.route], this.params.route, this.query)
-            .then((data) => this.body = data);
+            .getCollection<Persistable>(typeMap[this.params.route], this.params.route, this.query)
+            .then((data) => this.body = data.map((datum) => datum.serialize()));
     });
 
     router.post('/api/v1/:route', function* (next : Koa.Context) {
         yield serverApiContext
-            .postItem<any>(this.params.route, this.request.body)
+            .postItem<Persistable>(this.params.route, this.request.body)
             .then((data) => this.body = data);
     });
 
     router.put('/api/v1/:route/:id', function* (next : Koa.Context) {
         yield serverApiContext
-            .putItem<any>(this.params.route, this.params.id, this.request.body)
+            .putItem<Persistable>(this.params.route, this.params.id, this.request.body)
             .then((data) => this.body = data);
     });
 
     router.patch('/api/v1/:route/:id', function* (next : Koa.Context) {
         yield serverApiContext
-            .patchItem<any>(this.params.route, this.params.id, this.request.body)
+            .patchItem<Persistable>(this.params.route, this.params.id, this.request.body)
             .then((data) => this.body = data);
     });
 
     router.del('/api/v1/:route/:id', function* (next : Koa.Context) {
         yield serverApiContext
-            .delItem<any>(this.params.route, this.params.id)
+            .delItem<Persistable>(this.params.route, this.params.id)
             .then((data) => this.body = data);
     });
 

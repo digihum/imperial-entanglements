@@ -5,7 +5,7 @@
  */
 
 import { ApiService } from '../../common/ApiService';
-import { PersistentObject } from '../../common/datamodel/PersistentObject';
+import { Persistable } from './Persistable';
 import { IController } from '../controllers/IController';
 import { CollectionNotFoundException } from './Exceptions';
 
@@ -19,7 +19,7 @@ export class ServerApiService implements ApiService {
         this.controllerMap = routesMap;
     }
 
-    public getItem<T extends PersistentObject>(obj: { new(): T; }, baseUrl : string, uid: number) : Promise<T> {
+    public getItem<T extends Persistable>(obj: { new(): T; }, baseUrl : string, uid: number) : Promise<T> {
         const controller = this.controllerMap.get(baseUrl);
         if (controller === undefined) {
             return Promise.reject(new CollectionNotFoundException('Controller not found'));
@@ -27,7 +27,7 @@ export class ServerApiService implements ApiService {
         return controller.getItemJson<T>(obj, uid);
     }
 
-    public getCollection<T extends PersistentObject>(obj: { new(): T; }, baseUrl : string, params: any) : Promise<T[]> {
+    public getCollection<T extends Persistable>(obj: { new(): T; }, baseUrl : string, params: any) : Promise<T[]> {
         const controller = this.controllerMap.get(baseUrl);
         if (controller === undefined) {
             return Promise.reject(new CollectionNotFoundException('Controller not found'));
@@ -35,7 +35,7 @@ export class ServerApiService implements ApiService {
         return controller.getCollectionJson<T>(obj, params);
     }
 
-    public postItem<T extends PersistentObject>(baseUrl : string, data: T)  : Promise<boolean> {
+    public postItem<T extends Persistable>(baseUrl : string, data: T)  : Promise<boolean> {
         const controller = this.controllerMap.get(baseUrl);
         if (controller === undefined) {
             return Promise.reject(new CollectionNotFoundException('Controller not found'));
@@ -43,15 +43,15 @@ export class ServerApiService implements ApiService {
         return controller.postItem<T>(data);
     }
 
-    public putItem<T extends PersistentObject>(baseUrl : string, uid: number, data: T) : Promise<boolean> {
+    public putItem<T extends Persistable>(baseUrl : string, uid: number, data: T) : Promise<boolean> {
         return Promise.resolve(true);
     }
 
-    public patchItem<T extends PersistentObject>(baseUrl : string, uid: number, data : T) : Promise<boolean> {
+    public patchItem<T extends Persistable>(baseUrl : string, uid: number, data : T) : Promise<boolean> {
         return Promise.resolve(true);
     }
 
-    public delItem<T extends PersistentObject>(baseUrl : string, uid: number) {
+    public delItem<T extends Persistable>(baseUrl : string, uid: number) {
         return Promise.resolve(true);
     }
 

@@ -4,12 +4,9 @@
  * @version 0.0.1
  */
 
-import { PersistentObject } from './PersistentObject';
+import { Serializable } from './Serializable';
 
-export class Predicate implements PersistentObject {
-
-    public readonly tableName: string;
-
+export class Predicate implements Serializable {
     public uid: number | null;
     public domain : 'Any';
     public range: 'Any';
@@ -17,19 +14,14 @@ export class Predicate implements PersistentObject {
     public description: string;
     public sameAs: string[];
 
-    public fromJson(data: any) : Predicate {
-       this.uid = data.uid;
-       this.domain = data.domain;
-       this.name = data.name;
-       this.description = data.description;
-       return this;
+    public serialize() : Object {
+        return this;
     }
 
-    public fromDatabase(data: any) : Predicate {
-       this.uid = data.uid;
-       this.domain = data.domain;
-       this.name = data.name;
-       this.description = data.description;
-       return this;
+    public deserialize(data : any) {
+        this.uid = data.uid;
+        this.domain = data.domain;
+        this.name = data.name;
+        this.description = data.description;
     }
 }

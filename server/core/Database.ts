@@ -8,7 +8,7 @@
 import * as Knex from 'knex';
 import { omit } from 'lodash';
 
-import { PersistentObject } from '../../common/datamodel/PersistentObject';
+import { Persistable } from './Persistable';
 
 import { KeyNotFoundException } from './Exceptions';
 
@@ -18,6 +18,10 @@ export class Database {
 
     constructor(config: Knex.Config) {
         this.knex = Knex(config);
+    }
+
+    public query() : Knex {
+        return this.knex;
     }
 
     public loadItem(a: string, uid: number) : Promise<any> {
@@ -41,17 +45,17 @@ export class Database {
                 Object.assign(prev, {[curr]: result[curr]}), {})));
     }
 
-    public createItem(a: PersistentObject) : Promise<any> {
+    public createItem(a: Persistable) : Promise<any> {
         // throw warning if called with uid
         // validate that everything else has been sent
         const withoutUid = omit(a, ['uid', 'tableName']);
-        return this.knex.insert(withoutUid, 'uid').into(a.tableName);
+        return this.knex.insert(withoutUid, 'uid').into(a.getTableName());
     }
 
-    public updateItem(a: PersistentObject) : Promise<any> {
+    public updateItem(a: Persistable) : Promise<any> {
         // assert - must have uid
         // validation?
-        return this.knex(a.tableName)
+        return this.knex(a.getTableName())
             .where({ 'uid': a.uid })
             .update(omit(a, ['tableName']));
     }

@@ -4,11 +4,10 @@
  * @version 0.0.1
  */
 
-import { PersistentObject } from './PersistentObject';
+import { Serializable } from './Serializable';
 
-export class EntityType implements PersistentObject {
 
-    public readonly tableName: string;
+export class EntityType implements Serializable {
 
     public uid: number | null;
     public name: string;
@@ -17,7 +16,7 @@ export class EntityType implements PersistentObject {
     public color: string;
     public sameAs: string[];
 
-    public fromJson(data: any) : EntityType {
+    public deserialize(data: any) : EntityType {
         this.uid = data.uid;
         this.name = data.name;
         this.description = data.description;
@@ -27,13 +26,7 @@ export class EntityType implements PersistentObject {
         return this;
     }
 
-    public fromDatabase(data: any) : EntityType {
-        this.uid = data.uid;
-        this.name = data.name;
-        this.description = data.description;
-        this.icon = data.icon;
-        this.color = data.color;
-        this.sameAs = data.sameAs;
+    public serialize() : any {
         return this;
     }
 }

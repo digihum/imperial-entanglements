@@ -4,49 +4,23 @@
  * @version 0.0.1
  */
 
-import { Database } from '../core/Database';
-import { PersistentObject } from '../../common/datamodel/PersistentObject';
+import { Persistable } from '../core/Persistable';
 
 export interface IController {
 
-    getItemJson<T extends PersistentObject>(obj: { new(): T; }, uid: number) : Promise<T>;
+    getItemJson<T extends Persistable>(obj: { new(): T; }, uid: number) : Promise<T>;
 
-    getCollectionJson<T extends PersistentObject>(obj: { new(): T; }, params: Object) : Promise<T[]>;
-
-    // create
-    postItem<T extends PersistentObject>(data: any) : Promise<boolean>;
-
-    // replace
-    putItem<T extends PersistentObject>(uid: number, data: any) : Promise<boolean>;
-
-    // delete
-    deleteItem<T extends PersistentObject>(uid: number) : Promise<boolean>;
-
-    // update
-    patchItem<T extends PersistentObject>(uid: number, data: any) : Promise<boolean>;
-}
-
-export abstract class AbstractController implements IController {
-
-    protected db : Database;
-
-    constructor(db: Database) {
-        this.db = db;
-    }
-
-    public abstract getItemJson<T extends PersistentObject>(obj: { new(): T; }, uid: number) : Promise<T>;
-
-    public abstract getCollectionJson<T extends PersistentObject>(obj: { new(): T; }, params: Object) : Promise<T[]>;
+    getCollectionJson<T extends Persistable>(obj: { new(): T; }, params: Object) : Promise<T[]>;
 
     // create
-    public abstract postItem<T extends PersistentObject>(data: any) : Promise<string>;
+    postItem<T extends Persistable>(data: any) : Promise<boolean>;
 
     // replace
-    public abstract putItem<T extends PersistentObject>(uid: number, data: any) : Promise<string>;
+    putItem<T extends Persistable>(uid: number, data: any) : Promise<boolean>;
 
     // delete
-    public abstract deleteItem<T extends PersistentObject>(uid: number) : Promise<string>;
+    deleteItem<T extends Persistable>(uid: number) : Promise<boolean>;
 
     // update
-    public abstract patchItem<T extends PersistentObject>(uid: number, data: any);
+    patchItem<T extends Persistable>(uid: number, data: any) : Promise<boolean>;
 }

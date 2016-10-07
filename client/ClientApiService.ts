@@ -5,37 +5,37 @@
  */
 
 import { ApiService } from '../common/ApiService';
-import { PersistentObject } from '../common/datamodel/PersistentObject';
+import { Serializable } from '../common/datamodel/Serializable';
 import * as queryString from 'query-string';
 
 export { AppUrls } from '../common/ApiService';
 
 export class ClientApiService implements ApiService {
-    public getItem<T extends PersistentObject>(obj: { new(): T; }, baseUrl : string, uid: number) : Promise<T> {
+    public getItem<T extends Serializable>(obj: { new(): T; }, baseUrl : string, uid: number) : Promise<T> {
         return fetch(`/api/v1/${baseUrl}/${uid}`)
             .then((response) => response.json())
-            .then((data) => new obj().fromJson(data));
+            .then((data) => new obj().deserialize(data));
     }
 
-    public getCollection<T extends PersistentObject>(obj: { new(): T; }, baseUrl : string, params: any) : Promise<T[]> {
+    public getCollection<T extends Serializable>(obj: { new(): T; }, baseUrl : string, params: any) : Promise<T[]> {
         return fetch(`/api/v1/${baseUrl}?` + queryString.stringify(params))
             .then((response) => response.json())
-            .then((data) => data.map((datum) => new obj().fromJson(datum)));
+            .then((data) => data.map((datum) => new obj().deserialize(datum)));
     }
 
-    public postItem<T extends PersistentObject>(baseUrl : string, data: T)  : Promise<boolean> {
+    public postItem<T extends Serializable>(baseUrl : string, data: T)  : Promise<boolean> {
         return Promise.resolve(true);
     }
 
-    public putItem<T extends PersistentObject>(baseUrl : string, uid: number, data: T) : Promise<boolean> {
+    public putItem<T extends Serializable>(baseUrl : string, uid: number, data: T) : Promise<boolean> {
         return Promise.resolve(true);
     }
 
-    public patchItem<T extends PersistentObject>(baseUrl : string, uid: number, data : T) : Promise<boolean> {
+    public patchItem<T extends Serializable>(baseUrl : string, uid: number, data : T) : Promise<boolean> {
         return Promise.resolve(true);
     }
 
-    public delItem<T extends PersistentObject>(baseUrl : string, uid: number) {
+    public delItem<T extends Serializable>(baseUrl : string, uid: number) {
         return Promise.resolve(true);
     }
 }

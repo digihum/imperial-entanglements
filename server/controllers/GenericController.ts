@@ -4,30 +4,31 @@
  * @version 0.0.1
  */
 
-import { AbstractController } from './IController';
-import { PersistentObject } from '../../common/datamodel/PersistentObject';
+import { IController } from './IController';
+import { Persistable } from '../core/Persistable';
 import { Database } from '../core/Database';
 
-export class GenericController<T extends PersistentObject> extends AbstractController {
+export abstract class GenericController<T extends Persistable> implements IController {
 
-    private tableName: string;
+    protected tableName: string;
+    protected db : Database;
 
     constructor(
         db: Database,
         table: string) {
-        super(db);
+        this.db = db;
         this.tableName = table;
     }
 
 
     public getItemJson(obj: { new(): T; }, uid: number) : Promise<T> {
         return this.db.loadItem(this.tableName, uid)
-        .then((data) => new obj().fromDatabase(data));
+        .then((data) => new obj().fromSchema(data));
     }
 
     public getCollectionJson(obj: { new(): T; }, params: Object = {}) : Promise<T[]> {
         return this.db.loadCollection(this.tableName, params)
-         .then((data) => data.map((datum) =>  new obj().fromDatabase(datum)));
+         .then((data) => data.map((datum) =>  new obj().fromSchema(datum)));
     }
 
     public postItem(data: T) : Promise<string> {

@@ -4,25 +4,21 @@
  * @version 0.0.1
  */
 
-import { PersistentObject } from './PersistentObject';
+import { Serializable } from './Serializable';
 
-export class Entity implements PersistentObject {
+export class Entity implements Serializable {
     public uid: number | null;
     public entityType: string; // TODO: ideally this should be readonly
     public parent: number | Entity | null;
     public readonly readonly: boolean;
 
-    public tableName: string = 'entities';
-
-    public fromJson(data: any) : Entity {
+    public deserialize(data: any) : Entity {
        this.uid = data.uid;
        this.entityType = data.entityType;
        return this;
     }
 
-    public fromDatabase(data: any) : Entity {
-       this.uid = data.uid;
-       this.entityType = data.type;
-       return this;
+    public serialize() : any {
+        return this;
     }
 }

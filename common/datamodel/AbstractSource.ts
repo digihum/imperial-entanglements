@@ -5,7 +5,7 @@
  */
 
 import { FuzzyLocation } from './FuzzyLocation';
-import { PersistentObject } from './PersistentObject';
+import { Serializable } from './Serializable';
 
 // function mirror(arr: string[][]) : string[][] {
 //     return arr.concat(arr.map(([a, b]) => [b, a]));
@@ -18,27 +18,22 @@ export interface IElementSet {
     description: string | null;
 }
 
-export class ElementSet implements PersistentObject, IElementSet {
+export class ElementSet implements Serializable, IElementSet {
 
     public uid: number | null;
     public uri: string | null;
     public name: string;
     public description: string | null;
 
-    public readonly tableName : string = 'element_sets';
-
-    public fromJson(data: any) : ElementSet {
+    public deserialize(data: any) : ElementSet {
         this.name = data.name;
         this.uid = data.uid;
         this.description = data.description;
         return this;
     }
 
-    public fromDatabase(data: any) : ElementSet {
-        this.name = data.name;
-        this.uid = data.uid;
-        this.description = data.description;
-        return this;
+    public serialize() : any {
+        return {};
     }
 
     constructor(data: IElementSet = {
@@ -80,20 +75,16 @@ export interface AbstractSource {
     name: string;
 }
 
-export class Source implements PersistentObject {
+export class Source implements Serializable {
     public uid: number | null;
     public name: string;
     public readonly: boolean;
 
-    public readonly tableName = 'sources';
-
-    public fromJson(data: any) : Source {
-        this.name = data.name;
-        this.uid = data.uid;
+    public serialize() : any {
         return this;
     }
 
-    public fromDatabase(data: any) : Source {
+    public deserialize(data: any) : Source {
         this.name = data.name;
         this.uid = data.uid;
         return this;
