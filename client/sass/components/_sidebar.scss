@@ -1,0 +1,45 @@
+
+#sidebar {
+    background: linear-gradient(135deg, #e6e6e6 43%,#e2e2e2 100%);
+    flex: 0 0 20em;
+    border-right: #efefef 1px solid;
+
+    ul.card-list {
+        list-style: none;
+        padding: 0;
+    }
+
+    input.full-width-search {
+        width: 100%;
+        padding: 0.4em;
+        border: none;
+    }
+
+    .sidebar-card {
+        background-color: white;
+        padding: 1em;
+        border-radius: 2px;
+        border: #c2c0c0 1px solid;
+        position: relative;
+        margin: 0.5em 1em;
+
+        .entity-name {
+            display: block;
+            font-weight: 600;
+        }
+
+        .entity-type {
+            display: block;
+            font-size: 0.8em;
+            color: #575757;
+        }
+
+        .close-button {
+            position: absolute;
+            top: 0.5em;
+            right: 0.5em;
+            cursor: pointer;
+        }
+    }
+}
+

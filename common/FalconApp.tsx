@@ -29,7 +29,7 @@ export const FalconApp = (props : FalconAppProps) => (
         <props.router {...props.routerSettings} className="flex-fill">
             <div className="flex-fill" style={{ flexDirection: 'column' }}>
                 <div className='header'>
-                    <h1>Header!</h1>
+                    <h1>VRE</h1>
                     <Link to='/'>Home</Link>
                 </div>
 

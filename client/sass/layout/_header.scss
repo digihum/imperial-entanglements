@@ -3,4 +3,9 @@ div.header {
     z-index: 10;
     background-color: #0099e6;
     padding: 0.2em 1em;
+
+    h1 {
+        margin: 0 0.5em 0 0;
+        display: inline;
+    }
 }
