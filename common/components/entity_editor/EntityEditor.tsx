@@ -23,7 +23,7 @@ export class EntityEditor extends React.Component<EntityEditorProps, EntityEdito
         super();
         this.state = {
             dimension: 'predicates'
-        }
+        };
     }
 
     public render() {
