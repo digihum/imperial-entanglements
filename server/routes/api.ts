@@ -18,7 +18,7 @@ import { IController } from '../controllers/IController';
 import { GenericController } from '../controllers/GenericController';
 
 // Models
-import { ElementSet } from '../../common/datamodel/AbstractSource';
+import { ElementSet, Source } from '../../common/datamodel/AbstractSource';
 import { Record } from '../../common/datamodel/Record';
 import { EntityType } from '../../common/datamodel/EntityType';
 import { Entity } from '../../common/datamodel/Entity';
@@ -30,7 +30,8 @@ export const wrapDatabase : (s: Database) => ServerApiService = (db: Database) =
         [AppUrls.record, new GenericController<Record>(db, 'records')],
         [AppUrls.entityType, new GenericController<EntityType>(db, 'entity_types')],
         [AppUrls.entity, new GenericController<Entity>(db, 'entities')],
-        [AppUrls.predicate, new GenericController<Predicate>(db, 'predicates')]
+        [AppUrls.predicate, new GenericController<Predicate>(db, 'predicates')],
+        [AppUrls.source, new GenericController<Source>(db, 'sources')]
     ]);
 
     return new ServerApiService(routes);
@@ -44,7 +45,8 @@ export const api : (router: KoaRouter, s: ServerApiService) => KoaRouter
         [AppUrls.record]: Record,
         [AppUrls.entityType]: EntityType,
         [AppUrls.entity]: Entity,
-        [AppUrls.predicate] : Predicate
+        [AppUrls.predicate] : Predicate,
+        [AppUrls.source] : Source
     };
 
     router.use(function* (next: Koa.Context){

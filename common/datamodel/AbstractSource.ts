@@ -79,3 +79,24 @@ export interface AbstractSource {
     location: FuzzyLocation;
     name: string;
 }
+
+export class Source implements PersistentObject {
+    public uid: number | null;
+    public name: string;
+    public readonly: boolean;
+
+    public readonly tableName = 'sources';
+
+    public fromJson(data: any) : Source {
+        this.name = data.name;
+        this.uid = data.uid;
+        return this;
+    }
+
+    public fromDatabase(data: any) : Source {
+        this.name = data.name;
+        this.uid = data.uid;
+        return this;
+    }
+
+}

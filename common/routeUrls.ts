@@ -69,5 +69,13 @@ export const routeUrls : RouteUrls = {
         itemEdit: RouteNotFound,
         collectionView: RouteNotFound,
         collectionEdit: RouteNotFound
+    },
+
+    [AppUrls.source]: {
+        url: 'source',
+        itemView: RouteNotFound,
+        itemEdit: RouteNotFound,
+        collectionView: RouteNotFound,
+        collectionEdit: RouteNotFound
     }
 };
