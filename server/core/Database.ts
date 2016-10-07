@@ -30,9 +30,7 @@ export class Database {
             .where({ uid: uid })
             .first();
 
-        return query.then((result) => result === undefined ? Promise.reject(new KeyNotFoundException()) :
-            Object.keys(result).reduce((prev, curr) =>
-                Object.assign(prev, {[curr]: result[curr]}), {}));
+        return query.then((result) => result === undefined ? Promise.reject(new KeyNotFoundException()) : result);
     }
 
     public loadCollection(a: string, params: Object) : Promise<any[]> {
@@ -40,9 +38,7 @@ export class Database {
             .from(a)
             .where(params);
 
-        return query.then((results) => results === undefined ? Promise.reject(new KeyNotFoundException()) : results.map((result) =>
-            Object.keys(result).reduce((prev, curr) =>
-                Object.assign(prev, {[curr]: result[curr]}), {})));
+        return query.then((results) => results === undefined ? Promise.reject(new KeyNotFoundException()) : results);
     }
 
     public createItem(a: Persistable) : Promise<any> {

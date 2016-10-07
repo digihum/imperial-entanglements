@@ -32,4 +32,22 @@ export class PredicateController extends GenericController<PredicatePersistable>
     constructor(db : Database) {
         super(db, PredicatePersistable.tableName);
     }
+
+    public getCollectionJson(obj: { new(): PredicatePersistable; }, params: any = {}) {
+        if (params.domain !== undefined) {
+            return this.db.query().raw(`
+            WITH RECURSIVE parent_of(slug, parent) AS  (SELECT slug, parent FROM entity_types),
+                ancestor(parent) AS (
+                SELECT slug FROM parent_of WHERE slug=?
+                UNION ALL
+                SELECT slug FROM parent_of JOIN ancestor USING(parent) )
+                
+                SELECT *
+                FROM predicates
+                WHERE predicates.domain IN ancestor;
+            `, params.domain).then((results) => results.map((result) => new obj().fromSchema(result)));
+        } else {
+            return super.getCollectionJson(obj, params);
+        }
+    }
 }

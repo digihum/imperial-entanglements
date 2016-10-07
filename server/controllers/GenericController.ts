@@ -26,7 +26,7 @@ export abstract class GenericController<T extends Persistable> implements IContr
         .then((data) => new obj().fromSchema(data));
     }
 
-    public getCollectionJson(obj: { new(): T; }, params: Object = {}) : Promise<T[]> {
+    public getCollectionJson(obj: { new(): T; }, params: any = {}) : Promise<T[]> {
         return this.db.loadCollection(this.tableName, params)
          .then((data) => data.map((datum) =>  new obj().fromSchema(datum)));
     }

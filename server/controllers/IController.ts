@@ -10,7 +10,7 @@ export interface IController {
 
     getItemJson<T extends Persistable>(obj: { new(): T; }, uid: number) : Promise<T>;
 
-    getCollectionJson<T extends Persistable>(obj: { new(): T; }, params: Object) : Promise<T[]>;
+    getCollectionJson<T extends Persistable>(obj: { new(): T; }, params: any) : Promise<T[]>;
 
     // create
     postItem<T extends Persistable>(data: any) : Promise<boolean>;
