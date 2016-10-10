@@ -38,7 +38,7 @@
                 "NODE_ENV": "development"
             },
             "console": "integratedTerminal"
-        },
+        },  
         {
             "name": "Attach",
             "type": "node",

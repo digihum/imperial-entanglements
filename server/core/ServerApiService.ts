@@ -47,8 +47,12 @@ export class ServerApiService implements ApiService {
         return Promise.resolve(true);
     }
 
-    public patchItem<T extends Persistable>(baseUrl : string, uid: number, data : T) : Promise<boolean> {
-        return Promise.resolve(true);
+    public patchItem<T extends Persistable>(obj: { new(): T; }, baseUrl : string, uid: number, data : T) : Promise<boolean> {
+        const controller = this.controllerMap.get(baseUrl);
+        if (controller === undefined) {
+            return Promise.reject(new CollectionNotFoundException('Controller not found'));
+        }
+        return controller.patchItem<T>(obj, uid, data);
     }
 
     public delItem<T extends Persistable>(baseUrl : string, uid: number) {

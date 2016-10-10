@@ -31,8 +31,16 @@ export class ClientApiService implements ApiService {
         return Promise.resolve(true);
     }
 
-    public patchItem<T extends Serializable>(baseUrl : string, uid: number, data : T) : Promise<boolean> {
-        return Promise.resolve(true);
+    public patchItem<T extends Serializable>(obj: { new(): T; }, baseUrl : string, uid: number, data : T) : Promise<boolean> {
+        return fetch(`/api/v1/${baseUrl}/${uid}`, { 
+                method: 'PATCH',
+                body: JSON.stringify(data),
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then((response) => response.json());
     }
 
     public delItem<T extends Serializable>(baseUrl : string, uid: number) {

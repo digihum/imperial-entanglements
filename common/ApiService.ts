@@ -23,6 +23,9 @@ export interface ApiService {
 
     postItem<T extends Serializable>(baseUrl : string, data: T) : Promise<boolean>;
     putItem<T extends Serializable>(baseUrl : string, uid: number, data: T) : Promise<boolean>;
-    patchItem<T extends Serializable>(baseUrl : string, uid: number, data : T) : Promise<boolean>;
+
+    //patch item takes a subset of an objects properties. This is currently being looked at in TS in the 
+    //context of the 'setState' function in react
+    patchItem<T extends Serializable>(obj: { new(): T; }, baseUrl : string, uid: number, data : any) : Promise<boolean>;
     delItem<T extends Serializable>(baseUrl : string, uid: number) : Promise<boolean>;
 } 

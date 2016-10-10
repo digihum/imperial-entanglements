@@ -34,6 +34,12 @@ interface EntityEditorState {
     tmp: string;
     entityTypes: EntityType[];
     options: any[];
+    tabs: Tab[];
+}
+
+class Tab {
+    public name: string;
+    public url: string;
 }
 
 export class ObjectEditor extends React.Component<EntityEditorProps, EntityEditorState> {
@@ -44,8 +50,15 @@ export class ObjectEditor extends React.Component<EntityEditorProps, EntityEdito
             entity: new Entity(),
             tmp: '',
             entityTypes: [],
-            options: []
+            options: [],
+            tabs: []
         };
+
+        if (typeof window !== 'undefined') {
+            console.log("browser!");
+        } else {
+            console.log("server");
+        }
     }
 
     public render() {

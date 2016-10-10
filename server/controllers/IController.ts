@@ -22,5 +22,5 @@ export interface IController {
     deleteItem<T extends Persistable>(uid: number) : Promise<boolean>;
 
     // update
-    patchItem<T extends Persistable>(uid: number, data: any) : Promise<boolean>;
+    patchItem<T extends Persistable>(obj: { new(): T; }, uid: number, data: any) : Promise<boolean>;
 }

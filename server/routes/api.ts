@@ -94,7 +94,7 @@ export const api : (router: KoaRouter, s: ServerApiService) => KoaRouter
 
     router.patch('/api/v1/:route/:id', function* (next : Koa.Context) {
         yield serverApiContext
-            .patchItem<Persistable>(this.params.route, this.params.id, this.request.body)
+            .patchItem<Persistable>(typeMap[this.params.route], this.params.route, this.params.id, this.request.body)
             .then((data) => this.body = data);
     });
 

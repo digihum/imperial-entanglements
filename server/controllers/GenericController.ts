@@ -39,8 +39,27 @@ export abstract class GenericController<T extends Persistable> implements IContr
         return this.db.updateItem(data);
     }
 
-    public patchItem(uid: number, data: T) : Promise<string> {
-        return Promise.resolve('');
+    public patchItem(obj: { new(): T; }, uid: number, data: T) : Promise<boolean> {
+        const o = new obj();
+        const keys = Object.keys(data);
+
+        o.deserialize(data);
+
+        const updateObject = {};
+
+        for (let i = 0; i < keys.length; i += 1) {
+            if (o.hasOwnProperty(keys[i])) {
+                updateObject[keys[i]] = o[keys[i]];
+            }
+        }
+
+        console.log(data, updateObject, uid, this.tableName);
+
+        return this.db.query()(this.tableName)
+            .where({ uid })
+            .update(updateObject)
+            .then(() => true)
+            .catch((err) => err);
     }
 
     public deleteItem(uid: number) : Promise<string> {

@@ -8,12 +8,15 @@ import { Serializable } from './Serializable';
 
 export class Predicate implements Serializable {
     public uid: number | null;
-    public domain : 'Any';
-    public range: 'Any';
+    public domain : string;
+    public range: string;
     public name: string;
     public description: string;
     public sameAs: string[];
     public readonly: boolean;
+
+    //calculated
+    public rangeIsReference: boolean;
 
     public serialize() : Object {
         return this;
@@ -25,6 +28,8 @@ export class Predicate implements Serializable {
         this.domain = data.domain;
         this.name = data.name;
         this.description = data.description;
+        this.rangeIsReference = data.rangeIsReference;
+        this.range = data.range;
         return this;
     }
 }

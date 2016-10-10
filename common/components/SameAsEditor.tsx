@@ -20,7 +20,7 @@ export const SameAsEditor : React.StatelessComponent<SameAsEditorProps>
         <h3>Same as:</h3>
         <ul>
             {sameAsUrls.map((url) => (
-                <li><a href={url}>{url}</a></li>
+                <li key={`li-${url}`}><a href={url}>{url}</a></li>
             ))}
         </ul>
     </div>);
