@@ -21,6 +21,6 @@ export class ElementSet implements Serializable {
     }
 
     public serialize() : any {
-        return {};
+        return this;
     }
 }

@@ -28,39 +28,65 @@ export class SourcePersistable extends Source implements Persistable {
     }
 }
 
-
-// SELECT elements.name, source_elements.value, elements.description, element_sets.name as 'element_set', elements.comment,  elements.uri
-// FROM source_elements
-// INNER JOIN elements ON source_elements.element = elements.uid
-// INNER JOIN element_sets ON element_sets.uid = elements.element_set
-// WHERE source_elements.source = 1;
-
-
 export class SourceController extends GenericController<SourcePersistable> {
     constructor(db : Database) {
         super(db, SourcePersistable.tableName);
     }
 
+    // override the getItemJson and getCollectionJson functions to also get information about the 
+    // metadata associated with the retrieved source
+
+    private getMetadata(fields : string[], sourceId: number) : Promise<any> {
+        return this.db.query().select(fields)
+            .from('source_elements')
+            .innerJoin('elements', function() { this.on('source_elements.element', '=', 'elements.uid'); })
+            .innerJoin('element_sets', function() { this.on('element_sets.uid', '=', 'elements.element_set'); })
+            .where({
+                'source_elements.source': sourceId
+            });
+    }
+
     public getItemJson(obj: { new(): SourcePersistable; }, uid: number) : Promise<SourcePersistable> {
         return super.getItemJson(obj, uid)
         .then((source) => {
-            return this.db.query().select(
+
+            if (source.uid === null) {
+                throw new Error('could not find source');
+            }
+
+            return this.getMetadata([
                 'elements.name',
                 'source_elements.value',
                 'elements.description',
                 'element_sets.name as element_set',
                 'elements.comment',
-                'elements.uri')
-            .from('source_elements')
-            .innerJoin('elements', function() { this.on('source_elements.element', '=', 'elements.uid'); })
-            .innerJoin('element_sets', function() { this.on('element_sets.uid', '=', 'elements.element_set'); })
-            .where({
-                'source_elements.source': 1
-            })
+                'elements.uri'], source.uid)
             .then((sourceElements) => {
                 source.metaData = sourceElements;
                 return source;
             });
+        });
+    }
+
+    public getCollectionJson(obj: { new(): SourcePersistable; }, params: any = {}) : Promise<SourcePersistable[]> {
+        return super.getCollectionJson(obj, params)
+        .then((sources) => {
+            return Promise.all(sources.map((source) => {
+
+                if (source.uid === null) {
+                    throw new Error('could not find source');
+                }
+
+                return this.getMetadata([
+                    'elements.name',
+                    'source_elements.value'
+                ], source.uid)
+                .then((sourceElements) => {
+                    source.metaData = sourceElements;
+                    return source;
+                });
+
+            }));
         });
     }
 }
