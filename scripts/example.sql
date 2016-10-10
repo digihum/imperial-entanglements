@@ -23,3 +23,10 @@ SELECT sources.name, elements.name, source_elements.value, elements.description,
 FROM sources
 LEFT JOIN source_elements ON sources.uid = source_elements.source
 LEFT JOIN elements ON source_elements.element = elements.uid;
+
+#Get Element Sets
+SELECT elements.name, source_elements.value, elements.description, element_sets.name as 'element_set', elements.comment,  elements.uri
+FROM source_elements
+INNER JOIN elements ON source_elements.element = elements.uid
+INNER JOIN element_sets ON element_sets.uid = elements.element_set
+WHERE source_elements.source = 1;

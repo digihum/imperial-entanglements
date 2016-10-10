@@ -79,6 +79,7 @@ export class Source implements Serializable {
     public uid: number | null;
     public name: string;
     public readonly: boolean;
+    public metaData: SourceMetadataElement[];
 
     public serialize() : any {
         return this;
