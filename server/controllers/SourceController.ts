@@ -6,7 +6,7 @@
 
 import { Database } from '../core/Database';
 
-import { Source } from '../../common/datamodel/AbstractSource';
+import { Source } from '../../common/datamodel/Source';
 import { Persistable } from '../core/Persistable';
 import { GenericController } from './GenericController';
 

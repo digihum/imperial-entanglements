@@ -9,7 +9,7 @@ import { Link } from 'react-router';
 import { ApiService, AppUrls } from '../ApiService';
 
 
-import { ElementSet } from '../datamodel/AbstractSource';
+import { ElementSet } from '../datamodel/ElementSet';
 import { EntityType } from '../datamodel/EntityType';
 import { Entity } from '../datamodel/Entity';
 
