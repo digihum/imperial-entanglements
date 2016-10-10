@@ -2,6 +2,7 @@
 exports.up = function(knex, Promise) {
   return knex.schema.createTable('entities', function(table) {
         table.increments('uid').primary();
+        table.string('label');
         table.string('type')
             .references('slug')
             .inTable('entity_types');

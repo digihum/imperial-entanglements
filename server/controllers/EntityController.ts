@@ -23,7 +23,11 @@ export class EntityPersistable extends Entity implements Persistable {
     }
 
     public fromSchema(data: any) : EntityPersistable {
-        this.deserialize(data);
+        this.deserialize({
+            entityType: data.type,
+            uid: data.uid,
+            label: data.label
+        });
         return this;
     }
 }

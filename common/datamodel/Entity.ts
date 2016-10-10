@@ -11,10 +11,12 @@ export class Entity implements Serializable {
     public entityType: string; // TODO: ideally this should be readonly
     public parent: number | Entity | null;
     public readonly readonly: boolean;
+    public label: string;
 
     public deserialize(data: any) : Entity {
        this.uid = data.uid;
        this.entityType = data.entityType;
+       this.label = data.label;
        return this;
     }
 
