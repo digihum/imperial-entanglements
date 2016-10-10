@@ -6,11 +6,15 @@
 
 import * as React from 'react';
 import { ApiService } from '../ApiService';
-import { EntityEditorWorkspace, EmptyWorkspace, SourceEditorWorkspace } from './workspace/workspace';
+import {
+    EmptyWorkspace,
+    SourceEditorWorkspace,
+    EntityEditorWorkspace,
+    PredicateEditorWorkspace} from './workspace/workspace';
 
 interface WorkspaceProps {
     api: ApiService;
-    workspaceType: 'empty' | 'entity' | 'source';
+    workspaceType: string;
     id: number;
 }
 
@@ -66,6 +70,8 @@ export class Workspace extends React.Component<WorkspaceProps, WorkspaceState> {
         switch (this.props.workspaceType) {
             case 'entity':
                 return (<EntityEditorWorkspace api={this.props.api} id={this.props.id} />);
+            case 'predicate':
+                return (<PredicateEditorWorkspace api={this.props.api} id={this.props.id} />);
             default:
                 return (<EmptyWorkspace />);
 

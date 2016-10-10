@@ -6,6 +6,8 @@
 
 import * as React from 'react';
 
+import { Loading } from '../Loading';
+
 import { RecordsEditor } from '../entity_editor/records/RecordsEditor';
 import { ApiService, AppUrls } from '../../ApiService';
 
@@ -56,7 +58,7 @@ export class EntityEditorWorkspace extends React.Component<EntityEditorProps, En
     public render() {
 
         if (this.state.entity === null || this.state.predicates === null) {
-            return (<div>Loading..</div>);
+            return (<Loading />);
         }
 
         return (

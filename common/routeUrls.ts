@@ -7,7 +7,7 @@
 import * as React from 'react';
 import { RouteNotFound } from './views/RouteNotFound';
 
-import { EntityEditor } from './views/EntityEditor';
+import { ObjectEditor } from './views/ObjectEditor';
 
 import { AppUrls } from './ApiService';
 
@@ -17,6 +17,7 @@ export interface PageProps {
 
 interface ComponentRoute {
     url: string;
+    workspaceType: string;
 
     itemView: React.ComponentClass<PageProps> | React.StatelessComponent<PageProps>;
     itemEdit: React.ComponentClass<PageProps> | React.StatelessComponent<PageProps>;
@@ -33,6 +34,7 @@ export const routeUrls : RouteUrls = {
 
     [AppUrls.elementSet]: {
         url: 'element_set',
+        workspaceType: '',
         itemView: RouteNotFound,
         itemEdit: RouteNotFound,
         collectionView: RouteNotFound,
@@ -41,6 +43,7 @@ export const routeUrls : RouteUrls = {
 
     [AppUrls.record]: {
         url: 'record',
+        workspaceType: '',
         itemView: RouteNotFound,
         itemEdit: RouteNotFound,
         collectionView: RouteNotFound,
@@ -49,14 +52,16 @@ export const routeUrls : RouteUrls = {
 
     [AppUrls.entity]:  {
         url: 'entity',
-        itemView: EntityEditor,
-        itemEdit: EntityEditor,
+        workspaceType: 'entity',
+        itemView: ObjectEditor,
+        itemEdit: ObjectEditor,
         collectionView: RouteNotFound,
         collectionEdit: RouteNotFound
     },
 
     [AppUrls.entityType]: {
         url: 'entity_type',
+        workspaceType: '',
         itemView: RouteNotFound,
         itemEdit: RouteNotFound,
         collectionView: RouteNotFound,
@@ -64,18 +69,20 @@ export const routeUrls : RouteUrls = {
     },
 
     [AppUrls.predicate]: {
-        url: 'entity_type',
-        itemView: RouteNotFound,
-        itemEdit: RouteNotFound,
-        collectionView: RouteNotFound,
-        collectionEdit: RouteNotFound
+        url: 'predicate',
+        workspaceType: 'predicate',
+        itemView: ObjectEditor,
+        itemEdit: ObjectEditor,
+        collectionView: ObjectEditor,
+        collectionEdit: ObjectEditor
     },
 
     [AppUrls.source]: {
         url: 'source',
-        itemView: RouteNotFound,
-        itemEdit: RouteNotFound,
-        collectionView: RouteNotFound,
-        collectionEdit: RouteNotFound
+        workspaceType: 'source',
+        itemView: ObjectEditor,
+        itemEdit: ObjectEditor,
+        collectionView: ObjectEditor,
+        collectionEdit: ObjectEditor
     }
 };

@@ -13,15 +13,18 @@ export class Predicate implements Serializable {
     public name: string;
     public description: string;
     public sameAs: string[];
+    public readonly: boolean;
 
     public serialize() : Object {
         return this;
     }
 
-    public deserialize(data : any) {
+    public deserialize(data : any) : Predicate {
         this.uid = data.uid;
+        this.readonly = data.readonly;
         this.domain = data.domain;
         this.name = data.name;
         this.description = data.description;
+        return this;
     }
 }

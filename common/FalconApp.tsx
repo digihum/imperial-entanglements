@@ -41,7 +41,10 @@ export const FalconApp = (props : FalconAppProps) => (
                             exactly key={`${name}-cv`}
                             pattern={`/${routeUrl.url}`}
                             render={
-                                (matchProps) => (<routeUrl.collectionView api={props.api} {...matchProps} />)
+                                (matchProps) => (
+                                    <routeUrl.collectionView
+                                        api={props.api} {...matchProps} 
+                                        workspace={routeUrl.workspaceType} />)
                             } />,
 
                         <Match
@@ -49,21 +52,30 @@ export const FalconApp = (props : FalconAppProps) => (
                             pattern={`/${routeUrl.url}/:id`}
                             className="flex-fill"
                             render={
-                                (matchProps) => (<routeUrl.itemView api={props.api} {...matchProps} />)
+                                (matchProps) => (
+                                    <routeUrl.itemView 
+                                    api={props.api} {...matchProps}
+                                    workspace={routeUrl.workspaceType} />)
                             } />,
 
                         <Match
                             exactly key={`${name}-ce`}
                             pattern={`/admin/edit/${routeUrl.url}`}
                              render={
-                                (matchProps) => (<routeUrl.collectionEdit api={props.api} {...matchProps} />)
+                                (matchProps) => (
+                                    <routeUrl.collectionEdit 
+                                    api={props.api} {...matchProps}
+                                    workspace={routeUrl.workspaceType} />)
                             }/>,
 
                         <Match
                             exactly key={`${name}-ie`}
                             pattern={`/admin/edit/${routeUrl.url}`}
                             render={
-                                (matchProps) => (<routeUrl.itemEdit api={props.api} {...matchProps} />)
+                                (matchProps) => (
+                                    <routeUrl.itemEdit 
+                                    api={props.api} {...matchProps} 
+                                    workspace={routeUrl.workspaceType} />)
                             } />
                 ]
                 ))}

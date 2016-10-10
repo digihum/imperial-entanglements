@@ -1,3 +1,20 @@
 .workspace-editor {
     padding: 1em;
+    width: 100%;
+}
+
+.predicate-function-description {
+
+    display: flex;
+    text-align: center;
+    
+    .domain {
+        flex: 1;
+    }
+    .arrow {
+        flex: 0 0 3em;
+    }
+    .range {
+        flex: 1;
+    }
 }

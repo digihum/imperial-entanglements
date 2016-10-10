@@ -26,6 +26,7 @@ interface EntityEditorProps {
     id: number;
     api: ApiService;
     params: ExpectedParams;
+    workspace: string;
 }
 
 interface EntityEditorState {
@@ -35,7 +36,7 @@ interface EntityEditorState {
     options: any[];
 }
 
-export class EntityEditor extends React.Component<EntityEditorProps, EntityEditorState> {
+export class ObjectEditor extends React.Component<EntityEditorProps, EntityEditorState> {
 
     constructor() {
         super();
@@ -51,7 +52,7 @@ export class EntityEditor extends React.Component<EntityEditorProps, EntityEdito
         return (
             <section id='entity-editor' className='flex-fill'>
                 <Sidebar />
-                <Workspace api={this.props.api} workspaceType='entity' id={1} />
+                <Workspace api={this.props.api} workspaceType={this.props.workspace} id={this.props.params.id} />
             </section>
         );
     }
