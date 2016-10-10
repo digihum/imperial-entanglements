@@ -10,3 +10,11 @@ Building generates two directories:
 - dist: The binaries for the electron app are placed here.
 
 Electron App is currently broken. It cannot use sqlite3. The fix is documented here: https://github.com/electron/electron-rebuild. 
+
+## How to build sqlite3 for electron
+
+cd .\node_modules\sqlite3
+npm install nan --save
+npm run prepublish
+node-gyp configure --module_name=node_sqlite3 --module_path=../lib/binding/electron-v1.3-win32-x64
+node-gyp rebuild --target=1.3.2 --arch=x64 --target_platform=win32 --dist-url=http://electron.atom.io/ --module_name=node_sqlite3 --module_path=../lib/binding/electron-v1.3-win32-x64
