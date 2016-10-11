@@ -5,6 +5,7 @@
  */
 
 import { Serializable } from './Serializable';
+import { Element } from './Element';
 
 export class ElementSet implements Serializable {
 
@@ -12,11 +13,13 @@ export class ElementSet implements Serializable {
     public uri: string | null;
     public name: string;
     public description: string | null;
+    public elements: Element[];
 
     public deserialize(data: any) : ElementSet {
         this.name = data.name;
         this.uid = data.uid;
         this.description = data.description;
+        this.elements = data.elements;
         return this;
     }
 

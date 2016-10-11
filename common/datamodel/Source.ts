@@ -38,6 +38,7 @@ export class Source implements Serializable {
     public deserialize(data: any) : Source {
         this.name = data.name;
         this.uid = data.uid;
+        this.metaData = data.metaData;
         return this;
     }
 

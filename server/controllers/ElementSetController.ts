@@ -29,7 +29,26 @@ export class ElementSetPersistable extends ElementSet implements Persistable {
 }
 
 export class ElementSetController extends GenericController<ElementSetPersistable> {
+
     constructor(db : Database) {
         super(db, ElementSetPersistable.tableName);
+    }
+
+    public getItemJson(obj: { new(): ElementSetPersistable; }, uid: number) : Promise<ElementSetPersistable> {
+        return super.getItemJson(obj, uid)
+        .then((elementSet) => {
+
+            if (elementSet.uid === null) {
+                throw new Error('could not find source');
+            }
+
+            return this.db.query().select()
+                .from('elements')
+                .where({ 'element_set': elementSet.uid })
+                .then((elements) => {
+                    elementSet.elements = elements;
+                    return elementSet;
+                });
+        });
     }
 }

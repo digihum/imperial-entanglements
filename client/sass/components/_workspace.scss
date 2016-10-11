@@ -1,8 +1,15 @@
 .workspace-editor {
-    padding: 1em;
-    width: 100%;
-}
+    padding: 1em 2em;
+    width: 1060px;
+    margin: 0 auto;
+    background-color: white;
+    overflow-y: auto;
 
+    @media screen and (max-width: 1444px) {
+        width: 100%;
+    }
+}
+ 
 .predicate-function-description {
 
     display: flex;

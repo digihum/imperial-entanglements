@@ -72,6 +72,8 @@ export class Workspace extends React.Component<WorkspaceProps, WorkspaceState> {
                 return (<EntityEditorWorkspace api={this.props.api} id={this.props.id} />);
             case 'predicate':
                 return (<PredicateEditorWorkspace api={this.props.api} id={this.props.id} />);
+            case 'source':
+                return (<SourceEditorWorkspace api={this.props.api} id={this.props.id} />);
             default:
                 return (<EmptyWorkspace />);
 

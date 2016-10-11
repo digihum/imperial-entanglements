@@ -1,7 +1,7 @@
 /**
- * @fileOverview Empty workspace for when nothing is open!
- * @author <a href="mailto:jd@example.com">John Doe</a>
- * @version 3.1.2
+ * @fileOverview Predicate editor workspace
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.0.1
  */
 
 import * as React from 'react';
