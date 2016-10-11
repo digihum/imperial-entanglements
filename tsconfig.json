@@ -8,6 +8,7 @@
  "outDir": "build",
  "rootDir": ".",
  "jsx": "react",
+ "baseUrl": ".",
  "sourceMap": true,
  "strictNullChecks": true
 },

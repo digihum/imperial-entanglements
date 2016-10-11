@@ -11,9 +11,7 @@ import { Loading } from '../Loading';
 import { RecordsEditor } from '../entity_editor/records/RecordsEditor';
 import { ApiService, AppUrls } from '../../ApiService';
 
-import { Entity } from '../../datamodel/Entity';
-
-import { Predicate } from '../../datamodel/Predicate';
+import { Entity, Predicate } from '../../../common/datamodel/datamodel';
 
 interface EntityEditorProps {
     api: ApiService;

@@ -1,5 +1,19 @@
+var webpack = require('webpack');
+var path = require('path');
+var fs = require('fs');
+
+var nodeModules = {};
+fs.readdirSync('node_modules')
+  .filter(function(x) {
+    return ['.bin'].indexOf(x) === -1;
+  })
+  .forEach(function(mod) {
+    nodeModules[mod] = 'commonjs ' + mod;
+  });
+
+
 var frontendConfig = {
-    devtool: 'inline-source-map',
+    devtool: 'source-map',
     entry: {
         "app.frontend": './build/client/app.frontend.js', 
 	},
@@ -8,17 +22,21 @@ var frontendConfig = {
         filename: '[name].dist.js'     // file name
     },
     resolve: {
-        extensions: ['', '.js']
+        extensions: ['.js'],
+        modules: [path.resolve(__dirname, 'build'), 'node_modules']
     },
-    module: {
-    loaders: [
-	      { 
-            test   : /.js?$/,
-            loaders : ['babel'],
-            exclude: /node_modules/
-          }
-	    ]
+    module:  {
+        rules: [
+            {
+                enforce: 'pre',
+                test:   /\.js$/,
+                loader: 'source-map-loader'
+            }
+        ]
     },
+    plugins: [
+       // new webpack.optimize.UglifyJsPlugin()
+    ],
     externals: {
         "react": "React",
         "react-dom": "ReactDOM",
@@ -26,8 +44,34 @@ var frontendConfig = {
     }
 }
 
+var backendConfig = {
+    devtool: 'source-map',
+    entry: {
+        "app.backend": './build/server/index.js', 
+	},
+    output: {  
+        path: 'build',                 // output folder
+        filename: '[name].dist.js'     // file name
+    },
+    resolve: {
+        extensions: ['.js'],
+        modules: [path.resolve(__dirname, 'build'), 'node_modules']
+    },
+    module:  {
+        rules: [
+            {
+                enforce: 'pre',
+                test:   /\.js$/,
+                loader: 'source-map-loader'
+            }
+        ]
+    },
+    target: 'node',
+    externals: nodeModules
+}
+
 var electronConfig = {
-    devtool: 'inline-source-map',
+    devtool: 'source-map',
     entry: {
         "app.electron": './build/app/app.electron.js'
 	},
@@ -36,12 +80,30 @@ var electronConfig = {
         filename: '[name].dist.js'     // file name
     },
     resolve: {
-        extensions: ['', '.js']
+        extensions: ['.js', '.json'],
+        modules: [path.resolve(__dirname, 'build'), 'node_modules']
     },
-    target: 'node',
-    externals: {
-        "knex": "commonjs knex"
-    }
+    module:  {
+        rules: [
+            {
+                enforce: 'pre',
+                test:   /\.js$/,
+                loader: 'source-map-loader'
+            }
+        ]
+    },
+    plugins: [
+
+        // swap out /common/datamodel/datamodel with app/app.datamodel to inject
+        // server side models into the frontend!
+
+        new webpack.NormalModuleReplacementPlugin(
+            /common\/datamodel\/datamodel/,
+            require.resolve('./build/app/app.datamodel')
+        )
+    ],
+    target: 'electron',    
+    externals: nodeModules
 }
 
 module.exports = [frontendConfig, electronConfig];

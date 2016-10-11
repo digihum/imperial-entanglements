@@ -5,7 +5,7 @@
  */
 
 import * as React from 'react';
-import { Record } from '../../../datamodel/Record';
+import { Record } from '../../../datamodel/datamodel';
 
 interface RecordRowProps {
     record: Record;

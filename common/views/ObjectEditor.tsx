@@ -9,9 +9,7 @@ import { Link } from 'react-router';
 import { ApiService, AppUrls } from '../ApiService';
 
 
-import { ElementSet } from '../datamodel/ElementSet';
-import { EntityType } from '../datamodel/EntityType';
-import { Entity } from '../datamodel/Entity';
+import { ElementSet, EntityType, Entity } from '../datamodel/datamodel';
 
 import { Sidebar } from '../components/Sidebar';
 import { Workspace } from '../components/Workspace';

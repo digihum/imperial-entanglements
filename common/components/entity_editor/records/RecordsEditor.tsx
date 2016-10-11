@@ -6,7 +6,7 @@
 
 import * as React from 'react';
 import { ApiService, AppUrls } from '../../../ApiService';
-import { Record } from '../../../datamodel/Record';
+import { Record } from '../../../datamodel/datamodel';
 
 import { RecordRow } from './RecordRow';
 

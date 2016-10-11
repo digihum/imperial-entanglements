@@ -53,8 +53,6 @@ export abstract class GenericController<T extends Persistable> implements IContr
             }
         }
 
-        console.log(data, updateObject, uid, this.tableName);
-
         return this.db.query()(this.tableName)
             .where({ uid })
             .update(updateObject)

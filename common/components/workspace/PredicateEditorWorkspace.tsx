@@ -10,7 +10,7 @@ import { SameAsEditor } from '../SameAsEditor';
 import { Loading } from '../Loading';
 import { ApiService, AppUrls } from '../../ApiService';
 
-import { Predicate } from '../../datamodel/Predicate';
+import { Predicate } from '../../../common/datamodel/datamodel';
 
 import { EditableHeader, EditableFieldComponent } from '../fields/EditableHeader';
 import { EditableParagraph } from '../fields/EditableParagraph';
