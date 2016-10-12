@@ -41,8 +41,7 @@ describe('A simple test', () => {
       apiService.postItem(ElementSetPersistable, AppUrls.elementSet, new ElementSetPersistable().fromSchema({
         uri: 'example.com',
         name: 'example',
-        description: 'a example set',
-        uid: null
+        description: 'a example set'
       }))
       .then((success) => {
        // expect(isNumber(result[0])).to.be.equal(true, 'insert query returned a non-numeric value');
