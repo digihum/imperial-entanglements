@@ -78,14 +78,14 @@ export class RecordsEditor extends React.Component<RecordsEditorProps, RecordsEd
 
 		return (
 		<div>
-			<div className='row'>
-				<div className='col-md-12'>
-					<h4 className='tab-header'>Records</h4>
-					<div className='input-group margin-bottom-sm  mega-search'>
+			<div>
+				<div>
+					<h4>Records</h4>
+					<div>
 						<span className='input-group-addon'><i className='fa fa-search fa-fw'></i></span>
 						<input type='text' className='form-control' />
 					</div>
-					<div className='well'>
+					<div>
 						{Object.keys(this.state.records).map((section) => (
 							<section key={`section-${section}`}>
 								<h5>{section}</h5>

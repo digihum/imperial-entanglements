@@ -17,6 +17,8 @@ import { Database } from './Database';
 
 import { FalconApp } from '../../common/FalconApp';
 import { renderToStaticMarkup } from 'react-dom/server';
+import { createElement } from 'react';
+
 import { template } from 'lodash';
 import { readFileSync } from 'fs';
 
@@ -63,7 +65,7 @@ export class Server {
 
         const self = this;
         this.app.use(function* (next: Koa.Context) {
-            this.body = self.skeleton({ body: renderToStaticMarkup(FalconApp({
+            this.body = self.skeleton({ body: renderToStaticMarkup(createElement(FalconApp, {
                 router: ServerRouter,
                 api: serverApiContext,
                 routerSettings: {

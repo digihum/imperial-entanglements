@@ -1,0 +1,44 @@
+
+.combo-dropdown {
+
+    position: relative;
+
+    .dropdown {
+        padding: 0em;
+        border: #b7b7b7 1px solid;
+        position: absolute;
+        left: 0;
+        right: 0;
+        background-color: white;
+        z-index: 10;
+
+        ul {
+            margin: 0;
+            list-style: none;
+            padding: 0;
+            
+            li {
+                cursor: pointer;
+                padding: 1em;
+                border-bottom: #e2e2e2 1px solid;
+
+                &:hover {
+                    background-color: #f1f1f1;
+                }
+
+                &:last-child {
+                    border-bottom: none;
+                }
+
+                &.add {
+                    background-color: #bbe2bb;
+                }                    
+            }
+        }
+    } 
+
+    .search-input {
+        width: 100%;
+        padding: 1em;
+    }
+}  

@@ -14,6 +14,7 @@ import { Predicate } from '../../../common/datamodel/datamodel';
 
 import { EditableHeader, EditableFieldComponent } from '../fields/EditableHeader';
 import { EditableParagraph } from '../fields/EditableParagraph';
+import { PredicateDescription } from '../fields/PredicateDescription';
 
 class StringEditableFieldComponent extends EditableFieldComponent<string> {}
 
@@ -82,11 +83,8 @@ export class PredicateEditorWorkspace extends React.Component<PredicateEditorPro
                     component={EditableParagraph}
                     onChange={(value) => this.updatePredicate('description', value)}  />
 
-                <div className='predicate-function-description'>
-                    <div className='domain'>{this.state.predicate.domain}</div>
-                    <div className='arrow'><i className='fa fa-long-arrow-right' aria-hidden='true'></i></div>
-                    <div className='range'>{this.state.predicate.range}</div>
-                </div>
+                <PredicateDescription domain={this.state.predicate.domain} range={this.state.predicate.range} />
+
                 <div>
                     <SameAsEditor sameAsString='a,b,c,woot,list' />
                 </div>

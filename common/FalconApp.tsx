@@ -18,15 +18,28 @@ import { Home } from './views/Home';
 
 import { Link } from 'react-router';
 
+import { globalClick } from './Signaller';
+
 interface FalconAppProps {
     router: any;
     api: ApiService;
     routerSettings: any;
 }
 
-export const FalconApp = (props : FalconAppProps) => (
-    <div id='main' className="flex-fill">
-        <props.router {...props.routerSettings} className="flex-fill">
+interface FalconAppState {
+
+}
+
+export class FalconApp extends React.Component<FalconAppProps, FalconAppState> {
+
+    public onClickSignal() {
+        globalClick.dispatch();
+    }
+
+    public render() {
+        return (
+    <div id='main' className="flex-fill" onClick={this.onClickSignal.bind(this)}>
+        <this.props.router {...this.props.routerSettings} className="flex-fill">
             <div className="flex-fill" style={{ flexDirection: 'column' }}>
                 <div className='header'>
                     <h1>VRE</h1>
@@ -41,9 +54,9 @@ export const FalconApp = (props : FalconAppProps) => (
                             exactly key={`${name}-cv`}
                             pattern={`/${routeUrl.url}`}
                             render={
-                                (matchProps) => (
+                                (matchprops) => (
                                     <routeUrl.collectionView
-                                        api={props.api} {...matchProps} 
+                                        api={this.props.api} {...matchprops} 
                                         workspace={routeUrl.workspaceType} />)
                             } />,
 
@@ -52,9 +65,9 @@ export const FalconApp = (props : FalconAppProps) => (
                             pattern={`/${routeUrl.url}/:id`}
                             className="flex-fill"
                             render={
-                                (matchProps) => (
+                                (matchprops) => (
                                     <routeUrl.itemView 
-                                    api={props.api} {...matchProps}
+                                    api={this.props.api} {...matchprops}
                                     workspace={routeUrl.workspaceType} />)
                             } />,
 
@@ -62,9 +75,9 @@ export const FalconApp = (props : FalconAppProps) => (
                             exactly key={`${name}-ce`}
                             pattern={`/admin/edit/${routeUrl.url}`}
                              render={
-                                (matchProps) => (
+                                (matchprops) => (
                                     <routeUrl.collectionEdit 
-                                    api={props.api} {...matchProps}
+                                    api={this.props.api} {...matchprops}
                                     workspace={routeUrl.workspaceType} />)
                             }/>,
 
@@ -72,9 +85,9 @@ export const FalconApp = (props : FalconAppProps) => (
                             exactly key={`${name}-ie`}
                             pattern={`/admin/edit/${routeUrl.url}`}
                             render={
-                                (matchProps) => (
+                                (matchprops) => (
                                     <routeUrl.itemEdit 
-                                    api={props.api} {...matchProps} 
+                                    api={this.props.api} {...matchprops} 
                                     workspace={routeUrl.workspaceType} />)
                             } />
                 ]
@@ -82,6 +95,8 @@ export const FalconApp = (props : FalconAppProps) => (
 
                 <Miss component={RouteNotFound} />
             </div>
-        </props.router>
-    </div>
-);
+        </this.props.router>
+    </div>)
+    }
+
+}

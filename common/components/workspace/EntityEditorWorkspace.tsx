@@ -13,6 +13,9 @@ import { ApiService, AppUrls } from '../../ApiService';
 
 import { Entity, Predicate } from '../../../common/datamodel/datamodel';
 
+import { ComboDropdown } from '../ComboDropdown';
+import { CreatePredicate } from '../modal/CreatePredicate';
+
 interface EntityEditorProps {
     api: ApiService;
     id: number;
@@ -21,6 +24,8 @@ interface EntityEditorProps {
 interface EntityEditorState {
     entity : Entity | null;
     predicates : Predicate[] | null;
+    comboValue: string;
+    creatingPredicate: boolean;
 }
 
 // What can I do?
@@ -32,13 +37,20 @@ interface EntityEditorState {
 // Records 
 // - Order records by type, source and date
 // - Add new records
+// - Adding a new predicate creates a new record with the 
+//   entity set, the predicate set, the score set to 3, the period set to null, source set to null
+//   it also creates a blank entry in the records sub table based on the range of the predicate.
+// - New predicates must have a name. The domain is set to the current entitytype but can be changed
+//   to one of its parents. The range MUST be set.
 export class EntityEditorWorkspace extends React.Component<EntityEditorProps, EntityEditorState> {
 
     constructor() {
         super();
         this.state = {
             entity: null,
-            predicates: null
+            predicates: null,
+            comboValue: 'test',
+            creatingPredicate: false
         };
     }
 
@@ -53,15 +65,35 @@ export class EntityEditorWorkspace extends React.Component<EntityEditorProps, En
         });
     }
 
+    public setComboValue(str: string) {
+        this.setState({ comboValue: str });
+    }
+
     public render() {
 
         if (this.state.entity === null || this.state.predicates === null) {
             return (<Loading />);
         }
 
+        const options = this.state.predicates.map((pred) => ({ key: pred.name, value: pred.name}));
+
         return (
             <div className='workspace-editor'>
                 <h2>Predicates <i className='fa fa-plus-circle' aria-hidden='true'></i></h2>
+                <div>
+                    <label>Add new predicate:</label>
+                    <ComboDropdown
+                        options={options}
+                        typeName='predicate'
+                        value={this.state.comboValue}
+                        setValue={this.setComboValue.bind(this)}
+                        createNewValue={(s) => this.setState({ creatingPredicate: true})}
+                     />
+                </div>
+                {this.state.creatingPredicate ?
+                    (<CreatePredicate
+                        initialName={this.state.comboValue} 
+                        cancel={() => this.setState({creatingPredicate: false})} />) : null}
                 <RecordsEditor dimension='predicates' entityExists={true} id={this.props.id} api={this.props.api} />
             </div>
         );
