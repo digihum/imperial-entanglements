@@ -70,11 +70,11 @@ export class PredicateController extends GenericController<PredicatePersistable>
     public getCollectionJson(obj: { new(): PredicatePersistable; }, params: any = {}) {
         if (params.domain !== undefined) {
             return this.db.query().raw(`
-            WITH RECURSIVE parent_of(slug, parent) AS  (SELECT slug, parent FROM entity_types),
+            WITH RECURSIVE parent_of(uid, parent) AS  (SELECT uid, parent FROM entity_types),
                 ancestor(parent) AS (
-                SELECT slug FROM parent_of WHERE slug=?
+                SELECT uid FROM parent_of WHERE uid=?
                 UNION ALL
-                SELECT slug FROM parent_of JOIN ancestor USING(parent) )
+                SELECT uid FROM parent_of JOIN ancestor USING(parent) )
                 
                 SELECT *
                 FROM predicates

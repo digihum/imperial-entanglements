@@ -3,8 +3,8 @@ exports.up = function(knex, Promise) {
   return knex.schema.createTable('entities', function(table) {
         table.increments('uid').primary();
         table.string('label');
-        table.string('type')
-            .references('slug')
+        table.integer('type')
+            .references('uid')
             .inTable('entity_types');
         table.integer('parent')
             .references('uid')

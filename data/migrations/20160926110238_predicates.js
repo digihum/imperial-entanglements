@@ -8,8 +8,8 @@ exports.up = function(knex, Promise) {
             table.string('name');
             table.string('description');
             table.string('same_as');
-            table.string('domain')
-                .references('slug')
+            table.integer('domain')
+                .references('uid')
                 .inTable('entity_types');
             table.boolean('readonly')
                 .defaultTo(false);
@@ -20,8 +20,8 @@ exports.up = function(knex, Promise) {
                 .primary()
                 .references('uid')
                 .inTable('predicates');
-            table.string('range')
-                .references('slug')
+            table.integer('range')
+                .references('uid')
                 .inTable('entity_types');   
         }),
 

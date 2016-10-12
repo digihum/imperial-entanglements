@@ -6,23 +6,26 @@ exports.seed = function(knex, Promise) {
       knex('predicates_ref').del(),
       knex('predicates_val').del()
     ])
-    .then(function () {
+    .then(() => knex('entity_types').select('uid').where({ 'name': 'Person' }))
+    .then(function ([result]) {
       return Promise.all([
         // Inserts seed entries
         knex('predicates').insert({
           name: 'has forename',
           description: 'A forename',
-          domain: 'person'
+          domain: result.uid
         }).returning('uid'),
 
         knex('predicates').insert({
           name: 'has brother',
           description: 'Has a male sibling that shares parents',
-          domain: 'person'
-        }).returning('uid')
+          domain: result.uid
+        }).returning('uid'),
+
+       knex('entity_types').select('uid').where({ 'name': 'Person' })
       ]);
     })
-    .then(function([id1, id2]) {
+    .then(function([id1, id2, result]) {
       return Promise.all([
         // Inserts seed entries
         knex('predicates_val').insert({
@@ -32,7 +35,7 @@ exports.seed = function(knex, Promise) {
 
         knex('predicates_ref').insert({
           uid: id2, 
-          range: 'person'
+          range: result[0].uid
         }),
       ]);
     });

@@ -8,7 +8,7 @@ import { Serializable } from './Serializable';
 
 export class Entity implements Serializable {
     public uid: number | null;
-    public entityType: string; // TODO: ideally this should be readonly
+    public entityType: number; // TODO: ideally this should be readonly
     public parent: number | Entity | null;
     public readonly readonly: boolean;
     public label: string;
