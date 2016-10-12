@@ -83,7 +83,13 @@ export class PredicateEditorWorkspace extends React.Component<PredicateEditorPro
                     component={EditableParagraph}
                     onChange={(value) => this.updatePredicate('description', value)}  />
 
-                <PredicateDescription domain={this.state.predicate.domain} range={this.state.predicate.range} />
+                <PredicateDescription
+                    domain={this.state.predicate.domain}
+                    range={this.state.predicate.range}
+                    domainChanged={(value) => this.updatePredicate('domain', value)}
+                    rangeChanged={(value) => this.updatePredicate('range', value)}
+                    mode='editSingle'
+                 />
 
                 <div>
                     <SameAsEditor sameAsString='a,b,c,woot,list' />

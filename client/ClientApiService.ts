@@ -23,16 +23,16 @@ export class ClientApiService implements ApiService {
             .then((data) => data.map((datum) => new obj().deserialize(datum)));
     }
 
-    public postItem<T extends Serializable>(baseUrl : string, data: T)  : Promise<boolean> {
+    public postItem<T extends Serializable>(obj: { new(): T; }, baseUrl : string, data: T)  : Promise<boolean> {
         return Promise.resolve(true);
     }
 
-    public putItem<T extends Serializable>(baseUrl : string, uid: number, data: T) : Promise<boolean> {
+    public putItem<T extends Serializable>(obj: { new(): T; }, baseUrl : string, uid: number, data: T) : Promise<boolean> {
         return Promise.resolve(true);
     }
 
     public patchItem<T extends Serializable>(obj: { new(): T; }, baseUrl : string, uid: number, data : T) : Promise<boolean> {
-        return fetch(`/api/v1/${baseUrl}/${uid}`, { 
+        return fetch(`/api/v1/${baseUrl}/${uid}`, {
                 method: 'PATCH',
                 body: JSON.stringify(data),
                 headers: {
@@ -43,7 +43,7 @@ export class ClientApiService implements ApiService {
             .then((response) => response.json());
     }
 
-    public delItem<T extends Serializable>(baseUrl : string, uid: number) {
+    public delItem<T extends Serializable>(obj: { new(): T; }, baseUrl : string, uid: number) {
         return Promise.resolve(true);
     }
 }

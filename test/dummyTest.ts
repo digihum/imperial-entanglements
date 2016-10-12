@@ -38,7 +38,7 @@ describe('A simple test', () => {
 
     it('to check things work', (done) => {
 
-      apiService.postItem(AppUrls.elementSet, new ElementSetPersistable().fromSchema({
+      apiService.postItem(ElementSetPersistable, AppUrls.elementSet, new ElementSetPersistable().fromSchema({
         uri: 'example.com',
         name: 'example',
         description: 'a example set',

@@ -15,6 +15,7 @@ export class EntityType implements Serializable {
     public icon: string;
     public color: string;
     public sameAs: string[];
+    public parents: EntityType[];
 
     public deserialize(data: any) : EntityType {
         this.uid = data.uid;
@@ -23,6 +24,7 @@ export class EntityType implements Serializable {
         this.icon = data.icon;
         this.color = data.color;
         this.sameAs = data.sameAs;
+        this.parents = data.parents;
         return this;
     }
 

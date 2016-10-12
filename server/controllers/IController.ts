@@ -13,13 +13,13 @@ export interface IController {
     getCollectionJson<T extends Persistable>(obj: { new(): T; }, params: any) : Promise<T[]>;
 
     // create
-    postItem<T extends Persistable>(data: any) : Promise<boolean>;
+    postItem<T extends Persistable>(obj: { new(): T; }, data: any) : Promise<boolean>;
 
     // replace
-    putItem<T extends Persistable>(uid: number, data: any) : Promise<boolean>;
+    putItem<T extends Persistable>(obj: { new(): T; }, uid: number, data: any) : Promise<boolean>;
 
     // delete
-    deleteItem<T extends Persistable>(uid: number) : Promise<boolean>;
+    deleteItem<T extends Persistable>(obj: { new(): T; }, uid: number) : Promise<boolean>;
 
     // update
     patchItem<T extends Persistable>(obj: { new(): T; }, uid: number, data: any) : Promise<boolean>;

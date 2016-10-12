@@ -7,13 +7,13 @@
 import { Serializable } from './Serializable';
 
 export class Predicate implements Serializable {
-    public uid: number | null;
-    public domain : string;
-    public range: string;
+    public uid: number | null = null;
+    public domain : number;
+    public range: string | number;
     public name: string;
-    public description: string;
-    public sameAs: string[];
-    public readonly: boolean;
+    public description: string | null = null;
+    public sameAs: string[] | null = null;
+    public readonly: boolean = false;
 
     //calculated
     public rangeIsReference: boolean;
@@ -23,13 +23,15 @@ export class Predicate implements Serializable {
     }
 
     public deserialize(data : any) : Predicate {
-        this.uid = data.uid;
-        this.readonly = data.readonly;
+        this.uid = data.uid !== undefined ? data.uid : null;
         this.domain = data.domain;
-        this.name = data.name;
-        this.description = data.description;
-        this.rangeIsReference = data.rangeIsReference;
         this.range = data.range;
+        this.name = data.name;
+        this.description = data.description !== undefined ? data.description : null;
+        this.sameAs = data.sameAs !== undefined ? data.sameAs : null;
+
+        this.readonly = data.readonly !== undefined ? data.readonly : false;
+        this.rangeIsReference = data.rangeIsReference;
         return this;
     }
 }

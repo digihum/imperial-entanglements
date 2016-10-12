@@ -10,6 +10,8 @@ import { Predicate } from '../../common/datamodel/Predicate';
 import { Persistable } from '../core/Persistable';
 import { GenericController } from './GenericController';
 
+import { omit } from 'lodash';
+
 export class PredicatePersistable extends Predicate implements Persistable {
 
     public static readonly tableName: string = 'predicates';
@@ -19,7 +21,7 @@ export class PredicatePersistable extends Predicate implements Persistable {
     }
 
     public toSchema() {
-        return this.serialize();
+        return Object.assign(omit(this.serialize(), 'range', 'rangeIsReference', 'sameAs'), { 'same_as': this.sameAs });
     }
 
     public fromSchema(data: any) : PredicatePersistable {
@@ -83,5 +85,20 @@ export class PredicateController extends GenericController<PredicatePersistable>
         } else {
             return super.getCollectionJson(obj, params);
         }
+    }
+
+    //TODO: it is concivable that the first insert will succeed and the second will fail, the first
+    // should be rolled back in this case.
+    public postItem(obj: { new(): PredicatePersistable; }, data: PredicatePersistable) : Promise<string> {
+        return super.postItem(obj, data)
+        .then(([id]) => {
+            if (data.rangeIsReference) {
+                return this.db.query().insert({ uid: id, range: data.range}).into('predicates_ref')
+                .then(() => id);
+            } else {
+                return this.db.query().insert({ uid: id, range: data.range}).into('predicates_val')
+                .then(() => id);
+            }
+        });
     }
 }

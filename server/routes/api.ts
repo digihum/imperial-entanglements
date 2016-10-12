@@ -82,13 +82,13 @@ export const api : (router: KoaRouter, s: ServerApiService) => KoaRouter
 
     router.post('/api/v1/:route', function* (next : Koa.Context) {
         yield serverApiContext
-            .postItem<Persistable>(this.params.route, this.request.body)
+            .postItem<Persistable>(typeMap[this.params.route],this.params.route, this.request.body)
             .then((data) => this.body = data);
     });
 
     router.put('/api/v1/:route/:id', function* (next : Koa.Context) {
         yield serverApiContext
-            .putItem<Persistable>(this.params.route, this.params.id, this.request.body)
+            .putItem<Persistable>(typeMap[this.params.route], this.params.route, this.params.id, this.request.body)
             .then((data) => this.body = data);
     });
 
@@ -100,7 +100,7 @@ export const api : (router: KoaRouter, s: ServerApiService) => KoaRouter
 
     router.del('/api/v1/:route/:id', function* (next : Koa.Context) {
         yield serverApiContext
-            .delItem<Persistable>(this.params.route, this.params.id)
+            .delItem<Persistable>(typeMap[this.params.route], this.params.route, this.params.id)
             .then((data) => this.body = data);
     });
 

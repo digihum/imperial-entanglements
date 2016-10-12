@@ -6,12 +6,15 @@
 
 import * as React from 'react';
 import { ComboDropdown } from '../ComboDropdown';
+import { literalTypes } from '../../literalTypes';
 import { noop } from 'lodash';
 
 interface PredicateDescriptionProps {
     domain: string;
     range: string;
     mode: 'editAll' | 'editSingle';
+    domainChanged: (s: string) => void;
+    rangeChanged: (s: string) => void;
 }
 
 export const PredicateDescription : React.StatelessComponent<PredicateDescriptionProps>
@@ -26,7 +29,7 @@ export const PredicateDescription : React.StatelessComponent<PredicateDescriptio
                     typeName='entity type'
                     allowNew={false}
                     value={props.domain}
-                    setValue={() => console.log('meh')}
+                    setValue={props.domainChanged}
                     createNewValue={noop} />
             ) : props.domain}
         </div>
@@ -34,11 +37,11 @@ export const PredicateDescription : React.StatelessComponent<PredicateDescriptio
         <div className='range'>
             {props.mode === 'editAll' ? (
                 <ComboDropdown
-                    options={[]}
+                    options={literalTypes.map((lit) => ({ key: lit.name, value: lit.name}))}
                     typeName='entity type'
                     allowNew={false}
                     value={props.range}
-                    setValue={() => console.log('meh')}
+                    setValue={props.rangeChanged}
                     createNewValue={noop} />
             ) : props.range}
         </div>

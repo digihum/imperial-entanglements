@@ -35,15 +35,15 @@ export class ServerApiService implements ApiService {
         return controller.getCollectionJson<T>(obj, params);
     }
 
-    public postItem<T extends Persistable>(baseUrl : string, data: T)  : Promise<boolean> {
+    public postItem<T extends Persistable>(obj: { new(): T; }, baseUrl : string, data: T)  : Promise<boolean> {
         const controller = this.controllerMap.get(baseUrl);
         if (controller === undefined) {
             return Promise.reject(new CollectionNotFoundException('Controller not found'));
         }
-        return controller.postItem<T>(data);
+        return controller.postItem<T>(obj, data);
     }
 
-    public putItem<T extends Persistable>(baseUrl : string, uid: number, data: T) : Promise<boolean> {
+    public putItem<T extends Persistable>(obj: { new(): T; }, baseUrl : string, uid: number, data: T) : Promise<boolean> {
         return Promise.resolve(true);
     }
 
@@ -55,7 +55,7 @@ export class ServerApiService implements ApiService {
         return controller.patchItem<T>(obj, uid, data);
     }
 
-    public delItem<T extends Persistable>(baseUrl : string, uid: number) {
+    public delItem<T extends Persistable>(obj: { new(): T; }, baseUrl : string, uid: number) {
         return Promise.resolve(true);
     }
 

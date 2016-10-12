@@ -31,11 +31,11 @@ export abstract class GenericController<T extends Persistable> implements IContr
          .then((data) => data.map((datum) =>  new obj().fromSchema(datum)));
     }
 
-    public postItem(data: T) : Promise<string> {
-        return this.db.createItem(data);
+    public postItem(obj: { new(): T; }, data: T) : Promise<string> {
+        return this.db.createItem(new obj().deserialize(data));
     }
 
-    public putItem(uid: number, data: T) : Promise<string> {
+    public putItem(obj: { new(): T; }, uid: number, data: T) : Promise<string> {
         return this.db.updateItem(data);
     }
 
@@ -60,7 +60,7 @@ export abstract class GenericController<T extends Persistable> implements IContr
             .catch((err) => err);
     }
 
-    public deleteItem(uid: number) : Promise<string> {
+    public deleteItem(obj: { new(): T; }, uid: number) : Promise<string> {
         return this.db.deleteItem(this.tableName, uid);
     }
 }

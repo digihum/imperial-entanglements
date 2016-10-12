@@ -15,13 +15,15 @@ interface CreatePredicateProps {
 
 interface CreatePredicateState{
     name: string;
+    domain: string;
+    range: string;
 }
 
 export class CreatePredicate extends React.Component<CreatePredicateProps, CreatePredicateState> {
 
     constructor() {
         super();
-        this.state = { name: '' };
+        this.state = { name: '', domain: '', range: '' };
     }
 
     public componentWillMount() {
@@ -34,7 +36,12 @@ export class CreatePredicate extends React.Component<CreatePredicateProps, Creat
             <div className='create-predicate-modal'>
                 <h3>Create new predicate</h3>
                 <input type='text' value={this.state.name} onChange={(e) => this.setState({ name: e.target.value })} />
-                <PredicateDescription domain={''} range={''} mode='editAll' />
+                <PredicateDescription
+                    domain={this.state.domain}
+                    range={this.state.range}
+                    domainChanged={(s) => this.setState({ domain: s })}
+                    rangeChanged={(s) => this.setState({ range: s})}
+                    mode='editAll' />
                 <div className='modal-toolbar'>
                     <button onClick={this.props.cancel}>Cancel</button>
                     <button onClick={this.props.cancel}>Create Predicate</button>

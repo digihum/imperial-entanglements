@@ -44,8 +44,8 @@ export class Database {
     public createItem(a: Persistable) : Promise<any> {
         // throw warning if called with uid
         // validate that everything else has been sent
-        const withoutUid = omit(a, ['uid', 'tableName']);
-        return this.knex.insert(withoutUid, 'uid').into(a.getTableName());
+        const withoutUid = omit(a.toSchema(), ['uid', 'tableName']);
+        return this.knex.insert(withoutUid, 'uid').into(a.getTableName()).returning('uid');
     }
 
     public updateItem(a: Persistable) : Promise<any> {
