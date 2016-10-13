@@ -17,7 +17,6 @@ exports.up = function(knex, Promise) {
         table.increments('uid').primary();
 
         table.integer('source')
-            .notNullable()
             .references('uid')
             .inTable('sources');            
 
@@ -32,7 +31,7 @@ exports.up = function(knex, Promise) {
             .inTable('entities');   
 
         table.integer('score')
-            .notNullable()
+            .nullable()
             .defaultTo(0);            
 
         table.integer('period')
