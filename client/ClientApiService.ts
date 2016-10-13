@@ -52,6 +52,9 @@ export class ClientApiService implements ApiService {
     }
 
     public delItem<T extends Serializable>(obj: { new(): T; }, baseUrl : string, uid: number) {
-        return Promise.resolve(true);
+        return fetch(`/api/v1/${baseUrl}/${uid}`, {
+            method: 'DELETE'
+        })
+        .then((response) => response.json());
     }
 }

@@ -18,6 +18,7 @@ interface RecordsEditorProps {
 	dimension: string;
 	entityExists: boolean;
 	records: Dictionary<Record[]>;
+	onChange: () => void;
 }
 
 interface RecordsEditorState {
@@ -47,10 +48,12 @@ export class RecordsEditor extends React.Component<RecordsEditorProps, RecordsEd
 	// 	.then(this.updateRecords);
 	// }
 
-	// public postDelete(deletedRecord) {
-	// 	return this.props.service.deleteRecord(this.props.id, deletedRecord)
-	// 	.then(this.updateRecords);
-	// }
+	public deleteRecord(recordUid: number) {
+		this.props.api.delItem(Record, AppUrls.record, recordUid)
+		.then(() => {
+			this.props.onChange();
+		});
+	}
 
 	// public postAdd(newRecord) {
 	// 	return this.props.service.addRecord(this.props.id, newRecord)
@@ -78,17 +81,26 @@ export class RecordsEditor extends React.Component<RecordsEditorProps, RecordsEd
 					<div>
 						{Object.keys(this.props.records).map((section) => (
 							<section key={`section-${section}`}>
-								<h5 className='section-header'>{section}</h5>
+								<h5 className='section-header'>{section}
+									<span className='fa-stack'>
+										<i className='fa fa-th-list fa-stack-1x'></i>
+										<i className='fa fa-plus fa-stack-1x' style={{ color: 'green' }}></i>
+									</span>
+								</h5>
 								<div className='record-row title'>
 									<div className='record-row-item uid'>ID</div>
-									<div className='record-row-item'>Source</div>
-									<div className='record-row-item'>Predicate</div>
 									<div className='record-row-item'>Value</div>
+									<div className='record-row-item'>Source</div>
 									<div className='record-row-item score'>Score</div>
 									<div className='record-row-item buttons'>Actions</div>
 								</div>
 								{this.props.records[section].map((record) => (
-									<RecordRow key={`record-${record.uid}`} record={record} dimension={this.props.dimension} />
+									<RecordRow
+										key={`record-${record.uid}`}
+										record={record}
+										dimension={this.props.dimension}
+										deleteRecord={this.deleteRecord.bind(this)}
+									 />
 								))}
 							</section>
 						))}

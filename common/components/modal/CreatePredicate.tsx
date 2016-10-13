@@ -17,6 +17,7 @@ import { ComboDropdownOption } from '../ComboDropdown';
 interface CreatePredicateProps {
     initialName: string;
     cancel: () => void;
+    complete: (newId: number) => void;
     api: ApiService;
     initialDomain?: number;
 }
@@ -91,7 +92,7 @@ export class CreatePredicate extends React.Component<CreatePredicateProps, Creat
             domain: this.state.domain.value,
             range: this.state.range.value,
             rangeIsReference: this.state.range.meta !== 'literal'
-        })).then(() => this.props.cancel());
+        })).then(this.props.complete);
     }
 
     public render() {

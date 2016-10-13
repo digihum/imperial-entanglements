@@ -68,10 +68,7 @@ export class EntityEditorWorkspace extends React.Component<EntityEditorProps, En
 
         this.props.api.getItem(Entity, AppUrls.entity, this.props.id).then((data) => {
             this.setState({ entity: data });
-            this.props.api.getCollection(Predicate, AppUrls.predicate, { domain: data.entityType})
-            .then((predicateData) => {
-                this.setState({ predicates: predicateData });
-            });
+            this.loadPredicates(data.entityType);
         });
 
         this.loadRecords();
@@ -82,6 +79,30 @@ export class EntityEditorWorkspace extends React.Component<EntityEditorProps, En
 		.then((data) => {
 			this.setState({ records: groupBy(data, 'predicate') });
 		});
+    }
+
+    public loadPredicates(entityType: number) {
+        this.props.api.getCollection(Predicate, AppUrls.predicate, { domain: entityType })
+        .then((predicateData) => {
+            this.setState({ predicates: predicateData });
+        });
+    }
+
+    public createdPredicate(newPredicateId: number) {
+        this.setState({creatingPredicate: false}, () => {
+
+            if (this.state.entity === null) {
+                throw new Error('Missing entity!');
+            }
+
+            this.loadPredicates(this.state.entity.entityType);
+
+            this.props.api.postItem(Record, AppUrls.record,
+            new Record().deserialize({
+                predicate: newPredicateId,
+                entity: this.props.id
+            })).then(this.loadRecords.bind(this));
+        });
     }
 
     public setComboValue(opt: ComboDropdownOption) {
@@ -99,7 +120,7 @@ export class EntityEditorWorkspace extends React.Component<EntityEditorProps, En
         return (
             <div className='workspace-editor'>
                 <h2>Predicates <i
-                    className='fa fa-plus-circle'
+                    className='fa fa-plus-circle add-button'
                      aria-hidden='true'
                      onClick={() => this.setState({ creatingRecord : true })}
                 ></i></h2>
@@ -108,6 +129,7 @@ export class EntityEditorWorkspace extends React.Component<EntityEditorProps, En
                     (<CreatePredicate
                         initialName={this.state.comboSearchValue}
                         cancel={() => this.setState({creatingPredicate: false})}
+                        complete={this.createdPredicate.bind(this)}
                         api={this.props.api}
                         initialDomain={this.state.entity.entityType}
                     />) : null}
@@ -126,7 +148,8 @@ export class EntityEditorWorkspace extends React.Component<EntityEditorProps, En
                     entityExists={true}
                     id={this.props.id}
                     api={this.props.api}
-                    records={this.state.records} />
+                    records={this.state.records}
+                    onChange={this.loadRecords.bind(this)}/>
             </div>
         );
     }
