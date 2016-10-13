@@ -13,12 +13,15 @@ export interface EditableSubfieldProps<T> {
     setEdit: () => void;
     acceptChanges: () => void;
     cancelChanges: () => void;
+    onDelete: React.EventHandler<React.FormEvent>;
 }
 
 interface EditableFieldProps<T> {
     value: T;
     onChange: (s: T) => void;
+    onDelete?: (val: T) => void;
     component: React.StatelessComponent<EditableSubfieldProps<T>>;
+    additionalProps?: any;
 }
 
 interface EditableFieldState<T> {
@@ -62,6 +65,8 @@ export class EditableFieldComponent<T> extends React.Component<EditableFieldProp
         onChange={(e) => this.setState({internalValue: e.target.value}) }
         setEdit={this.switchToEditState.bind(this)}
         acceptChanges={this.acceptChanges.bind(this)}
-        cancelChanges={this.cancelChanges.bind(this)}  />);
+        cancelChanges={this.cancelChanges.bind(this)}
+        onDelete={(e) => this.props.onDelete !== undefined ? this.props.onDelete(this.props.value) : null}
+        {...this.props.additionalProps} />);
     }
 }

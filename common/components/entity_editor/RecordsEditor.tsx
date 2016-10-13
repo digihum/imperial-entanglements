@@ -7,10 +7,13 @@
 import * as React from 'react';
 import { ApiService, AppUrls } from '../../ApiService';
 import { Record } from '../../../common/datamodel/datamodel';
+import { EditableFieldComponent } from '../fields/EditableFieldComponent';
 
 import { RecordRow } from './RecordRow';
 
 import { groupBy, Dictionary } from 'lodash';
+
+class RecordEditableFieldComponent extends EditableFieldComponent<Record> {}
 
 interface RecordsEditorProps {
     id: number;
@@ -48,8 +51,13 @@ export class RecordsEditor extends React.Component<RecordsEditorProps, RecordsEd
 	// 	.then(this.updateRecords);
 	// }
 
-	public deleteRecord(recordUid: number) {
-		this.props.api.delItem(Record, AppUrls.record, recordUid)
+	public deleteRecord(record: Record) {
+
+		if (record.uid === null) {
+			throw new Error('Trying to delete a record with null id');
+		}
+
+		this.props.api.delItem(Record, AppUrls.record, record.uid)
 		.then(() => {
 			this.props.onChange();
 		});
@@ -95,12 +103,16 @@ export class RecordsEditor extends React.Component<RecordsEditorProps, RecordsEd
 									<div className='record-row-item buttons'>Actions</div>
 								</div>
 								{this.props.records[section].map((record) => (
-									<RecordRow
-										key={`record-${record.uid}`}
-										record={record}
-										dimension={this.props.dimension}
-										deleteRecord={this.deleteRecord.bind(this)}
-									 />
+									<RecordEditableFieldComponent
+										key={`row-${record.uid}`}
+										value={record}
+										onChange={(a) => console.log(a)}
+										onDelete={this.deleteRecord.bind(this)}
+										component={RecordRow}
+										additionalProps={{
+											dimension: 'predicates'
+										}}
+									/>
 								))}
 							</section>
 						))}

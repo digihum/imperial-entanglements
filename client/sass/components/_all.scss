@@ -4,3 +4,9 @@
 @import 'overlay';
 @import 'modals';
 @import 'record_editor';
+
+// https://css-tricks.com/star-ratings/
+.score-picker > i:hover:before,
+.score-picker > i:hover ~ i:before {
+   color: orange;
+}
