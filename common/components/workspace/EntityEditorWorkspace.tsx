@@ -11,10 +11,13 @@ import { Loading } from '../Loading';
 import { RecordsEditor } from '../entity_editor/RecordsEditor';
 import { ApiService, AppUrls } from '../../ApiService';
 
-import { Entity, Predicate } from '../../../common/datamodel/datamodel';
+import { Entity, Predicate, Record } from '../../../common/datamodel/datamodel';
 
 import { ComboDropdown, ComboDropdownOption } from '../ComboDropdown';
 import { CreatePredicate } from '../modal/CreatePredicate';
+import { CreateRecord } from '../modal/CreateRecord';
+
+import { Dictionary, groupBy } from 'lodash';
 
 interface EntityEditorProps {
     api: ApiService;
@@ -27,6 +30,8 @@ interface EntityEditorState {
     comboValue: ComboDropdownOption;
     comboSearchValue: string;
     creatingPredicate: boolean;
+    creatingRecord: boolean;
+    records: Dictionary<Record[]>;
 }
 
 // What can I do?
@@ -43,6 +48,7 @@ interface EntityEditorState {
 //   it also creates a blank entry in the records sub table based on the range of the predicate.
 // - New predicates must have a name. The domain is set to the current entitytype but can be changed
 //   to one of its parents. The range MUST be set.
+// 
 export class EntityEditorWorkspace extends React.Component<EntityEditorProps, EntityEditorState> {
 
     constructor() {
@@ -52,7 +58,9 @@ export class EntityEditorWorkspace extends React.Component<EntityEditorProps, En
             predicates: null,
             comboValue: { key: 'test', value: ''},
             creatingPredicate: false,
-            comboSearchValue: ''
+            creatingRecord: false,
+            comboSearchValue: '',
+            records: []
         };
     }
 
@@ -65,6 +73,15 @@ export class EntityEditorWorkspace extends React.Component<EntityEditorProps, En
                 this.setState({ predicates: predicateData });
             });
         });
+
+        this.loadRecords();
+    }
+
+    public loadRecords() {
+        this.props.api.getCollection(Record, AppUrls.record, { entity: this.props.id })
+		.then((data) => {
+			this.setState({ records: groupBy(data, 'predicate') });
+		});
     }
 
     public setComboValue(opt: ComboDropdownOption) {
@@ -81,17 +98,12 @@ export class EntityEditorWorkspace extends React.Component<EntityEditorProps, En
 
         return (
             <div className='workspace-editor'>
-                <h2>Predicates <i className='fa fa-plus-circle' aria-hidden='true'></i></h2>
-                <div>
-                    <label>Add new predicate:</label>
-                    <ComboDropdown
-                        options={options}
-                        typeName='predicate'
-                        value={this.state.comboValue}
-                        setValue={this.setComboValue.bind(this)}
-                        createNewValue={(s) => this.setState({ creatingPredicate: true, comboSearchValue: s})}
-                     />
-                </div>
+                <h2>Predicates <i
+                    className='fa fa-plus-circle'
+                     aria-hidden='true'
+                     onClick={() => this.setState({ creatingRecord : true })}
+                ></i></h2>
+
                 {this.state.creatingPredicate ?
                     (<CreatePredicate
                         initialName={this.state.comboSearchValue}
@@ -99,7 +111,22 @@ export class EntityEditorWorkspace extends React.Component<EntityEditorProps, En
                         api={this.props.api}
                         initialDomain={this.state.entity.entityType}
                     />) : null}
-                <RecordsEditor dimension='predicates' entityExists={true} id={this.props.id} api={this.props.api} />
+
+                {this.state.creatingRecord ?
+                    (<CreateRecord
+                        options={options}
+                        api={this.props.api}
+                        entityUid={this.props.id}
+                        create={(s) => this.setState({ creatingPredicate: true, comboSearchValue: s, creatingRecord: false})}
+                        close={() => { this.setState({ creatingRecord: false }); this.loadRecords() }}
+                    />) : null}
+
+                <RecordsEditor
+                    dimension='predicates'
+                    entityExists={true}
+                    id={this.props.id}
+                    api={this.props.api}
+                    records={this.state.records} />
             </div>
         );
     }

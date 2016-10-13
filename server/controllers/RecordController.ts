@@ -21,7 +21,7 @@ export class RecordPersistable extends Record implements Persistable {
     }
 
     public toSchema() {
-        return omit(this.serialize(), 'value');
+        return omit(this.serialize(), 'value', 'valueType');
     }
 
     public fromSchema(data: any) : RecordPersistable {

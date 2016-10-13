@@ -6,3 +6,30 @@
 h1, h2, h3, h4, h5 {
     font-family: 'Roboto', 'sans-serif';
 }
+
+h5.section-header {
+    font-size: larger;
+    margin-bottom: 0.4em;
+    border-bottom: 1px #d4d4d4 solid;
+    padding-bottom: 0.2em;
+}
+
+.input-addon-formgroup {
+    display: flex;
+    .input-addon-icon {
+        padding: 0.5em;
+        background-color: #e2e2e2;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: medium;
+        color: #3e3e3e;
+        border: 1px solid grey;
+        border-right: none;
+    }
+
+    input.with-addon {
+        flex: 1;
+        padding: 0.5em;
+    }
+}

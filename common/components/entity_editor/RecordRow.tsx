@@ -13,11 +13,21 @@ interface RecordRowProps {
 }
 
 export const RecordRow = (props: RecordRowProps) => (
-    <div>
-        <div>#{props.record.uid}</div>
-        <div>{props.record.source}</div>
-        <div>{props.record.predicate}</div>
-        <div>{props.record.value}</div>
-        <div>{props.record.score}</div>
+    <div className='record-row'>
+        <div className='record-row-item uid'>#{props.record.uid}</div>
+        <div className='record-row-item'>{props.record.source}</div>
+        <div className='record-row-item'>{props.record.predicate}</div>
+        <div className='record-row-item'>{props.record.value}</div>
+        <div className='record-row-item score'>
+            <i className='fa fa-star-o' aria-hidden='true'></i>
+            <i className='fa fa-star-o' aria-hidden='true'></i>
+            <i className='fa fa-star-o' aria-hidden='true'></i>
+            <i className='fa fa-star-o' aria-hidden='true'></i>
+            <i className='fa fa-star-o' aria-hidden='true'></i>
+        </div>
+        <div className='record-row-item buttons'>
+            <button><i className='fa fa-pencil-square-o' aria-hidden='true'></i></button>
+            <button><i className='fa fa-times' aria-hidden='true'></i></button>
+        </div>
     </div>
 ); 

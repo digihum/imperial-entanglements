@@ -1,0 +1,26 @@
+.record-row {
+    display: flex;
+
+    &:hover {
+        background-color: #eee;
+    }
+
+    &.title {
+        font-weight: 700;
+    }
+
+    .record-row-item {
+        flex: 1;
+        padding-bottom: 0.4em;
+        &.uid {
+            flex: 0 0 2em;
+            color: #b5b5b5;
+        }
+        &.buttons {
+            flex: 0 0 4em;
+        }
+        &.score {
+            flex: 0 0 6em;
+        }
+    }
+}

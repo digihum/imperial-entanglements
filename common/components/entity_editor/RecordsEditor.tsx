@@ -10,27 +10,21 @@ import { Record } from '../../../common/datamodel/datamodel';
 
 import { RecordRow } from './RecordRow';
 
+import { groupBy, Dictionary } from 'lodash';
+
 interface RecordsEditorProps {
     id: number;
 	api: ApiService;
 	dimension: string;
 	entityExists: boolean;
+	records: Dictionary<Record[]>;
 }
 
 interface RecordsEditorState {
-	records: { [s: string]: Record[] } ;
+	
 }
 
 export class RecordsEditor extends React.Component<RecordsEditorProps, RecordsEditorState> {
-
-	constructor() {
-		super();
-		this.state = {
-			records: {
-				'forename': [ new Record() ]
-			}
-		};
-	}
 
 	// public updateRecords() {
 	// 	this.props.service.getPerson(this.props.id)
@@ -47,13 +41,6 @@ export class RecordsEditor extends React.Component<RecordsEditorProps, RecordsEd
 	// 		});
 	// 	});
 	// }
-
-	public componentDidMount() {
-		this.props.api.getCollection(Record, AppUrls.record, { entity: this.props.id })
-		.then((data) => {
-			this.setState({ records: data });
-		})
-	}
 
 	// public postChange(updatedRecord) {
 	// 	return this.props.service.changeRecord(this.props.id, updatedRecord)
@@ -82,14 +69,25 @@ export class RecordsEditor extends React.Component<RecordsEditorProps, RecordsEd
 				<div>
 					<h4>Records</h4>
 					<div>
-						<span className='input-group-addon'><i className='fa fa-search fa-fw'></i></span>
-						<input type='text' className='form-control' />
+						<div className='input-addon-formgroup'>
+							<span className='input-addon-icon'><i className='fa fa-search fa-fw'></i></span>
+							<input type='text' className='form-control with-addon' />
+						</div>
+
 					</div>
 					<div>
-						{Object.keys(this.state.records).map((section) => (
+						{Object.keys(this.props.records).map((section) => (
 							<section key={`section-${section}`}>
-								<h5>{section}</h5>
-								{this.state.records[section].map((record) => (
+								<h5 className='section-header'>{section}</h5>
+								<div className='record-row title'>
+									<div className='record-row-item uid'>ID</div>
+									<div className='record-row-item'>Source</div>
+									<div className='record-row-item'>Predicate</div>
+									<div className='record-row-item'>Value</div>
+									<div className='record-row-item score'>Score</div>
+									<div className='record-row-item buttons'>Actions</div>
+								</div>
+								{this.props.records[section].map((record) => (
 									<RecordRow key={`record-${record.uid}`} record={record} dimension={this.props.dimension} />
 								))}
 							</section>
