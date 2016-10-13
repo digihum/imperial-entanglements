@@ -8,7 +8,7 @@ import * as React from 'react';
 
 import { Loading } from '../Loading';
 
-import { RecordsEditor } from '../entity_editor/records/RecordsEditor';
+import { RecordsEditor } from '../entity_editor/RecordsEditor';
 import { ApiService, AppUrls } from '../../ApiService';
 
 import { Entity, Predicate } from '../../../common/datamodel/datamodel';
