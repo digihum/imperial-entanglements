@@ -7,8 +7,14 @@
 import * as React from 'react';
 import { SearchBox } from './sidebar/SearchBox';
 
+export interface Tab {
+    title: string;
+    subtitle: string;
+    url: string;
+}
+
 interface SidebarProps {
-    
+    tabs: Tab[];
 }
 
 interface SidebarState {
@@ -30,13 +36,18 @@ export class Sidebar extends React.Component<SidebarProps, SidebarState> {
                 <SearchBox searchString={this.state.searchString}
                 onChange={(evt) => this.setState({searchString: evt.currentTarget.value})} />
                 <ul className='card-list'>
-                    <li>
-                        <div className='sidebar-card'>
-                            <span className='entity-name'>Entity #1</span>
-                            <span className='entity-type'>Person</span>
-                            <span className='close-button'><i className='fa fa-times'></i></span>
-                        </div>
-                    </li>
+                    {this.props.tabs.map((tab) => (
+                        <li key={`${tab.url}`}>
+                            <a href={tab.url}>
+                                <div className='sidebar-card'>
+                                    <span className='entity-name'>{tab.title}</span>
+                                    <span className='entity-type'>{tab.subtitle}</span>
+                                    <span className='close-button'><i className='fa fa-times'></i></span>
+                                </div>
+                            </a>
+                        </li>
+                    ))}
+
                 </ul>
             </section>
         );

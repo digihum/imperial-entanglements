@@ -24,7 +24,15 @@ export class ClientApiService implements ApiService {
     }
 
     public postItem<T extends Serializable>(obj: { new(): T; }, baseUrl : string, data: T)  : Promise<boolean> {
-        return Promise.resolve(true);
+        return fetch(`/api/v1/${baseUrl}`, {
+            method: 'POST',
+            body: JSON.stringify(data),
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        })
+        .then((response) => response.json());
     }
 
     public putItem<T extends Serializable>(obj: { new(): T; }, baseUrl : string, uid: number, data: T) : Promise<boolean> {
@@ -33,14 +41,14 @@ export class ClientApiService implements ApiService {
 
     public patchItem<T extends Serializable>(obj: { new(): T; }, baseUrl : string, uid: number, data : T) : Promise<boolean> {
         return fetch(`/api/v1/${baseUrl}/${uid}`, {
-                method: 'PATCH',
-                body: JSON.stringify(data),
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                }
-            })
-            .then((response) => response.json());
+            method: 'PATCH',
+            body: JSON.stringify(data),
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        })
+        .then((response) => response.json());
     }
 
     public delItem<T extends Serializable>(obj: { new(): T; }, baseUrl : string, uid: number) {

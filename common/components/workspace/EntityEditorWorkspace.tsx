@@ -13,7 +13,7 @@ import { ApiService, AppUrls } from '../../ApiService';
 
 import { Entity, Predicate } from '../../../common/datamodel/datamodel';
 
-import { ComboDropdown } from '../ComboDropdown';
+import { ComboDropdown, ComboDropdownOption } from '../ComboDropdown';
 import { CreatePredicate } from '../modal/CreatePredicate';
 
 interface EntityEditorProps {
@@ -24,7 +24,8 @@ interface EntityEditorProps {
 interface EntityEditorState {
     entity : Entity | null;
     predicates : Predicate[] | null;
-    comboValue: string;
+    comboValue: ComboDropdownOption;
+    comboSearchValue: string;
     creatingPredicate: boolean;
 }
 
@@ -49,8 +50,9 @@ export class EntityEditorWorkspace extends React.Component<EntityEditorProps, En
         this.state = {
             entity: null,
             predicates: null,
-            comboValue: 'test',
-            creatingPredicate: false
+            comboValue: { key: 'test', value: ''},
+            creatingPredicate: false,
+            comboSearchValue: ''
         };
     }
 
@@ -65,8 +67,8 @@ export class EntityEditorWorkspace extends React.Component<EntityEditorProps, En
         });
     }
 
-    public setComboValue(str: string) {
-        this.setState({ comboValue: str });
+    public setComboValue(opt: ComboDropdownOption) {
+        this.setState({ comboValue: opt });
     }
 
     public render() {
@@ -87,13 +89,16 @@ export class EntityEditorWorkspace extends React.Component<EntityEditorProps, En
                         typeName='predicate'
                         value={this.state.comboValue}
                         setValue={this.setComboValue.bind(this)}
-                        createNewValue={(s) => this.setState({ creatingPredicate: true})}
+                        createNewValue={(s) => this.setState({ creatingPredicate: true, comboSearchValue: s})}
                      />
                 </div>
                 {this.state.creatingPredicate ?
                     (<CreatePredicate
-                        initialName={this.state.comboValue} 
-                        cancel={() => this.setState({creatingPredicate: false})} />) : null}
+                        initialName={this.state.comboSearchValue}
+                        cancel={() => this.setState({creatingPredicate: false})}
+                        api={this.props.api}
+                        initialDomain={this.state.entity.entityType}
+                    />) : null}
                 <RecordsEditor dimension='predicates' entityExists={true} id={this.props.id} api={this.props.api} />
             </div>
         );

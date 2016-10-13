@@ -11,7 +11,7 @@ import { ApiService, AppUrls } from '../ApiService';
 
 import { ElementSet, EntityType, Entity } from '../datamodel/datamodel';
 
-import { Sidebar } from '../components/Sidebar';
+import { Sidebar, Tab } from '../components/Sidebar';
 import { Workspace } from '../components/Workspace';
 
 
@@ -35,11 +35,6 @@ interface EntityEditorState {
     tabs: Tab[];
 }
 
-class Tab {
-    public name: string;
-    public url: string;
-}
-
 export class ObjectEditor extends React.Component<EntityEditorProps, EntityEditorState> {
 
     constructor() {
@@ -59,10 +54,16 @@ export class ObjectEditor extends React.Component<EntityEditorProps, EntityEdito
         }
     }
 
+    public componentWillMount() {
+        this.setState({
+            tabs: [{ title: 'Entity 1', subtitle: 'Person', url: '/entity/1'}]
+        });
+    }
+
     public render() {
         return (
             <section id='entity-editor' className='flex-fill'>
-                <Sidebar />
+                <Sidebar tabs={this.state.tabs} />
                 <Workspace api={this.props.api} workspaceType={this.props.workspace} id={this.props.params.id} />
             </section>
         );

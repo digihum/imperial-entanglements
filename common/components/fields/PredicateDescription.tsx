@@ -5,16 +5,17 @@
  */
 
 import * as React from 'react';
-import { ComboDropdown } from '../ComboDropdown';
-import { literalTypes } from '../../literalTypes';
+import { ComboDropdown, ComboDropdownOption } from '../ComboDropdown';
 import { noop } from 'lodash';
 
 interface PredicateDescriptionProps {
-    domain: string;
-    range: string;
+    domain: ComboDropdownOption;
+    range: ComboDropdownOption;
     mode: 'editAll' | 'editSingle';
-    domainChanged: (s: string) => void;
-    rangeChanged: (s: string) => void;
+    domainChanged: (s: ComboDropdownOption) => void;
+    rangeChanged: (s: ComboDropdownOption) => void;
+    domainOptions: ComboDropdownOption[];
+    rangeOptions: ComboDropdownOption[];
 }
 
 export const PredicateDescription : React.StatelessComponent<PredicateDescriptionProps>
@@ -25,7 +26,7 @@ export const PredicateDescription : React.StatelessComponent<PredicateDescriptio
         <div className='domain'>
             {props.mode === 'editAll' ? (
                 <ComboDropdown
-                    options={[{key: 'any', value: 'any'},{key: 'person', value: 'any'}]}
+                    options={props.domainOptions}
                     typeName='entity type'
                     allowNew={false}
                     value={props.domain}
@@ -37,7 +38,7 @@ export const PredicateDescription : React.StatelessComponent<PredicateDescriptio
         <div className='range'>
             {props.mode === 'editAll' ? (
                 <ComboDropdown
-                    options={literalTypes.map((lit) => ({ key: lit.name, value: lit.name}))}
+                    options={props.rangeOptions}
                     typeName='entity type'
                     allowNew={false}
                     value={props.range}
