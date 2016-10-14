@@ -16,6 +16,7 @@ import { Entity, Predicate, Record, Source } from '../../../common/datamodel/dat
 import { ComboDropdown, ComboDropdownOption } from '../ComboDropdown';
 import { CreatePredicate } from '../modal/CreatePredicate';
 import { CreateRecord } from '../modal/CreateRecord';
+import { CreateSource } from '../modal/CreateSource';
 
 import { Dictionary, groupBy } from 'lodash';
 
@@ -33,6 +34,7 @@ interface EntityEditorState {
     comboSearchValue: string;
     creatingPredicate: boolean;
     creatingRecord: boolean;
+    creatingSource: boolean;
     records: Dictionary<Record[]>;
     sources: Source[];
 }
@@ -63,6 +65,7 @@ export class EntityEditorWorkspace extends React.Component<EntityEditorProps, En
             comboValue: { key: 'test', value: ''},
             creatingPredicate: false,
             creatingRecord: false,
+            creatingSource: false,
             comboSearchValue: '',
             records: [],
             sources: []
