@@ -36,4 +36,8 @@ h5.section-header {
 
 i.add-button {
     cursor: pointer;
+    color: #789946;
+    &:hover {
+        color: greenyellow;
+    }
 }

@@ -106,13 +106,10 @@ export class RecordsEditor extends React.Component<RecordsEditorProps, RecordsEd
 
 							return (<section key={`section-${section}`}>
 								<h5 className='section-header'>{currentPredicate.name}
-									<span className='fa-stack'
-										onClick={() => createTab.dispatch(currentPredicate.name, 
+									<i className='icon-list-add add-button'
+									onClick={() => createTab.dispatch(currentPredicate.name, 
 											currentPredicate.uid,
-											 `/${AppUrls.predicate}/${currentPredicate.uid}`)}>
-										<i className='fa fa-th-list fa-stack-1x'></i>
-										<i className='fa fa-plus fa-stack-1x' style={{ color: 'green' }}></i>
-									</span>
+											 `/${AppUrls.predicate}/${currentPredicate.uid}`)}></i>
 								</h5>
 								<div className='record-row title'>
 									<div className='record-row-item uid'>ID</div>

@@ -10,6 +10,8 @@ import { EditableSubfieldProps } from '../fields/EditableFieldComponent';
 export { EditableFieldComponent } from '../fields/EditableFieldComponent';
 import { ScorePicker } from '../fields/ScorePicker';
 import { ComboDropdown, ComboDropdownOption } from '../ComboDropdown';
+import { createTab } from '../../Signaller';
+import { AppUrls } from '../../ApiService';
 
 interface RecordRowProps extends EditableSubfieldProps<Record> {
     dimension: string;
@@ -60,7 +62,14 @@ export const RecordRow = (props: RecordRowProps) => {
         <div className='record-row'>
             <div className='record-row-item uid'>#{props.value.uid}</div>
             <div className='record-row-item'>{props.value.value}</div>
-            <div className='record-row-item'>{dropDownValue.key}</div>
+            <div className='record-row-item'>{dropDownValue.key}
+                {dropDownValue.key.length > 0 ? (
+                    <i className='icon-list-add add-button'
+                    onClick={() => createTab.dispatch(dropDownValue.key, 
+                            dropDownValue.value,
+                                `/${AppUrls.source}/${dropDownValue.value}`)}></i>
+                ) : null}
+			</div>
             <div className='record-row-item score'>
                 <i className='fa fa-star-o' aria-hidden='true'></i>
                 <i className='fa fa-star-o' aria-hidden='true'></i>
