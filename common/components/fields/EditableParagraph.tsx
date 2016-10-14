@@ -13,13 +13,18 @@ export const EditableParagraph : React.StatelessComponent<EditableSubfieldProps<
          if (!props.edit || props.value == null) {
             return (
                 <div>
-                    <p>{props.value}</p>
-                    <sup>
-                        <i className='fa fa-pencil-square-o'
-                            aria-hidden='true'
-                            onClick={props.setEdit}>
-                        </i>
-                    </sup>
+                    <p>
+                        {props.value.length > 0 ? props.value
+                        : (
+                            <em>No value</em>
+                        )}
+                        <sup>
+                            <i className='fa fa-pencil-square-o'
+                                aria-hidden='true'
+                                onClick={props.setEdit}>
+                            </i>
+                        </sup>
+                    </p>
                 </div>
             );
         } else {

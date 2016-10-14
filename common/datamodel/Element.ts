@@ -5,12 +5,24 @@
  */
 
 import { Serializable } from './Serializable';
-import { ElementSet } from './ElementSet';
 
 export class Element implements Serializable {
-    public uri: URL;
-    public elementSet: ElementSet;
+    public uid: number | null;
+    public elementSet: number;
     public name: string;
     public description: string;
     public comment: string;
+
+    public deserialize(data: any) : Element {
+        this.name = data.name;
+        this.uid = data.uid !== undefined ? data.uid : null;
+        this.elementSet = data.elementSet !== undefined ? data.uri : null;
+        this.description = data.description !== undefined ? data.description : null;
+        this.comment = data.comment !== undefined ? data.comment : null;
+        return this;
+    }
+
+    public serialize() : any {
+        return this;
+    }
 }

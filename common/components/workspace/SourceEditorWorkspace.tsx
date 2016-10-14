@@ -10,7 +10,7 @@ import { SameAsEditor } from '../SameAsEditor';
 import { Loading } from '../Loading';
 import { ApiService, AppUrls } from '../../ApiService';
 
-import { Source, ElementSet } from '../../../common/datamodel/datamodel';
+import { Source, ElementSet, Element } from '../../../common/datamodel/datamodel';
 
 import { EditableHeader, EditableFieldComponent } from '../fields/EditableHeader';
 import { EditableParagraph } from '../fields/EditableParagraph';
@@ -72,6 +72,10 @@ export class SourceEditorWorkspace extends React.Component<SourceEditorProps, So
         });
     }
 
+    public updateSourceElement(element: Element, value: string) {
+
+    }
+
     public render() {
 
         if (this.state.source === null || this.state.dublinCore === null) {
@@ -90,13 +94,12 @@ export class SourceEditorWorkspace extends React.Component<SourceEditorProps, So
 
                 {this.state.dublinCore.elements.map((element) => (
                     <div key={`${element.name}-edit`}>
-                        <small>Dublin Core</small>
-                        <h4>{element.name} <small><a href={element.url}>{element.uri}</a></small></h4>
-                        <p>{element.description}</p>
+                        <h5 className='section-header'>{element.name} <small><a href={element.url}>{element.uri}</a></small></h5>
+                        <p className='element-description'>{element.description}</p>
                          <StringEditableFieldComponent
                             value={metaDataValues.hasOwnProperty(element.name) ? (metaDataValues[element.name].value) : ''}
                             component={EditableParagraph}
-                            onChange={(value) => console.log(value)}  />
+                            onChange={(value) => this.updateSourceElement(element, value)}  />
                     </div>
                 ))}
 

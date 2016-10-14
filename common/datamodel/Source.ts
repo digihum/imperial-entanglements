@@ -5,31 +5,13 @@
  */
 
 import { Serializable } from './Serializable';
-import { Element } from './Element';
-
-class SourceMetadataElement {
-    public element: Element;
-    public value: string;
-}
-
-class SourceTag {
-    public id: string;
-}
-
-// export interface AbstractSource {
-//     locationType: 'physical' | 'digital';
-//     metaData: SourceMetadataElement[];
-//     creationDate: Date;
-//     tags: SourceTag[];
-//     location: FuzzyLocation;
-//     name: string;
-// }
+import { SourceElement } from './SourceElement';
 
 export class Source implements Serializable {
     public uid: number | null;
     public name: string;
     public readonly: boolean;
-    public metaData: SourceMetadataElement[];
+    public metaData: SourceElement[];
 
     public serialize() : any {
         return this;

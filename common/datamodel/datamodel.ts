@@ -4,7 +4,9 @@
  * @version 0.0.1
  */
 
+export { Element } from './Element';
 export { ElementSet } from './ElementSet';
+export { SourceElement } from './SourceElement';
 export { Entity } from './Entity';
 export { EntityType } from './EntityType';
 export { Predicate } from './Predicate';

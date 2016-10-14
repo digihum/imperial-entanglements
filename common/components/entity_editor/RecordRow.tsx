@@ -9,6 +9,7 @@ import { Record } from '../../../common/datamodel/datamodel';
 import { EditableSubfieldProps } from '../fields/EditableFieldComponent';
 export { EditableFieldComponent } from '../fields/EditableFieldComponent';
 import { ScorePicker } from '../fields/ScorePicker';
+import { ComboDropdown, ComboDropdownOption } from '../ComboDropdown';
 
 interface RecordRowProps extends EditableSubfieldProps<Record> {
     dimension: string;
@@ -25,7 +26,15 @@ export const RecordRow = (props: RecordRowProps) => {
         <div className='record-row'>
             <div className='record-row-item uid'>#{props.value.uid}</div>
             <div className='record-row-item'>{props.value.value}</div>
-            <div className='record-row-item'>{props.value.source}</div>
+            <div className='record-row-item'>
+                <ComboDropdown
+                    options={[]}
+                    typeName='source'
+                    value={{key: props.value.source, value: props.value.source}}
+                    setValue={(s) => console.log(s)}
+                    createNewValue={(s) => console.log(s)}
+                />
+            </div>
             <div className='record-row-item score'>
                 <ScorePicker value={3} onChange={(val) => console.log(val)} />
             </div>
