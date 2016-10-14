@@ -36,9 +36,12 @@ interface EntityEditorState {
     entityTypes: EntityType[];
     options: any[];
     tabs: Tab[];
+    inBrowser: boolean;
 }
 
 export class ObjectEditor extends React.Component<EntityEditorProps, EntityEditorState> {
+
+    private boundCreateTab: any;
 
     constructor() {
         super();
@@ -47,23 +50,28 @@ export class ObjectEditor extends React.Component<EntityEditorProps, EntityEdito
             tmp: '',
             entityTypes: [],
             options: [],
-            tabs: []
+            tabs: [],
+            inBrowser: (typeof window !== 'undefined')
         };
 
-        if (typeof window !== 'undefined') {
-            console.log("browser!");
-        } else {
-            console.log("server");
+        if (this.state.inBrowser) {
+            const tabsString = window.localStorage.getItem('open_tabs');
+            if (tabsString !== null) {
+                this.state.tabs = JSON.parse(tabsString);
+            }
         }
 
-        createTab.add((title: string, subtitle: string, url: string) => {
+        this.boundCreateTab = this.createTab.bind(this);
 
-            if (find(this.state.tabs, (tab) => tab.title === title) === undefined) {
-                this.setState({
-                    tabs: this.state.tabs.concat([{ title, subtitle, url}])
-                });
-            }
-        });
+        createTab.add(this.boundCreateTab);
+    }
+
+    public createTab(title: string, subtitle: string, url: string) {
+        if (find(this.state.tabs, (tab) => tab.title === title) === undefined) {
+            this.setState({
+                tabs: this.state.tabs.concat([{ title, subtitle, url}])
+            });
+        }
     }
 
     // public componentWillMount() {
@@ -71,6 +79,14 @@ export class ObjectEditor extends React.Component<EntityEditorProps, EntityEdito
     //         tabs: [{ title: 'Entity 1', subtitle: 'Person', url: '/entity/1'}]
     //     });
     // }
+
+    public componentWillUnmount() {
+        const tabsString = JSON.stringify(this.state.tabs);
+        if (this.state.inBrowser) {
+            window.localStorage.setItem('open_tabs', tabsString);
+        }
+        createTab.remove(this.boundCreateTab);
+    }
 
     public render() {
         return (

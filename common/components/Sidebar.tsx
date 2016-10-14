@@ -6,6 +6,7 @@
 
 import * as React from 'react';
 import { SearchBox } from './sidebar/SearchBox';
+import { Link } from 'react-router';
 
 export interface Tab {
     title: string;
@@ -38,13 +39,13 @@ export class Sidebar extends React.Component<SidebarProps, SidebarState> {
                 <ul className='card-list'>
                     {this.props.tabs.map((tab) => (
                         <li key={`${tab.url}`}>
-                            <a href={tab.url}>
+                            <Link to={tab.url}>
                                 <div className='sidebar-card'>
                                     <span className='entity-name'>{tab.title}</span>
                                     <span className='entity-type'>{tab.subtitle}</span>
                                     <span className='close-button'><i className='fa fa-times'></i></span>
                                 </div>
-                            </a>
+                            </Link>
                         </li>
                     ))}
 

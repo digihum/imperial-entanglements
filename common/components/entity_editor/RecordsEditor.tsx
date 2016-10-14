@@ -6,10 +6,12 @@
 
 import * as React from 'react';
 import { ApiService, AppUrls } from '../../ApiService';
-import { Record } from '../../../common/datamodel/datamodel';
+import { Record, Predicate } from '../../../common/datamodel/datamodel';
 import { EditableFieldComponent } from '../fields/EditableFieldComponent';
 
 import { RecordRow } from './RecordRow';
+
+import { createTab } from '../../Signaller';
 
 import { groupBy, Dictionary } from 'lodash';
 
@@ -22,6 +24,7 @@ interface RecordsEditorProps {
 	entityExists: boolean;
 	records: Dictionary<Record[]>;
 	onChange: () => void;
+	predicates : Predicate[];
 }
 
 interface RecordsEditorState {
@@ -87,10 +90,25 @@ export class RecordsEditor extends React.Component<RecordsEditorProps, RecordsEd
 
 					</div>
 					<div>
-						{Object.keys(this.props.records).map((section) => (
-							<section key={`section-${section}`}>
-								<h5 className='section-header'>{section}
-									<span className='fa-stack'>
+						{Object.keys(this.props.records).map((section) => {
+
+							const currentPredicate = this.props.predicates.find((pred) => {
+								if (pred.uid === null) {
+									throw new Error('encountered predicate with null id');
+								}
+								return pred.uid.toString() === section;
+							});
+
+							if (currentPredicate === undefined) {
+								throw new Error('Could not find predicate');
+							}
+
+							return (<section key={`section-${section}`}>
+								<h5 className='section-header'>{currentPredicate.name}
+									<span className='fa-stack'
+										onClick={() => createTab.dispatch(currentPredicate.name, 
+											currentPredicate.uid,
+											 `/${AppUrls.predicate}/${currentPredicate.uid}`)}>
 										<i className='fa fa-th-list fa-stack-1x'></i>
 										<i className='fa fa-plus fa-stack-1x' style={{ color: 'green' }}></i>
 									</span>
@@ -115,7 +133,7 @@ export class RecordsEditor extends React.Component<RecordsEditorProps, RecordsEd
 									/>
 								))}
 							</section>
-						))}
+						)})}
 					</div>
 				</div>
 			</div>

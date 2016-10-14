@@ -120,7 +120,7 @@ export class EntityEditorWorkspace extends React.Component<EntityEditorProps, En
             return (<Loading />);
         }
 
-        const options = this.state.predicates.map((pred) => ({ key: pred.name, value: pred.name}));
+        const options = this.state.predicates.map((pred) => ({ key: pred.name, value: pred.uid}));
 
         return (
             <div className='workspace-editor'>
@@ -154,7 +154,9 @@ export class EntityEditorWorkspace extends React.Component<EntityEditorProps, En
                     id={this.props.id}
                     api={this.props.api}
                     records={this.state.records}
-                    onChange={this.loadRecords.bind(this)}/>
+                    onChange={this.loadRecords.bind(this)}
+                    predicates={this.state.predicates}
+                />
             </div>
         );
     }
