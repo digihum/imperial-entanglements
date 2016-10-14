@@ -49,6 +49,14 @@ export class PredicateEditorWorkspace extends React.Component<PredicateEditorPro
         });
     }
 
+    public componentWillReceiveProps(newProps: PredicateEditorProps) {
+        if (newProps.id !== this.props.id) {
+            this.props.api.getItem(Predicate, AppUrls.predicate, newProps.id).then((data) => {
+                this.setState({ predicate: data });
+            });
+        }
+    }
+
     public updatePredicate(field: string, value: string) {
 
         if (this.state.predicate === null) {

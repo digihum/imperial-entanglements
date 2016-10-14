@@ -43,6 +43,10 @@ export class EditableFieldComponent<T> extends React.Component<EditableFieldProp
         this.setState({internalValue: this.props.value});
     }
 
+    public componentWillReceiveProps(newProps: EditableFieldProps<T>) {
+        this.setState({internalValue: newProps.value});
+    }
+
     public switchToEditState() {
         this.setState({edit: true, internalValue: this.props.value});
     }

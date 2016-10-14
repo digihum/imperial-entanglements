@@ -14,7 +14,7 @@ import { ElementSet, EntityType, Entity } from '../datamodel/datamodel';
 import { Sidebar, Tab } from '../components/Sidebar';
 import { Workspace } from '../components/Workspace';
 
-import { createTab } from '../Signaller';
+import { createTab, closeTab } from '../Signaller';
 import { find } from 'lodash';
 
 
@@ -42,6 +42,7 @@ interface EntityEditorState {
 export class ObjectEditor extends React.Component<EntityEditorProps, EntityEditorState> {
 
     private boundCreateTab: any;
+    private boundCloseTab: any;
 
     constructor() {
         super();
@@ -62,8 +63,10 @@ export class ObjectEditor extends React.Component<EntityEditorProps, EntityEdito
         }
 
         this.boundCreateTab = this.createTab.bind(this);
+        this.boundCloseTab = this.closeTab.bind(this);
 
         createTab.add(this.boundCreateTab);
+        closeTab.add(this.boundCloseTab);
     }
 
     public createTab(title: string, subtitle: string, url: string) {
@@ -74,6 +77,19 @@ export class ObjectEditor extends React.Component<EntityEditorProps, EntityEdito
         }
     }
 
+    public closeTab(url: string) {
+        this.setState({
+            tabs: this.state.tabs.filter((a) => a.url !== url)
+        }, () => this.saveTabs());
+    }
+
+    public saveTabs() {
+        const tabsString = JSON.stringify(this.state.tabs);
+        if (this.state.inBrowser) {
+            window.localStorage.setItem('open_tabs', tabsString);
+        }
+    }
+
     // public componentWillMount() {
     //     this.setState({
     //         tabs: [{ title: 'Entity 1', subtitle: 'Person', url: '/entity/1'}]
@@ -81,11 +97,9 @@ export class ObjectEditor extends React.Component<EntityEditorProps, EntityEdito
     // }
 
     public componentWillUnmount() {
-        const tabsString = JSON.stringify(this.state.tabs);
-        if (this.state.inBrowser) {
-            window.localStorage.setItem('open_tabs', tabsString);
-        }
+        this.saveTabs();
         createTab.remove(this.boundCreateTab);
+        closeTab.remove(this.boundCloseTab);
     }
 
     public render() {

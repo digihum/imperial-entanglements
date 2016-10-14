@@ -7,6 +7,7 @@
 import * as React from 'react';
 import { SearchBox } from './sidebar/SearchBox';
 import { Link } from 'react-router';
+import { closeTab } from '../Signaller';
 
 export interface Tab {
     title: string;
@@ -31,6 +32,13 @@ export class Sidebar extends React.Component<SidebarProps, SidebarState> {
         };
     }
 
+    public closeTab(e: React.MouseEvent, url: string) {
+        closeTab.dispatch(url);
+        e.stopPropagation();
+        e.preventDefault();
+        e.nativeEvent.stopImmediatePropagation();
+    }
+
     public render() {
         return (
             <section id='sidebar'>
@@ -43,7 +51,9 @@ export class Sidebar extends React.Component<SidebarProps, SidebarState> {
                                 <div className='sidebar-card'>
                                     <span className='entity-name'>{tab.title}</span>
                                     <span className='entity-type'>{tab.subtitle}</span>
-                                    <span className='close-button'><i className='fa fa-times'></i></span>
+                                    <span className='close-button'>
+                                        <i className='fa fa-times' onClick={(e) => this.closeTab(e, tab.url)}></i>
+                                    </span>
                                 </div>
                             </Link>
                         </li>
