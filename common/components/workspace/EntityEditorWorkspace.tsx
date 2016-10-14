@@ -19,6 +19,8 @@ import { CreateRecord } from '../modal/CreateRecord';
 
 import { Dictionary, groupBy } from 'lodash';
 
+import { createTab } from '../../Signaller';
+
 interface EntityEditorProps {
     api: ApiService;
     id: number;
@@ -69,6 +71,7 @@ export class EntityEditorWorkspace extends React.Component<EntityEditorProps, En
         this.props.api.getItem(Entity, AppUrls.entity, this.props.id).then((data) => {
             this.setState({ entity: data });
             this.loadPredicates(data.entityType);
+            createTab.dispatch(`Entity #${this.props.id}`, data.entityType, `/${AppUrls.entity}/${this.props.id}`);
         });
 
         this.loadRecords();
@@ -96,6 +99,8 @@ export class EntityEditorWorkspace extends React.Component<EntityEditorProps, En
             }
 
             this.loadPredicates(this.state.entity.entityType);
+
+            createTab.dispatch(`Predicate #${newPredicateId}`, '', `/${AppUrls.predicate}/${newPredicateId}`);
 
             this.props.api.postItem(Record, AppUrls.record,
             new Record().deserialize({

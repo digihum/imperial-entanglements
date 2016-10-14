@@ -14,6 +14,9 @@ import { ElementSet, EntityType, Entity } from '../datamodel/datamodel';
 import { Sidebar, Tab } from '../components/Sidebar';
 import { Workspace } from '../components/Workspace';
 
+import { createTab } from '../Signaller';
+import { find } from 'lodash';
+
 
 
 interface ExpectedParams {
@@ -52,13 +55,22 @@ export class ObjectEditor extends React.Component<EntityEditorProps, EntityEdito
         } else {
             console.log("server");
         }
-    }
 
-    public componentWillMount() {
-        this.setState({
-            tabs: [{ title: 'Entity 1', subtitle: 'Person', url: '/entity/1'}]
+        createTab.add((title: string, subtitle: string, url: string) => {
+
+            if (find(this.state.tabs, (tab) => tab.title === title) === undefined) {
+                this.setState({
+                    tabs: this.state.tabs.concat([{ title, subtitle, url}])
+                });
+            }
         });
     }
+
+    // public componentWillMount() {
+    //     this.setState({
+    //         tabs: [{ title: 'Entity 1', subtitle: 'Person', url: '/entity/1'}]
+    //     });
+    // }
 
     public render() {
         return (
