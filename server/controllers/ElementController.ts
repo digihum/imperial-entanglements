@@ -10,8 +10,6 @@ import { Element } from '../../common/datamodel/Element';
 import { Persistable } from '../core/Persistable';
 import { GenericController } from './GenericController';
 
-import { omit } from 'lodash';
-
 export class ElementPersistable extends Element implements Persistable {
 
     public static readonly tableName: string = 'elements';
@@ -21,7 +19,7 @@ export class ElementPersistable extends Element implements Persistable {
     }
 
     public toSchema() {
-        return omit(this.serialize(), 'value', 'valueType');
+        return this.serialize();
     }
 
     public fromSchema(data: any) : ElementPersistable {

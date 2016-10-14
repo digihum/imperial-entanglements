@@ -10,12 +10,12 @@ import { SameAsEditor } from '../SameAsEditor';
 import { Loading } from '../Loading';
 import { ApiService, AppUrls } from '../../ApiService';
 
-import { Source, ElementSet, Element } from '../../../common/datamodel/datamodel';
+import { Source, ElementSet, Element, SourceElement } from '../../../common/datamodel/datamodel';
 
 import { EditableHeader, EditableFieldComponent } from '../fields/EditableHeader';
 import { EditableParagraph } from '../fields/EditableParagraph';
 
-import { keyBy } from 'lodash';
+import { keyBy, Dictionary } from 'lodash';
 
 class StringEditableFieldComponent extends EditableFieldComponent<string> {}
 
@@ -26,6 +26,7 @@ interface SourceEditorProps {
 
 interface SourceEditorState {
     source : Source | null;
+    metaData: Dictionary<SourceElement> | null;
     dublinCore: ElementSet | null;
 }
 
@@ -42,13 +43,14 @@ export class SourceEditorWorkspace extends React.Component<SourceEditorProps, So
         super();
         this.state = {
             source: null,
-            dublinCore: null
+            dublinCore: null,
+            metaData: null
         };
     }
 
     public componentDidMount() {
         this.props.api.getItem(Source, AppUrls.source, this.props.id).then((data) => {
-            this.setState({ source: data });
+            this.setState({ source: data, metaData: keyBy(data.metaData, 'name') });
         });
 
         //TODO: make sure this is ALWAYS dublin core
@@ -66,14 +68,33 @@ export class SourceEditorWorkspace extends React.Component<SourceEditorProps, So
 
         this.props.api.patchItem(Source, AppUrls.source, this.state.source.uid, { [field]: value })
         .then((success) => {
+
+            const updatedSource = new Source().deserialize(Object.assign({},
+                this.state.source.serialize(), { [field]: value }));
+
             this.setState({
-                source: new Source().deserialize(Object.assign({}, this.state.source.serialize(), { [field]: value }))
+                source: updatedSource,
+                metaData: keyBy(updatedSource.metaData, 'name')
             });
         });
     }
 
     public updateSourceElement(element: Element, value: string) {
 
+        if (this.state.metaData.hasOwnProperty(element.name)) {
+            this.props.api.patchItem(SourceElement, AppUrls.sourceElement,
+            this.state.metaData[element.name].uid,
+                new SourceElement().deserialize({
+                    value: value
+                }));
+        } else {
+            this.props.api.postItem(SourceElement, AppUrls.sourceElement,
+                new SourceElement().deserialize({
+                    element: element.uid,
+                    source: this.props.id,
+                    value: value
+                }));
+        }
     }
 
     public render() {
@@ -81,8 +102,6 @@ export class SourceEditorWorkspace extends React.Component<SourceEditorProps, So
         if (this.state.source === null || this.state.dublinCore === null) {
             return (<Loading />);
         }
-
-        const metaDataValues = keyBy(this.state.source.metaData, 'name');
 
         return (
             <div className='workspace-editor'>
@@ -97,7 +116,7 @@ export class SourceEditorWorkspace extends React.Component<SourceEditorProps, So
                         <h5 className='section-header'>{element.name} <small><a href={element.url}>{element.uri}</a></small></h5>
                         <p className='element-description'>{element.description}</p>
                          <StringEditableFieldComponent
-                            value={metaDataValues.hasOwnProperty(element.name) ? (metaDataValues[element.name].value) : ''}
+                            value={this.state.metaData.hasOwnProperty(element.name) ? (this.state.metaData[element.name].value) : ''}
                             component={EditableParagraph}
                             onChange={(value) => this.updateSourceElement(element, value)}  />
                     </div>

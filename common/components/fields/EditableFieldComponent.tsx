@@ -9,7 +9,7 @@ import * as React from 'react';
 export interface EditableSubfieldProps<T> {
     edit: boolean;
     value: T | null;
-    onChange: React.EventHandler<React.FormEvent>;
+    onChange: (updated: T) => void;
     setEdit: () => void;
     acceptChanges: () => void;
     cancelChanges: () => void;
@@ -66,7 +66,7 @@ export class EditableFieldComponent<T> extends React.Component<EditableFieldProp
        return (<this.props.component
         edit={this.state.edit}
         value={this.state.internalValue}
-        onChange={(e) => this.setState({internalValue: e.target.value}) }
+        onChange={(value) => this.setState({internalValue: value}) }
         setEdit={this.switchToEditState.bind(this)}
         acceptChanges={this.acceptChanges.bind(this)}
         cancelChanges={this.cancelChanges.bind(this)}

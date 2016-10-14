@@ -6,7 +6,7 @@
 
 import * as React from 'react';
 import { ApiService, AppUrls } from '../../ApiService';
-import { Record, Predicate } from '../../../common/datamodel/datamodel';
+import { Record, Predicate, Source } from '../../../common/datamodel/datamodel';
 import { EditableFieldComponent } from '../fields/EditableFieldComponent';
 
 import { RecordRow } from './RecordRow';
@@ -25,6 +25,7 @@ interface RecordsEditorProps {
 	records: Dictionary<Record[]>;
 	onChange: () => void;
 	predicates : Predicate[];
+	sources: Source[];
 }
 
 interface RecordsEditorState {
@@ -128,7 +129,8 @@ export class RecordsEditor extends React.Component<RecordsEditorProps, RecordsEd
 										onDelete={this.deleteRecord.bind(this)}
 										component={RecordRow}
 										additionalProps={{
-											dimension: 'predicates'
+											dimension: 'predicates',
+											sources: this.props.sources
 										}}
 									/>
 								))}

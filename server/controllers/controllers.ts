@@ -10,3 +10,5 @@ export { EntityTypeController, EntityTypePersistable } from './EntityTypeControl
 export { PredicateController, PredicatePersistable } from './PredicateController';
 export { RecordController, RecordPersistable } from './RecordController';
 export { SourceController, SourcePersistable } from './SourceController';
+export { ElementController, ElementPersistable } from './ElementController';
+export { SourceElementController, SourceElementPersistable } from './SourceElementController';

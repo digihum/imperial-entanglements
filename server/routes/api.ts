@@ -22,7 +22,9 @@ import {
     ElementSetController, ElementSetPersistable,
     PredicateController, PredicatePersistable,
     SourceController, SourcePersistable,
-    RecordController, RecordPersistable
+    RecordController, RecordPersistable,
+    ElementController, ElementPersistable,
+    SourceElementController, SourceElementPersistable
 } from '../controllers/controllers';
 
 export const wrapDatabase : (s: Database) => ServerApiService = (db: Database) => {
@@ -32,7 +34,9 @@ export const wrapDatabase : (s: Database) => ServerApiService = (db: Database) =
         [AppUrls.entityType, new EntityTypeController(db)],
         [AppUrls.entity, new EntityController(db)],
         [AppUrls.predicate, new PredicateController(db)],
-        [AppUrls.source, new SourceController(db)]
+        [AppUrls.source, new SourceController(db)],
+        [AppUrls.element, new ElementController(db)],
+        [AppUrls.sourceElement, new SourceElementController(db)]
     ]);
 
     return new ServerApiService(routes);
@@ -47,7 +51,9 @@ export const api : (router: KoaRouter, s: ServerApiService) => KoaRouter
         [AppUrls.entityType]: EntityTypePersistable,
         [AppUrls.entity]: EntityPersistable,
         [AppUrls.predicate] : PredicatePersistable,
-        [AppUrls.source] : SourcePersistable
+        [AppUrls.source] : SourcePersistable,
+        [AppUrls.element] : ElementPersistable,
+        [AppUrls.sourceElement]: SourceElementPersistable
     };
 
     router.use(function* (next: Koa.Context){

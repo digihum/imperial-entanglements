@@ -32,7 +32,7 @@ export const EditableParagraph : React.StatelessComponent<EditableSubfieldProps<
                 <div>
                     <textarea
                         value={props.value}
-                        onChange={props.onChange}
+                        onChange={(e) => props.onChange(e.target.value)}
                         style={{ width: '100%', height: '6em'}}></textarea>
                     <button onClick={props.acceptChanges}><i className='fa fa-check' aria-hidden='true'></i></button>
                     <button onClick={props.cancelChanges}><i className='fa fa-times' aria-hidden='true'></i></button>

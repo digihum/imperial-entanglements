@@ -11,7 +11,7 @@ import { Loading } from '../Loading';
 import { RecordsEditor } from '../entity_editor/RecordsEditor';
 import { ApiService, AppUrls } from '../../ApiService';
 
-import { Entity, Predicate, Record } from '../../../common/datamodel/datamodel';
+import { Entity, Predicate, Record, Source } from '../../../common/datamodel/datamodel';
 
 import { ComboDropdown, ComboDropdownOption } from '../ComboDropdown';
 import { CreatePredicate } from '../modal/CreatePredicate';
@@ -34,6 +34,7 @@ interface EntityEditorState {
     creatingPredicate: boolean;
     creatingRecord: boolean;
     records: Dictionary<Record[]>;
+    sources: Source[];
 }
 
 // What can I do?
@@ -50,7 +51,8 @@ interface EntityEditorState {
 //   it also creates a blank entry in the records sub table based on the range of the predicate.
 // - New predicates must have a name. The domain is set to the current entitytype but can be changed
 //   to one of its parents. The range MUST be set.
-// 
+// Visualisations: 
+// - Network graph of entity relationships
 export class EntityEditorWorkspace extends React.Component<EntityEditorProps, EntityEditorState> {
 
     constructor() {
@@ -62,7 +64,8 @@ export class EntityEditorWorkspace extends React.Component<EntityEditorProps, En
             creatingPredicate: false,
             creatingRecord: false,
             comboSearchValue: '',
-            records: []
+            records: [],
+            sources: []
         };
     }
 
@@ -75,6 +78,9 @@ export class EntityEditorWorkspace extends React.Component<EntityEditorProps, En
         });
 
         this.loadRecords();
+
+        this.props.api.getCollection(Source, AppUrls.source, {})
+        .then((data) => this.setState({ sources: data }));
     }
 
     public loadRecords() {
@@ -156,6 +162,7 @@ export class EntityEditorWorkspace extends React.Component<EntityEditorProps, En
                     records={this.state.records}
                     onChange={this.loadRecords.bind(this)}
                     predicates={this.state.predicates}
+                    sources={this.state.sources}
                 />
             </div>
         );

@@ -54,7 +54,7 @@ export class ComboDropdown<T> extends React.Component<ComboDropdownProps, ComboD
     public componentWillMount() {
          this.setState({
             filteredOptions: this.props.options,
-            internalValue: this.props.value.key
+            internalValue: this.props.value.key === null ? '' : this.props.value.key
         });
     }
 

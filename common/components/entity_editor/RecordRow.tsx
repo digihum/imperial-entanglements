@@ -5,7 +5,7 @@
  */
 
 import * as React from 'react';
-import { Record } from '../../../common/datamodel/datamodel';
+import { Record, Source } from '../../../common/datamodel/datamodel';
 import { EditableSubfieldProps } from '../fields/EditableFieldComponent';
 export { EditableFieldComponent } from '../fields/EditableFieldComponent';
 import { ScorePicker } from '../fields/ScorePicker';
@@ -13,12 +13,24 @@ import { ComboDropdown, ComboDropdownOption } from '../ComboDropdown';
 
 interface RecordRowProps extends EditableSubfieldProps<Record> {
     dimension: string;
+    sources: Source[];
 }
 
 export const RecordRow = (props: RecordRowProps) => {
 
-    if (props.value === null) {
+    const recordValue = props.value;
+
+    if (recordValue === null) {
         throw new Error('Should not be null!!');
+    }
+
+    const currentSource = props.sources.find((source) => source.uid === recordValue.source);
+    const dropDownValue = {
+        key: '', value: props.source
+    };
+
+    if (currentSource !== undefined) {
+        dropDownValue.key = currentSource.name;
     }
 
     if (props.edit) {
@@ -28,10 +40,10 @@ export const RecordRow = (props: RecordRowProps) => {
             <div className='record-row-item'>{props.value.value}</div>
             <div className='record-row-item'>
                 <ComboDropdown
-                    options={[]}
+                    options={props.sources.map((source) => ({ key: source.name , value: source.uid}))}
                     typeName='source'
-                    value={{key: props.value.source, value: props.value.source}}
-                    setValue={(s) => console.log(s)}
+                    value={dropDownValue}
+                    setValue={(combo) => props.onChange(Object.assign(props.value, { source: combo.value }))}
                     createNewValue={(s) => console.log(s)}
                 />
             </div>
@@ -48,7 +60,7 @@ export const RecordRow = (props: RecordRowProps) => {
         <div className='record-row'>
             <div className='record-row-item uid'>#{props.value.uid}</div>
             <div className='record-row-item'>{props.value.value}</div>
-            <div className='record-row-item'>{props.value.source}</div>
+            <div className='record-row-item'>{dropDownValue.key}</div>
             <div className='record-row-item score'>
                 <i className='fa fa-star-o' aria-hidden='true'></i>
                 <i className='fa fa-star-o' aria-hidden='true'></i>
