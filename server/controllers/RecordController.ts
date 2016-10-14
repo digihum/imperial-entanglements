@@ -25,6 +25,32 @@ export class RecordPersistable extends Record implements Persistable {
     }
 
     public fromSchema(data: any) : RecordPersistable {
+
+        if (data.entity !== null) {
+            data.valueType = 'entity';
+            data.value = data.entity;
+        }
+
+        if (data.string !== null) {
+            data.valueType = 'string';
+            data.value = data.string;
+        }
+
+        if (data.date !== null) {
+            data.valueType = 'date';
+            data.value = data.date;
+        }
+
+        if (data.integer !== null) {
+            data.valueType = 'integer';
+            data.value = data.integer;
+        }
+
+        if (data.spatial_point !== null) {
+            data.valueType = 'spatial_point';
+            data.value = data.spatial_point;
+        }
+
         this.deserialize(data);
         return this;
     }
@@ -33,6 +59,31 @@ export class RecordPersistable extends Record implements Persistable {
 export class RecordController extends GenericController<RecordPersistable> {
     constructor(db : Database) {
         super(db, RecordPersistable.tableName);
+    }
+
+    public getItemJson(obj: { new(): RecordPersistable; }, uid: number) : Promise<RecordPersistable> {
+
+        const fields = [
+            'records.*',
+            'records_entity.reference as entity',
+            'records_string.value as string',
+            'records_date.value as date',
+            'records_integer.value as integer',
+            'records_spatial_point.value as spatial_point'
+            ];
+
+        const query = this.db.query().select(fields)
+            .from(this.tableName)
+            .debug(true)
+            .leftJoin('records_entity', 'records.uid', '=', 'records_entity.uid')
+            .leftJoin('records_string', 'records.uid', '=', 'records_string.uid')
+            .leftJoin('records_date', 'records.uid', '=', 'records_date.uid')
+            .leftJoin('records_integer', 'records.uid', '=', 'records_integer.uid')
+            .leftJoin('records_spatial_point', 'records.uid', '=', 'records_spatial_point.uid')
+            .where({ 'records.uid': uid })
+            .first();
+
+        return query.then((data) => new obj().fromSchema(data));
     }
 
     //TODO: it is concivable that the first insert will succeed and the second will fail, the first
