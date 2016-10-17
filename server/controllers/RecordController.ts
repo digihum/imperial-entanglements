@@ -89,7 +89,7 @@ export class RecordController extends GenericController<RecordPersistable> {
     //TODO: it is concivable that the first insert will succeed and the second will fail, the first
     // should be rolled back in this case.
     public postItem(obj: { new(): RecordPersistable; }, data: RecordPersistable) : Promise<string> {
-        return super.postItem(obj, data)
+        return super.postItem(obj, data);
         // .then(([id]) => {
         //     if (data.rangeIsReference) {
         //         return this.db.query().insert({ uid: id, range: data.range}).into('predicates_ref')

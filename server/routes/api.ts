@@ -42,6 +42,10 @@ export const wrapDatabase : (s: Database) => ServerApiService = (db: Database) =
     return new ServerApiService(routes);
 };
 
+// would be cleaner if it allowed 2nd level REST urls
+//  /entity/{entity_id}/predicate/{predicate_id}
+// /source/{source_id}/element/{element_id}
+
 export const api : (router: KoaRouter, s: ServerApiService) => KoaRouter
     = (router: KoaRouter, serverApiContext: ServerApiService) => {
 

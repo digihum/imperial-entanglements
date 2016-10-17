@@ -32,7 +32,7 @@ export const PredicateDescription : React.StatelessComponent<PredicateDescriptio
                     value={props.domain}
                     setValue={props.domainChanged}
                     createNewValue={noop} />
-            ) : props.domain}
+            ) : props.domain.key}
         </div>
         <div className='arrow'><i className='fa fa-long-arrow-right' aria-hidden='true'></i></div>
         <div className='range'>
@@ -44,7 +44,7 @@ export const PredicateDescription : React.StatelessComponent<PredicateDescriptio
                     value={props.range}
                     setValue={props.rangeChanged}
                     createNewValue={noop} />
-            ) : props.range}
+            ) : props.range.key}
         </div>
     </div>);
 };

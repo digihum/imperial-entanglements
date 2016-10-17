@@ -38,6 +38,18 @@ export class PredicatePersistable extends Predicate implements Persistable {
 }
 
 export class PredicateController extends GenericController<PredicatePersistable> {
+
+    private fields = [
+            'predicates.uid',
+            'name',
+            'description',
+            'same_as',
+            'domain',
+            'readonly',
+            'predicates_ref.range as range_ref',
+            'predicates_val.range as range_val'];
+
+
     constructor(db : Database) {
         super(db, PredicatePersistable.tableName);
     }
@@ -49,17 +61,7 @@ export class PredicateController extends GenericController<PredicatePersistable>
 
     public getItemJson(obj: { new(): PredicatePersistable; }, uid: number) : Promise<PredicatePersistable> {
 
-        const fields = [
-            'predicates.uid',
-            'name',
-            'description',
-            'same_as',
-            'domain',
-            'readonly',
-            'predicates_ref.range as range_ref',
-            'predicates_val.range as range_val'];
-
-        const query = this.db.query().select(fields)
+        const query = this.db.query().select(this.fields)
             .from(this.tableName)
             .leftJoin('predicates_ref', 'predicates.uid', '=', 'predicates_ref.uid')
             .leftJoin('predicates_val', 'predicates.uid', '=', 'predicates_val.uid')
@@ -83,7 +85,12 @@ export class PredicateController extends GenericController<PredicatePersistable>
                 WHERE predicates.domain IN ancestor;
             `, params.domain).then((results) => results.map((result) => new obj().fromSchema(result)));
         } else {
-            return super.getCollectionJson(obj, params);
+             const query = this.db.query().select(this.fields)
+                .from(this.tableName)
+                .leftJoin('predicates_ref', 'predicates.uid', '=', 'predicates_ref.uid')
+                .leftJoin('predicates_val', 'predicates.uid', '=', 'predicates_val.uid');
+
+            return query.then((data) => data.map((datum) => new obj().fromSchema(datum)));
         }
     }
 

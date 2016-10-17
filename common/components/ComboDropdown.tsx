@@ -27,7 +27,8 @@ interface ComboDropdownProps {
 }
 
 interface ComboDropdownState {
-    internalValue: ComboDropdownOption;
+    searchString: string;
+    selected: ComboDropdownOption;
     showingDropDown: boolean;
     filteredOptions: ComboDropdownOption[];
     boundHideFunc: any;
@@ -44,7 +45,8 @@ export class ComboDropdown<T> extends React.Component<ComboDropdownProps, ComboD
         super();
 
         this.state = {
-            internalValue: '',
+            searchString: '',
+            selected: { key: '', value: ''},
             showingDropDown: false,
             filteredOptions: [],
             boundHideFunc: this.hide.bind(this)
@@ -54,17 +56,22 @@ export class ComboDropdown<T> extends React.Component<ComboDropdownProps, ComboD
     public componentWillMount() {
          this.setState({
             filteredOptions: this.props.options,
-            internalValue: this.props.value.key === null ? '' : this.props.value.key
+            searchString: this.props.value.key === null ? '' : this.props.value.key,
+            selected: this.props.value
         });
     }
 
     public componentWillReceiveProps(newProps: ComboDropdownProps) {
-        this.setState({ internalValue: newProps.value.key, options: newProps.options });
+        this.setState({
+            searchString: newProps.value.key,
+            selected: newProps.value,
+            options: newProps.options
+        });
     }
 
-    public changeSearchString(event : React.EventHandler<FormData>) {
-        this.setState({internalValue: event.target.value, showingDropDown: true}, () => {
-            this.updateFilter(this.state.internalValue);
+    public changeSearchString(event : React.EventHandler<React.FormData>) {
+        this.setState({searchString: event.target.value, showingDropDown: true}, () => {
+            this.updateFilter(this.state.searchString);
         });
     }
 
@@ -94,7 +101,7 @@ export class ComboDropdown<T> extends React.Component<ComboDropdownProps, ComboD
 
         this.setState({
             filteredOptions: filtered
-        })
+        });
     }
 
     public addNewAction(option: string) {
@@ -114,8 +121,8 @@ export class ComboDropdown<T> extends React.Component<ComboDropdownProps, ComboD
     public hide() {
         this.setState({ showingDropDown: false });
         globalClick.remove(this.state.boundHideFunc);
-        if (findIndex(this.props.options, (option) => option.key === this.state.internalValue) === -1) {
-            this.setState({ internalValue: this.props.value.key }, () => {
+        if (findIndex(this.props.options, (option) => option.key === this.state.searchString) === -1) {
+            this.setState({ searchString: this.props.value.key }, () => {
                 this.updateFilter(this.props.value.key);
             });
         }
@@ -127,7 +134,7 @@ export class ComboDropdown<T> extends React.Component<ComboDropdownProps, ComboD
                 <div>
                     <input type='text'
                         className='search-input'
-                        value={this.state.internalValue}
+                        value={this.state.searchString}
                         placeholder='Click here and start typing..'
                         onClick={this.show.bind(this)}
                         onChange={this.changeSearchString.bind(this)}
@@ -136,7 +143,7 @@ export class ComboDropdown<T> extends React.Component<ComboDropdownProps, ComboD
                 {this.state.showingDropDown ? (
                     <div className='dropdown'>
                         <ul>
-                            {this.state.internalValue.length === 0 && this.props.allowNew ? (
+                            {this.state.searchString.length === 0 && this.props.allowNew ? (
                                 <li className='add' onClick={() => this.addNewAction('')}>
                                     <i className='fa fa-plus' aria-hidden='true'></i>
                                     Add new {this.props.typeName}</li>
@@ -144,10 +151,10 @@ export class ComboDropdown<T> extends React.Component<ComboDropdownProps, ComboD
                             {this.state.filteredOptions.map((opt) => (
                                 <li key={`opt-${opt.key}`} onClick={() => this.selectOption(opt)}>{opt.key}</li>
                             ))}
-                            {this.state.internalValue.length > 0 && this.props.allowNew ? (
-                                <li className='add' onClick={() => this.addNewAction(this.state.internalValue)}>
+                            {this.state.searchString.length > 0 && this.props.allowNew ? (
+                                <li className='add' onClick={() => this.addNewAction(this.state.searchString)}>
                                     <i className='fa fa-plus' aria-hidden='true'></i>
-                                    Add new {this.props.typeName}: '{this.state.internalValue}'</li>
+                                    Add new {this.props.typeName}: '{this.state.searchString}'</li>
                             ) : null }
                         </ul>
                     </div>

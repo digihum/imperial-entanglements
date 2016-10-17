@@ -10,11 +10,12 @@ import { SameAsEditor } from '../SameAsEditor';
 import { Loading } from '../Loading';
 import { ApiService, AppUrls } from '../../ApiService';
 
-import { Predicate } from '../../../common/datamodel/datamodel';
+import { Predicate, EntityType } from '../../../common/datamodel/datamodel';
 
 import { EditableHeader, EditableFieldComponent } from '../fields/EditableHeader';
 import { EditableParagraph } from '../fields/EditableParagraph';
 import { PredicateDescription } from '../fields/PredicateDescription';
+import { ComboDropdownOption } from '../ComboDropdown';
 
 class StringEditableFieldComponent extends EditableFieldComponent<string> {}
 
@@ -25,6 +26,7 @@ interface PredicateEditorProps {
 
 interface PredicateEditorState {
     predicate : Predicate | null;
+    entityTypes: EntityType[] | null;
 }
 
 // - Should state the number of times this predicate is used
@@ -39,13 +41,17 @@ export class PredicateEditorWorkspace extends React.Component<PredicateEditorPro
     constructor() {
         super();
         this.state = {
-            predicate: null
+            predicate: null,
+            entityTypes: null
         };
     }
 
     public componentDidMount() {
-        this.props.api.getItem(Predicate, AppUrls.predicate, this.props.id).then((data) => {
-            this.setState({ predicate: data });
+        Promise.all([
+            this.props.api.getItem(Predicate, AppUrls.predicate, this.props.id),
+            this.props.api.getCollection(EntityType, AppUrls.entityType, {})
+        ]).then(([predicate, entityTypes]) => {
+            this.setState({ predicate, entityTypes });
         });
     }
 
@@ -74,8 +80,23 @@ export class PredicateEditorWorkspace extends React.Component<PredicateEditorPro
 
     public render() {
 
-        if (this.state.predicate === null) {
+        if (this.state.predicate === null || this.state.entityTypes === null) {
             return (<Loading />);
+        }
+
+        let currentDomainEntityType =
+            this.state.entityTypes.find((t) => t.uid == this.state.predicate.domain);
+
+        let currentDomainEntityTypeName = '';
+
+        if (currentDomainEntityType !== undefined) {
+            currentDomainEntityTypeName = currentDomainEntityType.name;
+        }
+
+        const m : ComboDropdownOption = {key: currentDomainEntityTypeName, value: this.state.predicate.domain.toString()};
+
+        if (this.state.predicate.rangeIsReference) {
+            
         }
 
         return (
@@ -92,11 +113,13 @@ export class PredicateEditorWorkspace extends React.Component<PredicateEditorPro
                     onChange={(value) => this.updatePredicate('description', value)}  />
 
                 <PredicateDescription
-                    domain={this.state.predicate.domain}
-                    range={this.state.predicate.range}
-                    domainChanged={(value) => this.updatePredicate('domain', value)}
-                    rangeChanged={(value) => this.updatePredicate('range', value)}
+                    domain={m}
+                    range={{key: '', value:''}}
+                    domainChanged={(value) => this.updatePredicate('domain', value.value)}
+                    rangeChanged={(value) => this.updatePredicate('range', value.value)}
                     mode='editSingle'
+                    domainOptions={[]}
+                    rangeOptions={[]}
                  />
 
                 <div>
