@@ -36,7 +36,15 @@ export class ClientApiService implements ApiService {
     }
 
     public putItem<T extends Serializable>(obj: { new(): T; }, baseUrl : string, uid: number, data: T) : Promise<boolean> {
-        return Promise.resolve(true);
+        return fetch(`/api/v1/${baseUrl}/${uid}`, {
+            method: 'PUT',
+            body: JSON.stringify(data),
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        })
+        .then((response) => response.json());
     }
 
     public patchItem<T extends Serializable>(obj: { new(): T; }, baseUrl : string, uid: number, data : T) : Promise<boolean> {

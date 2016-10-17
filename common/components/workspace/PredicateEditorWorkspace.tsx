@@ -129,27 +129,36 @@ export class PredicateEditorWorkspace extends React.Component<PredicateEditorPro
         return (
             <div className='workspace-editor'>
 
-                <StringEditableFieldComponent
-                    value={this.state.predicate.name}
-                    component={EditableHeader}
-                    onChange={(value) => this.updatePredicate('name', value)}  />
+                <div className='edit-group'>
+                    <label>Name</label>
+                    <StringEditableFieldComponent
+                        value={this.state.predicate.name}
+                        component={EditableHeader}
+                        onChange={(value) => this.updatePredicate('name', value)}  />
+                </div>
 
                 <div>Count: {this.state.records.length}</div>
 
-                <StringEditableFieldComponent
-                    value={this.state.predicate.description}
-                    component={EditableParagraph}
-                    onChange={(value) => this.updatePredicate('description', value)}  />
+                <div className='edit-group'>
+                    <label>Description</label>
+                    <StringEditableFieldComponent
+                        value={this.state.predicate.description}
+                        component={EditableParagraph}
+                        onChange={(value) => this.updatePredicate('description', value)}  />
+                </div>
 
-                <PredicateDescription
-                    domain={domain}
-                    range={range}
-                    domainChanged={(value) => this.updatePredicate('domain', value.value)}
-                    rangeChanged={(value) => this.updatePredicate('range', value.value)}
-                    mode='editSingle'
-                    domainOptions={entityTypeOptions}
-                    rangeOptions={literalTypes.map((t) => ({ key: t.name, value: t.name})).concat(entityTypeOptions)}
-                 />
+                <div className='edit-group'>
+                    <label>Typing</label>
+                    <PredicateDescription
+                        domain={domain}
+                        range={range}
+                        domainChanged={(value) => this.updatePredicate('domain', value.value)}
+                        rangeChanged={(value) => this.updatePredicate('range', value.value)}
+                        mode='editSingle'
+                        domainOptions={entityTypeOptions}
+                        rangeOptions={literalTypes.map((t) => ({ key: t.name, value: t.name})).concat(entityTypeOptions)}
+                    />
+                </div>
 
                 <div>
                     <SameAsEditor sameAsString='a,b,c,woot,list' />

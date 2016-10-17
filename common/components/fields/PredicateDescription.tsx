@@ -44,6 +44,13 @@ export class PredicateDescription extends React.Component<PredicateDescriptionPr
         });
     }
 
+    public componentWillReceiveProps(newProps: PredicateDescriptionProps) {
+        this.setState({
+            rangeValue: newProps.range,
+            domainValue: newProps.domain
+        });
+    }
+
     public acceptDomainChanges() {
         this.props.domainChanged(this.state.domainValue);
         this.setState({ editingDomain: false});

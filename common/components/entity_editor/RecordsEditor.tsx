@@ -67,6 +67,10 @@ export class RecordsEditor extends React.Component<RecordsEditorProps, RecordsEd
 		});
 	}
 
+	public recordChanged(record: Record) {
+		this.props.api.putItem(Record, AppUrls.record, this.props.id, record.serialize());
+	}
+
 	// public postAdd(newRecord) {
 	// 	return this.props.service.addRecord(this.props.id, newRecord)
 	// 	.then(this.updateRecords);
@@ -122,7 +126,7 @@ export class RecordsEditor extends React.Component<RecordsEditorProps, RecordsEd
 									<RecordEditableFieldComponent
 										key={`row-${record.uid}`}
 										value={record}
-										onChange={(a) => console.log(a)}
+										onChange={this.recordChanged.bind(this)}
 										onDelete={this.deleteRecord.bind(this)}
 										component={RecordRow}
 										additionalProps={{

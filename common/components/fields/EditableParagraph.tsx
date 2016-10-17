@@ -10,11 +10,11 @@ export { EditableFieldComponent } from './EditableFieldComponent';
 
 export const EditableParagraph : React.StatelessComponent<EditableSubfieldProps<string>>
     = (props: EditableSubfieldProps<string>) => {
-         if (!props.edit || props.value == null) {
+         if (!props.edit) {
             return (
                 <div>
                     <p>
-                        {props.value.length > 0 ? props.value
+                        {props.value === null || props.value.length > 0 ? props.value
                         : (
                             <em>No value</em>
                         )}
