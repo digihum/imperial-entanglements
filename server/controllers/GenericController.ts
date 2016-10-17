@@ -50,7 +50,7 @@ export abstract class GenericController<T extends Persistable> implements IContr
         const updateObject = {};
 
         for (let i = 0; i < keys.length; i += 1) {
-            if (schemaData[keys[i]] !== null && schemaData[keys[i]] !== undefined) {
+            if (schemaData[keys[i]] !== undefined) {
                 updateObject[keys[i]] = schemaData[keys[i]];
             }
         }
@@ -59,7 +59,7 @@ export abstract class GenericController<T extends Persistable> implements IContr
             .where({ uid })
             .update(updateObject)
             .then(() => true)
-            .catch((err) => err);
+            .catch((err) => { throw new Error(err); });
     }
 
     public deleteItem(obj: { new(): T; }, uid: number) : Promise<string> {

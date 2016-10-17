@@ -28,8 +28,10 @@ export class PredicatePersistable extends Predicate implements Persistable {
 
         if (this.rangeIsReference) {
             out['range_ref'] = this.range;
+            out['range_val'] = null;
         } else {
             out['range_val'] = this.range;
+            out['range_ref'] = null;
         }
 
         return out;

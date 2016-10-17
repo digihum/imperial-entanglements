@@ -15,10 +15,10 @@ export class Element implements Serializable {
 
     public deserialize(data: any) : Element {
         this.name = data.name;
-        this.uid = data.uid !== undefined ? data.uid : null;
-        this.elementSet = data.elementSet !== undefined ? data.uri : null;
-        this.description = data.description !== undefined ? data.description : null;
-        this.comment = data.comment !== undefined ? data.comment : null;
+        this.uid = data.uid;
+        this.elementSet = data.elementSet;
+        this.description = data.description;
+        this.comment = data.comment;
         return this;
     }
 

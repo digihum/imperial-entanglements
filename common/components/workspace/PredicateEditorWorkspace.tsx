@@ -71,17 +71,20 @@ export class PredicateEditorWorkspace extends React.Component<PredicateEditorPro
         }
     }
 
-    public updatePredicate(field: string, value: string) {
+    public updatePredicate(field: string, value: string, rangeIsReferenceOverride: boolean | null = null) {
 
         if (this.state.predicate === null) {
             console.warn('Tried to edit unready predicate');
             return;
         }
 
+        const rangeIsReferenceVal = rangeIsReferenceOverride === null
+            ? this.state.predicate.rangeIsReference : rangeIsReferenceOverride;
+
         this.props.api.patchItem(Predicate, AppUrls.predicate, this.state.predicate.uid,
         {
             [field]: value,
-            rangeIsReference: this.state.predicate.rangeIsReference
+            rangeIsReference: rangeIsReferenceVal
         })
         .then((success) => {
             this.setState({
@@ -157,10 +160,10 @@ export class PredicateEditorWorkspace extends React.Component<PredicateEditorPro
                         domain={domain}
                         range={range}
                         domainChanged={(value) => this.updatePredicate('domain', value.value)}
-                        rangeChanged={(value) => this.updatePredicate('range', value.value)}
+                        rangeChanged={(value) => this.updatePredicate('range', value.value, value.meta !== 'literal')}
                         mode='editSingle'
                         domainOptions={entityTypeOptions}
-                        rangeOptions={literalTypes.map((t) => ({ key: t.name, value: t.name})).concat(entityTypeOptions)}
+                        rangeOptions={literalTypes.map((t) => ({ key: t.name, value: t.name, meta: 'literal'})).concat(entityTypeOptions)}
                     />
                 </div>
 

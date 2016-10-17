@@ -92,7 +92,7 @@ export class CreatePredicate extends React.Component<CreatePredicateProps, Creat
             domain: this.state.domain.value,
             range: this.state.range.value,
             rangeIsReference: this.state.range.meta !== 'literal'
-        })).then(this.props.complete);
+        })).then((result) => this.props.complete(result[0]));
     }
 
     public render() {
