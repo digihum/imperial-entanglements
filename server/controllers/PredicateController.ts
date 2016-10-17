@@ -108,4 +108,27 @@ export class PredicateController extends GenericController<PredicatePersistable>
             }
         });
     }
+
+    public patchItem(obj: { new(): PredicatePersistable; }, uid: number, data: PredicatePersistable) : Promise<boolean> {
+        return super.patchItem(obj, uid, data)
+        .then((result) => {
+            if ('range' in data) {
+
+                const tableExtension = data.range.toString().match(/[0-9]+/) ? 'ref' : 'val';
+
+                return this.db.query().transaction((trx) =>
+
+                    Promise.all([
+                        trx.from('predicates_ref').where({ uid }).del(),
+                        trx.from('predicates_val').where({ uid }).del()
+                    ]).then(() =>
+                        trx.from('predicates_' + tableExtension)
+                        .insert({ uid, range: data.range })
+                    )
+                );
+            }
+
+            return result;
+        });
+    }
 }
