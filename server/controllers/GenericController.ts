@@ -8,6 +8,8 @@ import { IController } from './IController';
 import { Persistable } from '../core/Persistable';
 import { Database } from '../core/Database';
 
+import { remove } from 'lodash';
+
 export abstract class GenericController<T extends Persistable> implements IController {
 
     protected tableName: string;
@@ -41,15 +43,15 @@ export abstract class GenericController<T extends Persistable> implements IContr
 
     public patchItem(obj: { new(): T; }, uid: number, data: T) : Promise<boolean> {
         const o = new obj();
-        const keys = Object.keys(data);
+        const schemaData = o.deserialize(data).toSchema();
 
-        o.deserialize(data);
+        const keys = Object.keys(schemaData);
 
         const updateObject = {};
 
         for (let i = 0; i < keys.length; i += 1) {
-            if (o.hasOwnProperty(keys[i])) {
-                updateObject[keys[i]] = o[keys[i]];
+            if (schemaData[keys[i]] !== null && schemaData[keys[i]] !== undefined) {
+                updateObject[keys[i]] = schemaData[keys[i]];
             }
         }
 

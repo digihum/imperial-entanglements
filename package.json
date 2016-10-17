@@ -15,7 +15,8 @@
     "style": "node-sass ./client/sass/app.scss --include-path node_modules -o build/static",
     "style:watch": "node-sass --watch ./client/sass/app.scss --include-path node_modules -o build/static",
     "webpack": "webpack",
-    "webpack:watch": "webpack --watch"
+    "webpack:watch": "webpack --watch",
+    "sql": "node scripts/build_sql.js"
   },
   "repository": {
     "type": "git",

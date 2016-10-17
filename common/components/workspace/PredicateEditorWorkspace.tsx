@@ -78,7 +78,11 @@ export class PredicateEditorWorkspace extends React.Component<PredicateEditorPro
             return;
         }
 
-        this.props.api.patchItem(Predicate, AppUrls.predicate, this.state.predicate.uid, { [field]: value })
+        this.props.api.patchItem(Predicate, AppUrls.predicate, this.state.predicate.uid,
+        {
+            [field]: value,
+            rangeIsReference: this.state.predicate.rangeIsReference
+        })
         .then((success) => {
             this.setState({
                 predicate: new Predicate().deserialize(Object.assign({}, this.state.predicate.serialize(), { [field]: value }))

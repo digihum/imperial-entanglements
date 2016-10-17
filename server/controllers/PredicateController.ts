@@ -21,11 +21,22 @@ export class PredicatePersistable extends Predicate implements Persistable {
     }
 
     public toSchema() {
-        return Object.assign(omit(this.serialize(), 'range', 'rangeIsReference', 'sameAs'), { 'same_as': this.sameAs });
+        const out : { [s: string] : any } = Object.assign(omit(this.serialize(), 'range', 'rangeIsReference', 'sameAs'), {
+            'same_as': this.sameAs,
+            'range_type': this.rangeIsReference ? 'ref' : 'val'
+        });
+
+        if (this.rangeIsReference) {
+            out['range_ref'] = this.range;
+        } else {
+            out['range_val'] = this.range;
+        }
+
+        return out;
     }
 
     public fromSchema(data: any) : PredicatePersistable {
-        if (data.range_ref !== null) {
+        if (data.range_type === 'ref') {
             data.range = data.range_ref;
             data.rangeIsReference = true;
         } else {
@@ -39,36 +50,8 @@ export class PredicatePersistable extends Predicate implements Persistable {
 
 export class PredicateController extends GenericController<PredicatePersistable> {
 
-    private fields = [
-            'predicates.uid',
-            'name',
-            'description',
-            'same_as',
-            'domain',
-            'readonly',
-            'predicates_ref.range as range_ref',
-            'predicates_val.range as range_val'];
-
-
     constructor(db : Database) {
         super(db, PredicatePersistable.tableName);
-    }
-
-// SELECT predicates.uid, description, same_as, domain, readonly, predicates_ref.range as 'range_ref', predicates_val.range as 'range_val'
-// FROM predicates
-// LEFT JOIN predicates_ref ON predicates.uid = predicates_ref.uid
-// LEFT JOIN predicates_val ON predicates.uid = predicates_val.uid;
-
-    public getItemJson(obj: { new(): PredicatePersistable; }, uid: number) : Promise<PredicatePersistable> {
-
-        const query = this.db.query().select(this.fields)
-            .from(this.tableName)
-            .leftJoin('predicates_ref', 'predicates.uid', '=', 'predicates_ref.uid')
-            .leftJoin('predicates_val', 'predicates.uid', '=', 'predicates_val.uid')
-            .where({ 'predicates.uid': uid })
-            .first();
-
-        return query.then((data) => new obj().fromSchema(data));
     }
 
     public getCollectionJson(obj: { new(): PredicatePersistable; }, params: any = {}) {
@@ -85,50 +68,7 @@ export class PredicateController extends GenericController<PredicatePersistable>
                 WHERE predicates.domain IN ancestor;
             `, params.domain).then((results) => results.map((result) => new obj().fromSchema(result)));
         } else {
-             const query = this.db.query().select(this.fields)
-                .from(this.tableName)
-                .leftJoin('predicates_ref', 'predicates.uid', '=', 'predicates_ref.uid')
-                .leftJoin('predicates_val', 'predicates.uid', '=', 'predicates_val.uid');
-
-            return query.then((data) => data.map((datum) => new obj().fromSchema(datum)));
+            return super.getCollectionJson(obj, params);
         }
-    }
-
-    //TODO: it is concivable that the first insert will succeed and the second will fail, the first
-    // should be rolled back in this case.
-    public postItem(obj: { new(): PredicatePersistable; }, data: PredicatePersistable) : Promise<string> {
-        return super.postItem(obj, data)
-        .then(([id]) => {
-            if (data.rangeIsReference) {
-                return this.db.query().insert({ uid: id, range: data.range}).into('predicates_ref')
-                .then(() => id);
-            } else {
-                return this.db.query().insert({ uid: id, range: data.range}).into('predicates_val')
-                .then(() => id);
-            }
-        });
-    }
-
-    public patchItem(obj: { new(): PredicatePersistable; }, uid: number, data: PredicatePersistable) : Promise<boolean> {
-        return super.patchItem(obj, uid, data)
-        .then((result) => {
-            if ('range' in data) {
-
-                const tableExtension = data.range.toString().match(/[0-9]+/) ? 'ref' : 'val';
-
-                return this.db.query().transaction((trx) =>
-
-                    Promise.all([
-                        trx.from('predicates_ref').where({ uid }).del(),
-                        trx.from('predicates_val').where({ uid }).del()
-                    ]).then(() =>
-                        trx.from('predicates_' + tableExtension)
-                        .insert({ uid, range: data.range })
-                    )
-                );
-            }
-
-            return result;
-        });
     }
 }
