@@ -70,7 +70,7 @@ export class ObjectEditor extends React.Component<EntityEditorProps, EntityEdito
     }
 
     public createTab(title: string, subtitle: string, url: string) {
-        if (find(this.state.tabs, (tab) => tab.title === title) === undefined) {
+        if (find(this.state.tabs, (tab) => tab.url === url) === undefined) {
             this.setState({
                 tabs: this.state.tabs.concat([{ title, subtitle, url}])
             });

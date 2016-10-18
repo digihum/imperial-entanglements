@@ -44,7 +44,10 @@ export class FalconApp extends React.Component<FalconAppProps, FalconAppState> {
             <div className="flex-fill" style={{ flexDirection: 'column' }}>
                 <div className='header'>
                     <h1>VRE</h1>
-                    <Link to='/'>Home</Link>
+                    <Link to='/' className='header-link'>Home</Link>
+                    <Link to='/entity' className='header-link'>Entities</Link>
+                    <Link to='/predicate' className='header-link'>Predicates</Link>
+                    <Link to='/source' className='header-link'>Sources</Link>
                 </div>
 
                 <Match exactly pattern='/' component={Home} />

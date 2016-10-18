@@ -71,7 +71,7 @@ export class ComboDropdown<T> extends React.Component<ComboDropdownProps, ComboD
         });
     }
 
-    public changeSearchString(event : React.EventHandler<React.FormData>) {
+    public changeSearchString(event : React.EventHandler<React.FormEvent>) {
         this.setState({searchString: event.target.value, showingDropDown: true}, () => {
             this.updateFilter(this.state.searchString);
         });

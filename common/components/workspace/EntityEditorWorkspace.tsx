@@ -94,7 +94,10 @@ export class EntityEditorWorkspace extends React.Component<EntityEditorProps, En
             createTab.dispatch(`Entity #${newProps.id}`, data.entityType, `/${AppUrls.entity}/${newProps.id}`);
         });
 
-        this.loadRecords();
+        this.props.api.getCollection(Record, AppUrls.record, { entity: newProps.id })
+		.then((data) => {
+			this.setState({ records: groupBy(data, 'predicate') });
+		});
 
         newProps.api.getCollection(Source, AppUrls.source, {})
         .then((data) => this.setState({ sources: data }));
