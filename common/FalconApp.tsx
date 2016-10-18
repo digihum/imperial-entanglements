@@ -65,7 +65,8 @@ export class FalconApp extends React.Component<FalconAppProps, FalconAppState> {
                                 (matchprops) => (
                                     <routeUrl.collectionView
                                         api={this.props.api} {...matchprops} 
-                                        workspace={routeUrl.workspaceType} />)
+                                        workspace='list'
+                                        name={routeUrl.plural} />)
                             } />,
 
                         <Match

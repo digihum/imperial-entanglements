@@ -41,4 +41,13 @@
         width: 100%;
         padding: 1em;
     }
+
+    &.compact {
+        .search-input {
+            padding: 0.2em;
+        }
+        .dropdown ul li {
+            padding: 0.2em;
+        }
+    }
 }  

@@ -9,3 +9,4 @@ export { EntityEditorWorkspace } from './EntityEditorWorkspace';
 export { SourceEditorWorkspace } from './SourceEditorWorkspace';
 export { PredicateEditorWorkspace } from './PredicateEditorWorkspace';
 export { AdvancedSearchWorkspace } from './AdvancedSearchWorkspace';
+export { ObjectListWorkspace } from './ObjectListWorkspace';

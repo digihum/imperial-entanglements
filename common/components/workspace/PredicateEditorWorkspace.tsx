@@ -144,7 +144,8 @@ export class PredicateEditorWorkspace extends React.Component<PredicateEditorPro
                         onChange={(value) => this.updatePredicate('name', value)}  />
                 </div>
 
-                <div>Count: {this.state.records.length}</div>
+                <div>Count: {this.state.records.length} 
+                (TODO: this should link to the search page showing all records with this predicate)</div>
 
                 <div className='edit-group'>
                     <label>Description</label>

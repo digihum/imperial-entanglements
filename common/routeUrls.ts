@@ -43,20 +43,24 @@ export const routeUrls : RouteUrls = {
 
     [AppUrls.record]: {
         url: 'record',
+        name: 'Record',
+        plural: 'Records',
         workspaceType: '',
         itemView: RouteNotFound,
         itemEdit: RouteNotFound,
-        collectionView: RouteNotFound,
-        collectionEdit: RouteNotFound
+        collectionView: ObjectEditor,
+        collectionEdit: ObjectEditor
     },
 
     [AppUrls.entity]:  {
         url: 'entity',
+        name: 'Entity',
+        plural: 'Entities',
         workspaceType: 'entity',
         itemView: ObjectEditor,
         itemEdit: ObjectEditor,
-        collectionView: RouteNotFound,
-        collectionEdit: RouteNotFound
+        collectionView: ObjectEditor,
+        collectionEdit: ObjectEditor
     },
 
     [AppUrls.entityType]: {
@@ -70,6 +74,8 @@ export const routeUrls : RouteUrls = {
 
     [AppUrls.predicate]: {
         url: 'predicate',
+        name: 'Predicate',
+        plural: 'Predicates',
         workspaceType: 'predicate',
         itemView: ObjectEditor,
         itemEdit: ObjectEditor,
@@ -79,6 +85,8 @@ export const routeUrls : RouteUrls = {
 
     [AppUrls.source]: {
         url: 'source',
+        name: 'Source',
+        plural: 'Sources',
         workspaceType: 'source',
         itemView: ObjectEditor,
         itemEdit: ObjectEditor,

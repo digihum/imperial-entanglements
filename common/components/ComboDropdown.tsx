@@ -24,6 +24,7 @@ interface ComboDropdownProps {
     createNewValue: (s: string) => void;
     updateSearchString?: (s: string) => void;
     allowNew?: boolean;
+    compact?: boolean;
 }
 
 interface ComboDropdownState {
@@ -38,6 +39,7 @@ export class ComboDropdown<T> extends React.Component<ComboDropdownProps, ComboD
 
     public static defaultProps : ComboDropdownProps = {
        allowNew: true,
+       compact: false,
        updateSearchString: noop
     }
 
@@ -130,7 +132,7 @@ export class ComboDropdown<T> extends React.Component<ComboDropdownProps, ComboD
 
     public render() {
        return (
-            <div className='combo-dropdown'>
+            <div className={this.props.compact ? 'compact combo-dropdown' : 'combo-dropdown'}>
                 <div>
                     <input type='text'
                         className='search-input'

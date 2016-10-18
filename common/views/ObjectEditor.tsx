@@ -106,7 +106,7 @@ export class ObjectEditor extends React.Component<EntityEditorProps, EntityEdito
         return (
             <section id='entity-editor' className='flex-fill'>
                 <Sidebar tabs={this.state.tabs} />
-                <Workspace api={this.props.api} workspaceType={this.props.workspace} id={this.props.params.id} />
+                <Workspace {...this.props} id={this.props.params.id}/>
             </section>
         );
     }
