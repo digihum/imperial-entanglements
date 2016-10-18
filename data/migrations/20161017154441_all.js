@@ -10,7 +10,11 @@ exports.up = function(knex, Promise) {
       fs.readFileSync('data/migrations/entities.sql', 'utf8') +
       fs.readFileSync('data/migrations/records.sql', 'utf8');
 
-  return knex.schema.debug(true).raw(creationScript);     
+  var statements = creationScript.split(';').filter((statement) => statement.length > 0);
+
+  var prom = statements.reduce((prev, cur, index) => prev.then(() => knex.schema.raw(cur + ';')), Promise.resolve());
+
+  return prom;  
 };
 
 exports.down = function(knex, Promise) {

@@ -17,7 +17,7 @@ CREATE TABLE records (
     value_entity INTEGER 
         REFERENCES entities(uid)
         CHECK(value_type != 'entity' OR (
-            #(value_entity is not NULL) AND
+
             (value_string is NULL) AND
             (value_date is NULL) AND 
             (value_integer is NULL) AND 
@@ -27,7 +27,7 @@ CREATE TABLE records (
     value_string varchar(255)
         CHECK(value_type != 'string' OR (
             (value_entity is NULL) AND
-           # (value_string is not NULL) AND
+
             (value_date is NULL) AND 
             (value_integer is NULL) AND 
             (value_point is NULL) AND 
@@ -37,7 +37,7 @@ CREATE TABLE records (
         CHECK(value_type != 'date' OR (
             (value_entity is NULL) AND
             (value_string is NULL) AND
-           # (value_date is not NULL) AND 
+
             (value_integer is NULL) AND 
             (value_point is NULL) AND 
             (value_region is NULL))),
@@ -47,7 +47,7 @@ CREATE TABLE records (
             (value_entity is NULL) AND
             (value_string is NULL) AND
             (value_date is NULL) AND 
-            #(value_integer is not NULL) AND 
+
             (value_point is NULL) AND 
             (value_region is NULL))),
 
@@ -57,7 +57,7 @@ CREATE TABLE records (
             (value_string is NULL) AND
             (value_date is NULL) AND 
             (value_integer is NULL) AND 
-           # (value_point is not NULL) AND 
+
             (value_region is NULL))),
 
     value_region varchar(255)
@@ -66,6 +66,5 @@ CREATE TABLE records (
             (value_string is NULL) AND
             (value_date is NULL) AND 
             (value_integer is NULL) AND 
-            (value_point is NULL)# AND 
-           # (value_region is not NULL)))
+            (value_point is NULL)))
 );
