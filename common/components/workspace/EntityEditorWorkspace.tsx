@@ -1,7 +1,7 @@
 /**
  * @fileOverview Empty workspace for when nothing is open!
- * @author <a href="mailto:jd@example.com">John Doe</a>
- * @version 3.1.2
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.1.0
  */
 
 import * as React from 'react';
@@ -83,6 +83,20 @@ export class EntityEditorWorkspace extends React.Component<EntityEditorProps, En
         this.loadRecords();
 
         this.props.api.getCollection(Source, AppUrls.source, {})
+        .then((data) => this.setState({ sources: data }));
+    }
+
+    public componentWillReceiveProps(newProps: EntityEditorProps)  {
+
+        newProps.api.getItem(Entity, AppUrls.entity, newProps.id).then((data) => {
+            this.setState({ entity: data });
+            this.loadPredicates(data.entityType);
+            createTab.dispatch(`Entity #${newProps.id}`, data.entityType, `/${AppUrls.entity}/${newProps.id}`);
+        });
+
+        this.loadRecords();
+
+        newProps.api.getCollection(Source, AppUrls.source, {})
         .then((data) => this.setState({ sources: data }));
     }
 

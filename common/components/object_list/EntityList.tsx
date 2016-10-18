@@ -1,7 +1,7 @@
 /**
  * @fileOverview Sidebar for editor
- * @author <a href="mailto:jd@example.com">John Doe</a>
- * @version 3.1.2
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.1.0
  */
 
 import * as React from 'react';
@@ -10,6 +10,8 @@ import { ApiService, AppUrls } from '../../ApiService';
 import { Entity, EntityType, Predicate } from '../../../common/datamodel/datamodel';
 import { ComboDropdown, ComboDropdownOption } from '../ComboDropdown';
 import { noop } from 'lodash';
+
+import { AddTabButton } from '../AddTabButton';
 
 interface EntityListProps {
     api: ApiService;
@@ -90,7 +92,10 @@ export class EntityList extends React.Component<EntityListProps, EntityListState
                 const entityType = this.state.entityTypes.find((t) => t.uid === entity.entityType);
                 return (
                     <tr key={`entity-${entity.uid}`}>
-                        <td>{entity.uid}</td>
+                        <td>{entity.uid} <AddTabButton
+                            title={entity.label}
+                            subtitle={`Entity ${entity.uid}`}
+                            url={`/${AppUrls.entity}/${entity.uid}`} /></td>
                         <td>{entity.label}</td>
                         <td>{entityType ? entityType.name : ''}</td>
                         <td>Col1</td>
