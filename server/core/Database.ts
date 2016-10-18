@@ -53,7 +53,7 @@ export class Database {
         // validation?
         return this.knex(a.getTableName())
             .where({ 'uid': a.uid })
-            .update(omit(a, ['tableName']));
+            .update(omit(a.toSchema(), ['tableName']));
     }
 
     public deleteItem(tableName: string, uid: number) : Promise<any> {

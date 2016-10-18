@@ -38,7 +38,7 @@ export abstract class GenericController<T extends Persistable> implements IContr
     }
 
     public putItem(obj: { new(): T; }, uid: number, data: T) : Promise<string> {
-        return this.db.updateItem(data);
+        return this.db.updateItem(new obj().deserialize(data));
     }
 
     public patchItem(obj: { new(): T; }, uid: number, data: T) : Promise<boolean> {

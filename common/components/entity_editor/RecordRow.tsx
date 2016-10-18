@@ -13,6 +13,8 @@ import { ComboDropdown, ComboDropdownOption } from '../ComboDropdown';
 import { createTab } from '../../Signaller';
 import { AppUrls } from '../../ApiService';
 
+import { StringFieldEditor } from './StringFieldEditor';
+
 interface RecordRowProps extends EditableSubfieldProps<Record> {
     dimension: string;
     sources: Source[];
@@ -28,7 +30,7 @@ export const RecordRow = (props: RecordRowProps) => {
 
     const currentSource = props.sources.find((source) => source.uid === recordValue.source);
     const dropDownValue = {
-        key: '', value: props.source
+        key: '', value: props.value.source
     };
 
     if (currentSource !== undefined) {
@@ -39,7 +41,18 @@ export const RecordRow = (props: RecordRowProps) => {
         return (
         <div className='record-row'>
             <div className='record-row-item uid'>#{props.value.uid}</div>
-            <div className='record-row-item'>{props.value.value}</div>
+            <div className='record-row-item'>
+                {(() => {
+                    switch(props.value.valueType) {
+                        case 'string':
+                            return (<StringFieldEditor
+                                value={props.value.value || ''}
+                                onChange={(value) => props.onChange(Object.assign(props.value, { value }))} />);
+                        default:
+                            return (<div>Missing editor</div>);
+                    }
+                })()}
+            </div>
             <div className='record-row-item'>
                 <ComboDropdown
                     options={props.sources.map((source) => ({ key: source.name , value: source.uid}))}
