@@ -17,6 +17,7 @@ import { routeUrls } from './routeUrls';
 import { Home } from './views/Home';
 
 import { Link } from 'react-router';
+import { ObjectEditor } from './views/ObjectEditor';
 
 import { globalClick } from './Signaller';
 
@@ -47,6 +48,13 @@ export class FalconApp extends React.Component<FalconAppProps, FalconAppState> {
                 </div>
 
                 <Match exactly pattern='/' component={Home} />
+
+                <Match exactly pattern='/search' render={
+                    (matchprops) => (
+                        <ObjectEditor
+                            api={this.props.api} {...matchprops} 
+                            workspace={'search'} />)
+                } />
 
                 {Object.keys(routeUrls).map((name) => [name, routeUrls[name]]).map(([name, routeUrl]) => ([
 

@@ -8,3 +8,4 @@ export { EmptyWorkspace } from './EmptyWorkspace';
 export { EntityEditorWorkspace } from './EntityEditorWorkspace';
 export { SourceEditorWorkspace } from './SourceEditorWorkspace';
 export { PredicateEditorWorkspace } from './PredicateEditorWorkspace';
+export { AdvancedSearchWorkspace } from './AdvancedSearchWorkspace';

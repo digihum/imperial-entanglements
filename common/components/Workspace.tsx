@@ -10,7 +10,8 @@ import {
     EmptyWorkspace,
     SourceEditorWorkspace,
     EntityEditorWorkspace,
-    PredicateEditorWorkspace} from './workspace/workspace';
+    PredicateEditorWorkspace,
+    AdvancedSearchWorkspace } from './workspace/workspace';
 
 interface WorkspaceProps {
     api: ApiService;
@@ -74,6 +75,8 @@ export class Workspace extends React.Component<WorkspaceProps, WorkspaceState> {
                 return (<PredicateEditorWorkspace api={this.props.api} id={this.props.id} />);
             case 'source':
                 return (<SourceEditorWorkspace api={this.props.api} id={this.props.id} />);
+            case 'search':
+                return (<AdvancedSearchWorkspace api={this.props.api} />);
             default:
                 return (<EmptyWorkspace />);
 
