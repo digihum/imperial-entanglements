@@ -7,14 +7,14 @@
 import * as React from 'react';
 
 import { Overlay } from '../Overlay';
-import { Record } from '../../../common/datamodel/datamodel';
+import { Record, Predicate } from '../../../common/datamodel/datamodel';
 import { ApiService, AppUrls } from '../../ApiService';
 import { ComboDropdown, ComboDropdownOption } from '../ComboDropdown';
 
 
 interface CreateRecordProps {
     api: ApiService;
-    options: ComboDropdownOption[];
+    options: { key: string, value: string, meta: Predicate}[];
     create: (s: string) => void;
     close: () => void;
     entityUid: number;
@@ -33,11 +33,12 @@ export class CreateRecord extends React.Component<CreateRecordProps, CreateRecor
         };
     }
 
-    public setComboValue(opt: ComboDropdownOption) {
+    public setComboValue(opt: { key: string, value: string, meta: Predicate }) {
         this.props.api.postItem(Record, AppUrls.record,
             new Record().deserialize({
-                predicate: opt.value,
-                entity: this.props.entityUid
+                predicate: opt.meta.uid,
+                entity: this.props.entityUid,
+                valueType: opt.meta.rangeIsReference ? 'entity' : opt.meta.range
             }))
         .then(this.props.close)
         .catch(this.props.close);

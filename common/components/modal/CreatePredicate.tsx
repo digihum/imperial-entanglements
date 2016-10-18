@@ -17,7 +17,7 @@ import { ComboDropdownOption } from '../ComboDropdown';
 interface CreatePredicateProps {
     initialName: string;
     cancel: () => void;
-    complete: (newId: number) => void;
+    complete: (newPredicate: Predicate) => void;
     api: ApiService;
     initialDomain?: number;
 }
@@ -51,7 +51,7 @@ export class CreatePredicate extends React.Component<CreatePredicateProps, Creat
         if (this.props.initialDomain !== undefined) {
             this.props.api.getItem(EntityType, AppUrls.entityType, this.props.initialDomain)
             .then((result) => {
- 
+
                 if (result.uid === null) {
                     throw new Error('Unexpected null uid');
                 }
@@ -87,12 +87,19 @@ export class CreatePredicate extends React.Component<CreatePredicateProps, Creat
     }
 
     public create() {
-        this.props.api.postItem(Predicate, AppUrls.predicate, new Predicate().deserialize({
+
+        const newPredicate = new Predicate().deserialize({
             name: this.state.name,
             domain: this.state.domain.value,
             range: this.state.range.value,
             rangeIsReference: this.state.range.meta !== 'literal'
-        })).then((result) => this.props.complete(result[0]));
+        });
+
+        this.props.api.postItem(Predicate, AppUrls.predicate, newPredicate)
+            .then((result) => {
+                newPredicate.uid = result[0];
+                this.props.complete(newPredicate);
+            });
     }
 
     public render() {

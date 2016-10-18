@@ -13,7 +13,7 @@ import { findIndex, noop } from 'lodash';
 export interface ComboDropdownOption {
     key: string;
     value: string;
-    meta?: string;
+    meta?: any;
 }
 
 interface ComboDropdownProps {

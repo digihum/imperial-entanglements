@@ -100,7 +100,7 @@ export class EntityEditorWorkspace extends React.Component<EntityEditorProps, En
         });
     }
 
-    public createdPredicate(newPredicateId: number) {
+    public createdPredicate(newPredicate: Predicate) {
         this.setState({creatingPredicate: false}, () => {
 
             if (this.state.entity === null) {
@@ -109,12 +109,13 @@ export class EntityEditorWorkspace extends React.Component<EntityEditorProps, En
 
             this.loadPredicates(this.state.entity.entityType);
 
-            createTab.dispatch(`Predicate #${newPredicateId}`, '', `/${AppUrls.predicate}/${newPredicateId}`);
+            createTab.dispatch(`Predicate #${newPredicate.uid}`, '', `/${AppUrls.predicate}/${newPredicate.uid}`);
 
             this.props.api.postItem(Record, AppUrls.record,
             new Record().deserialize({
-                predicate: newPredicateId,
-                entity: this.props.id
+                predicate: newPredicate.uid,
+                entity: this.props.id,
+                valueType: newPredicate.rangeIsReference ? 'entity' : newPredicate.range
             })).then(this.loadRecords.bind(this));
         });
     }
@@ -129,7 +130,7 @@ export class EntityEditorWorkspace extends React.Component<EntityEditorProps, En
             return (<Loading />);
         }
 
-        const options = this.state.predicates.map((pred) => ({ key: pred.name, value: pred.uid}));
+        const options = this.state.predicates.map((pred) => ({ key: pred.name, value: pred.uid, meta: pred}));
 
         return (
             <div className='workspace-editor'>

@@ -21,34 +21,42 @@ export class RecordPersistable extends Record implements Persistable {
     }
 
     public toSchema() {
-        return omit(this.serialize(), 'value', 'valueType');
+        const schemaOutput = omit(this.serialize(), 'value', 'valueType');
+
+        schemaOutput.value_type = this.valueType;
+
+        if (this.valueType !== undefined) {
+            schemaOutput['value_' + this.valueType] = this.value;
+        }
+
+        return schemaOutput;
     }
 
     public fromSchema(data: any) : RecordPersistable {
 
-        if (data.entity !== null) {
-            data.valueType = 'entity';
-            data.value = data.entity;
-        }
+        data.valueType = data.value_type;
 
-        if (data.string !== null) {
-            data.valueType = 'string';
-            data.value = data.string;
-        }
-
-        if (data.date !== null) {
-            data.valueType = 'date';
-            data.value = data.date;
-        }
-
-        if (data.integer !== null) {
-            data.valueType = 'integer';
-            data.value = data.integer;
-        }
-
-        if (data.spatial_point !== null) {
-            data.valueType = 'spatial_point';
-            data.value = data.spatial_point;
+        switch (data.value_type) {
+            case 'entity':
+                data.value = data.value_entity;
+                break;
+            case 'string':
+                data.value = data.value_string;
+                break;
+            case 'date':
+                data.value = data.value_date;
+                break;
+            case 'integer':
+                data.value = data.value_integer;
+                break;
+            case 'point':
+                data.value = data.value_point;
+                break;
+            case 'region':
+                data.value = data.value_region;
+                break;
+            default:
+                data.value = null;
         }
 
         this.deserialize(data);
@@ -60,7 +68,7 @@ export class RecordController extends GenericController<RecordPersistable> {
     constructor(db : Database) {
         super(db, RecordPersistable.tableName);
     }
-
+/*
     public getItemJson(obj: { new(): RecordPersistable; }, uid: number) : Promise<RecordPersistable> {
 
         const fields = [
@@ -99,5 +107,5 @@ export class RecordController extends GenericController<RecordPersistable> {
         //         .then(() => id);
         //     }
         // });
-    }
+    }*/
 }
