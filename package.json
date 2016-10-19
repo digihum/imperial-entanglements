@@ -39,6 +39,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "graphql": "^0.7.2",
     "jsonschema": "^1.1.0",
     "knex": "^0.12.5",
     "koa": "^1.2.4",

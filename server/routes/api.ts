@@ -12,6 +12,7 @@ import * as KoaRouter from 'koa-router';
 import { Database } from '../core/Database';
 import { ServerApiService, AppUrls } from '../core/ServerApiService';
 import { Persistable } from '../core/Persistable';
+import { QueryEngine } from '../core/QueryEngine';
 
 // Controllers
 import { IController } from '../controllers/IController';
@@ -39,7 +40,7 @@ export const wrapDatabase : (s: Database) => ServerApiService = (db: Database) =
         [AppUrls.sourceElement, new SourceElementController(db)]
     ]);
 
-    return new ServerApiService(routes);
+    return new ServerApiService(routes, new QueryEngine(db));
 };
 
 // would be cleaner if it allowed 2nd level REST urls
@@ -76,6 +77,11 @@ export const api : (router: KoaRouter, s: ServerApiService) => KoaRouter
             }
             this.body = err.message;
         }
+    });
+
+    router.get('/api/v1/query', function* (next : Koa.Context) {
+        yield serverApiContext.queryEngine.runQuery(this.query.query)
+            .then((result) => this.body = result);
     });
 
     router.get('/api/v1/:route/:id', function* (next : Koa.Context) {

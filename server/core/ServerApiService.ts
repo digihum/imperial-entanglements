@@ -9,14 +9,19 @@ import { Persistable } from './Persistable';
 import { IController } from '../controllers/IController';
 import { CollectionNotFoundException } from './Exceptions';
 
+import { QueryEngine } from './QueryEngine';
+
 export { AppUrls } from '../../common/ApiService';
 
 export class ServerApiService implements ApiService {
 
     private controllerMap: Map<string, IController>;
 
-    constructor(routesMap: Map<string, IController>) {
+    public queryEngine: QueryEngine;
+
+    constructor(routesMap: Map<string, IController>, queryEngine: QueryEngine) {
         this.controllerMap = routesMap;
+        this.queryEngine = queryEngine;
     }
 
     public getItem<T extends Persistable>(obj: { new(): T; }, baseUrl : string, uid: number) : Promise<T> {

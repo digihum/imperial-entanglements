@@ -68,8 +68,9 @@ export class FalconApp extends React.Component<FalconAppProps, FalconAppState> {
                                 (matchprops) => (
                                     <routeUrl.collectionView
                                         api={this.props.api} {...matchprops} 
-                                        workspace='list'
-                                        name={routeUrl.plural} />)
+                                        workspace={routeUrl.workspaceType}
+                                        name={routeUrl.plural} 
+                                        list={true} />)
                             } />,
 
                         <Match
@@ -80,7 +81,8 @@ export class FalconApp extends React.Component<FalconAppProps, FalconAppState> {
                                 (matchprops) => (
                                     <routeUrl.itemView 
                                     api={this.props.api} {...matchprops}
-                                    workspace={routeUrl.workspaceType} />)
+                                    workspace={routeUrl.workspaceType}
+                                    list={false} />)
                             } />,
 
                         <Match
@@ -90,7 +92,8 @@ export class FalconApp extends React.Component<FalconAppProps, FalconAppState> {
                                 (matchprops) => (
                                     <routeUrl.collectionEdit 
                                     api={this.props.api} {...matchprops}
-                                    workspace={routeUrl.workspaceType} />)
+                                    workspace={routeUrl.workspaceType} 
+                                    list={true}/>)
                             }/>,
 
                         <Match
@@ -100,7 +103,8 @@ export class FalconApp extends React.Component<FalconAppProps, FalconAppState> {
                                 (matchprops) => (
                                     <routeUrl.itemEdit 
                                     api={this.props.api} {...matchprops} 
-                                    workspace={routeUrl.workspaceType} />)
+                                    workspace={routeUrl.workspaceType}
+                                    list={false} />)
                             } />
                 ]
                 ))}

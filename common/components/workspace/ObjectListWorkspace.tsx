@@ -8,16 +8,28 @@ import * as React from 'react';
 import { ApiService } from '../../ApiService';
 
 import { EntityList } from '../object_list/EntityList';
+import { PredicateList } from '../object_list/PredicateList';
+import { SourceList } from '../object_list/SourceList';
 
 interface ObjectListWorkspaceProps {
     api: ApiService;
     name: string;
+    listType: string;
 }
 
 export const ObjectListWorkspace : React.StatelessComponent<ObjectListWorkspaceProps> =
     (props: ObjectListWorkspaceProps) => (
     <div className='workspace-editor'>
         <h2>All {props.name}</h2>
-        <EntityList api={props.api} />
+        {(() => {
+            switch(props.listType) {
+                case 'entity':
+                    return (<EntityList api={props.api} />);
+                case 'source':
+                    return (<SourceList api={props.api} />);
+                case 'predicate':
+                    return (<PredicateList api={props.api} />);
+            }
+        })()}
     </div>
 );

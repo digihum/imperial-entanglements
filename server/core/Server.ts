@@ -56,7 +56,9 @@ export class Server {
 
         let router = new KoaRouter();
         router.use(koaJSON());
-        router.use(koaBodyParser());
+        router.use(koaBodyParser({
+            enableTypes: ['json', 'form', 'text']
+        }));
 
         const serverApiContext = wrapDatabase(db);
         router = api(router, serverApiContext);

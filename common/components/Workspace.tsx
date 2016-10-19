@@ -19,6 +19,7 @@ interface WorkspaceProps {
     workspace: string;
     id: number;
     name?: string;
+    list: boolean;
 }
 
 interface WorkspaceState {
@@ -70,6 +71,9 @@ export class Workspace extends React.Component<WorkspaceProps, WorkspaceState> {
     // }
 
     public render() {
+        if (this.props.list) {
+            return (<ObjectListWorkspace api={this.props.api} name={this.props.name} listType={this.props.workspace} />);
+        }
         switch (this.props.workspace) {
             case 'entity':
                 return (<EntityEditorWorkspace api={this.props.api} id={this.props.id} />);
@@ -79,8 +83,6 @@ export class Workspace extends React.Component<WorkspaceProps, WorkspaceState> {
                 return (<SourceEditorWorkspace api={this.props.api} id={this.props.id} />);
             case 'search':
                 return (<AdvancedSearchWorkspace api={this.props.api} />);
-            case 'list':
-                return (<ObjectListWorkspace api={this.props.api} name={this.props.name} />)
             default:
                 return (<EmptyWorkspace />);
 

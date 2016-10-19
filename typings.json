@@ -4,6 +4,7 @@
     "chai": "registry:dt/chai#3.4.0+20160601211834",
     "dotenv": "registry:dt/dotenv#2.0.0+20160327131627",
     "electron": "registry:env/electron#0.37.6+20160909065630",
+    "graphql": "registry:dt/graphql#0.7.0+20160930121740",
     "js-signals": "registry:dt/js-signals#0.0.0+20160316155526",
     "jsonschema": "registry:dt/jsonschema#0.0.0+20160811135847",
     "knex": "registry:dt/knex#0.0.0+20160923124117",
