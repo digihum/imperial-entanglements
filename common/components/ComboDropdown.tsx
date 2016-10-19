@@ -65,7 +65,7 @@ export class ComboDropdown<T> extends React.Component<ComboDropdownProps, ComboD
 
     public componentWillReceiveProps(newProps: ComboDropdownProps) {
         this.setState({
-            searchString: newProps.value.key,
+            searchString: newProps.value.key !== this.props.value.key ? newProps.value.key : this.state.searchString,
             selected: newProps.value,
             options: newProps.options
         });

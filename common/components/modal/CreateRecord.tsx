@@ -11,17 +11,22 @@ import { Record, Predicate } from '../../../common/datamodel/datamodel';
 import { ApiService, AppUrls } from '../../ApiService';
 import { ComboDropdown, ComboDropdownOption } from '../ComboDropdown';
 
+import { showModal, createTab } from '../../Signaller';
+import { ModalDefinition } from './ModalDefinition';
+
+import { noop } from 'lodash';
 
 interface CreateRecordProps {
     api: ApiService;
     options: { key: string, value: string, meta: Predicate}[];
-    complete: (s: string) => void;
+    complete: (s: any) => void;
     cancel: () => void;
     entityUid: number;
 }
 
 interface CreateRecordState {
     comboValue: ComboDropdownOption;
+    searchValue: string;
 }
 
 export class CreateRecord extends React.Component<CreateRecordProps, CreateRecordState> {
@@ -29,8 +34,29 @@ export class CreateRecord extends React.Component<CreateRecordProps, CreateRecor
     constructor() {
         super();
         this.state = {
-            comboValue: {key: '', value: ''}
+            comboValue: {key: '', value: ''},
+            searchValue: ''
         };
+    }
+
+    public createNewPredicate() {
+        const modalDef: ModalDefinition = {
+            name: 'predicate',
+            complete: (data : Predicate) => {
+                console.log('Predicate editor called complete');
+                this.setComboValue({ key: data.name, value: data.uid.toString(), meta: data});
+                createTab.dispatch(data.name, `Predicate ${data.uid}`, `/${AppUrls.predicate}/${data.uid}`);
+            },
+            cancel: () => {
+                console.log('Predicate editor called cancel');
+            },
+            settings: {
+                initialName: this.state.searchValue,
+                initialDomain: 2
+            }
+        };
+
+        showModal.dispatch(modalDef);
     }
 
     public setComboValue(opt: { key: string, value: string, meta: Predicate }) {
@@ -40,7 +66,7 @@ export class CreateRecord extends React.Component<CreateRecordProps, CreateRecor
                 entity: this.props.entityUid,
                 valueType: opt.meta.rangeIsReference ? 'entity' : opt.meta.range
             }))
-        .then(this.props.cancel)
+        .then((result) => this.props.complete(result))
         .catch(this.props.cancel);
     }
 
@@ -52,7 +78,8 @@ export class CreateRecord extends React.Component<CreateRecordProps, CreateRecor
                 typeName='predicate'
                 value={this.state.comboValue}
                 setValue={this.setComboValue.bind(this)}
-                createNewValue={this.props.complete}
+                createNewValue={this.createNewPredicate.bind(this)}
+                updateSearchString={(s) => this.setState({ searchValue: s})}
             />
         </Overlay>
         );

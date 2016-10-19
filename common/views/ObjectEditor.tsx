@@ -41,7 +41,6 @@ interface EntityEditorState {
     options: any[];
     tabs: Tab[];
     inBrowser: boolean;
-    modal: ModalDefinition | null;
     modalQueue: ModalDefinition[];
 }
 
@@ -60,7 +59,6 @@ export class ObjectEditor extends React.Component<EntityEditorProps, EntityEdito
             options: [],
             tabs: [],
             inBrowser: (typeof window !== 'undefined'),
-            modal: null,
             modalQueue: []
         };
 
@@ -102,31 +100,27 @@ export class ObjectEditor extends React.Component<EntityEditorProps, EntityEdito
     }
 
     public addModal(def: ModalDefinition) {
-        this.setState({ modalQueue: this.state.modalQueue.concat([def])}, () => {
-            if (this.state.modal === null) {
-                this.setState({ modal: this.state.modalQueue[0], modalQueue: tail(this.state.modalQueue)});
-            }
-        });
+        this.setState({ modalQueue: [def].concat(this.state.modalQueue)});
     }
 
     public modalComplete(data: any) {
-        if (this.state.modal === null) {
+        if (this.state.modalQueue.length === 0) {
             throw new Error('Attempted to complete non-existent modal');
         }
-        this.state.modal.complete(data);
+        this.state.modalQueue[0].complete(data);
         if (this.state.modalQueue.length > 0) {
-            this.setState({ modal: this.state.modalQueue[0], modalQueue: tail(this.state.modalQueue)});
-        } else {
-            this.setState({ modal: null });
+            this.setState({ modalQueue: tail(this.state.modalQueue) });
         }
     }
 
     public modalCancel() {
-        if (this.state.modal === null) {
+        if (this.state.modalQueue.length === 0) {
             throw new Error('Attempted to cancel non-existent modal');
         }
-        this.state.modal.cancel();
-        this.setState({ modal: null, modalQueue: [] });
+        this.state.modalQueue[0].cancel();
+        this.setState({
+            modalQueue: []
+        });
     }
 
     // public componentWillMount() {
@@ -148,7 +142,7 @@ export class ObjectEditor extends React.Component<EntityEditorProps, EntityEdito
                 <Sidebar tabs={this.state.tabs} />
                 <Workspace {...this.props} id={this.props.params.id}/>
                 {(() => {
-                    if (this.state.modal === null) {
+                    if (this.state.modalQueue.length === 0) {
                         return null;
                     }
 
@@ -158,15 +152,15 @@ export class ObjectEditor extends React.Component<EntityEditorProps, EntityEdito
                         cancel: this.modalCancel.bind(this)
                     };
 
-                    switch(this.state.modal.name) {
+                    switch(this.state.modalQueue[0].name) {
                         case 'predicate':
-                            return (<CreatePredicate {...sharedProps} {...this.state.modal.settings} />);
+                            return (<CreatePredicate {...sharedProps} {...this.state.modalQueue[0].settings} />);
 
                         case 'record':
-                            return (<CreateRecord {...sharedProps} {...this.state.modal.settings}/>);
+                            return (<CreateRecord {...sharedProps} {...this.state.modalQueue[0].settings}/>);
 
                         case 'source':
-                            return (<CreateSource {...sharedProps} {...this.state.modal.settings}/>);
+                            return (<CreateSource {...sharedProps} {...this.state.modalQueue[0].settings}/>);
                     }
                 })()}
             </section>

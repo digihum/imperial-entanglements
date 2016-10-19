@@ -17,10 +17,11 @@ import { ComboDropdown, ComboDropdownOption } from '../ComboDropdown';
 import { CreatePredicate } from '../modal/CreatePredicate';
 import { CreateRecord } from '../modal/CreateRecord';
 import { CreateSource } from '../modal/CreateSource';
+import { ModalDefinition } from '../modal/ModalDefinition';
 
-import { Dictionary, groupBy } from 'lodash';
+import { Dictionary, groupBy, noop } from 'lodash';
 
-import { createTab } from '../../Signaller';
+import { createTab, showModal } from '../../Signaller';
 
 interface EntityEditorProps {
     api: ApiService;
@@ -32,9 +33,6 @@ interface EntityEditorState {
     predicates : Predicate[] | null;
     comboValue: ComboDropdownOption;
     comboSearchValue: string;
-    creatingPredicate: boolean;
-    creatingRecord: boolean;
-    creatingSource: boolean;
     records: Dictionary<Record[]>;
     sources: Source[];
 }
@@ -63,9 +61,6 @@ export class EntityEditorWorkspace extends React.Component<EntityEditorProps, En
             entity: null,
             predicates: null,
             comboValue: { key: 'test', value: ''},
-            creatingPredicate: false,
-            creatingRecord: false,
-            creatingSource: false,
             comboSearchValue: '',
             records: [],
             sources: []
@@ -111,34 +106,36 @@ export class EntityEditorWorkspace extends React.Component<EntityEditorProps, En
     }
 
     public loadPredicates(entityType: number) {
-        this.props.api.getCollection(Predicate, AppUrls.predicate, { domain: entityType })
+        return this.props.api.getCollection(Predicate, AppUrls.predicate, { domain: entityType })
         .then((predicateData) => {
-            this.setState({ predicates: predicateData });
-        });
-    }
-
-    public createdPredicate(newPredicate: Predicate) {
-        this.setState({creatingPredicate: false}, () => {
-
-            if (this.state.entity === null) {
-                throw new Error('Missing entity!');
-            }
-
-            this.loadPredicates(this.state.entity.entityType);
-
-            createTab.dispatch(`Predicate #${newPredicate.uid}`, '', `/${AppUrls.predicate}/${newPredicate.uid}`);
-
-            this.props.api.postItem(Record, AppUrls.record,
-            new Record().deserialize({
-                predicate: newPredicate.uid,
-                entity: this.props.id,
-                valueType: newPredicate.rangeIsReference ? 'entity' : newPredicate.range
-            })).then(this.loadRecords.bind(this));
+            return new Promise((res) => {
+                this.setState({ predicates: predicateData }, res);
+            });
         });
     }
 
     public setComboValue(opt: ComboDropdownOption) {
         this.setState({ comboValue: opt });
+    }
+
+    public createNewRecord() {
+        const modalDef: ModalDefinition = {
+            name: 'record',
+            complete: (data) => {
+                console.log('Records editor called complete');
+                this.loadPredicates(this.state.entity.entityType)
+                .then(() => this.loadRecords());
+            },
+            cancel: () => {
+                console.log('Records editor called cancel');
+            },
+            settings: {
+                options: this.state.predicates.map((pred) => ({ key: pred.name, value: pred.uid, meta: pred})),
+                entityUid: this.props.id
+            }
+        };
+
+        showModal.dispatch(modalDef);
     }
 
     public render() {
@@ -151,33 +148,15 @@ export class EntityEditorWorkspace extends React.Component<EntityEditorProps, En
 
         return (
             <div className='workspace-editor'>
-                <h2>Predicates <i
+                <h2>Edit Entity {this.props.id} <i
                     className='fa fa-plus-circle add-button'
                      aria-hidden='true'
-                     onClick={() => this.setState({ creatingRecord : true })}
+                     onClick={this.createNewRecord.bind(this)}
                 ></i><i
                     className='fa fa-trash delete-button'
                      aria-hidden='true'
                      onClick={() => this.setState({ creatingRecord : true })}
                 ></i></h2>
-
-                {this.state.creatingPredicate ?
-                    (<CreatePredicate
-                        initialName={this.state.comboSearchValue}
-                        cancel={() => this.setState({creatingPredicate: false})}
-                        complete={this.createdPredicate.bind(this)}
-                        api={this.props.api}
-                        initialDomain={this.state.entity.entityType}
-                    />) : null}
-
-                {this.state.creatingRecord ?
-                    (<CreateRecord
-                        options={options}
-                        api={this.props.api}
-                        entityUid={this.props.id}
-                        create={(s) => this.setState({ creatingPredicate: true, comboSearchValue: s, creatingRecord: false})}
-                        close={() => { this.setState({ creatingRecord: false }); this.loadRecords() }}
-                    />) : null}
 
                 <RecordsEditor
                     dimension='predicates'
