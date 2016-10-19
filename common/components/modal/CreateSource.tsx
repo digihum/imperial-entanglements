@@ -13,8 +13,8 @@ import { ApiService, AppUrls } from '../../ApiService';
 
 interface CreateSourceProps {
     api: ApiService;
-    create: (s: string) => void;
-    close: () => void;
+    complete: (s: string) => void;
+    cancel: () => void;
 }
 
 interface CreateSourceState {
@@ -35,7 +35,7 @@ export class CreateSource extends React.Component<CreateSourceProps, CreateSourc
             new Source().deserialize({
                 name: this.state.internalValue
             }))
-        .then(this.props.create);
+        .then(this.props.complete);
     }
 
     public render() {
@@ -43,7 +43,7 @@ export class CreateSource extends React.Component<CreateSourceProps, CreateSourc
         <Overlay>
             <input type='text' value={this.state.internalValue}
                 onChange={(e) => this.setState({ internalValue: e.target.value })} />
-            <button onClick={() => this.props.close()}>Cancel</button>
+            <button onClick={() => this.props.cancel()}>Cancel</button>
             <button onClick={() => this.createSource.bind(this)}>Create Source</button>
         </Overlay>
         );

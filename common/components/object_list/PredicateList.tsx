@@ -13,6 +13,7 @@ import { noop } from 'lodash';
 
 import { AddTabButton } from '../AddTabButton';
 
+
 interface PredicateListProps {
     api: ApiService;
 }

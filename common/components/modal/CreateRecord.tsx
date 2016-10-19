@@ -15,8 +15,8 @@ import { ComboDropdown, ComboDropdownOption } from '../ComboDropdown';
 interface CreateRecordProps {
     api: ApiService;
     options: { key: string, value: string, meta: Predicate}[];
-    create: (s: string) => void;
-    close: () => void;
+    complete: (s: string) => void;
+    cancel: () => void;
     entityUid: number;
 }
 
@@ -40,8 +40,8 @@ export class CreateRecord extends React.Component<CreateRecordProps, CreateRecor
                 entity: this.props.entityUid,
                 valueType: opt.meta.rangeIsReference ? 'entity' : opt.meta.range
             }))
-        .then(this.props.close)
-        .catch(this.props.close);
+        .then(this.props.cancel)
+        .catch(this.props.cancel);
     }
 
     public render() {
@@ -52,7 +52,7 @@ export class CreateRecord extends React.Component<CreateRecordProps, CreateRecor
                 typeName='predicate'
                 value={this.state.comboValue}
                 setValue={this.setComboValue.bind(this)}
-                createNewValue={this.props.create}
+                createNewValue={this.props.complete}
             />
         </Overlay>
         );
