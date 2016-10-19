@@ -97,6 +97,13 @@ export class SourceEditorWorkspace extends React.Component<SourceEditorProps, So
         }
     }
 
+    public deleteSource() {
+        this.props.api.delItem(Source, AppUrls.source, this.props.id)
+        .then(() => {
+            window.location = '/';
+        });
+    }
+
     public render() {
 
         if (this.state.source === null || this.state.dublinCore === null) {

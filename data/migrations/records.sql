@@ -2,13 +2,27 @@ DROP TABLE IF EXISTS records;
 CREATE TABLE records (
     uid INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
 
-    source INTEGER REFERENCES sources(uid),
-    predicate INTEGER NOT NULL REFERENCES predicates(uid),
-    entity INTEGER NOT NULL REFERENCES entities(uid),
+    source INTEGER 
+        REFERENCES sources(uid)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE,
+
+    predicate INTEGER NOT NULL 
+        REFERENCES predicates(uid)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE,
+
+    entity INTEGER NOT NULL 
+        REFERENCES entities(uid)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE,
 
     score INTEGER CHECK(score IN (1,2,3,4,5)),
 
-    period INTEGER REFERENCES entities(uid),
+    period INTEGER
+        REFERENCES entities(uid)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE,
 
     value_type varchar(7) 
         NOT NULL
@@ -16,6 +30,8 @@ CREATE TABLE records (
 
     value_entity INTEGER 
         REFERENCES entities(uid)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
         CHECK(value_type != 'entity' OR (
 
             (value_string is NULL) AND

@@ -5,10 +5,17 @@ CREATE TABLE predicates (
     description varchar(255),
     same_as varchar(255),
 
-    domain INTEGER NOT NULL REFERENCES entity_types(uid),
+    domain INTEGER NOT NULL 
+        REFERENCES entity_types(uid)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE,
 
     range_type char(3) NOT NULL CHECK(range_type IN ('val', 'ref')),
     range_val varchar(255) CHECK(range_type != 'val' OR ((range_ref is NULL) AND (range_val is not NULL))),
-    range_ref varchar(255) CHECK(range_type != 'ref' OR ((range_val is NULL) AND (range_ref is not NULL))),
+    range_ref varchar(255) CHECK(range_type != 'ref' OR ((range_val is NULL) AND (range_ref is not NULL)))
+        REFERENCES entity_types(uid)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE,
+        
     readonly char(1) DEFAULT FALSE
 );

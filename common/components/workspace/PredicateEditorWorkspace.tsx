@@ -93,6 +93,13 @@ export class PredicateEditorWorkspace extends React.Component<PredicateEditorPro
         });
     }
 
+    public deletePredicate() {
+        this.props.api.delItem(Predicate, AppUrls.predicate, this.props.id)
+        .then(() => {
+            window.location = '/';
+        });
+    }
+
     public render() {
 
         if (this.state.predicate === null ||

@@ -3,9 +3,15 @@ CREATE TABLE entities (
     uid INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
     label varchar(255) NOT NULL,
 
-    type INTEGER NOT NULL REFERENCES entity_types(uid),
+    type INTEGER NOT NULL
+        REFERENCES entity_types(uid)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE,
 
-    parent INTEGER REFERENCES entities(uid),
+    parent INTEGER 
+        REFERENCES entities(uid)
+        ON UPDATE CASCADE
+        ON DELETE SET NULL,
 
     readonly char(1) DEFAULT FALSE
 );
