@@ -10,6 +10,8 @@ import { Source } from '../../common/datamodel/Source';
 import { Persistable } from '../core/Persistable';
 import { GenericController } from './GenericController';
 
+import { omit } from 'lodash';
+
 export class SourcePersistable extends Source implements Persistable {
 
     public static readonly tableName: string = 'sources';
@@ -19,7 +21,7 @@ export class SourcePersistable extends Source implements Persistable {
     }
 
     public toSchema() {
-        return this.serialize();
+        return omit(this.serialize(), 'metaData');
     }
 
     public fromSchema(data: any) : SourcePersistable {

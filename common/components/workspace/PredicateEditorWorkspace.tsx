@@ -135,7 +135,11 @@ export class PredicateEditorWorkspace extends React.Component<PredicateEditorPro
 
         return (
             <div className='workspace-editor'>
-
+                <i
+                    className='fa fa-trash delete-button'
+                     aria-hidden='true'
+                     onClick={() => console.log('DELETE')}
+                ></i>
                 <div className='edit-group'>
                     <label>Name</label>
                     <StringEditableFieldComponent

@@ -44,7 +44,7 @@ export class CreateSource extends React.Component<CreateSourceProps, CreateSourc
             <input type='text' value={this.state.internalValue}
                 onChange={(e) => this.setState({ internalValue: e.target.value })} />
             <button onClick={() => this.props.cancel()}>Cancel</button>
-            <button onClick={() => this.createSource.bind(this)}>Create Source</button>
+            <button onClick={this.createSource.bind(this)}>Create Source</button>
         </Overlay>
         );
     }

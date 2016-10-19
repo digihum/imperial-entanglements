@@ -155,7 +155,7 @@ export class EntityEditorWorkspace extends React.Component<EntityEditorProps, En
                 ></i><i
                     className='fa fa-trash delete-button'
                      aria-hidden='true'
-                     onClick={() => this.setState({ creatingRecord : true })}
+                     onClick={() => console.log('DELETE')}
                 ></i></h2>
 
                 <RecordsEditor

@@ -10,7 +10,8 @@ import { EditableSubfieldProps } from '../fields/EditableFieldComponent';
 export { EditableFieldComponent } from '../fields/EditableFieldComponent';
 import { ScorePicker } from '../fields/ScorePicker';
 import { ComboDropdown, ComboDropdownOption } from '../ComboDropdown';
-import { createTab } from '../../Signaller';
+import { createTab, showModal } from '../../Signaller';
+import { ModalDefinition } from '../modal/ModalDefinition';
 import { AppUrls } from '../../ApiService';
 
 import { StringFieldEditor } from './StringFieldEditor';
@@ -21,6 +22,19 @@ interface RecordRowProps extends EditableSubfieldProps<Record> {
 }
 
 export const RecordRow = (props: RecordRowProps) => {
+
+    const createNewSource = (initialValue: string) => {
+        const a : ModalDefinition = {
+            name: 'source',
+            complete: () => {
+                // TODO : Automatically reload sources
+            },
+            cancel: () => { console.log('cancel')},
+            settings: {}
+        };
+
+        showModal.dispatch(a);
+    }
 
     const recordValue = props.value;
 
@@ -59,7 +73,7 @@ export const RecordRow = (props: RecordRowProps) => {
                     typeName='source'
                     value={dropDownValue}
                     setValue={(combo) => props.onChange(Object.assign(props.value, { source: combo.value }))}
-                    createNewValue={(s) => console.log(s)}
+                    createNewValue={createNewSource}
                 />
             </div>
             <div className='record-row-item score'>
