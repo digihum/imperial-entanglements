@@ -114,8 +114,11 @@ export class EntityEditorWorkspace extends React.Component<EntityEditorProps, En
         });
     }
 
-    public setComboValue(opt: ComboDropdownOption) {
-        this.setState({ comboValue: opt });
+    public deleteEntity() {
+        this.props.api.delItem(Entity, AppUrls.entity, this.props.id)
+        .then(() => {
+            window.location = '/';
+        });
     }
 
     public createNewRecord() {
@@ -155,7 +158,7 @@ export class EntityEditorWorkspace extends React.Component<EntityEditorProps, En
                 ></i><i
                     className='fa fa-trash delete-button'
                      aria-hidden='true'
-                     onClick={() => console.log('DELETE')}
+                     onClick={this.deleteEntity.bind(this)}
                 ></i></h2>
 
                 <RecordsEditor

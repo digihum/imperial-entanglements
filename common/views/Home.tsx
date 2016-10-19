@@ -11,12 +11,6 @@ export const Home = (props) => (
     <div className='page'>
         <section>
             <h1>This is the home page</h1>
-            <ul>
-                <li><Link to='/entity/1'>Entity 1</Link></li>
-                <li><Link to='/predicate/1'>Predicate 1</Link></li>
-                <li><Link to='/predicate/2'>Predicate 2</Link></li>
-               <li> <Link to='/source/1'>Source 1</Link></li>
-            </ul>
         </section>
     </div>
 );
