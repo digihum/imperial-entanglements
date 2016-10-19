@@ -20,6 +20,7 @@ import { find, tail } from 'lodash';
 import { CreatePredicate } from '../components/modal/CreatePredicate';
 import { CreateRecord } from '../components/modal/CreateRecord';
 import { CreateSource } from '../components/modal/CreateSource';
+import { CreateEntity } from '../components/modal/CreateEntity';
 
 import { ModalDefinition } from '../components/modal/ModalDefinition';
 
@@ -161,6 +162,9 @@ export class ObjectEditor extends React.Component<EntityEditorProps, EntityEdito
 
                         case 'source':
                             return (<CreateSource {...sharedProps} {...this.state.modalQueue[0].settings}/>);
+
+                        case 'entity':
+                            return (<CreateEntity {...sharedProps} {...this.state.modalQueue[0].settings}/>);
                     }
                 })()}
             </section>

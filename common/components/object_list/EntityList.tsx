@@ -55,9 +55,8 @@ export class EntityList extends React.Component<EntityListProps, EntityListState
 
     public addNew() {
         const a : ModalDefinition = {
-            name: 'predicate',
+            name: 'entity',
             complete: () => {
-                this.loadData();
             },
             cancel: () => { console.log('cancel')},
             settings: {

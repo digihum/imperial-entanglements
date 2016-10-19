@@ -82,7 +82,7 @@ export class PredicateList extends React.Component<PredicateListProps, Predicate
                     <tr>
                         <td>#</td>
                         <td>Label</td>
-                        <td>Type</td>
+                        <td>Domain</td>
                     </tr>
                 </thead>
                 <tbody>
