@@ -155,6 +155,10 @@ export class EntityEditorWorkspace extends React.Component<EntityEditorProps, En
                     className='fa fa-plus-circle add-button'
                      aria-hidden='true'
                      onClick={() => this.setState({ creatingRecord : true })}
+                ></i><i
+                    className='fa fa-trash delete-button'
+                     aria-hidden='true'
+                     onClick={() => this.setState({ creatingRecord : true })}
                 ></i></h2>
 
                 {this.state.creatingPredicate ?

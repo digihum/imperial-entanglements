@@ -20,7 +20,11 @@ interface ObjectListWorkspaceProps {
 export const ObjectListWorkspace : React.StatelessComponent<ObjectListWorkspaceProps> =
     (props: ObjectListWorkspaceProps) => (
     <div className='workspace-editor'>
-        <h2>All {props.name}</h2>
+        <h2>All {props.name} <i
+            className='fa fa-plus-circle add-button'
+            aria-hidden='true'
+            onClick={() => this.setState({ creatingRecord : true })}
+        ></i></h2>
         {(() => {
             switch(props.listType) {
                 case 'entity':

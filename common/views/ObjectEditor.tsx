@@ -17,6 +17,9 @@ import { Workspace } from '../components/Workspace';
 import { createTab, closeTab } from '../Signaller';
 import { find } from 'lodash';
 
+import { CreatePredicate } from '../components/modal/CreatePredicate';
+import { CreateRecord } from '../components/modal/CreateRecord';
+import { CreateSource } from '../components/modal/CreateSource';
 
 
 interface ExpectedParams {
@@ -37,6 +40,7 @@ interface EntityEditorState {
     options: any[];
     tabs: Tab[];
     inBrowser: boolean;
+    modal: string;
 }
 
 export class ObjectEditor extends React.Component<EntityEditorProps, EntityEditorState> {
@@ -52,7 +56,8 @@ export class ObjectEditor extends React.Component<EntityEditorProps, EntityEdito
             entityTypes: [],
             options: [],
             tabs: [],
-            inBrowser: (typeof window !== 'undefined')
+            inBrowser: (typeof window !== 'undefined'),
+            modal: ''
         };
 
         if (this.state.inBrowser) {
@@ -107,6 +112,16 @@ export class ObjectEditor extends React.Component<EntityEditorProps, EntityEdito
             <section id='entity-editor' className='flex-fill'>
                 <Sidebar tabs={this.state.tabs} />
                 <Workspace {...this.props} id={this.props.params.id}/>
+                {(() => {
+                    switch(this.state.modal) {
+                        case 'createPredicate':
+                            return (<CreatePredicate />);
+                        case 'createRecord':
+                            return (<CreateRecord />);
+                        case 'createSource':
+                            return (<CreateSource />);
+                    }
+                })()}
             </section>
         );
     }

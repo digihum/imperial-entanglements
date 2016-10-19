@@ -8,7 +8,7 @@ import * as React from 'react';
 import { Link } from 'react-router';
 
 export const Home = (props) => (
-    <div id='main'>
+    <div className='page'>
         <section>
             <h1>This is the home page</h1>
             <ul>
@@ -17,10 +17,6 @@ export const Home = (props) => (
                 <li><Link to='/predicate/2'>Predicate 2</Link></li>
                <li> <Link to='/source/1'>Source 1</Link></li>
             </ul>
-
-            <button>New Entity</button>
-            <button>New Source</button>
-            <button>New Predicate</button>
         </section>
     </div>
 );

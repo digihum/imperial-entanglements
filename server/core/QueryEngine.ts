@@ -8,7 +8,8 @@ import {
   graphql,
   GraphQLSchema,
   GraphQLObjectType,
-  GraphQLString
+  GraphQLString,
+  GraphQLList
 } from 'graphql';
 
 import { Database } from './Database';
@@ -29,6 +30,12 @@ export class QueryEngine {
                     resolve: (parent, {}) => {
                         return parent.label;
                     }
+                },
+                type: {
+                    type: GraphQLString,
+                    resolve: (parent, {}) => {
+                        return db.query()('entity_types').where({ uid: parent.type }).first().then((data) => data.name);
+                    }
                 }
             }
         });
@@ -38,13 +45,16 @@ export class QueryEngine {
             name: 'Query',
             fields: {
                 entity: {
-                    type: entityType,
+                    type: new GraphQLList(entityType),
                     // `args` describes the arguments that the `user` query accepts
                     args: {
                         uid: { type: GraphQLString }
                     },
                     resolve: (_, {uid}) => {
-                        return db.query()('entities').select(['label']).where({ uid }).first();
+                        if (uid === undefined) {
+                            return db.query()('entities');
+                        }
+                        return db.query()('entities').where({ uid });
                     }
                 }
             }

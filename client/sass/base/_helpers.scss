@@ -41,3 +41,11 @@ i.add-button {
         color: greenyellow;
     }
 }
+
+i.delete-button {
+    cursor: pointer;
+    color: darkred;
+    &:hover {
+        color: red;
+    }
+}
