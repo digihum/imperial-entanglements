@@ -16,7 +16,7 @@ export interface ComboDropdownOption {
     meta?: any;
 }
 
-interface ComboDropdownProps {
+export interface ComboDropdownProps {
     options: ComboDropdownOption[];
     typeName: string;
     value: ComboDropdownOption;

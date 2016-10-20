@@ -14,6 +14,7 @@ import { EntityType } from '../../../common/datamodel/datamodel';
 
 import { EditableHeader, EditableFieldComponent } from '../fields/EditableHeader';
 import { EditableParagraph } from '../fields/EditableParagraph';
+import { EditableComboDropdown } from '../fields/EditableComboDropdown';
 
 import { keyBy, Dictionary } from 'lodash';
 
@@ -38,7 +39,15 @@ export class EntityTypeWorkspace extends React.Component<EntityTypeWorkspaceProp
     }
 
     public componentDidMount() {
-        this.props.api.getItem(EntityType, AppUrls.entityType, this.props.id).then((entityType) => {
+        this.loadData(this.props);
+    }
+
+    public componentWillReceiveProps(newProps: EntityTypeWorkspaceProps) {
+        this.loadData(newProps);
+    }
+
+    public loadData(props: EntityTypeWorkspaceProps) {
+        props.api.getItem(EntityType, AppUrls.entityType, props.id).then((entityType) => {
             this.setState({ entityType });
         });
     }
@@ -61,6 +70,11 @@ export class EntityTypeWorkspace extends React.Component<EntityTypeWorkspaceProp
                     value={this.state.entityType.name}
                     component={EditableHeader}
                     onChange={(value) => this.update({'name': value})}  />
+
+                <StringEditableFieldComponent
+                    value={this.state.entityType.description}
+                    component={EditableParagraph}
+                    onChange={(value) => this.update({'description': value})}  />
 
                 <div>
                     <SameAsEditor sameAsString='a,b,c,woot,list' />

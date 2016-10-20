@@ -11,7 +11,7 @@ import { Loading } from '../Loading';
 import { RecordsEditor } from '../entity_editor/RecordsEditor';
 import { ApiService, AppUrls } from '../../ApiService';
 
-import { Entity, Predicate, Record, Source } from '../../../common/datamodel/datamodel';
+import { Entity, Predicate, Record, Source, EntityType } from '../../../common/datamodel/datamodel';
 
 import { ComboDropdown, ComboDropdownOption } from '../ComboDropdown';
 import { ModalDefinition } from '../modal/ModalDefinition';
@@ -19,6 +19,7 @@ import { ModalDefinition } from '../modal/ModalDefinition';
 import { Dictionary, groupBy, noop } from 'lodash';
 
 import { createTab, showModal } from '../../Signaller';
+import { AddTabButton } from '../AddTabButton';
 
 import { connect } from 'react-redux';
 import { loadEntity } from '../../actions';
@@ -40,6 +41,7 @@ interface EntityEditorState {
     records: Dictionary<Record[]>;
     sources: Source[];
     potentialParents: Entity[];
+    entityType: EntityType | null;
 }
 
 // What can I do?
@@ -69,7 +71,8 @@ class EntityEditorWorkspaceComponent extends React.Component<EntityEditorProps, 
             comboSearchValue: '',
             records: [],
             sources: [],
-            potentialParents: []
+            potentialParents: [],
+            entityType: null
         };
     }
 
@@ -94,14 +97,16 @@ class EntityEditorWorkspaceComponent extends React.Component<EntityEditorProps, 
                 props.api.getCollection(Predicate, AppUrls.predicate, { domain: entity.entityType }),
                 props.api.getCollection(Record, AppUrls.record, { entity: props.id }),
                 props.api.getCollection(Source, AppUrls.source, {}),
-                props.api.getCollection(Entity, AppUrls.entity, { type: entity.entityType })
+                props.api.getCollection(Entity, AppUrls.entity, { type: entity.entityType }),
+                props.api.getCollection(EntityType, AppUrls.entityType, { uid: entity.entityType })
             ])
-            .then(([predicates, records, sources, potentialParents]) => {
+            .then(([predicates, records, sources, potentialParents, [entityType]]) => {
                 this.setState({
                     sources,                    
                     predicates,
                     entity,
                     potentialParents,
+                    entityType,
                     records: groupBy(records, 'predicate'),
                 });
             });
@@ -166,6 +171,13 @@ class EntityEditorWorkspaceComponent extends React.Component<EntityEditorProps, 
                         component={EditableHeader}
                         onChange={(value) => this.update({ 'label': value })}  />
                 </div>
+
+                <div>{this.state.entityType.name} <AddTabButton
+                    title={this.state.entityType.name}
+                    subtitle={`Entity type ${this.state.entityType.uid}`}
+                    url={`/${AppUrls.entityType}/${this.state.entityType.uid}`}
+                    tabType='entity_type'
+                /></div>
 
                 <RecordsEditor
                     dimension='predicates'

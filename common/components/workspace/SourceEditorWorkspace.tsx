@@ -49,12 +49,21 @@ export class SourceEditorWorkspace extends React.Component<SourceEditorProps, So
     }
 
     public componentDidMount() {
-        this.props.api.getItem(Source, AppUrls.source, this.props.id).then((data) => {
+        this.loadData(this.props);
+    }
+
+    public componentWillReceiveProps(newProps: SourceEditorProps)  {
+        this.loadData(newProps);
+    }
+
+
+    public loadData(props: SourceEditorProps) {
+        props.api.getItem(Source, AppUrls.source, props.id).then((data) => {
             this.setState({ source: data, metaData: keyBy(data.metaData, 'name') });
         });
 
         //TODO: make sure this is ALWAYS dublin core
-        this.props.api.getItem(ElementSet, AppUrls.elementSet, 1).then((data) => {
+        props.api.getItem(ElementSet, AppUrls.elementSet, 1).then((data) => {
             this.setState({ dublinCore: data });
         });
     }

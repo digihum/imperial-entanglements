@@ -51,24 +51,21 @@ export class PredicateEditorWorkspace extends React.Component<PredicateEditorPro
     }
 
     public componentDidMount() {
-        Promise.all([
-            this.props.api.getItem(Predicate, AppUrls.predicate, this.props.id),
-            this.props.api.getCollection(EntityType, AppUrls.entityType, {}),
-            this.props.api.getCollection(Record, AppUrls.record, { predicate: this.props.id })
-        ]).then(([predicate, entityTypes, records]) => {
-            this.setState({ predicate, entityTypes, records });
-        });
+        this.loadData(this.props);
     }
 
     public componentWillReceiveProps(newProps: PredicateEditorProps) {
-        if (newProps.id !== this.props.id) {
-            Promise.all([
-                 this.props.api.getItem(Predicate, AppUrls.predicate, newProps.id),
-                this.props.api.getCollection(Record, AppUrls.record, { predicate: newProps.id })
-            ]).then(([ predicate, records ]) => {
-                this.setState({ predicate, records });
-            });
-        }
+        this.loadData(newProps);
+    }
+
+    public loadData(props: PredicateEditorProps) {
+        Promise.all([
+            props.api.getItem(Predicate, AppUrls.predicate, props.id),
+            props.api.getCollection(EntityType, AppUrls.entityType, {}),
+            props.api.getCollection(Record, AppUrls.record, { predicate: props.id })
+        ]).then(([predicate, entityTypes, records]) => {
+            this.setState({ predicate, entityTypes, records });
+        });
     }
 
     public updatePredicate(field: string, value: string, rangeIsReferenceOverride: boolean | null = null) {

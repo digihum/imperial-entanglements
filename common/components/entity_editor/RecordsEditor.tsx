@@ -113,7 +113,7 @@ export class RecordsEditor extends React.Component<RecordsEditorProps, RecordsEd
 							return (<section key={`section-${section}`}>
 								<h5 className='section-header'>{currentPredicate.name}
 								<AddTabButton title={currentPredicate.name}
-									subtitle={currentPredicate.uid.toString()}
+									subtitle={`Predicate ${currentPredicate.uid}`}
 									url={`/${AppUrls.predicate}/${currentPredicate.uid}`}
 									tabType='predicate' />
 								</h5>
