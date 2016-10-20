@@ -18,45 +18,18 @@ import { AddTabButton } from '../AddTabButton';
 
 import { omit } from 'lodash';
 
-interface EditableComboDropdownProps extends EditableSubfieldProps<string> {
+interface EditableComboDropdownProps extends EditableSubfieldProps<ComboDropdownOption> {
     comboSettings: ComboDropdownProps;
 }
 
-export const EditableComboDropdown = (props: RecordRowProps) => {
-
-    const createNewSource = (initialValue: string) => {
-        const a : ModalDefinition = {
-            name: 'source',
-            complete: () => {
-                // TODO : Automatically reload sources
-            },
-            cancel: () => { console.log('cancel')},
-            settings: {
-                initialValue
-            }
-        };
-
-        showModal.dispatch(a);
-    }
-
-    const recordValue = props.value;
-
-    if (recordValue === null) {
-        throw new Error('Should not be null!!');
-    }
-
-    const currentSource = props.sources.find((source) => source.uid === recordValue.source);
-    const dropDownValue = {
-        key: '', value: props.value.source
-    };
-
-    if (currentSource !== undefined) {
-        dropDownValue.key = currentSource.name;
-    }
-
+export const EditableComboDropdown = (props: EditableComboDropdownProps) => {
+ 
     if (props.edit) {
         return (<div>
-            <ComboDropdown {...props.comboSettings} />
+            <ComboDropdown {...props.comboSettings}
+                value={props.value}
+                setValue={props.onChange}
+                createNewValue={() => {}} />
             <button><i className='fa fa-check' onClick={props.acceptChanges} aria-hidden='true'></i></button>
             <button><i className='fa fa-times' aria-hidden='true' onClick={props.cancelChanges}></i></button>
         </div>
@@ -65,7 +38,7 @@ export const EditableComboDropdown = (props: RecordRowProps) => {
         return (
             <div>
                 <p>
-                    {props.value === null || props.value.length > 0 ? props.value
+                    {props.value === null || props.value.key.length > 0 ? props.value.key
                     : (
                         <em>No value</em>
                     )}
