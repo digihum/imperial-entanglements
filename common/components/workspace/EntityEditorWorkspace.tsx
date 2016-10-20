@@ -25,8 +25,10 @@ import { connect } from 'react-redux';
 import { loadEntity } from '../../actions';
 
 import { EditableHeader, EditableFieldComponent } from '../fields/EditableHeader';
+import { EditableComboDropdown } from '../fields/EditableComboDropdown';
 
 class StringEditableFieldComponent extends EditableFieldComponent<string> {}
+class ComboEditableFieldComponent extends EditableFieldComponent<ComboDropdownOption> {}
 
 interface EntityEditorProps {
     api: ApiService;
@@ -153,6 +155,14 @@ class EntityEditorWorkspaceComponent extends React.Component<EntityEditorProps, 
 
         const options = this.state.predicates.map((pred) => ({ key: pred.name, value: pred.uid, meta: pred}));
 
+        let parentName = '';
+        if (this.state.potentialParents !== null && this.state.entity.parent !== undefined) {
+            const found = this.state.potentialParents.find((par) => par.uid === this.state.entity.parent);
+            if (found !== undefined) {
+                parentName = found.label;
+            }
+        }
+
         return (
             <div className='workspace-editor'>
                 <h2>Edit Entity {this.props.id} <i
@@ -179,6 +189,17 @@ class EntityEditorWorkspaceComponent extends React.Component<EntityEditorProps, 
                     url={`/${AppUrls.entityType}/${this.state.entityType.uid}`}
                     tabType='entity_type'
                 /></div>
+
+                <span>Parent:</span>
+                <ComboEditableFieldComponent
+                    value={{key: parentName, value: this.state.entity.parent}}
+                    component={EditableComboDropdown}
+                    onChange={(value) => this.update({'parent': value.value})}
+                    additionalProps={{ comboSettings: {
+                        options: this.state.potentialParents.map((par) => ({ key: par.label, value: par.uid})),
+                        typeName: 'Entity'
+                    }}} />
+
 
                 <RecordsEditor
                     dimension='predicates'

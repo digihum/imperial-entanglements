@@ -30,7 +30,8 @@ export class EntityPersistable extends Entity implements Persistable {
         this.deserialize({
             entityType: data.type,
             uid: data.uid,
-            label: data.label
+            label: data.label,
+            parent: data.parent
         });
         return this;
     }

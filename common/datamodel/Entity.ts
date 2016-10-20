@@ -9,7 +9,7 @@ import { Serializable } from './Serializable';
 export class Entity implements Serializable {
     public uid: number | null;
     public entityType: number; // TODO: ideally this should be readonly
-    public parent: number | Entity | null;
+    public parent: number | null;
     public readonly readonly: boolean;
     public label: string;
 
@@ -17,6 +17,7 @@ export class Entity implements Serializable {
        this.uid = data.uid;
        this.entityType = data.entityType;
        this.label = data.label;
+       this.parent = data.parent;
        return this;
     }
 
