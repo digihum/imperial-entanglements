@@ -14,14 +14,18 @@ import { ApiService, AppUrls } from '../../ApiService';
 import { Entity, Predicate, Record, Source } from '../../../common/datamodel/datamodel';
 
 import { ComboDropdown, ComboDropdownOption } from '../ComboDropdown';
-import { CreatePredicate } from '../modal/CreatePredicate';
-import { CreateRecord } from '../modal/CreateRecord';
-import { CreateSource } from '../modal/CreateSource';
 import { ModalDefinition } from '../modal/ModalDefinition';
 
 import { Dictionary, groupBy, noop } from 'lodash';
 
 import { createTab, showModal } from '../../Signaller';
+
+import { connect } from 'react-redux';
+import { loadEntity } from '../../actions';
+
+import { EditableHeader, EditableFieldComponent } from '../fields/EditableHeader';
+
+class StringEditableFieldComponent extends EditableFieldComponent<string> {}
 
 interface EntityEditorProps {
     api: ApiService;
@@ -53,7 +57,7 @@ interface EntityEditorState {
 //   to one of its parents. The range MUST be set.
 // Visualisations: 
 // - Network graph of entity relationships
-export class EntityEditorWorkspace extends React.Component<EntityEditorProps, EntityEditorState> {
+class EntityEditorWorkspaceComponent extends React.Component<EntityEditorProps, EntityEditorState> {
 
     constructor() {
         super();
@@ -141,6 +145,11 @@ export class EntityEditorWorkspace extends React.Component<EntityEditorProps, En
         showModal.dispatch(modalDef);
     }
 
+    public update(data: any) {
+        this.props.api.patchItem(Entity, AppUrls.entity, this.props.id, data)
+        .then(() => this.setState({ entity: Object.assign({}, this.state.entity, data)});
+    }
+
     public render() {
 
         if (this.state.entity === null || this.state.predicates === null) {
@@ -161,6 +170,14 @@ export class EntityEditorWorkspace extends React.Component<EntityEditorProps, En
                      onClick={this.deleteEntity.bind(this)}
                 ></i></h2>
 
+                <div className='edit-group'>
+                    <label>Label</label>
+                    <StringEditableFieldComponent
+                        value={this.state.entity.label}
+                        component={EditableHeader}
+                        onChange={(value) => this.update({ 'label': value })}  />
+                </div>
+
                 <RecordsEditor
                     dimension='predicates'
                     entityExists={true}
@@ -175,3 +192,23 @@ export class EntityEditorWorkspace extends React.Component<EntityEditorProps, En
         );
     }
 }
+
+
+const mapStateToProps = (state) => {
+  return {
+    test_entity: state.loaded_entity
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    onTodoClick: (id) => {
+      dispatch(loadEntity(id))
+    }
+  }
+}
+
+export const EntityEditorWorkspace = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(EntityEditorWorkspaceComponent)

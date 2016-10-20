@@ -21,6 +21,7 @@ import { CreatePredicate } from '../components/modal/CreatePredicate';
 import { CreateRecord } from '../components/modal/CreateRecord';
 import { CreateSource } from '../components/modal/CreateSource';
 import { CreateEntity } from '../components/modal/CreateEntity';
+import { CreateEntityType } from '../components/modal/CreateEntityType';
 
 import { ModalDefinition } from '../components/modal/ModalDefinition';
 
@@ -165,6 +166,9 @@ export class ObjectEditor extends React.Component<EntityEditorProps, EntityEdito
 
                         case 'entity':
                             return (<CreateEntity {...sharedProps} {...this.state.modalQueue[0].settings}/>);
+
+                        case 'entity_type':
+                            return (<CreateEntityType {...sharedProps} {...this.state.modalQueue[0].settings}/>);
                     }
                 })()}
             </section>

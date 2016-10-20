@@ -13,18 +13,18 @@ export class EntityType implements Serializable {
     public name: string;
     public description: string;
     public icon: string;
-    public color: string;
+    public colour: string;
     public sameAs: string[];
-    public parents: EntityType[];
+    public parent: EntityType[];
 
     public deserialize(data: any) : EntityType {
         this.uid = data.uid;
         this.name = data.name;
         this.description = data.description;
         this.icon = data.icon;
-        this.color = data.color;
+        this.colour = data.colour;
         this.sameAs = data.sameAs;
-        this.parents = data.parents;
+        this.parent = data.parent;
         return this;
     }
 

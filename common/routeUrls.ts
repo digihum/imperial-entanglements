@@ -65,11 +65,13 @@ export const routeUrls : RouteUrls = {
 
     [AppUrls.entityType]: {
         url: 'entity_type',
-        workspaceType: '',
-        itemView: RouteNotFound,
-        itemEdit: RouteNotFound,
-        collectionView: RouteNotFound,
-        collectionEdit: RouteNotFound
+        name: 'Entity Type',
+        plural: 'Entity Types',
+        workspaceType: 'entity_type',
+        itemView: ObjectEditor,
+        itemEdit: ObjectEditor,
+        collectionView: ObjectEditor,
+        collectionEdit: ObjectEditor
     },
 
     [AppUrls.predicate]: {

@@ -10,6 +10,7 @@ import { ApiService } from '../../ApiService';
 import { EntityList } from '../object_list/EntityList';
 import { PredicateList } from '../object_list/PredicateList';
 import { SourceList } from '../object_list/SourceList';
+import { EntityTypeList } from '../object_list/EntityTypeList';
 
 interface ObjectListWorkspaceProps {
     api: ApiService;
@@ -28,6 +29,8 @@ export const ObjectListWorkspace : React.StatelessComponent<ObjectListWorkspaceP
                     return (<SourceList api={props.api} />);
                 case 'predicate':
                     return (<PredicateList api={props.api} />);
+                case 'entity_type':
+                    return (<EntityTypeList api={props.api} />);
             }
         })()}
     </div>

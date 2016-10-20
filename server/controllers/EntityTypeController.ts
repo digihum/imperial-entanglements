@@ -10,6 +10,8 @@ import { EntityType } from '../../common/datamodel/EntityType';
 import { Persistable } from '../core/Persistable';
 import { GenericController } from './GenericController';
 
+import { omit } from 'lodash';
+
 export class EntityTypePersistable extends EntityType implements Persistable {
 
     public static readonly tableName: string = 'entity_types';
@@ -19,7 +21,9 @@ export class EntityTypePersistable extends EntityType implements Persistable {
     }
 
     public toSchema() {
-        return this.serialize();
+        return Object.assign(omit(this.serialize(), 'sameAs'), {
+            same_as: this.sameAs
+        });
     }
 
     public fromSchema(data: any) : EntityTypePersistable {
