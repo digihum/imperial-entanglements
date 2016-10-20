@@ -60,15 +60,22 @@ export class PredicateController extends GenericController<PredicatePersistable>
         if (params.domain !== undefined) {
             return this.db.query().raw(`
             WITH RECURSIVE parent_of(uid, parent) AS  (SELECT uid, parent FROM entity_types),
-                ancestor(parent) AS (
-                SELECT uid FROM parent_of WHERE uid=?
+                ancestor(uid) AS (
+                SELECT parent FROM parent_of WHERE uid=:uid
                 UNION ALL
-                SELECT uid FROM parent_of JOIN ancestor USING(parent) )
+                SELECT parent FROM parent_of JOIN ancestor USING(uid) ),
+				currentType(uid) AS (
+					SELECT uid from entity_types WHERE uid=:uid
+					UNION ALL
+					SELECT * from ancestor
+				)
                 
                 SELECT *
                 FROM predicates
-                WHERE predicates.domain IN ancestor;
-            `, params.domain).then((results) => results.map((result) => new obj().fromSchema(result)));
+                WHERE predicates.domain IN currentType
+            `, {
+                uid: params.domain
+            }).then((results) => results.map((result) => new obj().fromSchema(result)));
         } else {
             return super.getCollectionJson(obj, params);
         }

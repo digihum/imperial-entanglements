@@ -132,7 +132,8 @@ class EntityEditorWorkspaceComponent extends React.Component<EntityEditorProps, 
             },
             settings: {
                 options: this.state.predicates.map((pred) => ({ key: pred.name, value: pred.uid, meta: pred})),
-                entityUid: this.props.id
+                entityUid: this.props.id,
+                entityType: this.state.entityType.uid
             }
         };
 

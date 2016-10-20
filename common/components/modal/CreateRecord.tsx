@@ -22,6 +22,7 @@ interface CreateRecordProps {
     complete: (s: any) => void;
     cancel: () => void;
     entityUid: number;
+    entityType: number;
 }
 
 interface CreateRecordState {
@@ -45,14 +46,14 @@ export class CreateRecord extends React.Component<CreateRecordProps, CreateRecor
             complete: (data : Predicate) => {
                 console.log('Predicate editor called complete');
                 this.setComboValue({ key: data.name, value: data.uid.toString(), meta: data});
-                createTab.dispatch(data.name, `Predicate ${data.uid}`, `/${AppUrls.predicate}/${data.uid}`);
+                createTab.dispatch(data.name, `Predicate ${data.uid}`, `/${AppUrls.predicate}/${data.uid}`, 'predicate');
             },
             cancel: () => {
                 console.log('Predicate editor called cancel');
             },
             settings: {
                 initialName: this.state.searchValue,
-                initialDomain: 2
+                initialDomain: this.props.entityType
             }
         };
 
