@@ -5,10 +5,12 @@
  */
 
 import * as React from 'react';
+import { reverse } from 'lodash';
 
 interface ScorePickerProps {
     value: number;
-    onChange: (val: number) => void;
+    onChange?: (val: number) => void;
+    readOnly: boolean;
 }
 
 export const ScorePicker : React.StatelessComponent<ScorePickerProps> =
@@ -16,10 +18,27 @@ export const ScorePicker : React.StatelessComponent<ScorePickerProps> =
 
         const values = [1, 2, 3, 4, 5];
 
-        return (<span className='score-picker'>
-            {values.map((val) => (<i key={val}
-                className={'fa fa-star' + (val > props.value ? '-o' : '')}
-                onClick={() => props.onChange(val)}
-                aria-hidden='true'></i>))}
-        </span>);
+        if (props.readOnly) {
+            return (
+            <span className='score-picker'>
+                {values.map((val) => (<i key={val}
+                    className={'fa fa-star' + (val > props.value ? '-o' : '')}
+                    aria-hidden='true'></i>))}
+            </span>
+            );
+        } else {
+            if (props.onChange === undefined) {
+                throw new Error('An onChange handler is required');
+            }
+            return (
+            <span className='score-picker editing'>
+                {reverse(values).map((val) => (<i key={val}
+                    className={'fa fa-star' + (val > props.value ? '-o' : '')}
+                    onClick={() => props.onChange(val)}
+                    aria-hidden='true'></i>))}
+            </span>
+            );
+        }
+
+
     };

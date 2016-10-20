@@ -17,7 +17,9 @@ CREATE TABLE records (
         ON UPDATE CASCADE
         ON DELETE CASCADE,
 
-    score INTEGER CHECK(score IN (1,2,3,4,5)),
+    score INTEGER CHECK(score IN (1,2,3,4,5))
+        NOT NULL
+        DEFAULT 3,
 
     period INTEGER
         REFERENCES entities(uid)

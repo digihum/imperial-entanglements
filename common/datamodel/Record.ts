@@ -11,7 +11,7 @@ export class Record implements Serializable {
     public source: number | null;
     public predicate: number;
     public entity: number;
-    public score: number | null;
+    public score: number;
     public value: string | null;
 
     //calculated

@@ -80,7 +80,8 @@ export const RecordRow = (props: RecordRowProps) => {
                 />
             </div>
             <div className='record-row-item score'>
-                <ScorePicker value={3} onChange={(val) => console.log(val)} />
+                <ScorePicker value={props.value.score} readOnly={false}
+                    onChange={(score) => props.onChange(Object.assign(props.value, { score }))} />
             </div>
             <div className='record-row-item buttons'>
                 <button><i className='fa fa-check' onClick={props.acceptChanges} aria-hidden='true'></i></button>
@@ -101,11 +102,7 @@ export const RecordRow = (props: RecordRowProps) => {
                 ) : null}
 			</div>
             <div className='record-row-item score'>
-                <i className='fa fa-star-o' aria-hidden='true'></i>
-                <i className='fa fa-star-o' aria-hidden='true'></i>
-                <i className='fa fa-star-o' aria-hidden='true'></i>
-                <i className='fa fa-star-o' aria-hidden='true'></i>
-                <i className='fa fa-star-o' aria-hidden='true'></i>
+                 <ScorePicker value={props.value.score} readOnly={true} />
             </div>
             <div className='record-row-item buttons'>
                 <button><i className='fa fa-pencil-square-o' onClick={props.setEdit} aria-hidden='true'></i></button>

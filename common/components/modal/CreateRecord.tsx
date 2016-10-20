@@ -64,7 +64,8 @@ export class CreateRecord extends React.Component<CreateRecordProps, CreateRecor
             new Record().deserialize({
                 predicate: opt.meta.uid,
                 entity: this.props.entityUid,
-                valueType: opt.meta.rangeIsReference ? 'entity' : opt.meta.range
+                valueType: opt.meta.rangeIsReference ? 'entity' : opt.meta.range,
+                score: 3
             }))
         .then((result) => this.props.complete(result))
         .catch(this.props.cancel);

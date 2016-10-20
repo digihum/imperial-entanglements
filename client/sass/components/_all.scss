@@ -6,8 +6,20 @@
 @import 'record_editor';
 @import 'source_editor';
 
-// https://css-tricks.com/star-ratings/
-.score-picker > i:hover:before,
-.score-picker > i:hover ~ i:before {
-   color: orange;
+.score-picker.editing  {
+  unicode-bidi: bidi-override;
+  direction: rtl;
+}
+.score-picker.editing > i {
+  display: inline-block;
+  position: relative;
+  font-family: FontAwesome;
+  font-weight: normal;
+  font-style: normal;
+  cursor: pointer;
+}
+.score-picker.editing  > i:hover:before,
+.score-picker.editing  > i:hover ~ i:before {
+    content: "\f005";
+    color: #e3cf7a;
 }
