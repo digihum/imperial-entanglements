@@ -71,49 +71,35 @@ class EntityEditorWorkspaceComponent extends React.Component<EntityEditorProps, 
         };
     }
 
+    // loads
+    // data from the entity
+    // predicates with a domain of this type
+    // records for this entity
+    // all sources
     public componentDidMount() {
-
-        this.props.api.getItem(Entity, AppUrls.entity, this.props.id).then((data) => {
-            this.setState({ entity: data });
-            this.loadPredicates(data.entityType);
-            createTab.dispatch(`Entity #${this.props.id}`, data.entityType, `/${AppUrls.entity}/${this.props.id}`);
-        });
-
-        this.loadRecords();
-
-        this.props.api.getCollection(Source, AppUrls.source, {})
-        .then((data) => this.setState({ sources: data }));
+        this.loadData(this.props);
     }
 
     public componentWillReceiveProps(newProps: EntityEditorProps)  {
-
-        newProps.api.getItem(Entity, AppUrls.entity, newProps.id).then((data) => {
-            this.setState({ entity: data });
-            this.loadPredicates(data.entityType);
-            createTab.dispatch(`Entity #${newProps.id}`, data.entityType, `/${AppUrls.entity}/${newProps.id}`);
-        });
-
-        this.props.api.getCollection(Record, AppUrls.record, { entity: newProps.id })
-		.then((data) => {
-			this.setState({ records: groupBy(data, 'predicate') });
-		});
-
-        newProps.api.getCollection(Source, AppUrls.source, {})
-        .then((data) => this.setState({ sources: data }));
+        this.loadData(newProps);
     }
 
-    public loadRecords() {
-        this.props.api.getCollection(Record, AppUrls.record, { entity: this.props.id })
-		.then((data) => {
-			this.setState({ records: groupBy(data, 'predicate') });
-		});
-    }
+    public loadData(props: EntityEditorProps) {
 
-    public loadPredicates(entityType: number) {
-        return this.props.api.getCollection(Predicate, AppUrls.predicate, { domain: entityType })
-        .then((predicateData) => {
-            return new Promise((res) => {
-                this.setState({ predicates: predicateData }, res);
+        props.api.getItem(Entity, AppUrls.entity, props.id).then((entity) => {
+            createTab.dispatch(`Entity #${props.id}`, entity.entityType, `/${AppUrls.entity}/${props.id}`);
+            Promise.all([
+                props.api.getCollection(Predicate, AppUrls.predicate, { domain: entity.entityType }),
+                props.api.getCollection(Record, AppUrls.record, { entity: props.id }),
+                props.api.getCollection(Source, AppUrls.source, {})
+            ])
+            .then(([predicates, records, sources]) => {
+                this.setState({
+                    sources,                    
+                    predicates,
+                    entity,
+                    records: groupBy(records, 'predicate'),
+                });
             });
         });
     }
@@ -130,8 +116,7 @@ class EntityEditorWorkspaceComponent extends React.Component<EntityEditorProps, 
             name: 'record',
             complete: (data) => {
                 console.log('Records editor called complete');
-                this.loadPredicates(this.state.entity.entityType)
-                .then(() => this.loadRecords());
+                this.loadData(this.props);
             },
             cancel: () => {
                 console.log('Records editor called cancel');
@@ -184,7 +169,7 @@ class EntityEditorWorkspaceComponent extends React.Component<EntityEditorProps, 
                     id={this.props.id}
                     api={this.props.api}
                     records={this.state.records}
-                    onChange={this.loadRecords.bind(this)}
+                    onChange={this.loadData.bind(this, this.props)}
                     predicates={this.state.predicates}
                     sources={this.state.sources}
                 />
