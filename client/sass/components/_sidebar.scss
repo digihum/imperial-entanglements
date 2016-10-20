@@ -17,22 +17,47 @@
 
     .sidebar-card {
         background-color: white;
-        padding: 1em;
+        padding: 0.6em;
         border-radius: 2px;
         border: #c2c0c0 1px solid;
         position: relative;
         margin: 0.5em 1em;
+        display: flex;
 
-        .entity-name {
-            display: block;
-            font-weight: 600;
+        .badge-container {
+            flex: 0 0 2em;
+            display: flex;
+            align-content: center;
+            justify-content: center;
+
+            .badge {
+                width: 1.6em;
+                height: 1.6em;
+                border-radius: 50%;
+                background-color: #c9e6f2;
+                display: flex;
+                align-content: center;
+                justify-content: center;
+                span {
+                    text-decoration: none;
+                }
+            }
         }
 
-        .entity-type {
-            display: block;
-            font-size: 0.8em;
-            color: #575757;
+        .description {
+            .entity-name {
+                display: block;
+                font-weight: 600;
+            }
+
+            .entity-type {
+                display: block;
+                font-size: 0.8em;
+                color: #575757;
+            }
         }
+
+
 
         .close-button {
             position: absolute;

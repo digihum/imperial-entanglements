@@ -49,8 +49,15 @@ export class Sidebar extends React.Component<SidebarProps, SidebarState> {
                         <li key={`${tab.url}`}>
                             <Link to={tab.url}>
                                 <div className='sidebar-card'>
-                                    <span className='entity-name'>{tab.title}</span>
-                                    <span className='entity-type'>{tab.subtitle}</span>
+                                    <div className='badge-container'>
+                                        <div className='badge'>
+                                            <span>E</span>
+                                        </div>
+                                    </div>
+                                    <div className='description'>
+                                        <span className='entity-name'>{tab.title}</span>
+                                        <span className='entity-type'>{tab.subtitle}</span>
+                                    </div>
                                     <span className='close-button'>
                                         <i className='fa fa-times' onClick={(e) => this.closeTab(e, tab.url)}></i>
                                     </span>
