@@ -68,44 +68,4 @@ export class RecordController extends GenericController<RecordPersistable> {
     constructor(db : Database) {
         super(db, RecordPersistable.tableName);
     }
-/*
-    public getItemJson(obj: { new(): RecordPersistable; }, uid: number) : Promise<RecordPersistable> {
-
-        const fields = [
-            'records.*',
-            'records_entity.reference as entity',
-            'records_string.value as string',
-            'records_date.value as date',
-            'records_integer.value as integer',
-            'records_spatial_point.value as spatial_point'
-            ];
-
-        const query = this.db.query().select(fields)
-            .from(this.tableName)
-            .debug(true)
-            .leftJoin('records_entity', 'records.uid', '=', 'records_entity.uid')
-            .leftJoin('records_string', 'records.uid', '=', 'records_string.uid')
-            .leftJoin('records_date', 'records.uid', '=', 'records_date.uid')
-            .leftJoin('records_integer', 'records.uid', '=', 'records_integer.uid')
-            .leftJoin('records_spatial_point', 'records.uid', '=', 'records_spatial_point.uid')
-            .where({ 'records.uid': uid })
-            .first();
-
-        return query.then((data) => new obj().fromSchema(data));
-    }
-
-    //TODO: it is concivable that the first insert will succeed and the second will fail, the first
-    // should be rolled back in this case.
-    public postItem(obj: { new(): RecordPersistable; }, data: RecordPersistable) : Promise<string> {
-        return super.postItem(obj, data);
-        // .then(([id]) => {
-        //     if (data.rangeIsReference) {
-        //         return this.db.query().insert({ uid: id, range: data.range}).into('predicates_ref')
-        //         .then(() => id);
-        //     } else {
-        //         return this.db.query().insert({ uid: id, range: data.range}).into('predicates_val')
-        //         .then(() => id);
-        //     }
-        // });
-    }*/
 }

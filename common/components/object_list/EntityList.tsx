@@ -45,6 +45,10 @@ export class EntityList extends React.Component<EntityListProps, EntityListState
     }
 
     public componentWillMount() {
+        this.loadData();
+    }
+
+    public loadData() {
         Promise.all([
             this.props.api.getCollection(Entity, AppUrls.entity, {}),
             this.props.api.getCollection(EntityType, AppUrls.entityType, {}),
@@ -57,6 +61,7 @@ export class EntityList extends React.Component<EntityListProps, EntityListState
         const a : ModalDefinition = {
             name: 'entity',
             complete: () => {
+                this.loadData();
             },
             cancel: () => { console.log('cancel')},
             settings: {

@@ -30,7 +30,9 @@ export const RecordRow = (props: RecordRowProps) => {
                 // TODO : Automatically reload sources
             },
             cancel: () => { console.log('cancel')},
-            settings: {}
+            settings: {
+                initialValue
+            }
         };
 
         showModal.dispatch(a);

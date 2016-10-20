@@ -15,6 +15,7 @@ interface CreateSourceProps {
     api: ApiService;
     complete: (s: string) => void;
     cancel: () => void;
+    initialValue: string;
 }
 
 interface CreateSourceState {
@@ -28,6 +29,10 @@ export class CreateSource extends React.Component<CreateSourceProps, CreateSourc
         this.state = {
             internalValue: ''
         };
+    }
+
+    public componentWillMount() {
+        this.setState({ internalValue: this.props.initialValue});
     }
 
     public createSource() {
