@@ -80,11 +80,11 @@ export class ObjectEditor extends React.Component<EntityEditorProps, EntityEdito
         showModal.add(this.boundAddModal);
     }
 
-    public createTab(title: string, subtitle: string, url: string) {
+    public createTab(title: string, subtitle: string, url: string, tabType: string) {
         if (find(this.state.tabs, (tab) => tab.url === url) === undefined) {
             this.setState({
-                tabs: this.state.tabs.concat([{ title, subtitle, url}])
-            });
+                tabs: this.state.tabs.concat([{ title, subtitle, url, tabType}])
+            }, this.saveTabs.bind(this));
         }
     }
 

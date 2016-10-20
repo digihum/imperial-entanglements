@@ -87,7 +87,8 @@ export class SourceList extends React.Component<SourceListProps, SourceListState
                             <td>{source.uid} <AddTabButton
                                 title={source.name}
                                 subtitle={`Source ${source.uid}`}
-                                url={`/${AppUrls.source}/${source.uid}`} /></td>
+                                url={`/${AppUrls.source}/${source.uid}`}
+                                tabType='source' /></td>
                             <td>{source.name}</td>
                             <td></td>
                         </tr>

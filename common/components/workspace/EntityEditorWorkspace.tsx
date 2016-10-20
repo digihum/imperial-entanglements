@@ -39,6 +39,7 @@ interface EntityEditorState {
     comboSearchValue: string;
     records: Dictionary<Record[]>;
     sources: Source[];
+    potentialParents: Entity[];
 }
 
 // What can I do?
@@ -67,7 +68,8 @@ class EntityEditorWorkspaceComponent extends React.Component<EntityEditorProps, 
             comboValue: { key: 'test', value: ''},
             comboSearchValue: '',
             records: [],
-            sources: []
+            sources: [],
+            potentialParents: []
         };
     }
 
@@ -87,17 +89,19 @@ class EntityEditorWorkspaceComponent extends React.Component<EntityEditorProps, 
     public loadData(props: EntityEditorProps) {
 
         props.api.getItem(Entity, AppUrls.entity, props.id).then((entity) => {
-            createTab.dispatch(`Entity #${props.id}`, entity.entityType, `/${AppUrls.entity}/${props.id}`);
+            createTab.dispatch(`Entity #${props.id}`, entity.entityType, `/${AppUrls.entity}/${props.id}`, 'entity');
             Promise.all([
                 props.api.getCollection(Predicate, AppUrls.predicate, { domain: entity.entityType }),
                 props.api.getCollection(Record, AppUrls.record, { entity: props.id }),
-                props.api.getCollection(Source, AppUrls.source, {})
+                props.api.getCollection(Source, AppUrls.source, {}),
+                props.api.getCollection(Entity, AppUrls.entity, { type: entity.entityType })
             ])
-            .then(([predicates, records, sources]) => {
+            .then(([predicates, records, sources, potentialParents]) => {
                 this.setState({
                     sources,                    
                     predicates,
                     entity,
+                    potentialParents,
                     records: groupBy(records, 'predicate'),
                 });
             });

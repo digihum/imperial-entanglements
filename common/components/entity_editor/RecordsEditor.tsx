@@ -15,6 +15,8 @@ import { createTab } from '../../Signaller';
 
 import { groupBy, Dictionary } from 'lodash';
 
+import { AddTabButton } from '../AddTabButton';
+
 class RecordEditableFieldComponent extends EditableFieldComponent<Record> {}
 
 interface RecordsEditorProps {
@@ -110,10 +112,10 @@ export class RecordsEditor extends React.Component<RecordsEditorProps, RecordsEd
 
 							return (<section key={`section-${section}`}>
 								<h5 className='section-header'>{currentPredicate.name}
-									<i className='icon-list-add add-button'
-									onClick={() => createTab.dispatch(currentPredicate.name, 
-											currentPredicate.uid,
-											 `/${AppUrls.predicate}/${currentPredicate.uid}`)}></i>
+								<AddTabButton title={currentPredicate.name}
+									subtitle={currentPredicate.uid.toString()}
+									url={`/${AppUrls.predicate}/${currentPredicate.uid}`}
+									tabType='predicate' />
 								</h5>
 								<div className='record-row title'>
 									<div className='record-row-item uid'>ID</div>

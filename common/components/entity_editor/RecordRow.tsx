@@ -15,6 +15,7 @@ import { ModalDefinition } from '../modal/ModalDefinition';
 import { AppUrls } from '../../ApiService';
 
 import { StringFieldEditor } from './StringFieldEditor';
+import { AddTabButton } from '../AddTabButton';
 
 interface RecordRowProps extends EditableSubfieldProps<Record> {
     dimension: string;
@@ -93,10 +94,10 @@ export const RecordRow = (props: RecordRowProps) => {
             <div className='record-row-item'>{props.value.value}</div>
             <div className='record-row-item'>{dropDownValue.key}
                 {dropDownValue.key.length > 0 ? (
-                    <i className='icon-list-add add-button'
-                    onClick={() => createTab.dispatch(dropDownValue.key, 
-                            dropDownValue.value,
-                                `/${AppUrls.source}/${dropDownValue.value}`)}></i>
+                    <AddTabButton title={dropDownValue.key}
+                        subtitle={`Source ${dropDownValue.value}`}
+                        url={`/${AppUrls.source}/${dropDownValue.value}`}
+                        tabType='source' />
                 ) : null}
 			</div>
             <div className='record-row-item score'>

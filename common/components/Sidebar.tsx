@@ -13,6 +13,7 @@ export interface Tab {
     title: string;
     subtitle: string;
     url: string;
+    tabType: string;
 }
 
 interface SidebarProps {
@@ -47,22 +48,22 @@ export class Sidebar extends React.Component<SidebarProps, SidebarState> {
                 <ul className='card-list'>
                     {this.props.tabs.map((tab) => (
                         <li key={`${tab.url}`}>
-                            <Link to={tab.url}>
-                                <div className='sidebar-card'>
-                                    <div className='badge-container'>
-                                        <div className='badge'>
-                                            <span>E</span>
-                                        </div>
+                            <div className='sidebar-card'>
+                                <div className='badge-container'>
+                                    <div className={'badge ' + tab.tabType}>
+                                        <span>{tab.tabType[0].toUpperCase()}</span>
                                     </div>
-                                    <div className='description'>
+                                </div>
+                                <div className='description'>
+                                    <Link to={tab.url}>
                                         <span className='entity-name'>{tab.title}</span>
                                         <span className='entity-type'>{tab.subtitle}</span>
-                                    </div>
-                                    <span className='close-button'>
-                                        <i className='fa fa-times' onClick={(e) => this.closeTab(e, tab.url)}></i>
-                                    </span>
+                                    </Link>
                                 </div>
-                            </Link>
+                                <span className='close-button'>
+                                    <i className='fa fa-times' onClick={(e) => this.closeTab(e, tab.url)}></i>
+                                </span>
+                            </div>
                         </li>
                     ))}
 

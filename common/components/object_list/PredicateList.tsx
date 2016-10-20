@@ -93,7 +93,8 @@ export class PredicateList extends React.Component<PredicateListProps, Predicate
                             <td>{predicate.uid} <AddTabButton
                                 title={predicate.name}
                                 subtitle={`Predicate ${predicate.uid}`}
-                                url={`/${AppUrls.predicate}/${predicate.uid}`} /></td>
+                                url={`/${AppUrls.predicate}/${predicate.uid}`}
+                                tabType='predicate' /></td>
                             <td>{predicate.name}</td>
                             <td>{entityType ? entityType.name : ''}</td>
                         </tr>

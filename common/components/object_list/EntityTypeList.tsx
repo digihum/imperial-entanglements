@@ -79,7 +79,8 @@ export class EntityTypeList extends React.Component<EntityTypeListProps, EntityT
                             <td>{entityType.uid} <AddTabButton
                                 title={entityType.name}
                                 subtitle={`Entity Type ${entityType.uid}`}
-                                url={`/${AppUrls.entityType}/${entityType.uid}`} /></td>
+                                url={`/${AppUrls.entityType}/${entityType.uid}`}
+                                tabType='entity_type' /></td>
                             <td>{entityType.name}</td>
                             <td></td>
                         </tr>

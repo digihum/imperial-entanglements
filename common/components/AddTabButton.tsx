@@ -11,10 +11,11 @@ interface AddTabButtonProps {
     title: string;
     subtitle: string;
     url: string;
+    tabType: string;
 }
 
 export const AddTabButton : React.StatelessComponent<AddTabButtonProps> =
     (props: AddTabButtonProps) => (
         <i className='icon-list-add add-button'
-                    onClick={() => createTab.dispatch(props.title, props.subtitle, props.url)}></i>
+                    onClick={() => createTab.dispatch(props.title, props.subtitle, props.url, props.tabType)}></i>
     );
