@@ -17,6 +17,8 @@ import { AppUrls } from '../../ApiService';
 import { StringFieldEditor } from './StringFieldEditor';
 import { EntityFieldEditor } from './EntityFieldEditor';
 import { DateFieldEditor } from './DateFieldEditor';
+import { IntegerFieldEditor } from './IntegerFieldEditor';
+
 import { AddTabButton } from '../AddTabButton';
 
 interface RecordRowProps extends EditableSubfieldProps<Record> {
@@ -70,6 +72,10 @@ export const RecordRow = (props: RecordRowProps) => {
                                 onChange={(value) => props.onChange(Object.assign(props.value, { value }))} />);
                         case 'date':
                             return (<DateFieldEditor
+                                value={props.value.value || ''}
+                                onChange={(value) => props.onChange(Object.assign(props.value, { value }))} />);
+                        case 'integer':
+                            return (<IntegerFieldEditor
                                 value={props.value.value || ''}
                                 onChange={(value) => props.onChange(Object.assign(props.value, { value }))} />);
                         case 'entity':
