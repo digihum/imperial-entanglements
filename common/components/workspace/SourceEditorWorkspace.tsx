@@ -91,10 +91,13 @@ export class SourceEditorWorkspace extends React.Component<SourceEditorProps, So
     public updateSourceElement(element: Element, value: string) {
 
         if (this.state.metaData.hasOwnProperty(element.name)) {
-            this.props.api.patchItem(SourceElement, AppUrls.sourceElement,
+            this.props.api.putItem(SourceElement, AppUrls.sourceElement,
             this.state.metaData[element.name].uid,
                 new SourceElement().deserialize({
-                    value: value
+                    uid: this.state.metaData[element.name].uid,
+                    element: this.state.metaData[element.name].element_uid,
+                    source: this.props.id,
+                    value
                 }));
         } else {
             this.props.api.postItem(SourceElement, AppUrls.sourceElement,

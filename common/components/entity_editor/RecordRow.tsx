@@ -42,6 +42,30 @@ const createNewSource = (initialValue: string) => {
         showModal.dispatch(a);
     };
 
+const recordEditor = (props: RecordRowProps) => {
+    switch (props.value.valueType) {
+        case 'string':
+            return (<StringFieldEditor
+                value={props.value.value || ''}
+                onChange={(value) => props.onChange(Object.assign(props.value, { value }))} />);
+        case 'date':
+            return (<DateFieldEditor
+                value={props.value.value || ''}
+                onChange={(value) => props.onChange(Object.assign(props.value, { value }))} />);
+        case 'integer':
+            return (<IntegerFieldEditor
+                value={props.value.value || ''}
+                onChange={(value) => props.onChange(Object.assign(props.value, { value }))} />);
+        case 'entity':
+            return (<EntityFieldEditor
+                value={props.value.value || ''}
+                onChange={(value) => props.onChange(Object.assign(props.value, { value }))}
+                entities={props.entities} />);
+        default:
+            return (<div>Missing editor</div>);
+    }
+}
+
 export const RecordRow = (props: RecordRowProps) => {
 
     const recordValue = props.value;
@@ -64,29 +88,7 @@ export const RecordRow = (props: RecordRowProps) => {
         <div className='record-row'>
             <div className='record-row-item uid'>#{props.value.uid}</div>
             <div className='record-row-item'>
-                {(() => {
-                    switch(props.value.valueType) {
-                        case 'string':
-                            return (<StringFieldEditor
-                                value={props.value.value || ''}
-                                onChange={(value) => props.onChange(Object.assign(props.value, { value }))} />);
-                        case 'date':
-                            return (<DateFieldEditor
-                                value={props.value.value || ''}
-                                onChange={(value) => props.onChange(Object.assign(props.value, { value }))} />);
-                        case 'integer':
-                            return (<IntegerFieldEditor
-                                value={props.value.value || ''}
-                                onChange={(value) => props.onChange(Object.assign(props.value, { value }))} />);
-                        case 'entity':
-                            return (<EntityFieldEditor
-                                value={props.value.value || ''}
-                                onChange={(value) => props.onChange(Object.assign(props.value, { value }))}
-                                entities={props.entities} />);
-                        default:
-                            return (<div>Missing editor</div>);
-                    }
-                })()}
+                {recordEditor(props)}
             </div>
             <div className='record-row-item'>
                 <ComboDropdown

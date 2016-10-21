@@ -13,10 +13,10 @@ export class SourceElement implements Serializable {
     public value: string;
 
     public deserialize(data: any) : SourceElement {
-        this.uid = data.uid !== undefined ? data.uid : null;
-        this.source = data.source !== undefined ? data.source : null;
-        this.element = data.element !== undefined ? data.element : null;
-        this.value = data.value !== undefined ? data.value : null;
+        this.uid = data.uid;
+        this.source = data.source;
+        this.element = data.element;
+        this.value = data.value;
         return this;
     }
 
