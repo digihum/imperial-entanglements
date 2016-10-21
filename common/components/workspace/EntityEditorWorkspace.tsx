@@ -27,6 +27,8 @@ import { loadEntity } from '../../actions';
 import { EditableHeader, EditableFieldComponent } from '../fields/EditableHeader';
 import { EditableComboDropdown } from '../fields/EditableComboDropdown';
 
+import { DataStore } from '../../DataStore';
+
 class StringEditableFieldComponent extends EditableFieldComponent<string> {}
 class ComboEditableFieldComponent extends EditableFieldComponent<ComboDropdownOption> {}
 
@@ -64,7 +66,7 @@ interface EntityEditorState {
 // - Network graph of entity relationships
 class EntityEditorWorkspaceComponent extends React.Component<EntityEditorProps, EntityEditorState> {
 
-    constructor() {
+    constructor(props : EntityEditorProps, context: any) {
         super();
         this.state = {
             entity: null,
@@ -76,6 +78,7 @@ class EntityEditorWorkspaceComponent extends React.Component<EntityEditorProps, 
             potentialParents: [],
             entityType: null
         };
+        this.loadData(props);
     }
 
     // loads
@@ -83,14 +86,16 @@ class EntityEditorWorkspaceComponent extends React.Component<EntityEditorProps, 
     // predicates with a domain of this type
     // records for this entity
     // all sources
-    public componentDidMount() {
-        this.loadData(this.props);
-    }
 
     public componentWillReceiveProps(newProps: EntityEditorProps)  {
         this.loadData(newProps);
     }
 
+    // loads
+    // data from the entity
+    // predicates with a domain of this type
+    // records for this entity
+    // all sources
     public loadData(props: EntityEditorProps) {
 
         props.api.getItem(Entity, AppUrls.entity, props.id).then((entity) => {

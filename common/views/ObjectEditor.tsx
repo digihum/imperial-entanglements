@@ -25,6 +25,8 @@ import { CreateEntityType } from '../components/modal/CreateEntityType';
 
 import { ModalDefinition } from '../components/modal/ModalDefinition';
 
+import { DataStore } from '../DataStore';
+
 interface ExpectedParams {
     id: number;
 }
@@ -44,6 +46,7 @@ interface EntityEditorState {
     tabs: Tab[];
     inBrowser: boolean;
     modalQueue: ModalDefinition[];
+    dataStore: DataStore;
 }
 
 export class ObjectEditor extends React.Component<EntityEditorProps, EntityEditorState> {
@@ -52,7 +55,7 @@ export class ObjectEditor extends React.Component<EntityEditorProps, EntityEdito
     private boundCloseTab: any;
     private boundAddModal: any;
 
-    constructor() {
+    constructor(props: EntityEditorProps, context: any) {
         super();
         this.state = {
             entity: new Entity(),
@@ -61,7 +64,8 @@ export class ObjectEditor extends React.Component<EntityEditorProps, EntityEdito
             options: [],
             tabs: [],
             inBrowser: (typeof window !== 'undefined'),
-            modalQueue: []
+            modalQueue: [],
+            dataStore: new DataStore(props.api, () => { this.forceUpdate(); })
         };
 
         if (this.state.inBrowser) {
