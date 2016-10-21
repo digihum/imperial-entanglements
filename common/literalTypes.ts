@@ -6,5 +6,6 @@
 
 export const literalTypes: { name: string, url: string, description: string }[] = [
     { name: 'string', url: '', description: 'some text' },
-    { name: 'integer', url: '', description: 'a number' }
-]
+    { name: 'integer', url: '', description: 'a number' },
+    { name: 'date', url: '', description: 'a date'}
+];
