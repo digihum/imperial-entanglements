@@ -13,6 +13,9 @@ import { RecordRow } from './RecordRow';
 
 import { createTab } from '../../Signaller';
 
+
+import { RecordPredicate } from './RecordPredicate';
+
 import { groupBy, Dictionary } from 'lodash';
 
 import { AddTabButton } from '../AddTabButton';
@@ -36,27 +39,6 @@ interface RecordsEditorState {
 
 export class RecordsEditor extends React.Component<RecordsEditorProps, RecordsEditorState> {
 
-	// public updateRecords() {
-	// 	this.props.service.getPerson(this.props.id)
-	// 	.then((data) => {
-	// 		this.setState({
-	// 			data: data
-	// 		});
-	// 	});
-
-	// 	this.props.service.getFields()
-	// 	.then((data) => {
-	// 		this.setState({
-	// 			fields: data
-	// 		});
-	// 	});
-	// }
-
-	// public postChange(updatedRecord) {
-	// 	return this.props.service.changeRecord(this.props.id, updatedRecord)
-	// 	.then(this.updateRecords);
-	// }
-
 	public deleteRecord(record: Record) {
 
 		if (record.uid === null) {
@@ -72,15 +54,6 @@ export class RecordsEditor extends React.Component<RecordsEditorProps, RecordsEd
 	public recordChanged(record: Record) {
 		this.props.api.putItem(Record, AppUrls.record, this.props.id, record.serialize());
 	}
-
-	// public postAdd(newRecord) {
-	// 	return this.props.service.addRecord(this.props.id, newRecord)
-	// 	.then(this.updateRecords);
-	// }
-
-	// public changeFilter(event) {
-	// 	this.setState({filter: event.target.value});
-	// }
 
 	public render() {
 
@@ -110,35 +83,18 @@ export class RecordsEditor extends React.Component<RecordsEditorProps, RecordsEd
 								throw new Error('Could not find predicate');
 							}
 
-							return (<section key={`section-${section}`}>
-								<h5 className='section-header'>{currentPredicate.name}
-								<AddTabButton title={currentPredicate.name}
-									subtitle={`Predicate ${currentPredicate.uid}`}
-									url={`/${AppUrls.predicate}/${currentPredicate.uid}`}
-									tabType='predicate' />
-								</h5>
-								<div className='record-row title'>
-									<div className='record-row-item uid'>ID</div>
-									<div className='record-row-item'>Value</div>
-									<div className='record-row-item'>Source</div>
-									<div className='record-row-item score'>Score</div>
-									<div className='record-row-item buttons'>Actions</div>
-								</div>
-								{this.props.records[section].map((record) => (
-									<RecordEditableFieldComponent
-										key={`row-${record.uid}`}
-										value={record}
-										onChange={this.recordChanged.bind(this)}
-										onDelete={this.deleteRecord.bind(this)}
-										component={RecordRow}
-										additionalProps={{
-											dimension: 'predicates',
-											sources: this.props.sources
-										}}
-									/>
-								))}
-							</section>
-						)})}
+							return (<RecordPredicate
+								key={`section-${section}`}
+								entity_id={this.props.id}
+								api={this.props.api}
+								dimension='predicate'
+								records={this.props.records[section]}
+								predicate={currentPredicate}
+								sources={this.props.sources}
+								onChange={this.props.onChange}
+							 />);
+
+						})}
 					</div>
 				</div>
 			</div>

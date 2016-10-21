@@ -5,7 +5,7 @@
  */
 
 import * as React from 'react';
-import { Record, Source } from '../../../common/datamodel/datamodel';
+import { Record, Source, Entity } from '../../../common/datamodel/datamodel';
 import { EditableSubfieldProps } from '../fields/EditableFieldComponent';
 export { EditableFieldComponent } from '../fields/EditableFieldComponent';
 import { ScorePicker } from '../fields/ScorePicker';
@@ -15,16 +15,16 @@ import { ModalDefinition } from '../modal/ModalDefinition';
 import { AppUrls } from '../../ApiService';
 
 import { StringFieldEditor } from './StringFieldEditor';
+import { EntityFieldEditor } from './EntityFieldEditor';
 import { AddTabButton } from '../AddTabButton';
 
 interface RecordRowProps extends EditableSubfieldProps<Record> {
     dimension: string;
     sources: Source[];
+    entities: Entity[];
 }
 
-export const RecordRow = (props: RecordRowProps) => {
-
-    const createNewSource = (initialValue: string) => {
+const createNewSource = (initialValue: string) => {
         const a : ModalDefinition = {
             name: 'source',
             complete: () => {
@@ -37,7 +37,9 @@ export const RecordRow = (props: RecordRowProps) => {
         };
 
         showModal.dispatch(a);
-    }
+    };
+
+export const RecordRow = (props: RecordRowProps) => {
 
     const recordValue = props.value;
 
@@ -65,6 +67,11 @@ export const RecordRow = (props: RecordRowProps) => {
                             return (<StringFieldEditor
                                 value={props.value.value || ''}
                                 onChange={(value) => props.onChange(Object.assign(props.value, { value }))} />);
+                        case 'entity':
+                            return (<EntityFieldEditor
+                                value={props.value.value || ''}
+                                onChange={(value) => props.onChange(Object.assign(props.value, { value }))}
+                                entities={props.entities} />);
                         default:
                             return (<div>Missing editor</div>);
                     }
@@ -92,7 +99,24 @@ export const RecordRow = (props: RecordRowProps) => {
         return (
         <div className='record-row'>
             <div className='record-row-item uid'>#{props.value.uid}</div>
-            <div className='record-row-item'>{props.value.value}</div>
+            <div className='record-row-item'>
+                 {(() => {
+                     if (props.value.valueType === 'entity') {
+                         const entity = props.entities.find((entity) => entity.uid == props.value.value);
+                         if (entity !== undefined) {
+                             return (<span>
+                                {entity.label} <AddTabButton title={entity.label}
+                                    subtitle={`Entity ${entity.uid}`}
+                                    url={`/${AppUrls.entity}/${entity.uid}`}
+                                    tabType='entity' />
+                            </span>);
+                         } else {
+                             return (<em>Missing Entity</em>);
+                         }
+                     }
+                    return props.value.value;
+                })()}
+            </div>
             <div className='record-row-item'>{dropDownValue.key}
                 {dropDownValue.key.length > 0 ? (
                     <AddTabButton title={dropDownValue.key}
