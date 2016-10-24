@@ -45,7 +45,9 @@ export class PredicatePersistable extends Predicate implements Persistable {
             data.range = data.range_val;
             data.rangeIsReference = false;
         }
-        this.deserialize(data);
+        this.deserialize(Object.assign(data, {
+            'sameAs': data.same_as
+        }));
         return this;
     }
 }

@@ -6,7 +6,7 @@
 
 import * as React from 'react';
 
-import { SameAsEditor } from '../SameAsEditor';
+import { SameAsEditor } from '../fields/SameAsEditor';
 import { Loading } from '../Loading';
 import { ApiService, AppUrls } from '../../ApiService';
 
@@ -142,7 +142,10 @@ export class SourceEditorWorkspace extends React.Component<SourceEditorProps, So
                 ))}
 
                 <div>
-                    <SameAsEditor sameAsString='a,b,c,woot,list' />
+                    <StringEditableFieldComponent
+                        value={this.state.source.sameAs}
+                        component={SameAsEditor}
+                        onChange={(value) => this.updateSource('sameAs', value)} />
                 </div>
             </div>
         );

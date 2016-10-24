@@ -2,6 +2,7 @@ DROP TABLE IF EXISTS sources;
 CREATE TABLE sources (
     uid INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
     name varchar(255) NOT NULL,
+    same_as varchar(255),
     readonly char(1) DEFAULT FALSE
 );
 

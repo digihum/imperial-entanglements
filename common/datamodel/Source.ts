@@ -12,6 +12,7 @@ export class Source implements Serializable {
     public name: string;
     public readonly: boolean;
     public metaData: SourceElement[];
+    public sameAs: string;
 
     public serialize() : any {
         return this;
@@ -21,6 +22,7 @@ export class Source implements Serializable {
         this.name = data.name;
         this.uid = data.uid;
         this.metaData = data.metaData;
+        this.sameAs = data.sameAs;
         return this;
     }
 

@@ -12,7 +12,7 @@ export class Predicate implements Serializable {
     public range: string | number;
     public name: string;
     public description: string | null;
-    public sameAs: string[] | null;
+    public sameAs: string | null;
     public readonly: boolean | null;
 
     //calculated

@@ -20,7 +20,7 @@ interface EditableFieldProps<T> {
     value: T;
     onChange: (s: T) => void;
     onDelete?: (val: T) => void;
-    component: React.StatelessComponent<EditableSubfieldProps<T>>;
+    component: React.StatelessComponent<EditableSubfieldProps<T>> | React.Component<EditableSubfieldProps<T>, any>;
     additionalProps?: any;
 }
 
@@ -40,7 +40,7 @@ export class EditableFieldComponent<T> extends React.Component<EditableFieldProp
     }
 
     public componentWillMount() {
-        this.setState({internalValue: this.props.value});
+        this.setState({internalValue: this.props.value === undefined ? null : this.props.value});
     }
 
     public componentWillReceiveProps(newProps: EditableFieldProps<T>) {

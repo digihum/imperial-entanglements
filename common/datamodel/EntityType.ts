@@ -14,7 +14,7 @@ export class EntityType implements Serializable {
     public description: string;
     public icon: string;
     public colour: string;
-    public sameAs: string[];
+    public sameAs: string;
     public parent: number | null;
     public parents: EntityType[];
 

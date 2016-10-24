@@ -21,11 +21,15 @@ export class SourcePersistable extends Source implements Persistable {
     }
 
     public toSchema() {
-        return omit(this.serialize(), 'metaData');
+        return Object.assign({}, omit(this.serialize(), 'metaData', 'sameAs'), {
+            'same_as': this.sameAs
+        });
     }
 
     public fromSchema(data: any) : SourcePersistable {
-        this.deserialize(data);
+        this.deserialize(Object.assign(data, {
+            'sameAs': data.same_as
+        }));
         return this;
     }
 }

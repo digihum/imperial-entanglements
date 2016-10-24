@@ -27,7 +27,9 @@ export class EntityTypePersistable extends EntityType implements Persistable {
     }
 
     public fromSchema(data: any) : EntityTypePersistable {
-        this.deserialize(data);
+        this.deserialize(Object.assign(data, {
+            'sameAs': data.same_as
+        }));
         return this;
     }
 }

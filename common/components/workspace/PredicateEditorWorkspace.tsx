@@ -6,7 +6,7 @@
 
 import * as React from 'react';
 
-import { SameAsEditor } from '../SameAsEditor';
+import { SameAsEditor } from '../fields/SameAsEditor';
 import { Loading } from '../Loading';
 import { ApiService, AppUrls } from '../../ApiService';
 
@@ -177,7 +177,10 @@ export class PredicateEditorWorkspace extends React.Component<PredicateEditorPro
                 </div>
 
                 <div>
-                    <SameAsEditor sameAsString='a,b,c,woot,list' />
+                    <StringEditableFieldComponent
+                        value={this.state.predicate.sameAs}
+                        component={SameAsEditor}
+                        onChange={(value) => this.updatePredicate('sameAs', value)} />
                 </div>
             </div>
         );
