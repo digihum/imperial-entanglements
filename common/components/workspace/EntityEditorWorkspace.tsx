@@ -120,7 +120,7 @@ class EntityEditorWorkspaceComponent extends React.Component<EntityEditorProps, 
         });
     }
 
-    public deleteEntity() {
+    public del() {
         this.props.api.delItem(Entity, AppUrls.entity, this.props.id)
         .then(() => {
             window.location = '/';
@@ -177,7 +177,7 @@ class EntityEditorWorkspaceComponent extends React.Component<EntityEditorProps, 
                 ></i><i
                     className='fa fa-trash delete-button'
                      aria-hidden='true'
-                     onClick={this.deleteEntity.bind(this)}
+                     onClick={this.del.bind(this)}
                 ></i></h2>
 
                 <div className='edit-group'>

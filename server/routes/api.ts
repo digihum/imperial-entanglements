@@ -72,10 +72,14 @@ export const api : (router: KoaRouter, s: ServerApiService) => KoaRouter
                 case 'CollectionNotFoundException':
                     this.status = 404;
                     break;
+                case 'OperationNotPermittedException':
+                    this.status = 422;
+                    break;
                 default:
                     this.status = 500;
             }
-            this.body = err.message;
+            this.type = 'application/json';
+            this.body = err.data;
         }
     });
 

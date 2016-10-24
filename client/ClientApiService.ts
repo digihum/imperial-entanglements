@@ -10,15 +10,30 @@ import * as queryString from 'query-string';
 
 export { AppUrls } from '../common/ApiService';
 
+function handleErrors(response: any) {
+    if (!response.ok) {
+        response.json().then((data) => {
+            throw Error(JSON.stringify({
+                data,
+                statusText: response.statusText,
+                status: response.status
+            }));
+        });
+    }
+    return response;
+}
+
 export class ClientApiService implements ApiService {
     public getItem<T extends Serializable>(obj: { new(): T; }, baseUrl : string, uid: number) : Promise<T> {
         return fetch(`/api/v1/${baseUrl}/${uid}`)
+            .then(handleErrors)
             .then((response) => response.json())
             .then((data) => new obj().deserialize(data));
     }
 
     public getCollection<T extends Serializable>(obj: { new(): T; }, baseUrl : string, params: any) : Promise<T[]> {
         return fetch(`/api/v1/${baseUrl}?` + queryString.stringify(params))
+            .then(handleErrors)
             .then((response) => response.json())
             .then((data) => data.map((datum) => new obj().deserialize(datum)));
     }
@@ -32,6 +47,7 @@ export class ClientApiService implements ApiService {
                 'Content-Type': 'application/json'
             }
         })
+        .then(handleErrors)
         .then((response) => response.json());
     }
 
@@ -44,6 +60,7 @@ export class ClientApiService implements ApiService {
                 'Content-Type': 'application/json'
             }
         })
+        .then(handleErrors)
         .then((response) => response.json());
     }
 
@@ -56,6 +73,7 @@ export class ClientApiService implements ApiService {
                 'Content-Type': 'application/json'
             }
         })
+        .then(handleErrors)
         .then((response) => response.json());
     }
 
@@ -63,6 +81,7 @@ export class ClientApiService implements ApiService {
         return fetch(`/api/v1/${baseUrl}/${uid}`, {
             method: 'DELETE'
         })
+        .then(handleErrors)
         .then((response) => response.json());
     }
 }

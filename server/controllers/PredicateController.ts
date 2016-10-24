@@ -10,6 +10,8 @@ import { Predicate } from '../../common/datamodel/Predicate';
 import { Persistable } from '../core/Persistable';
 import { GenericController } from './GenericController';
 
+import { OperationNotPermittedException } from '../core/Exceptions';
+
 import { omit } from 'lodash';
 
 export class PredicatePersistable extends Predicate implements Persistable {
@@ -58,7 +60,7 @@ export class PredicateController extends GenericController<PredicatePersistable>
         super(db, PredicatePersistable.tableName);
     }
 
-    public getCollectionJson(obj: { new(): PredicatePersistable; }, params: any = {}) {
+    public getCollectionJson(obj: { new(): PredicatePersistable; }, params: any = {}) : Promise<PredicatePersistable[]>  {
         if (params.domain !== undefined) {
             return this.db.query().raw(`
             WITH RECURSIVE parent_of(uid, parent) AS  (SELECT uid, parent FROM entity_types),
@@ -81,5 +83,22 @@ export class PredicateController extends GenericController<PredicatePersistable>
         } else {
             return super.getCollectionJson(obj, params);
         }
+    }
+
+     public deleteItem(obj: { new(): PredicatePersistable; }, uid: number) : Promise<string> {
+        // check if this entity is the parent of another entity or if it has any relationships
+        // pointing towards it.
+        return Promise.all([
+            this.db.query()('records').select().where('predicate', '=', uid)
+        ]).then(([records]) => {
+            if (records.length === 0) {
+                return this.db.deleteItem(this.tableName, uid);
+            } else {
+                throw new OperationNotPermittedException({
+                    message: 'The operation could not be completed as the predicate is used by other records',
+                    data: records
+                });
+            }
+        });
     }
 }

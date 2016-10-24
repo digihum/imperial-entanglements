@@ -90,10 +90,13 @@ export class PredicateEditorWorkspace extends React.Component<PredicateEditorPro
         });
     }
 
-    public deletePredicate() {
+    public del() {
         this.props.api.delItem(Predicate, AppUrls.predicate, this.props.id)
         .then(() => {
-            window.location = '/';
+            console.log('passed');
+        })
+        .catch(() => {
+            console.log('failed');
         });
     }
 
@@ -142,7 +145,7 @@ export class PredicateEditorWorkspace extends React.Component<PredicateEditorPro
                 <i
                     className='fa fa-trash delete-button'
                      aria-hidden='true'
-                     onClick={() => console.log('DELETE')}
+                     onClick={this.del.bind(this)}
                 ></i>
                 <div className='edit-group'>
                     <label>Name</label>
