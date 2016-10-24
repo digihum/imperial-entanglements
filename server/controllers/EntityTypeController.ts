@@ -10,6 +10,8 @@ import { EntityType } from '../../common/datamodel/EntityType';
 import { Persistable } from '../core/Persistable';
 import { GenericController } from './GenericController';
 
+import { OperationNotPermittedException } from '../core/Exceptions';
+
 import { omit } from 'lodash';
 
 export class EntityTypePersistable extends EntityType implements Persistable {
@@ -66,6 +68,25 @@ export class EntityTypeController extends GenericController<EntityTypePersistabl
                 result.parents = parents;
                 return result;
             });
+        });
+    }
+
+    public deleteItem(obj: { new(): EntityTypePersistable; }, uid: number) : Promise<string> {
+        // check if this entity is the parent of another entity or if it has any relationships
+        // pointing towards it.
+        return Promise.all([
+            this.db.query()(EntityTypePersistable.tableName).select().where('parent', '=', uid),
+            this.db.query()('entities').select().where('type', '=', uid),
+            this.db.query()('predicates').select().where('domain', '=', uid).orWhere('range_ref', '=', uid)
+        ]).then(([entityTypes, entities, predicates]) => {
+            if (entities.length + entityTypes.length + predicates.length === 0) {
+                return this.db.deleteItem(this.tableName, uid);
+            } else {
+                throw new OperationNotPermittedException({
+                    message: 'The operation could not be completed as the entity is referenced in other sources',
+                    data: entities.concat(entityTypes).concat(predicates)
+                });
+            }
         });
     }
 }

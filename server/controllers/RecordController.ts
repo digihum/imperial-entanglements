@@ -10,6 +10,8 @@ import { Record } from '../../common/datamodel/Record';
 import { Persistable } from '../core/Persistable';
 import { GenericController } from './GenericController';
 
+import { OperationNotPermittedException } from '../core/Exceptions';
+
 import { omit } from 'lodash';
 
 export class RecordPersistable extends Record implements Persistable {
@@ -67,5 +69,28 @@ export class RecordPersistable extends Record implements Persistable {
 export class RecordController extends GenericController<RecordPersistable> {
     constructor(db : Database) {
         super(db, RecordPersistable.tableName);
+    }
+
+    public postItem(obj: { new(): RecordPersistable; }, data: RecordPersistable) : Promise<string> {
+        // predicate domain must equal value_type
+        return this.db.query()('predicate').select('range_type').where({ uid: data.predicate })
+        .then((predicate) => {
+            if (data.valueType === predicate.range_type) {
+                //TODO: still need to check entity type constraints
+                return super.postItem(obj, data);
+            }
+            throw new OperationNotPermittedException({
+                message: 'Attempted to add a record with an incorrect type!', 
+                data: []
+            })
+        });
+    }
+
+    public putItem(obj: { new(): RecordPersistable; }, uid: number, data: RecordPersistable) : Promise<string> {
+        return super.putItem(obj, uid, data);
+    }
+
+    public patchItem(obj: { new(): RecordPersistable; }, uid: number, data: RecordPersistable) : Promise<boolean> {
+        return super.patchItem(obj, uid, data);
     }
 }

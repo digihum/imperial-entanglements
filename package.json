@@ -74,6 +74,7 @@
   },
   "devDependencies": {
     "chai": "^3.5.0",
+    "chai-http": "^3.0.0",
     "electron": "1.4.2",
     "mocha": "^3.0.2",
     "node-sass": "^3.10.0",

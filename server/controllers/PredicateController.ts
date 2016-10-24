@@ -25,14 +25,12 @@ export class PredicatePersistable extends Predicate implements Persistable {
     public toSchema() {
         const out : { [s: string] : any } = Object.assign(omit(this.serialize(), 'range', 'rangeIsReference', 'sameAs'), {
             'same_as': this.sameAs,
-            'range_type': this.rangeIsReference ? 'ref' : 'val'
+            'range_type': this.rangeIsReference ? 'entity' : this.range
         });
 
         if (this.rangeIsReference) {
             out['range_ref'] = this.range;
-            out['range_val'] = null;
         } else {
-            out['range_val'] = this.range;
             out['range_ref'] = null;
         }
 
@@ -40,11 +38,11 @@ export class PredicatePersistable extends Predicate implements Persistable {
     }
 
     public fromSchema(data: any) : PredicatePersistable {
-        if (data.range_type === 'ref') {
+        if (data.range_type === 'entity') {
             data.range = data.range_ref;
             data.rangeIsReference = true;
         } else {
-            data.range = data.range_val;
+            data.range = data.range_type;
             data.rangeIsReference = false;
         }
         this.deserialize(Object.assign(data, {
