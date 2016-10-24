@@ -66,6 +66,10 @@ interface EntityEditorState {
 // - Network graph of entity relationships
 class EntityEditorWorkspaceComponent extends React.Component<EntityEditorProps, EntityEditorState> {
 
+    public static contextTypes = {
+        router: React.PropTypes.object.isRequired
+    };
+
     constructor(props : EntityEditorProps, context: any) {
         super();
         this.state = {
@@ -100,7 +104,7 @@ class EntityEditorWorkspaceComponent extends React.Component<EntityEditorProps, 
 
         props.api.getItem(Entity, AppUrls.entity, props.id).then((entity) => {
             createTab.dispatch(`Entity #${props.id}`, entity.entityType, `/${AppUrls.entity}/${props.id}`, 'entity');
-            Promise.all([
+            return Promise.all([
                 props.api.getCollection(Predicate, AppUrls.predicate, { domain: entity.entityType }),
                 props.api.getCollection(Record, AppUrls.record, { entity: props.id }),
                 props.api.getCollection(Source, AppUrls.source, {}),
@@ -117,13 +121,16 @@ class EntityEditorWorkspaceComponent extends React.Component<EntityEditorProps, 
                     records: groupBy(records, 'predicate'),
                 });
             });
+        }).catch((err) => {
+            console.log(err);
+            this.context.router.transitionTo('/');
         });
     }
 
     public del() {
         this.props.api.delItem(Entity, AppUrls.entity, this.props.id)
         .then(() => {
-            window.location = '/';
+            this.context.router.transitionTo('/');
         });
     }
 

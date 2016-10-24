@@ -12,6 +12,14 @@ export { AppUrls } from '../common/ApiService';
 
 function handleErrors(response: any) {
     if (!response.ok) {
+
+        if (response.status === 404) {
+             throw Error(JSON.stringify({
+                statusText: response.statusText,
+                status: response.status
+            }));
+        }
+
         response.json().then((data) => {
             throw Error(JSON.stringify({
                 data,

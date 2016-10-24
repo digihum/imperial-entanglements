@@ -34,6 +34,10 @@ interface EntityTypeWorkspaceState {
 
 export class EntityTypeWorkspace extends React.Component<EntityTypeWorkspaceProps, EntityTypeWorkspaceState> {
 
+    public static contextTypes = {
+        router: React.PropTypes.object.isRequired
+    };
+
     constructor() {
         super();
         this.state = {

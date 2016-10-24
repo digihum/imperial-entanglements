@@ -39,6 +39,10 @@ interface SourceEditorState {
 // - Cannot change 'readonly'
 export class SourceEditorWorkspace extends React.Component<SourceEditorProps, SourceEditorState> {
 
+    public static contextTypes = {
+        router: React.PropTypes.object.isRequired
+    };
+
     constructor() {
         super();
         this.state = {

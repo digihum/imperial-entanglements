@@ -41,6 +41,10 @@ interface PredicateEditorState {
 // - Cannot change 'readonly'
 export class PredicateEditorWorkspace extends React.Component<PredicateEditorProps, PredicateEditorState> {
 
+    public static contextTypes = {
+        router: React.PropTypes.object.isRequired
+    };
+
     constructor() {
         super();
         this.state = {
