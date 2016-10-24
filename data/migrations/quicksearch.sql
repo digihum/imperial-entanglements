@@ -1,0 +1,1 @@
+CREATE VIRTUAL TABLE QuickSearch USING fts4(type, uid, value);

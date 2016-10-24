@@ -28,6 +28,8 @@ import { api, wrapDatabase } from '../routes/api';
 
 import { ServerRouter, createServerRenderContext } from 'react-router';
 
+import { setupAuth } from './Auth';
+
 export class Server {
 
     private app: Koa;
@@ -64,6 +66,8 @@ export class Server {
 
         const db = new Database(databaseConfig);
 
+        setupAuth(db);
+
         let router = new KoaRouter();
         router.use(koaJSON());
         router.use(koaBodyParser({
@@ -74,6 +78,17 @@ export class Server {
         router = api(router, serverApiContext);
 
         this.app.use(router.middleware());
+
+        const authRouter = new KoaRouter();
+        authRouter.post(`/${this.adminRoute}/login`, koaPassport.authenticate('local'), function*(next: Koa.Context) {
+            next.redirect('/');
+        });
+
+        authRouter.get(`/${this.adminRoute}/logout`, function*() {
+            this.body = 'logout :(!';
+        });
+
+        this.app.use(authRouter.middleware());
 
         const self = this;
         this.app.use(function* (next: Koa.Context) {
