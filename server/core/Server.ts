@@ -11,6 +11,8 @@ import * as koaJSON from 'koa-json';
 import * as koaBodyParser from 'koa-bodyparser';
 import * as koaQs from 'koa-qs';
 import * as koaLogger from 'koa-logger';
+import * as koaSession from 'koa-session';
+import * as koaPassport from 'koa-passport';
 
 import { Config as KnexConfig } from 'knex';
 import { Database } from './Database';
@@ -42,6 +44,14 @@ export class Server {
         this.app = new Koa();
         this.app.use(koaLogger());
         koaQs(this.app, 'first');
+
+        // Sessions
+        this.app.keys = ['secret'];
+        this.app.use(koaSession(this.app));
+
+        this.app.use(koaPassport.initialize());
+        this.app.use(koaPassport.session());
+
         this.app.use(koaStatic('build/static'));
 
         this.skeleton = template(readFileSync('./build/common/index.html', 'utf8'));
