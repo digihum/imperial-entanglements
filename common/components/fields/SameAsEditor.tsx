@@ -34,7 +34,7 @@ export class SameAsEditor extends React.Component<EditableSubfieldProps<string>,
 
     public removeItemFromList(itemId: number) {
         this.setState({
-            urls: this.state.urls.filter((val, i) => i !== itemId);
+            urls: this.state.urls.filter((val, i) => i !== itemId)
         }, () => this.props.onChange(this.state.urls.join(',')));
     }
 

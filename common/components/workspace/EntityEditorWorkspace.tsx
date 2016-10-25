@@ -156,7 +156,7 @@ class EntityEditorWorkspaceComponent extends React.Component<EntityEditorProps, 
 
     public update(data: any) {
         this.props.api.patchItem(Entity, AppUrls.entity, this.props.id, data)
-        .then(() => this.setState({ entity: Object.assign({}, this.state.entity, data)});
+        .then(() => this.setState({ entity: Object.assign({}, this.state.entity, data)}));
     }
 
     public render() {
