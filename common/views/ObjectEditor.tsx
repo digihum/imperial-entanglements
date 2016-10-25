@@ -45,7 +45,7 @@ interface EntityEditorState {
     inBrowser: boolean;
     modalQueue: ModalDefinition[];
     dataStore: DataStore;
-    loaded: boolean;
+    loading: boolean;
 }
 
 export class ObjectEditor extends React.Component<EntityEditorProps, EntityEditorState> {
@@ -67,7 +67,7 @@ export class ObjectEditor extends React.Component<EntityEditorProps, EntityEdito
                 record: Map<string, DataStoreEntry<Record>>(),
                 source: Map<string, DataStoreEntry<Source>>()
             },
-            loaded: false
+            loading: true
         };
 
         if (this.state.inBrowser) {
@@ -112,7 +112,7 @@ export class ObjectEditor extends React.Component<EntityEditorProps, EntityEdito
                         entity: this.state.dataStore['entity'].set(AppUrls.entity, { value: entities, lastUpdate: moment()}),
                         entityType: this.state.dataStore['entityType'].set(AppUrls.entityType, { value: entityType, lastUpdate: moment()})
                     }),
-                loaded: true
+                loading: false
             });
         });
     }
@@ -179,15 +179,15 @@ export class ObjectEditor extends React.Component<EntityEditorProps, EntityEdito
         showModal.remove(this.boundAddModal);
     }
 
-    public render() {
-        if (!this.state.loaded) {
-            return (<div>Loading</div>);
-        }
+    public requestUrls(urls: [{base: string, params: { [s: string]: string }}]) {
+        console.log("oot");
+    }
 
+    public render() {
         return (
             <section id='entity-editor' className='flex-fill'>
                 <Sidebar tabs={this.state.tabs} />
-                <Workspace {...this.props} id={this.props.params.id} dataStore={this.state.dataStore}/>
+                <Workspace {...this.props} id={this.props.params.id} dataStore={this.state.dataStore} loading={this.state.loading} />
                 {(() => {
                     if (this.state.modalQueue.length === 0) {
                         return null;

@@ -7,6 +7,8 @@
 import * as React from 'react';
 import { ApiService } from '../ApiService';
 import { DataStore } from '../DataStore';
+import { Loading } from './Loading';
+
 import {
     EmptyWorkspace,
     SourceEditorWorkspace,
@@ -23,6 +25,7 @@ interface WorkspaceProps {
     name?: string;
     list: boolean;
     dataStore: DataStore;
+    loading: boolean;
 }
 
 interface WorkspaceState {
@@ -39,9 +42,15 @@ export class Workspace extends React.Component<WorkspaceProps, WorkspaceState> {
     }
 
     public render() {
+
+        if (this.props.loading) {
+            return (<Loading />);
+        }
+
         if (this.props.list) {
             return (<ObjectListWorkspace api={this.props.api} name={this.props.name} listType={this.props.workspace} />);
         }
+
         switch (this.props.workspace) {
             case 'entity':
                 return (<EntityEditorWorkspace api={this.props.api} id={this.props.id} dataStore={this.props.dataStore} />);

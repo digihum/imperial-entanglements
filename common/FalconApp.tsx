@@ -21,10 +21,6 @@ import { ObjectEditor } from './views/ObjectEditor';
 
 import { globalClick } from './Signaller';
 
-import { Provider } from 'react-redux';
-import { createStore } from 'redux';
-
-import { reducer } from './reducer';
 
 interface FalconAppProps {
     router: any;
@@ -38,11 +34,8 @@ interface FalconAppState {
 
 export class FalconApp extends React.Component<FalconAppProps, FalconAppState> {
 
-    private reduxStore: Redux.Store<any>;
-
     constructor() {
         super();
-        this.reduxStore = createStore(reducer);
     }
 
     public onClickSignal() {
@@ -51,7 +44,6 @@ export class FalconApp extends React.Component<FalconAppProps, FalconAppState> {
 
     public render() {
         return (
-    <Provider store={this.reduxStore}>
         <div id='main' className="flex-fill" onClick={this.onClickSignal.bind(this)}>
             <this.props.router {...this.props.routerSettings} className="flex-fill">
                 <div className="flex-fill" style={{ flexDirection: 'column' }}>
@@ -126,8 +118,7 @@ export class FalconApp extends React.Component<FalconAppProps, FalconAppState> {
                     <Miss component={RouteNotFound} />
                 </div>
             </this.props.router>
-        </div>
-    </Provider>);
+        </div>);
     }
 
 }

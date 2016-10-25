@@ -16,13 +16,11 @@ import { Entity, Predicate, Record, Source, EntityType } from '../../../common/d
 import { ComboDropdown, ComboDropdownOption } from '../ComboDropdown';
 import { ModalDefinition } from '../modal/ModalDefinition';
 
-import { Dictionary, groupBy, noop } from 'lodash';
+import { Dictionary, groupBy } from 'lodash';
 
 import { createTab, showModal } from '../../Signaller';
 import { AddTabButton } from '../AddTabButton';
 
-import { connect } from 'react-redux';
-import { loadEntity } from '../../actions';
 
 import { EditableHeader, EditableFieldComponent } from '../fields/EditableHeader';
 import { EditableComboDropdown } from '../fields/EditableComboDropdown';
