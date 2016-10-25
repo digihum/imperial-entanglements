@@ -43,7 +43,7 @@ describe('Entity', () => {
         .then(() => done());
     });
 
-    it('it should GET all entities', (done) => {
+    it('it should GET all entities #api', (done) => {
         chai.request('http://localhost:8080')
             .get('/api/v1/entity')
             .end((err, res) => {

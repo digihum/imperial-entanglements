@@ -9,16 +9,14 @@
     "tsc:watch": "tsc --watch",
     "electron": "electron ./build/app",
     "asar": "asar pack build bin/falcon.asar",
-    "test": "mocha",
+    "test": "mocha --grep #api --invert",
     "migrate": "knex migrate:latest",
     "seed": "knex seed:run",
     "style": "node-sass ./client/sass/app.scss --include-path node_modules -o build/static",
     "style:watch": "node-sass --watch ./client/sass/app.scss --include-path node_modules -o build/static",
     "webpack": "webpack",
     "webpack:watch": "webpack --watch",
-    "sql": "node scripts/build_sql.js",
-    "server:start": "forever start build/server/index.js",
-    "server:stop": "forever stop build/server/index.js"
+    "sql": "node scripts/build_sql.js"
   },
   "repository": {
     "type": "git",
@@ -78,7 +76,6 @@
     "chai": "^3.5.0",
     "chai-http": "^3.0.0",
     "electron": "1.4.2",
-    "forever": "^0.15.2",
     "mocha": "^3.0.2",
     "node-sass": "^3.10.0",
     "source-map-loader": "^0.1.5",

@@ -17,11 +17,5 @@ run_tests:
   # run sql migrations
   - npm run migrate
 
-  # start server
-  - npm run server:start
-
   # ready to test!
   - npm test
-
-  # testing all done :)
-  - npm run server:stop
