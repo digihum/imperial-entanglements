@@ -72,9 +72,10 @@ export class RecordController extends GenericController<RecordPersistable> {
     }
 
     public postItem(obj: { new(): RecordPersistable; }, data: RecordPersistable) : Promise<string> {
+
         // predicate domain must equal value_type
-        return this.db.query()('predicate').select('range_type').where({ uid: data.predicate })
-        .then((predicate) => {
+        return this.db.query()('predicates').select('range_type').where({ uid: data.predicate })
+        .then(([predicate]) => {
             if (data.valueType === predicate.range_type) {
                 //TODO: still need to check entity type constraints
                 return super.postItem(obj, data);

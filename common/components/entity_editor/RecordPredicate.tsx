@@ -47,6 +47,16 @@ export class RecordPredicate extends React.Component<RecordPredicateProps, Recor
         }
     }
 
+    public createNewRecord() {
+        this.props.api.postItem(Record, AppUrls.record,
+        new Record().deserialize({
+            predicate: this.props.predicate.uid,
+            entity: this.props.entity_id,
+            valueType: this.props.predicate.rangeIsReference ? 'entity' : this.props.predicate.range,
+            score: 3
+        }));
+    }
+
 	public deleteRecord(record: Record) {
 
 		if (record.uid === null) {
@@ -66,7 +76,11 @@ export class RecordPredicate extends React.Component<RecordPredicateProps, Recor
 	public render() {
 
         return (<section>
-            <h5 className='section-header'>{this.props.predicate.name}
+            <h5 className='section-header'>{this.props.predicate.name} <i
+                    className='fa fa-plus-circle add-button'
+                     aria-hidden='true'
+                     onClick={this.createNewRecord.bind(this)}
+                ></i>
             <AddTabButton title={this.props.predicate.name}
                 subtitle={`Predicate ${this.props.predicate.uid}`}
                 url={`/${AppUrls.predicate}/${this.props.predicate.uid}`}
