@@ -5,9 +5,22 @@
  */
 
 import { LOAD_ENTITY } from './actions';
+import { Entity, Predicate, Record, Source } from '../common/datamodel/datamodel';
 
-const initialState = {
-  loaded_entity: -1
+import { Map } from 'immutable';
+
+interface FalconAppState {
+  entity: Map<string, Entity>;
+  predicate: Map<string, Predicate>;
+  record: Map<string, Record>;
+  source: Map<string, Source>;
+}
+
+const initialState : FalconAppState = {
+  entity: Map<string, Entity>(),
+  predicate: Map<string, Predicate>(),
+  record: Map<string, Record>(),
+  source: Map<string, Source>()
 };
 
 export const reducer = (state, action) => {

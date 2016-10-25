@@ -6,6 +6,7 @@
 
 import * as React from 'react';
 import { ApiService } from '../ApiService';
+import { DataStore } from '../DataStore';
 import {
     EmptyWorkspace,
     SourceEditorWorkspace,
@@ -21,6 +22,7 @@ interface WorkspaceProps {
     id: number;
     name?: string;
     list: boolean;
+    dataStore: DataStore;
 }
 
 interface WorkspaceState {
@@ -42,7 +44,7 @@ export class Workspace extends React.Component<WorkspaceProps, WorkspaceState> {
         }
         switch (this.props.workspace) {
             case 'entity':
-                return (<EntityEditorWorkspace api={this.props.api} id={this.props.id} />);
+                return (<EntityEditorWorkspace api={this.props.api} id={this.props.id} dataStore={this.props.dataStore} />);
             case 'predicate':
                 return (<PredicateEditorWorkspace api={this.props.api} id={this.props.id} />);
             case 'source':

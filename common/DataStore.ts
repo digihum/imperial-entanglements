@@ -4,47 +4,19 @@
  * @version 0.1.0
  */
 
-import { ApiService, AppUrls } from './ApiService';
-import { Predicate, EntityType } from '../common/datamodel/datamodel';
+import { Map } from 'immutable';
+import { Predicate, EntityType, Entity, Record, Source } from '../common/datamodel/datamodel';
+import * as moment from 'moment';
 
-export class DataStore {
+export interface DataStoreEntry<T> {
+    value: T[];
+    lastUpdate: moment.Moment | null;
+}
 
-    private api: ApiService;
-
-    private update: () => void;
-
-    private predicates: Predicate[];
-    private entityTypes: EntityType[];
-
-    constructor(api: ApiService, update: () => void) {
-        this.api = api;
-        this.predicates = [];
-        this.update = update;
-    }
-
-    public loadPredicates() : Promise<Predicate[]> {
-        return this.api.getCollection(Predicate, AppUrls.predicate, {})
-        .then((predicates) => {
-            this.predicates = predicates;
-            this.update();
-            return predicates;
-        });
-    }
-
-    public getPredicates() : Predicate[] {
-        return this.predicates;
-    }
-
-    public loadEntityTypes() : Promise<EntityType[]> {
-        return this.api.getCollection(EntityType, AppUrls.entityType, {})
-        .then((entityTypes) => {
-            this.entityTypes = entityTypes;
-            this.update();
-            return entityTypes;
-        });
-    }
-
-    public getEntityTypes() : EntityType[] {
-        return this.entityTypes;
-    }
+export interface DataStore {
+  entity: Map<string, DataStoreEntry<Entity>>;
+  entityType: Map<string, DataStoreEntry<EntityType>>;
+  predicate: Map<string, DataStoreEntry<Predicate>>;
+  record: Map<string, DataStoreEntry<Record>>;
+  source: Map<string, DataStoreEntry<Source>>;
 }

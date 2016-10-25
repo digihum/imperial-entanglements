@@ -35,6 +35,7 @@ class ComboEditableFieldComponent extends EditableFieldComponent<ComboDropdownOp
 interface EntityEditorProps {
     api: ApiService;
     id: number;
+    dataStore: DataStore;
 }
 
 interface EntityEditorState {
@@ -64,7 +65,7 @@ interface EntityEditorState {
 //   to one of its parents. The range MUST be set.
 // Visualisations: 
 // - Network graph of entity relationships
-class EntityEditorWorkspaceComponent extends React.Component<EntityEditorProps, EntityEditorState> {
+export class EntityEditorWorkspace extends React.Component<EntityEditorProps, EntityEditorState> {
 
     public static contextTypes = {
         router: React.PropTypes.object.isRequired
@@ -77,12 +78,15 @@ class EntityEditorWorkspaceComponent extends React.Component<EntityEditorProps, 
             predicates: null,
             comboValue: { key: 'test', value: ''},
             comboSearchValue: '',
-            records: [],
+            records: {},
             sources: [],
             potentialParents: [],
             entityType: null
         };
-        this.loadData(props);
+    }
+
+    public componentDidMount() {
+        this.loadData(this.props);
     }
 
     // loads
@@ -105,19 +109,11 @@ class EntityEditorWorkspaceComponent extends React.Component<EntityEditorProps, 
         props.api.getItem(Entity, AppUrls.entity, props.id).then((entity) => {
             createTab.dispatch(`Entity #${props.id}`, entity.entityType, `/${AppUrls.entity}/${props.id}`, 'entity');
             return Promise.all([
-                props.api.getCollection(Predicate, AppUrls.predicate, { domain: entity.entityType }),
-                props.api.getCollection(Record, AppUrls.record, { entity: props.id }),
-                props.api.getCollection(Source, AppUrls.source, {}),
-                props.api.getCollection(Entity, AppUrls.entity, { type: entity.entityType }),
-                props.api.getCollection(EntityType, AppUrls.entityType, { uid: entity.entityType })
+                props.api.getCollection(Record, AppUrls.record, { entity: props.id })
             ])
-            .then(([predicates, records, sources, potentialParents, [entityType]]) => {
+            .then(([records]) => {
                 this.setState({
-                    sources,                    
-                    predicates,
                     entity,
-                    potentialParents,
-                    entityType,
                     records: groupBy(records, 'predicate'),
                 });
             });
@@ -161,15 +157,25 @@ class EntityEditorWorkspaceComponent extends React.Component<EntityEditorProps, 
 
     public render() {
 
-        if (this.state.entity === null || this.state.predicates === null) {
+        const entity = this.state.entity;
+
+        if (entity === null) {
             return (<Loading />);
         }
 
-        const options = this.state.predicates.map((pred) => ({ key: pred.name, value: pred.uid, meta: pred}));
+        const entityType = this.props.dataStore.entityType.get(AppUrls.entityType).value.find((t) => t.uid === entity.entityType);
+        const potentialParents = this.props.dataStore.entity.get(AppUrls.entity).value;
+
+        const predicates = this.props.dataStore.predicate.get(AppUrls.predicate)
+            .value.filter((pred) => pred.domain === entity.entityType);
+
+        const sources = this.props.dataStore.source.get(AppUrls.source).value;
+
+        const options = predicates.map((pred) => ({ key: pred.name, value: pred.uid, meta: pred}));
 
         let parentName = '';
-        if (this.state.potentialParents !== null && this.state.entity.parent !== undefined) {
-            const found = this.state.potentialParents.find((par) => par.uid === this.state.entity.parent);
+        if (potentialParents !== null && entity.parent !== undefined) {
+            const found = potentialParents.find((par) => par.uid === entity.parent);
             if (found !== undefined) {
                 parentName = found.label;
             }
@@ -195,21 +201,21 @@ class EntityEditorWorkspaceComponent extends React.Component<EntityEditorProps, 
                 <div className='edit-group'>
                     <label>Label</label>
                     <StringEditableFieldComponent
-                        value={this.state.entity.label}
+                        value={entity.label}
                         component={EditableHeader}
                         onChange={(value) => this.update({ 'label': value })}  />
                 </div>
 
-                <div>{this.state.entityType.name} <AddTabButton
-                    title={this.state.entityType.name}
-                    subtitle={`Entity type ${this.state.entityType.uid}`}
-                    url={`/${AppUrls.entityType}/${this.state.entityType.uid}`}
+                <div>{entityType.name} <AddTabButton
+                    title={entityType.name}
+                    subtitle={`Entity type ${entityType.uid}`}
+                    url={`/${AppUrls.entityType}/${entityType.uid}`}
                     tabType='entity_type'
                 /></div>
 
                 <span>Parent:</span>
                 <ComboEditableFieldComponent
-                    value={{key: parentName, value: this.state.entity.parent}}
+                    value={{key: parentName, value: entity.parent}}
                     component={EditableComboDropdown}
                     onChange={(value) => this.update({'parent': value.value})}
                     additionalProps={{ comboSettings: {
@@ -225,30 +231,10 @@ class EntityEditorWorkspaceComponent extends React.Component<EntityEditorProps, 
                     api={this.props.api}
                     records={this.state.records}
                     onChange={this.loadData.bind(this, this.props)}
-                    predicates={this.state.predicates}
-                    sources={this.state.sources}
+                    predicates={predicates}
+                    sources={sources}
                 />
             </div>
         );
     }
 }
-
-
-const mapStateToProps = (state) => {
-  return {
-    test_entity: state.loaded_entity
-  }
-}
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    onTodoClick: (id) => {
-      dispatch(loadEntity(id))
-    }
-  }
-}
-
-export const EntityEditorWorkspace = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(EntityEditorWorkspaceComponent)

@@ -6,6 +6,7 @@
 
 import * as React from 'react';
 import { ApiService, AppUrls } from '../../ApiService';
+import { DataStore } from '../../DataStore';
 import { Record, Predicate, Source } from '../../../common/datamodel/datamodel';
 import { EditableFieldComponent } from '../fields/EditableFieldComponent';
 
@@ -57,6 +58,8 @@ export class RecordsEditor extends React.Component<RecordsEditorProps, RecordsEd
 
 	public render() {
 
+		const predicates = this.props.predicates;
+
 		return (
 		<div>
 			<div>
@@ -72,7 +75,7 @@ export class RecordsEditor extends React.Component<RecordsEditorProps, RecordsEd
 					<div>
 						{Object.keys(this.props.records).map((section) => {
 
-							const currentPredicate = this.props.predicates.find((pred) => {
+							const currentPredicate = predicates.find((pred) => {
 								if (pred.uid === null) {
 									throw new Error('encountered predicate with null id');
 								}

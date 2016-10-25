@@ -41,6 +41,7 @@
   "dependencies": {
     "bcrypt": "^0.8.7",
     "graphql": "^0.7.2",
+    "immutable": "^3.8.1",
     "jsonschema": "^1.1.0",
     "knex": "^0.12.5",
     "koa": "^1.2.4",
@@ -55,6 +56,7 @@
     "leaflet": "^1.0.1",
     "lodash": "^4.16.1",
     "lunr": "^0.7.1",
+    "moment": "^2.15.2",
     "mousetrap": "^1.6.0",
     "normalize.css": "^5.0.0",
     "passport-local": "^1.0.0",

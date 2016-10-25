@@ -6,10 +6,12 @@
 
 import * as React from 'react';
 import { Link } from 'react-router';
+import { Map } from 'immutable';
+import * as moment from 'moment';
+
 import { ApiService, AppUrls } from '../ApiService';
 
-
-import { ElementSet, EntityType, Entity } from '../datamodel/datamodel';
+import { ElementSet, EntityType, Entity, Predicate, Record, Source } from '../datamodel/datamodel';
 
 import { Sidebar, Tab } from '../components/Sidebar';
 import { Workspace } from '../components/Workspace';
@@ -25,7 +27,7 @@ import { CreateEntityType } from '../components/modal/CreateEntityType';
 
 import { ModalDefinition } from '../components/modal/ModalDefinition';
 
-import { DataStore } from '../DataStore';
+import { DataStore, DataStoreEntry } from '../DataStore';
 
 interface ExpectedParams {
     id: number;
@@ -39,14 +41,11 @@ interface EntityEditorProps {
 }
 
 interface EntityEditorState {
-    entity: Entity;
-    tmp: string;
-    entityTypes: EntityType[];
-    options: any[];
     tabs: Tab[];
     inBrowser: boolean;
     modalQueue: ModalDefinition[];
     dataStore: DataStore;
+    loaded: boolean;
 }
 
 export class ObjectEditor extends React.Component<EntityEditorProps, EntityEditorState> {
@@ -58,14 +57,17 @@ export class ObjectEditor extends React.Component<EntityEditorProps, EntityEdito
     constructor(props: EntityEditorProps, context: any) {
         super();
         this.state = {
-            entity: new Entity(),
-            tmp: '',
-            entityTypes: [],
-            options: [],
             tabs: [],
             inBrowser: (typeof window !== 'undefined'),
             modalQueue: [],
-            dataStore: new DataStore(props.api, () => { this.forceUpdate(); })
+            dataStore: {
+                entity: Map<string, DataStoreEntry<Entity>>(),
+                entityType: Map<string, DataStoreEntry<EntityType>>(),
+                predicate: Map<string, DataStoreEntry<Predicate>>(),
+                record: Map<string, DataStoreEntry<Record>>(),
+                source: Map<string, DataStoreEntry<Source>>()
+            },
+            loaded: false
         };
 
         if (this.state.inBrowser) {
@@ -82,6 +84,37 @@ export class ObjectEditor extends React.Component<EntityEditorProps, EntityEdito
         createTab.add(this.boundCreateTab);
         closeTab.add(this.boundCloseTab);
         showModal.add(this.boundAddModal);
+    }
+
+    public componentDidMount() {
+
+        const toUpdate = [
+            ['predicate', Predicate, AppUrls.predicate, {}],
+            ['source', Source, AppUrls.source, {}],
+            ['entity', Entity, AppUrls.entity, {}],
+            ['entityType', EntityType, AppUrls.entityType, {}]
+        ].filter((entry) => {
+            if (!this.state.dataStore[entry[0]].has(entry[2])) return true;
+            const a = this.state.dataStore[entry[0]].get(entry[2]);
+            return a.lastUpdate === null ? true : a.lastUpdate.diff(moment(), 'minutes') > 5;
+        }).map((entry) => {
+            return this.props.api.getCollection(entry[1], entry[2], {});
+        });
+
+        Promise.all(toUpdate)
+        .then(([predicates, sources, entities, entityType]) => {
+            this.setState({
+                dataStore: Object.assign({}, 
+                    this.state.dataStore,
+                    {
+                        predicate: this.state.dataStore['predicate'].set(AppUrls.predicate, { value: predicates, lastUpdate: moment()}),
+                        source: this.state.dataStore['source'].set(AppUrls.source, { value: sources, lastUpdate: moment() }),
+                        entity: this.state.dataStore['entity'].set(AppUrls.entity, { value: entities, lastUpdate: moment()}),
+                        entityType: this.state.dataStore['entityType'].set(AppUrls.entityType, { value: entityType, lastUpdate: moment()})
+                    }),
+                loaded: true
+            });
+        });
     }
 
     public createTab(title: string, subtitle: string, url: string, tabType: string) {
@@ -129,11 +162,15 @@ export class ObjectEditor extends React.Component<EntityEditorProps, EntityEdito
         });
     }
 
-    // public componentWillMount() {
-    //     this.setState({
-    //         tabs: [{ title: 'Entity 1', subtitle: 'Person', url: '/entity/1'}]
-    //     });
-    // }
+    public setDatastore<T>(itemType: string, key: string, data: T[]) {
+        this.setState({
+            dataStore: Object.assign({}, 
+                this.state.dataStore,
+                {
+                    [itemType]: this.state.dataStore[itemType].set(key, data)
+                } 
+        });
+    }
 
     public componentWillUnmount() {
         this.saveTabs();
@@ -143,10 +180,14 @@ export class ObjectEditor extends React.Component<EntityEditorProps, EntityEdito
     }
 
     public render() {
+        if (!this.state.loaded) {
+            return (<div>Loading</div>);
+        }
+
         return (
             <section id='entity-editor' className='flex-fill'>
                 <Sidebar tabs={this.state.tabs} />
-                <Workspace {...this.props} id={this.props.params.id}/>
+                <Workspace {...this.props} id={this.props.params.id} dataStore={this.state.dataStore}/>
                 {(() => {
                     if (this.state.modalQueue.length === 0) {
                         return null;
@@ -154,6 +195,7 @@ export class ObjectEditor extends React.Component<EntityEditorProps, EntityEdito
 
                     const sharedProps = {
                         api: this.props.api,
+                        dataStore: this.state.dataStore,
                         complete: this.modalComplete.bind(this),
                         cancel: this.modalCancel.bind(this)
                     };
