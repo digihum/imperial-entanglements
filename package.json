@@ -9,7 +9,7 @@
     "tsc:watch": "tsc --watch",
     "electron": "electron ./build/app",
     "asar": "asar pack build bin/falcon.asar",
-    "test": "mocha --grep #api --invert",
+    "test": "mocha --grep=#api --invert",
     "migrate": "knex migrate:latest",
     "seed": "knex seed:run",
     "style": "node-sass ./client/sass/app.scss --include-path node_modules -o build/static",
