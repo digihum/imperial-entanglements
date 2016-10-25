@@ -13,6 +13,7 @@ export class Source implements Serializable {
     public readonly: boolean;
     public metaData: SourceElement[];
     public sameAs: string;
+    public parent: number | null;
 
     public serialize() : any {
         return this;
@@ -23,6 +24,7 @@ export class Source implements Serializable {
         this.uid = data.uid;
         this.metaData = data.metaData;
         this.sameAs = data.sameAs;
+        this.parent = data.parent;
         return this;
     }
 

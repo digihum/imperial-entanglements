@@ -185,6 +185,11 @@ class EntityEditorWorkspaceComponent extends React.Component<EntityEditorProps, 
                     className='fa fa-trash delete-button'
                      aria-hidden='true'
                      onClick={this.del.bind(this)}
+                ></i>
+                <i
+                    className='fa fa-clone'
+                     aria-hidden='true'
+                     onClick={() => console.log('copy')}
                 ></i></h2>
 
                 <div className='edit-group'>

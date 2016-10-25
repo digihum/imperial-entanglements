@@ -14,10 +14,13 @@ import { Source, ElementSet, Element, SourceElement } from '../../../common/data
 
 import { EditableHeader, EditableFieldComponent } from '../fields/EditableHeader';
 import { EditableParagraph } from '../fields/EditableParagraph';
+import { EditableComboDropdown } from '../fields/EditableComboDropdown';
+import { ComboDropdownOption } from '../ComboDropdown';
 
 import { keyBy, Dictionary } from 'lodash';
 
 class StringEditableFieldComponent extends EditableFieldComponent<string> {}
+class ComboEditableFieldComponent extends EditableFieldComponent<ComboDropdownOption> {}
 
 interface SourceEditorProps {
     api: ApiService;
@@ -28,6 +31,7 @@ interface SourceEditorState {
     source : Source | null;
     metaData: Dictionary<SourceElement> | null;
     dublinCore: ElementSet | null;
+    potentialParents: Source[];
 }
 
 // - Should state the number of times this predicate is used
@@ -48,7 +52,8 @@ export class SourceEditorWorkspace extends React.Component<SourceEditorProps, So
         this.state = {
             source: null,
             dublinCore: null,
-            metaData: null
+            metaData: null,
+            potentialParents: []
         };
     }
 
@@ -62,13 +67,19 @@ export class SourceEditorWorkspace extends React.Component<SourceEditorProps, So
 
 
     public loadData(props: SourceEditorProps) {
-        props.api.getItem(Source, AppUrls.source, props.id).then((data) => {
-            this.setState({ source: data, metaData: keyBy(data.metaData, 'name') });
-        });
 
-        //TODO: make sure this is ALWAYS dublin core
-        props.api.getItem(ElementSet, AppUrls.elementSet, 1).then((data) => {
-            this.setState({ dublinCore: data });
+        Promise.all([
+            props.api.getItem(Source, AppUrls.source, props.id),
+            props.api.getItem(ElementSet, AppUrls.elementSet, 1), //TODO: make sure this is ALWAYS dublin core
+            props.api.getCollection(Source, AppUrls.source, {})
+        ])
+        .then(([data, dublinCore, potentialParents]) => {
+            this.setState({
+                source: data,
+                metaData: keyBy(data.metaData, 'name'),
+                dublinCore,
+                potentialParents
+            });
         });
     }
 
@@ -126,6 +137,14 @@ export class SourceEditorWorkspace extends React.Component<SourceEditorProps, So
             return (<Loading />);
         }
 
+        let parentName = '';
+        if (this.state.potentialParents !== null && this.state.source.parent !== undefined) {
+            const found = this.state.potentialParents.find((par) => par.uid === this.state.source.parent);
+            if (found !== undefined) {
+                parentName = found.name;
+            }
+        }
+
         return (
             <div className='workspace-editor'>
 
@@ -133,6 +152,16 @@ export class SourceEditorWorkspace extends React.Component<SourceEditorProps, So
                     value={this.state.source.name}
                     component={EditableHeader}
                     onChange={(value) => this.updateSource('name', value)}  />
+
+                <span>Parent:</span>
+                <ComboEditableFieldComponent
+                    value={{key: parentName, value: this.state.source.parent}}
+                    component={EditableComboDropdown}
+                    onChange={(value) => this.updateSource('parent', value.value)}
+                    additionalProps={{ comboSettings: {
+                        options: this.state.potentialParents.map((par) => ({ key: par.name, value: par.uid})),
+                        typeName: 'Source'
+                    }}} />
 
                 {this.state.dublinCore.elements.map((element) => (
                     <div key={`${element.name}-edit`}>
