@@ -38,6 +38,7 @@ interface EntityEditorProps {
     api: ApiService;
     params: ExpectedParams;
     workspace: string;
+    list: boolean;
 }
 
 interface EntityEditorState {
@@ -90,7 +91,7 @@ export class ObjectEditor extends React.Component<EntityEditorProps, EntityEdito
             if (tabsString !== null) {
                 this.state.tabs = JSON.parse(tabsString);
 
-                 if (find(this.state.tabs, (tab) => tab.tabType === this.props.workspace
+                 if (!this.props.list && find(this.state.tabs, (tab) => tab.tabType === this.props.workspace
                     && tab.uid.toString() === this.props.params.id.toString()) === undefined) {
                         this.state.tabs.push({ tabType: this.props.workspace, uid: this.props.params.id});
                         this.saveTabs();
