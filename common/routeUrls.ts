@@ -32,7 +32,7 @@ interface RouteUrls {
 
 export const routeUrls : RouteUrls = {
 
-    [AppUrls.elementSet]: {
+    [AppUrls.element_set]: {
         url: 'element_set',
         workspaceType: '',
         itemView: RouteNotFound,

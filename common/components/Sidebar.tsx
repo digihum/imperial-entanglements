@@ -11,6 +11,8 @@ import { Link } from 'react-router';
 import { DataStore } from '../DataStore';
 import { closeTab } from '../Signaller';
 
+import { capitalize } from 'lodash';
+
 export interface Tab {
     tabType: string;
     uid: number;
@@ -56,12 +58,13 @@ export class Sidebar extends React.Component<SidebarProps, SidebarState> {
                 <ul className='card-list'>
                     {this.props.tabs.map((tab) => {
 
-                        const item = this.props.dataStore[tab.tabType].get(tab.tabType).value
-                            .find((item) => item.uid === tab.uid);
+                        // TODO: shouldn't be ==
+                        const item = this.props.dataStore.all[tab.tabType].value
+                            .find((item) => item.uid == tab.uid);
 
                         const url = `/${AppUrls[tab.tabType]}/${tab.uid}`;
-                        const title = `${AppUrls[tab.tabType]}/${tab.uid}`;
-                        const subtitle = `${AppUrls[tab.tabType]}/${tab.uid}`;
+                        const title = tab.tabType === 'entity' ? item.label : item.name;
+                        const subtitle = `${capitalize(AppUrls[tab.tabType])} ${tab.uid}`;
 
                         return (
                         <li key={`${url}`}>

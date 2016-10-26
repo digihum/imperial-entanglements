@@ -70,7 +70,7 @@ export class SourceEditorWorkspace extends React.Component<SourceEditorProps, So
 
         Promise.all([
             props.api.getItem(Source, AppUrls.source, props.id),
-            props.api.getItem(ElementSet, AppUrls.elementSet, 1), //TODO: make sure this is ALWAYS dublin core
+            props.api.getItem(ElementSet, AppUrls.element_set, 1), //TODO: make sure this is ALWAYS dublin core
             props.api.getCollection(Source, AppUrls.source, {})
         ])
         .then(([data, dublinCore, potentialParents]) => {
@@ -106,7 +106,7 @@ export class SourceEditorWorkspace extends React.Component<SourceEditorProps, So
     public updateSourceElement(element: Element, value: string) {
 
         if (this.state.metaData.hasOwnProperty(element.name)) {
-            this.props.api.putItem(SourceElement, AppUrls.sourceElement,
+            this.props.api.putItem(SourceElement, AppUrls.source_element,
             this.state.metaData[element.name].uid,
                 new SourceElement().deserialize({
                     uid: this.state.metaData[element.name].uid,
@@ -115,7 +115,7 @@ export class SourceEditorWorkspace extends React.Component<SourceEditorProps, So
                     value
                 }));
         } else {
-            this.props.api.postItem(SourceElement, AppUrls.sourceElement,
+            this.props.api.postItem(SourceElement, AppUrls.source_element,
                 new SourceElement().deserialize({
                     element: element.uid,
                     source: this.props.id,

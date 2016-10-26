@@ -30,14 +30,14 @@ import {
 
 export const wrapDatabase : (s: Database) => ServerApiService = (db: Database) => {
     const routes = new Map<string, IController>([
-        [AppUrls.elementSet, new ElementSetController(db)],
+        [AppUrls.element_set, new ElementSetController(db)],
         [AppUrls.record, new RecordController(db)],
         [AppUrls.entity_type, new EntityTypeController(db)],
         [AppUrls.entity, new EntityController(db)],
         [AppUrls.predicate, new PredicateController(db)],
         [AppUrls.source, new SourceController(db)],
         [AppUrls.element, new ElementController(db)],
-        [AppUrls.sourceElement, new SourceElementController(db)]
+        [AppUrls.source_element, new SourceElementController(db)]
     ]);
 
     return new ServerApiService(routes, new QueryEngine(db));
@@ -51,14 +51,14 @@ export const api : (router: KoaRouter, s: ServerApiService) => KoaRouter
     = (router: KoaRouter, serverApiContext: ServerApiService) => {
 
     const typeMap = {
-        [AppUrls.elementSet]: ElementSetPersistable,
+        [AppUrls.element_set]: ElementSetPersistable,
         [AppUrls.record]: RecordPersistable,
         [AppUrls.entity_type]: EntityTypePersistable,
         [AppUrls.entity]: EntityPersistable,
         [AppUrls.predicate] : PredicatePersistable,
         [AppUrls.source] : SourcePersistable,
         [AppUrls.element] : ElementPersistable,
-        [AppUrls.sourceElement]: SourceElementPersistable
+        [AppUrls.source_element]: SourceElementPersistable
     };
 
     router.use(function* (next: Koa.Context){

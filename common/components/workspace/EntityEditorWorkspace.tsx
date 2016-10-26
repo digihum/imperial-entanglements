@@ -37,14 +37,8 @@ interface EntityEditorProps {
 }
 
 interface EntityEditorState {
-    entity : Entity | null;
-    predicates : Predicate[] | null;
     comboValue: ComboDropdownOption;
     comboSearchValue: string;
-    records: Dictionary<Record[]>;
-    sources: Source[];
-    potentialParents: Entity[];
-    entityType: EntityType | null;
 }
 
 // What can I do?
@@ -72,52 +66,9 @@ export class EntityEditorWorkspace extends React.Component<EntityEditorProps, En
     constructor(props : EntityEditorProps, context: any) {
         super();
         this.state = {
-            entity: null,
-            predicates: null,
             comboValue: { key: 'test', value: ''},
-            comboSearchValue: '',
-            records: {},
-            sources: [],
-            potentialParents: [],
-            entityType: null
+            comboSearchValue: ''
         };
-    }
-
-    public componentDidMount() {
-        this.loadData(this.props);
-    }
-
-    // loads
-    // data from the entity
-    // predicates with a domain of this type
-    // records for this entity
-    // all sources
-
-    public componentWillReceiveProps(newProps: EntityEditorProps)  {
-        this.loadData(newProps);
-    }
-
-    // loads
-    // data from the entity
-    // predicates with a domain of this type
-    // records for this entity
-    // all sources
-    public loadData(props: EntityEditorProps) {
-
-        props.api.getItem(Entity, AppUrls.entity, props.id).then((entity) => {
-          return Promise.all([
-                props.api.getCollection(Record, AppUrls.record, { entity: props.id })
-            ])
-            .then(([records]) => {
-                this.setState({
-                    entity,
-                    records: groupBy(records, 'predicate'),
-                });
-            });
-        }).catch((err) => {
-            console.log(err);
-            this.context.router.transitionTo('/');
-        });
     }
 
     public del() {
@@ -132,7 +83,7 @@ export class EntityEditorWorkspace extends React.Component<EntityEditorProps, En
             name: 'record',
             complete: (data) => {
                 console.log('Records editor called complete');
-                this.loadData(this.props);
+                //this.loadData(this.props);
             },
             cancel: () => {
                 console.log('Records editor called cancel');
@@ -154,19 +105,17 @@ export class EntityEditorWorkspace extends React.Component<EntityEditorProps, En
 
     public render() {
 
-        const entity = this.state.entity;
+        const entity = this.props.dataStore.tabs.entity.get('entity-' + this.props.id).value.entity;
 
-        if (entity === null) {
-            return (<Loading />);
-        }
+        const entityType = this.props.dataStore.all.entity_type.value.find((t) => t.uid === entity.entityType);
+        const potentialParents = this.props.dataStore.all.entity.value;
 
-        const entityType = this.props.dataStore.entity_type.get(AppUrls.entity_type).value.find((t) => t.uid === entity.entityType);
-        const potentialParents = this.props.dataStore.entity.get(AppUrls.entity).value;
-
-        const predicates = this.props.dataStore.predicate.get(AppUrls.predicate)
+        const predicates = this.props.dataStore.all.predicate
             .value.filter((pred) => pred.domain === entity.entityType);
 
-        const sources = this.props.dataStore.source.get(AppUrls.source).value;
+        const sources = this.props.dataStore.all.source.value;
+        const records = groupBy(this.props.dataStore.tabs.entity.get('entity-' + this.props.id).value.records, 'predicate');
+
 
         const options = predicates.map((pred) => ({ key: pred.name, value: pred.uid, meta: pred}));
 
@@ -224,8 +173,8 @@ export class EntityEditorWorkspace extends React.Component<EntityEditorProps, En
                     entityExists={true}
                     id={this.props.id}
                     api={this.props.api}
-                    records={this.state.records}
-                    onChange={this.loadData.bind(this, this.props)}
+                    records={records}
+                    onChange={() => {}}
                     predicates={predicates}
                     sources={sources}
                 />

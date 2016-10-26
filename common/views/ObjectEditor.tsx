@@ -11,13 +11,13 @@ import * as moment from 'moment';
 
 import { ApiService, AppUrls } from '../ApiService';
 
-import { ElementSet, EntityType, Entity, Predicate, Record, Source } from '../datamodel/datamodel';
+import { ElementSet, EntityType, Entity, Predicate, Record, Source, SourceElement } from '../datamodel/datamodel';
 
 import { Sidebar, Tab } from '../components/Sidebar';
 import { Workspace } from '../components/Workspace';
 
 import { createTab, closeTab, showModal } from '../Signaller';
-import { find, tail } from 'lodash';
+import { find, tail, cloneDeep, groupBy } from 'lodash';
 
 import { CreatePredicate } from '../components/modal/CreatePredicate';
 import { CreateRecord } from '../components/modal/CreateRecord';
@@ -27,7 +27,7 @@ import { CreateEntityType } from '../components/modal/CreateEntityType';
 
 import { ModalDefinition } from '../components/modal/ModalDefinition';
 
-import { DataStore, DataStoreEntry } from '../DataStore';
+import { DataStore, DataStoreEntry, emptyDataStore } from '../DataStore';
 
 interface ExpectedParams {
     id: number;
@@ -60,22 +60,9 @@ export class ObjectEditor extends React.Component<EntityEditorProps, EntityEdito
             tabs: [],
             inBrowser: (typeof window !== 'undefined'),
             modalQueue: [],
-            dataStore: {
-                entity: Map<string, DataStoreEntry<Entity>>(),
-                entity_type: Map<string, DataStoreEntry<EntityType>>(),
-                predicate: Map<string, DataStoreEntry<Predicate>>(),
-                record: Map<string, DataStoreEntry<Record>>(),
-                source: Map<string, DataStoreEntry<Source>>()
-            },
+            dataStore: cloneDeep(emptyDataStore),
             loading: true
         };
-
-        if (this.state.inBrowser) {
-            const tabsString = window.localStorage.getItem('open_tabs');
-            if (tabsString !== null) {
-                this.state.tabs = JSON.parse(tabsString);
-            }
-        }
 
         this.boundCreateTab = this.createTab.bind(this);
         this.boundCloseTab = this.closeTab.bind(this);
@@ -88,36 +75,88 @@ export class ObjectEditor extends React.Component<EntityEditorProps, EntityEdito
 
     public componentDidMount() {
 
-        const toUpdate = [
-            ['predicate', Predicate, AppUrls.predicate, {}],
-            ['source', Source, AppUrls.source, {}],
-            ['entity', Entity, AppUrls.entity, {}],
-            ['entity_type', EntityType, AppUrls.entity_type, {}]
-        ].filter((entry) => {
-            if (!this.state.dataStore[entry[0]].has(entry[2])) return true;
-            const a = this.state.dataStore[entry[0]].get(entry[2]);
-            return a.lastUpdate === null ? true : a.lastUpdate.diff(moment(), 'minutes') > 5;
-        }).map((entry) => {
-            return this.props.api.getCollection(entry[1], entry[2], {});
+        // load data required by the current tabs
+        let tabPromise = Promise.resolve(cloneDeep(emptyDataStore.tabs));
+
+        if (this.state.inBrowser) {
+            const tabsString = window.localStorage.getItem('open_tabs');
+            if (tabsString !== null) {
+                this.state.tabs = JSON.parse(tabsString);
+
+                 if (find(this.state.tabs, (tab) => tab.tabType === this.props.workspace
+                    && tab.uid.toString() === this.props.params.id.toString()) === undefined) {
+                        this.state.tabs.push({ tabType: this.props.workspace, uid: this.props.params.id});
+                        this.saveTabs();
+                 }
+
+                const groupedTabs = groupBy(this.state.tabs, 'tabType');
+
+                tabPromise = Promise.all(
+                    Object.keys(groupedTabs).map((tabType) =>
+
+                        Promise.all(groupedTabs[tabType].map((tab) =>
+                            this.loadTabData(tab.tabType, tab.uid)
+                            .then((value) => {
+                                return { [`${tab.tabType}-${tab.uid}`]: { value, lastUpdate: moment() }};
+                        })))
+                        .then((tabData) => {
+                            return { [tabType]: Map(Object.assign({}, ...tabData)) };
+                        })
+                    )
+                );
+            }
+        }
+
+        // load lists of data commonly required by views
+        const allPromise = Promise.all([
+            this.props.api.getCollection(Predicate, AppUrls.predicate, {}),
+            this.props.api.getCollection(Source, AppUrls.source, {}),
+            this.props.api.getCollection(Entity, AppUrls.entity, {}),
+            this.props.api.getCollection(EntityType, AppUrls.entity_type, {})
+        ])
+        .then(([predicates, sources, entities, entityType]) => {
+
+            return {
+                predicate: { value: predicates, lastUpdate: moment() },
+                source: { value: sources, lastUpdate: moment() },
+                entity: { value: entities, lastUpdate: moment() },
+                entity_type: { value: entityType, lastUpdate: moment() }
+            };
         });
 
-        Promise.all(toUpdate)
-        .then(([predicates, sources, entities, entityType]) => {
+        Promise.all([tabPromise, allPromise])
+        .then(([tabsArray, all]) => {
+            const tabs = Object.assign({}, ...tabsArray);
             this.setState({
-                dataStore: Object.assign({}, 
-                    this.state.dataStore,
-                    {
-                        predicate: this.state.dataStore['predicate'].set(AppUrls.predicate, { value: predicates, lastUpdate: moment()}),
-                        source: this.state.dataStore['source'].set(AppUrls.source, { value: sources, lastUpdate: moment() }),
-                        entity: this.state.dataStore['entity'].set(AppUrls.entity, { value: entities, lastUpdate: moment()}),
-                        entity_type: this.state.dataStore['entity_type'].set(AppUrls.entity_type, { value: entityType, lastUpdate: moment()})
-                    }),
+                dataStore: Object.assign({}, this.state.dataStore, { tabs, all }),
                 loading: false
             });
         });
     }
 
+    public loadTabData(tabType: string, uid: number) {
+        switch (tabType) {
+            case 'entity':
+                return Promise.all([
+                    this.props.api.getItem(Entity, AppUrls.entity, uid),
+                    this.props.api.getCollection(Record, AppUrls.record, { entity: uid })
+                ]).then(([entity, records]) => ({ entity, records }));
+            case 'predicate':
+                return this.props.api.getItem(Predicate, AppUrls.predicate, uid);
+            case 'entity_type':
+                return this.props.api.getItem(EntityType, AppUrls.entity_type, uid);
+            case 'source':
+                return Promise.all([
+                    this.props.api.getItem(Source, AppUrls.source, uid),
+                    this.props.api.getCollection(SourceElement, AppUrls.source_element, { source: uid })
+                ]).then(([source, source_element]) => ({ source, source_element }));
+            default:
+                throw new Error('Unexpected tab type requested');
+        }
+    }
+
     public createTab(tabType: string, uid: number, data?: any) {
+        // don't add a tab if it already exists
         if (find(this.state.tabs, (tab) => tab.tabType === tabType && tab.uid === uid) === undefined) {
             this.setState({
                 tabs: this.state.tabs.concat([{ tabType, uid, data }])

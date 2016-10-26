@@ -6,7 +6,16 @@
 
 import { Serializable } from './datamodel/Serializable';
 
-export const AppUrls : { [s : string]: string} = {
+export const AppUrls : {
+    element_set: string,
+    record: string,
+    entity: string,
+    entity_type: string,
+    predicate: string,
+    source: string,
+    element: string,
+    source_element: string
+} = {
     element_set: 'element_set',
     record: 'record',
     entity: 'entity',
