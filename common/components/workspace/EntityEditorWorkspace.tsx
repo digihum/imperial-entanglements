@@ -105,8 +105,7 @@ export class EntityEditorWorkspace extends React.Component<EntityEditorProps, En
     public loadData(props: EntityEditorProps) {
 
         props.api.getItem(Entity, AppUrls.entity, props.id).then((entity) => {
-            createTab.dispatch(`Entity #${props.id}`, entity.entityType, `/${AppUrls.entity}/${props.id}`, 'entity');
-            return Promise.all([
+          return Promise.all([
                 props.api.getCollection(Record, AppUrls.record, { entity: props.id })
             ])
             .then(([records]) => {
@@ -161,7 +160,7 @@ export class EntityEditorWorkspace extends React.Component<EntityEditorProps, En
             return (<Loading />);
         }
 
-        const entityType = this.props.dataStore.entityType.get(AppUrls.entityType).value.find((t) => t.uid === entity.entityType);
+        const entityType = this.props.dataStore.entity_type.get(AppUrls.entity_type).value.find((t) => t.uid === entity.entityType);
         const potentialParents = this.props.dataStore.entity.get(AppUrls.entity).value;
 
         const predicates = this.props.dataStore.predicate.get(AppUrls.predicate)
@@ -205,9 +204,7 @@ export class EntityEditorWorkspace extends React.Component<EntityEditorProps, En
                 </div>
 
                 <div>{entityType.name} <AddTabButton
-                    title={entityType.name}
-                    subtitle={`Entity type ${entityType.uid}`}
-                    url={`/${AppUrls.entityType}/${entityType.uid}`}
+                    uid={entityType.uid}
                     tabType='entity_type'
                 /></div>
 

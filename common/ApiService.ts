@@ -6,18 +6,16 @@
 
 import { Serializable } from './datamodel/Serializable';
 
-export class AppUrls {
-    public static elementSet: string = 'element_set';
-    public static record: string = 'record';
-    public static entity: string = 'entity';
-    public static entityType: string = 'entity_type';
-    public static predicate: string = 'predicate';
-    public static source: string = 'source';
-    public static element: string = 'element';
-    public static sourceElement: string = 'source_element';
-
-    public tmp: string;
-}
+export const AppUrls : { [s : string]: string} = {
+    element_set: 'element_set',
+    record: 'record',
+    entity: 'entity',
+    entity_type: 'entity_type',
+    predicate: 'predicate',
+    source: 'source',
+    element: 'element',
+    source_element: 'source_element'
+};
 
 export interface ApiService {
     getItem<T extends Serializable>(obj: { new(): T; }, baseUrl : string, uid: number) : Promise<T>;

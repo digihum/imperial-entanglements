@@ -62,7 +62,7 @@ export class ObjectEditor extends React.Component<EntityEditorProps, EntityEdito
             modalQueue: [],
             dataStore: {
                 entity: Map<string, DataStoreEntry<Entity>>(),
-                entityType: Map<string, DataStoreEntry<EntityType>>(),
+                entity_type: Map<string, DataStoreEntry<EntityType>>(),
                 predicate: Map<string, DataStoreEntry<Predicate>>(),
                 record: Map<string, DataStoreEntry<Record>>(),
                 source: Map<string, DataStoreEntry<Source>>()
@@ -92,7 +92,7 @@ export class ObjectEditor extends React.Component<EntityEditorProps, EntityEdito
             ['predicate', Predicate, AppUrls.predicate, {}],
             ['source', Source, AppUrls.source, {}],
             ['entity', Entity, AppUrls.entity, {}],
-            ['entityType', EntityType, AppUrls.entityType, {}]
+            ['entity_type', EntityType, AppUrls.entity_type, {}]
         ].filter((entry) => {
             if (!this.state.dataStore[entry[0]].has(entry[2])) return true;
             const a = this.state.dataStore[entry[0]].get(entry[2]);
@@ -110,24 +110,24 @@ export class ObjectEditor extends React.Component<EntityEditorProps, EntityEdito
                         predicate: this.state.dataStore['predicate'].set(AppUrls.predicate, { value: predicates, lastUpdate: moment()}),
                         source: this.state.dataStore['source'].set(AppUrls.source, { value: sources, lastUpdate: moment() }),
                         entity: this.state.dataStore['entity'].set(AppUrls.entity, { value: entities, lastUpdate: moment()}),
-                        entityType: this.state.dataStore['entityType'].set(AppUrls.entityType, { value: entityType, lastUpdate: moment()})
+                        entity_type: this.state.dataStore['entity_type'].set(AppUrls.entity_type, { value: entityType, lastUpdate: moment()})
                     }),
                 loading: false
             });
         });
     }
 
-    public createTab(title: string, subtitle: string, url: string, tabType: string) {
-        if (find(this.state.tabs, (tab) => tab.url === url) === undefined) {
+    public createTab(tabType: string, uid: number, data?: any) {
+        if (find(this.state.tabs, (tab) => tab.tabType === tabType && tab.uid === uid) === undefined) {
             this.setState({
-                tabs: this.state.tabs.concat([{ title, subtitle, url, tabType}])
+                tabs: this.state.tabs.concat([{ tabType, uid, data }])
             }, this.saveTabs.bind(this));
         }
     }
 
-    public closeTab(url: string) {
+    public closeTab(tabType: string, uid: number) {
         this.setState({
-            tabs: this.state.tabs.filter((a) => a.url !== url)
+            tabs: this.state.tabs.filter((a) => a.tabType !== tabType || a.uid !== uid)
         }, () => this.saveTabs());
     }
 
@@ -186,7 +186,7 @@ export class ObjectEditor extends React.Component<EntityEditorProps, EntityEdito
     public render() {
         return (
             <section id='entity-editor' className='flex-fill'>
-                <Sidebar tabs={this.state.tabs} />
+                <Sidebar tabs={this.state.tabs} dataStore={this.state.dataStore} loading={this.state.loading} />
                 <Workspace {...this.props} id={this.props.params.id} dataStore={this.state.dataStore} loading={this.state.loading} />
                 {(() => {
                     if (this.state.modalQueue.length === 0) {

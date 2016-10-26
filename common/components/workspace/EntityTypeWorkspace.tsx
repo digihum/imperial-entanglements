@@ -56,8 +56,8 @@ export class EntityTypeWorkspace extends React.Component<EntityTypeWorkspaceProp
 
     public loadData(props: EntityTypeWorkspaceProps) {
         Promise.all([
-            props.api.getItem(EntityType, AppUrls.entityType, props.id),
-            props.api.getCollection(EntityType, AppUrls.entityType, {})
+            props.api.getItem(EntityType, AppUrls.entity_type, props.id),
+            props.api.getCollection(EntityType, AppUrls.entity_type, {})
         ])
         .then(([entityType, potentialParents]) => {
             this.setState({ entityType, potentialParents });
@@ -65,7 +65,7 @@ export class EntityTypeWorkspace extends React.Component<EntityTypeWorkspaceProp
     }
 
     public update(data: any) {
-        this.props.api.patchItem(EntityType, AppUrls.entityType, this.props.id, data)
+        this.props.api.patchItem(EntityType, AppUrls.entity_type, this.props.id, data)
         .then(() => this.setState({ entityType: Object.assign({}, this.state.entityType, data)}));
     }
 

@@ -81,9 +81,8 @@ export class RecordPredicate extends React.Component<RecordPredicateProps, Recor
                      aria-hidden='true'
                      onClick={this.createNewRecord.bind(this)}
                 ></i>
-            <AddTabButton title={this.props.predicate.name}
-                subtitle={`Predicate ${this.props.predicate.uid}`}
-                url={`/${AppUrls.predicate}/${this.props.predicate.uid}`}
+            <AddTabButton
+                uid={this.props.predicate.uid}
                 tabType='predicate' />
             </h5>
             <div className='record-row title'>

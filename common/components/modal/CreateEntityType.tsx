@@ -31,7 +31,7 @@ export class CreateEntityType extends React.Component<CreateEntityTypeProps, Cre
     }
 
     public createEntityType() {
-        this.props.api.postItem(EntityType, AppUrls.entityType,
+        this.props.api.postItem(EntityType, AppUrls.entity_type,
             new EntityType().deserialize({
                 name: this.state.internalValue
             }))

@@ -25,15 +25,15 @@ var frontendConfig = {
         extensions: ['.js'],
         modules: [path.resolve(__dirname, 'build'), 'node_modules']
     },
-    module:  {
-        rules: [
-            {
-                enforce: 'pre',
-                test:   /\.js$/,
-                loader: 'source-map-loader'
-            }
-        ]
-    },
+    // module:  {
+    //     rules: [
+    //         {
+    //             enforce: 'pre',
+    //             test:   /\.js$/,
+    //             loader: 'source-map-loader'
+    //         }
+    //     ]
+    // },
     plugins: [
        // new webpack.optimize.UglifyJsPlugin()
     ],

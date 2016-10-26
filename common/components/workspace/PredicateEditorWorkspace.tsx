@@ -65,7 +65,7 @@ export class PredicateEditorWorkspace extends React.Component<PredicateEditorPro
     public loadData(props: PredicateEditorProps) {
         Promise.all([
             props.api.getItem(Predicate, AppUrls.predicate, props.id),
-            props.api.getCollection(EntityType, AppUrls.entityType, {}),
+            props.api.getCollection(EntityType, AppUrls.entity_type, {}),
             props.api.getCollection(Record, AppUrls.record, { predicate: props.id })
         ]).then(([predicate, entityTypes, records]) => {
             this.setState({ predicate, entityTypes, records });

@@ -6,18 +6,21 @@
 
 import * as React from 'react';
 import { SearchBox } from './sidebar/SearchBox';
+import { AppUrls } from '../ApiService';
 import { Link } from 'react-router';
+import { DataStore } from '../DataStore';
 import { closeTab } from '../Signaller';
 
 export interface Tab {
-    title: string;
-    subtitle: string;
-    url: string;
     tabType: string;
+    uid: number;
+    data?: any;
 }
 
 interface SidebarProps {
     tabs: Tab[];
+    dataStore: DataStore;
+    loading: boolean;
 }
 
 interface SidebarState {
@@ -33,21 +36,35 @@ export class Sidebar extends React.Component<SidebarProps, SidebarState> {
         };
     }
 
-    public closeTab(e: React.MouseEvent, url: string) {
-        closeTab.dispatch(url);
+    public closeTab(e: React.MouseEvent, tabType: string, uid: number) {
+        closeTab.dispatch(tabType, uid);
         e.stopPropagation();
         e.preventDefault();
         e.nativeEvent.stopImmediatePropagation();
     }
 
     public render() {
+
+        if (this.props.loading) {
+            return (<div></div>);
+        }
+
         return (
             <section id='sidebar'>
                 <SearchBox searchString={this.state.searchString}
                 onChange={(evt) => this.setState({searchString: evt.currentTarget.value})} />
                 <ul className='card-list'>
-                    {this.props.tabs.map((tab) => (
-                        <li key={`${tab.url}`}>
+                    {this.props.tabs.map((tab) => {
+
+                        const item = this.props.dataStore[tab.tabType].get(tab.tabType).value
+                            .find((item) => item.uid === tab.uid);
+
+                        const url = `/${AppUrls[tab.tabType]}/${tab.uid}`;
+                        const title = `${AppUrls[tab.tabType]}/${tab.uid}`;
+                        const subtitle = `${AppUrls[tab.tabType]}/${tab.uid}`;
+
+                        return (
+                        <li key={`${url}`}>
                             <div className='sidebar-card'>
                                 <div className='badge-container'>
                                     <div className={'badge ' + tab.tabType}>
@@ -55,18 +72,18 @@ export class Sidebar extends React.Component<SidebarProps, SidebarState> {
                                     </div>
                                 </div>
                                 <div className='description'>
-                                    <Link to={tab.url}>
-                                        <span className='entity-name'>{tab.title}</span>
-                                        <span className='entity-type'>{tab.subtitle}</span>
+                                    <Link to={url}>
+                                        <span className='entity-name'>{title}</span>
+                                        <span className='entity-type'>{subtitle}</span>
                                     </Link>
                                 </div>
                                 <span className='close-button'>
-                                    <i className='fa fa-times' onClick={(e) => this.closeTab(e, tab.url)}></i>
+                                    <i className='fa fa-times' onClick={(e) => this.closeTab(e, tab.tabType, tab.uid)}></i>
                                 </span>
                             </div>
                         </li>
-                    ))}
-
+                    );
+                })}
                 </ul>
             </section>
         );

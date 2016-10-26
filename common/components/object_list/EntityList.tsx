@@ -51,7 +51,7 @@ export class EntityList extends React.Component<EntityListProps, EntityListState
     public loadData() {
         Promise.all([
             this.props.api.getCollection(Entity, AppUrls.entity, {}),
-            this.props.api.getCollection(EntityType, AppUrls.entityType, {}),
+            this.props.api.getCollection(EntityType, AppUrls.entity_type, {}),
             this.props.api.getCollection(Predicate, AppUrls.predicate, {})
         ])
         .then(([entities, entityTypes, predicates]) => this.setState({ entities, entityTypes, predicates }));
@@ -123,9 +123,7 @@ export class EntityList extends React.Component<EntityListProps, EntityListState
                     return (
                         <tr key={`entity-${entity.uid}`}>
                             <td>{entity.uid} <AddTabButton
-                                title={entity.label}
-                                subtitle={`Entity ${entity.uid}`}
-                                url={`/${AppUrls.entity}/${entity.uid}`} 
+                                uid={entity.uid}
                                 tabType='entity'/></td>
                             <td>{entity.label}</td>
                             <td>{entityType ? entityType.name : ''}</td>

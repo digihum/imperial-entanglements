@@ -48,7 +48,7 @@ export class PredicateList extends React.Component<PredicateListProps, Predicate
 
     public loadData() {
          Promise.all([
-            this.props.api.getCollection(EntityType, AppUrls.entityType, {}),
+            this.props.api.getCollection(EntityType, AppUrls.entity_type, {}),
             this.props.api.getCollection(Predicate, AppUrls.predicate, {})
         ])
         .then(([entityTypes, predicates]) => this.setState({ entityTypes, predicates }));
@@ -91,9 +91,7 @@ export class PredicateList extends React.Component<PredicateListProps, Predicate
                     return (
                         <tr key={`predicate-${predicate.uid}`}>
                             <td>{predicate.uid} <AddTabButton
-                                title={predicate.name}
-                                subtitle={`Predicate ${predicate.uid}`}
-                                url={`/${AppUrls.predicate}/${predicate.uid}`}
+                                uid={predicate.uid}
                                 tabType='predicate' /></td>
                             <td>{predicate.name}</td>
                             <td>{entityType ? entityType.name : ''}</td>

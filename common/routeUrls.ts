@@ -63,7 +63,7 @@ export const routeUrls : RouteUrls = {
         collectionEdit: ObjectEditor
     },
 
-    [AppUrls.entityType]: {
+    [AppUrls.entity_type]: {
         url: 'entity_type',
         name: 'Entity Type',
         plural: 'Entity Types',

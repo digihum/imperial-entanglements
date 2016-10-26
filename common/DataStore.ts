@@ -15,7 +15,7 @@ export interface DataStoreEntry<T> {
 
 export interface DataStore {
   entity: Map<string, DataStoreEntry<Entity>>;
-  entityType: Map<string, DataStoreEntry<EntityType>>;
+  entity_type: Map<string, DataStoreEntry<EntityType>>;
   predicate: Map<string, DataStoreEntry<Predicate>>;
   record: Map<string, DataStoreEntry<Record>>;
   source: Map<string, DataStoreEntry<Source>>;

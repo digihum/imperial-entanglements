@@ -32,7 +32,7 @@ export const wrapDatabase : (s: Database) => ServerApiService = (db: Database) =
     const routes = new Map<string, IController>([
         [AppUrls.elementSet, new ElementSetController(db)],
         [AppUrls.record, new RecordController(db)],
-        [AppUrls.entityType, new EntityTypeController(db)],
+        [AppUrls.entity_type, new EntityTypeController(db)],
         [AppUrls.entity, new EntityController(db)],
         [AppUrls.predicate, new PredicateController(db)],
         [AppUrls.source, new SourceController(db)],
@@ -53,7 +53,7 @@ export const api : (router: KoaRouter, s: ServerApiService) => KoaRouter
     const typeMap = {
         [AppUrls.elementSet]: ElementSetPersistable,
         [AppUrls.record]: RecordPersistable,
-        [AppUrls.entityType]: EntityTypePersistable,
+        [AppUrls.entity_type]: EntityTypePersistable,
         [AppUrls.entity]: EntityPersistable,
         [AppUrls.predicate] : PredicatePersistable,
         [AppUrls.source] : SourcePersistable,

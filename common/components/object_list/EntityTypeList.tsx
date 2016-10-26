@@ -37,7 +37,7 @@ export class EntityTypeList extends React.Component<EntityTypeListProps, EntityT
 
     public loadData() {
         Promise.all([
-            this.props.api.getCollection(EntityType, AppUrls.entityType, {})
+            this.props.api.getCollection(EntityType, AppUrls.entity_type, {})
         ])
         .then(([entityTypes]) => this.setState({ entityTypes }));
     }
@@ -77,9 +77,7 @@ export class EntityTypeList extends React.Component<EntityTypeListProps, EntityT
                     return (
                         <tr key={`entityType-${entityType.uid}`}>
                             <td>{entityType.uid} <AddTabButton
-                                title={entityType.name}
-                                subtitle={`Entity Type ${entityType.uid}`}
-                                url={`/${AppUrls.entityType}/${entityType.uid}`}
+                                uid={entityType.uid}
                                 tabType='entity_type' /></td>
                             <td>{entityType.name}</td>
                             <td></td>

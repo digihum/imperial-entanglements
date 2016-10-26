@@ -49,7 +49,7 @@ export class CreatePredicate extends React.Component<CreatePredicateProps, Creat
 
     public componentDidMount() {
         if (this.props.initialDomain !== undefined) {
-            this.props.api.getItem(EntityType, AppUrls.entityType, this.props.initialDomain)
+            this.props.api.getItem(EntityType, AppUrls.entity_type, this.props.initialDomain)
             .then((result) => {
 
                 if (result.uid === null) {
@@ -67,7 +67,7 @@ export class CreatePredicate extends React.Component<CreatePredicateProps, Creat
             });
         }
 
-        this.props.api.getCollection(EntityType, AppUrls.entityType, {})
+        this.props.api.getCollection(EntityType, AppUrls.entity_type, {})
         .then((results) => {
             const entityTypeMap : ComboDropdownOption[] = results.map((entityType) => {
                 if (entityType.uid === null) {

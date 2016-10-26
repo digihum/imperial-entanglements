@@ -12,7 +12,7 @@ import { ScorePicker } from '../fields/ScorePicker';
 import { ComboDropdown, ComboDropdownOption } from '../ComboDropdown';
 import { createTab, showModal } from '../../Signaller';
 import { ModalDefinition } from '../modal/ModalDefinition';
-import { AppUrls } from '../../ApiService';
+import { ApiService, AppUrls } from '../../ApiService';
 
 import { StringFieldEditor } from './StringFieldEditor';
 import { EntityFieldEditor } from './EntityFieldEditor';
@@ -64,7 +64,9 @@ const recordEditor = (props: RecordRowProps) => {
         default:
             return (<div>Missing editor</div>);
     }
-}
+};
+
+const odd = AppUrls.source;
 
 export const RecordRow = (props: RecordRowProps) => {
 
@@ -86,7 +88,7 @@ export const RecordRow = (props: RecordRowProps) => {
     if (props.edit) {
         return (
         <div className='record-row'>
-            <div className='record-row-item uid'>#{props.value.uid}</div>
+            <div className='record-row-item uid'>{props.value.uid}</div>
             <div className='record-row-item'>
                 {recordEditor(props)}
             </div>
@@ -118,9 +120,8 @@ export const RecordRow = (props: RecordRowProps) => {
                          const entity = props.entities.find((entity) => entity.uid == props.value.value);
                          if (entity !== undefined) {
                              return (<span>
-                                {entity.label} <AddTabButton title={entity.label}
-                                    subtitle={`Entity ${entity.uid}`}
-                                    url={`/${AppUrls.entity}/${entity.uid}`}
+                                {entity.label} <AddTabButton
+                                    uid={entity.uid}
                                     tabType='entity' />
                             </span>);
                          } else {

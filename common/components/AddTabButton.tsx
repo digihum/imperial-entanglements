@@ -8,14 +8,13 @@ import * as React from 'react';
 import { createTab } from '../Signaller';
 
 interface AddTabButtonProps {
-    title: string;
-    subtitle: string;
-    url: string;
     tabType: string;
+    uid: number;
+    data?: any;
 }
 
 export const AddTabButton : React.StatelessComponent<AddTabButtonProps> =
     (props: AddTabButtonProps) => (
         <i className='icon-list-add add-button'
-                    onClick={() => createTab.dispatch(props.title, props.subtitle, props.url, props.tabType)}></i>
+                    onClick={() => createTab.dispatch(props.tabType, props.uid, props.data)}></i>
     );

@@ -37,7 +37,7 @@ export class CreateEntity extends React.Component<CreateEntityProps, CreateEntit
     }
 
     public componentWillMount() {
-        this.props.api.getCollection(EntityType, AppUrls.entityType, {})
+        this.props.api.getCollection(EntityType, AppUrls.entity_type, {})
         .then((allEntityTypes) => this.setState({ allEntityTypes }));
     }
 
