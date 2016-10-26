@@ -16,7 +16,7 @@ import { ElementSet, EntityType, Entity, Predicate, Record, Source, SourceElemen
 import { Sidebar, Tab } from '../components/Sidebar';
 import { Workspace } from '../components/Workspace';
 
-import { createTab, closeTab, showModal } from '../Signaller';
+import { createTab, closeTab, showModal, triggerReload } from '../Signaller';
 import { find, tail, cloneDeep, groupBy } from 'lodash';
 
 import { CreatePredicate } from '../components/modal/CreatePredicate';
@@ -53,6 +53,7 @@ export class ObjectEditor extends React.Component<EntityEditorProps, EntityEdito
     private boundCreateTab: any;
     private boundCloseTab: any;
     private boundAddModal: any;
+    private boundReload: any;
 
     constructor(props: EntityEditorProps, context: any) {
         super();
@@ -67,13 +68,19 @@ export class ObjectEditor extends React.Component<EntityEditorProps, EntityEdito
         this.boundCreateTab = this.createTab.bind(this);
         this.boundCloseTab = this.closeTab.bind(this);
         this.boundAddModal = this.addModal.bind(this);
+        this.boundReload = this.reload.bind(this);
 
         createTab.add(this.boundCreateTab);
         closeTab.add(this.boundCloseTab);
         showModal.add(this.boundAddModal);
+        triggerReload.add(this.boundReload);
     }
 
     public componentDidMount() {
+        this.reload();
+    }
+
+    public reload() {
 
         // load data required by the current tabs
         let tabPromise = Promise.resolve(cloneDeep(emptyDataStore.tabs));
@@ -201,25 +208,12 @@ export class ObjectEditor extends React.Component<EntityEditorProps, EntityEdito
         });
     }
 
-    public setDatastore<T>(itemType: string, key: string, data: T[]) {
-        this.setState({
-            dataStore: Object.assign({}, 
-                this.state.dataStore,
-                {
-                    [itemType]: this.state.dataStore[itemType].set(key, data)
-                } 
-        });
-    }
-
     public componentWillUnmount() {
         this.saveTabs();
         createTab.remove(this.boundCreateTab);
         closeTab.remove(this.boundCloseTab);
         showModal.remove(this.boundAddModal);
-    }
-
-    public requestUrls(urls: [{base: string, params: { [s: string]: string }}]) {
-        console.log("oot");
+        triggerReload.remove(this.boundReload);
     }
 
     public render() {

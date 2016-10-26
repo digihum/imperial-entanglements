@@ -8,6 +8,8 @@ import { ApiService } from '../common/ApiService';
 import { Serializable } from '../common/datamodel/Serializable';
 import * as queryString from 'query-string';
 
+import { triggerReload } from '../common/Signaller';
+
 export { AppUrls } from '../common/ApiService';
 
 function handleErrors(response: any) {
@@ -56,7 +58,10 @@ export class ClientApiService implements ApiService {
             }
         })
         .then(handleErrors)
-        .then((response) => response.json());
+        .then((response) => {
+            triggerReload.dispatch();
+            return response.json();
+        });
     }
 
     public putItem<T extends Serializable>(obj: { new(): T; }, baseUrl : string, uid: number, data: T) : Promise<boolean> {
@@ -69,7 +74,10 @@ export class ClientApiService implements ApiService {
             }
         })
         .then(handleErrors)
-        .then((response) => response.json());
+        .then((response) => {
+            triggerReload.dispatch();
+            return response.json();
+        });
     }
 
     public patchItem<T extends Serializable>(obj: { new(): T; }, baseUrl : string, uid: number, data : T) : Promise<boolean> {
@@ -82,7 +90,10 @@ export class ClientApiService implements ApiService {
             }
         })
         .then(handleErrors)
-        .then((response) => response.json());
+        .then((response) => {
+            triggerReload.dispatch();
+            return response.json();
+        });
     }
 
     public delItem<T extends Serializable>(obj: { new(): T; }, baseUrl : string, uid: number) {
@@ -90,6 +101,9 @@ export class ClientApiService implements ApiService {
             method: 'DELETE'
         })
         .then(handleErrors)
-        .then((response) => response.json());
+        .then((response) => {
+            triggerReload.dispatch();
+            return response.json();
+        });
     }
 }

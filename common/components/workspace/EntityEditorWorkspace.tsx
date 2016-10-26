@@ -163,7 +163,7 @@ export class EntityEditorWorkspace extends React.Component<EntityEditorProps, En
                     component={EditableComboDropdown}
                     onChange={(value) => this.update({'parent': value.value})}
                     additionalProps={{ comboSettings: {
-                        options: this.state.potentialParents.map((par) => ({ key: par.label, value: par.uid})),
+                        options: potentialParents.map((par) => ({ key: par.label, value: par.uid})),
                         typeName: 'Entity'
                     }}} />
 

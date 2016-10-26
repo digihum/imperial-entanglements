@@ -10,10 +10,12 @@ export const globalClick = new signals.Signal();
 export const createTab = new signals.Signal();
 export const closeTab = new signals.Signal();
 export const showModal = new signals.Signal();
+export const triggerReload = new signals.Signal();
 
 export const Signaller = {
     globalClick,
     createTab,
     closeTab,
-    showModal
+    showModal,
+    triggerReload
 };
