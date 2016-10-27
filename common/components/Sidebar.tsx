@@ -24,6 +24,9 @@ interface SidebarProps {
     dataStore: DataStore;
     loading: boolean;
     clearTabs: any;
+    workspace: string;
+    list: boolean;
+    id: number;
 }
 
 interface SidebarState {
@@ -71,9 +74,11 @@ export class Sidebar extends React.Component<SidebarProps, SidebarState> {
                         const title = tab.tabType === 'entity' ? item.label : item.name;
                         const subtitle = `${capitalize(AppUrls[tab.tabType])} ${tab.uid}`;
 
+                        const currentTab = !this.props.list && tab.tabType === this.props.workspace && tab.uid == this.props.id;
+
                         return (
                         <li key={`${url}`}>
-                            <div className='sidebar-card'>
+                            <div className={currentTab ? 'sidebar-card current' : 'sidebar-card'}>
                                 <div className='badge-container'>
                                     <div className={'badge ' + tab.tabType}>
                                         <span>{tab.tabType[0].toUpperCase()}</span>

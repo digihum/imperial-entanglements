@@ -32,6 +32,10 @@
         margin: 0.5em 1em;
         display: flex;
 
+        &.current {
+            transform: translate(-0.6em,0);
+        }
+
         .badge-container {
             flex: 0 0 2em;
             display: flex;

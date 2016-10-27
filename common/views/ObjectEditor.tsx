@@ -236,7 +236,15 @@ export class ObjectEditor extends React.Component<EntityEditorProps, EntityEdito
     public render() {
         return (
             <section id='entity-editor' className='flex-fill'>
-                <Sidebar tabs={this.state.tabs} dataStore={this.state.dataStore} loading={this.state.loading} clearTabs={this.clearAllTabs.bind(this)} />
+                <Sidebar
+                    tabs={this.state.tabs}
+                    dataStore={this.state.dataStore}
+                    loading={this.state.loading}
+                    clearTabs={this.clearAllTabs.bind(this)}
+                    list={this.props.list}
+                    id={this.props.params.id}
+                    workspace={this.props.workspace}
+                />
                 <Workspace {...this.props} id={this.props.params.id} dataStore={this.state.dataStore} loading={this.state.loading} />
                 {(() => {
                     if (this.state.modalQueue.length === 0) {
