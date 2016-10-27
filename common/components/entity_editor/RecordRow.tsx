@@ -10,7 +10,7 @@ import { EditableSubfieldProps } from '../fields/EditableFieldComponent';
 export { EditableFieldComponent } from '../fields/EditableFieldComponent';
 import { ScorePicker } from '../fields/ScorePicker';
 import { ComboDropdown, ComboDropdownOption } from '../ComboDropdown';
-import { createTab, showModal } from '../../Signaller';
+import { showModal } from '../../Signaller';
 import { ModalDefinition } from '../modal/ModalDefinition';
 import { ApiService, AppUrls } from '../../ApiService';
 

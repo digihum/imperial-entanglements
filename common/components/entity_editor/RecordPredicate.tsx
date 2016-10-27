@@ -11,8 +11,6 @@ import { EditableFieldComponent } from '../fields/EditableFieldComponent';
 
 import { RecordRow } from './RecordRow';
 
-import { createTab } from '../../Signaller';
-
 import { AddTabButton } from '../AddTabButton';
 
 class RecordEditableFieldComponent extends EditableFieldComponent<Record> {}

@@ -18,7 +18,7 @@ import { ModalDefinition } from '../modal/ModalDefinition';
 
 import { Dictionary, groupBy } from 'lodash';
 
-import { createTab, showModal } from '../../Signaller';
+import { showModal } from '../../Signaller';
 import { AddTabButton } from '../AddTabButton';
 
 
@@ -79,6 +79,14 @@ export class EntityEditorWorkspace extends React.Component<EntityEditorProps, En
     }
 
     public createNewRecord() {
+
+        const entity = this.props.dataStore.tabs.entity.get('entity-' + this.props.id).value.entity;
+
+        const entityType = this.props.dataStore.all.entity_type.value.find((t) => t.uid === entity.entityType);
+
+        const predicates = this.props.dataStore.all.predicate
+            .value.filter((pred) => pred.domain === entity.entityType);
+
         const modalDef: ModalDefinition = {
             name: 'record',
             complete: (data) => {
@@ -89,9 +97,9 @@ export class EntityEditorWorkspace extends React.Component<EntityEditorProps, En
                 console.log('Records editor called cancel');
             },
             settings: {
-                options: this.state.predicates.map((pred) => ({ key: pred.name, value: pred.uid, meta: pred})),
+                options: predicates.map((pred) => ({ key: pred.name, value: pred.uid, meta: pred})),
                 entityUid: this.props.id,
-                entityType: this.state.entityType.uid
+                entityType: entityType.uid
             }
         };
 
@@ -99,8 +107,8 @@ export class EntityEditorWorkspace extends React.Component<EntityEditorProps, En
     }
 
     public update(data: any) {
-        this.props.api.patchItem(Entity, AppUrls.entity, this.props.id, data)
-        .then(() => this.setState({ entity: Object.assign({}, this.state.entity, data)}));
+        this.props.api.patchItem(Entity, AppUrls.entity, this.props.id, data);
+        // .then(() => this.setState({ entity: Object.assign({}, this.state.entity, data)}));
     }
 
     public render() {

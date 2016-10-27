@@ -12,9 +12,6 @@ import { EditableFieldComponent } from '../fields/EditableFieldComponent';
 
 import { RecordRow } from './RecordRow';
 
-import { createTab } from '../../Signaller';
-
-
 import { RecordPredicate } from './RecordPredicate';
 
 import { groupBy, Dictionary } from 'lodash';

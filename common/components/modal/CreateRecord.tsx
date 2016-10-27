@@ -11,7 +11,7 @@ import { Record, Predicate } from '../../../common/datamodel/datamodel';
 import { ApiService, AppUrls } from '../../ApiService';
 import { ComboDropdown, ComboDropdownOption } from '../ComboDropdown';
 
-import { showModal, createTab } from '../../Signaller';
+import { showModal } from '../../Signaller';
 import { ModalDefinition } from './ModalDefinition';
 
 import { noop } from 'lodash';
@@ -46,7 +46,6 @@ export class CreateRecord extends React.Component<CreateRecordProps, CreateRecor
             complete: (data : Predicate) => {
                 console.log('Predicate editor called complete');
                 this.setComboValue({ key: data.name, value: data.uid.toString(), meta: data});
-                createTab.dispatch(data.name, `Predicate ${data.uid}`, `/${AppUrls.predicate}/${data.uid}`, 'predicate');
             },
             cancel: () => {
                 console.log('Predicate editor called cancel');
