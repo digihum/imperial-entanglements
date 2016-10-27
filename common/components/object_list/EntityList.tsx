@@ -7,6 +7,7 @@
 import * as React from 'react';
 
 import { ApiService, AppUrls } from '../../ApiService';
+import { DataStore } from '../../DataStore';
 import { Entity, EntityType, Predicate } from '../../../common/datamodel/datamodel';
 import { ComboDropdown, ComboDropdownOption } from '../ComboDropdown';
 import { noop } from 'lodash';
@@ -19,19 +20,21 @@ import { ModalDefinition } from '../modal/ModalDefinition';
 
 interface EntityListProps {
     api: ApiService;
+    dataStore: DataStore;
+}
+
+interface ColumnSettings {
+    predicate: number;
 }
 
 interface EntityListState {
     entities: Entity[];
     entityTypes: EntityType[];
     predicates: Predicate[];
+    columns: ColumnSettings[];
 }
 
-interface ColumnSettings {
-    name: string;
-    nullable: boolean;
 
-}
 
 export class EntityList extends React.Component<EntityListProps, EntityListState> {
 
@@ -40,28 +43,15 @@ export class EntityList extends React.Component<EntityListProps, EntityListState
         this.state = {
             entities: [],
             entityTypes: [],
-            predicates: []
+            predicates: [],
+            columns: []
         };
-    }
-
-    public componentWillMount() {
-        this.loadData();
-    }
-
-    public loadData() {
-        Promise.all([
-            this.props.api.getCollection(Entity, AppUrls.entity, {}),
-            this.props.api.getCollection(EntityType, AppUrls.entity_type, {}),
-            this.props.api.getCollection(Predicate, AppUrls.predicate, {})
-        ])
-        .then(([entities, entityTypes, predicates]) => this.setState({ entities, entityTypes, predicates }));
     }
 
     public addNew() {
         const a : ModalDefinition = {
             name: 'entity',
             complete: () => {
-                this.loadData();
             },
             cancel: () => { console.log('cancel')},
             settings: {
@@ -72,8 +62,16 @@ export class EntityList extends React.Component<EntityListProps, EntityListState
         showModal.dispatch(a);
     }
 
+    public setColumnPredicate(colId: number, predicateId: number) {
+
+    }
 
     public render() {
+
+        const entities = this.props.dataStore.all.entity.value;
+        const predicates = this.props.dataStore.all.predicate.value;
+        const entityTypes = this.props.dataStore.all.entity_type.value;
+
         return (
         <section>
             <h2>All Entities <i
@@ -93,7 +91,7 @@ export class EntityList extends React.Component<EntityListProps, EntityListState
                                 typeName='predicate'
                                 allowNew={false}
                                 setValue={(a) => console.log(a)}
-                                options={this.state.predicates.map((pred) => ({ key: pred.name, value: pred.uid.toString()}))}
+                                options={predicates.map((pred) => ({ key: pred.name, value: pred.uid.toString()}))}
                                 createNewValue={noop}
                             /></td>
                         ))}
@@ -118,8 +116,8 @@ export class EntityList extends React.Component<EntityListProps, EntityListState
                     </tr>
                 </thead>
                 <tbody>
-                {this.state.entities.map((entity) => {
-                    const entityType = this.state.entityTypes.find((t) => t.uid === entity.entityType);
+                {entities.map((entity) => {
+                    const entityType = entityTypes.find((t) => t.uid === entity.entityType);
                     return (
                         <tr key={`entity-${entity.uid}`}>
                             <td>{entity.uid} <AddTabButton

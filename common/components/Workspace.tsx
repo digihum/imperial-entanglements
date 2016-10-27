@@ -48,7 +48,11 @@ export class Workspace extends React.Component<WorkspaceProps, WorkspaceState> {
         }
 
         if (this.props.list) {
-            return (<ObjectListWorkspace api={this.props.api} name={this.props.name} listType={this.props.workspace} />);
+            return (<ObjectListWorkspace
+                api={this.props.api}
+                name={this.props.name}
+                listType={this.props.workspace}
+                dataStore={this.props.dataStore} />);
         }
 
         switch (this.props.workspace) {
