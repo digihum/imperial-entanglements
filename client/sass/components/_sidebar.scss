@@ -3,6 +3,7 @@
     background: linear-gradient(135deg, #e6e6e6 43%,#e2e2e2 100%);
     flex: 0 0 20em;
     border-right: #efefef 1px solid;
+    overflow-y: auto;
 
     ul.card-list {
         list-style: none;

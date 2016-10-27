@@ -73,6 +73,7 @@
     "sqlite3": "^3.1.4"
   },
   "devDependencies": {
+    "Faker": "^0.7.2",
     "chai": "^3.5.0",
     "chai-http": "^3.0.0",
     "electron": "1.4.2",
