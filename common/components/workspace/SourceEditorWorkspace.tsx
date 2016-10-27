@@ -19,12 +19,15 @@ import { ComboDropdownOption } from '../ComboDropdown';
 
 import { keyBy, Dictionary } from 'lodash';
 
+import { DataStore } from '../../DataStore';
+
 class StringEditableFieldComponent extends EditableFieldComponent<string> {}
 class ComboEditableFieldComponent extends EditableFieldComponent<ComboDropdownOption> {}
 
 interface SourceEditorProps {
     api: ApiService;
     id: number;
+    dataStore: DataStore;
 }
 
 interface SourceEditorState {
@@ -85,16 +88,13 @@ export class SourceEditorWorkspace extends React.Component<SourceEditorProps, So
 
     public updateSource(field: string, value: string) {
 
-        if (this.state.source === null) {
-            console.warn('Tried to edit unready source');
-            return;
-        }
+        const source = this.props.dataStore.tabs.source.get('source-' + this.props.id).value.source;
 
-        this.props.api.patchItem(Source, AppUrls.source, this.state.source.uid, { [field]: value })
+        this.props.api.patchItem(Source, AppUrls.source, source.uid, { [field]: value })
         .then((success) => {
 
             const updatedSource = new Source().deserialize(Object.assign({},
-                this.state.source.serialize(), { [field]: value }));
+                source.serialize(), { [field]: value }));
 
             this.setState({
                 source: updatedSource,
@@ -133,13 +133,16 @@ export class SourceEditorWorkspace extends React.Component<SourceEditorProps, So
 
     public render() {
 
-        if (this.state.source === null || this.state.dublinCore === null) {
+        if (this.state.dublinCore === null) {
             return (<Loading />);
         }
 
+        const source = this.props.dataStore.tabs.source.get('source-' + this.props.id).value.source;
+        const potentialParents = this.props.dataStore.all.source.value;
+
         let parentName = '';
-        if (this.state.potentialParents !== null && this.state.source.parent !== undefined) {
-            const found = this.state.potentialParents.find((par) => par.uid === this.state.source.parent);
+        if (potentialParents !== null && source.parent !== undefined) {
+            const found = potentialParents.find((par) => par.uid === source.parent);
             if (found !== undefined) {
                 parentName = found.name;
             }
@@ -149,17 +152,17 @@ export class SourceEditorWorkspace extends React.Component<SourceEditorProps, So
             <div className='workspace-editor'>
 
                 <StringEditableFieldComponent
-                    value={this.state.source.name}
+                    value={source.name}
                     component={EditableHeader}
                     onChange={(value) => this.updateSource('name', value)}  />
 
                 <span>Parent:</span>
                 <ComboEditableFieldComponent
-                    value={{key: parentName, value: this.state.source.parent}}
+                    value={{key: parentName, value: source.parent}}
                     component={EditableComboDropdown}
                     onChange={(value) => this.updateSource('parent', value.value)}
                     additionalProps={{ comboSettings: {
-                        options: this.state.potentialParents.map((par) => ({ key: par.name, value: par.uid})),
+                        options: potentialParents.map((par) => ({ key: par.name, value: par.uid})),
                         typeName: 'Source'
                     }}} />
 
@@ -176,7 +179,7 @@ export class SourceEditorWorkspace extends React.Component<SourceEditorProps, So
 
                 <div>
                     <StringEditableFieldComponent
-                        value={this.state.source.sameAs}
+                        value={source.sameAs}
                         component={SameAsEditor}
                         onChange={(value) => this.updateSource('sameAs', value)} />
                 </div>

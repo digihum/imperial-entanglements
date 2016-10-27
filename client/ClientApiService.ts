@@ -8,7 +8,7 @@ import { ApiService } from '../common/ApiService';
 import { Serializable } from '../common/datamodel/Serializable';
 import * as queryString from 'query-string';
 
-import { triggerReload } from '../common/Signaller';
+import { triggerReload, createTab } from '../common/Signaller';
 
 export { AppUrls } from '../common/ApiService';
 
@@ -61,6 +61,9 @@ export class ClientApiService implements ApiService {
         .then((response) => {
             triggerReload.dispatch();
             return response.json();
+        }).then(([uid]) => {
+            //createTab.dispatch(baseUrl, uid);
+            return Promise.resolve(data);
         });
     }
 

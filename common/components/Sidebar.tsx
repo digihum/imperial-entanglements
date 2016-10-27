@@ -57,7 +57,8 @@ export class Sidebar extends React.Component<SidebarProps, SidebarState> {
                 <SearchBox searchString={this.state.searchString}
                 onChange={(evt) => this.setState({searchString: evt.currentTarget.value})} />
                 <div className='sidebar-toolbar'>
-                    <button onClick={this.props.clearTabs}>Clear All</button><button>Save</button>
+                    <button onClick={this.props.clearTabs}><i className='fa fa-trash'></i> Clear All</button>
+                    <button><i className='fa fa-floppy-o'></i> Save</button>
                 </div>
                 <ul className='card-list'>
                     {this.props.tabs.map((tab) => {
