@@ -42,4 +42,4 @@ export const predicateQLType = (db: Database) : GraphQLObjectType => {
             }
         }
     });
-}
+};

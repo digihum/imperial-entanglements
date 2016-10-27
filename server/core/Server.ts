@@ -45,7 +45,7 @@ export class Server {
 
         this.app = new Koa();
         this.app.use(koaLogger());
-        koaQs(this.app, 'first');
+        koaQs(this.app, 'strict');
 
         // Sessions
         this.app.keys = ['secret'];

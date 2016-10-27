@@ -34,9 +34,12 @@ export class Database {
     }
 
     public loadCollection(a: string, params: Object) : Promise<any[]> {
-        const query = this.knex.select()
-            .from(a)
-            .where(params);
+        let query = this.knex.select()
+            .from(a);
+
+        Object.keys(params).forEach((param) => {
+            query = query.whereIn(param, params[param]);
+        });
 
         return query.then((results) => results === undefined ? Promise.reject(new KeyNotFoundException()) : results);
     }

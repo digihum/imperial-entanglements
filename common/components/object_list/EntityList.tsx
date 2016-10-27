@@ -8,7 +8,7 @@ import * as React from 'react';
 
 import { ApiService, AppUrls } from '../../ApiService';
 import { DataStore } from '../../DataStore';
-import { Entity, EntityType, Predicate } from '../../../common/datamodel/datamodel';
+import { Entity, EntityType, Predicate, Record } from '../../../common/datamodel/datamodel';
 import { ComboDropdown, ComboDropdownOption } from '../ComboDropdown';
 import { noop, cloneDeep } from 'lodash';
 
@@ -25,6 +25,7 @@ interface EntityListProps {
 
 interface ColumnSettings {
     predicate: number;
+    sort: 'none' | 'asc' | 'desc';
 }
 
 interface EntityListState {
@@ -32,10 +33,43 @@ interface EntityListState {
     entityTypes: EntityType[];
     predicates: Predicate[];
     columns: ColumnSettings[];
-    results: any[];
+    results: Record[];
 }
 
+const sortIcons = {
+    'none': 'fa fa-sort',
+    'asc': 'fa fa-sort-asc',
+    'desc': 'fa fa-sort-desc'
+};
 
+const customColumns = (predicates, columns, setColumnPredicate, rotateSort) => {
+    return [0,1,2].map((id) => {
+
+        let comboValue = { key: '', value: ''};
+
+        if (columns[id].predicate !== -1) {
+            const thisPred = predicates.find((pred) => pred.uid == columns[id].predicate);
+            if (thisPred !== undefined) {
+                comboValue.key = thisPred.name;
+            }
+            comboValue.value = columns[id].predicate;
+        }
+
+        return (
+            <td key={`col-${id}`}>
+                <ComboDropdown
+                    value={comboValue}
+                    typeName='predicate'
+                    allowNew={false}
+                    setValue={(value) => setColumnPredicate(id, value.value)}
+                    options={predicates.map((pred) => ({ key: pred.name, value: pred.uid.toString()}))}
+                    createNewValue={noop}
+                />
+                <i className={sortIcons[columns[id].sort]} onClick={() => rotateSort(id)}></i>
+            </td>
+        );
+    })
+};
 
 export class EntityList extends React.Component<EntityListProps, EntityListState> {
 
@@ -46,9 +80,9 @@ export class EntityList extends React.Component<EntityListProps, EntityListState
             entityTypes: [],
             predicates: [],
             columns: [
-                { predicate: -1 },
-                { predicate: -1 },
-                { predicate: -1 }
+                { predicate: -1, sort: 'none' },
+                { predicate: -1, sort: 'none' },
+                { predicate: -1, sort: 'none' }
             ],
             results: []
         };
@@ -61,15 +95,13 @@ export class EntityList extends React.Component<EntityListProps, EntityListState
     public reload() {
 
         let predicatesQuery = '';
+        const setColumns = this.state.columns.filter((col) => col.predicate != -1);
 
-        if (this.state.columns.length > 0) {
-             const colUids = this.state.columns.map((col) => `"${col.predicate}"`).join(', ');
-             predicatesQuery = `, predicates(uids: [${colUids}]) { uid, values }`;
-        }
-
-        const queryString = `{ entity { uid, type${predicatesQuery} } }`;
-
-        this.props.api.query(queryString).then((results) => this.setState({ results: results.data.entity });
+        this.props.api.getCollection(Record, AppUrls.record, {
+            predicate: setColumns.map((col) => col.predicate),
+            entity: this.props.dataStore.all.entity.value.map((entity) => entity.uid)
+        })
+        .then((results) => this.setState({ results });
     }
 
     public addNew() {
@@ -94,11 +126,60 @@ export class EntityList extends React.Component<EntityListProps, EntityListState
         }, this.reload.bind(this));
     }
 
+    public rotateSort(colId: number) {
+        const columns = cloneDeep(this.state.columns);
+        switch (columns[colId].sort) {
+            case 'none':
+                columns[colId].sort = 'asc';
+                break;
+            case 'asc':
+                columns[colId].sort = 'desc';
+                break;
+            case 'desc':
+                columns[colId].sort = 'none';
+        }
+        this.setState({
+            columns
+        }, this.reload.bind(this));
+    }
+
     public render() {
 
         const entities = this.props.dataStore.all.entity.value;
         const predicates = this.props.dataStore.all.predicate.value;
         const entityTypes = this.props.dataStore.all.entity_type.value;
+
+        const tableData = entities.map((entity) => {
+            const entityType = entityTypes.find((t) => t.uid === entity.entityType);
+            const entityData = this.state.results.filter((res) => res.entity === entity.uid);
+
+            return {
+                uid: entity.uid,
+                label: entity.label,
+                entityType,
+                columns: this.state.columns.map((col) => {
+                        let value = '';
+
+                        if (entityData !== undefined && col.predicate !== -1) {
+                            const predicateData = entityData
+                            .filter((record) => record.predicate == col.predicate);
+
+                            if (predicateData !== undefined) {
+                                value = predicateData.map((pred) => pred.value).join(', ');
+                            }
+                            return value;
+                        }
+                })
+            };
+        }).sort((row1, row2) => {
+            let score = 0;
+            this.state.columns.forEach((col, i) => {
+                if (col.sort !== 'none' && row1.columns[i] !== row2.columns[i]) {
+                    score += (row1.columns[i] > row2.columns[i] ? 1 : -1) * (Math.pow(10, 3 - i)) * (col.sort === 'asc' ? -1 : 1);
+                }
+            });
+            return score;
+        });
 
         return (
         <section>
@@ -113,30 +194,7 @@ export class EntityList extends React.Component<EntityListProps, EntityListState
                         <td>#</td>
                         <td>Label</td>
                         <td>Type</td>
-                        {[0,1,2].map((id) => {
-
-                            let comboValue = { key: '', value: ''};
-
-                            if (this.state.columns[id].predicate !== -1) {
-                                const thisPred = predicates.find((pred) => pred.uid == this.state.columns[id].predicate);
-                                if (thisPred !== undefined) {
-                                    comboValue.key = thisPred.name;
-                                }
-                                comboValue.value = this.state.columns[id].predicate;
-                            }
-
-                            return (
-                                <td key={`col-${id}`}><ComboDropdown
-                                    value={comboValue}
-                                    typeName='predicate'
-                                    allowNew={false}
-                                    setValue={(value) => this.setColumnPredicate(id, value.value)}
-                                    options={predicates.map((pred) => ({ key: pred.name, value: pred.uid.toString()}))}
-                                    createNewValue={noop}
-                                /></td>
-                            );
-                        }
-                        )}
+                        { customColumns(predicates, this.state.columns, this.setColumnPredicate.bind(this), this.rotateSort.bind(this))}
                     </tr>
                     <tr>
                         <td></td>
@@ -158,34 +216,16 @@ export class EntityList extends React.Component<EntityListProps, EntityListState
                     </tr>
                 </thead>
                 <tbody>
-                {entities.map((entity) => {
-                    const entityType = entityTypes.find((t) => t.uid === entity.entityType);
-                    const entityData = this.state.results.find((res) => res.uid == entity.uid);
-                    return (
-                        <tr key={`entity-${entity.uid}`}>
-                            <td>{entity.uid} <AddTabButton
-                                uid={entity.uid}
+                {tableData.map((row) => (
+                        <tr key={`entity-${row.uid}`}>
+                            <td>{row.uid} <AddTabButton
+                                uid={row.uid}
                                 tabType='entity'/></td>
-                            <td>{entity.label}</td>
-                            <td>{entityType ? entityType.name : ''}</td>
-
-                             {[0,1,2].map((id) => {
-
-                                 let value = '';
-
-                                 if (entityData !== undefined && this.state.columns[id].predicate !== -1) {
-                                     const predicateData = entityData.predicates
-                                        .find((pred) => pred.uid == this.state.columns[id].predicate);
-
-                                    if(predicateData !== undefined) {
-                                        value = predicateData.values.join(', ');
-                                    }
-                                 }
-
-                                 return (<td key={`col-val-${id}`}>{value}</td>);
-                            })}
+                            <td>{row.label}</td>
+                            <td>{row.entityType ? row.entityType.name : ''}</td>
+                             {[0,1,2].map((id) => (<td key={`col-val-${id}`}>{row.columns[id]}</td>))}
                         </tr>
-                    )}
+                    )
                 )}
                 </tbody>
             </table>
