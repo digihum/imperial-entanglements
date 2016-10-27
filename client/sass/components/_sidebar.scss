@@ -5,6 +5,13 @@
     border-right: #efefef 1px solid;
     overflow-y: auto;
 
+    .sidebar-toolbar {
+        display: flex;
+        button {
+            flex: 1;
+        }
+    }
+
     ul.card-list {
         list-style: none;
         padding: 0;

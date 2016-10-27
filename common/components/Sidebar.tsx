@@ -23,6 +23,7 @@ interface SidebarProps {
     tabs: Tab[];
     dataStore: DataStore;
     loading: boolean;
+    clearTabs: any;
 }
 
 interface SidebarState {
@@ -55,6 +56,9 @@ export class Sidebar extends React.Component<SidebarProps, SidebarState> {
             <section id='sidebar'>
                 <SearchBox searchString={this.state.searchString}
                 onChange={(evt) => this.setState({searchString: evt.currentTarget.value})} />
+                <div className='sidebar-toolbar'>
+                    <button onClick={this.props.clearTabs}>Clear All</button><button>Save</button>
+                </div>
                 <ul className='card-list'>
                     {this.props.tabs.map((tab) => {
 

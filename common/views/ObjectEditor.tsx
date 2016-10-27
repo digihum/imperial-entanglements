@@ -194,6 +194,13 @@ export class ObjectEditor extends React.Component<EntityEditorProps, EntityEdito
         }
     }
 
+    public clearAllTabs() {
+        this.setState({tabs: []}, () => {
+            this.saveTabs();
+            this.reload();
+        });
+    }
+
     public addModal(def: ModalDefinition) {
         this.setState({ modalQueue: [def].concat(this.state.modalQueue)});
     }
@@ -229,7 +236,7 @@ export class ObjectEditor extends React.Component<EntityEditorProps, EntityEdito
     public render() {
         return (
             <section id='entity-editor' className='flex-fill'>
-                <Sidebar tabs={this.state.tabs} dataStore={this.state.dataStore} loading={this.state.loading} />
+                <Sidebar tabs={this.state.tabs} dataStore={this.state.dataStore} loading={this.state.loading} clearTabs={this.clearAllTabs.bind(this)} />
                 <Workspace {...this.props} id={this.props.params.id} dataStore={this.state.dataStore} loading={this.state.loading} />
                 {(() => {
                     if (this.state.modalQueue.length === 0) {
