@@ -106,4 +106,10 @@ export class ClientApiService implements ApiService {
             return response.json();
         });
     }
+
+    public query(graphQLQueryString: string) : Promise<any> {
+        return fetch('/api/v1/query?query=' + graphQLQueryString)
+            .then(handleErrors)
+            .then((response) => response.json());
+    }
 }

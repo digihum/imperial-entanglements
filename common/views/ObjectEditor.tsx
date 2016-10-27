@@ -17,7 +17,7 @@ import { Sidebar, Tab } from '../components/Sidebar';
 import { Workspace } from '../components/Workspace';
 
 import { createTab, closeTab, showModal, triggerReload } from '../Signaller';
-import { find, tail, cloneDeep, groupBy } from 'lodash';
+import { find, tail, cloneDeep, groupBy, findIndex } from 'lodash';
 
 import { CreatePredicate } from '../components/modal/CreatePredicate';
 import { CreateRecord } from '../components/modal/CreateRecord';
@@ -169,6 +169,15 @@ export class ObjectEditor extends React.Component<EntityEditorProps, EntityEdito
             this.setState({
                 tabs: this.state.tabs.concat([{ tabType, uid, data }])
             }, this.saveTabs.bind(this));
+        }
+    }
+
+    public updateTab(tabType: string, uid: number, data: any) {
+        const tabs = cloneDeep(this.state.tabs);
+        const tabId = findIndex(tabs, (tab) => tab.tabType === tabType && tab.uid === uid);
+        if (tabId !== -1) {
+            tabs[tabId].data = data;
+            this.setState({ tabs });
         }
     }
 

@@ -37,4 +37,6 @@ export interface ApiService {
     //context of the 'setState' function in react
     patchItem<T extends Serializable>(obj: { new(): T; }, baseUrl : string, uid: number, data : any) : Promise<boolean>;
     delItem<T extends Serializable>(obj: { new(): T; }, baseUrl : string, uid: number) : Promise<boolean>;
+
+    query(graphQLQuery: string) : Promise<any>;
 } 
