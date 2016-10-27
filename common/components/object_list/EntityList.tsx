@@ -46,7 +46,7 @@ const customColumns = (predicates, columns, setColumnPredicate, rotateSort) => {
     return [0,1,2].map((id) => {
 
         let comboValue = { key: '', value: ''};
-
+        
         if (columns[id].predicate !== -1) {
             const thisPred = predicates.find((pred) => pred.uid == columns[id].predicate);
             if (thisPred !== undefined) {
@@ -57,15 +57,22 @@ const customColumns = (predicates, columns, setColumnPredicate, rotateSort) => {
 
         return (
             <td key={`col-${id}`}>
-                <ComboDropdown
-                    value={comboValue}
-                    typeName='predicate'
-                    allowNew={false}
-                    setValue={(value) => setColumnPredicate(id, value.value)}
-                    options={predicates.map((pred) => ({ key: pred.name, value: pred.uid.toString()}))}
-                    createNewValue={noop}
-                />
-                <i className={sortIcons[columns[id].sort]} onClick={() => rotateSort(id)}></i>
+                <div className='list-combo-header'>
+                    <div className='combo-wrapper'>
+                        <ComboDropdown
+                            value={comboValue}
+                            typeName='predicate'
+                            allowNew={false}
+                            setValue={(value) => setColumnPredicate(id, value.value)}
+                            options={predicates.map((pred) => ({ key: pred.name, value: pred.uid.toString()}))}
+                            createNewValue={noop}
+                            compact={true}
+                        />
+                    </div>
+                    <div className='order-wrapper'>
+                        <i className={sortIcons[columns[id].sort]} onClick={() => rotateSort(id)}></i>
+                    </div>
+                </div>
             </td>
         );
     })
