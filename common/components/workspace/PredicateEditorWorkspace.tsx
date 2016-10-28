@@ -134,6 +134,8 @@ export class PredicateEditorWorkspace extends React.Component<PredicateEditorPro
             return { key: t.name, value: t.uid.toString() };
         });
 
+        const literalTypeOptions = literalTypes.map((t) => ({ key: t.name, value: t.name, meta: 'literal'}));
+
         return (
             <div className='workspace-editor'>
                 <i
@@ -169,7 +171,7 @@ export class PredicateEditorWorkspace extends React.Component<PredicateEditorPro
                         rangeChanged={(value) => this.updatePredicate('range', value.value, value.meta !== 'literal')}
                         mode='editSingle'
                         domainOptions={entityTypeOptions}
-                        rangeOptions={literalTypes.map((t) => ({ key: t.name, value: t.name, meta: 'literal'})).concat(entityTypeOptions)}
+                        rangeOptions={literalTypeOptions.concat(entityTypeOptions)}
                     />
                 </div>
 

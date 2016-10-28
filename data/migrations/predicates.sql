@@ -11,7 +11,7 @@ CREATE TABLE predicates (
         ON DELETE CASCADE,
 
     range_type varchar(255) NOT NULL,
-    range_ref varchar(255) CHECK(range_type != 'entity' OR range_ref is not NULL)
+    range_ref INTEGER CHECK(range_type != 'entity' OR range_ref is not NULL)
         REFERENCES entity_types(uid)
         ON UPDATE CASCADE
         ON DELETE CASCADE,
