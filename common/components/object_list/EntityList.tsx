@@ -43,10 +43,10 @@ const sortIcons = {
 };
 
 const customColumns = (predicates, columns, setColumnPredicate, rotateSort) => {
-    return [0,1,2].map((id) => {
+    return [0, 1, 2].map((id) => {
 
-        let comboValue = { key: '', value: ''};
-        
+        const comboValue = { key: '', value: ''};
+
         if (columns[id].predicate !== -1) {
             const thisPred = predicates.find((pred) => pred.uid == columns[id].predicate);
             if (thisPred !== undefined) {
@@ -75,7 +75,7 @@ const customColumns = (predicates, columns, setColumnPredicate, rotateSort) => {
                 </div>
             </td>
         );
-    })
+    });
 };
 
 export class EntityList extends React.Component<EntityListProps, EntityListState> {
@@ -116,7 +116,7 @@ export class EntityList extends React.Component<EntityListProps, EntityListState
             name: 'entity',
             complete: () => {
             },
-            cancel: () => { console.log('cancel')},
+            cancel: () => { console.log('cancel'); },
             settings: {
                 initialName: ''
             }
