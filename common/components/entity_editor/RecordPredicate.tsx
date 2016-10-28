@@ -75,7 +75,7 @@ export class RecordPredicate extends React.Component<RecordPredicateProps, Recor
 
         return (<section>
             <h5 className='section-header'>{this.props.predicate.name} <i
-                    className='fa fa-plus-circle add-button'
+                    className='fa fa-plus-circle add button'
                      aria-hidden='true'
                      onClick={this.createNewRecord.bind(this)}
                 ></i>

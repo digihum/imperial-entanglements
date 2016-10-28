@@ -58,35 +58,43 @@ export class EntityTypeList extends React.Component<EntityTypeListProps, EntityT
 
     public render() {
         return (
-        <section>
-            <h2>All Entity Types <i
-                className='fa fa-plus-circle add-button'
-                aria-hidden='true'
-                onClick={this.addNew.bind(this)}
-            ></i></h2>
-            <table className='table'>
-                <thead>
-                    <tr>
-                        <td>#</td>
-                        <td>Label</td>
-                        <td>Type</td>
-                    </tr>
-                </thead>
-                <tbody>
-                {this.state.entityTypes.map((entityType) => {
-                    return (
-                        <tr key={`entityType-${entityType.uid}`}>
-                            <td>{entityType.uid} <AddTabButton
-                                uid={entityType.uid}
-                                tabType='entity_type' /></td>
-                            <td>{entityType.name}</td>
-                            <td></td>
+        <div className='workspace-editor'>
+
+            <header className='editor-header entity_type'>
+                <div className='main-toolbar'>
+                    <h2>All Entity Types <i
+                        className='fa fa-plus-circle add button'
+                        aria-hidden='true'
+                        onClick={this.addNew.bind(this)}
+                    ></i></h2>
+                </div>
+            </header>
+
+            <section className='editor-body'>
+                <table className='table'>
+                    <thead>
+                        <tr>
+                            <td>#</td>
+                            <td>Label</td>
+                            <td>Type</td>
                         </tr>
+                    </thead>
+                    <tbody>
+                    {this.state.entityTypes.map((entityType) => {
+                        return (
+                            <tr key={`entityType-${entityType.uid}`}>
+                                <td>{entityType.uid} <AddTabButton
+                                    uid={entityType.uid}
+                                    tabType='entity_type' /></td>
+                                <td>{entityType.name}</td>
+                                <td></td>
+                            </tr>
+                        )}
                     )}
-                )}
-                </tbody>
-            </table>
-        </section>
+                    </tbody>
+                </table>
+            </section>
+        </div>
         );
     }
 }

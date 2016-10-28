@@ -1,13 +1,41 @@
+.workspace-outer-wrapper {
+    flex-direction: column;
+    .header-colour {
+        height: 0.2em;
+        background-color: red;
+        &.records {
+            background-color: $records_colour;
+        }
+
+        &.entity_type {
+            background-color: $types_colour;
+        }
+
+        &.source {
+            background-color: $source_colour;
+        }
+
+        &.entity {
+            background-color: $entity_colour;
+        }
+
+        &.predicate {
+            background-color: $predicate_colour;
+        }
+    }
+}
+
 .workspace-editor {
-    padding: 1em 2em;
-    width: 1060px;
+    //padding: 1em 2em;
+    max-width: 1060px;
     margin: 0 auto;
     background-color: white;
     overflow-y: auto;
+    flex: 1;
 
-    @media screen and (max-width: 1444px) {
-        width: 100%;
-    }
+    // @media screen and (max-width: 1444px) {
+    //     width: 100%;
+    // }
 }
  
 .predicate-function-description {
@@ -27,4 +55,57 @@
     .range {
         flex: 1;
     }
+}
+
+.editor-header {
+    display: flex;
+    padding: 1em 2em;
+
+    i.fa.fa-pencil-square-o {
+        font-size: 1em;
+    }
+
+    i.item-icon {
+        padding-right: 0.5em;
+        opacity: 0.5;
+    }
+    
+    &.records {
+        background-color: rgba($records_colour, 0.2);
+    }
+
+    &.entity_type {
+        background-color: rgba($types_colour, 0.2);
+    }
+
+    &.source {
+        background-color: rgba($source_colour, 0.2);
+    }
+
+    &.entity {
+        background-color: rgba($entity_colour, 0.2);
+    }
+
+    &.predicate {
+        background-color: rgba($predicate_colour, 0.2);
+    }
+
+    i {
+        font-size: x-large;
+    }
+    h2 {
+        display: inline;
+    }
+    .main-toolbar {
+        flex: 1
+    }
+    .sub-toolbar {
+        i {
+            padding: 0 0.2em;
+        }
+    }
+}
+
+.editor-body {
+    padding: 1em 2em;
 }

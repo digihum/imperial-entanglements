@@ -138,49 +138,61 @@ export class PredicateEditorWorkspace extends React.Component<PredicateEditorPro
 
         return (
             <div className='workspace-editor'>
-                <i
-                    className='fa fa-trash delete-button'
-                     aria-hidden='true'
-                     onClick={this.del.bind(this)}
-                ></i>
-                <div className='edit-group'>
-                    <label>Name</label>
-                    <StringEditableFieldComponent
-                        value={predicate.name}
-                        component={EditableHeader}
-                        onChange={(value) => this.updatePredicate('name', value)}  />
-                </div>
+                <header className='editor-header predicate'>
+                    <div className='main-toolbar'>
+                        <i className='fa fa-long-arrow-right item-icon'></i>
+                        <StringEditableFieldComponent
+                            value={predicate.name}
+                            component={EditableHeader}
+                            onChange={(value) => this.updatePredicate('name', value)}  />
+                    </div>
+                    <div className='sub-toolbar'>
+                        <i
+                            className='fa fa-trash delete button'
+                            aria-hidden='true'
+                            onClick={this.del.bind(this)}
+                        ></i>
+                        <i
+                            className='fa fa-clone button'
+                            aria-hidden='true'
+                            onClick={() => console.log('copy')}
+                        ></i>
+                    </div>
+                </header>
 
-                <div>Count: {this.state.records.length}
-                (TODO: this should link to the search page showing all records with this predicate)</div>
+                <section className='editor-body'>
+                    
+                    <div>Count: {this.state.records.length}
+                    (TODO: this should link to the search page showing all records with this predicate)</div>
 
-                <div className='edit-group'>
-                    <label>Description</label>
-                    <StringEditableFieldComponent
-                        value={predicate.description}
-                        component={EditableParagraph}
-                        onChange={(value) => this.updatePredicate('description', value)}  />
-                </div>
+                    <div className='edit-group'>
+                        <label>Description</label>
+                        <StringEditableFieldComponent
+                            value={predicate.description}
+                            component={EditableParagraph}
+                            onChange={(value) => this.updatePredicate('description', value)}  />
+                    </div>
 
-                <div className='edit-group'>
-                    <label>Typing</label>
-                    <PredicateDescription
-                        domain={domain}
-                        range={range}
-                        domainChanged={(value) => this.updatePredicate('domain', value.value)}
-                        rangeChanged={(value) => this.updatePredicate('range', value.value, value.meta !== 'literal')}
-                        mode='editSingle'
-                        domainOptions={entityTypeOptions}
-                        rangeOptions={literalTypeOptions.concat(entityTypeOptions)}
-                    />
-                </div>
+                    <div className='edit-group'>
+                        <label>Typing</label>
+                        <PredicateDescription
+                            domain={domain}
+                            range={range}
+                            domainChanged={(value) => this.updatePredicate('domain', value.value)}
+                            rangeChanged={(value) => this.updatePredicate('range', value.value, value.meta !== 'literal')}
+                            mode='editSingle'
+                            domainOptions={entityTypeOptions}
+                            rangeOptions={literalTypeOptions.concat(entityTypeOptions)}
+                        />
+                    </div>
 
-                <div>
-                    <StringEditableFieldComponent
-                        value={predicate.sameAs}
-                        component={SameAsEditor}
-                        onChange={(value) => this.updatePredicate('sameAs', value)} />
-                </div>
+                    <div>
+                        <StringEditableFieldComponent
+                            value={predicate.sameAs}
+                            component={SameAsEditor}
+                            onChange={(value) => this.updatePredicate('sameAs', value)} />
+                    </div>
+                </section>
             </div>
         );
     }

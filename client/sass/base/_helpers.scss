@@ -4,7 +4,7 @@
 }
 
 h1, h2, h3, h4, h5 {
-    font-family: 'Roboto', 'sans-serif';
+    font-family: $main-font;
 }
 
 h5.section-header {
@@ -34,18 +34,21 @@ h5.section-header {
     }
 }
 
-i.add-button {
+i.button {
     cursor: pointer;
-    color: #789946;
-    &:hover {
-        color: greenyellow;
-    }
-}
 
-i.delete-button {
-    cursor: pointer;
-    color: darkred;
-    &:hover {
-        color: red;
+    &.add {
+        color: #789946;
+        &:hover {
+            color: greenyellow;
+        }
     }
+
+    &.delete {
+        color: darkred;
+        &:hover {
+            color: red;
+        }
+    }
+    
 }

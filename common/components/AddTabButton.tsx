@@ -15,6 +15,6 @@ interface AddTabButtonProps {
 
 export const AddTabButton : React.StatelessComponent<AddTabButtonProps> =
     (props: AddTabButtonProps) => (
-        <i className='icon-list-add add-button'
+        <i className='icon-list-add add button'
                     onClick={() => createTab.dispatch(props.tabType, props.uid, props.data)}></i>
     );

@@ -137,55 +137,63 @@ export class EntityEditorWorkspace extends React.Component<EntityEditorProps, En
 
         return (
             <div className='workspace-editor'>
-                <h2>Edit Entity {this.props.id} <i
-                    className='fa fa-plus-circle add-button'
-                     aria-hidden='true'
-                     onClick={this.createNewRecord.bind(this)}
-                ></i><i
-                    className='fa fa-trash delete-button'
-                     aria-hidden='true'
-                     onClick={this.del.bind(this)}
-                ></i>
-                <i
-                    className='fa fa-clone'
-                     aria-hidden='true'
-                     onClick={() => console.log('copy')}
-                ></i></h2>
+                <header className='editor-header entity'>
+                    <div className='main-toolbar'>
+                        <i className='fa fa-cube item-icon'></i>
+                        <StringEditableFieldComponent
+                            value={entity.label}
+                            component={EditableHeader}
+                            onChange={(value) => this.update({ 'label': value })}  />
 
-                <div className='edit-group'>
-                    <label>Label</label>
-                    <StringEditableFieldComponent
-                        value={entity.label}
-                        component={EditableHeader}
-                        onChange={(value) => this.update({ 'label': value })}  />
-                </div>
+                    </div>
+                    <div className='sub-toolbar'>
+                        <i
+                            className='fa fa-trash delete button'
+                            aria-hidden='true'
+                            onClick={this.del.bind(this)}
+                        ></i>
+                        <i
+                            className='fa fa-clone button'
+                            aria-hidden='true'
+                            onClick={() => console.log('copy')}
+                        ></i>
+                    </div>
+                </header>
 
-                <div>{entityType.name} <AddTabButton
-                    uid={entityType.uid}
-                    tabType='entity_type'
-                /></div>
+                <section className='editor-body'>
 
-                <span>Parent:</span>
-                <ComboEditableFieldComponent
-                    value={{key: parentName, value: entity.parent}}
-                    component={EditableComboDropdown}
-                    onChange={(value) => this.update({'parent': value.value})}
-                    additionalProps={{ comboSettings: {
-                        options: potentialParents.map((par) => ({ key: par.label, value: par.uid})),
-                        typeName: 'Entity'
-                    }}} />
+                    <div>{entityType.name} <AddTabButton
+                        uid={entityType.uid}
+                        tabType='entity_type'
+                    /></div>
 
+                    <span>Parent:</span>
+                    <ComboEditableFieldComponent
+                        value={{key: parentName, value: entity.parent}}
+                        component={EditableComboDropdown}
+                        onChange={(value) => this.update({'parent': value.value})}
+                        additionalProps={{ comboSettings: {
+                            options: potentialParents.map((par) => ({ key: par.label, value: par.uid})),
+                            typeName: 'Entity'
+                        }}} />
 
-                <RecordsEditor
-                    dimension='predicates'
-                    entityExists={true}
-                    id={this.props.id}
-                    api={this.props.api}
-                    records={records}
-                    onChange={() => {}}
-                    predicates={predicates}
-                    sources={sources}
-                />
+                       <i
+                            className='fa fa-plus-circle add button'
+                            aria-hidden='true'
+                            onClick={this.createNewRecord.bind(this)}
+                        >
+                        </i>
+                    <RecordsEditor
+                        dimension='predicates'
+                        entityExists={true}
+                        id={this.props.id}
+                        api={this.props.api}
+                        records={records}
+                        onChange={() => {}}
+                        predicates={predicates}
+                        sources={sources}
+                    />
+                </section>
             </div>
         );
     }

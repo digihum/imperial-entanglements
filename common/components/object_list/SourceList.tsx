@@ -66,35 +66,43 @@ export class SourceList extends React.Component<SourceListProps, SourceListState
 
     public render() {
         return (
-        <section>
-            <h2>All Sources <i
-                className='fa fa-plus-circle add-button'
-                aria-hidden='true'
-                onClick={this.addNew.bind(this)}
-            ></i></h2>
-            <table className='table'>
-                <thead>
-                    <tr>
-                        <td>#</td>
-                        <td>Label</td>
-                        <td>Type</td>
-                    </tr>
-                </thead>
-                <tbody>
-                {this.state.sources.map((source) => {
-                    return (
-                        <tr key={`source-${source.uid}`}>
-                            <td>{source.uid} <AddTabButton
-                                uid={source.uid}
-                                tabType='source' /></td>
-                            <td>{source.name}</td>
-                            <td></td>
+         <div className='workspace-editor'>
+
+            <header className='editor-header source'>
+                <div className='main-toolbar'>
+                    <h2>All Sources <i
+                        className='fa fa-plus-circle add button'
+                        aria-hidden='true'
+                        onClick={this.addNew.bind(this)}
+                    ></i></h2>
+                </div>
+            </header>
+
+            <section className='editor-body'>
+                <table className='table'>
+                    <thead>
+                        <tr>
+                            <td>#</td>
+                            <td>Label</td>
+                            <td>Type</td>
                         </tr>
+                    </thead>
+                    <tbody>
+                    {this.state.sources.map((source) => {
+                        return (
+                            <tr key={`source-${source.uid}`}>
+                                <td>{source.uid} <AddTabButton
+                                    uid={source.uid}
+                                    tabType='source' /></td>
+                                <td>{source.name}</td>
+                                <td></td>
+                            </tr>
+                        )}
                     )}
-                )}
-                </tbody>
-            </table>
-        </section>
+                    </tbody>
+                </table>
+            </section>
+        </div>
         );
     }
 }

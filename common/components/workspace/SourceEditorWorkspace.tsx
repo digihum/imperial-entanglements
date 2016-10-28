@@ -150,39 +150,58 @@ export class SourceEditorWorkspace extends React.Component<SourceEditorProps, So
 
         return (
             <div className='workspace-editor'>
-
-                <StringEditableFieldComponent
-                    value={source.name}
-                    component={EditableHeader}
-                    onChange={(value) => this.updateSource('name', value)}  />
-
-                <span>Parent:</span>
-                <ComboEditableFieldComponent
-                    value={{key: parentName, value: source.parent}}
-                    component={EditableComboDropdown}
-                    onChange={(value) => this.updateSource('parent', value.value)}
-                    additionalProps={{ comboSettings: {
-                        options: potentialParents.map((par) => ({ key: par.name, value: par.uid})),
-                        typeName: 'Source'
-                    }}} />
-
-                {this.state.dublinCore.elements.map((element) => (
-                    <div key={`${element.name}-edit`}>
-                        <h5 className='section-header'>{element.name} <small><a href={element.url}>{element.uri}</a></small></h5>
-                        <p className='element-description'>{element.description}</p>
-                         <StringEditableFieldComponent
-                            value={this.state.metaData.hasOwnProperty(element.name) ? (this.state.metaData[element.name].value) : ''}
-                            component={EditableParagraph}
-                            onChange={(value) => this.updateSourceElement(element, value)}  />
+                <header className='editor-header source'>
+                    <div className='main-toolbar'>
+                        <i className='fa fa-sun-o item-icon'></i>
+                        <StringEditableFieldComponent
+                            value={source.name}
+                            component={EditableHeader}
+                            onChange={(value) => this.updateSource('name', value)}  />
                     </div>
-                ))}
+                    <div className='sub-toolbar'>
+                        <i
+                            className='fa fa-trash delete button'
+                            aria-hidden='true'
+                            onClick={() => console.log('del')}
+                        ></i>
+                        <i
+                            className='fa fa-clone button'
+                            aria-hidden='true'
+                            onClick={() => console.log('copy')}
+                        ></i>
+                    </div>
+                </header>
 
-                <div>
-                    <StringEditableFieldComponent
-                        value={source.sameAs}
-                        component={SameAsEditor}
-                        onChange={(value) => this.updateSource('sameAs', value)} />
-                </div>
+                <section className='editor-body'>
+
+                    <span>Parent:</span>
+                    <ComboEditableFieldComponent
+                        value={{key: parentName, value: source.parent}}
+                        component={EditableComboDropdown}
+                        onChange={(value) => this.updateSource('parent', value.value)}
+                        additionalProps={{ comboSettings: {
+                            options: potentialParents.map((par) => ({ key: par.name, value: par.uid})),
+                            typeName: 'Source'
+                        }}} />
+
+                    {this.state.dublinCore.elements.map((element) => (
+                        <div key={`${element.name}-edit`}>
+                            <h5 className='section-header'>{element.name} <small><a href={element.url}>{element.uri}</a></small></h5>
+                            <p className='element-description'>{element.description}</p>
+                            <StringEditableFieldComponent
+                                value={this.state.metaData.hasOwnProperty(element.name) ? (this.state.metaData[element.name].value) : ''}
+                                component={EditableParagraph}
+                                onChange={(value) => this.updateSourceElement(element, value)}  />
+                        </div>
+                    ))}
+
+                    <div>
+                        <StringEditableFieldComponent
+                            value={source.sameAs}
+                            component={SameAsEditor}
+                            onChange={(value) => this.updateSource('sameAs', value)} />
+                    </div>
+                </section>
             </div>
         );
     }

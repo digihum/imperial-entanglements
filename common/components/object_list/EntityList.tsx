@@ -189,54 +189,61 @@ export class EntityList extends React.Component<EntityListProps, EntityListState
         });
 
         return (
-        <section>
-            <h2>All Entities <i
-                    className='fa fa-plus-circle add-button'
-                    aria-hidden='true'
-                    onClick={this.addNew.bind(this)}
-            ></i></h2>
-            <table className='table'>
-                <thead>
-                    <tr>
-                        <td>#</td>
-                        <td>Label</td>
-                        <td>Type</td>
-                        { customColumns(predicates, this.state.columns, this.setColumnPredicate.bind(this), this.rotateSort.bind(this))}
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+        <div className='workspace-editor'>
+            <header className='editor-header entity'>
+                <div className='main-toolbar'>
+                    <h2>All Entities <i
+                            className='fa fa-plus-circle add button'
+                            aria-hidden='true'
+                            onClick={this.addNew.bind(this)}
+                    ></i></h2>
+                </div>
+            </header>
 
-                        {[0,1,2].map((id) => (
-                            <td key={`col-${id}`}>
-                                <div>
-                                    <select>
-                                        <option>Exists</option>
-                                        <option>Equals</option>
-                                        <option>Similar</option>
-                                    </select>
-                                    <input type='text' />
-                                </div>
-                            </td>
-                        ))}
-                    </tr>
-                </thead>
-                <tbody>
-                {tableData.map((row) => (
-                        <tr key={`entity-${row.uid}`}>
-                            <td>{row.uid} <AddTabButton
-                                uid={row.uid}
-                                tabType='entity'/></td>
-                            <td>{row.label}</td>
-                            <td>{row.entityType ? row.entityType.name : ''}</td>
-                             {[0,1,2].map((id) => (<td key={`col-val-${id}`}>{row.columns[id]}</td>))}
+            <section className='editor-body'>
+                <table className='table'>
+                    <thead>
+                        <tr>
+                            <td>#</td>
+                            <td>Label</td>
+                            <td>Type</td>
+                            { customColumns(predicates, this.state.columns, this.setColumnPredicate.bind(this), this.rotateSort.bind(this))}
                         </tr>
-                    )
-                )}
-                </tbody>
-            </table>
-        </section>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+
+                            {[0,1,2].map((id) => (
+                                <td key={`col-${id}`}>
+                                    <div>
+                                        <select>
+                                            <option>Exists</option>
+                                            <option>Equals</option>
+                                            <option>Similar</option>
+                                        </select>
+                                        <input type='text' />
+                                    </div>
+                                </td>
+                            ))}
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {tableData.map((row) => (
+                            <tr key={`entity-${row.uid}`}>
+                                <td>{row.uid} <AddTabButton
+                                    uid={row.uid}
+                                    tabType='entity'/></td>
+                                <td>{row.label}</td>
+                                <td>{row.entityType ? row.entityType.name : ''}</td>
+                                {[0,1,2].map((id) => (<td key={`col-val-${id}`}>{row.columns[id]}</td>))}
+                            </tr>
+                        )
+                    )}
+                    </tbody>
+                </table>
+            </section>
+        </div>
         );
     }
 }

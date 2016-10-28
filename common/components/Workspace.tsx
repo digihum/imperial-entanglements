@@ -55,20 +55,36 @@ export class Workspace extends React.Component<WorkspaceProps, WorkspaceState> {
                 dataStore={this.props.dataStore} />);
         }
 
+        let workspaceComponent : any = EmptyWorkspace;
+
         switch (this.props.workspace) {
             case 'entity':
-                return (<EntityEditorWorkspace api={this.props.api} id={this.props.id} dataStore={this.props.dataStore} />);
+                workspaceComponent = EntityEditorWorkspace;
+                break;
             case 'predicate':
-                return (<PredicateEditorWorkspace api={this.props.api} id={this.props.id} dataStore={this.props.dataStore} />);
+                workspaceComponent = PredicateEditorWorkspace;
+                break;
             case 'source':
-                return (<SourceEditorWorkspace api={this.props.api} id={this.props.id} dataStore={this.props.dataStore} />);
+                workspaceComponent = SourceEditorWorkspace;
+                break;
             case 'entity_type':
-                return (<EntityTypeWorkspace api={this.props.api} id={this.props.id} dataStore={this.props.dataStore} />);
+                workspaceComponent = EntityTypeWorkspace;
+                break;
             case 'search':
-                return (<AdvancedSearchWorkspace api={this.props.api} />);
-            default:
-                return (<EmptyWorkspace />);
-
+                workspaceComponent = AdvancedSearchWorkspace;
+                break;
         }
+
+        return (
+            <div className='flex-fill workspace-outer-wrapper'>
+                <span className={'header-colour ' + this.props.workspace}></span>
+                <div className='workspace-inner-wrapper flex-fill'>
+                    {React.createElement(workspaceComponent, {api: this.props.api, dataStore: this.props.dataStore, id:this.props.id})}
+                </div>
+                <span className={'header-colour ' + this.props.workspace}></span>
+            </div>
+        );
+
+
     }
 }

@@ -68,32 +68,51 @@ export class EntityTypeWorkspace extends React.Component<EntityTypeWorkspaceProp
         return (
             <div className='workspace-editor'>
 
-                <StringEditableFieldComponent
-                    value={entityType.name}
-                    component={EditableHeader}
-                    onChange={(value) => this.update({'name': value})}  />
+                <header className='editor-header entity_type'>
+                    <div className='main-toolbar'>
+                        <i className='fa fa-tag item-icon'></i>
+                        <StringEditableFieldComponent
+                            value={entityType.name}
+                            component={EditableHeader}
+                            onChange={(value) => this.update({'name': value})}  />
+                    </div>
+                    <div className='sub-toolbar'>
+                         <i
+                            className='fa fa-trash delete button'
+                            aria-hidden='true'
+                            onClick={() => console.log('del')}
+                        ></i>
+                        <i
+                            className='fa fa-clone button'
+                            aria-hidden='true'
+                            onClick={() => console.log('copy')}
+                        ></i>
+                    </div>
+                </header>
 
-                <span>Parent:</span>
-                <ComboEditableFieldComponent
-                    value={{key: parentName, value: entityType.parent}}
-                    component={EditableComboDropdown}
-                    onChange={(value) => this.update({'parent': value.value})}
-                    additionalProps={{ comboSettings: {
-                        options: potentialParents.map((par) => ({ key: par.name, value: par.uid})),
-                        typeName: 'EntityType'
-                    }}} />
+                <section className='editor-body'>
+                    <span>Parent:</span>
+                    <ComboEditableFieldComponent
+                        value={{key: parentName, value: entityType.parent}}
+                        component={EditableComboDropdown}
+                        onChange={(value) => this.update({'parent': value.value})}
+                        additionalProps={{ comboSettings: {
+                            options: potentialParents.map((par) => ({ key: par.name, value: par.uid})),
+                            typeName: 'EntityType'
+                        }}} />
 
-                <StringEditableFieldComponent
-                    value={entityType.description}
-                    component={EditableParagraph}
-                    onChange={(value) => this.update({'description': value})}  />
-
-                <div>
                     <StringEditableFieldComponent
-                        value={entityType.sameAs}
-                        component={SameAsEditor}
-                        onChange={(value) => this.update({'sameAs': value})} />
-                </div>
+                        value={entityType.description}
+                        component={EditableParagraph}
+                        onChange={(value) => this.update({'description': value})}  />
+
+                    <div>
+                        <StringEditableFieldComponent
+                            value={entityType.sameAs}
+                            component={SameAsEditor}
+                            onChange={(value) => this.update({'sameAs': value})} />
+                    </div>
+                </section>
             </div>
         );
     }
