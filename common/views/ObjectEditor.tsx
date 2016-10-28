@@ -11,7 +11,7 @@ import * as moment from 'moment';
 
 import { ApiService, AppUrls } from '../ApiService';
 
-import { ElementSet, EntityType, Entity, Predicate, Record, Source, SourceElement } from '../datamodel/datamodel';
+import { ElementSet, EntityType, Entity, Predicate, Record, Source, SourceElement } from '../../common/datamodel/datamodel';
 
 import { Sidebar, Tab } from '../components/Sidebar';
 import { Workspace } from '../components/Workspace';

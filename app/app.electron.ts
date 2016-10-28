@@ -15,7 +15,8 @@ const db = new Database({
   client: 'sqlite3',
   connection: {
     filename: './mydb.sqlite'
-  }
+  },
+  debug: true
 });
 
 document.addEventListener('DOMContentLoaded', (event) => {

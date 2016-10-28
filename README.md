@@ -9,7 +9,13 @@ Building generates two directories:
 - build : All of the TypeScript is transpiled to JavaScript and put here. Directory structure is identical to the root directory. 
 - dist: The binaries for the electron app are placed here.
 
-Electron App is currently broken. It cannot use sqlite3. The fix is documented here: https://github.com/electron/electron-rebuild. 
+## How to deploy
+- Clone git repo
+- Run `npm run tsc` to compile TypeScript
+- Run `npm run webpack` to build the frontend bundle
+- Run `npm run style` to build the stylesheets
+- Copy `index.html` from `./common` to `./build/common`
+- Run `node ./build/server/index`
 
 ## How to build sqlite3 for electron
 

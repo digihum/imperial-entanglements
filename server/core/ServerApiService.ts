@@ -11,6 +11,8 @@ import { CollectionNotFoundException } from './Exceptions';
 
 import { QueryEngine } from './QueryEngine';
 
+import { triggerReload, createTab } from '../../common/Signaller';
+
 export { AppUrls } from '../../common/ApiService';
 
 export class ServerApiService implements ApiService {
@@ -45,7 +47,8 @@ export class ServerApiService implements ApiService {
         if (controller === undefined) {
             return Promise.reject(new CollectionNotFoundException('Controller not found'));
         }
-        return controller.postItem<T>(obj, data);
+        return controller.postItem<T>(obj, data)
+        .then(triggerReload.dispatch);
     }
 
     public putItem<T extends Persistable>(obj: { new(): T; }, baseUrl : string, uid: number, data: T) : Promise<boolean> {
@@ -53,7 +56,8 @@ export class ServerApiService implements ApiService {
         if (controller === undefined) {
             return Promise.reject(new CollectionNotFoundException('Controller not found'));
         }
-        return controller.putItem<T>(obj, uid, data);
+        return controller.putItem<T>(obj, uid, data)
+        .then(triggerReload.dispatch);
     }
 
     public patchItem<T extends Persistable>(obj: { new(): T; }, baseUrl : string, uid: number, data : T) : Promise<boolean> {
@@ -61,7 +65,8 @@ export class ServerApiService implements ApiService {
         if (controller === undefined) {
             return Promise.reject(new CollectionNotFoundException('Controller not found'));
         }
-        return controller.patchItem<T>(obj, uid, data);
+        return controller.patchItem<T>(obj, uid, data)
+        .then(triggerReload.dispatch);
     }
 
     public delItem<T extends Persistable>(obj: { new(): T; }, baseUrl : string, uid: number) {
@@ -69,7 +74,8 @@ export class ServerApiService implements ApiService {
         if (controller === undefined) {
             return Promise.reject(new CollectionNotFoundException('Controller not found'));
         }
-        return controller.deleteItem<T>(obj, uid);
+        return controller.deleteItem<T>(obj, uid)
+        .then(triggerReload.dispatch);
     }
 
 }
