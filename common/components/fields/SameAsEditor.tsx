@@ -24,6 +24,13 @@ export class SameAsEditor extends React.Component<EditableSubfieldProps<string>,
         };
     }
 
+    public componentWillReceiveProps(props: EditableSubfieldProps<string>) {
+        this.setState({
+            temporaryValue: '',
+            urls: props.value === null ? [] : props.value.split(',')
+        })
+    }
+
     public addItemToList() {
         if (this.state.temporaryValue.length === 0) {
             return;
