@@ -48,7 +48,10 @@ export class ServerApiService implements ApiService {
             return Promise.reject(new CollectionNotFoundException('Controller not found'));
         }
         return controller.postItem<T>(obj, data)
-        .then(triggerReload.dispatch);
+        .then((result) => {
+            triggerReload.dispatch();
+            return Promise.resolve(result);
+        });
     }
 
     public putItem<T extends Persistable>(obj: { new(): T; }, baseUrl : string, uid: number, data: T) : Promise<boolean> {
@@ -57,7 +60,10 @@ export class ServerApiService implements ApiService {
             return Promise.reject(new CollectionNotFoundException('Controller not found'));
         }
         return controller.putItem<T>(obj, uid, data)
-        .then(triggerReload.dispatch);
+        .then((result) => {
+            triggerReload.dispatch();
+            return Promise.resolve(result);
+        });
     }
 
     public patchItem<T extends Persistable>(obj: { new(): T; }, baseUrl : string, uid: number, data : T) : Promise<boolean> {
@@ -66,7 +72,10 @@ export class ServerApiService implements ApiService {
             return Promise.reject(new CollectionNotFoundException('Controller not found'));
         }
         return controller.patchItem<T>(obj, uid, data)
-        .then(triggerReload.dispatch);
+        .then((result) => {
+            triggerReload.dispatch();
+            return Promise.resolve(result);
+        });
     }
 
     public delItem<T extends Persistable>(obj: { new(): T; }, baseUrl : string, uid: number) {
@@ -75,7 +84,10 @@ export class ServerApiService implements ApiService {
             return Promise.reject(new CollectionNotFoundException('Controller not found'));
         }
         return controller.deleteItem<T>(obj, uid)
-        .then(triggerReload.dispatch);
+        .then((result) => {
+            triggerReload.dispatch();
+            return Promise.resolve(result);
+        });
     }
 
 }
