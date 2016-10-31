@@ -10,6 +10,10 @@ import { EntityType } from '../../common/datamodel/EntityType';
 import { Persistable } from '../core/Persistable';
 import { GenericController } from './GenericController';
 
+import { PredicatePersistable } from './PredicateController';
+
+import { EntityPersistable } from './EntityController';
+
 import { OperationNotPermittedException } from '../core/Exceptions';
 
 import { omit } from 'lodash';
@@ -84,7 +88,10 @@ export class EntityTypeController extends GenericController<EntityTypePersistabl
             } else {
                 throw new OperationNotPermittedException({
                     message: 'The operation could not be completed as the entity is referenced in other sources',
-                    data: entities.concat(entityTypes).concat(predicates)
+                    data: {
+                        entity: entities.map((entity) => new EntityPersistable().fromSchema(entity)),
+                        predicate: predicates.map((predicate) => new PredicatePersistable().fromSchema(predicate))
+                    }
                 });
             }
         });

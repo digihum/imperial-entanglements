@@ -7,7 +7,7 @@
 import * as React from 'react';
 
 import { Overlay } from '../Overlay';
-import { Entity, EntityType, Record } from '../../../common/datamodel/datamodel';
+import { Entity, EntityType, Record, Predicate } from '../../../common/datamodel/datamodel';
 import { ApiService, AppUrls } from '../../ApiService';
 import { DataStore } from '../../DataStore';
 import { ComboDropdown, ComboDropdownOption } from '../ComboDropdown';
@@ -20,7 +20,11 @@ interface ConflictResolutionProps {
     complete: (s: string) => void;
     cancel: () => void;
     message: string;
-    conflictingRecords: Record[];
+    conflictingItems: {
+        record: Record[],
+        entity: Entity[],
+        predicate: Predicate[]
+    };
 }
 
 interface ConflictResolutionState {
@@ -45,40 +49,70 @@ export class ConflictResolution extends React.Component<ConflictResolutionProps,
         return (
         <Overlay>
             <h2><i className='fa fa-exclamation-triangle warning'></i> Conflict: {this.props.message}</h2>
-            <p>The following records conflict with your request change.</p>
-            <table className='table'>
-                <thead>
-                    <tr>
-                        <th>Entity</th>
-                        <th>Predicate</th>
-                        <th>Value</th>
-                    </tr>
-                </thead>
-                <tbody>
-                {this.props.conflictingRecords.map((record) => {
+            {this.props.conflictingItems.record !== undefined && this.props.conflictingItems.record.length > 0 ? (
+                <span>
+                    <p>The following records conflict with your request change:</p>
+                    <table className='table'>
+                        <thead>
+                            <tr>
+                                <th>Entity</th>
+                                <th>Predicate</th>
+                                <th>Value</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {this.props.conflictingItems.record.map((record) => {
 
-                    const entityName = this.props.dataStore.all.entity.value
-                        .find((entity) => entity.uid == record.entity).label;
+                            const entityName = this.props.dataStore.all.entity.value
+                                .find((entity) => entity.uid == record.entity).label;
 
-                    const predicateName = this.props.dataStore.all.predicate.value
-                        .find((predicate) => predicate.uid == record.predicate).name;
-                        
+                            const predicateName = this.props.dataStore.all.predicate.value
+                                .find((predicate) => predicate.uid == record.predicate).name;
+                                
 
-                    return (
-                    <tr key={`row-${record.uid}`}>
-                        <td>
-                            {entityName}
-                        </td>
-                        <td>
-                            {predicateName}
-                        </td>
-                        <td>
-                            {record.value}
-                        </td>
-                    </tr>);
-                })}
-                </tbody>
-            </table>
+                            return (
+                            <tr key={`row-${record.uid}`}>
+                                <td>
+                                    {entityName}
+                                </td>
+                                <td>
+                                    {predicateName}
+                                </td>
+                                <td>
+                                    {record.value}
+                                </td>
+                            </tr>);
+                        })}
+                        </tbody>
+                    </table>
+                </span>
+            ) : null }
+
+
+            {this.props.conflictingItems.entity !== undefined && this.props.conflictingItems.entity.length > 0 ? (
+                <span>
+                    <p>The following entities conflict with your request change:</p>
+                    <table className='table'>
+                        <thead>
+                            <tr>
+                                <th>Entity</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {this.props.conflictingItems.entity.map((entity) => {
+                            return (
+                            <tr key={`row-${entity.uid}`}>
+                                <td>
+                                    {entity.label}
+                                </td>
+                            </tr>);
+                        })}
+                        </tbody>
+                    </table>
+                </span>
+            ) : null }
+
+
             <div className='block-buttons'>
                 <button onClick={() => this.props.cancel()}>Cancel</button>
                 <button onClick={() => this.props.complete('addToWorkspace')}>

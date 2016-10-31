@@ -19,6 +19,9 @@ import { ComboDropdownOption } from '../ComboDropdown';
 
 import { keyBy, Dictionary } from 'lodash';
 
+import { showModal, createTab } from '../../Signaller';
+import { ModalDefinition } from '../modal/ModalDefinition';
+
 import { DataStore } from '../../DataStore';
 
 class StringEditableFieldComponent extends EditableFieldComponent<string> {}
@@ -51,6 +54,28 @@ export class EntityTypeWorkspace extends React.Component<EntityTypeWorkspaceProp
         .then(() => this.setState({ entityType: Object.assign({}, entityType, data)}));
     }
 
+    public del() {
+        this.props.api.delItem(EntityType, AppUrls.entity_type, this.props.id)
+        .catch((e) => {
+            e.data.then((data) => {
+
+                const conflictResolutionModal : ModalDefinition = {
+                    name: 'conflict_resolution',
+                    cancel: () => {},
+                    complete: (result) => {
+
+                    },
+                    settings: {
+                        conflictingItems: data.data,
+                        message: 'Deleting Entity Type'
+                    }
+                };
+
+                showModal.dispatch(conflictResolutionModal);
+            });
+        });
+    }
+
     public render() {
 
         const entityType = this.props.dataStore.tabs.entity_type.get('entity_type-' + this.props.id).value;
@@ -80,7 +105,7 @@ export class EntityTypeWorkspace extends React.Component<EntityTypeWorkspaceProp
                          <i
                             className='fa fa-trash delete button'
                             aria-hidden='true'
-                            onClick={() => console.log('del')}
+                            onClick={this.del.bind(this)}
                         ></i>
                         <i
                             className='fa fa-clone button'

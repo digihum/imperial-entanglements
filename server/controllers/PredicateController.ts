@@ -96,7 +96,9 @@ export class PredicateController extends GenericController<PredicatePersistable>
             } else {
                 throw new OperationNotPermittedException({
                     message: 'The operation could not be completed as the predicate is used by other records',
-                    data: records.map((record) => new RecordPersistable().fromSchema(record))
+                    data: {
+                        record: records.map((record) => new RecordPersistable().fromSchema(record))
+                    }
                 });
             }
         });
