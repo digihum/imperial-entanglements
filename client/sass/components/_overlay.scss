@@ -10,11 +10,15 @@
     
     align-items: baseline;
     padding-top: 4em;
-    
+
     justify-content: center;
 
     .overlay-container {
         background-color: white;
         padding: 1em;
+
+        h2 {
+            margin-top: 0.2em;
+        }
     }
 }

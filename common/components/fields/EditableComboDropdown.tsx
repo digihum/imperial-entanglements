@@ -36,18 +36,16 @@ export const EditableComboDropdown = (props: EditableComboDropdownProps) => {
     } else {
         return (
             <div>
-                <p>
-                    {props.value === null || props.value.key.length > 0 ? props.value.key
-                    : (
-                        <em>No value</em>
-                    )}
-                    <sup>
-                        <i className='fa fa-pencil-square-o'
-                            aria-hidden='true'
-                            onClick={props.setEdit}>
-                        </i>
-                    </sup>
-                </p>
+                {props.value === null || props.value.key.length > 0 ? props.value.key
+                : (
+                    <em>No value</em>
+                )}
+                <sup>
+                    <i className='fa fa-pencil-square-o'
+                        aria-hidden='true'
+                        onClick={props.setEdit}>
+                    </i>
+                </sup>
             </div>
         );
     }

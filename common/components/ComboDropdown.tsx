@@ -135,6 +135,7 @@ export class ComboDropdown<T> extends React.Component<ComboDropdownProps, ComboD
             <div className={this.props.compact ? 'compact combo-dropdown' : 'combo-dropdown'}>
                 <div>
                     <input type='text'
+                        ref='comboDropDownInputBox'
                         className='search-input'
                         value={this.state.searchString}
                         placeholder='Click here and start typing..'

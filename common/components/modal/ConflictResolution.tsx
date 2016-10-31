@@ -44,9 +44,9 @@ export class ConflictResolution extends React.Component<ConflictResolutionProps,
     public render() {
         return (
         <Overlay>
-            <h2><i className='fa fa-exclamation-triangle'></i> Conflict: {this.props.message}</h2>
+            <h2><i className='fa fa-exclamation-triangle warning'></i> Conflict: {this.props.message}</h2>
             <p>The following records conflict with your request change.</p>
-            <table>
+            <table className='table'>
                 <thead>
                     <tr>
                         <th>Entity</th>
@@ -55,28 +55,40 @@ export class ConflictResolution extends React.Component<ConflictResolutionProps,
                     </tr>
                 </thead>
                 <tbody>
-                {this.props.conflictingRecords.map((record) => (
+                {this.props.conflictingRecords.map((record) => {
+
+                    const entityName = this.props.dataStore.all.entity.value
+                        .find((entity) => entity.uid == record.entity).label;
+
+                    const predicateName = this.props.dataStore.all.predicate.value
+                        .find((predicate) => predicate.uid == record.predicate).name;
+                        
+
+                    return (
                     <tr key={`row-${record.uid}`}>
                         <td>
-                            {record.entity}
+                            {entityName}
                         </td>
                         <td>
-                            {record.predicate}
+                            {predicateName}
                         </td>
                         <td>
                             {record.value}
                         </td>
-                    </tr>
-                ))}
+                    </tr>);
+                })}
                 </tbody>
             </table>
-            <button onClick={() => this.props.cancel()}>Cancel</button>
-            <button onClick={() => this.props.complete('addToWorkspace')}>
-                <i className='icon-list-add'></i>Cancel and add conflicting records to workspace
-            </button>
-            <button onClick={() => this.props.complete('deleteAll')}>
-                <i className='fa fa-trash'></i> Continue and delete all conflicting records
-            </button>
+            <div className='block-buttons'>
+                <button onClick={() => this.props.cancel()}>Cancel</button>
+                <button onClick={() => this.props.complete('addToWorkspace')}>
+                    <i className='icon-list-add'></i>Cancel and add conflicting records to workspace
+                </button>
+                <button onClick={() => this.props.complete('deleteAll')}>
+                    <i className='fa fa-trash'></i> Continue and delete all conflicting records
+                </button>
+            </div>
+
         </Overlay>
         );
     }

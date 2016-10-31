@@ -162,27 +162,34 @@ export class EntityEditorWorkspace extends React.Component<EntityEditorProps, En
 
                 <section className='editor-body'>
 
-                    <div>{entityType.name} <AddTabButton
-                        uid={entityType.uid}
-                        tabType='entity_type'
-                    /></div>
+                    <div className='flex-fill'>
+                        <div className='flex-fill'>
+                            <div><strong>Type: </strong>{entityType.name} <AddTabButton
+                                uid={entityType.uid}
+                                tabType='entity_type'
+                            /></div>
+                        </div>
 
-                    <span>Parent:</span>
-                    <ComboEditableFieldComponent
-                        value={{key: parentName, value: entity.parent}}
-                        component={EditableComboDropdown}
-                        onChange={(value) => this.update({'parent': value.value})}
-                        additionalProps={{ comboSettings: {
-                            options: potentialParents.map((par) => ({ key: par.label, value: par.uid})),
-                            typeName: 'Entity'
-                        }}} />
+                        <div className='flex-fill'>
+                            <span><strong>Parent: </strong></span>
+                            <ComboEditableFieldComponent
+                                value={{key: parentName, value: entity.parent}}
+                                component={EditableComboDropdown}
+                                onChange={(value) => this.update({'parent': value.value})}
+                                additionalProps={{ comboSettings: {
+                                    options: potentialParents.map((par) => ({ key: par.label, value: par.uid})),
+                                    typeName: 'Entity'
+                                }}} />
+                        </div>
+                    </div>
 
-                       <i
-                            className='fa fa-plus-circle add button'
-                            aria-hidden='true'
-                            onClick={this.createNewRecord.bind(this)}
-                        >
-                        </i>
+                    <i
+                        className='fa fa-plus-circle add button lower-large-icon'
+                        aria-hidden='true'
+                        onClick={this.createNewRecord.bind(this)}
+                    >
+                    </i>
+
                     <RecordsEditor
                         dimension='predicates'
                         entityExists={true}

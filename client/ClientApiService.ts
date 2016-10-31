@@ -59,7 +59,7 @@ export class ClientApiService implements ApiService {
         .then((response) => {
             triggerReload.dispatch();
             return response.json();
-        }).then(([uid]) => {
+        }).then((data) => {
             //createTab.dispatch(baseUrl, uid);
             return Promise.resolve(data);
         });

@@ -32,10 +32,17 @@
     background-color: white;
     overflow-y: auto;
     flex: 1;
-
+    position: relative;
     // @media screen and (max-width: 1444px) {
     //     width: 100%;
     // }
+}
+
+i.lower-large-icon {
+    position: absolute;
+    bottom: 0.8em;
+    right: 0.8em;
+    font-size: 36pt;
 }
  
 .predicate-function-description {

@@ -115,7 +115,7 @@ export class PredicateEditorWorkspace extends React.Component<PredicateEditorPro
                     },
                     settings: {
                         conflictingRecords : data.data,
-                        message: 'Test message'
+                        message: 'Deleting Predicate'
                     }
                 };
 

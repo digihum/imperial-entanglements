@@ -40,6 +40,10 @@ export class CreateRecord extends React.Component<CreateRecordProps, CreateRecor
         };
     }
 
+    public componentDidMount() {
+        this.refs.comboDropDown.refs.comboDropDownInputBox.focus();
+    }
+
     public createNewPredicate() {
         const modalDef: ModalDefinition = {
             name: 'predicate',
@@ -75,6 +79,7 @@ export class CreateRecord extends React.Component<CreateRecordProps, CreateRecor
         return (
         <Overlay>
             <ComboDropdown
+                ref='comboDropDown'
                 options={this.props.options}
                 typeName='predicate'
                 value={this.state.comboValue}
