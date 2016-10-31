@@ -33,3 +33,13 @@ input.text-edit-header {
     font-family: 'Roboto';
     padding: 0.2em;
 }
+
+.editable-paragraph-box {
+    cursor: pointer;
+    padding: 0.4em 0.4em;
+    border: 1px solid #d5d5d5;
+    background-color: #f2f2f2;
+    p {
+      margin :0
+    }
+}
