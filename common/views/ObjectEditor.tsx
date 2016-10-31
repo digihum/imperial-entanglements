@@ -24,10 +24,11 @@ import { CreateRecord } from '../components/modal/CreateRecord';
 import { CreateSource } from '../components/modal/CreateSource';
 import { CreateEntity } from '../components/modal/CreateEntity';
 import { CreateEntityType } from '../components/modal/CreateEntityType';
+import { ConflictResolution } from '../components/modal/ConflictResolution';
 
 import { ModalDefinition } from '../components/modal/ModalDefinition';
 
-import { DataStore, DataStoreEntry, emptyDataStore } from '../DataStore';
+import { DataStore, DataStoreEntry, emptyDataStore, emptyTabs } from '../DataStore';
 
 interface ExpectedParams {
     id: number;
@@ -84,7 +85,7 @@ export class ObjectEditor extends React.Component<EntityEditorProps, EntityEdito
     public reload() {
 
         // load data required by the current tabs
-        let tabPromise = Promise.resolve(cloneDeep(emptyDataStore.tabs));
+        let tabPromise = Promise.resolve(cloneDeep(emptyTabs));
 
         if (this.state.inBrowser) {
             const tabsString = window.localStorage.getItem('open_tabs');
@@ -273,6 +274,9 @@ export class ObjectEditor extends React.Component<EntityEditorProps, EntityEdito
 
                         case 'entity_type':
                             return (<CreateEntityType {...sharedProps} {...this.state.modalQueue[0].settings}/>);
+
+                        case 'conflict_resolution':
+                            return (<ConflictResolution {...sharedProps} {...this.state.modalQueue[0].settings} />);
                     }
                 })()}
             </section>

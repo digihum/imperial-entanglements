@@ -9,6 +9,7 @@ import * as React from 'react';
 import { SameAsEditor } from '../fields/SameAsEditor';
 import { Loading } from '../Loading';
 import { ApiService, AppUrls } from '../../ApiService';
+import { showModal, createTab } from '../../Signaller';
 
 import { Predicate, EntityType, Record } from '../../../common/datamodel/datamodel';
 
@@ -18,6 +19,8 @@ import { PredicateDescription } from '../fields/PredicateDescription';
 import { ComboDropdownOption } from '../ComboDropdown';
 
 import { literalTypes } from '../../literalTypes';
+
+import { ModalDefinition } from '../modal/ModalDefinition';
 
 import { DataStore } from '../../DataStore';
 
@@ -90,11 +93,34 @@ export class PredicateEditorWorkspace extends React.Component<PredicateEditorPro
 
     public del() {
         this.props.api.delItem(Predicate, AppUrls.predicate, this.props.id)
-        .then(() => {
-            console.log('passed');
-        })
-        .catch(() => {
-            console.log('failed');
+        .catch((e) => {
+            e.data.then((data) => {
+
+                const conflictResolutionModal : ModalDefinition = {
+                    name: 'conflict_resolution',
+                    cancel: () => {},
+                    complete: (result) => {
+                        if (result === 'addToWorkspace') {
+                            data.data.forEach((datum) => {
+                                 createTab.dispatch('entity', datum.entity);
+                            });
+                        }
+
+                        if (result === 'deleteAll') {
+                            Promise.all(data.data.map((datum) => this.props.api.delItem(Record, AppUrls.record, datum.uid)))
+                            .then(() => {
+                                this.del();
+                            });
+                        }
+                    },
+                    settings: {
+                        conflictingRecords : data.data,
+                        message: 'Test message'
+                    }
+                };
+
+                showModal.dispatch(conflictResolutionModal);
+            });
         });
     }
 

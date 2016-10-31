@@ -64,3 +64,18 @@ export const emptyDataStore : DataStore = {
     }>>()
   }
 };
+
+export const emptyTabs = [
+    {entity: Map<string, DataStoreEntry<{
+      entity: Entity;
+      records: Record[];
+    }>>()},
+
+    {entity_type: Map<string, DataStoreEntry<EntityType>>()},
+    {predicate: Map<string, DataStoreEntry<Predicate>>()},
+
+    {source: Map<string, DataStoreEntry<{
+      source: Source;
+      elements: SourceElement;
+    }>>()
+  }];

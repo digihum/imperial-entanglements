@@ -12,6 +12,8 @@ import { GenericController } from './GenericController';
 
 import { OperationNotPermittedException } from '../core/Exceptions';
 
+import { RecordPersistable } from './RecordController';
+
 import { omit } from 'lodash';
 
 export class PredicatePersistable extends Predicate implements Persistable {
@@ -87,14 +89,14 @@ export class PredicateController extends GenericController<PredicatePersistable>
         // check if this entity is the parent of another entity or if it has any relationships
         // pointing towards it.
         return Promise.all([
-            this.db.query()('records').select().where('predicate', '=', uid)
+            this.db.loadCollection('records', { predicate: uid})
         ]).then(([records]) => {
             if (records.length === 0) {
                 return this.db.deleteItem(this.tableName, uid);
             } else {
                 throw new OperationNotPermittedException({
                     message: 'The operation could not be completed as the predicate is used by other records',
-                    data: records
+                    data: records.map((record) => new RecordPersistable().fromSchema(record))
                 });
             }
         });

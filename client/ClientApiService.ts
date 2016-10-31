@@ -10,6 +10,8 @@ import * as queryString from 'query-string';
 
 import { triggerReload, createTab } from '../common/Signaller';
 
+import { UnprocessableEntity } from '../common/Exceptions';
+
 export { AppUrls } from '../common/ApiService';
 
 function handleErrors(response: any) {
@@ -22,13 +24,9 @@ function handleErrors(response: any) {
             }));
         }
 
-        response.json().then((data) => {
-            throw Error(JSON.stringify({
-                data,
-                statusText: response.statusText,
-                status: response.status
-            }));
-        });
+        if (response.status === 422) {
+            throw new UnprocessableEntity(response.statusText, response.json());
+        }
     }
     return response;
 }

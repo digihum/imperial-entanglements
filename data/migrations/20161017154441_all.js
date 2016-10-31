@@ -8,7 +8,8 @@ exports.up = function(knex, Promise) {
       fs.readFileSync('data/migrations/predicates.sql', 'utf8') +
       fs.readFileSync('data/migrations/entity_types.sql', 'utf8') +
       fs.readFileSync('data/migrations/entities.sql', 'utf8') +
-      fs.readFileSync('data/migrations/records.sql', 'utf8');
+      fs.readFileSync('data/migrations/records.sql', 'utf8') +
+      fs.readFileSync('data/migrations/view_predicate_usage.sql', 'utf8');
 
   var statements = creationScript.split(';').filter((statement) => statement.length > 0);
 
