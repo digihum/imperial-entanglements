@@ -1,4 +1,4 @@
-DROP VIEW predicate_usage;
+DROP VIEW IF EXISTS predicate_usage;
 
 CREATE VIEW predicate_usage AS
 SELECT predicate, COUNT(*) as 'count'
