@@ -4,7 +4,7 @@ CREATE TABLE sources (
     name varchar(255) NOT NULL,
     same_as varchar(255),
     parent INTEGER 
-        REFERENCES entities(uid)
+        REFERENCES sources(uid)
         ON UPDATE CASCADE
         ON DELETE SET NULL,
     readonly char(1) DEFAULT FALSE
