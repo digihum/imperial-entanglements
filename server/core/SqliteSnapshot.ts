@@ -16,11 +16,14 @@ export class SqliteSnapshot {
         this.knex = Knex(config);
     }
 
+    //TODO: use some kind of tempory file tracking package
+
     public getSnapshotStream() : Promise<fs.ReadStream> {
         const filename = __dirname + '/test.sqlite';
+        fs.unlinkSync(filename);
         const db = new sqlite.Database(filename);
 
-        const tempKnex = Knex({
+        let tempKnex = Knex({
             client: 'sqlite3',
             connection: { filename },
             migrations: {
@@ -28,23 +31,11 @@ export class SqliteSnapshot {
             }
         });
 
-        // db.serialize(() => {
-        //     db.run("CREATE TABLE lorem (info TEXT)");
-            
-        //     var stmt = db.prepare("INSERT INTO lorem VALUES (?)");
-        //     for (var i = 0; i < 10; i++) {
-        //         stmt.run("Ipsum " + i);
-        //     }
-        //     stmt.finalize();
-
-        // });
-
         return tempKnex.migrate.latest()
         .then(() => {
             return new Promise((res) => {
                 db.close(() => {
                     const stream = fs.createReadStream(filename);
-                    stream.on('close', () => fs.unlinkSync(filename));
                     res(stream);
                 });
             });

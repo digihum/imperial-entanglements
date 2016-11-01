@@ -14,7 +14,7 @@ export const Admin = (props) => (
             <ul>
                 <li>Manage Users</li>
                 <li>Download app</li>
-                <li>Download database snapshot</li>
+                <li><a href='/admin/snapshot'>Download database snapshot</a></li>
             </ul>
         </section>
     </div>
