@@ -22,7 +22,7 @@ exports.up = function(knex, Promise) {
   var creationScript = files
     .map((filename) => fs.readFileSync('data/migrations/' + filename, 'utf8'))
     .map((fileContents) => _.template(fileContents))
-    .map((template) => template({ auto_increment: 'INTEGER PRIMARY KEY AUTOINCREMENT'}))
+    .map((template) => template({ auto_increment: autoIncrementCommand}))
     .join(' ');
 
 //   var creationScript =
