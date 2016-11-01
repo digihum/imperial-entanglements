@@ -70,7 +70,7 @@ export class Sidebar extends React.Component<SidebarProps, SidebarState> {
                         const item = this.props.dataStore.all[tab.tabType].value
                             .find((item) => item.uid == tab.uid);
 
-                        const url = `/${AppUrls[tab.tabType]}/${tab.uid}`;
+                        const url = `/edit/${AppUrls[tab.tabType]}/${tab.uid}`;
                         const title = tab.tabType === 'entity' ? item.label : item.name;
                         const subtitle = `${capitalize(AppUrls[tab.tabType])} ${tab.uid}`;
 

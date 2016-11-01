@@ -22,9 +22,9 @@ export const setupAuth = (db: Database) => {
         .then(([user]) => done(null, user));
     });
 
-    passport.use(new LocalStrategy((username, password, done) =>
+    passport.use(new LocalStrategy((username, password, done) => {
         // retrieve user ...
-        db.query()('users')
+        return db.query()('users')
         .select().where({username})
         .then(([user]) => compare(password, user.password, (err, res) => {
             if (err) {
@@ -32,7 +32,7 @@ export const setupAuth = (db: Database) => {
             } else {
                 done(null, user);
             }
-      }))));
+      }))}));
 };
 
 export const Auth = {

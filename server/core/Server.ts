@@ -13,11 +13,13 @@ import * as koaQs from 'koa-qs';
 import * as koaLogger from 'koa-logger';
 import * as koaSession from 'koa-session';
 import * as koaPassport from 'koa-passport';
+import * as koaMount from 'koa-mount';
 
 import { Config as KnexConfig } from 'knex';
 import { Database } from './Database';
 
 import { FalconApp } from '../../common/FalconApp';
+
 import { renderToStaticMarkup } from 'react-dom/server';
 import { createElement } from 'react';
 
@@ -46,6 +48,8 @@ export class Server {
         this.app = new Koa();
         this.app.use(koaLogger());
         koaQs(this.app, 'strict');
+
+        this.app.use(koaBodyParser());
 
         // Sessions
         this.app.keys = ['secret'];
@@ -80,18 +84,37 @@ export class Server {
         this.app.use(router.middleware());
 
         const authRouter = new KoaRouter();
-        authRouter.post(`/${this.adminRoute}/login`, koaPassport.authenticate('local'), function*(next: Koa.Context) {
-            next.redirect('/');
-        });
+        authRouter.post(`/${this.adminRoute}/login`, koaPassport.authenticate('local', {
+            successRedirect: '/admin',
+            failureRedirect: '/login'
+        }));
 
         authRouter.get(`/${this.adminRoute}/logout`, function*() {
-            this.body = 'logout :(!';
+            this.logout();
+            this.redirect('/admin');
+        });
+
+        authRouter.get(`/${this.adminRoute}/currentuser`, function*() {
+            this.body = {
+                username: this.req.user.name
+            };
         });
 
         this.app.use(authRouter.middleware());
 
+        const adminApp = new Koa();
+
         const self = this;
-        this.app.use(function* (next: Koa.Context) {
+
+        adminApp.use(function* (next: Koa.Context) {
+            if (this.isAuthenticated()) {
+                yield next;
+            } else {
+                this.body = readFileSync('./build/common/login.html', 'utf8');
+            }
+        });
+
+        adminApp.use(function* (next: Koa.Context) {
             this.body = self.skeleton({ body: renderToStaticMarkup(createElement(FalconApp, {
                 router: ServerRouter,
                 api: serverApiContext,
@@ -101,6 +124,18 @@ export class Server {
                 }
             }))});
         });
+
+        this.app.use(koaMount('/admin', adminApp));
+
+        const frontendApp = new Koa();
+
+        frontendApp.use(function* (next: Koa.Context) {
+            this.body = 'Frontend under construction';
+        });
+
+         this.app.use(koaMount('/', frontendApp));
+
+        this.app.use(function* (next: Koa.Context) { this.body = '404'; });
     }
 
     public listen() : void {

@@ -16,6 +16,8 @@ import { ApiService } from './ApiService';
 import { routeUrls } from './routeUrls';
 import { Home } from './views/Home';
 
+import { Admin } from './views/Admin';
+
 import { Link } from 'react-router';
 import { ObjectEditor } from './views/ObjectEditor';
 
@@ -45,18 +47,22 @@ export class FalconApp extends React.Component<FalconAppProps, FalconAppState> {
     public render() {
         return (
         <div id='main' className="flex-fill" onClick={this.onClickSignal.bind(this)}>
-            <this.props.router {...this.props.routerSettings} className="flex-fill">
+            <this.props.router {...this.props.routerSettings} className="flex-fill" basename='/admin'>
                 <div className="flex-fill" style={{ flexDirection: 'column' }}>
                     <div className='header'>
                         <h1>VRE</h1>
                         <Link to='/' className='header-link'>Home</Link>
-                        <Link to='/entity' className='header-link'>Entities</Link>
-                        <Link to='/predicate' className='header-link'>Predicates</Link>
-                        <Link to='/source' className='header-link'>Sources</Link>
-                        <Link to='/entity_type' className='header-link'>Entity Types</Link>
+                        <Link to='/edit/entity' className='header-link'>Entities</Link>
+                        <Link to='/edit/predicate' className='header-link'>Predicates</Link>
+                        <Link to='/edit/source' className='header-link'>Sources</Link>
+                        <Link to='/edit/entity_type' className='header-link'>Entity Types</Link>
+
+                        <div className='right-header'>
+                            <a href='/admin/logout'>Logout</a>
+                        </div>
                     </div>
 
-                    <Match exactly pattern='/' component={Home} />
+                    <Match exactly pattern='/' component={Admin} />
 
                     <Match exactly pattern='/search' render={
                         (matchprops) => (
@@ -69,7 +75,7 @@ export class FalconApp extends React.Component<FalconAppProps, FalconAppState> {
 
                             <Match
                                 exactly key={`${name}-cv`}
-                                pattern={`/${routeUrl.url}`}
+                                pattern={`/edit/${routeUrl.url}`}
                                 render={
                                     (matchprops) => (
                                         <routeUrl.collectionView
@@ -81,34 +87,12 @@ export class FalconApp extends React.Component<FalconAppProps, FalconAppState> {
 
                             <Match
                                 exactly key={`${name}-iv`}
-                                pattern={`/${routeUrl.url}/:id`}
+                                pattern={`/edit/${routeUrl.url}/:id`}
                                 className="flex-fill"
                                 render={
                                     (matchprops) => (
                                         <routeUrl.itemView 
                                         api={this.props.api} {...matchprops}
-                                        workspace={routeUrl.workspaceType}
-                                        list={false} />)
-                                } />,
-
-                            <Match
-                                exactly key={`${name}-ce`}
-                                pattern={`/admin/edit/${routeUrl.url}`}
-                                render={
-                                    (matchprops) => (
-                                        <routeUrl.collectionEdit 
-                                        api={this.props.api} {...matchprops}
-                                        workspace={routeUrl.workspaceType} 
-                                        list={true}/>)
-                                }/>,
-
-                            <Match
-                                exactly key={`${name}-ie`}
-                                pattern={`/admin/edit/${routeUrl.url}`}
-                                render={
-                                    (matchprops) => (
-                                        <routeUrl.itemEdit 
-                                        api={this.props.api} {...matchprops} 
                                         workspace={routeUrl.workspaceType}
                                         list={false} />)
                                 } />

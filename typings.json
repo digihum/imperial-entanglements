@@ -14,6 +14,7 @@
     "koa": "registry:dt/koa#2.0.0+20160724024233",
     "koa-bodyparser": "registry:dt/koa-bodyparser#3.0.0+20160414124440",
     "koa-json": "registry:dt/koa-json#2.0.0+20160412125208",
+    "koa-mount": "registry:dt/koa-mount#2.0.0+20160711132230",
     "koa-passport": "registry:dt/koa-passport#2.0.0+20161012045224",
     "koa-qs": "file:typings/custom/koa-qs.d.ts",
     "koa-router": "file:typings/custom/koa-router.d.ts",

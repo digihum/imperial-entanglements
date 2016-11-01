@@ -36,9 +36,7 @@ export const routeUrls : RouteUrls = {
         url: 'element_set',
         workspaceType: '',
         itemView: RouteNotFound,
-        itemEdit: RouteNotFound,
-        collectionView: RouteNotFound,
-        collectionEdit: RouteNotFound
+        collectionView: RouteNotFound
     },
 
     [AppUrls.record]: {
@@ -47,9 +45,7 @@ export const routeUrls : RouteUrls = {
         plural: 'Records',
         workspaceType: '',
         itemView: RouteNotFound,
-        itemEdit: RouteNotFound,
-        collectionView: ObjectEditor,
-        collectionEdit: ObjectEditor
+        collectionView: ObjectEditor
     },
 
     [AppUrls.entity]:  {
@@ -58,9 +54,7 @@ export const routeUrls : RouteUrls = {
         plural: 'Entities',
         workspaceType: 'entity',
         itemView: ObjectEditor,
-        itemEdit: ObjectEditor,
-        collectionView: ObjectEditor,
-        collectionEdit: ObjectEditor
+        collectionView: ObjectEditor
     },
 
     [AppUrls.entity_type]: {
@@ -69,9 +63,7 @@ export const routeUrls : RouteUrls = {
         plural: 'Entity Types',
         workspaceType: 'entity_type',
         itemView: ObjectEditor,
-        itemEdit: ObjectEditor,
-        collectionView: ObjectEditor,
-        collectionEdit: ObjectEditor
+        collectionView: ObjectEditor
     },
 
     [AppUrls.predicate]: {
@@ -80,9 +72,7 @@ export const routeUrls : RouteUrls = {
         plural: 'Predicates',
         workspaceType: 'predicate',
         itemView: ObjectEditor,
-        itemEdit: ObjectEditor,
-        collectionView: ObjectEditor,
-        collectionEdit: ObjectEditor
+        collectionView: ObjectEditor
     },
 
     [AppUrls.source]: {
@@ -91,8 +81,6 @@ export const routeUrls : RouteUrls = {
         plural: 'Sources',
         workspaceType: 'source',
         itemView: ObjectEditor,
-        itemEdit: ObjectEditor,
-        collectionView: ObjectEditor,
-        collectionEdit: ObjectEditor
+        collectionView: ObjectEditor
     }
 };
