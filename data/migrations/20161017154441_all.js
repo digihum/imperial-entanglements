@@ -12,8 +12,8 @@ exports.up = function(knex, Promise) {
 
   var files = [
     'sources.sql',
-    'predicates.sql',
     'entity_types.sql',
+    'predicates.sql',
     'entities.sql',
     'records.sql',
     'view_predicate_usage.sql'
