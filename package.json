@@ -2,7 +2,7 @@
   "name": "imperial-entanglements",
   "version": "0.0.1",
   "description": "VRE for Imperial Entanglements project",
-  "main": "index.js",
+  "main": "./build/app/index.js",
   "scripts": {
     "dist": "build",
     "tsc": "tsc",
@@ -34,7 +34,7 @@
   },
   "directories": {
     "output": "bin",
-    "app": "build/app",
+    "app": ".",
     "buildResources": "tmp"
   },
   "author": "",
@@ -82,6 +82,7 @@
     "chai-http": "^3.0.0",
     "chromedriver": "^2.24.1",
     "electron": "1.4.2",
+    "electron-builder": "^7.15.2",
     "gulp": "^3.9.1",
     "gulp-sass": "^2.3.2",
     "mocha": "^3.0.2",
