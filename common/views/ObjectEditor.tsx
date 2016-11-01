@@ -107,7 +107,12 @@ export class ObjectEditor extends React.Component<EntityEditorProps, EntityEdito
                             this.loadTabData(tab.tabType, tab.uid)
                             .then((value) => {
                                 return { [`${tab.tabType}-${tab.uid}`]: { value, lastUpdate: moment() }};
-                        })))
+                            })
+                            .catch((err) => {
+                                console.warn(`Attempted to load missing resource ${tab.tabType}/${tab.uid}`);
+                                this.closeTab(tab.tabType, tab.uid);
+                            })
+                        ))
                         .then((tabData) => {
                             return { [tabType]: Map(Object.assign({}, ...tabData)) };
                         })
