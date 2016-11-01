@@ -15,6 +15,8 @@ import * as koaSession from 'koa-session';
 import * as koaPassport from 'koa-passport';
 import * as koaMount from 'koa-mount';
 
+import * as moment from 'moment';
+
 import { Config as KnexConfig } from 'knex';
 import { Database } from './Database';
 
@@ -32,6 +34,8 @@ import { ServerRouter, createServerRenderContext } from 'react-router';
 
 import { setupAuth } from './Auth';
 
+import { SqliteSnapshot } from './SqliteSnapshot';
+
 export class Server {
 
     private app: Koa;
@@ -39,6 +43,8 @@ export class Server {
     private apiRoute: string;
     private adminRoute: string;
     private adminEditRoute: string;
+
+    private snapshot: SqliteSnapshot;
 
     // TODO: type this properly
     private routingContext: any;
@@ -69,6 +75,7 @@ export class Server {
         this.routingContext = createServerRenderContext();
 
         const db = new Database(databaseConfig);
+        this.snapshot = new SqliteSnapshot(databaseConfig);
 
         setupAuth(db);
 
@@ -89,6 +96,8 @@ export class Server {
             failureRedirect: '/login'
         }));
 
+        const self = this;
+
         authRouter.get(`/${this.adminRoute}/logout`, function*() {
             this.logout();
             this.redirect('/admin');
@@ -100,11 +109,21 @@ export class Server {
             };
         });
 
+        authRouter.get(`/${this.adminRoute}/snapshot`, function*() {
+            this.set('Content-disposition', 'attachment; filename=' + 'snapshot_' + moment().toISOString() +  '.sqlite');
+            this.set('Content-type', 'application/x-sqlite3');
+            yield self.snapshot.getSnapshotStream()
+            .then((snapshotStream) => {
+                this.body = snapshotStream;
+            });
+        });
+
+
         this.app.use(authRouter.middleware());
 
         const adminApp = new Koa();
 
-        const self = this;
+        
 
         adminApp.use(function* (next: Koa.Context) {
             if (this.isAuthenticated()) {

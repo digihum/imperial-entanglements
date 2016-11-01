@@ -34,6 +34,7 @@
     "redis": "registry:dt/redis#0.12.1+20160818110030",
     "redux": "registry:dt/redux#3.5.2+20160703092728",
     "reflect-metadata": "registry:dt/reflect-metadata#0.0.0+20160630155503",
+    "sqlite3": "registry:dt/sqlite3#2.2.3+20160724070935",
     "whatwg-fetch": "registry:dt/whatwg-fetch#0.0.0+20160829180742"
   },
   "dependencies": {

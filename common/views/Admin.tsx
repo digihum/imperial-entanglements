@@ -10,7 +10,7 @@ import { Link } from 'react-router';
 export const Admin = (props) => (
     <div className='page'>
         <section>
-            <h1>This is the admin page</h1>
+            <h1>Welcome to the admin pages</h1>
             <ul>
                 <li>Manage Users</li>
                 <li>Download app</li>
