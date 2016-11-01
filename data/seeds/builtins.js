@@ -12,7 +12,7 @@ exports.seed = function(knex, Promise) {
             same_as: '',
             colour: '',
             icon: '',
-            readonly: true
+            readonly: 1
           }
        ).returning('uid').then(([id]) => {
          return Promise.all([
@@ -24,7 +24,7 @@ exports.seed = function(knex, Promise) {
               same_as: 'http://xmlns.com/foaf/spec/#term_Person',
               colour: 'blue',
               icon: 'person',
-              readonly: true,
+              readonly: 1,
               parent: id
             }),
 
@@ -34,7 +34,7 @@ exports.seed = function(knex, Promise) {
               same_as: 'http://xmlns.com/foaf/spec/#term_SpatialThing',
               colour: 'red',
               icon: 'place',
-              readonly: true,
+              readonly: 1,
               parent: id
             }),
 
@@ -44,7 +44,7 @@ exports.seed = function(knex, Promise) {
               same_as: '',
               colour: 'green',
               icon: 'job',
-              readonly: false,
+              readonly: 1,
               parent: id
           })           
         

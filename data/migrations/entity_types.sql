@@ -12,5 +12,5 @@ CREATE TABLE entity_types (
     same_as varchar(255),
     colour varchar(255),
     icon varchar(255),
-    readonly char(1) DEFAULT FALSE
+    readonly INTEGER DEFAULT 0
 );

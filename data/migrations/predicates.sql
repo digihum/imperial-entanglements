@@ -16,5 +16,5 @@ CREATE TABLE predicates (
         ON UPDATE CASCADE
         ON DELETE CASCADE,
         
-    readonly char(1) DEFAULT FALSE
+    readonly INTEGER DEFAULT 0
 );

@@ -7,7 +7,7 @@ CREATE TABLE sources (
         REFERENCES sources(uid)
         ON UPDATE CASCADE
         ON DELETE SET NULL,
-    readonly char(1) DEFAULT FALSE
+    readonly INTEGER DEFAULT 0
 );
 
 DROP TABLE IF EXISTS element_sets;

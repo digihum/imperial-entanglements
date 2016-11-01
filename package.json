@@ -16,7 +16,8 @@
     "style:watch": "node-sass --watch ./client/sass/app.scss --include-path node_modules -o build/static",
     "webpack": "webpack",
     "webpack:watch": "webpack --watch",
-    "sql": "node scripts/build_sql.js"
+    "sql": "node scripts/build_sql.js",
+    "docker-pg": "docker run --name ie-postgres -e POSTGRES_PASSWORD=password -e POSTGRES_USER=admin -e POSTGRES_DB=db1 -d postgres"
   },
   "repository": {
     "type": "git",

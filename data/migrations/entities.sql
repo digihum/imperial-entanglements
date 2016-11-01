@@ -13,5 +13,5 @@ CREATE TABLE entities (
         ON UPDATE CASCADE
         ON DELETE SET NULL,
 
-    readonly char(1) DEFAULT FALSE
+    readonly INTEGER DEFAULT 0
 );
