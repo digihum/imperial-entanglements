@@ -1,6 +1,6 @@
 DROP TABLE IF EXISTS sources;
 CREATE TABLE sources (
-    uid INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    uid <%= auto_increment %> NOT NULL,
     name varchar(255) NOT NULL,
     same_as varchar(255),
     parent INTEGER 
@@ -12,7 +12,7 @@ CREATE TABLE sources (
 
 DROP TABLE IF EXISTS element_sets;
 CREATE TABLE element_sets (
-    uid INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    uid <%= auto_increment %> NOT NULL,
     uri varchar(255),
     name varchar(255),
     description varchar(255)
@@ -20,7 +20,7 @@ CREATE TABLE element_sets (
 
 DROP TABLE IF EXISTS elements;
 CREATE TABLE elements (
-    uid INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    uid <%= auto_increment %> NOT NULL,
     uri varchar(255),
 
     element_set INTEGER NOT NULL
@@ -35,7 +35,7 @@ CREATE TABLE elements (
 
 DROP TABLE IF EXISTS source_elements;
 CREATE TABLE source_elements (
-    uid INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    uid <%= auto_increment %> NOT NULL,
 
     source INTEGER NOT NULL 
         REFERENCES sources(uid)

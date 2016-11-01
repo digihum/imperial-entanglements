@@ -1,6 +1,6 @@
 DROP TABLE IF EXISTS entities;
 CREATE TABLE entities (
-    uid INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    uid <%= auto_increment %> NOT NULL,
     label varchar(255) NOT NULL,
 
     type INTEGER NOT NULL

@@ -1,6 +1,6 @@
 DROP TABLE IF EXISTS records;
 CREATE TABLE records (
-    uid INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    uid <%= auto_increment %> NOT NULL,
 
     source INTEGER 
         REFERENCES sources(uid)

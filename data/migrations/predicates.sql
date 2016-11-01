@@ -1,6 +1,6 @@
 DROP TABLE IF EXISTS predicates;
 CREATE TABLE predicates (
-    uid INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    uid <%= auto_increment %> NOT NULL,
     name varchar(255) NOT NULL,
     description varchar(255),
     same_as varchar(255),

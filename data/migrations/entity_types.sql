@@ -1,6 +1,6 @@
 DROP TABLE IF EXISTS entity_types;
 CREATE TABLE entity_types (
-    uid INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    uid <%= auto_increment %> NOT NULL,
     name varchar(255) NOT NULL,
     description varchar(255),
 
