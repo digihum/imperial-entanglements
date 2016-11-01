@@ -14,6 +14,9 @@ run_tests:
   # copy test db
   - cp blank.sqlite mydb.sqlite
 
+  # copy .env file
+  - cp .env.example .env
+
   # run sql migrations
   - npm run migrate
 
