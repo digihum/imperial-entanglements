@@ -11,22 +11,35 @@ import { Database } from '../server/core/Database';
 import { wrapDatabase } from '../server/routes/api';
 import { MemoryRouter } from 'react-router';
 
-const db = new Database({
-  client: 'sqlite3',
-  connection: {
-    filename: './mydb.sqlite'
-  },
-  debug: true
-});
+import * as electron from 'electron';
 
-document.addEventListener('DOMContentLoaded', (event) => {
-    render(createElement(FalconApp, {
-        api: wrapDatabase(db),
-        router: MemoryRouter,
-        routerSettings: {
-           initialEntries: ['/'],
-           initialIndex: 0
-        }
-    }), <Element>document.getElementById('falcon-container'));
-});
+const databaseFile = electron.remote.dialog.showOpenDialog({properties: ['openFile']});
+
+if (databaseFile !== undefined) {
+
+  electron.remote.getCurrentWindow().setTitle(`Imperial Entanglements (${databaseFile[0]})`);
+
+  const db = new Database({
+    client: 'sqlite3',
+    useNullAsDefault: true,
+    connection: {
+      filename: databaseFile[0]
+    },
+    debug: true
+  });
+
+  document.addEventListener('DOMContentLoaded', (event) => {
+      render(createElement(FalconApp, {
+          api: wrapDatabase(db),
+          router: MemoryRouter,
+          routerSettings: {
+            initialEntries: ['/'],
+            initialIndex: 0
+          }
+      }), <Element>document.getElementById('falcon-container'));
+  });
+} else {
+  electron.remote.app.quit();
+}
+
 
