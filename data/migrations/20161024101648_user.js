@@ -6,6 +6,7 @@ exports.up = function(knex, Promise) {
     table.string('username');
     table.string('email');
     table.string('password', 128);
+    table.integer('account_level');
  });
 };
 

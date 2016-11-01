@@ -12,7 +12,8 @@ exports.seed = function(knex, Promise) {
           name: 'Tim Hollies',
           username: 'thollies',
           password: bcrypt.hashSync('password', 10),
-          email: 'tim.hollies@warwick.ac.uk'
+          email: 'tim.hollies@warwick.ac.uk',
+          account_level: 1
         }),
       ]);
     });

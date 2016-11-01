@@ -6,7 +6,8 @@ exports.seed = function(knex, Promise) {
       return Promise.all([
         // Inserts seed entries
         knex('sources').insert({
-          name: 'Test Source'
+          name: 'Test Source',
+          creator: 1
         })
       ]);
     });

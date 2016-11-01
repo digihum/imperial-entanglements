@@ -12,7 +12,8 @@ exports.seed = function(knex, Promise) {
             same_as: '',
             colour: '',
             icon: '',
-            readonly: 1
+            readonly: 1,
+            creator: 1
           }
        ).returning('uid').then(([id]) => {
          return Promise.all([
@@ -25,7 +26,8 @@ exports.seed = function(knex, Promise) {
               colour: 'blue',
               icon: 'person',
               readonly: 1,
-              parent: id
+              parent: id,
+              creator: 1
             }),
 
             knex(ENTITY_TYPES_TABLE_NAME).insert({
@@ -35,7 +37,8 @@ exports.seed = function(knex, Promise) {
               colour: 'red',
               icon: 'place',
               readonly: 1,
-              parent: id
+              parent: id,
+              creator: 1
             }),
 
             knex(ENTITY_TYPES_TABLE_NAME).insert({
@@ -45,7 +48,8 @@ exports.seed = function(knex, Promise) {
               colour: 'green',
               icon: 'job',
               readonly: 1,
-              parent: id
+              parent: id,
+              creator: 1
           })           
         
         ])

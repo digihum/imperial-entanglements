@@ -13,6 +13,7 @@ exports.seed = function(knex, Promise) {
           description: 'A forename',
           domain: result.uid,
           range_type: 'string',
+          creator: 1
         }).returning('uid'),
 
         knex('predicates').insert({
@@ -20,7 +21,8 @@ exports.seed = function(knex, Promise) {
           description: 'Has a male sibling that shares parents',
           domain: result.uid,
           range_type: 'entity',
-          range_ref: result.uid
+          range_ref: result.uid,
+          creator: 1
         }).returning('uid')
       ]);
     })

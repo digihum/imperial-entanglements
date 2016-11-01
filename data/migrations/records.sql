@@ -84,5 +84,8 @@ CREATE TABLE records (
             (value_string is NULL) AND
             (value_date is NULL) AND 
             (value_integer is NULL) AND 
-            (value_point is NULL)))
+            (value_point is NULL))),
+
+    creator INTEGER NOT NULL
+        REFERENCES users(uid)
 );

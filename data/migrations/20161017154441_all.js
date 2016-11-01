@@ -35,6 +35,10 @@ exports.up = function(knex, Promise) {
 
   var statements = creationScript.split(';').filter((statement) => statement.length > 0);
 
+  if (process.env.DB_TYPE === 'sqlite') {
+      statements.push('PRAGMA foreign_keys = TRUE;');
+  }
+
   var prom = statements.reduce((prev, cur, index) => prev.then(() => knex.schema.raw(cur + ';')), Promise.resolve());
 
   return prom;  

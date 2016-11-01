@@ -12,5 +12,8 @@ CREATE TABLE entity_types (
     same_as varchar(255),
     colour varchar(255),
     icon varchar(255),
-    readonly INTEGER DEFAULT 0
+    readonly INTEGER DEFAULT 0,
+
+    creator INTEGER NOT NULL
+        REFERENCES users(uid)
 );

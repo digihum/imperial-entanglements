@@ -13,5 +13,8 @@ CREATE TABLE entities (
         ON UPDATE CASCADE
         ON DELETE SET NULL,
 
-    readonly INTEGER DEFAULT 0
+    readonly INTEGER DEFAULT 0,
+
+    creator INTEGER NOT NULL
+        REFERENCES users(uid)
 );
