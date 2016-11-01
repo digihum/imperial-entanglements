@@ -1,27 +1,32 @@
 // Update with your config settings.
 
-module.exports = {
+require('dotenv').config();
 
-  development: {
-    client: 'sqlite3',
-    connection: {
-      filename: './mydb.sqlite'
-    },
-
-    migrations: {
-      directory: './data/migrations'
-    },
-    seeds: {
-      directory: './data/seeds'
-    },
-
-    // client: 'pg',
-    // connection: {
-    //   host : '127.0.0.1',
-    //   user : 'postgres',
-    //   password : 'password',
-    //   database : 'falcon'
-    // }
+const databaseConnection = {
+  useNullAsDefault: true,
+  connection: {},
+  migrations: {
+    directory: './data/migrations'
+  },
+  seeds: {
+    directory: './data/seeds'
   }
+};
 
+if (process.env.DB_TYPE === 'sqlite') {
+  databaseConnection.client = 'sqlite3';
+  databaseConnection.connection.filename = './mydb.sqlite';
+}
+
+if (process.env.DB_TYPE === 'postgres') {
+  databaseConnection.client = 'pg';
+  databaseConnection.connection.host = process.env.DB_HOST;
+  databaseConnection.connection.user = process.env.DB_USER;
+  databaseConnection.connection.password = process.env.DB_PASSWORD;
+  databaseConnection.connection.database = process.env.DB_DATABASE;
+}
+
+
+module.exports = {
+  development: databaseConnection
 };
