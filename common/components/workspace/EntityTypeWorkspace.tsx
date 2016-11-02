@@ -7,7 +7,6 @@
 import * as React from 'react';
 
 import { SameAsEditor } from '../fields/SameAsEditor';
-import { Loading } from '../Loading';
 import { ApiService, AppUrls } from '../../ApiService';
 
 import { EntityType } from '../../../common/datamodel/datamodel';
@@ -17,9 +16,7 @@ import { EditableParagraph } from '../fields/EditableParagraph';
 import { EditableComboDropdown } from '../fields/EditableComboDropdown';
 import { ComboDropdownOption } from '../ComboDropdown';
 
-import { keyBy, Dictionary } from 'lodash';
-
-import { showModal, createTab } from '../../Signaller';
+import { showModal } from '../../Signaller';
 import { ModalDefinition } from '../modal/ModalDefinition';
 
 import { DataStore } from '../../DataStore';

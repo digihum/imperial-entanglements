@@ -14,8 +14,6 @@ import { ComboDropdown, ComboDropdownOption } from '../ComboDropdown';
 import { showModal } from '../../Signaller';
 import { ModalDefinition } from './ModalDefinition';
 
-import { noop } from 'lodash';
-
 interface CreateRecordProps {
     api: ApiService;
     options: { key: string, value: string, meta: Predicate}[];
@@ -41,7 +39,7 @@ export class CreateRecord extends React.Component<CreateRecordProps, CreateRecor
     }
 
     public componentDidMount() {
-        this.refs.comboDropDown.refs.comboDropDownInputBox.focus();
+        this.refs['comboDropDown'].refs['comboDropDownInputBox'].focus();
     }
 
     public createNewPredicate() {

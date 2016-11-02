@@ -9,7 +9,7 @@ import * as React from 'react';
 import { ApiService, AppUrls } from '../../ApiService';
 import { DataStore } from '../../DataStore';
 import { Entity, EntityType, Predicate, Record } from '../../../common/datamodel/datamodel';
-import { ComboDropdown, ComboDropdownOption } from '../ComboDropdown';
+import { ComboDropdown } from '../ComboDropdown';
 import { noop, cloneDeep } from 'lodash';
 
 import { AddTabButton } from '../AddTabButton';
@@ -101,14 +101,13 @@ export class EntityList extends React.Component<EntityListProps, EntityListState
 
     public reload() {
 
-        let predicatesQuery = '';
         const setColumns = this.state.columns.filter((col) => col.predicate != -1);
 
         this.props.api.getCollection(Record, AppUrls.record, {
             predicate: setColumns.map((col) => col.predicate),
             entity: this.props.dataStore.all.entity.value.map((entity) => entity.uid)
         })
-        .then((results) => this.setState({ results });
+        .then((results) => this.setState({ results }));
     }
 
     public addNew() {

@@ -11,7 +11,7 @@ import { CollectionNotFoundException } from './Exceptions';
 
 import { QueryEngine } from './QueryEngine';
 
-import { triggerReload, createTab } from '../../common/Signaller';
+import { triggerReload } from '../../common/Signaller';
 
 export { AppUrls } from '../../common/ApiService';
 

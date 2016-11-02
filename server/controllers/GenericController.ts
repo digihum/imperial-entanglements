@@ -8,8 +8,6 @@ import { IController } from './IController';
 import { Persistable } from '../core/Persistable';
 import { Database } from '../core/Database';
 
-import { remove } from 'lodash';
-
 export abstract class GenericController<T extends Persistable> implements IController {
 
     protected tableName: string;

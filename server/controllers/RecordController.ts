@@ -81,7 +81,7 @@ export class RecordController extends GenericController<RecordPersistable> {
                 return super.postItem(obj, data);
             }
             throw new OperationNotPermittedException({
-                message: 'Attempted to add a record with an incorrect type!', 
+                message: 'Attempted to add a record with an incorrect type!',
                 data: []
             })
         });
