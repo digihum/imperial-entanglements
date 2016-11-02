@@ -5,13 +5,12 @@
  */
 
 import * as React from 'react';
-import { Link } from 'react-router';
 import { Map } from 'immutable';
 import * as moment from 'moment';
 
 import { ApiService, AppUrls } from '../ApiService';
 
-import { ElementSet, EntityType, Entity, Predicate, Record, Source, SourceElement } from '../../common/datamodel/datamodel';
+import { EntityType, Entity, Predicate, Record, Source, SourceElement } from '../../common/datamodel/datamodel';
 
 import { Sidebar, Tab } from '../components/Sidebar';
 import { Workspace } from '../components/Workspace';
@@ -28,7 +27,7 @@ import { ConflictResolution } from '../components/modal/ConflictResolution';
 
 import { ModalDefinition } from '../components/modal/ModalDefinition';
 
-import { DataStore, DataStoreEntry, emptyDataStore, emptyTabs } from '../DataStore';
+import { DataStore, emptyDataStore, emptyTabs } from '../DataStore';
 
 interface ExpectedParams {
     id: number;
