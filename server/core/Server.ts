@@ -36,6 +36,8 @@ import { setupAuth } from './Auth';
 
 import { SqliteSnapshot } from './SqliteSnapshot';
 
+import { AdminApp } from './AdminApp';
+
 export class Server {
 
     private app: Koa;
@@ -90,61 +92,7 @@ export class Server {
 
         this.app.use(router.middleware());
 
-        const authRouter = new KoaRouter();
-        authRouter.post(`/${this.adminRoute}/login`, koaPassport.authenticate('local', {
-            successRedirect: '/admin',
-            failureRedirect: '/login'
-        }));
-
-        const self = this;
-
-        authRouter.get(`/${this.adminRoute}/logout`, function*() {
-            this.logout();
-            this.redirect('/admin');
-        });
-
-        authRouter.get(`/${this.adminRoute}/currentuser`, function*() {
-            this.body = {
-                username: this.req.user.name
-            };
-        });
-
-        authRouter.get(`/${this.adminRoute}/snapshot`, function*() {
-            this.set('Content-disposition', 'attachment; filename=' + 'snapshot_' + moment().toISOString() +  '.sqlite');
-            this.set('Content-type', 'application/x-sqlite3');
-            yield self.snapshot.getSnapshotStream()
-            .then((snapshotStream) => {
-                this.body = snapshotStream;
-            });
-        });
-
-
-        this.app.use(authRouter.middleware());
-
-        const adminApp = new Koa();
-
-        
-
-        adminApp.use(function* (next: Koa.Context) {
-            if (this.isAuthenticated()) {
-                yield next;
-            } else {
-                this.body = readFileSync('./build/common/login.html', 'utf8');
-            }
-        });
-
-        adminApp.use(function* (next: Koa.Context) {
-            this.body = self.skeleton({ body: renderToStaticMarkup(createElement(FalconApp, {
-                router: ServerRouter,
-                api: serverApiContext,
-                routerSettings: {
-                    context: self.routingContext,
-                    location: this.request.url
-                }
-            }))});
-        });
-
-        this.app.use(koaMount('/admin', adminApp));
+        this.app.use(koaMount('/admin', AdminApp(this.snapshot, this.skeleton, serverApiContext)));
 
         const frontendApp = new Koa();
 
