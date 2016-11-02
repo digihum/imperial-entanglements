@@ -56,6 +56,7 @@ export class EntityTypeWorkspace extends React.Component<EntityTypeWorkspaceProp
 
     public del() {
         this.props.api.delItem(EntityType, AppUrls.entity_type, this.props.id)
+        .then(() => this.context.router.transitionTo('/edit/notfound'))
         .catch((e) => {
             e.data.then((data) => {
 

@@ -126,9 +126,7 @@ export class SourceEditorWorkspace extends React.Component<SourceEditorProps, So
 
     public deleteSource() {
         this.props.api.delItem(Source, AppUrls.source, this.props.id)
-        .then(() => {
-            window.location = '/';
-        });
+        .then(() => this.context.router.transitionTo('/edit/notfound'));
     }
 
     public render() {

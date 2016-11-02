@@ -74,7 +74,7 @@ export class EntityEditorWorkspace extends React.Component<EntityEditorProps, En
     public del() {
         this.props.api.delItem(Entity, AppUrls.entity, this.props.id)
         .then(() => {
-            this.context.router.transitionTo('/');
+            this.context.router.transitionTo('/edit/notfound');
         });
     }
 

@@ -71,6 +71,13 @@ export class FalconApp extends React.Component<FalconAppProps, FalconAppState> {
                                 workspace={'search'} />)
                     } />
 
+                    <Match exactly pattern='/edit/notfound' render={
+                        (matchprops) => (
+                            <ObjectEditor
+                                api={this.props.api} {...matchprops} 
+                                workspace={'notfound'} />)
+                    } />
+
                     {Object.keys(routeUrls).map((name) => [name, routeUrls[name]]).map(([name, routeUrl]) => ([
 
                             <Match

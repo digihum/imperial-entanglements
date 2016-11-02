@@ -7,7 +7,7 @@
 import * as React from 'react';
 
 export const EmptyWorkspace = () => (
-    <span>
-        <p>Nothing is selected!</p>
-    </span>
+    <div className='workspace-editor'>
+        <h2>There is nothing here</h2>
+    </div>
 );

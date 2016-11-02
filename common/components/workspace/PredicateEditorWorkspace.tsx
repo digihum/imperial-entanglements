@@ -93,6 +93,7 @@ export class PredicateEditorWorkspace extends React.Component<PredicateEditorPro
 
     public del() {
         this.props.api.delItem(Predicate, AppUrls.predicate, this.props.id)
+        .then(() => this.context.router.transitionTo('/edit/notfound'))
         .catch((e) => {
             e.data.then((data) => {
 

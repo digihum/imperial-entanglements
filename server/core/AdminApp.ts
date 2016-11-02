@@ -15,6 +15,8 @@ import * as koaSession from 'koa-session';
 import * as koaPassport from 'koa-passport';
 import * as koaMount from 'koa-mount';
 
+import * as moment from 'moment';
+
 import { SqliteSnapshot } from './SqliteSnapshot';
 
 import { readFileSync } from 'fs';
