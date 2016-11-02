@@ -14,7 +14,6 @@ import { RouteNotFound } from './views/RouteNotFound';
 import { ApiService } from './ApiService';
 
 import { routeUrls } from './routeUrls';
-import { Home } from './views/Home';
 
 import { Admin } from './views/Admin';
 
@@ -27,11 +26,7 @@ interface FalconAppProps {
     routerSettings: any;
 }
 
-interface FalconAppState {
-
-}
-
-export class FalconApp extends React.Component<FalconAppProps, FalconAppState> {
+export class FalconApp extends React.Component<FalconAppProps, {}> {
 
     constructor() {
         super();
@@ -39,9 +34,9 @@ export class FalconApp extends React.Component<FalconAppProps, FalconAppState> {
 
     public render() {
         return (
-        <div id='main' className="flex-fill">
-            <this.props.router {...this.props.routerSettings} className="flex-fill" basename='/admin'>
-                <div className="flex-fill" style={{ flexDirection: 'column' }}>
+        <div id='main' className='flex-fill'>
+            <this.props.router {...this.props.routerSettings} className='flex-fill' basename='/admin'>
+                <div className='flex-fill' style={{ flexDirection: 'column' }}>
                     <div className='header'>
                         <h1>VRE</h1>
                         <Link to='/' className='header-link'>Home</Link>

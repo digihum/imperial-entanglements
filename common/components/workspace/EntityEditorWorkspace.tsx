@@ -6,12 +6,10 @@
 
 import * as React from 'react';
 
-import { Loading } from '../Loading';
-
 import { RecordsEditor } from '../entity_editor/RecordsEditor';
 import { ApiService, AppUrls } from '../../ApiService';
 
-import { Entity, Predicate, Record, Source, EntityType } from '../../../common/datamodel/datamodel';
+import { Entity } from '../../../common/datamodel/datamodel';
 
 import { ComboDropdown, ComboDropdownOption } from '../ComboDropdown';
 import { ModalDefinition } from '../modal/ModalDefinition';
@@ -20,6 +18,8 @@ import { Dictionary, groupBy } from 'lodash';
 
 import { showModal } from '../../Signaller';
 import { AddTabButton } from '../AddTabButton';
+
+import { findParentTree } from '../../helper/findParentTree';
 
 
 import { EditableHeader, EditableFieldComponent } from '../fields/EditableHeader';
@@ -84,8 +84,9 @@ export class EntityEditorWorkspace extends React.Component<EntityEditorProps, En
 
         const entityType = this.props.dataStore.all.entity_type.value.find((t) => t.uid === entity.entityType);
 
+        const entityTypeParents = findParentTree(entity.entityType, this.props.dataStore.all.entity_type.value);
         const predicates = this.props.dataStore.all.predicate
-            .value.filter((pred) => pred.domain === entity.entityType);
+            .value.filter((pred) => entityTypeParents.indexOf(pred.domain) !== -1);
 
         const modalDef: ModalDefinition = {
             name: 'record',
@@ -108,7 +109,6 @@ export class EntityEditorWorkspace extends React.Component<EntityEditorProps, En
 
     public update(data: any) {
         this.props.api.patchItem(Entity, AppUrls.entity, this.props.id, data);
-        // .then(() => this.setState({ entity: Object.assign({}, this.state.entity, data)}));
     }
 
     public render() {
@@ -118,8 +118,9 @@ export class EntityEditorWorkspace extends React.Component<EntityEditorProps, En
         const entityType = this.props.dataStore.all.entity_type.value.find((t) => t.uid === entity.entityType);
         const potentialParents = this.props.dataStore.all.entity.value;
 
+        const entityTypeParents = findParentTree(entity.entityType, this.props.dataStore.all.entity_type.value);
         const predicates = this.props.dataStore.all.predicate
-            .value.filter((pred) => pred.domain === entity.entityType);
+            .value.filter((pred) => entityTypeParents.indexOf(pred.domain) !== -1);
 
         const sources = this.props.dataStore.all.source.value;
         const records = groupBy(this.props.dataStore.tabs.entity.get('entity-' + this.props.id).value.records, 'predicate');
