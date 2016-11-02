@@ -20,22 +20,26 @@ export class SqliteSnapshot {
 
     public getSnapshotStream() : Promise<fs.ReadStream> {
         const filename = __dirname + '/test.sqlite';
-        fs.unlinkSync(filename);
-        const db = new sqlite.Database(filename);
+       // fs.unlinkSync(filename);
+       // const db = new sqlite.Database(filename);
 
         let tempKnex = Knex({
             client: 'sqlite3',
             connection: { filename },
             migrations: {
                 directory: './data/migrations'
-            }
+            },
+            useNullAsDefault: true
         });
 
         return tempKnex.migrate.latest()
         .then(() => {
             return new Promise((res) => {
-                db.close(() => {
+                tempKnex.destroy(() => {
                     const stream = fs.createReadStream(filename);
+                    stream.on('close', () => {
+                        fs.unlinkSync(filename);
+                    });
                     res(stream);
                 });
             });
