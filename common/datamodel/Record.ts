@@ -13,6 +13,7 @@ export class Record implements Serializable {
     public entity: number;
     public score: number;
     public value: string | null;
+    public creator: number;
 
     //calculated
     public valueType: string | null = null;
@@ -25,6 +26,7 @@ export class Record implements Serializable {
         this.score = data.score;
         this.valueType = data.valueType;
         this.value = data.value;
+        this.creator = data.creator;
         return this;
     }
 

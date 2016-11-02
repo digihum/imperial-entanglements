@@ -53,7 +53,8 @@ export class ClientApiService implements ApiService {
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
-            }
+            },
+            credentials: 'same-origin'
         })
         .then(handleErrors)
         .then((response) => {
@@ -72,7 +73,8 @@ export class ClientApiService implements ApiService {
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
-            }
+            },
+            credentials: 'same-origin'
         })
         .then(handleErrors)
         .then((response) => {
@@ -88,7 +90,8 @@ export class ClientApiService implements ApiService {
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
-            }
+            },
+            credentials: 'same-origin'
         })
         .then(handleErrors)
         .then((response) => {
@@ -99,7 +102,8 @@ export class ClientApiService implements ApiService {
 
     public delItem<T extends Serializable>(obj: { new(): T; }, baseUrl : string, uid: number) {
         return fetch(`/api/v1/${baseUrl}/${uid}`, {
-            method: 'DELETE'
+            method: 'DELETE',
+            credentials: 'same-origin'
         })
         .then(handleErrors)
         .then((response) => {

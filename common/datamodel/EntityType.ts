@@ -17,6 +17,7 @@ export class EntityType implements Serializable {
     public sameAs: string;
     public parent: number | null;
     public parents: EntityType[];
+    public creator: number;
 
     public deserialize(data: any) : EntityType {
         this.uid = data.uid;
@@ -27,6 +28,7 @@ export class EntityType implements Serializable {
         this.sameAs = data.sameAs;
         this.parent = data.parent;
         this.parents = data.parents;
+        this.creator = data.creator;
         return this;
     }
 

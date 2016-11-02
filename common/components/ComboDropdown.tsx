@@ -7,8 +7,9 @@
 import * as React from 'react';
 import * as lunr from 'lunr';
 
-import { globalClick } from '../Signaller';
 import { findIndex, noop } from 'lodash';
+
+import * as ReactAutoComplete from 'react-autocomplete';
 
 export interface ComboDropdownOption {
     key: string;
@@ -33,6 +34,8 @@ interface ComboDropdownState {
     showingDropDown: boolean;
     filteredOptions: ComboDropdownOption[];
     boundHideFunc: any;
+    selectedString: string;
+    highlightedIndex: null | number;
 }
 
 export class ComboDropdown<T> extends React.Component<ComboDropdownProps, ComboDropdownState> {
@@ -43,6 +46,9 @@ export class ComboDropdown<T> extends React.Component<ComboDropdownProps, ComboD
        updateSearchString: noop
     }
 
+    private ignoreBlur;
+    private ignoreClick;
+
     constructor() {
         super();
 
@@ -51,11 +57,15 @@ export class ComboDropdown<T> extends React.Component<ComboDropdownProps, ComboD
             selected: { key: '', value: ''},
             showingDropDown: false,
             filteredOptions: [],
-            boundHideFunc: this.hide.bind(this)
+            selectedString: '',
+            highlightedIndex: null
         };
     }
 
     public componentWillMount() {
+        this.ignoreBlur = false;
+        this.ignoreClick = false;
+
          this.setState({
             filteredOptions: this.props.options,
             searchString: this.props.value.key === null ? '' : this.props.value.key,
@@ -64,6 +74,7 @@ export class ComboDropdown<T> extends React.Component<ComboDropdownProps, ComboD
     }
 
     public componentWillReceiveProps(newProps: ComboDropdownProps) {
+        this.updateFilter(newProps.value.key !== this.props.value.key ? newProps.value.key : this.state.searchString, newProps);
         this.setState({
             searchString: newProps.value.key !== this.props.value.key ? newProps.value.key : this.state.searchString,
             selected: newProps.value,
@@ -73,15 +84,11 @@ export class ComboDropdown<T> extends React.Component<ComboDropdownProps, ComboD
 
     public changeSearchString(event : React.EventHandler<React.FormEvent>) {
         this.setState({searchString: event.target.value, showingDropDown: true}, () => {
-            this.updateFilter(this.state.searchString);
+            this.updateFilter(this.state.searchString, this.props);
         });
     }
 
-    public updateFilter(filter: string) {
-
-        if (this.props.updateSearchString !== undefined) {
-            this.props.updateSearchString(filter);
-        }
+    public updateFilter(filter: string, props: ComboDropdownProps) {
 
         let filtered : any[] = [];
 
@@ -90,15 +97,15 @@ export class ComboDropdown<T> extends React.Component<ComboDropdownProps, ComboD
                 this.field('key', { boost: 10 });
             });
 
-            this.props.options.forEach((opt, i) => idx.add(Object.assign({}, opt, { id: i})));
+            props.options.forEach((opt, i) => idx.add(Object.assign({}, opt, { id: i})));
 
             const result = idx.search(filter);
 
             for (let i = 0; i < result.length; i += 1) {
-                filtered.push(this.props.options[result[i].ref]);
+                filtered.push(props.options[result[i].ref]);
             }
         } else {
-            filtered = this.props.options;
+            filtered = props.options;
         }
 
         this.setState({
@@ -112,50 +119,106 @@ export class ComboDropdown<T> extends React.Component<ComboDropdownProps, ComboD
 
     public selectOption(option: ComboDropdownOption) {
         this.props.setValue(option);
+        this.ignoreBlur = false;
+        this.setState({ showingDropDown: false, searchString: option.key });
+        this.props.updateSearchString(option.key);
     }
 
-    public show(e : React.EventHandler<React.FormEvent>) {
-        this.setState({ showingDropDown: true });
-        globalClick.add(this.state.boundHideFunc);
-        e.stopPropagation();
-    }
+    public handleInputBlur() {
+        if (!this.ignoreBlur) {
 
-    public hide() {
-        this.setState({ showingDropDown: false });
-        globalClick.remove(this.state.boundHideFunc);
-        if (findIndex(this.props.options, (option) => option.key === this.state.searchString) === -1) {
-            this.setState({ searchString: this.props.value.key }, () => {
-                this.updateFilter(this.props.value.key);
+            if (this.state.searchString.length === 0) {
+                 this.setState({ searchString: '' });
+            } else {
+                 if (findIndex(this.props.options, (option) => option.key === this.state.searchString) === -1) {
+                    this.setState({ searchString: this.props.value.key }, () => {
+                        this.updateFilter(this.props.value.key, this.props);
+                    });
+                }
+            }
+
+            this.setState({
+                showingDropDown: false,
             });
         }
     }
 
-    public render() {
+    public handleInputFocus () {
+        if (this.ignoreBlur) {
+        this.ignoreBlur = true;
+        return;
+        }
+        // We don't want `selectItemFromMouse` to trigger when
+        // the user clicks into the input to focus it, so set this
+        // flag to cancel out the logic in `handleInputClick`.
+        // The event order is:  MouseDown -> Focus -> MouseUp -> Click
+        this.ignoreClick = true;
+        this.setState({ showingDropDown: true });
+  }
+
+  public handleInputClick () {
+    // Input will not be focused if it's disabled
+    if (this.isInputFocused() && this.state.showingDropDown === false) {
+        this.setState({ showingDropDown: true })
+    } else {
+         if (this.state.highlightedIndex !== null && !this.ignoreClick) {
+             this.selectItemFromMouse(this.state.filteredOptions[this.state.highlightedIndex]);
+         } else {
+             this.ignoreClick = false;
+         }
+    }
+  }
+
+  public selectItemFromMouse (item) {
+    this.setState({
+      showingDropDown: false,
+      highlightedIndex: null
+    }, () => {
+      this.props.setValue(item);
+      this.refs.comboDropDownInputBox.focus();
+    })
+  }
+
+   public isInputFocused () {
+    const el = this.refs.comboDropDownInputBox;
+    return el.ownerDocument && (el === el.ownerDocument.activeElement);
+  }
+
+  public render() {
+
        return (
-            <div className={this.props.compact ? 'compact combo-dropdown' : 'combo-dropdown'}>
+        <div className={this.props.compact ? 'compact combo-dropdown' : 'combo-dropdown'}>
                 <div>
                     <input type='text'
                         ref='comboDropDownInputBox'
                         className='search-input'
                         value={this.state.searchString}
                         placeholder='Click here and start typing..'
-                        onClick={this.show.bind(this)}
+                        onBlur={this.handleInputBlur.bind(this)}
+                        onFocus={this.handleInputFocus.bind(this)}
                         onChange={this.changeSearchString.bind(this)}
+                        onClick={this.handleInputClick.bind(this)}
                     />
                 </div>
                 {this.state.showingDropDown ? (
                     <div className='dropdown'>
                         <ul>
                             {this.state.searchString.length === 0 && this.props.allowNew ? (
-                                <li className='add' onClick={() => this.addNewAction('')}>
+                                <li className='add'
+                                onMouseDown={() => this.ignoreBlur = true}
+                                 onClick={() => this.addNewAction('')}>
                                     <i className='fa fa-plus' aria-hidden='true'></i>
                                     Add new {this.props.typeName}</li>
                             ) : null }
                             {this.state.filteredOptions.map((opt) => (
-                                <li key={`opt-${opt.key}`} onClick={() => this.selectOption(opt)}>{opt.key}</li>
+                                <li key={`opt-${opt.key}`} 
+                                onMouseDown={() => this.ignoreBlur = true}
+                                onClick={() => this.selectOption(opt)}>{opt.key}</li>
                             ))}
                             {this.state.searchString.length > 0 && this.props.allowNew ? (
-                                <li className='add' onClick={() => this.addNewAction(this.state.searchString)}>
+                                <li className='add'
+                                onMouseDown={() => this.ignoreBlur = true}
+                                onClick={() => this.addNewAction(this.state.searchString)}>
                                     <i className='fa fa-plus' aria-hidden='true'></i>
                                     Add new {this.props.typeName}: '{this.state.searchString}'</li>
                             ) : null }
@@ -166,3 +229,4 @@ export class ComboDropdown<T> extends React.Component<ComboDropdownProps, ComboD
         );
     }
 }
+

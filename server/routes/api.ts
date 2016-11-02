@@ -61,6 +61,15 @@ export const api : (router: KoaRouter, s: ServerApiService) => KoaRouter
         [AppUrls.source_element]: SourceElementPersistable
     };
 
+    router.use(function* (next: Koa.Context) {
+        if (this.req.method === 'GET' || this.isAuthenticated()) {
+            yield next;
+        } else {
+            this.status = 403;
+            this.body = 'You must be authorised to modify this resource';
+        }
+    });
+
     router.use(function* (next: Koa.Context){
         try {
             yield next;
@@ -101,6 +110,8 @@ export const api : (router: KoaRouter, s: ServerApiService) => KoaRouter
     });
 
     router.post('/api/v1/:route', function* (next : Koa.Context) {
+        const creationData = this.request.body;
+        creationData.creator = this.req.user.uid;
         yield serverApiContext
             .postItem<Persistable>(typeMap[this.params.route],this.params.route, this.request.body)
             .then((data) => this.body = data);

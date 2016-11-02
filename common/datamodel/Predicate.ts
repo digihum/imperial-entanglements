@@ -14,6 +14,7 @@ export class Predicate implements Serializable {
     public description: string | null;
     public sameAs: string | null;
     public readonly: boolean | null;
+    public creator: number;
 
     //calculated
     public rangeIsReference: boolean;
@@ -32,6 +33,7 @@ export class Predicate implements Serializable {
 
         this.readonly = data.readonly;
         this.rangeIsReference = data.rangeIsReference;
+        this.creator = data.creator;
         return this;
     }
 }

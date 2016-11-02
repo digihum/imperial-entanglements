@@ -12,12 +12,14 @@ export class Entity implements Serializable {
     public parent: number | null;
     public readonly readonly: boolean;
     public label: string;
+    public creator: number;
 
     public deserialize(data: any) : Entity {
        this.uid = data.uid;
        this.entityType = data.entityType;
        this.label = data.label;
        this.parent = data.parent;
+       this.creator = data.creator;
        return this;
     }
 

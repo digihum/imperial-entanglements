@@ -17,5 +17,5 @@ export const Admin = (props) => (
                 <li><a href='/admin/snapshot'>Download database snapshot</a></li>
             </ul>
         </section>
-    </div>
+     </div>
 );

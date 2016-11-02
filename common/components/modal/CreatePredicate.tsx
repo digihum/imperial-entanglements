@@ -11,6 +11,7 @@ import { PredicateDescription } from '../fields/PredicateDescription';
 import { Predicate, EntityType } from '../../../common/datamodel/datamodel';
 import { literalTypes } from '../../literalTypes';
 import { ApiService, AppUrls } from '../../ApiService';
+import { DataStore } from '../../DataStore';
 import { ComboDropdownOption } from '../ComboDropdown';
 
 
@@ -20,6 +21,7 @@ interface CreatePredicateProps {
     complete: (newPredicate: Predicate) => void;
     api: ApiService;
     initialDomain?: number;
+    dataStore: DataStore;
 }
 
 interface CreatePredicateState {
@@ -67,22 +69,20 @@ export class CreatePredicate extends React.Component<CreatePredicateProps, Creat
             });
         }
 
-        this.props.api.getCollection(EntityType, AppUrls.entity_type, {})
-        .then((results) => {
-            const entityTypeMap : ComboDropdownOption[] = results.map((entityType) => {
-                if (entityType.uid === null) {
-                    throw new Error('Unexpected null uid');
-                }
-                return { key: entityType.name, value: entityType.uid.toString() }
-            });
-
-            if (this.props.initialDomain === undefined) {
-                this.setState({ domainOptions: entityTypeMap });
+        const results = this.props.dataStore.all.entity_type.value;
+        const entityTypeMap : ComboDropdownOption[] = results.map((entityType) => {
+            if (entityType.uid === null) {
+                throw new Error('Unexpected null uid');
             }
+            return { key: entityType.name, value: entityType.uid.toString() }
+        });
 
-            this.setState({
-                rangeOptions:  literalTypes.map((lit) => ({ key: lit.name, value: lit.name, meta: 'literal'})).concat(entityTypeMap)
-            });
+        if (this.props.initialDomain === undefined) {
+            this.setState({ domainOptions: entityTypeMap });
+        }
+
+        this.setState({
+            rangeOptions:  literalTypes.map((lit) => ({ key: lit.name, value: lit.name, meta: 'literal'})).concat(entityTypeMap)
         });
     }
 

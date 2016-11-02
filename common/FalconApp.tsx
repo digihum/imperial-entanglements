@@ -21,9 +21,6 @@ import { Admin } from './views/Admin';
 import { Link } from 'react-router';
 import { ObjectEditor } from './views/ObjectEditor';
 
-import { globalClick } from './Signaller';
-
-
 interface FalconAppProps {
     router: any;
     api: ApiService;
@@ -40,13 +37,9 @@ export class FalconApp extends React.Component<FalconAppProps, FalconAppState> {
         super();
     }
 
-    public onClickSignal() {
-        globalClick.dispatch();
-    }
-
     public render() {
         return (
-        <div id='main' className="flex-fill" onClick={this.onClickSignal.bind(this)}>
+        <div id='main' className="flex-fill">
             <this.props.router {...this.props.routerSettings} className="flex-fill" basename='/admin'>
                 <div className="flex-fill" style={{ flexDirection: 'column' }}>
                     <div className='header'>

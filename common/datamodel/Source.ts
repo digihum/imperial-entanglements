@@ -14,6 +14,7 @@ export class Source implements Serializable {
     public metaData: SourceElement[];
     public sameAs: string;
     public parent: number | null;
+    public creator: number;
 
     public serialize() : any {
         return this;
@@ -25,6 +26,7 @@ export class Source implements Serializable {
         this.metaData = data.metaData;
         this.sameAs = data.sameAs;
         this.parent = data.parent;
+        this.creator = data.creator;
         return this;
     }
 
