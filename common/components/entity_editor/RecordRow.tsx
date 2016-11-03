@@ -87,12 +87,12 @@ export const RecordRow = (props: RecordRowProps) => {
 
     if (props.edit) {
         return (
-        <div className='record-row'>
-            <div className='record-row-item uid'>{props.value.uid}</div>
-            <div className='record-row-item'>
+        <tr className='record-row'>
+            <td className='record-row-item uid'>{props.value.uid}</td>
+            <td className='record-row-item'>
                 {recordEditor(props)}
-            </div>
-            <div className='record-row-item'>
+            </td>
+            <td className='record-row-item'>
                 <ComboDropdown
                     options={props.sources.map((source) => ({ key: source.name , value: source.uid}))}
                     typeName='source'
@@ -100,26 +100,26 @@ export const RecordRow = (props: RecordRowProps) => {
                     setValue={(combo) => props.onChange(Object.assign(props.value, { source: combo.value }))}
                     createNewValue={createNewSource}
                 />
-            </div>
-            <div className='record-row-item score'>
+            </td>
+            <td className='record-row-item score'>
                 <ScorePicker value={props.value.score} readOnly={false}
                     onChange={(score) => props.onChange(Object.assign(props.value, { score }))} />
-            </div>
-            <div className='record-row-item period'>
+            </td>
+            <td className='record-row-item period'>
                 <DateFieldEditor
                     value={props.value.period || ''}
                     onChange={(period) => props.onChange(Object.assign(props.value, { period }))} />
-            </div>
-            <div className='record-row-item buttons'>
+            </td>
+            <td className='record-row-item buttons'>
                 <button><i className='fa fa-check' onClick={props.acceptChanges} aria-hidden='true'></i></button>
                 <button><i className='fa fa-times' aria-hidden='true' onClick={props.cancelChanges}></i></button>
-            </div>
-        </div>);
+            </td>
+        </tr>);
     } else {
         return (
-        <div className='record-row'>
-            <div className='record-row-item uid'>#{props.value.uid}</div>
-            <div className='record-row-item'>
+        <tr className='record-row'>
+            <td className='record-row-item uid'>#{props.value.uid}</td>
+            <td className='record-row-item'>
                  {(() => {
                      if (props.value.valueType === 'entity') {
                          const entity = props.entities.find((entity) => entity.uid == props.value.value);
@@ -135,26 +135,26 @@ export const RecordRow = (props: RecordRowProps) => {
                      }
                     return props.value.value;
                 })()}
-            </div>
-            <div className='record-row-item'>{dropDownValue.key}
+            </td>
+            <td className='record-row-item'>{dropDownValue.key}
                 {dropDownValue.key.length > 0 ? (
                     <AddTabButton title={dropDownValue.key}
                         subtitle={`Source ${dropDownValue.value}`}
                         url={`/${AppUrls.source}/${dropDownValue.value}`}
                         tabType='source' />
                 ) : null}
-			</div>
-            <div className='record-row-item score'>
+			</td>
+            <td className='record-row-item score'>
                  <ScorePicker value={props.value.score} readOnly={true} />
-            </div>
-            <div className='record-row-item period'>
+            </td>
+            <td className='record-row-item period'>
                  {props.value.period}
-            </div>
-            <div className='record-row-item buttons'>
+            </td>
+            <td className='record-row-item buttons'>
                 <button><i className='fa fa-pencil-square-o' onClick={props.setEdit} aria-hidden='true'></i></button>
                 <button><i className='fa fa-trash' aria-hidden='true' onClick={props.onDelete}></i></button>
-            </div>
-        </div>
+            </td>
+        </tr>
         );
     }
 }; 

@@ -1,5 +1,5 @@
 .record-row {
-    display: flex;
+    //display: flex;
 
     &:hover {
         background-color: #eee;
@@ -10,17 +10,17 @@
     }
 
     .record-row-item {
-        flex: 1;
+        //flex: 1;
         padding-bottom: 0.4em;
         &.uid {
-            flex: 0 0 2em;
+            //flex: 0 0 2em;
             color: #b5b5b5;
         }
         &.buttons {
-            flex: 0 0 4em;
+            //flex: 0 0 4em;
         }
         &.score {
-            flex: 0 0 6em;
+            //flex: 0 0 6em;
         }
     }
 }

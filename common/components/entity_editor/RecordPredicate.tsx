@@ -83,28 +83,34 @@ export class RecordPredicate extends React.Component<RecordPredicateProps, Recor
                 uid={this.props.predicate.uid}
                 tabType='predicate' />
             </h5>
-            <div className='record-row title'>
-                <div className='record-row-item uid'>ID</div>
-                <div className='record-row-item'>Value</div>
-                <div className='record-row-item'>Source</div>
-                <div className='record-row-item score'>Score</div>
-                <div className='record-row-item score'>Period</div>
-                <div className='record-row-item buttons'>Actions</div>
-            </div>
-            {this.props.records.map((record) => (
-                <RecordEditableFieldComponent
-                    key={`row-${record.uid}`}
-                    value={record}
-                    onChange={this.recordChanged.bind(this)}
-                    onDelete={this.deleteRecord.bind(this)}
-                    component={RecordRow}
-                    additionalProps={{
-                        dimension: 'predicates',
-                        sources: this.props.sources,
-                        entities: this.state.potentialValues
-                    }}
-                />
-            ))}
+            <table className='record-editing-table'>
+                <thead>
+                    <tr className='record-row title'>
+                        <th className='record-row-item uid'>ID</th>
+                        <th className='record-row-item'>Value</th>
+                        <th className='record-row-item'>Source</th>
+                        <th className='record-row-item score'>Score</th>
+                        <th className='record-row-item score'>Period</th>
+                        <th className='record-row-item buttons'>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {this.props.records.map((record) => (
+                        <RecordEditableFieldComponent
+                            key={`row-${record.uid}`}
+                            value={record}
+                            onChange={this.recordChanged.bind(this)}
+                            onDelete={this.deleteRecord.bind(this)}
+                            component={RecordRow}
+                            additionalProps={{
+                                dimension: 'predicates',
+                                sources: this.props.sources,
+                                entities: this.state.potentialValues
+                            }}
+                        />
+                    ))}
+                </tbody>
+            </table>
         </section>
     );
 	}
