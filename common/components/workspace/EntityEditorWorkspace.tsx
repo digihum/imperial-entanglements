@@ -9,14 +9,14 @@ import * as React from 'react';
 import { RecordsEditor } from '../entity_editor/RecordsEditor';
 import { ApiService, AppUrls } from '../../ApiService';
 
-import { Entity } from '../../../common/datamodel/datamodel';
+import { Entity, Record } from '../../../common/datamodel/datamodel';
 
 import { ComboDropdown, ComboDropdownOption } from '../ComboDropdown';
 import { ModalDefinition } from '../modal/ModalDefinition';
 
 import { Dictionary, groupBy } from 'lodash';
 
-import { showModal } from '../../Signaller';
+import { showModal, createTab } from '../../Signaller';
 import { AddTabButton } from '../AddTabButton';
 
 import { findParentTree } from '../../helper/findParentTree';
@@ -26,6 +26,7 @@ import { EditableHeader, EditableFieldComponent } from '../fields/EditableHeader
 import { EditableComboDropdown } from '../fields/EditableComboDropdown';
 
 import { DataStore } from '../../DataStore';
+
 
 class StringEditableFieldComponent extends EditableFieldComponent<string> {}
 class ComboEditableFieldComponent extends EditableFieldComponent<ComboDropdownOption> {}
@@ -75,6 +76,35 @@ export class EntityEditorWorkspace extends React.Component<EntityEditorProps, En
         this.props.api.delItem(Entity, AppUrls.entity, this.props.id)
         .then(() => {
             this.context.router.transitionTo('/edit/notfound');
+        })
+         .catch((e) => {
+            e.data.then((data) => {
+
+                const conflictResolutionModal : ModalDefinition = {
+                    name: 'conflict_resolution',
+                    cancel: () => {},
+                    complete: (result) => {
+                        if (result === 'addToWorkspace') {
+                            data.data.forEach((datum) => {
+                                 createTab.dispatch('entity', datum.entity);
+                            });
+                        }
+
+                        if (result === 'deleteAll') {
+                            Promise.all(data.data.map((datum) => this.props.api.delItem(Record, AppUrls.record, datum.uid)))
+                            .then(() => {
+                                this.del();
+                            });
+                        }
+                    },
+                    settings: {
+                        conflictingItems: data.data,
+                        message: 'Deleting Entity'
+                    }
+                };
+
+                showModal.dispatch(conflictResolutionModal);
+            });
         });
     }
 

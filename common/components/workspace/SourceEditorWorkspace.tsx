@@ -129,7 +129,7 @@ export class SourceEditorWorkspace extends React.Component<SourceEditorProps, So
         }
     }
 
-    public deleteSource() {
+    public del() {
         this.props.api.delItem(Source, AppUrls.source, this.props.id)
         .then(() => this.context.router.transitionTo('/edit/notfound'))
         .catch((e) => {
@@ -148,7 +148,7 @@ export class SourceEditorWorkspace extends React.Component<SourceEditorProps, So
                         if (result === 'deleteAll') {
                             Promise.all(data.data.map((datum) => this.props.api.delItem(Record, AppUrls.record, datum.uid)))
                             .then(() => {
-                                this.deleteSource();
+                                this.del();
                             });
                         }
                     },
@@ -194,7 +194,7 @@ export class SourceEditorWorkspace extends React.Component<SourceEditorProps, So
                         <i
                             className='fa fa-trash delete button'
                             aria-hidden='true'
-                            onClick={() => this.deleteSource()}
+                            onClick={() => this.del()}
                         ></i>
                         <i
                             className='fa fa-clone button'
@@ -221,6 +221,14 @@ export class SourceEditorWorkspace extends React.Component<SourceEditorProps, So
                             typeName: 'Source'
                         }}} />
                         {source.parent !== null ? (<AddTabButton tabType='source' uid={source.parent} />) : null}
+
+                    <div>
+                        <StringEditableFieldComponent
+                            value={source.sameAs}
+                            component={SameAsEditor}
+                            onChange={(value) => this.updateSource('sameAs', value)} />
+                    </div>
+
                     {this.state.dublinCore.elements.map((element) => (
                         <div key={`${element.name}-edit`}>
                             <h5 className='section-header'>{element.name} <small><a href={element.url}>{element.uri}</a></small></h5>
@@ -231,13 +239,6 @@ export class SourceEditorWorkspace extends React.Component<SourceEditorProps, So
                                 onChange={(value) => this.updateSourceElement(element, value)}  />
                         </div>
                     ))}
-
-                    <div>
-                        <StringEditableFieldComponent
-                            value={source.sameAs}
-                            component={SameAsEditor}
-                            onChange={(value) => this.updateSource('sameAs', value)} />
-                    </div>
                 </section>
             </div>
         );
