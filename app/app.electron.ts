@@ -25,7 +25,7 @@ if (databaseFile !== undefined) {
     connection: {
       filename: databaseFile[0]
     },
-    debug: true
+    //debug: true
   });
 
   document.addEventListener('DOMContentLoaded', (event) => {
