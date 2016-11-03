@@ -77,11 +77,9 @@ export class Workspace extends React.Component<WorkspaceProps, WorkspaceState> {
 
         return (
             <div className='flex-fill workspace-outer-wrapper'>
-                <span className={'header-colour ' + this.props.workspace}></span>
                 <div className='workspace-inner-wrapper flex-fill'>
                     {React.createElement(workspaceComponent, {api: this.props.api, dataStore: this.props.dataStore, id:this.props.id})}
                 </div>
-                <span className={'header-colour ' + this.props.workspace}></span>
             </div>
         );
 
