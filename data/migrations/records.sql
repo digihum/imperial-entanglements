@@ -21,10 +21,7 @@ CREATE TABLE records (
         NOT NULL
         DEFAULT 3,
 
-    period INTEGER
-        REFERENCES entities(uid)
-        ON UPDATE CASCADE
-        ON DELETE CASCADE,
+    period varchar(255),
 
     value_type varchar(7) 
         NOT NULL

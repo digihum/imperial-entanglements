@@ -53,7 +53,7 @@ export class CreateEntity extends React.Component<CreateEntityProps, CreateEntit
     public render() {
         return (
         <Overlay>
-            <input type='text' value={this.state.label}
+            <input type='text' value={this.state.label} name='new-entity-name'
                 onChange={(e) => this.setState({ label: e.target.value })} />
             <ComboDropdown
                 options={this.state.allEntityTypes.map((t) => ({ key: t.name, value: t.uid.toString() }))}
@@ -63,8 +63,8 @@ export class CreateEntity extends React.Component<CreateEntityProps, CreateEntit
                 createNewValue={noop}
                 allowNew={false}
             />
-            <button onClick={() => this.props.cancel()}>Cancel</button>
-            <button onClick={this.CreateEntity.bind(this)}>Create Entity</button>
+            <button name='cancel-modal' onClick={() => this.props.cancel()}>Cancel</button>
+            <button name='create-entity' onClick={this.CreateEntity.bind(this)}>Create Entity</button>
         </Overlay>
         );
     }

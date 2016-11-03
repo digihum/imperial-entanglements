@@ -88,6 +88,7 @@ export class RecordPredicate extends React.Component<RecordPredicateProps, Recor
                 <div className='record-row-item'>Value</div>
                 <div className='record-row-item'>Source</div>
                 <div className='record-row-item score'>Score</div>
+                <div className='record-row-item score'>Period</div>
                 <div className='record-row-item buttons'>Actions</div>
             </div>
             {this.props.records.map((record) => (

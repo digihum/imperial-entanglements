@@ -105,6 +105,11 @@ export const RecordRow = (props: RecordRowProps) => {
                 <ScorePicker value={props.value.score} readOnly={false}
                     onChange={(score) => props.onChange(Object.assign(props.value, { score }))} />
             </div>
+            <div className='record-row-item period'>
+                <DateFieldEditor
+                    value={props.value.period || ''}
+                    onChange={(period) => props.onChange(Object.assign(props.value, { period }))} />
+            </div>
             <div className='record-row-item buttons'>
                 <button><i className='fa fa-check' onClick={props.acceptChanges} aria-hidden='true'></i></button>
                 <button><i className='fa fa-times' aria-hidden='true' onClick={props.cancelChanges}></i></button>
@@ -141,6 +146,9 @@ export const RecordRow = (props: RecordRowProps) => {
 			</div>
             <div className='record-row-item score'>
                  <ScorePicker value={props.value.score} readOnly={true} />
+            </div>
+            <div className='record-row-item period'>
+                 {props.value.period}
             </div>
             <div className='record-row-item buttons'>
                 <button><i className='fa fa-pencil-square-o' onClick={props.setEdit} aria-hidden='true'></i></button>
