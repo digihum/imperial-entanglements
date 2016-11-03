@@ -6,9 +6,13 @@
 
 import { Database } from '../core/Database';
 
-import { Source } from '../../common/datamodel/Source';
+import { Source } from '../../common/datamodel/datamodel';
 import { Persistable } from '../core/Persistable';
 import { GenericController } from './GenericController';
+
+import { OperationNotPermittedException } from '../core/Exceptions';
+
+import { RecordPersistable } from './RecordController';
 
 import { omit, map } from 'lodash';
 
@@ -21,8 +25,15 @@ export class SourcePersistable extends Source implements Persistable {
     }
 
     public toSchema() {
-        return Object.assign({}, omit(this.serialize(), 'metaData', 'sameAs'), {
-            'same_as': this.sameAs
+        return Object.assign({}, omit(this.serialize(),
+            'metaData',
+            'sameAs',
+            'creationTimestamp',
+            'lastmodifiedTimestamp'
+        ), {
+            same_as: this.sameAs,
+            creation_timestamp: this.creationTimestamp,
+            lastmodified_timeStamp: this.lastmodifiedTimestamp
         });
     }
 
@@ -107,6 +118,28 @@ export class SourceController extends GenericController<SourcePersistable> {
                 });
 
             }));
+        });
+    }
+
+    //TODO should find every child source, not just the direct children
+    public deleteItem(obj: { new(): SourcePersistable; }, uid: number) : Promise<string> {
+        // check if this entity is the parent of another entity or if it has any relationships
+        // pointing towards it.
+        return Promise.all([
+            this.db.loadCollection('records', { source: uid}),
+            this.db.loadCollection('sources', { parent: uid})
+        ]).then(([records, sources]) => {
+            if (records.length === 0) {
+                return this.db.deleteItem(this.tableName, uid);
+            } else {
+                throw new OperationNotPermittedException({
+                    message: 'The operation could not be completed as the source is used by other records',
+                    data: {
+                        record: records.map((record) => new RecordPersistable().fromSchema(record)),
+                        sources: sources.map((source) => new SourcePersistable().fromSchema(source))
+                    }
+                });
+            }
         });
     }
 }

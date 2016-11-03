@@ -10,6 +10,8 @@ import { SourceElement } from '../../common/datamodel/SourceElement';
 import { Persistable } from '../core/Persistable';
 import { GenericController } from './GenericController';
 
+import { omit } from 'lodash';
+
 export class SourceElementPersistable extends SourceElement implements Persistable {
 
     public static readonly tableName: string = 'source_elements';
@@ -19,7 +21,13 @@ export class SourceElementPersistable extends SourceElement implements Persistab
     }
 
     public toSchema() {
-        return this.serialize();
+        return Object.assign(omit(this.serialize(),
+            'creationTimestamp',
+            'lastmodifiedTimestamp'
+        ), {
+            creation_timestamp: this.creationTimestamp,
+            lastmodified_timeStamp: this.lastmodifiedTimestamp
+        });
     }
 
     public fromSchema(data: any) : SourceElementPersistable {

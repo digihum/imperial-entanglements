@@ -23,7 +23,11 @@ export class RecordPersistable extends Record implements Persistable {
     }
 
     public toSchema() {
-        const schemaOutput = omit(this.serialize(), 'value', 'valueType');
+        const schemaOutput = omit(this.serialize(),
+            'value',
+            'valueType',
+            'creationTimestamp',
+            'lastmodifiedTimestamp');
 
         schemaOutput.value_type = this.valueType;
 
@@ -31,7 +35,10 @@ export class RecordPersistable extends Record implements Persistable {
             schemaOutput['value_' + this.valueType] = this.value;
         }
 
-        return schemaOutput;
+        return Object.assign({}, schemaOutput, {
+            creation_timestamp: this.creationTimestamp,
+            lastmodified_timeStamp: this.lastmodifiedTimestamp
+        });
     }
 
     public fromSchema(data: any) : RecordPersistable {

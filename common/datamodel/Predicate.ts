@@ -16,6 +16,10 @@ export class Predicate implements Serializable {
     public readonly: boolean | null;
     public creator: number;
 
+    public creationTimestamp: string;
+    public lastmodifiedTimestamp: string;
+
+
     //calculated
     public rangeIsReference: boolean;
 
@@ -34,6 +38,10 @@ export class Predicate implements Serializable {
         this.readonly = data.readonly;
         this.rangeIsReference = data.rangeIsReference;
         this.creator = data.creator;
+
+        this.creationTimestamp = data.creationTimestamp;
+        this.lastmodifiedTimestamp = data.lastmodifiedTimestamp;
+
         return this;
     }
 }

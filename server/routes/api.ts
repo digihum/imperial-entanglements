@@ -90,7 +90,11 @@ export const api : (router: KoaRouter, s: ServerApiService) => KoaRouter
                     this.status = 500;
             }
             this.type = 'application/json';
-            this.body = err.data;
+            if ( err.data !== undefined) {
+                this.body = err.data;
+            } else {
+                this.body = err.message;
+            }
         }
     });
 
@@ -115,8 +119,8 @@ export const api : (router: KoaRouter, s: ServerApiService) => KoaRouter
         yield serverApiContext
             .postItem<Persistable>(typeMap[this.params.route],this.params.route, Object.assign(this.request.body,{
                 creator: this.req.user.uid,
-                creation_timestamp: moment().toISOString(),
-                lastmodified_timestamp: moment().toISOString()
+                creationTimestamp: moment().toISOString(),
+                lastmodifiedTimestamp: moment().toISOString()
             }))
             .then((data) => this.body = data);
     });
@@ -124,7 +128,7 @@ export const api : (router: KoaRouter, s: ServerApiService) => KoaRouter
     router.put('/api/v1/:route/:id', function* (next : Koa.Context) {
         yield serverApiContext
             .putItem<Persistable>(typeMap[this.params.route], this.params.route, this.params.id, Object.assign(this.request.body,{
-                lastmodified_timestamp: moment().toISOString()
+                lastmodifiedTimestamp: moment().toISOString()
             }))
             .then((data) => this.body = data);
     });
@@ -132,7 +136,7 @@ export const api : (router: KoaRouter, s: ServerApiService) => KoaRouter
     router.patch('/api/v1/:route/:id', function* (next : Koa.Context) {
         yield serverApiContext
             .patchItem<Persistable>(typeMap[this.params.route], this.params.route, this.params.id, Object.assign(this.request.body,{
-                lastmodified_timestamp: moment().toISOString()
+                lastmodifiedTimestamp: moment().toISOString()
             }))
             .then((data) => this.body = data);
     });

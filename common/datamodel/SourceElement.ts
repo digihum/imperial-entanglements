@@ -13,12 +13,20 @@ export class SourceElement implements Serializable {
     public value: string;
     public creator: number;
 
+    public creationTimestamp: string;
+    public lastmodifiedTimestamp: string;
+
+
     public deserialize(data: any) : SourceElement {
         this.uid = data.uid;
         this.source = data.source;
         this.element = data.element;
         this.value = data.value;
         this.creator = data.creator;
+
+        this.creationTimestamp = data.creationTimestamp;
+        this.lastmodifiedTimestamp = data.lastmodifiedTimestamp;
+
         return this;
     }
 

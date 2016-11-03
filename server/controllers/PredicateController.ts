@@ -25,9 +25,17 @@ export class PredicatePersistable extends Predicate implements Persistable {
     }
 
     public toSchema() {
-        const out : { [s: string] : any } = Object.assign(omit(this.serialize(), 'range', 'rangeIsReference', 'sameAs'), {
-            'same_as': this.sameAs,
-            'range_type': this.rangeIsReference ? 'entity' : this.range
+        const out : { [s: string] : any } = Object.assign(omit(this.serialize(),
+            'range',
+            'rangeIsReference',
+            'sameAs',
+            'creationTimestamp',
+            'lastmodifiedTimestamp'
+        ), {
+            same_as: this.sameAs,
+            range_type: this.rangeIsReference ? 'entity' : this.range,
+            creation_timestamp: this.creationTimestamp,
+            lastmodified_timeStamp: this.lastmodifiedTimestamp
         });
 
         if (this.rangeIsReference) {

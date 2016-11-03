@@ -14,12 +14,19 @@ export class Entity implements Serializable {
     public label: string;
     public creator: number;
 
+    public creationTimestamp: string;
+    public lastmodifiedTimestamp: string;
+
     public deserialize(data: any) : Entity {
        this.uid = data.uid;
        this.entityType = data.entityType;
        this.label = data.label;
        this.parent = data.parent;
        this.creator = data.creator;
+
+       this.creationTimestamp = data.creationTimestamp;
+       this.lastmodifiedTimestamp = data.lastmodifiedTimestamp;
+
        return this;
     }
 

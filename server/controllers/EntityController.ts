@@ -23,8 +23,13 @@ export class EntityPersistable extends Entity implements Persistable {
     }
 
     public toSchema() {
-        return Object.assign(omit(this.serialize(), 'entityType'), {
-            type: this.entityType
+        return Object.assign(omit(this.serialize(),
+            'entityType',
+            'creationTimestamp',
+            'lastmodifiedTimestamp'), {
+            type: this.entityType,
+            creation_timestamp: this.creationTimestamp,
+            lastmodified_timeStamp: this.lastmodifiedTimestamp
         });
     }
 

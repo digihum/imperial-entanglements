@@ -16,6 +16,9 @@ export class Record implements Serializable {
     public period: string;
     public creator: number;
 
+    public creationTimestamp: string;
+    public lastmodifiedTimestamp: string;
+
     //calculated
     public valueType: string | null = null;
 
@@ -29,6 +32,9 @@ export class Record implements Serializable {
         this.value = data.value;
         this.creator = data.creator;
         this.period = data.period;
+
+        this.creationTimestamp = data.creationTimestamp;
+        this.lastmodifiedTimestamp = data.lastmodifiedTimestamp;
         return this;
     }
 
