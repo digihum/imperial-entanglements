@@ -10,7 +10,7 @@ import { SameAsEditor } from '../fields/SameAsEditor';
 import { Loading } from '../Loading';
 import { ApiService, AppUrls } from '../../ApiService';
 
-import { Source, ElementSet, Element, SourceElement } from '../../../common/datamodel/datamodel';
+import { Source, ElementSet, Element, SourceElement, Record } from '../../../common/datamodel/datamodel';
 
 import { EditableHeader, EditableFieldComponent } from '../fields/EditableHeader';
 import { EditableParagraph } from '../fields/EditableParagraph';
@@ -19,8 +19,12 @@ import { ComboDropdownOption } from '../ComboDropdown';
 
 import { keyBy, Dictionary } from 'lodash';
 
+import { showModal, createTab } from '../../Signaller';
+
 import { DataStore } from '../../DataStore';
 import { AddTabButton } from '../AddTabButton';
+
+import { ModalDefinition } from '../modal/ModalDefinition';
 
 class StringEditableFieldComponent extends EditableFieldComponent<string> {}
 class ComboEditableFieldComponent extends EditableFieldComponent<ComboDropdownOption> {}
@@ -127,7 +131,36 @@ export class SourceEditorWorkspace extends React.Component<SourceEditorProps, So
 
     public deleteSource() {
         this.props.api.delItem(Source, AppUrls.source, this.props.id)
-        .then(() => this.context.router.transitionTo('/edit/notfound'));
+        .then(() => this.context.router.transitionTo('/edit/notfound'))
+        .catch((e) => {
+            e.data.then((data) => {
+
+                const conflictResolutionModal : ModalDefinition = {
+                    name: 'conflict_resolution',
+                    cancel: () => {},
+                    complete: (result) => {
+                        if (result === 'addToWorkspace') {
+                            data.data.forEach((datum) => {
+                                 createTab.dispatch('entity', datum.entity);
+                            });
+                        }
+
+                        if (result === 'deleteAll') {
+                            Promise.all(data.data.map((datum) => this.props.api.delItem(Record, AppUrls.record, datum.uid)))
+                            .then(() => {
+                                this.deleteSource();
+                            });
+                        }
+                    },
+                    settings: {
+                        conflictingItems: data.data,
+                        message: 'Deleting Source'
+                    }
+                };
+
+                showModal.dispatch(conflictResolutionModal);
+            });
+        });
     }
 
     public render() {
@@ -161,10 +194,15 @@ export class SourceEditorWorkspace extends React.Component<SourceEditorProps, So
                         <i
                             className='fa fa-trash delete button'
                             aria-hidden='true'
-                            onClick={() => console.log('del')}
+                            onClick={() => this.deleteSource()}
                         ></i>
                         <i
                             className='fa fa-clone button'
+                            aria-hidden='true'
+                            onClick={() => console.log('copy')}
+                        ></i>
+                        <i
+                            className='fa fa-arrow-circle-o-down'
                             aria-hidden='true'
                             onClick={() => console.log('copy')}
                         ></i>
