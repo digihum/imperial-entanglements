@@ -10,7 +10,7 @@ import { Source } from '../../common/datamodel/Source';
 import { Persistable } from '../core/Persistable';
 import { GenericController } from './GenericController';
 
-import { omit } from 'lodash';
+import { omit, map } from 'lodash';
 
 export class SourcePersistable extends Source implements Persistable {
 
@@ -43,13 +43,24 @@ export class SourceController extends GenericController<SourcePersistable> {
     // metadata associated with the retrieved source
 
     private getMetadata(fields : string[], sourceId: number) : Promise<any> {
-        return this.db.query().select(fields)
-            .from('source_elements')
-            .innerJoin('elements', function() { this.on('source_elements.element', '=', 'elements.uid'); })
-            .innerJoin('element_sets', function() { this.on('element_sets.uid', '=', 'elements.element_set'); })
-            .where({
-                'source_elements.source': sourceId
-            });
+
+        return this.db.query().raw(`
+            WITH RECURSIVE parent_of(uid, parent) AS  (SELECT uid, parent FROM sources),
+                ancestor(uid) AS (
+                SELECT parent FROM parent_of WHERE uid=?
+                UNION ALL
+                SELECT parent FROM parent_of JOIN ancestor USING(uid) )
+            
+            SELECT *
+                FROM ancestor;
+        `, sourceId).then((result) => {
+            result[result.length - 1].uid = sourceId;
+             return this.db.query().select(fields)
+                .from('source_elements')
+                .innerJoin('elements', function() { this.on('source_elements.element', '=', 'elements.uid'); })
+                .innerJoin('element_sets', function() { this.on('element_sets.uid', '=', 'elements.element_set'); })
+                .whereIn('source_elements.source', map(result, 'uid'));
+        });
     }
 
     public getItemJson(obj: { new(): SourcePersistable; }, uid: number) : Promise<SourcePersistable> {
@@ -61,6 +72,7 @@ export class SourceController extends GenericController<SourcePersistable> {
             }
 
             return this.getMetadata([
+                'source_elements.source as source',
                 'elements.name',
                 'source_elements.value',
                 'elements.description',

@@ -50,5 +50,8 @@ CREATE TABLE source_elements (
         ON UPDATE CASCADE
         ON DELETE CASCADE,
 
-    value varchar(255)
+    value varchar(255),
+
+    creator INTEGER NOT NULL
+        REFERENCES users(uid)
 );

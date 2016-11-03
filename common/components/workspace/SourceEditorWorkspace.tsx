@@ -20,6 +20,7 @@ import { ComboDropdownOption } from '../ComboDropdown';
 import { keyBy, Dictionary } from 'lodash';
 
 import { DataStore } from '../../DataStore';
+import { AddTabButton } from '../AddTabButton';
 
 class StringEditableFieldComponent extends EditableFieldComponent<string> {}
 class ComboEditableFieldComponent extends EditableFieldComponent<ComboDropdownOption> {}
@@ -181,7 +182,7 @@ export class SourceEditorWorkspace extends React.Component<SourceEditorProps, So
                             options: potentialParents.map((par) => ({ key: par.name, value: par.uid})),
                             typeName: 'Source'
                         }}} />
-
+                        {source.parent !== null ? (<AddTabButton tabType='source' uid={source.parent} />) : null}
                     {this.state.dublinCore.elements.map((element) => (
                         <div key={`${element.name}-edit`}>
                             <h5 className='section-header'>{element.name} <small><a href={element.url}>{element.uri}</a></small></h5>
