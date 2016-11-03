@@ -151,7 +151,10 @@ export class PredicateEditorWorkspace extends React.Component<PredicateEditorPro
             }
 
         } else {
-           range.key = predicate.range.toString();
+            const literalType = literalTypes.find((t) => t.value === predicate.range);
+            if (literalType !== undefined) {
+                range.key = literalType.name;
+            }
         }
 
         const entityTypeOptions = entityTypes.map((t) => {
@@ -161,7 +164,7 @@ export class PredicateEditorWorkspace extends React.Component<PredicateEditorPro
             return { key: t.name, value: t.uid.toString() };
         });
 
-        const literalTypeOptions = literalTypes.map((t) => ({ key: t.name, value: t.name, meta: 'literal'}));
+        const literalTypeOptions = literalTypes.map((t) => ({ key: t.name, value: t.value, meta: 'literal'}));
 
         return (
             <div className='workspace-editor'>

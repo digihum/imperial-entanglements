@@ -82,7 +82,7 @@ export class CreatePredicate extends React.Component<CreatePredicateProps, Creat
         }
 
         this.setState({
-            rangeOptions:  literalTypes.map((lit) => ({ key: lit.name, value: lit.name, meta: 'literal'})).concat(entityTypeMap)
+            rangeOptions:  literalTypes.map((lit) => ({ key: lit.name, value: lit.value, meta: 'literal'})).concat(entityTypeMap)
         });
     }
 

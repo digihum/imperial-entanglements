@@ -67,9 +67,9 @@ export const routeUrls : RouteUrls = {
     },
 
     [AppUrls.predicate]: {
-        url: 'predicate',
-        name: 'Predicate',
-        plural: 'Predicates',
+        url: 'property',
+        name: 'Property',
+        plural: 'Properties',
         workspaceType: 'predicate',
         itemView: ObjectEditor,
         collectionView: ObjectEditor

@@ -11,7 +11,7 @@ import { Match, Miss } from 'react-router';
 
 import { RouteNotFound } from './views/RouteNotFound';
 
-import { ApiService } from './ApiService';
+import { ApiService, AppUrls } from './ApiService';
 
 import { routeUrls } from './routeUrls';
 
@@ -40,10 +40,10 @@ export class FalconApp extends React.Component<FalconAppProps, {}> {
                     <div className='header'>
                         <h1>VRE</h1>
                         <Link to='/' className='header-link'>Home</Link>
-                        <Link to='/edit/entity' className='header-link'>Entities</Link>
-                        <Link to='/edit/predicate' className='header-link'>Predicates</Link>
-                        <Link to='/edit/source' className='header-link'>Sources</Link>
-                        <Link to='/edit/entity_type' className='header-link'>Entity Types</Link>
+                        <Link to={'/edit/' + AppUrls.entity} className='header-link'>{routeUrls[AppUrls.entity].plural}</Link>
+                        <Link to={'/edit/' + AppUrls.predicate} className='header-link'>{routeUrls[AppUrls.predicate].plural}</Link>
+                        <Link to={'/edit/' + AppUrls.source} className='header-link'>{routeUrls[AppUrls.source].plural}</Link>
+                        <Link to={'/edit/' + AppUrls.entity_type} className='header-link'>{routeUrls[AppUrls.entity_type].plural}</Link>
 
                         <div className='right-header'>
                             <a href='/admin/logout'>Logout</a>

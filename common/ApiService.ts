@@ -20,7 +20,7 @@ export const AppUrls : {
     record: 'record',
     entity: 'entity',
     entity_type: 'entity_type',
-    predicate: 'predicate',
+    predicate: 'property',
     source: 'source',
     element: 'element',
     source_element: 'source_element'

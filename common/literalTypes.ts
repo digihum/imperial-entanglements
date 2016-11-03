@@ -4,10 +4,10 @@
  * @version 0.1.0
  */
 
-export const literalTypes: { name: string, url: string, description: string }[] = [
-    { name: 'string', url: '', description: 'some text' },
-    { name: 'integer', url: '', description: 'a number' },
-    { name: 'date', url: '', description: 'a date'},
-    { name: 'point', url: '', description: 'a point on a map '},
-    { name: 'region', url: '', description: 'a region on a map'}
+export const literalTypes: { name: string, value: string, url: string, description: string }[] = [
+    { name: 'text', value: 'string', url: '', description: 'some text' },
+    { name: 'number', value: 'integer', url: '', description: 'a number' },
+    { name: 'date', value: 'date', url: '', description: 'a date'},
+    { name: 'point', value: 'point', url: '', description: 'a point on a map '},
+    { name: 'region', value: 'region', url: '', description: 'a region on a map'}
 ];

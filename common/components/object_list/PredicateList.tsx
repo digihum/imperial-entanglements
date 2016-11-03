@@ -74,7 +74,7 @@ export class PredicateList extends React.Component<PredicateListProps, Predicate
         <div className='workspace-editor'>
             <header className='editor-header predicate'>
                 <div className='main-toolbar'>
-                    <h2>All Predicates <i
+                    <h2>All Properties <i
                         className='fa fa-plus-circle add button'
                         aria-hidden='true'
                         onClick={this.addNew.bind(this)}
