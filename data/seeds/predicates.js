@@ -1,3 +1,4 @@
+const moment = require('moment');
 
 exports.seed = function(knex, Promise) {
   // Deletes ALL existing entries
@@ -13,7 +14,9 @@ exports.seed = function(knex, Promise) {
           description: 'A forename',
           domain: result.uid,
           range_type: 'string',
-          creator: 1
+          creator: 1,
+          creation_timestamp: moment().toISOString(),
+          lastmodified_timestamp: moment().toISOString()
         }).returning('uid'),
 
         knex('predicates').insert({
@@ -22,7 +25,9 @@ exports.seed = function(knex, Promise) {
           domain: result.uid,
           range_type: 'entity',
           range_ref: result.uid,
-          creator: 1
+          creator: 1,
+          creation_timestamp: moment().toISOString(),
+          lastmodified_timestamp: moment().toISOString()
         }).returning('uid')
       ]);
     })

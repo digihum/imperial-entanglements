@@ -8,6 +8,8 @@
 import * as Koa from 'koa';
 import * as KoaRouter from 'koa-router';
 
+import * as moment from 'moment';
+
 // Database
 import { Database } from '../core/Database';
 import { ServerApiService, AppUrls } from '../core/ServerApiService';
@@ -110,22 +112,28 @@ export const api : (router: KoaRouter, s: ServerApiService) => KoaRouter
     });
 
     router.post('/api/v1/:route', function* (next : Koa.Context) {
-        const creationData = this.request.body;
-        creationData.creator = this.req.user.uid;
         yield serverApiContext
-            .postItem<Persistable>(typeMap[this.params.route],this.params.route, this.request.body)
+            .postItem<Persistable>(typeMap[this.params.route],this.params.route, Object.assign(this.request.body,{
+                creator: this.req.user.uid,
+                creation_timestamp: moment().toISOString(),
+                lastmodified_timestamp: moment().toISOString()
+            }))
             .then((data) => this.body = data);
     });
 
     router.put('/api/v1/:route/:id', function* (next : Koa.Context) {
         yield serverApiContext
-            .putItem<Persistable>(typeMap[this.params.route], this.params.route, this.params.id, this.request.body)
+            .putItem<Persistable>(typeMap[this.params.route], this.params.route, this.params.id, Object.assign(this.request.body,{
+                lastmodified_timestamp: moment().toISOString()
+            }))
             .then((data) => this.body = data);
     });
 
     router.patch('/api/v1/:route/:id', function* (next : Koa.Context) {
         yield serverApiContext
-            .patchItem<Persistable>(typeMap[this.params.route], this.params.route, this.params.id, this.request.body)
+            .patchItem<Persistable>(typeMap[this.params.route], this.params.route, this.params.id, Object.assign(this.request.body,{
+                lastmodified_timestamp: moment().toISOString()
+            }))
             .then((data) => this.body = data);
     });
 

@@ -1,6 +1,8 @@
 //import { ENTITY_TYPES_TABLE_NAME } from '../data/symbols/tableNames';
 const ENTITY_TYPES_TABLE_NAME = 'entity_types';
 
+const moment = require('moment');
+
 exports.seed = function(knex, Promise) {
   // Deletes ALL existing entries
   return knex(ENTITY_TYPES_TABLE_NAME).del()
@@ -13,7 +15,9 @@ exports.seed = function(knex, Promise) {
             colour: '',
             icon: '',
             readonly: 1,
-            creator: 1
+            creator: 1,
+            creation_timestamp: moment().toISOString(),
+            lastmodified_timestamp: moment().toISOString()
           }
        ).returning('uid').then(([id]) => {
          return Promise.all([
@@ -27,7 +31,9 @@ exports.seed = function(knex, Promise) {
               icon: 'person',
               readonly: 1,
               parent: id,
-              creator: 1
+              creator: 1,
+              creation_timestamp: moment().toISOString(),
+              lastmodified_timestamp: moment().toISOString()
             }),
 
             knex(ENTITY_TYPES_TABLE_NAME).insert({
@@ -38,7 +44,9 @@ exports.seed = function(knex, Promise) {
               icon: 'place',
               readonly: 1,
               parent: id,
-              creator: 1
+              creator: 1,
+              creation_timestamp: moment().toISOString(),
+              lastmodified_timestamp: moment().toISOString()
             }),
 
             knex(ENTITY_TYPES_TABLE_NAME).insert({
@@ -49,7 +57,9 @@ exports.seed = function(knex, Promise) {
               icon: 'job',
               readonly: 1,
               parent: id,
-              creator: 1
+              creator: 1,
+              creation_timestamp: moment().toISOString(),
+              lastmodified_timestamp: moment().toISOString()
           })           
         
         ])

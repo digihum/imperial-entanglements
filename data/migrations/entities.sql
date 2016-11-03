@@ -16,5 +16,8 @@ CREATE TABLE entities (
     readonly INTEGER DEFAULT 0,
 
     creator INTEGER NOT NULL
-        REFERENCES users(uid)
+        REFERENCES users(uid),
+
+    creation_timestamp varchar(255) NOT NULL,
+    lastmodified_timestamp varchar(255) NOT NULL
 );

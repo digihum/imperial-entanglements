@@ -84,5 +84,8 @@ CREATE TABLE records (
             (value_point is NULL))),
 
     creator INTEGER NOT NULL
-        REFERENCES users(uid)
+        REFERENCES users(uid),
+
+    creation_timestamp varchar(255) NOT NULL,
+    lastmodified_timestamp varchar(255) NOT NULL
 );
