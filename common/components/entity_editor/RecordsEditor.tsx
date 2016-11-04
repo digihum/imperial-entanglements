@@ -10,7 +10,7 @@ import { DataStore } from '../../DataStore';
 import { Record, Predicate, Source } from '../../../common/datamodel/datamodel';
 import { EditableFieldComponent } from '../fields/EditableFieldComponent';
 
-import { RecordRow } from './RecordRow';
+import { SearchBar } from '../SearchBar';
 
 import { RecordPredicate } from './RecordPredicate';
 
@@ -32,10 +32,17 @@ interface RecordsEditorProps {
 }
 
 interface RecordsEditorState {
-	
+	filterFunc: (p: Predicate) => boolean;
 }
 
 export class RecordsEditor extends React.Component<RecordsEditorProps, RecordsEditorState> {
+
+	constructor() {
+		super();
+		this.state = {
+			filterFunc: () => true
+		};
+	}
 
 	public deleteRecord(record: Record) {
 
@@ -62,13 +69,10 @@ export class RecordsEditor extends React.Component<RecordsEditorProps, RecordsEd
 			<div>
 				<div>
 					<h4>Records</h4>
-					<div>
-						<div className='input-addon-formgroup'>
-							<span className='input-addon-icon'><i className='fa fa-search fa-fw'></i></span>
-							<input type='text' className='form-control with-addon' />
-						</div>
-
-					</div>
+					<SearchBar
+						getValue={(p: Predicate) => p.name}
+						setFilterFunc={(filterFunc) => this.setState({ filterFunc })}
+					 />
 					<div>
 						{Object.keys(this.props.records).map((section) => {
 
@@ -79,8 +83,12 @@ export class RecordsEditor extends React.Component<RecordsEditorProps, RecordsEd
 								return pred.uid.toString() === section;
 							});
 
-							if (currentPredicate === undefined) {
+							if(currentPredicate === undefined) {
 								throw new Error('Could not find predicate');
+							}
+
+							if (!this.state.filterFunc(currentPredicate)) {
+								return null;
 							}
 
 							return (<RecordPredicate
