@@ -16,12 +16,15 @@ import { AddTabButton } from '../AddTabButton';
 import { showModal } from '../../Signaller';
 import { ModalDefinition } from '../modal/ModalDefinition';
 
+import { SearchBar } from '../SearchBar';
+
 interface SourceListProps {
     api: ApiService;
 }
 
 interface SourceListState {
     sources: Source[];
+    filterFunc: (p: Source) => boolean;
 }
 
 interface ColumnSettings {
@@ -35,7 +38,8 @@ export class SourceList extends React.Component<SourceListProps, SourceListState
     constructor() {
         super();
         this.state = {
-            sources: []
+            sources: [],
+            filterFunc: () => true
         };
     }
 
@@ -79,6 +83,12 @@ export class SourceList extends React.Component<SourceListProps, SourceListState
             </header>
 
             <section className='editor-body'>
+
+                <SearchBar
+                    getValue={(a: Source) => a.name}
+                    setFilterFunc={(f) => this.setState({ filterFunc: f })}
+                />
+
                 <table className='table'>
                     <thead>
                         <tr>
@@ -88,7 +98,7 @@ export class SourceList extends React.Component<SourceListProps, SourceListState
                         </tr>
                     </thead>
                     <tbody>
-                    {this.state.sources.map((source) => {
+                    {this.state.sources.filter(this.state.filterFunc).map((source) => {
                         return (
                             <tr key={`source-${source.uid}`}>
                                 <td>{source.uid} <AddTabButton

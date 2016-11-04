@@ -14,12 +14,15 @@ import { AddTabButton } from '../AddTabButton';
 import { showModal } from '../../Signaller';
 import { ModalDefinition } from '../modal/ModalDefinition';
 
+import { SearchBar } from '../SearchBar';
+
 interface EntityTypeListProps {
     api: ApiService;
 }
 
 interface EntityTypeListState {
     entityTypes: EntityType[];
+    filterFunc: (t: EntityType) => boolean;
 }
 
 export class EntityTypeList extends React.Component<EntityTypeListProps, EntityTypeListState> {
@@ -27,7 +30,8 @@ export class EntityTypeList extends React.Component<EntityTypeListProps, EntityT
     constructor() {
         super();
         this.state = {
-            entityTypes: []
+            entityTypes: [],
+            filterFunc: () => true
         };
     }
 
@@ -71,6 +75,12 @@ export class EntityTypeList extends React.Component<EntityTypeListProps, EntityT
             </header>
 
             <section className='editor-body'>
+
+                <SearchBar
+                    getValue={(a: EntityType) => a.name}
+                    setFilterFunc={(f) => this.setState({ filterFunc: f })}
+                />
+
                 <table className='table'>
                     <thead>
                         <tr>
@@ -80,7 +90,7 @@ export class EntityTypeList extends React.Component<EntityTypeListProps, EntityT
                         </tr>
                     </thead>
                     <tbody>
-                    {this.state.entityTypes.map((entityType) => {
+                    {this.state.entityTypes.filter(this.state.filterFunc).map((entityType) => {
                         return (
                             <tr key={`entityType-${entityType.uid}`}>
                                 <td>{entityType.uid} <AddTabButton

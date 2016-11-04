@@ -86,12 +86,13 @@ export class PredicateList extends React.Component<PredicateListProps, Predicate
                 </div>
             </header>
 
-            <SearchBar
-                getValue={(a: Predicate) => a.name}
-                setFilterFunc={(f) => this.setState({ filterFunc: f })}
-            />
-
             <section className='editor-body'>
+
+                <SearchBar
+                    getValue={(a: Predicate) => a.name}
+                    setFilterFunc={(f) => this.setState({ filterFunc: f })}
+                />
+
                 <table className='table'>
                     <thead>
                         <tr>
