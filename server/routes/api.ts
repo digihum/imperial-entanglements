@@ -30,7 +30,8 @@ import {
     SourceElementController, SourceElementPersistable
 } from '../controllers/controllers';
 
-export const wrapDatabase : (s: Database) => ServerApiService = (db: Database) => {
+export const wrapDatabase : (s: Database, fakeCreator: boolean) => ServerApiService =
+    (db: Database, fakeCreator: boolean) => {
     const routes = new Map<string, IController>([
         [AppUrls.element_set, new ElementSetController(db)],
         [AppUrls.record, new RecordController(db)],
@@ -42,7 +43,7 @@ export const wrapDatabase : (s: Database) => ServerApiService = (db: Database) =
         [AppUrls.source_element, new SourceElementController(db)]
     ]);
 
-    return new ServerApiService(routes, new QueryEngine(db));
+    return new ServerApiService(routes, new QueryEngine(db), fakeCreator);
 };
 
 // would be cleaner if it allowed 2nd level REST urls
@@ -118,26 +119,20 @@ export const api : (router: KoaRouter, s: ServerApiService) => KoaRouter
     router.post('/api/v1/:route', function* (next : Koa.Context) {
         yield serverApiContext
             .postItem<Persistable>(typeMap[this.params.route],this.params.route, Object.assign(this.request.body,{
-                creator: this.req.user.uid,
-                creationTimestamp: moment().toISOString(),
-                lastmodifiedTimestamp: moment().toISOString()
+                creator: this.req.user.uid
             }))
             .then((data) => this.body = data);
     });
 
     router.put('/api/v1/:route/:id', function* (next : Koa.Context) {
         yield serverApiContext
-            .putItem<Persistable>(typeMap[this.params.route], this.params.route, this.params.id, Object.assign(this.request.body,{
-                lastmodifiedTimestamp: moment().toISOString()
-            }))
+            .putItem<Persistable>(typeMap[this.params.route], this.params.route, this.params.id, this.request.body)
             .then((data) => this.body = data);
     });
 
     router.patch('/api/v1/:route/:id', function* (next : Koa.Context) {
         yield serverApiContext
-            .patchItem<Persistable>(typeMap[this.params.route], this.params.route, this.params.id, Object.assign(this.request.body,{
-                lastmodifiedTimestamp: moment().toISOString()
-            }))
+            .patchItem<Persistable>(typeMap[this.params.route], this.params.route, this.params.id, this.request.body)
             .then((data) => this.body = data);
     });
 

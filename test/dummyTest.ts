@@ -25,7 +25,7 @@ describe('A simple test', () => {
 
   before(() => {
     knex = Knex(knexConfig);
-    apiService = wrapDatabase(new Database(knexConfig));
+    apiService = wrapDatabase(new Database(knexConfig), true);
   });
 
   describe('on the element_sets table', () => {

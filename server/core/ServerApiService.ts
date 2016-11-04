@@ -11,6 +11,8 @@ import { CollectionNotFoundException } from './Exceptions';
 
 import { QueryEngine } from './QueryEngine';
 
+import * as moment from 'moment';
+
 import { triggerReload } from '../../common/Signaller';
 
 export { AppUrls } from '../../common/ApiService';
@@ -20,10 +22,12 @@ export class ServerApiService implements ApiService {
     private controllerMap: Map<string, IController>;
 
     public queryEngine: QueryEngine;
+    public fakeCreator: boolean;
 
-    constructor(routesMap: Map<string, IController>, queryEngine: QueryEngine) {
+    constructor(routesMap: Map<string, IController>, queryEngine: QueryEngine, fakeCreator: boolean) {
         this.controllerMap = routesMap;
         this.queryEngine = queryEngine;
+        this.fakeCreator = fakeCreator;
     }
 
     public getItem<T extends Persistable>(obj: { new(): T; }, baseUrl : string, uid: number) : Promise<T> {
@@ -47,7 +51,11 @@ export class ServerApiService implements ApiService {
         if (controller === undefined) {
             return Promise.reject(new CollectionNotFoundException('Controller not found'));
         }
-        return controller.postItem<T>(obj, data)
+        return controller.postItem<T>(obj, Object.assign(data, {
+            creationTimestamp: moment().toISOString(),
+            lastmodifiedTimestamp: moment().toISOString(),
+            creator: this.fakeCreator ? 0 : data.creator
+        }))
         .then((result) => {
             triggerReload.dispatch();
             return Promise.resolve(result);
@@ -59,7 +67,9 @@ export class ServerApiService implements ApiService {
         if (controller === undefined) {
             return Promise.reject(new CollectionNotFoundException('Controller not found'));
         }
-        return controller.putItem<T>(obj, uid, data)
+        return controller.putItem<T>(obj, uid, Object.assign(data, {
+            lastmodifiedTimestamp: moment().toISOString()
+        }))
         .then((result) => {
             triggerReload.dispatch();
             return Promise.resolve(result);
@@ -71,7 +81,9 @@ export class ServerApiService implements ApiService {
         if (controller === undefined) {
             return Promise.reject(new CollectionNotFoundException('Controller not found'));
         }
-        return controller.patchItem<T>(obj, uid, data)
+        return controller.patchItem<T>(obj, uid, Object.assign(data, {
+            lastmodifiedTimestamp: moment().toISOString()
+        }))
         .then((result) => {
             triggerReload.dispatch();
             return Promise.resolve(result);

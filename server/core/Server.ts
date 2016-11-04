@@ -85,7 +85,7 @@ export class Server {
             enableTypes: ['json', 'form', 'text']
         }));
 
-        const serverApiContext = wrapDatabase(db);
+        const serverApiContext = wrapDatabase(db, false);
         router = api(router, serverApiContext);
 
         this.app.use(router.middleware());
