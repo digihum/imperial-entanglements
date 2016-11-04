@@ -40,10 +40,12 @@ export class FalconApp extends React.Component<FalconAppProps, {}> {
                     <div className='header'>
                         <h1>VRE</h1>
                         <Link to='/' className='header-link'>Home</Link>
-                        <Link to={'/edit/' + AppUrls.entity} className='header-link'>{routeUrls[AppUrls.entity].plural}</Link>
-                        <Link to={'/edit/' + AppUrls.predicate} className='header-link'>{routeUrls[AppUrls.predicate].plural}</Link>
-                        <Link to={'/edit/' + AppUrls.source} className='header-link'>{routeUrls[AppUrls.source].plural}</Link>
-                        <Link to={'/edit/' + AppUrls.entity_type} className='header-link'>{routeUrls[AppUrls.entity_type].plural}</Link>
+                        <Link accessKey='e' to={'/edit/' + AppUrls.entity} className='header-link'>{routeUrls[AppUrls.entity].plural}</Link>
+                        <Link accessKey='p'
+                            to={'/edit/' + AppUrls.predicate} className='header-link'>{routeUrls[AppUrls.predicate].plural}</Link>
+                        <Link accessKey='s' to={'/edit/' + AppUrls.source} className='header-link'>{routeUrls[AppUrls.source].plural}</Link>
+                        <Link accessKey='t'
+                            to={'/edit/' + AppUrls.entity_type} className='header-link'>{routeUrls[AppUrls.entity_type].plural}</Link>
 
                         <div className='right-header'>
                             <a href='/admin/logout'>Logout</a>

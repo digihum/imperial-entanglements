@@ -27,7 +27,6 @@ import { EditableComboDropdown } from '../fields/EditableComboDropdown';
 
 import { DataStore } from '../../DataStore';
 
-
 class StringEditableFieldComponent extends EditableFieldComponent<string> {}
 class ComboEditableFieldComponent extends EditableFieldComponent<ComboDropdownOption> {}
 
