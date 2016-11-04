@@ -9,10 +9,10 @@ import { Record, Source, Entity } from '../../../common/datamodel/datamodel';
 import { EditableSubfieldProps } from '../fields/EditableFieldComponent';
 export { EditableFieldComponent } from '../fields/EditableFieldComponent';
 import { ScorePicker } from '../fields/ScorePicker';
-import { ComboDropdown, ComboDropdownOption } from '../ComboDropdown';
+import { ComboDropdown } from '../ComboDropdown';
 import { showModal } from '../../Signaller';
 import { ModalDefinition } from '../modal/ModalDefinition';
-import { ApiService, AppUrls } from '../../ApiService';
+import { AppUrls } from '../../ApiService';
 
 import { StringFieldEditor } from './StringFieldEditor';
 import { EntityFieldEditor } from './EntityFieldEditor';
@@ -142,9 +142,8 @@ export const RecordRow = (props: RecordRowProps) => {
             ) : null }
             <td className='record-row-item'>{dropDownValue.key}
                 {dropDownValue.key.length > 0 ? (
-                    <AddTabButton title={dropDownValue.key}
-                        subtitle={`Source ${dropDownValue.value}`}
-                        url={`/${AppUrls.source}/${dropDownValue.value}`}
+                    <AddTabButton 
+                        uid={dropDownValue.value}
                         tabType='source' />
                 ) : null}
 			</td>
