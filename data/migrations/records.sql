@@ -5,7 +5,15 @@ CREATE TABLE records (
     source INTEGER 
         REFERENCES sources(uid)
         ON UPDATE CASCADE
-        ON DELETE CASCADE,
+        ON DELETE CASCADE
+        CHECK(value_type != 'source' OR (
+            
+            (value_entity is NULL) AND
+            (value_string is NULL) AND
+            (value_date is NULL) AND 
+            (value_integer is NULL) AND 
+            (value_point is NULL) AND 
+            (value_region is NULL))),
 
     predicate INTEGER NOT NULL 
         REFERENCES predicates(uid)
@@ -25,7 +33,7 @@ CREATE TABLE records (
 
     value_type varchar(7) 
         NOT NULL
-        CHECK(value_type in ('entity', 'string', 'date', 'integer', 'point', 'region')),
+        CHECK(value_type in ('entity', 'string', 'date', 'integer', 'point', 'region', 'source')),
 
     value_entity INTEGER 
         REFERENCES entities(uid)

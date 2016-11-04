@@ -87,7 +87,7 @@ export class RecordPredicate extends React.Component<RecordPredicateProps, Recor
                 <thead>
                     <tr className='record-row title'>
                         <th className='record-row-item uid'>ID</th>
-                        <th className='record-row-item'>Value</th>
+                        {this.props.predicate.range !== 'source' ? (<th className='record-row-item'>Value</th>) : null}
                         <th className='record-row-item'>Source</th>
                         <th className='record-row-item score'>Score</th>
                         <th className='record-row-item score'>Period</th>

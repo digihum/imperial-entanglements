@@ -31,7 +31,7 @@ export class RecordPersistable extends Record implements Persistable {
 
         schemaOutput.value_type = this.valueType;
 
-        if (this.valueType !== undefined) {
+        if (this.valueType !== undefined && this.valueType !== 'source') {
             schemaOutput['value_' + this.valueType] = this.value;
         }
 
@@ -63,6 +63,9 @@ export class RecordPersistable extends Record implements Persistable {
                 break;
             case 'region':
                 data.value = data.value_region;
+                break;
+            case 'source':
+                data.value = data.source;
                 break;
             default:
                 data.value = null;

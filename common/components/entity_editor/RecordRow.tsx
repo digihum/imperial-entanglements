@@ -89,9 +89,11 @@ export const RecordRow = (props: RecordRowProps) => {
         return (
         <tr className='record-row'>
             <td className='record-row-item uid'>{props.value.uid}</td>
-            <td className='record-row-item'>
-                {recordEditor(props)}
-            </td>
+            {recordValue.valueType !== 'source' ? (
+                <td className='record-row-item'>
+                    {recordEditor(props)}
+                </td>
+            ) : null}
             <td className='record-row-item'>
                 <ComboDropdown
                     options={props.sources.map((source) => ({ key: source.name , value: source.uid}))}
@@ -119,23 +121,25 @@ export const RecordRow = (props: RecordRowProps) => {
         return (
         <tr className='record-row'>
             <td className='record-row-item uid'>#{props.value.uid}</td>
-            <td className='record-row-item'>
-                 {(() => {
-                     if (props.value.valueType === 'entity') {
-                         const entity = props.entities.find((entity) => entity.uid == props.value.value);
-                         if (entity !== undefined) {
-                             return (<span>
-                                {entity.label} <AddTabButton
-                                    uid={entity.uid}
-                                    tabType='entity' />
-                            </span>);
-                         } else {
-                             return (<em>Missing Entity</em>);
-                         }
-                     }
-                    return props.value.value;
-                })()}
-            </td>
+            {recordValue.valueType !== 'source' ? (
+                <td className='record-row-item'>
+                    {(() => {
+                        if (props.value.valueType === 'entity') {
+                            const entity = props.entities.find((entity) => entity.uid == props.value.value);
+                            if (entity !== undefined) {
+                                return (<span>
+                                    {entity.label} <AddTabButton
+                                        uid={entity.uid}
+                                        tabType='entity' />
+                                </span>);
+                            } else {
+                                return (<em>Missing Entity</em>);
+                            }
+                        }
+                        return props.value.value;
+                    })()}
+                </td>
+            ) : null }
             <td className='record-row-item'>{dropDownValue.key}
                 {dropDownValue.key.length > 0 ? (
                     <AddTabButton title={dropDownValue.key}

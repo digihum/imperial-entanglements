@@ -9,5 +9,6 @@ export const literalTypes: { name: string, value: string, url: string, descripti
     { name: 'number', value: 'integer', url: '', description: 'a number' },
     { name: 'date', value: 'date', url: '', description: 'a date'},
     { name: 'point', value: 'point', url: '', description: 'a point on a map '},
-    { name: 'region', value: 'region', url: '', description: 'a region on a map'}
+    { name: 'region', value: 'region', url: '', description: 'a region on a map'},
+    { name: 'source', value: 'source', url: '', description: 'a source in the database'}
 ];
