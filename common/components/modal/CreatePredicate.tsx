@@ -105,21 +105,26 @@ export class CreatePredicate extends React.Component<CreatePredicateProps, Creat
     public render() {
         return (
         <Overlay>
-            <div className='create-predicate-modal'>
-                <h3><i className='fa fa-plus' aria-hidden='true'></i> Create new predicate</h3>
-                <input type='text' value={this.state.name} onChange={(e) => this.setState({ name: e.target.value })} />
-                <PredicateDescription
-                    domain={this.state.domain}
-                    range={this.state.range}
-                    domainChanged={(s) => this.setState({ domain: s })}
-                    rangeChanged={(s) => this.setState({ range: s })}
-                    domainOptions={this.state.domainOptions}
-                    rangeOptions={this.state.rangeOptions}
-                    mode='editAll' />
-                <div className='modal-toolbar'>
-                    <button onClick={this.props.cancel}>Cancel</button>
-                    <button onClick={this.create.bind(this)}>Create Predicate</button>
-                </div>
+            <h2><i className='fa fa-plus' aria-hidden='true'></i> Create Property</h2>
+            <label className='small'>Name</label>
+
+            <input type='text'
+                className='gap'
+                ref={(a) =>  { if(a !== null) a.focus(); }}
+                value={this.state.name}
+                onChange={(e) => this.setState({ name: e.target.value })} />
+
+            <PredicateDescription
+                domain={this.state.domain}
+                range={this.state.range}
+                domainChanged={(s) => this.setState({ domain: s })}
+                rangeChanged={(s) => this.setState({ range: s })}
+                domainOptions={this.state.domainOptions}
+                rangeOptions={this.state.rangeOptions}
+                mode='editAll' />
+            <div className='modal-toolbar'>
+                <button onClick={this.props.cancel} className='pull-left'>Cancel</button>
+                <button onClick={this.create.bind(this)} className='pull-right'>Create Property</button>
             </div>
         </Overlay>
         );

@@ -55,12 +55,14 @@ export class CreateEntityType extends React.Component<CreateEntityTypeProps, Cre
     public render() {
         return (
         <Overlay>
+            <h2>Create Entity Type</h2>
+            <label className='small'>Name</label>
             <input type='text'
                 value={this.state.internalValue}
                 ref={this.inputRef.bind(this)}
                 onChange={(e) => this.setState({ internalValue: e.target.value })} />
-            <button onClick={() => this.props.cancel()}>Cancel</button>
-            <button onClick={this.createEntityType.bind(this)}>Create Entity Type</button>
+            <button onClick={() => this.props.cancel()} className='pull-left'>Cancel</button>
+            <button onClick={this.createEntityType.bind(this)} className='pull-right'>Create Entity Type</button>
         </Overlay>
         );
     }

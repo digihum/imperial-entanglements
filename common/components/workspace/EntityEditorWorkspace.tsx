@@ -211,6 +211,7 @@ export class EntityEditorWorkspace extends React.Component<EntityEditorProps, En
                                     options: potentialParents.map((par) => ({ key: par.label, value: par.uid})),
                                     typeName: 'Entity'
                                 }}} />
+                            {entity.parent !== null ? (<AddTabButton tabType='entity' uid={entity.parent} />) : null}
                         </div>
                     </div>
 

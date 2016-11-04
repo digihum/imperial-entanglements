@@ -11,6 +11,8 @@ import { ApiService, AppUrls } from '../../ApiService';
 
 import { EntityType } from '../../../common/datamodel/datamodel';
 
+import { AddTabButton } from '../AddTabButton';
+
 import { EditableHeader, EditableFieldComponent } from '../fields/EditableHeader';
 import { EditableParagraph } from '../fields/EditableParagraph';
 import { EditableComboDropdown } from '../fields/EditableComboDropdown';
@@ -124,6 +126,7 @@ export class EntityTypeWorkspace extends React.Component<EntityTypeWorkspaceProp
                             options: potentialParents.map((par) => ({ key: par.name, value: par.uid})),
                             typeName: 'EntityType'
                         }}} />
+                    {entityType.parent !== null ? (<AddTabButton tabType='entity_type' uid={entityType.parent} />) : null}
 
                     <StringEditableFieldComponent
                         value={entityType.description}

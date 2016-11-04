@@ -82,6 +82,7 @@ export class PredicateDescription extends React.Component<PredicateDescriptionPr
             <div className='domain'>
                 {this.props.mode === 'editAll' || this.state.editingDomain ? (
                 <div>
+                    <label className='small'>Domain</label>
                     <ComboDropdown
                         options={this.props.domainOptions}
                         typeName='entity type'
@@ -109,6 +110,7 @@ export class PredicateDescription extends React.Component<PredicateDescriptionPr
             <div className='range'>
                 {this.props.mode === 'editAll' || this.state.editingRange ? (
                     <div>
+                        <label className='small'>Range</label>
                         <ComboDropdown
                             options={this.props.rangeOptions}
                             typeName='entity type'

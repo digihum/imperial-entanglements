@@ -1,3 +1,20 @@
+
+label.small {
+    display: block;
+    font-variant: small-caps;
+    font-size: small;
+    text-align: left;
+}
+
+input[type=text] {
+    width: 100%;
+    padding: 0.2em;
+}
+
+input.gap {
+    margin: 0 0 1em 0;
+}
+
 section.loginform {
     
     height: 100%;

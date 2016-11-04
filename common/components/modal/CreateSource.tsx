@@ -60,12 +60,14 @@ export class CreateSource extends React.Component<CreateSourceProps, CreateSourc
     public render() {
         return (
         <Overlay>
+            <h2>Create Source</h2>
+            <label className='small'>Name</label>
             <input type='text'
                 value={this.state.internalValue}
                 ref={this.inputRef.bind(this)}
                 onChange={(e) => this.setState({ internalValue: e.target.value })} />
-            <button onClick={() => this.props.cancel()}>Cancel</button>
-            <button onClick={this.createSource.bind(this)}>Create Source</button>
+            <button onClick={() => this.props.cancel()} className='pull-left'>Cancel</button>
+            <button onClick={this.createSource.bind(this)} className='pull-right'>Create Source</button>
         </Overlay>
         );
     }

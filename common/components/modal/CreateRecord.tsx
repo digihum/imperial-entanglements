@@ -76,6 +76,7 @@ export class CreateRecord extends React.Component<CreateRecordProps, CreateRecor
     public render() {
         return (
         <Overlay>
+            <h2>Create Record</h2>
             <ComboDropdown
                 ref='comboDropDown'
                 options={this.props.options}

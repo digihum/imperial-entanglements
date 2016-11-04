@@ -2,3 +2,24 @@
 @import 'fontello';
 @import 'roboto';
 @import 'table';
+
+button {
+    padding: 0.4em 0.8em;
+    background-color: #e3e3e3;
+    border: none;
+    cursor: pointer;
+
+    &:hover {
+        background-color: #f3f3f3;
+    }
+
+    &.pull-left {
+        margin: 1em 0 0;
+        float: left;
+    }
+
+    &.pull-right {
+        margin: 1em 0 0;
+        float: right;
+    }
+}
