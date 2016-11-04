@@ -17,8 +17,10 @@ export const EditableParagraph : React.StatelessComponent<EditableSubfieldProps<
 
     const bindKeyboard = (val) => {
         if (val !== null) {
+            val.focus();
             keyBoardShortcuts = new mousetrap(val);
             keyBoardShortcuts.bind('ctrl+return', props.acceptChanges);
+            keyBoardShortcuts.bind('escape', props.cancelChanges);
         } else {
             keyBoardShortcuts.unbind('ctrl+return');
         }
@@ -46,6 +48,7 @@ export const EditableParagraph : React.StatelessComponent<EditableSubfieldProps<
             <div>
                 <textarea
                     value={props.value}
+                    ref={bindKeyboard}
                     onChange={(e) => props.onChange(e.target.value)}
                     style={{ width: '100%', height: '6em'}}></textarea>
                 <button onClick={props.acceptChanges}>

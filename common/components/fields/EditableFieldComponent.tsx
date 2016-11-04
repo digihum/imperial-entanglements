@@ -59,7 +59,7 @@ export class EditableFieldComponent<T> extends React.Component<EditableFieldProp
     }
 
     public cancelChanges() {
-        this.setState({edit: false});
+        this.setState({edit: false, internalValue: this.props.value});
     }
 
     public render() {

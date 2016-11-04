@@ -10,6 +10,7 @@ import { Overlay } from '../Overlay';
 import { Source } from '../../../common/datamodel/datamodel';
 import { ApiService, AppUrls } from '../../ApiService';
 
+import * as mousetrap from 'mousetrap';
 
 interface CreateSourceProps {
     api: ApiService;
@@ -23,6 +24,8 @@ interface CreateSourceState {
 }
 
 export class CreateSource extends React.Component<CreateSourceProps, CreateSourceState> {
+
+    private keyboardShortcuts;
 
     constructor() {
         super();
@@ -43,14 +46,27 @@ export class CreateSource extends React.Component<CreateSourceProps, CreateSourc
         .then(this.props.complete);
     }
 
+    public inputRef(val) {
+        if (val !== null) {
+            val.focus();
+            this.keyboardShortcuts = new mousetrap(val);
+            this.keyboardShortcuts.bind('return', this.createSource.bind(this));
+            this.keyboardShortcuts.bind('escape', this.props.cancel);
+        } else {
+            this.keyboardShortcuts.unbind('return');
+        }
+    }
+
     public render() {
         return (
         <Overlay>
-            <input type='text' value={this.state.internalValue}
+            <input type='text'
+                value={this.state.internalValue}
+                ref={this.inputRef.bind(this)}
                 onChange={(e) => this.setState({ internalValue: e.target.value })} />
             <button onClick={() => this.props.cancel()}>Cancel</button>
             <button onClick={this.createSource.bind(this)}>Create Source</button>
         </Overlay>
         );
     }
-};
+}

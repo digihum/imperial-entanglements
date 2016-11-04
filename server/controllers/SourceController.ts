@@ -14,7 +14,7 @@ import { OperationNotPermittedException } from '../core/Exceptions';
 
 import { RecordPersistable } from './RecordController';
 
-import { omit, map } from 'lodash';
+import { omit, groupBy, flatten } from 'lodash';
 
 export class SourcePersistable extends Source implements Persistable {
 
@@ -53,7 +53,7 @@ export class SourceController extends GenericController<SourcePersistable> {
     // override the getItemJson and getCollectionJson functions to also get information about the 
     // metadata associated with the retrieved source
 
-    private getMetadata(fields : string[], sourceId: number) : Promise<any> {
+    private getMetadata(fields : string[], sourceId: number) : PromiseLike<any> {
 
         return this.db.query().raw(`
             WITH RECURSIVE parent_of(uid, parent) AS  (SELECT uid, parent FROM sources),
@@ -64,13 +64,16 @@ export class SourceController extends GenericController<SourcePersistable> {
             
             SELECT *
                 FROM ancestor;
-        `, sourceId).then((result) => {
-            result[result.length - 1].uid = sourceId;
-             return this.db.query().select(fields)
+        `, sourceId).then((results) => {
+            results[results.length - 1].uid = sourceId;
+            return Promise.all(results.map((result) =>
+                this.db.query().select(fields)
                 .from('source_elements')
                 .innerJoin('elements', function() { this.on('source_elements.element', '=', 'elements.uid'); })
                 .innerJoin('element_sets', function() { this.on('element_sets.uid', '=', 'elements.element_set'); })
-                .whereIn('source_elements.source', map(result, 'uid'));
+                .where({ 'source_elements.source': result.uid })
+
+            )).then((results) => groupBy(flatten(results), 'name'));
         });
     }
 
