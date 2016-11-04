@@ -10,7 +10,8 @@ gulp.task('sass', function () {
             'node_modules'
 		]    	
     }).on('error', sass.logError))
-    .pipe(gulp.dest('./build/static'));
+    .pipe(gulp.dest('./build/static'))
+    .pipe(gulp.dest('./build/app'));
 });
  
 gulp.task('sass:watch', function () {

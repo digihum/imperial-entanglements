@@ -1,0 +1,16 @@
+
+$font-path-roboto: 'font/Roboto-regular';
+
+@font-face {
+  font-family: 'Roboto';
+  font-weight: 400;
+  font-style: normal;
+  src: url($font-path-roboto + '/Roboto-regular.eot');
+  src: url($font-path-roboto + '/Roboto-regular.eot?#iefix') format('embedded-opentype'),
+       local('Roboto'),
+       local('Roboto-regular'),
+       url($font-path-roboto + '/Roboto-regular.woff2') format('woff2'),
+       url($font-path-roboto + '/Roboto-regular.woff') format('woff'),
+       url($font-path-roboto + '/Roboto-regular.ttf') format('truetype'),
+       url($font-path-roboto + '/Roboto-regular.svg#Roboto') format('svg');
+}

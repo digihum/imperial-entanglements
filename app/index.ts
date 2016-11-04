@@ -4,18 +4,26 @@
  * @version 0.0.1
  */
 
-import {app, BrowserWindow} from 'electron';
+import {app, BrowserWindow, protocol} from 'electron';
+import * as path from 'path';
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let win;
 
 function createWindow () {
+
   // Create the browser window.
-  win = new BrowserWindow({width: 1080, height: 786});
+  win = new BrowserWindow({
+      width: 1080,
+      height: 786,
+      webPreferences: {
+        webSecurity: false
+      }
+  });
 
   // and load the index.html of the app.
-  win.loadURL(`file://${__dirname}/index.html`);
+  win.loadURL('file:///' + __dirname + '/index.html');
 
   //win.setMenu(null);
 
