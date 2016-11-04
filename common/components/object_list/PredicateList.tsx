@@ -16,6 +16,8 @@ import { AddTabButton } from '../AddTabButton';
 import { showModal } from '../../Signaller';
 import { ModalDefinition } from '../modal/ModalDefinition';
 
+import { SearchBar } from '../SearchBar';
+
 
 interface PredicateListProps {
     api: ApiService;
@@ -24,6 +26,7 @@ interface PredicateListProps {
 interface PredicateListState {
     entityTypes: EntityType[];
     predicates: Predicate[];
+    filterFunc: (p: Predicate) => boolean;
 }
 
 interface ColumnSettings {
@@ -38,7 +41,8 @@ export class PredicateList extends React.Component<PredicateListProps, Predicate
         super();
         this.state = {
             entityTypes: [],
-            predicates: []
+            predicates: [],
+            filterFunc: () => true
         };
     }
 
@@ -82,6 +86,11 @@ export class PredicateList extends React.Component<PredicateListProps, Predicate
                 </div>
             </header>
 
+            <SearchBar
+                getValue={(a: Predicate) => a.name}
+                setFilterFunc={(f) => this.setState({ filterFunc: f })}
+            />
+
             <section className='editor-body'>
                 <table className='table'>
                     <thead>
@@ -92,7 +101,7 @@ export class PredicateList extends React.Component<PredicateListProps, Predicate
                         </tr>
                     </thead>
                     <tbody>
-                    {this.state.predicates.map((predicate) => {
+                    {this.state.predicates.filter(this.state.filterFunc).map((predicate) => {
                         const entityType = this.state.entityTypes.find((t) => t.uid === predicate.domain);
                         return (
                             <tr key={`predicate-${predicate.uid}`}>

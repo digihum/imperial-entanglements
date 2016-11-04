@@ -28,6 +28,7 @@ export class SourcePersistable extends Source implements Persistable {
         return Object.assign({}, omit(this.serialize(),
             'metaData',
             'sameAs',
+            'parents',
             'creationTimestamp',
             'lastmodifiedTimestamp'
         ), {
