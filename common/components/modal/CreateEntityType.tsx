@@ -10,6 +10,7 @@ import { Overlay } from '../Overlay';
 import { EntityType } from '../../../common/datamodel/datamodel';
 import { ApiService, AppUrls } from '../../ApiService';
 
+import * as mousetrap from 'mousetrap';
 
 interface CreateEntityTypeProps {
     api: ApiService;
@@ -22,6 +23,8 @@ interface CreateEntityTypeState {
 }
 
 export class CreateEntityType extends React.Component<CreateEntityTypeProps, CreateEntityTypeState> {
+
+    private keyboardShortcuts;
 
     constructor() {
         super();
@@ -38,10 +41,23 @@ export class CreateEntityType extends React.Component<CreateEntityTypeProps, Cre
         .then(this.props.complete);
     }
 
+    public inputRef(val: HTMLElement | null) {
+        if (val !== null) {
+            val.focus();
+            this.keyboardShortcuts = new mousetrap(val);
+            this.keyboardShortcuts.bind('return', this.createEntityType.bind(this));
+            this.keyboardShortcuts.bind('escape', this.props.cancel);
+        } else {
+            this.keyboardShortcuts.unbind('return');
+        }
+    }
+
     public render() {
         return (
         <Overlay>
-            <input type='text' value={this.state.internalValue}
+            <input type='text'
+                value={this.state.internalValue}
+                ref={this.inputRef.bind(this)}
                 onChange={(e) => this.setState({ internalValue: e.target.value })} />
             <button onClick={() => this.props.cancel()}>Cancel</button>
             <button onClick={this.createEntityType.bind(this)}>Create Entity Type</button>

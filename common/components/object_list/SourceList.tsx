@@ -6,10 +6,10 @@
 
 import * as React from 'react';
 
-import { ApiService, AppUrls } from '../../ApiService';
+import { ApiService } from '../../ApiService';
+import { DataStore } from '../../DataStore';
+
 import { Source } from '../../../common/datamodel/datamodel';
-import { ComboDropdown, ComboDropdownOption } from '../ComboDropdown';
-import { noop } from 'lodash';
 
 import { AddTabButton } from '../AddTabButton';
 
@@ -20,10 +20,10 @@ import { SearchBar } from '../SearchBar';
 
 interface SourceListProps {
     api: ApiService;
+    dataStore: DataStore;
 }
 
 interface SourceListState {
-    sources: Source[];
     filterFunc: (p: Source) => boolean;
 }
 
@@ -38,27 +38,14 @@ export class SourceList extends React.Component<SourceListProps, SourceListState
     constructor() {
         super();
         this.state = {
-            sources: [],
             filterFunc: () => true
         };
-    }
-
-    public componentWillMount() {
-        this.loadData();
-    }
-
-    public loadData() {
-        Promise.all([
-            this.props.api.getCollection(Source, AppUrls.source, {})
-        ])
-        .then(([sources]) => this.setState({ sources }));
     }
 
     public addNew() {
         const a : ModalDefinition = {
             name: 'source',
             complete: () => {
-                this.loadData();
             },
             cancel: () => { console.log('cancel')},
             settings: {}
@@ -98,7 +85,7 @@ export class SourceList extends React.Component<SourceListProps, SourceListState
                         </tr>
                     </thead>
                     <tbody>
-                    {this.state.sources.filter(this.state.filterFunc).map((source) => {
+                    {this.props.dataStore.all.source.value.filter(this.state.filterFunc).map((source) => {
                         return (
                             <tr key={`source-${source.uid}`}>
                                 <td>{source.uid} <AddTabButton
@@ -107,7 +94,7 @@ export class SourceList extends React.Component<SourceListProps, SourceListState
                                 <td>{source.name}</td>
                                 <td></td>
                             </tr>
-                        )}
+                        );}
                     )}
                     </tbody>
                 </table>

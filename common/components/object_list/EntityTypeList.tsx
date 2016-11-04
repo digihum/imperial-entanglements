@@ -6,7 +6,8 @@
 
 import * as React from 'react';
 
-import { ApiService, AppUrls } from '../../ApiService';
+import { ApiService } from '../../ApiService';
+import { DataStore } from '../../DataStore';
 import { EntityType } from '../../../common/datamodel/datamodel';
 
 import { AddTabButton } from '../AddTabButton';
@@ -18,10 +19,10 @@ import { SearchBar } from '../SearchBar';
 
 interface EntityTypeListProps {
     api: ApiService;
+    dataStore: DataStore;
 }
 
 interface EntityTypeListState {
-    entityTypes: EntityType[];
     filterFunc: (t: EntityType) => boolean;
 }
 
@@ -30,27 +31,14 @@ export class EntityTypeList extends React.Component<EntityTypeListProps, EntityT
     constructor() {
         super();
         this.state = {
-            entityTypes: [],
             filterFunc: () => true
         };
-    }
-
-    public componentWillMount() {
-        this.loadData();
-    }
-
-    public loadData() {
-        Promise.all([
-            this.props.api.getCollection(EntityType, AppUrls.entity_type, {})
-        ])
-        .then(([entityTypes]) => this.setState({ entityTypes }));
     }
 
     public addNew() {
         const a : ModalDefinition = {
             name: 'entity_type',
             complete: () => {
-                this.loadData();
             },
             cancel: () => { console.log('cancel')},
             settings: {}
@@ -90,7 +78,7 @@ export class EntityTypeList extends React.Component<EntityTypeListProps, EntityT
                         </tr>
                     </thead>
                     <tbody>
-                    {this.state.entityTypes.filter(this.state.filterFunc).map((entityType) => {
+                    {this.props.dataStore.all.entity_type.value.filter(this.state.filterFunc).map((entityType) => {
                         return (
                             <tr key={`entityType-${entityType.uid}`}>
                                 <td>{entityType.uid} <AddTabButton
@@ -99,7 +87,7 @@ export class EntityTypeList extends React.Component<EntityTypeListProps, EntityT
                                 <td>{entityType.name}</td>
                                 <td></td>
                             </tr>
-                        )}
+                        );}
                     )}
                     </tbody>
                 </table>

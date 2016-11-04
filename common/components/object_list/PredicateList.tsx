@@ -6,12 +6,11 @@
 
 import * as React from 'react';
 
-import { ApiService, AppUrls } from '../../ApiService';
-import { Entity, EntityType, Predicate } from '../../../common/datamodel/datamodel';
-import { ComboDropdown, ComboDropdownOption } from '../ComboDropdown';
-import { noop } from 'lodash';
+import { ApiService } from '../../ApiService';
+import { Predicate } from '../../../common/datamodel/datamodel';
 
 import { AddTabButton } from '../AddTabButton';
+import { DataStore } from '../../DataStore';
 
 import { showModal } from '../../Signaller';
 import { ModalDefinition } from '../modal/ModalDefinition';
@@ -21,11 +20,10 @@ import { SearchBar } from '../SearchBar';
 
 interface PredicateListProps {
     api: ApiService;
+    dataStore: DataStore;
 }
 
 interface PredicateListState {
-    entityTypes: EntityType[];
-    predicates: Predicate[];
     filterFunc: (p: Predicate) => boolean;
 }
 
@@ -40,29 +38,14 @@ export class PredicateList extends React.Component<PredicateListProps, Predicate
     constructor() {
         super();
         this.state = {
-            entityTypes: [],
-            predicates: [],
             filterFunc: () => true
         };
-    }
-
-    public componentWillMount() {
-        this.loadData();
-    }
-
-    public loadData() {
-         Promise.all([
-            this.props.api.getCollection(EntityType, AppUrls.entity_type, {}),
-            this.props.api.getCollection(Predicate, AppUrls.predicate, {})
-        ])
-        .then(([entityTypes, predicates]) => this.setState({ entityTypes, predicates }));
     }
 
     public addNew() {
         const a : ModalDefinition = {
             name: 'predicate',
             complete: () => {
-                this.loadData();
             },
             cancel: () => { console.log('cancel')},
             settings: {
@@ -102,8 +85,8 @@ export class PredicateList extends React.Component<PredicateListProps, Predicate
                         </tr>
                     </thead>
                     <tbody>
-                    {this.state.predicates.filter(this.state.filterFunc).map((predicate) => {
-                        const entityType = this.state.entityTypes.find((t) => t.uid === predicate.domain);
+                    {this.props.dataStore.all.predicate.value.filter(this.state.filterFunc).map((predicate) => {
+                        const entityType = this.props.dataStore.all.predicate.value.find((t) => t.uid === predicate.domain);
                         return (
                             <tr key={`predicate-${predicate.uid}`}>
                                 <td>{predicate.uid} <AddTabButton
@@ -112,7 +95,7 @@ export class PredicateList extends React.Component<PredicateListProps, Predicate
                                 <td>{predicate.name}</td>
                                 <td>{entityType ? entityType.name : ''}</td>
                             </tr>
-                        )}
+                        );}
                     )}
                     </tbody>
                 </table>

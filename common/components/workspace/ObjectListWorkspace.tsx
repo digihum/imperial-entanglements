@@ -29,11 +29,11 @@ export const ObjectListWorkspace : React.StatelessComponent<ObjectListWorkspaceP
                 case 'entity':
                     return (<EntityList api={props.api} dataStore={props.dataStore} />);
                 case 'source':
-                    return (<SourceList api={props.api} />);
+                    return (<SourceList api={props.api} dataStore={props.dataStore} />);
                 case 'predicate':
-                    return (<PredicateList api={props.api} />);
+                    return (<PredicateList api={props.api} dataStore={props.dataStore} />);
                 case 'entity_type':
-                    return (<EntityTypeList api={props.api} />);
+                    return (<EntityTypeList api={props.api} dataStore={props.dataStore} />);
             }
         })()}
     </div>

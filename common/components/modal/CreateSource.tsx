@@ -46,7 +46,7 @@ export class CreateSource extends React.Component<CreateSourceProps, CreateSourc
         .then(this.props.complete);
     }
 
-    public inputRef(val) {
+    public inputRef(val: HTMLElement | null) {
         if (val !== null) {
             val.focus();
             this.keyboardShortcuts = new mousetrap(val);
