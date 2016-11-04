@@ -14,7 +14,7 @@ import { OperationNotPermittedException } from '../core/Exceptions';
 
 import { RecordPersistable } from './RecordController';
 
-import { omit, groupBy, flatten } from 'lodash';
+import { omit, groupBy, flatten, map as pluck } from 'lodash';
 
 export class SourcePersistable extends Source implements Persistable {
 
@@ -64,16 +64,27 @@ export class SourceController extends GenericController<SourcePersistable> {
             
             SELECT *
                 FROM ancestor;
-        `, sourceId).then((results) => {
-            results[results.length - 1].uid = sourceId;
-            return Promise.all(results.map((result) =>
+        `, sourceId).then((parents) => {
+            parents = pluck(parents, 'uid');
+            parents.pop();
+            parents = [sourceId].concat(parents);
+            return Promise.all(parents.map((parent) =>
                 this.db.query().select(fields)
                 .from('source_elements')
                 .innerJoin('elements', function() { this.on('source_elements.element', '=', 'elements.uid'); })
                 .innerJoin('element_sets', function() { this.on('element_sets.uid', '=', 'elements.element_set'); })
-                .where({ 'source_elements.source': result.uid })
+                .where({ 'source_elements.source': parent })
 
-            )).then((results) => groupBy(flatten(results), 'name'));
+            )).then((results) => {
+                const a = groupBy(flatten(results), 'name');
+                return Object.keys(a).reduce((prev, cur) => {
+                    const meta = omit(a[cur][0], 'source', 'value');
+                    meta['values'] = a[cur]
+                        .map((val) => ({ source: val.source, value: val.value, uid: val.uid }))
+                        .sort((a, b) => parents.indexOf(a.source) - parents.indexOf(b.source));
+                    return Object.assign(prev, { [cur]: meta });
+                }, {});
+            });
         });
     }
 

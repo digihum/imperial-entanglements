@@ -37,7 +37,6 @@ interface SourceEditorProps {
 
 interface SourceEditorState {
     source : Source | null;
-    metaData: Dictionary<SourceElement> | null;
     dublinCore: ElementSet | null;
     potentialParents: Source[];
 }
@@ -60,7 +59,6 @@ export class SourceEditorWorkspace extends React.Component<SourceEditorProps, So
         this.state = {
             source: null,
             dublinCore: null,
-            metaData: null,
             potentialParents: []
         };
     }
@@ -110,12 +108,14 @@ export class SourceEditorWorkspace extends React.Component<SourceEditorProps, So
 
     public updateSourceElement(element: Element, value: string) {
 
-        if (this.state.metaData.hasOwnProperty(element.name)) {
+        const source = this.props.dataStore.tabs.source.get('source-' + this.props.id).value.source;
+
+        if (source.metaData.hasOwnProperty(element.name)) {
             this.props.api.putItem(SourceElement, AppUrls.source_element,
-            this.state.metaData[element.name].uid,
+            source.metaData[element.name].uid,
                 new SourceElement().deserialize({
-                    uid: this.state.metaData[element.name].uid,
-                    element: this.state.metaData[element.name].element_uid,
+                    uid: source.metaData[element.name].values[0].uid,
+                    element: source.metaData[element.name].element_uid,
                     source: this.props.id,
                     value
                 }));
@@ -234,7 +234,7 @@ export class SourceEditorWorkspace extends React.Component<SourceEditorProps, So
                             <h5 className='section-header'>{element.name} <small><a href={element.url}>{element.uri}</a></small></h5>
                             <p className='element-description'>{element.description}</p>
                             <StringEditableFieldComponent
-                                value={this.state.metaData.hasOwnProperty(element.name) ? (this.state.metaData[element.name].value) : ''}
+                                value={source.metaData.hasOwnProperty(element.name) ? (source.metaData[element.name].values[0].value) : ''}
                                 component={EditableParagraph}
                                 onChange={(value) => this.updateSourceElement(element, value)}  />
                         </div>
