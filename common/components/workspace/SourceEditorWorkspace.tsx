@@ -140,13 +140,13 @@ export class SourceEditorWorkspace extends React.Component<SourceEditorProps, So
                     cancel: () => {},
                     complete: (result) => {
                         if (result === 'addToWorkspace') {
-                            data.data.forEach((datum) => {
-                                 createTab.dispatch('entity', datum.entity);
+                            data.data.source.forEach((datum) => {
+                                 createTab.dispatch('source', datum.uid);
                             });
                         }
 
                         if (result === 'deleteAll') {
-                            Promise.all(data.data.map((datum) => this.props.api.delItem(Record, AppUrls.record, datum.uid)))
+                            Promise.all(data.data.source.map((datum) => this.props.api.delItem(Source, AppUrls.source, datum.uid)))
                             .then(() => {
                                 this.del();
                             });

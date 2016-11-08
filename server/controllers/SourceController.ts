@@ -144,14 +144,14 @@ export class SourceController extends GenericController<SourcePersistable> {
             this.db.loadCollection('records', { source: uid}),
             this.db.loadCollection('sources', { parent: uid})
         ]).then(([records, sources]) => {
-            if (records.length === 0) {
+            if (records.length + sources.length === 0) {
                 return this.db.deleteItem(this.tableName, uid);
             } else {
                 throw new OperationNotPermittedException({
                     message: 'The operation could not be completed as the source is used by other records',
                     data: {
                         record: records.map((record) => new RecordPersistable().fromSchema(record)),
-                        sources: sources.map((source) => new SourcePersistable().fromSchema(source))
+                        source: sources.map((source) => new SourcePersistable().fromSchema(source))
                     }
                 });
             }

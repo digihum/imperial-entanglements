@@ -7,8 +7,14 @@
 
     .sidebar-toolbar {
         display: flex;
+        font-size: small;
         button {
             flex: 1;
+            background-color: #6d6d6d;
+            color: white;
+            &:hover {
+                background-color: #444141;
+            }
         }
     }
 

@@ -27,6 +27,10 @@ export class CreateSource extends React.Component<CreateSourceProps, CreateSourc
 
     private keyboardShortcuts;
 
+    public static defaultProps : CreateSourceProps = {
+       initialValue: ''
+    }
+
     constructor() {
         super();
         this.state = {

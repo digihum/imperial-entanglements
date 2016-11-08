@@ -112,6 +112,52 @@ export class ConflictResolution extends React.Component<ConflictResolutionProps,
                 </span>
             ) : null }
 
+            {this.props.conflictingItems.entityType !== undefined && this.props.conflictingItems.entityType.length > 0 ? (
+                <span>
+                    <p>The following entity types conflict with your request change:</p>
+                    <table className='table'>
+                        <thead>
+                            <tr>
+                                <th>Entity Type</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {this.props.conflictingItems.entityType.map((entityType) => {
+                            return (
+                            <tr key={`row-${entityType.uid}`}>
+                                <td>
+                                    {entityType.name}
+                                </td>
+                            </tr>);
+                        })}
+                        </tbody>
+                    </table>
+                </span>
+            ) : null }
+
+             {this.props.conflictingItems.source !== undefined && this.props.conflictingItems.source.length > 0 ? (
+                <span>
+                    <p>The following sources conflict with your request change:</p>
+                    <table className='table'>
+                        <thead>
+                            <tr>
+                                <th>Sources</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {this.props.conflictingItems.source.map((source) => {
+                            return (
+                            <tr key={`row-${source.uid}`}>
+                                <td>
+                                    {source.name}
+                                </td>
+                            </tr>);
+                        })}
+                        </tbody>
+                    </table>
+                </span>
+            ) : null }
+
 
             <div className='block-buttons'>
                 <button onClick={() => this.props.cancel()}>Cancel</button>

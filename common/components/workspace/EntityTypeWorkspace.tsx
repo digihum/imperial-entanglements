@@ -18,7 +18,7 @@ import { EditableParagraph } from '../fields/EditableParagraph';
 import { EditableComboDropdown } from '../fields/EditableComboDropdown';
 import { ComboDropdownOption } from '../ComboDropdown';
 
-import { showModal } from '../../Signaller';
+import { showModal, createTab } from '../../Signaller';
 import { ModalDefinition } from '../modal/ModalDefinition';
 
 import { DataStore } from '../../DataStore';
@@ -64,7 +64,17 @@ export class EntityTypeWorkspace extends React.Component<EntityTypeWorkspaceProp
                     name: 'conflict_resolution',
                     cancel: () => {},
                     complete: (result) => {
-
+                        if (result === 'addToWorkspace') {
+                            data.data.entityType.forEach((datum) => {
+                                 createTab.dispatch('entity_type', datum.uid);
+                            });
+                            data.data.predicate.forEach((datum) => {
+                                 createTab.dispatch('predicate', datum.uid);
+                            });
+                            data.data.entity.forEach((datum) => {
+                                 createTab.dispatch('entity', datum.uid);
+                            });
+                        }
                     },
                     settings: {
                         conflictingItems: data.data,
