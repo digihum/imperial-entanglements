@@ -19,6 +19,11 @@ const databaseConnection = {
 if (process.env.DB_TYPE === 'sqlite') {
   databaseConnection.client = 'sqlite3';
   databaseConnection.connection.filename = './mydb.sqlite';
+  databaseConnection.pool = {
+    afterCreate: (conn, cb) => {
+      conn.run('PRAGMA foreign_keys = ON', cb);
+    }
+  };
 }
 
 if (process.env.DB_TYPE === 'postgres') {

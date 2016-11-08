@@ -25,6 +25,11 @@ if (databaseFile !== undefined) {
     connection: {
       filename: databaseFile[0]
     },
+    pool: {
+      afterCreate: (conn, cb) => {
+        conn.run('PRAGMA foreign_keys = ON', cb);
+      }
+    }
     //debug: true
   });
 

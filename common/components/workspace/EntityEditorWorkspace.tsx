@@ -84,13 +84,18 @@ export class EntityEditorWorkspace extends React.Component<EntityEditorProps, En
                     cancel: () => {},
                     complete: (result) => {
                         if (result === 'addToWorkspace') {
-                            data.data.forEach((datum) => {
+                            data.data.record.forEach((datum) => {
                                  createTab.dispatch('entity', datum.entity);
+                            });
+                            data.data.entity.forEach((datum) => {
+                                 createTab.dispatch('entity', datum.uid);
                             });
                         }
 
                         if (result === 'deleteAll') {
-                            Promise.all(data.data.map((datum) => this.props.api.delItem(Record, AppUrls.record, datum.uid)))
+                            Promise.all(
+                                data.data.record.map((datum) => this.props.api.delItem(Record, AppUrls.record, datum.uid))
+                            )
                             .then(() => {
                                 this.del();
                             });
