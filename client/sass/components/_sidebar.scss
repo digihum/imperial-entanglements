@@ -2,7 +2,7 @@
 #sidebar {
     background: linear-gradient(135deg, #e6e6e6 43%,#e2e2e2 100%);
     flex: 0 0 20em;
-    border-right: #efefef 1px solid;
+    border-right: rgba(109, 109, 109, 0.45) 1px solid;
     overflow-y: auto;
 
     .sidebar-toolbar {
@@ -21,21 +21,25 @@
     ul.card-list {
         list-style: none;
         padding: 0;
+        margin: 0;
     }
 
-    input.full-width-search {
-        width: 100%;
-        padding: 0.4em;
-        border: none;
+    .input-addon-formgroup {
+        input[type=text] {
+            border: 0;
+        }
+        span.input-addon-icon {
+            border: 0;
+        }
     }
 
     .sidebar-card {
         background-color: white;
         
-        border-radius: 2px;
-        border: #c2c0c0 1px solid;
+        //border-radius: 2px;
+        border-bottom: #989898 1px solid;
         position: relative;
-        margin: 0.5em 1em;
+       // margin: 0.5em 1em;
         display: flex;
 
         &.current {
@@ -86,6 +90,12 @@
         .description {
             padding: 0.6em;
 
+            a { 
+                color: rgba(0, 0, 0, 0.79);
+                text-decoration: none;
+                font-family: Roboto;
+            }
+
             .entity-name {
                 display: block;
                 font-weight: 600;
@@ -98,14 +108,13 @@
             }
         }
 
-
-
-        .close-button {
-            position: absolute;
-            top: 0.5em;
-            right: 0.5em;
-            cursor: pointer;
-        }
     }
 }
 
+
+.close-button {
+    position: absolute;
+    top: 0.5em;
+    right: 0.5em;
+    cursor: pointer;
+}

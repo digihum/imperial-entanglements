@@ -73,7 +73,7 @@ export class Sidebar extends React.Component<SidebarProps, SidebarState> {
 
                         const url = `/edit/${AppUrls[tab.tabType]}/${tab.uid}`;
                         const title = tab.tabType === 'entity' ? item.label : item.name;
-                        const subtitle = `${capitalize(AppUrls[tab.tabType])} ${tab.uid}`;
+                        const subtitle = `${capitalize(AppUrls[tab.tabType]).replace('_', ' ')} ${tab.uid}`;
 
                         const currentTab = !this.props.list && tab.tabType === this.props.workspace && tab.uid == this.props.id;
 

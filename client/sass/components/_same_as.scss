@@ -1,0 +1,12 @@
+ul.same-as-list {
+    list-style: none;
+    margin: 1em 0;
+    padding: 0em;
+    border: 1px solid grey;
+
+    li {
+        padding: 0.5em;
+        border-bottom: 1px solid grey;
+        position: relative;
+    }
+}

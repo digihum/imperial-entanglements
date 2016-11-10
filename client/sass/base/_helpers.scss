@@ -26,6 +26,13 @@ h5.section-header {
         color: #3e3e3e;
         border: 1px solid grey;
         border-right: none;
+        &.right {
+            border-right: 1px solid grey;
+            border-left: none;
+        }
+        &.button {
+            cursor: pointer;
+        }
     }
 
     input.with-addon {

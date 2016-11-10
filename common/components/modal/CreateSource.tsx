@@ -58,6 +58,7 @@ export class CreateSource extends React.Component<CreateSourceProps, CreateSourc
             this.keyboardShortcuts.bind('escape', this.props.cancel);
         } else {
             this.keyboardShortcuts.unbind('return');
+            this.keyboardShortcuts.unbind('escape');
         }
     }
 

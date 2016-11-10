@@ -86,7 +86,7 @@ export class PredicateList extends React.Component<PredicateListProps, Predicate
                     </thead>
                     <tbody>
                     {this.props.dataStore.all.predicate.value.filter(this.state.filterFunc).map((predicate) => {
-                        const entityType = this.props.dataStore.all.predicate.value.find((t) => t.uid === predicate.domain);
+                        const entityType = this.props.dataStore.all.entity_type.value.find((t) => t.uid === predicate.domain);
                         return (
                             <tr key={`predicate-${predicate.uid}`}>
                                 <td>{predicate.uid} <AddTabButton
