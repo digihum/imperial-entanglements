@@ -23,3 +23,9 @@ button {
         float: right;
     }
 }
+
+.loader-wrapper {
+    flex: 1;
+    display: flex;
+    align-items: center;
+}

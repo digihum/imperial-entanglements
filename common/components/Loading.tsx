@@ -13,7 +13,7 @@ export const Loading : React.StatelessComponent<LoadingProps>
     = (props: LoadingProps) => {
 
     return (
-    <div>
-        <p>Loading...</p>
+    <div className='loader-wrapper'>
+        <div className='loader'></div>
     </div>);
 };

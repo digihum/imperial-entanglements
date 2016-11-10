@@ -53,10 +53,6 @@ export class Sidebar extends React.Component<SidebarProps, SidebarState> {
 
     public render() {
 
-        if (this.props.loading) {
-            return (<div></div>);
-        }
-
         return (
             <section id='sidebar'>
                 <SearchBox searchString={this.state.searchString}
@@ -68,7 +64,7 @@ export class Sidebar extends React.Component<SidebarProps, SidebarState> {
                 </div>
                 <div className='card-list-container'>
                     <ul className='card-list'>
-                        {this.props.tabs.map((tab) => {
+                        {!this.props.loading ? this.props.tabs.map((tab) => {
 
                             // TODO: shouldn't be ==
                             const item = this.props.dataStore.all[tab.tabType].value
@@ -111,7 +107,7 @@ export class Sidebar extends React.Component<SidebarProps, SidebarState> {
                                 </div>
                             </li>
                         );
-                    })}
+                    }) : null}
                     </ul>
                 </div>
             </section>
