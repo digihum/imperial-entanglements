@@ -3,3 +3,34 @@
         display: flex;
     }
 }
+
+.date-picker-dropdown {
+    background-color: white;
+    padding: 1em;
+    width: 20em;
+    border: 1px solid #e3e3e3;
+
+    .range-type {
+        display: flex;
+        text-align: center;
+        .range-option {
+            flex: 1;
+            padding: 0.2em;
+            cursor: pointer;
+            &.selected {
+                background-color: lightblue;
+            }
+        }
+        margin-bottom: 0.5em;
+    }
+
+    .date-select {
+        display: flex;
+        .date-selector {
+            flex: 1;
+            select {
+                padding: 0.24em;
+            }
+        }
+    }
+}
