@@ -7,7 +7,9 @@
 import * as React from 'react';
 import * as moment from 'moment';
 
-import { findIndex, noop, padStart } from 'lodash';
+import { padStart } from 'lodash';
+
+import { formatDate } from '../../helper/formatDate';
 
 export interface DatePickerDropdownProps {
     value: string;
@@ -166,16 +168,7 @@ export class DatePickerDropdown<T> extends React.Component<DatePickerDropdownPro
         : this.props.value.substr(8, 1)
         : this.props.value.substr(7, 2);
 
-       const modifier = {
-            '=': '',
-            '>': 'After ',
-            '<': 'Before '
-        }[rangeOption];
-
-        const displayValue =  modifier + moment({
-            year, day,
-            month: (parseInt(month) - 1)
-        }).format('Do MMM YYYY');
+       const displayValue = formatDate(this.props.value);
 
        return (
         <div className='combo-dropdown'>
@@ -199,9 +192,9 @@ export class DatePickerDropdown<T> extends React.Component<DatePickerDropdownPro
                                 <div className={rangeOptionClassName('>')} onClick={() => this.rangeTypeChanged('>')}>After</div>
                             </section>
                             <section className='date-select'>
-                                <div className='date-selector year'>
-                                    <label className='small'>Year</label>
-                                    <input type='text' maxLength={4} value={year} onChange={this.yearChanged.bind(this)} />
+                                <div className='date-selector day'>
+                                    <label className='small'>Day</label>
+                                    <input type='text' maxLength={2} value={day} onChange={this.dayChanged.bind(this)} />
                                 </div>
                                 <div className='date-selector month'>
                                     <label className='small'>Month</label>
@@ -212,9 +205,9 @@ export class DatePickerDropdown<T> extends React.Component<DatePickerDropdownPro
                                         ))}
                                     </select>
                                 </div>
-                                <div className='date-selector day'>
-                                    <label className='small'>Day</label>
-                                    <input type='text' maxLength={2} value={day} onChange={this.dayChanged.bind(this)} />
+                                <div className='date-selector year'>
+                                    <label className='small'>Year</label>
+                                    <input type='text' maxLength={4} value={year} onChange={this.yearChanged.bind(this)} />
                                 </div>
                             </section>
                         </div>

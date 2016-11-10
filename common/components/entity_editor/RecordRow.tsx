@@ -5,7 +5,6 @@
  */
 
 import * as React from 'react';
-import * as moment from 'moment';
 
 import { Record, Source, Entity } from '../../../common/datamodel/datamodel';
 import { EditableSubfieldProps } from '../fields/EditableFieldComponent';
@@ -22,6 +21,8 @@ import { DateFieldEditor } from './DateFieldEditor';
 import { IntegerFieldEditor } from './IntegerFieldEditor';
 
 import { AddTabButton } from '../AddTabButton';
+
+import { formatDate } from '../../helper/formatDate';
 
 interface RecordRowProps extends EditableSubfieldProps<Record> {
     dimension: string;
@@ -83,23 +84,11 @@ const formatValue = (props: RecordRowProps) => {
     }
 
     if (props.value.valueType === 'date') {
-        const modifier = {
-            '=': '',
-            '>': 'After ',
-            '<': 'Before '
-        }[props.value.value[0]];
-
-        return modifier + moment({
-            year: props.value.value.substr(1, 4),
-            month: parseInt(props.value.value.substr(5, 2)) - 1,
-            day: props.value.value.substr(7, 2)
-        }).format('Do MMM YYYY');
+       return formatDate(props.value.value);
     }
 
     return props.value.value;
-})
-
-const odd = AppUrls.source;
+};
 
 export const RecordRow = (props: RecordRowProps) => {
 
@@ -170,7 +159,7 @@ export const RecordRow = (props: RecordRowProps) => {
                  <ScorePicker value={props.value.score} readOnly={true} />
             </td>
             <td className='record-row-item period'>
-                 {props.value.period}
+                 {formatDate(props.value.period)}
             </td>
             <td className='record-row-item buttons'>
                 <button><i className='fa fa-pencil-square-o' onClick={props.setEdit} aria-hidden='true'></i></button>
