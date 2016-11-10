@@ -75,7 +75,7 @@ export class FalconApp extends React.Component<FalconAppProps, {}> {
                                 pattern={`/edit/${routeUrl.url}`}
                                 render={
                                     (matchprops) => (
-                                        <routeUrl.collectionView
+                                        <ObjectEditor
                                             api={this.props.api} {...matchprops} 
                                             workspace={routeUrl.workspaceType}
                                             name={routeUrl.plural} 
@@ -88,7 +88,7 @@ export class FalconApp extends React.Component<FalconAppProps, {}> {
                                 className="flex-fill"
                                 render={
                                     (matchprops) => (
-                                        <routeUrl.itemView 
+                                        <ObjectEditor
                                         api={this.props.api} {...matchprops}
                                         workspace={routeUrl.workspaceType}
                                         list={false} />)

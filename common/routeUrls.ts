@@ -34,53 +34,41 @@ export const routeUrls : RouteUrls = {
 
     [AppUrls.element_set]: {
         url: 'element_set',
-        workspaceType: '',
-        itemView: RouteNotFound,
-        collectionView: RouteNotFound
+        workspaceType: ''
     },
 
     [AppUrls.record]: {
         url: 'record',
         name: 'Record',
         plural: 'Records',
-        workspaceType: '',
-        itemView: RouteNotFound,
-        collectionView: ObjectEditor
+        workspaceType: ''
     },
 
     [AppUrls.entity]:  {
         url: 'entity',
         name: 'Entity',
         plural: 'Entities',
-        workspaceType: 'entity',
-        itemView: ObjectEditor,
-        collectionView: ObjectEditor
+        workspaceType: 'entity'
     },
 
     [AppUrls.entity_type]: {
         url: 'entity_type',
         name: 'Entity Type',
         plural: 'Entity Types',
-        workspaceType: 'entity_type',
-        itemView: ObjectEditor,
-        collectionView: ObjectEditor
+        workspaceType: 'entity_type'
     },
 
     [AppUrls.predicate]: {
         url: 'property',
         name: 'Property',
         plural: 'Properties',
-        workspaceType: 'predicate',
-        itemView: ObjectEditor,
-        collectionView: ObjectEditor
+        workspaceType: 'predicate'
     },
 
     [AppUrls.source]: {
         url: 'source',
         name: 'Source',
         plural: 'Sources',
-        workspaceType: 'source',
-        itemView: ObjectEditor,
-        collectionView: ObjectEditor
+        workspaceType: 'source'
     }
 };
