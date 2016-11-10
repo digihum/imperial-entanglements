@@ -5,6 +5,8 @@
  */
 
 import * as React from 'react';
+import * as moment from 'moment';
+
 import { Record, Source, Entity } from '../../../common/datamodel/datamodel';
 import { EditableSubfieldProps } from '../fields/EditableFieldComponent';
 export { EditableFieldComponent } from '../fields/EditableFieldComponent';
@@ -66,6 +68,37 @@ const recordEditor = (props: RecordRowProps) => {
     }
 };
 
+const formatValue = (props: RecordRowProps) => {
+    if (props.value.valueType === 'entity') {
+        const entity = props.entities.find((entity) => entity.uid == props.value.value);
+        if (entity !== undefined) {
+            return (<span>
+                {entity.label} <AddTabButton
+                    uid={entity.uid}
+                    tabType='entity' />
+            </span>);
+        } else {
+            return (<em>Missing Entity</em>);
+        }
+    }
+
+    if (props.value.valueType === 'date') {
+        const modifier = {
+            '=': '',
+            '>': 'After ',
+            '<': 'Before '
+        }[props.value.value[0]];
+
+        return modifier + moment({
+            year: props.value.value.substr(1, 4),
+            month: parseInt(props.value.value.substr(5, 2)) - 1,
+            day: props.value.value.substr(7, 2)
+        }).format('Do MMM YYYY');
+    }
+
+    return props.value.value;
+})
+
 const odd = AppUrls.source;
 
 export const RecordRow = (props: RecordRowProps) => {
@@ -123,21 +156,7 @@ export const RecordRow = (props: RecordRowProps) => {
             <td className='record-row-item uid'>#{props.value.uid}</td>
             {recordValue.valueType !== 'source' ? (
                 <td className='record-row-item'>
-                    {(() => {
-                        if (props.value.valueType === 'entity') {
-                            const entity = props.entities.find((entity) => entity.uid == props.value.value);
-                            if (entity !== undefined) {
-                                return (<span>
-                                    {entity.label} <AddTabButton
-                                        uid={entity.uid}
-                                        tabType='entity' />
-                                </span>);
-                            } else {
-                                return (<em>Missing Entity</em>);
-                            }
-                        }
-                        return props.value.value;
-                    })()}
+                   {formatValue(props)}
                 </td>
             ) : null }
             <td className='record-row-item'>{dropDownValue.key}

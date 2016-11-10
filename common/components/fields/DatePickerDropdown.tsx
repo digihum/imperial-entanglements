@@ -166,6 +166,17 @@ export class DatePickerDropdown<T> extends React.Component<DatePickerDropdownPro
         : this.props.value.substr(8, 1)
         : this.props.value.substr(7, 2);
 
+       const modifier = {
+            '=': '',
+            '>': 'After ',
+            '<': 'Before '
+        }[rangeOption];
+
+        const displayValue =  modifier + moment({
+            year, day,
+            month: (parseInt(month) - 1)
+        }).format('Do MMM YYYY');
+
        return (
         <div className='combo-dropdown'>
                 <div>
@@ -173,7 +184,7 @@ export class DatePickerDropdown<T> extends React.Component<DatePickerDropdownPro
                         readOnly={true}
                         ref='datePickerDropDownInputBox'
                         className='search-input'
-                        value={this.props.value}
+                        value={displayValue}
                         onBlur={this.handleInputBlur.bind(this)}
                         onFocus={this.handleInputFocus.bind(this)}
                         onClick={this.handleInputClick.bind(this)}
