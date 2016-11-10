@@ -31,6 +31,7 @@ interface SidebarProps {
 
 interface SidebarState {
     searchString: string;
+    compactMode: boolean;
 }
 
 export class Sidebar extends React.Component<SidebarProps, SidebarState> {
@@ -38,7 +39,8 @@ export class Sidebar extends React.Component<SidebarProps, SidebarState> {
     constructor() {
         super();
         this.state = {
-            searchString: ''
+            searchString: '',
+            compactMode: false
         };
     }
 
@@ -62,7 +64,7 @@ export class Sidebar extends React.Component<SidebarProps, SidebarState> {
                 <div className='sidebar-toolbar'>
                     <button onClick={this.props.clearTabs}><i className='fa fa-trash'></i> Clear All</button>
                     <button><i className='fa fa-floppy-o'></i> Save</button>
-                    <button><i className='fa fa-compress'></i> Compact</button>
+                    <button onClick={() => this.setState({compactMode: !this.state.compactMode})}><i className='fa fa-compress'></i> Compact</button>
                 </div>
                 <div className='card-list-container'>
                     <ul className='card-list'>
@@ -80,7 +82,16 @@ export class Sidebar extends React.Component<SidebarProps, SidebarState> {
 
                             return (
                             <li key={`${url}`}>
-                                <div className={currentTab ? 'sidebar-card current' : 'sidebar-card'}>
+                                <div className={((currentTab) => {
+                                    const classes = ['sidebar-card'];
+                                    if (currentTab) {
+                                        classes.push('current');
+                                    }
+                                    if (this.state.compactMode) {
+                                        classes.push('compact');
+                                    }
+                                    return classes.join(' ');
+                                })(currentTab)}>
                                     <div className='badge-container'>
                                         <div className={'badge ' + tab.tabType}>
                                             <span>{tab.tabType[0].toUpperCase()}</span>
@@ -89,7 +100,9 @@ export class Sidebar extends React.Component<SidebarProps, SidebarState> {
                                     <div className='description'>
                                         <Link to={url}>
                                             <span className='entity-name'>{title}</span>
-                                            <span className='entity-type'>{subtitle}</span>
+                                            {this.state.compactMode ? null : (
+                                                <span className='entity-type'>{subtitle}</span>
+                                            )}
                                         </Link>
                                     </div>
                                     <span className='close-button'>

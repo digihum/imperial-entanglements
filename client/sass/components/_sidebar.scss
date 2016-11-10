@@ -42,6 +42,26 @@
     }
 
     .sidebar-card {
+
+        &.compact {
+            height: 1.5em;
+            .badge-container {
+                .badge {
+                    span {
+                        line-height: 1.5em;
+                    }
+                }
+            }
+
+            .description {
+                padding: 0.2em;
+            }
+
+            .close-button {
+                top: 0.25em;
+            }
+        }
+
         background-color: white;
         
         //border-radius: 2px;
