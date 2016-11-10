@@ -3,11 +3,15 @@
     background: linear-gradient(135deg, #e6e6e6 43%,#e2e2e2 100%);
     flex: 0 0 20em;
     border-right: rgba(109, 109, 109, 0.45) 1px solid;
-    overflow-y: auto;
+    
+    display: flex;
+    flex-direction: column;
 
     .sidebar-toolbar {
         display: flex;
         font-size: small;
+        z-index: 1;
+        box-shadow: 0px 4px 5px 0px rgba(0, 0, 0, 0.2);
         button {
             flex: 1;
             background-color: #6d6d6d;
@@ -16,6 +20,10 @@
                 background-color: #444141;
             }
         }
+    }
+
+    .card-list-container {
+        overflow-y: auto;
     }
 
     ul.card-list {

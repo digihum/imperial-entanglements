@@ -55,9 +55,19 @@ export class SameAsEditor extends React.Component<EditableSubfieldProps<string>,
             this.keyboardShortcuts = new mousetrap(val);
             this.keyboardShortcuts.bind('return', this.addItemToList.bind(this));
             this.keyboardShortcuts.bind('escape', this.props.cancelChanges);
+            this.keyboardShortcuts.bind('ctrl+s', (e) => {
+                if (e.preventDefault) {
+                    e.preventDefault();
+                } else {
+                    // internet explorer
+                    e.returnValue = false;
+                }
+                this.props.acceptChanges();
+            });
         } else {
             this.keyboardShortcuts.unbind('return');
             this.keyboardShortcuts.unbind('escape');
+            this.keyboardShortcuts.unbind('ctrl+s');
         }
     }
 

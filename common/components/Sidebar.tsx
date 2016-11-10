@@ -64,41 +64,43 @@ export class Sidebar extends React.Component<SidebarProps, SidebarState> {
                     <button><i className='fa fa-floppy-o'></i> Save</button>
                     <button><i className='fa fa-compress'></i> Compact</button>
                 </div>
-                <ul className='card-list'>
-                    {this.props.tabs.map((tab) => {
+                <div className='card-list-container'>
+                    <ul className='card-list'>
+                        {this.props.tabs.map((tab) => {
 
-                        // TODO: shouldn't be ==
-                        const item = this.props.dataStore.all[tab.tabType].value
-                            .find((item) => item.uid == tab.uid);
+                            // TODO: shouldn't be ==
+                            const item = this.props.dataStore.all[tab.tabType].value
+                                .find((item) => item.uid == tab.uid);
 
-                        const url = `/edit/${AppUrls[tab.tabType]}/${tab.uid}`;
-                        const title = tab.tabType === 'entity' ? item.label : item.name;
-                        const subtitle = `${capitalize(AppUrls[tab.tabType]).replace('_', ' ')} ${tab.uid}`;
+                            const url = `/edit/${AppUrls[tab.tabType]}/${tab.uid}`;
+                            const title = tab.tabType === 'entity' ? item.label : item.name;
+                            const subtitle = `${capitalize(AppUrls[tab.tabType]).replace('_', ' ')} ${tab.uid}`;
 
-                        const currentTab = !this.props.list && tab.tabType === this.props.workspace && tab.uid == this.props.id;
+                            const currentTab = !this.props.list && tab.tabType === this.props.workspace && tab.uid == this.props.id;
 
-                        return (
-                        <li key={`${url}`}>
-                            <div className={currentTab ? 'sidebar-card current' : 'sidebar-card'}>
-                                <div className='badge-container'>
-                                    <div className={'badge ' + tab.tabType}>
-                                        <span>{tab.tabType[0].toUpperCase()}</span>
+                            return (
+                            <li key={`${url}`}>
+                                <div className={currentTab ? 'sidebar-card current' : 'sidebar-card'}>
+                                    <div className='badge-container'>
+                                        <div className={'badge ' + tab.tabType}>
+                                            <span>{tab.tabType[0].toUpperCase()}</span>
+                                        </div>
                                     </div>
+                                    <div className='description'>
+                                        <Link to={url}>
+                                            <span className='entity-name'>{title}</span>
+                                            <span className='entity-type'>{subtitle}</span>
+                                        </Link>
+                                    </div>
+                                    <span className='close-button'>
+                                        <i className='fa fa-times' onClick={(e) => this.closeTab(e, tab.tabType, tab.uid)}></i>
+                                    </span>
                                 </div>
-                                <div className='description'>
-                                    <Link to={url}>
-                                        <span className='entity-name'>{title}</span>
-                                        <span className='entity-type'>{subtitle}</span>
-                                    </Link>
-                                </div>
-                                <span className='close-button'>
-                                    <i className='fa fa-times' onClick={(e) => this.closeTab(e, tab.tabType, tab.uid)}></i>
-                                </span>
-                            </div>
-                        </li>
-                    );
-                })}
-                </ul>
+                            </li>
+                        );
+                    })}
+                    </ul>
+                </div>
             </section>
         );
     }
