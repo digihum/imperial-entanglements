@@ -14,7 +14,9 @@ document.addEventListener('DOMContentLoaded', (event) => {
     render(createElement(FalconApp, {
         api: new ClientApiService(),
         router: BrowserRouter,
-        routerSettings: {}
+        routerSettings: {},
+        environment: 'website',
+        connected: true
     }), <Element>document.getElementById('main'));
 });
 

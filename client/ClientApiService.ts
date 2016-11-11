@@ -8,11 +8,13 @@ import { ApiService } from '../common/ApiService';
 import { Serializable, CompositeKey } from '../common/datamodel/Serializable';
 import * as queryString from 'query-string';
 
-import { triggerReload } from '../common/Signaller';
+import { triggerReload, showToast } from '../common/Signaller';
 
 import { isObject } from 'lodash';
 
 import { UnprocessableEntity } from '../common/Exceptions';
+
+import * as toastr from 'toastr';
 
 export { AppUrls } from '../common/ApiService';
 
@@ -20,15 +22,18 @@ export { AppUrls } from '../common/ApiService';
 function handleErrors(response: any) {
     if (!response.ok) {
 
+        if (response.status === 422) {
+            throw new UnprocessableEntity(response.statusText, response.json());
+        }
+
+        showToast.dispatch('Something went wrong ;(', response.statusText);
+        triggerReload.dispatch();
+
         if (response.status === 404) {
              throw Error(JSON.stringify({
                 statusText: response.statusText,
                 status: response.status
             }));
-        }
-
-        if (response.status === 422) {
-            throw new UnprocessableEntity(response.statusText, response.json());
         }
     }
     return response;

@@ -36,6 +36,8 @@ if (databaseFile !== undefined) {
   document.addEventListener('DOMContentLoaded', (event) => {
       render(createElement(FalconApp, {
           api: wrapDatabase(db, true),
+          environment: 'app',
+          connected: false,
           router: MemoryRouter,
           routerSettings: {
             initialEntries: ['/'],

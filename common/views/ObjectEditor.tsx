@@ -14,8 +14,9 @@ import { EntityType, Entity, Predicate, Record, Source, SourceElement } from '..
 
 import { Sidebar, Tab } from '../components/Sidebar';
 import { Workspace } from '../components/Workspace';
+import { Toast } from '../components/Toast';
 
-import { createTab, closeTab, showModal, triggerReload } from '../Signaller';
+import { createTab, closeTab, showModal, triggerReload, showToast } from '../Signaller';
 import { find, tail, cloneDeep, groupBy, findIndex } from 'lodash';
 
 import { CreatePredicate } from '../components/modal/CreatePredicate';
@@ -266,6 +267,8 @@ export class ObjectEditor extends React.Component<EntityEditorProps, EntityEdito
                         id={parseInt(this.props.params.id)}
                         dataStore={this.state.dataStore}
                         loading={this.state.loading} />
+
+                    <Toast />
 
                     {(() => {
                         if (this.state.modalQueue.length === 0) {

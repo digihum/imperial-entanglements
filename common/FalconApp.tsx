@@ -16,6 +16,7 @@ import { ApiService, AppUrls } from './ApiService';
 import { routeUrls } from './routeUrls';
 
 import { Admin } from './views/Admin';
+import { AdminApp } from '../app/AdminApp';
 
 import { Link } from 'react-router';
 import { ObjectEditor } from './views/ObjectEditor';
@@ -24,6 +25,8 @@ interface FalconAppProps {
     router: any;
     api: ApiService;
     routerSettings: any;
+    environment: 'app' | 'website';
+    connected: boolean;
 }
 
 export class FalconApp extends React.Component<FalconAppProps, {}> {
@@ -47,12 +50,19 @@ export class FalconApp extends React.Component<FalconAppProps, {}> {
                         <Link accessKey='t'
                             to={'/edit/' + AppUrls.entity_type} className='header-link'>{routeUrls[AppUrls.entity_type].plural}</Link>
 
-                        <div className='right-header'>
-                            <a href='/admin/logout'>Logout</a>
-                        </div>
+                        { this.props.environment === 'website' ? (
+                            <div className='right-header'>
+                                <a href='/admin/logout'>Logout</a>
+                            </div>
+                        ) : null}
+
                     </div>
 
-                    <Match exactly pattern='/' component={Admin} />
+                    { this.props.environment === 'website' ? (
+                        <Match exactly pattern='/' component={Admin} />
+                    ) : (
+                        <Match exactly pattern='/' component={AdminApp} />
+                    )}
 
                     <Match exactly pattern='/search' render={
                         (matchprops) => (
