@@ -5,22 +5,23 @@
  */
 
 import { Persistable } from '../core/Persistable';
+import { CompositeKey } from '../../common/datamodel/Serializable';
 
 export interface IController {
 
-    getItemJson<T extends Persistable>(obj: { new(): T; }, uid: number) : Promise<T>;
+    getItemJson<T extends Persistable>(obj: { new(): T; }, uid: number | CompositeKey) : PromiseLike<T>;
 
-    getCollectionJson<T extends Persistable>(obj: { new(): T; }, params: any) : Promise<T[]>;
+    getCollectionJson<T extends Persistable>(obj: { new(): T; }, params: any) : PromiseLike<T[]>;
 
     // create
-    postItem<T extends Persistable>(obj: { new(): T; }, data: any) : Promise<boolean>;
+    postItem<T extends Persistable>(obj: { new(): T; }, data: any) : PromiseLike<boolean>;
 
     // replace
-    putItem<T extends Persistable>(obj: { new(): T; }, uid: number, data: any) : Promise<boolean>;
+    putItem<T extends Persistable>(obj: { new(): T; }, uid: number | CompositeKey, data: any) : PromiseLike<boolean>;
 
     // delete
-    deleteItem<T extends Persistable>(obj: { new(): T; }, uid: number) : Promise<boolean>;
+    deleteItem<T extends Persistable>(obj: { new(): T; }, uid: number | CompositeKey) : PromiseLike<boolean>;
 
     // update
-    patchItem<T extends Persistable>(obj: { new(): T; }, uid: number, data: any) : Promise<boolean>;
+    patchItem<T extends Persistable>(obj: { new(): T; }, uid: number | CompositeKey, data: any) : PromiseLike<boolean>;
 }

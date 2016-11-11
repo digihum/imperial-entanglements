@@ -5,14 +5,17 @@
  */
 
 import { ApiService } from '../common/ApiService';
-import { Serializable } from '../common/datamodel/Serializable';
+import { Serializable, CompositeKey } from '../common/datamodel/Serializable';
 import * as queryString from 'query-string';
 
 import { triggerReload } from '../common/Signaller';
 
+import { isObject } from 'lodash';
+
 import { UnprocessableEntity } from '../common/Exceptions';
 
 export { AppUrls } from '../common/ApiService';
+
 
 function handleErrors(response: any) {
     if (!response.ok) {
@@ -32,21 +35,26 @@ function handleErrors(response: any) {
 }
 
 export class ClientApiService implements ApiService {
-    public getItem<T extends Serializable>(obj: { new(): T; }, baseUrl : string, uid: number) : Promise<T> {
-        return fetch(`/api/v1/${baseUrl}/${uid}`)
+    public getItem<T extends Serializable>(obj: { new(): T; }, baseUrl : string, uid: number | CompositeKey) : PromiseLike<T> {
+
+        const endURL = isObject(uid) ?
+            (<CompositeKey> uid).order.map((key) => (<CompositeKey> uid).values[key]).join('/')
+            : uid.toString();
+
+        return fetch(`/api/v1/${baseUrl}/${endURL}`)
             .then(handleErrors)
             .then((response) => response.json())
             .then((data) => new obj().deserialize(data));
     }
 
-    public getCollection<T extends Serializable>(obj: { new(): T; }, baseUrl : string, params: any) : Promise<T[]> {
+    public getCollection<T extends Serializable>(obj: { new(): T; }, baseUrl : string, params: any) : PromiseLike<T[]> {
         return fetch(`/api/v1/${baseUrl}?` + queryString.stringify(params))
             .then(handleErrors)
             .then((response) => response.json())
             .then((data) => data.map((datum) => new obj().deserialize(datum)));
     }
 
-    public postItem<T extends Serializable>(obj: { new(): T; }, baseUrl : string, data: T)  : Promise<boolean> {
+    public postItem<T extends Serializable>(obj: { new(): T; }, baseUrl : string, data: T)  : PromiseLike<boolean> {
         return fetch(`/api/v1/${baseUrl}`, {
             method: 'POST',
             body: JSON.stringify(data),
@@ -65,8 +73,14 @@ export class ClientApiService implements ApiService {
         });
     }
 
-    public putItem<T extends Serializable>(obj: { new(): T; }, baseUrl : string, uid: number, data: T) : Promise<boolean> {
-        return fetch(`/api/v1/${baseUrl}/${uid}`, {
+    public putItem<T extends Serializable>(obj: { new(): T; }, 
+            baseUrl : string, uid: number | CompositeKey, data: T) : PromiseLike<boolean> {
+
+        const endURL = isObject(uid) ?
+            (<CompositeKey> uid).order.map((key) => (<CompositeKey> uid).values[key]).join('/')
+            : uid.toString();
+
+        return fetch(`/api/v1/${baseUrl}/${endURL}`, {
             method: 'PUT',
             body: JSON.stringify(data),
             headers: {
@@ -82,8 +96,14 @@ export class ClientApiService implements ApiService {
         });
     }
 
-    public patchItem<T extends Serializable>(obj: { new(): T; }, baseUrl : string, uid: number, data : T) : Promise<boolean> {
-        return fetch(`/api/v1/${baseUrl}/${uid}`, {
+    public patchItem<T extends Serializable>(obj: { new(): T; },
+            baseUrl : string, uid: number | CompositeKey, data : T) : PromiseLike<boolean> {
+
+        const endURL = isObject(uid) ?
+            (<CompositeKey> uid).order.map((key) => (<CompositeKey> uid).values[key]).join('/')
+            : uid.toString();
+
+        return fetch(`/api/v1/${baseUrl}/${endURL}`, {
             method: 'PATCH',
             body: JSON.stringify(data),
             headers: {
@@ -99,8 +119,13 @@ export class ClientApiService implements ApiService {
         });
     }
 
-    public delItem<T extends Serializable>(obj: { new(): T; }, baseUrl : string, uid: number) {
-        return fetch(`/api/v1/${baseUrl}/${uid}`, {
+    public delItem<T extends Serializable>(obj: { new(): T; }, baseUrl : string, uid: number | CompositeKey) {
+
+        const endURL = isObject(uid) ?
+            (<CompositeKey> uid).order.map((key) => (<CompositeKey> uid).values[key]).join('/')
+            : uid.toString();
+
+        return fetch(`/api/v1/${baseUrl}/${endURL}`, {
             method: 'DELETE',
             credentials: 'same-origin'
         })
@@ -111,7 +136,7 @@ export class ClientApiService implements ApiService {
         });
     }
 
-    public query(graphQLQueryString: string) : Promise<any> {
+    public query(graphQLQueryString: string) : PromiseLike<any> {
         return fetch('/api/v1/query?query=' + graphQLQueryString)
             .then(handleErrors)
             .then((response) => response.json());

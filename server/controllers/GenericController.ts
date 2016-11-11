@@ -8,6 +8,8 @@ import { IController } from './IController';
 import { Persistable } from '../core/Persistable';
 import { Database } from '../core/Database';
 
+import { CompositeKey } from '../../common/datamodel/Serializable';
+
 export abstract class GenericController<T extends Persistable> implements IController {
 
     protected tableName: string;
@@ -21,12 +23,17 @@ export abstract class GenericController<T extends Persistable> implements IContr
     }
 
 
-    public getItemJson(obj: { new(): T; }, uid: number) : Promise<T> {
+    public getItemJson(obj: { new(): T; }, uid: number | CompositeKey) : PromiseLike<T> {
+
+        if (typeof(uid) !== 'number') {
+            throw new Error('Expected single column identifier');
+        }
+
         return this.db.loadItem(this.tableName, uid)
         .then((data) => new obj().fromSchema(data));
     }
 
-    public getCollectionJson(obj: { new(): T; }, params: any = {}) : Promise<T[]> {
+    public getCollectionJson(obj: { new(): T; }, params: any = {}) : PromiseLike<T[]> {
         return this.db.loadCollection(this.tableName, params)
          .then((data) => data.map((datum) =>  new obj().fromSchema(datum)));
     }
@@ -35,17 +42,26 @@ export abstract class GenericController<T extends Persistable> implements IContr
         return this.db.createItem(new obj().deserialize(data));
     }
 
-    public putItem(obj: { new(): T; }, uid: number, data: T) : Promise<string> {
+    public putItem(obj: { new(): T; }, uid: number | CompositeKey, data: T) : PromiseLike<string> {
+
+        if (typeof(uid) !== 'number') {
+            throw new Error('Expected single column identifier');
+        }
+
         return this.db.updateItem(new obj().deserialize(data));
     }
 
-    public patchItem(obj: { new(): T; }, uid: number, data: T) : Promise<boolean> {
+    public patchItem(obj: { new(): T; }, uid: number | CompositeKey, data: T) : PromiseLike<boolean> {
         const o = new obj();
         const schemaData = o.deserialize(data).toSchema();
 
         const keys = Object.keys(schemaData);
 
         const updateObject = {};
+
+        if (typeof(uid) !== 'number') {
+            throw new Error('Expected single column identifier');
+        }
 
         for (let i = 0; i < keys.length; i += 1) {
             if (schemaData[keys[i]] !== undefined) {
@@ -60,7 +76,12 @@ export abstract class GenericController<T extends Persistable> implements IContr
             .catch((err) => { throw new Error(err); });
     }
 
-    public deleteItem(obj: { new(): T; }, uid: number) : Promise<string> {
+    public deleteItem(obj: { new(): T; }, uid: number | CompositeKey) : PromiseLike<string> {
+
+        if (typeof(uid) !== 'number') {
+            throw new Error('Expected single column identifier');
+        }
+
         return this.db.deleteItem(this.tableName, uid);
     }
 }

@@ -11,6 +11,8 @@ import { CollectionNotFoundException } from './Exceptions';
 
 import { QueryEngine } from './QueryEngine';
 
+import { CompositeKey } from '../../common/datamodel/Serializable';
+
 import * as moment from 'moment';
 
 import { triggerReload } from '../../common/Signaller';
@@ -30,7 +32,7 @@ export class ServerApiService implements ApiService {
         this.fakeCreator = fakeCreator;
     }
 
-    public getItem<T extends Persistable>(obj: { new(): T; }, baseUrl : string, uid: number) : Promise<T> {
+    public getItem<T extends Persistable>(obj: { new(): T; }, baseUrl : string, uid: number | CompositeKey) : PromiseLike<T> {
         const controller = this.controllerMap.get(baseUrl);
         if (controller === undefined) {
             return Promise.reject(new CollectionNotFoundException('Controller not found'));
@@ -38,7 +40,7 @@ export class ServerApiService implements ApiService {
         return controller.getItemJson<T>(obj, uid);
     }
 
-    public getCollection<T extends Persistable>(obj: { new(): T; }, baseUrl : string, params: any) : Promise<T[]> {
+    public getCollection<T extends Persistable>(obj: { new(): T; }, baseUrl : string, params: any) : PromiseLike<T[]> {
         const controller = this.controllerMap.get(baseUrl);
         if (controller === undefined) {
             return Promise.reject(new CollectionNotFoundException('Controller not found'));
@@ -46,7 +48,7 @@ export class ServerApiService implements ApiService {
         return controller.getCollectionJson<T>(obj, params);
     }
 
-    public postItem<T extends Persistable>(obj: { new(): T; }, baseUrl : string, data: T)  : Promise<boolean> {
+    public postItem<T extends Persistable>(obj: { new(): T; }, baseUrl : string, data: T)  : PromiseLike<boolean> {
         const controller = this.controllerMap.get(baseUrl);
         if (controller === undefined) {
             return Promise.reject(new CollectionNotFoundException('Controller not found'));
@@ -62,7 +64,9 @@ export class ServerApiService implements ApiService {
         });
     }
 
-    public putItem<T extends Persistable>(obj: { new(): T; }, baseUrl : string, uid: number, data: T) : Promise<boolean> {
+    public putItem<T extends Persistable>(obj: { new(): T; }, 
+            baseUrl : string, uid: number | CompositeKey, data: T) : PromiseLike<boolean> {
+
         const controller = this.controllerMap.get(baseUrl);
         if (controller === undefined) {
             return Promise.reject(new CollectionNotFoundException('Controller not found'));
@@ -76,7 +80,9 @@ export class ServerApiService implements ApiService {
         });
     }
 
-    public patchItem<T extends Persistable>(obj: { new(): T; }, baseUrl : string, uid: number, data : T) : Promise<boolean> {
+    public patchItem<T extends Persistable>(obj: { new(): T; }, 
+            baseUrl : string, uid: number | CompositeKey, data : T) : PromiseLike<boolean> {
+
         const controller = this.controllerMap.get(baseUrl);
         if (controller === undefined) {
             return Promise.reject(new CollectionNotFoundException('Controller not found'));
@@ -90,7 +96,7 @@ export class ServerApiService implements ApiService {
         });
     }
 
-    public delItem<T extends Persistable>(obj: { new(): T; }, baseUrl : string, uid: number) {
+    public delItem<T extends Persistable>(obj: { new(): T; }, baseUrl : string, uid: number | CompositeKey) {
         const controller = this.controllerMap.get(baseUrl);
         if (controller === undefined) {
             return Promise.reject(new CollectionNotFoundException('Controller not found'));
@@ -102,4 +108,8 @@ export class ServerApiService implements ApiService {
         });
     }
 
+
+    public query(graphQLQuery: string) : PromiseLike<any> {
+        return Promise.resolve({});
+    }
 }

@@ -110,11 +110,20 @@ export class SourceEditorWorkspace extends React.Component<SourceEditorProps, So
 
         const source = this.props.dataStore.tabs.source.get('source-' + this.props.id).value.source;
 
+        const compositeKey = {
+            order: ['source', 'element'],
+            values: {
+                source: this.props.id,
+                element: element.uid
+            }
+        };
+
         if (source.metaData.hasOwnProperty(element.name)) {
-            this.props.api.putItem(SourceElement, AppUrls.source_element,
-            source.metaData[element.name].uid,
+
+            this.props.api.patchItem(SourceElement, AppUrls.source_element,
+            compositeKey,
                 new SourceElement().deserialize({
-                    uid: source.metaData[element.name].values[0].uid,
+                    uid: compositeKey,
                     element: source.metaData[element.name].element_uid,
                     source: this.props.id,
                     value
@@ -122,8 +131,7 @@ export class SourceEditorWorkspace extends React.Component<SourceEditorProps, So
         } else {
             this.props.api.postItem(SourceElement, AppUrls.source_element,
                 new SourceElement().deserialize({
-                    element: element.uid,
-                    source: this.props.id,
+                    uid: compositeKey,
                     value: value
                 }));
         }

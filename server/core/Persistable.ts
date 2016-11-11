@@ -4,11 +4,11 @@
  * @version 0.0.1
  */
 
-import { Serializable } from '../../common/datamodel/Serializable';
+import { Serializable, CompositeKey } from '../../common/datamodel/Serializable';
 
 export interface Persistable extends Serializable {
     getTableName() : string;
-    uid: number | null;
+    uid: number | null | CompositeKey;
     toSchema() : any;
     fromSchema(data: any) : Persistable;
 }

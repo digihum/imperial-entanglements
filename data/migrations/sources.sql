@@ -41,7 +41,6 @@ CREATE TABLE elements (
 
 DROP TABLE IF EXISTS source_elements;
 CREATE TABLE source_elements (
-    uid <%= auto_increment %> NOT NULL,
 
     source INTEGER NOT NULL 
         REFERENCES sources(uid)
@@ -59,5 +58,7 @@ CREATE TABLE source_elements (
         REFERENCES users(uid),
 
     creation_timestamp varchar(255) NOT NULL,
-    lastmodified_timestamp varchar(255) NOT NULL
+    lastmodified_timestamp varchar(255) NOT NULL,
+
+    PRIMARY KEY (source, element)
 );

@@ -258,10 +258,15 @@ export class ObjectEditor extends React.Component<EntityEditorProps, EntityEdito
                         loading={this.state.loading}
                         clearTabs={this.clearAllTabs.bind(this)}
                         list={this.props.list}
-                        id={this.props.params.id}
+                        id={parseInt(this.props.params.id)}
                         workspace={this.props.workspace}
                     />
-                    <Workspace {...this.props} id={this.props.params.id} dataStore={this.state.dataStore} loading={this.state.loading} />
+
+                    <Workspace {...this.props}
+                        id={parseInt(this.props.params.id)}
+                        dataStore={this.state.dataStore}
+                        loading={this.state.loading} />
+
                     {(() => {
                         if (this.state.modalQueue.length === 0) {
                             return null;

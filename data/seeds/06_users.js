@@ -15,6 +15,15 @@ exports.seed = function(knex, Promise) {
           email: 'tim.hollies@warwick.ac.uk',
           account_level: 1
         }),
+
+        knex('users').insert({
+          uid: 0, 
+          name: 'Unknown',
+          username: 'unknown',
+          password: bcrypt.hashSync('', 10),
+          email: '',
+          account_level: 1
+        }),
       ]);
     });
 };

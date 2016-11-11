@@ -68,7 +68,7 @@ export class PredicateController extends GenericController<PredicatePersistable>
         super(db, PredicatePersistable.tableName);
     }
 
-    public getCollectionJson(obj: { new(): PredicatePersistable; }, params: any = {}) : Promise<PredicatePersistable[]>  {
+    public getCollectionJson(obj: { new(): PredicatePersistable; }, params: any = {}) : PromiseLike<PredicatePersistable[]>  {
         if (params.domain !== undefined) {
             return this.db.query().raw(`
             WITH RECURSIVE parent_of(uid, parent) AS  (SELECT uid, parent FROM entity_types),
@@ -93,7 +93,7 @@ export class PredicateController extends GenericController<PredicatePersistable>
         }
     }
 
-     public deleteItem(obj: { new(): PredicatePersistable; }, uid: number) : Promise<string> {
+     public deleteItem(obj: { new(): PredicatePersistable; }, uid: number) : PromiseLike<string> {
         // check if this entity is the parent of another entity or if it has any relationships
         // pointing towards it.
         return Promise.all([

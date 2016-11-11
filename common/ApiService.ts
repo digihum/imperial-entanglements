@@ -4,7 +4,7 @@
  * @version 0.1.0
  */
 
-import { Serializable } from './datamodel/Serializable';
+import { Serializable, CompositeKey } from './datamodel/Serializable';
 
 export const AppUrls : {
     element_set: string,
@@ -27,16 +27,16 @@ export const AppUrls : {
 };
 
 export interface ApiService {
-    getItem<T extends Serializable>(obj: { new(): T; }, baseUrl : string, uid: number) : Promise<T>;
-    getCollection<T extends Serializable>(obj: { new(): T; }, baseUrl : string, params: any) : Promise<T[]>;
+    getItem<T extends Serializable>(obj: { new(): T; }, baseUrl : string, uid: number | CompositeKey) : PromiseLike<T>;
+    getCollection<T extends Serializable>(obj: { new(): T; }, baseUrl : string, params: any) : PromiseLike<T[]>;
 
-    postItem<T extends Serializable>(obj: { new(): T; }, baseUrl : string, data: T) : Promise<boolean>;
-    putItem<T extends Serializable>(obj: { new(): T; }, baseUrl : string, uid: number, data: T) : Promise<boolean>;
+    postItem<T extends Serializable>(obj: { new(): T; }, baseUrl : string, data: T) : PromiseLike<boolean>;
+    putItem<T extends Serializable>(obj: { new(): T; }, baseUrl : string, uid: number | CompositeKey, data: T) : PromiseLike<boolean>;
 
     //TODO: patch item takes a subset of an objects properties. This is currently being looked at in TS in the 
     //context of the 'setState' function in react
-    patchItem<T extends Serializable>(obj: { new(): T; }, baseUrl : string, uid: number, data : any) : Promise<boolean>;
-    delItem<T extends Serializable>(obj: { new(): T; }, baseUrl : string, uid: number) : Promise<boolean>;
+    patchItem<T extends Serializable>(obj: { new(): T; }, baseUrl : string, uid: number | CompositeKey, data : any) : PromiseLike<boolean>;
+    delItem<T extends Serializable>(obj: { new(): T; }, baseUrl : string, uid: number | CompositeKey) : PromiseLike<boolean>;
 
-    query(graphQLQuery: string) : Promise<any>;
+    query(graphQLQuery: string) : PromiseLike<any>;
 } 

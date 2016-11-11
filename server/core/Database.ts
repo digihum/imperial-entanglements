@@ -51,7 +51,7 @@ export class Database {
         return this.knex.insert(withoutUid, 'uid').into(a.getTableName()).returning('uid');
     }
 
-    public updateItem(a: Persistable) : Promise<any> {
+    public updateItem(a: Persistable) : PromiseLike<any> {
         // assert - must have uid
         // validation?
         return this.knex(a.getTableName())
@@ -59,7 +59,7 @@ export class Database {
             .update(omit(a.toSchema(), ['tableName']));
     }
 
-    public deleteItem(tableName: string, uid: number) : Promise<any> {
+    public deleteItem(tableName: string, uid: number) : PromiseLike<any> {
         return this.knex(tableName)
             .where({ uid })
             .del();

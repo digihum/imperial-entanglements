@@ -4,8 +4,10 @@
  * @version 0.0.1
  */
 
+export type CompositeKey = { order: string[], values: { [s: string] : number }};
+
 export interface Serializable {
-    uid: number | null;
+    uid: number | null | CompositeKey;
     serialize() : any;
     deserialize(data: any);
 }

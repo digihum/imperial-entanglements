@@ -105,8 +105,7 @@ export class SourceController extends GenericController<SourcePersistable> {
                 'element_sets.name as element_set',
                 'elements.comment',
                 'elements.uri',
-                'elements.uid as element_uid',
-                'source_elements.uid'], source.uid)
+                'elements.uid as element_uid'], source.uid)
             .then((sourceElements) => {
                 source.metaData = sourceElements;
                 return source;

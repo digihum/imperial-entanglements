@@ -46,6 +46,57 @@ export const wrapDatabase : (s: Database, fakeCreator: boolean) => ServerApiServ
     return new ServerApiService(routes, new QueryEngine(db), fakeCreator);
 };
 
+const sourceElementSpecial = (router: any, serverApiContext: ServerApiService, typeMap: any) => {
+
+    router.get(`/api/v1/${AppUrls.source_element}/:source/:element`, function* (next : Koa.Context) {
+        yield serverApiContext
+            .getItem<Persistable>(typeMap[AppUrls.source_element], AppUrls.source_element, {
+                order: ['source', 'element'],
+                values: {
+                    source: this.params.source,
+                    element: this.params.element
+                }
+            })
+            .then((data) => this.body = data.serialize());
+    });
+
+    router.put(`/api/v1/${AppUrls.source_element}/:source/:element`, function* (next : Koa.Context) {
+        yield serverApiContext
+            .putItem<Persistable>(typeMap[AppUrls.source_element], AppUrls.source_element, {
+                order: ['source', 'element'],
+                values: {
+                    source: this.params.source,
+                    element: this.params.element
+                }
+            }, this.request.body)
+            .then((data) => this.body = data);
+    });
+
+    router.patch(`/api/v1/${AppUrls.source_element}/:source/:element`, function* (next : Koa.Context) {
+        yield serverApiContext
+            .patchItem<Persistable>(typeMap[AppUrls.source_element], AppUrls.source_element, {
+                order: ['source', 'element'],
+                values: {
+                    source: this.params.source,
+                    element: this.params.element
+                }
+            }, this.request.body)
+            .then((data) => this.body = data);
+    });
+
+    router.del(`/api/v1/${AppUrls.source_element}/:source/:element`, function* (next : Koa.Context) {
+        yield serverApiContext
+            .delItem<Persistable>(typeMap[AppUrls.source_element], AppUrls.source_element, {
+                order: ['source', 'element'],
+                values: {
+                    source: this.params.source,
+                    element: this.params.element
+                }
+            })
+            .then((data) => this.body = data);
+    });
+};
+
 // would be cleaner if it allowed 2nd level REST urls
 //  /entity/{entity_id}/predicate/{predicate_id}
 // /source/{source_id}/element/{element_id}
@@ -104,11 +155,14 @@ export const api : (router: KoaRouter, s: ServerApiService) => KoaRouter
             .then((result) => this.body = result);
     });
 
+    sourceElementSpecial(router, serverApiContext, typeMap);
+
     router.get('/api/v1/:route/:id', function* (next : Koa.Context) {
         yield serverApiContext
-            .getItem<Persistable>(typeMap[this.params.route], this.params.route, this.params.id)
+            .getItem<Persistable>(typeMap[this.params.route], this.params.route, parseInt(this.params.id))
             .then((data) => this.body = data.serialize());
     });
+
 
     router.get('/api/v1/:route', function* (next : Koa.Context) {
         yield serverApiContext
@@ -126,23 +180,22 @@ export const api : (router: KoaRouter, s: ServerApiService) => KoaRouter
 
     router.put('/api/v1/:route/:id', function* (next : Koa.Context) {
         yield serverApiContext
-            .putItem<Persistable>(typeMap[this.params.route], this.params.route, this.params.id, this.request.body)
+            .putItem<Persistable>(typeMap[this.params.route], this.params.route, parseInt(this.params.id), this.request.body)
             .then((data) => this.body = data);
     });
 
     router.patch('/api/v1/:route/:id', function* (next : Koa.Context) {
         yield serverApiContext
-            .patchItem<Persistable>(typeMap[this.params.route], this.params.route, this.params.id, this.request.body)
+            .patchItem<Persistable>(typeMap[this.params.route], this.params.route, parseInt(this.params.id), this.request.body)
             .then((data) => this.body = data);
     });
 
     router.del('/api/v1/:route/:id', function* (next : Koa.Context) {
         yield serverApiContext
-            .delItem<Persistable>(typeMap[this.params.route], this.params.route, this.params.id)
+            .delItem<Persistable>(typeMap[this.params.route], this.params.route, parseInt(this.params.id))
             .then((data) => this.body = data);
     });
 
     return router;
 };
-
 
