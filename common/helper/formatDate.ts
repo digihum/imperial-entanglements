@@ -6,7 +6,12 @@
 
 import * as moment from 'moment';
 
-export const formatDate : (s: string) => string = (str: string) => {
+export const formatDate : (s: string | null) => string = (str: string | null) => {
+
+      if (str === null) {
+          return '';
+      }
+
       const modifier = {
             '=': '',
             '>': 'After ',
