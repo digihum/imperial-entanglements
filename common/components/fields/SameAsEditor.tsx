@@ -103,7 +103,7 @@ export class SameAsEditor extends React.Component<EditableSubfieldProps<string>,
             ) : null}
             <ul className='same-as-list'>
                 {this.state.urls.map((url, i) => (
-                    <li key={`li-${url}`}><a href={url}>{url}</a> {this.props.edit ? (<i 
+                    <li key={`li-${url}`}><a target='_blank' href={url}>{url}</a> {this.props.edit ? (<i 
                         className='fa fa-times close-button'
                         onClick={this.removeItemFromList.bind(this,i)}></i>) : null}</li>
                 ))}
