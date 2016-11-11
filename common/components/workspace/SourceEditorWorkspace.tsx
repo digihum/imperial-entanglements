@@ -118,7 +118,8 @@ export class SourceEditorWorkspace extends React.Component<SourceEditorProps, So
             }
         };
 
-        if (source.metaData.hasOwnProperty(element.name)) {
+        if (source.metaData[element.name] !== undefined
+            && source.metaData[element.name].values.find((a) => a.source === this.props.id) !== undefined) {
 
             this.props.api.patchItem(SourceElement, AppUrls.source_element,
             compositeKey,
