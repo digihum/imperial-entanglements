@@ -22,6 +22,22 @@
             "outDir": "${workspaceRoot}/build"
         },
         {
+            "name": "Debug Everything",
+            "type": "composite",
+            "configurationNames": [
+                "Launch",
+                "Launch localhost with sourcemaps"
+            ]
+        },
+        {
+            "name": "Launch localhost with sourcemaps",
+            "type": "chrome",
+            "request": "launch",
+            "url": "http://localhost:8080/admin",
+            "webRoot": "${workspaceRoot}/build/static",
+            "sourceMaps": true
+        },
+        {
             "name": "Migrate",
             "type": "node",
             "request": "launch",

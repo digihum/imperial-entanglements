@@ -59,6 +59,7 @@
     "koa-session": "^3.4.0",
     "koa-static": "^2.0.0",
     "leaflet": "^1.0.1",
+    "levenshtein": "^1.0.5",
     "lodash": "^4.16.1",
     "lunr": "^0.7.1",
     "moment": "^2.15.2",

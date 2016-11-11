@@ -6,6 +6,8 @@
 
 import * as React from 'react';
 
+import * as lev from 'levenshtein';
+
 import { ApiService, AppUrls } from '../../ApiService';
 import { DataStore } from '../../DataStore';
 import { Entity, EntityType, Predicate, Record } from '../../../common/datamodel/datamodel';
@@ -26,6 +28,9 @@ interface EntityListProps {
 interface ColumnSettings {
     predicate: number;
     sort: 'none' | 'asc' | 'desc';
+    filterType: 'any' | 'exists' | 'contains' | 'similar';
+    invertFilter: boolean;
+    filterValue: string;
 }
 
 interface EntityListState {
@@ -42,7 +47,7 @@ const sortIcons = {
     'desc': 'fa fa-sort-desc'
 };
 
-const customColumns = (predicates, columns, setColumnPredicate, rotateSort) => {
+const customColumns = (predicates, columns, updateColumnParams, rotateSort) => {
     return [0, 1, 2].map((id) => {
 
         const comboValue = { key: '', value: ''};
@@ -63,7 +68,7 @@ const customColumns = (predicates, columns, setColumnPredicate, rotateSort) => {
                             value={comboValue}
                             typeName='predicate'
                             allowNew={false}
-                            setValue={(value) => setColumnPredicate(id, value.value)}
+                            setValue={(value) => updateColumnParams(id, { predicate: value.value })}
                             options={predicates.map((pred) => ({ key: pred.name, value: pred.uid.toString()}))}
                             createNewValue={noop}
                             compact={true}
@@ -87,9 +92,9 @@ export class EntityList extends React.Component<EntityListProps, EntityListState
             entityTypes: [],
             predicates: [],
             columns: [
-                { predicate: -1, sort: 'none' },
-                { predicate: -1, sort: 'none' },
-                { predicate: -1, sort: 'none' }
+                { predicate: -1, sort: 'none', filterType: 'any', invertFilter: false, filterValue: '' },
+                { predicate: -1, sort: 'none', filterType: 'any', invertFilter: false, filterValue: '' },
+                { predicate: -1, sort: 'none', filterType: 'any', invertFilter: false, filterValue: '' }
             ],
             results: []
         };
@@ -127,6 +132,14 @@ export class EntityList extends React.Component<EntityListProps, EntityListState
     public setColumnPredicate(colId: number, predicateId: number) {
         const columns = cloneDeep(this.state.columns);
         columns[colId].predicate = predicateId;
+        this.setState({
+            columns
+        }, this.reload.bind(this));
+    }
+
+    public updateColumnParams(colId: number, updateData: { [s: string]: any }) {
+        const columns = cloneDeep(this.state.columns);
+        columns[colId] = Object.assign(columns[colId], updateData);
         this.setState({
             columns
         }, this.reload.bind(this));
@@ -177,7 +190,33 @@ export class EntityList extends React.Component<EntityListProps, EntityListState
                         }
                 })
             };
-        }).sort((row1, row2) => {
+        })
+        .filter((row) => {
+            let keepRow = true;
+            this.state.columns.forEach((col, i) => {
+                if (col.filterType === 'contains' && col.filterValue.length > 0 && col.predicate !== null) {
+                    if (row.columns[i].toLowerCase().indexOf(col.filterValue.toLowerCase()) === -1) {
+                        keepRow = false;
+                    }
+                }
+
+                if (col.filterType === 'exists' && col.predicate !== null) {
+                    if (row.columns[i].length === 0) {
+                        keepRow = false;
+                    }
+                }
+
+                if (col.filterType === 'similar' && col.predicate !== null && col.filterValue.length > 0) {
+                    if (new lev(row.columns[i], col.filterValue).distance >= col.filterValue.length + 2) {
+                        keepRow = false;
+                    }
+                }
+
+                
+            });
+            return keepRow;
+        })
+        .sort((row1, row2) => {
             let score = 0;
             this.state.columns.forEach((col, i) => {
                 if (col.sort !== 'none' && row1.columns[i] !== row2.columns[i]) {
@@ -206,22 +245,28 @@ export class EntityList extends React.Component<EntityListProps, EntityListState
                             <td>#</td>
                             <td>Label</td>
                             <td>Type</td>
-                            { customColumns(predicates, this.state.columns, this.setColumnPredicate.bind(this), this.rotateSort.bind(this))}
+                            { customColumns(predicates, this.state.columns, this.updateColumnParams.bind(this), this.rotateSort.bind(this))}
                         </tr>
                         <tr>
                             <td></td>
                             <td></td>
                             <td></td>
 
-                            {[0,1,2].map((id) => (
+                            {this.state.columns.map((col, id) => (
                                 <td key={`col-${id}`}>
                                     <div>
-                                        <select>
-                                            <option>Exists</option>
-                                            <option>Equals</option>
-                                            <option>Similar</option>
+                                        <select value={col.filterType}
+                                                onChange={(e) => this.updateColumnParams(id, { filterType: e.target.value})}>
+                                            <option value='any'>Any</option>
+                                            <option value='exists'>Exists</option>
+                                            <option value='contains'>Contains</option>
+                                            <option value='similar'>Similar</option>
                                         </select>
-                                        <input type='text' />
+                                        {col.filterType === 'similar' || col.filterType === 'contains' ? (
+                                            <input type='text'
+                                                onChange={(e) => this.updateColumnParams(id, { filterValue: e.target.value})}
+                                                value={col.filterValue} />
+                                        ) : null }
                                     </div>
                                 </td>
                             ))}
