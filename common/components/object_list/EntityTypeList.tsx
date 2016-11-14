@@ -69,12 +69,13 @@ export class EntityTypeList extends React.Component<EntityTypeListProps, EntityT
                     setFilterFunc={(f) => this.setState({ filterFunc: f })}
                 />
 
-                <table className='table'>
+                <table className='table gap'>
                     <thead>
                         <tr>
                             <td>#</td>
-                            <td>Label</td>
-                            <td>Type</td>
+                            <td>Name</td>
+                            <td>Parent</td>
+                            <td>Description</td>
                         </tr>
                     </thead>
                     <tbody>
@@ -85,7 +86,8 @@ export class EntityTypeList extends React.Component<EntityTypeListProps, EntityT
                                     uid={entityType.uid}
                                     tabType='entity_type' /></td>
                                 <td>{entityType.name}</td>
-                                <td></td>
+                                <td>{entityType.parent}</td>
+                                <td>{entityType.description}</td>
                             </tr>
                         );}
                     )}

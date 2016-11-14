@@ -76,17 +76,21 @@ export class PredicateList extends React.Component<PredicateListProps, Predicate
                     setFilterFunc={(f) => this.setState({ filterFunc: f })}
                 />
 
-                <table className='table'>
+                <table className='table gap'>
                     <thead>
                         <tr>
                             <td>#</td>
                             <td>Label</td>
                             <td>Domain</td>
+                            <td>Range</td>
                         </tr>
                     </thead>
                     <tbody>
                     {this.props.dataStore.all.predicate.value.filter(this.state.filterFunc).map((predicate) => {
                         const entityType = this.props.dataStore.all.entity_type.value.find((t) => t.uid === predicate.domain);
+                        const rangeType = predicate.rangeIsReference ?
+                            this.props.dataStore.all.entity_type.value.find((t) => t.uid === predicate.range) :
+                            predicate.range;
                         return (
                             <tr key={`predicate-${predicate.uid}`}>
                                 <td>{predicate.uid} <AddTabButton
@@ -94,6 +98,7 @@ export class PredicateList extends React.Component<PredicateListProps, Predicate
                                     tabType='predicate' /></td>
                                 <td>{predicate.name}</td>
                                 <td>{entityType ? entityType.name : ''}</td>
+                                <td>{predicate.rangeIsReference ? rangeType ? rangeType.name : '' : rangeType}</td>
                             </tr>
                         );}
                     )}

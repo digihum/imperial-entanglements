@@ -16,6 +16,11 @@
 
 .workspace-editor.object-list {
     table.table {
+
+        &.gap {
+            margin-top: 1em;
+        }
+
         border: #c1c1c1 1px solid;
         thead {
             td, th {
@@ -25,6 +30,10 @@
             border-bottom: #6d6d6d 2px solid;
         }
         tbody {
+            tr:nth-child(odd) {
+                background-color: #ccc;
+            }
+
             tr {
                 border-bottom: rgb(224, 224, 224) 1px solid;
                 margin: 1em 0;

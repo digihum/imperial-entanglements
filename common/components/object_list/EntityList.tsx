@@ -293,10 +293,10 @@ export class EntityList extends React.Component<EntityListProps, EntityListState
                     <tbody>
                     {tableData.map((row) => (
                             <tr key={`entity-${row.uid}`}>
-                                <td>{row.uid} <AddTabButton
+                                <td>{row.uid}</td>
+                                <td>{row.label} <AddTabButton
                                     uid={row.uid}
                                     tabType='entity'/></td>
-                                <td>{row.label}</td>
                                 <td>{row.entityType ? row.entityType.name : ''}</td>
                                 {[0,1,2].map((id) => (<td key={`col-val-${id}`}>{row.columns[id]}</td>))}
                             </tr>

@@ -76,12 +76,12 @@ export class SourceList extends React.Component<SourceListProps, SourceListState
                     setFilterFunc={(f) => this.setState({ filterFunc: f })}
                 />
 
-                <table className='table'>
+                <table className='table gap'>
                     <thead>
                         <tr>
                             <td>#</td>
-                            <td>Label</td>
-                            <td>Type</td>
+                            <td>Name</td>
+                            <td>Parent</td>
                         </tr>
                     </thead>
                     <tbody>
@@ -92,7 +92,7 @@ export class SourceList extends React.Component<SourceListProps, SourceListState
                                     uid={source.uid}
                                     tabType='source' /></td>
                                 <td>{source.name}</td>
-                                <td></td>
+                                <td>{source.parent}</td>
                             </tr>
                         );}
                     )}
