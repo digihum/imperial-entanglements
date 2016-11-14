@@ -13,7 +13,9 @@ import { MemoryRouter } from 'react-router';
 
 import * as electron from 'electron';
 
-const databaseFile = electron.remote.dialog.showOpenDialog({properties: ['openFile']});
+const databaseFile = electron.remote.dialog.showOpenDialog({properties: ['openFile'],  filters: [
+    {name: 'Database Files', extensions: ['sqlite']}
+  ]});
 
 if (databaseFile !== undefined) {
 
