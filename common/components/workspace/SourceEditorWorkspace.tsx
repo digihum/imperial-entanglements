@@ -193,6 +193,16 @@ export class SourceEditorWorkspace extends React.Component<SourceEditorProps, So
             <div className='workspace-editor'>
                 <header className='editor-header source'>
                     <div className='main-toolbar'>
+                        <div className='bread-crumbs'>
+                            {source.parents
+                                .map((child) => this.props.dataStore.all.source.value.find((et) => et.uid === child))
+                                .map((parent, i) => (
+                                <span key={`breadcrumb-${parent.uid}`}>
+                                    <span>  {parent.name} <AddTabButton tabType='source' uid={parent.uid} /> </span>
+                                    <i className='fa fa-angle-right'></i>
+                                </span>
+                            ))}
+                        </div>
                         <i className='fa fa-sun-o item-icon'></i>
                         <StringEditableFieldComponent
                             value={source.name}
@@ -248,6 +258,17 @@ export class SourceEditorWorkspace extends React.Component<SourceEditorProps, So
                                 onChange={(value) => this.updateSourceElement(element, value)}  />
                         </div>
                     ))}
+
+                    <div>
+                        <h4>Direct Children</h4>
+                        <ul>
+                        {source.children
+                            .map((child) => this.props.dataStore.all.source.value.find((et) => et.uid === child))
+                            .map((childEt) =>
+                                (<li key={`dc-${childEt.name}`}>{childEt.name} <AddTabButton tabType='entity_type' uid={childEt.uid} /></li>
+                            ))}
+                        </ul>
+                    </div>
                 </section>
             </div>
         );

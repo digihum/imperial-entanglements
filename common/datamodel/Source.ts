@@ -15,6 +15,7 @@ export class Source implements Serializable {
     public sameAs: string;
     public parent: number | null;
     public parents: number[];
+    public children: number[];
     public creator: number;
 
     public creationTimestamp: string;
@@ -32,6 +33,7 @@ export class Source implements Serializable {
         this.sameAs = data.sameAs;
         this.parent = data.parent;
         this.parents = data.parents;
+        this.children = data.children;
         this.creator = data.creator;
 
         this.creationTimestamp = data.creationTimestamp;

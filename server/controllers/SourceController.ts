@@ -29,6 +29,7 @@ export class SourcePersistable extends Source implements Persistable {
             'metaData',
             'sameAs',
             'parents',
+            'children',
             'creationTimestamp',
             'lastmodifiedTimestamp'
         ), {
@@ -89,7 +90,7 @@ export class SourceController extends GenericController<SourcePersistable> {
         });
     }
 
-    public getItemJson(obj: { new(): SourcePersistable; }, uid: number) : Promise<SourcePersistable> {
+    public getItemJson(obj: { new(): SourcePersistable; }, uid: number) : PromiseLike<SourcePersistable> {
         return super.getItemJson(obj, uid)
         .then((source) => {
 
@@ -97,7 +98,8 @@ export class SourceController extends GenericController<SourcePersistable> {
                 throw new Error('could not find source');
             }
 
-            return this.getMetadata([
+            return Promise.all([
+                this.getMetadata([
                 'source_elements.source as source',
                 'elements.name',
                 'source_elements.value',
@@ -105,9 +107,25 @@ export class SourceController extends GenericController<SourcePersistable> {
                 'element_sets.name as element_set',
                 'elements.comment',
                 'elements.uri',
-                'elements.uid as element_uid'], source.uid)
-            .then((sourceElements) => {
+                'elements.uid as element_uid'], source.uid),
+
+                this.db.query().select('uid').from('sources').where({ parent: uid }),
+
+                this.db.query().raw(`
+                    WITH RECURSIVE parent_of(uid, parent) AS  (SELECT uid, parent FROM sources),
+                    ancestor(uid) AS (
+                    SELECT parent FROM parent_of WHERE uid=?
+                    UNION ALL
+                    SELECT parent FROM parent_of JOIN ancestor USING(uid) )
+                    
+                    SELECT uid
+                    FROM ancestor;
+                `, uid)
+            ])
+            .then(([sourceElements, children, parents]) => {
                 source.metaData = sourceElements;
+                source.children = children.map((child) => child.uid).filter((child) => child !== null);
+                source.parents = parents.map((parent) => parent.uid).filter((parent) => parent !== null);
                 return source;
             });
         });
