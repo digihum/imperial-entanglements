@@ -30,6 +30,7 @@ export class EntityTypePersistable extends EntityType implements Persistable {
         return Object.assign(omit(this.serialize(),
                 'sameAs',
                 'parents',
+                'children',
                 'creationTimestamp',
                 'lastmodifiedTimestamp'), {
             same_as: this.sameAs,
@@ -61,21 +62,27 @@ export class EntityTypeController extends GenericController<EntityTypePersistabl
 	// FROM entity_types
 	// WHERE entity_types.uid in ancestor;
 
-    public getItemJson(obj: { new(): EntityTypePersistable; }, uid: number) : Promise<EntityTypePersistable> {
+    public getItemJson(obj: { new(): EntityTypePersistable; }, uid: number) : PromiseLike<EntityTypePersistable> {
         return super.getItemJson(obj, uid)
         .then((result) => {
-            return this.db.query().raw(`
-                WITH RECURSIVE parent_of(uid, parent) AS  (SELECT uid, parent FROM entity_types),
-                ancestor(uid) AS (
-                SELECT parent FROM parent_of WHERE uid=?
-                UNION ALL
-                SELECT parent FROM parent_of JOIN ancestor USING(uid) )
-                
-                SELECT *
-                FROM entity_types
-                WHERE entity_types.uid in ancestor;
-            `, uid).then((parents) => {
+            return Promise.all([
+                this.db.query().raw(`
+                    WITH RECURSIVE parent_of(uid, parent) AS  (SELECT uid, parent FROM entity_types),
+                    ancestor(uid) AS (
+                    SELECT parent FROM parent_of WHERE uid=?
+                    UNION ALL
+                    SELECT parent FROM parent_of JOIN ancestor USING(uid) )
+                    
+                    SELECT *
+                    FROM entity_types
+                    WHERE entity_types.uid in ancestor;
+                `, uid),
+
+                this.db.query().select('uid').from('entity_types').where({ parent: uid })
+            ])
+            .then(([parents, children]) => {
                 result.parents = parents;
+                result.children = children.map((child) => child.uid);
                 return result;
             });
         });

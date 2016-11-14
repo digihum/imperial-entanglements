@@ -106,6 +106,14 @@ export class EntityTypeWorkspace extends React.Component<EntityTypeWorkspaceProp
 
                 <header className='editor-header entity_type'>
                     <div className='main-toolbar'>
+                        <div className='bread-crumbs'>
+                            {entityType.parents.map((parent, i) => (
+                                <span key={`breadcrumb-${parent.uid}`}>
+                                    <span>  {parent.name} <AddTabButton tabType='entity_type' uid={parent.uid} /> </span>
+                                    <i className='fa fa-angle-right'></i>
+                                </span>
+                            ))}
+                        </div>
                         <i className='fa fa-tag item-icon'></i>
                         <StringEditableFieldComponent
                             value={entityType.name}
@@ -138,6 +146,7 @@ export class EntityTypeWorkspace extends React.Component<EntityTypeWorkspaceProp
                         }}} />
                     {entityType.parent !== null ? (<AddTabButton tabType='entity_type' uid={entityType.parent} />) : null}
 
+                    <label className='small'>Description</label>
                     <StringEditableFieldComponent
                         value={entityType.description}
                         component={EditableParagraph}
@@ -148,6 +157,17 @@ export class EntityTypeWorkspace extends React.Component<EntityTypeWorkspaceProp
                             value={entityType.sameAs}
                             component={SameAsEditor}
                             onChange={(value) => this.update({'sameAs': value})} />
+                    </div>
+
+                    <div>
+                        <h4>Direct Children</h4>
+                        <ul>
+                        {entityType.children
+                            .map((child) => this.props.dataStore.all.entity_type.value.find((et) => et.uid === child))
+                            .map((childEt) =>
+                                (<li key={`dc-${childEt.name}`}>{childEt.name} <AddTabButton tabType='entity_type' uid={childEt.uid} /></li>
+                            ))}
+                        </ul>
                     </div>
                 </section>
             </div>

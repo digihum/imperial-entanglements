@@ -183,7 +183,10 @@ export class ObjectEditor extends React.Component<EntityEditorProps, EntityEdito
         if (find(this.state.tabs, (tab) => tab.tabType === tabType && tab.uid === uid) === undefined) {
             this.setState({
                 tabs: this.state.tabs.concat([{ tabType, uid, data }])
-            }, this.saveTabs.bind(this));
+            }, () => {
+                this.saveTabs();
+                this.reload();
+            });
         }
     }
 

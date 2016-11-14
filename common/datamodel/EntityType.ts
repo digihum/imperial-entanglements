@@ -17,6 +17,7 @@ export class EntityType implements Serializable {
     public sameAs: string;
     public parent: number | null;
     public parents: EntityType[];
+    public children: number[];
     public creator: number;
 
     public creationTimestamp: string;
@@ -32,6 +33,7 @@ export class EntityType implements Serializable {
         this.parent = data.parent;
         this.parents = data.parents;
         this.creator = data.creator;
+        this.children = data.children;
 
         this.creationTimestamp = data.creationTimestamp;
         this.lastmodifiedTimestamp = data.lastmodifiedTimestamp;
