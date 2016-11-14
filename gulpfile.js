@@ -1,7 +1,8 @@
 'use strict';
  
-var gulp = require('gulp');
-var sass = require('gulp-sass');
+const gulp = require('gulp');
+const sass = require('gulp-sass');
+const nightwatch = require('gulp-nightwatch')
  
 gulp.task('sass', function () {
   return gulp.src('./client/sass/app.scss')
@@ -34,5 +35,12 @@ gulp.task('copy', function() {
       .pipe(gulp.dest('build/app/font'))    
     ];
 });
+
+gulp.task('test', () => {
+  return gulp.src('')
+    .pipe(nightwatch({
+      configFile: 'nightwatch.conf.js'
+    }))
+})
 
 gulp.task('default', ['copy', 'sass']);

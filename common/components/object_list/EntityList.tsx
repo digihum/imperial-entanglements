@@ -19,6 +19,8 @@ import { AddTabButton } from '../AddTabButton';
 import { showModal } from '../../Signaller';
 import { ModalDefinition } from '../modal/ModalDefinition';
 
+import { formatDate } from '../../helper/formatDate';
+
 
 interface EntityListProps {
     api: ApiService;
@@ -188,7 +190,22 @@ export class EntityList extends React.Component<EntityListProps, EntityListState
                             .filter((record) => record.predicate == col.predicate);
 
                             if (predicateData !== undefined) {
-                                value = predicateData.map((pred) => pred.value).join(', ');
+                                value = predicateData.map((pred) => {
+
+                                    if (pred.valueType === 'date') {
+                                        return formatDate(pred.value);
+                                    }
+
+                                    if (pred.valueType === 'source') {
+                                        return this.props.dataStore.all.source.value.find((source) => source.uid === pred.value).name;
+                                    }
+
+                                    if (pred.valueType === 'entity') {
+                                        return this.props.dataStore.all.entity.value.find((entity) => entity.uid === pred.value).label;
+                                    } 
+
+                                    return pred.value;
+                                }).join(', ');
                             }
                             return value;
                         }

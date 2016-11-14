@@ -74,7 +74,7 @@ export class ObjectEditor extends React.Component<EntityEditorProps, EntityEdito
         this.boundCreateTab = this.createTab.bind(this);
         this.boundCloseTab = this.closeTab.bind(this);
         this.boundAddModal = this.addModal.bind(this);
-        this.boundReload = this.reload.bind(this);
+        this.boundReload = this.callReload.bind(this);
 
         createTab.add(this.boundCreateTab);
         closeTab.add(this.boundCloseTab);
@@ -83,10 +83,14 @@ export class ObjectEditor extends React.Component<EntityEditorProps, EntityEdito
     }
 
     public componentDidMount() {
-        this.reload();
+        this.reload(this.props);
     }
 
-    public reload() {
+    public callReload() {
+        this.reload(this.props);
+    }
+
+    public reload(props: EntityEditorProps) {
 
         // load data required by the current tabs
         let tabPromise = Promise.resolve(cloneDeep(emptyTabs));
@@ -96,11 +100,11 @@ export class ObjectEditor extends React.Component<EntityEditorProps, EntityEdito
             if (tabsString !== null) {
                 this.state.tabs = JSON.parse(tabsString);
 
-                 if (!this.props.list &&
-                        ['entity', 'predicate', 'entity_type', 'source'].indexOf(this.props.workspace) !== -1 &&
-                        find(this.state.tabs, (tab) => tab.tabType === this.props.workspace
-                    && tab.uid === parseInt(this.props.params.id)) === undefined) {
-                        this.state.tabs.push({ tabType: this.props.workspace, uid: parseInt(this.props.params.id)});
+                 if (!props.list &&
+                        ['entity', 'predicate', 'entity_type', 'source'].indexOf(props.workspace) !== -1 &&
+                        find(this.state.tabs, (tab) => tab.tabType === props.workspace
+                    && tab.uid == parseInt(props.params.id)) === undefined) {
+                        this.state.tabs.push({ tabType: props.workspace, uid: parseInt(props.params.id)});
                         this.saveTabs();
                  }
 
@@ -117,7 +121,7 @@ export class ObjectEditor extends React.Component<EntityEditorProps, EntityEdito
                             .catch((err) => {
                                 console.warn(`Attempted to load missing resource ${tab.tabType}/${tab.uid}`);
                                 this.closeTab(tab.tabType, tab.uid);
-                                if (tab.tabType === this.props.workspace && tab.uid === parseInt(this.props.params.id)) {
+                                if (tab.tabType === props.workspace && tab.uid === parseInt(props.params.id)) {
                                      this.context.router.transitionTo('/edit/notfound');
                                 }
                             })
@@ -132,10 +136,10 @@ export class ObjectEditor extends React.Component<EntityEditorProps, EntityEdito
 
         // load lists of data commonly required by views
         const allPromise = Promise.all([
-            this.props.api.getCollection(Predicate, AppUrls.predicate, {}),
-            this.props.api.getCollection(Source, AppUrls.source, {}),
-            this.props.api.getCollection(Entity, AppUrls.entity, {}),
-            this.props.api.getCollection(EntityType, AppUrls.entity_type, {})
+            props.api.getCollection(Predicate, AppUrls.predicate, {}),
+            props.api.getCollection(Source, AppUrls.source, {}),
+            props.api.getCollection(Entity, AppUrls.entity, {}),
+            props.api.getCollection(EntityType, AppUrls.entity_type, {})
         ])
         .then(([predicates, sources, entities, entityType]) => {
 
@@ -180,12 +184,12 @@ export class ObjectEditor extends React.Component<EntityEditorProps, EntityEdito
 
     public createTab(tabType: string, uid: number, data?: any) {
         // don't add a tab if it already exists
-        if (find(this.state.tabs, (tab) => tab.tabType === tabType && tab.uid === uid) === undefined) {
+        if (find(this.state.tabs, (tab) => tab.tabType === tabType && tab.uid == uid) === undefined) {
             this.setState({
                 tabs: this.state.tabs.concat([{ tabType, uid, data }])
             }, () => {
                 this.saveTabs();
-                this.reload();
+                this.reload(this.props);
             });
         }
     }
@@ -215,7 +219,7 @@ export class ObjectEditor extends React.Component<EntityEditorProps, EntityEdito
     public clearAllTabs() {
         this.setState({tabs: []}, () => {
             this.saveTabs();
-            this.reload();
+            this.reload(this.props);
         });
     }
 
@@ -249,6 +253,10 @@ export class ObjectEditor extends React.Component<EntityEditorProps, EntityEdito
         closeTab.remove(this.boundCloseTab);
         showModal.remove(this.boundAddModal);
         triggerReload.remove(this.boundReload);
+    }
+
+    public componentWillReceiveProps(props: EntityEditorProps) {
+        this.reload(props);
     }
 
     public render() {
