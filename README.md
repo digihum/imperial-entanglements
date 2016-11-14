@@ -11,9 +11,10 @@ Building generates two directories:
 
 ## How to deploy
 - Clone git repo
+- Run `npm install`
 - Run `npm run tsc` to compile TypeScript
 - Run `npm run webpack` to build the frontend bundle
-- Run `npm run style` to build the stylesheets
+- Run `gulp`
 - Copy `index.html` from `./common` to `./build/common`
 - Run `node ./build/server/index`
 
