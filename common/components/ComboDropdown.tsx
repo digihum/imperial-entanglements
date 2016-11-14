@@ -184,6 +184,12 @@ export class ComboDropdown<T> extends React.Component<ComboDropdownProps, ComboD
     return el.ownerDocument && (el === el.ownerDocument.activeElement);
   }
 
+  public clearSearchBox() {
+      this.props.setValue({ key: '', value: ''});
+      this.setState({ searchString: '' });
+      this.refs.comboDropDownInputBox.focus();
+  }
+
   public render() {
 
        return (
@@ -199,6 +205,9 @@ export class ComboDropdown<T> extends React.Component<ComboDropdownProps, ComboD
                         onChange={this.changeSearchString.bind(this)}
                         onClick={this.handleInputClick.bind(this)}
                     />
+                    {this.state.searchString.length > 0 ? (
+                        <i className='fa fa-times clear-button' onClick={this.clearSearchBox.bind(this)}></i>
+                    ) : null}
                 </div>
                 {this.state.showingDropDown ? (
                     <div className='dropdown'>

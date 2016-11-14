@@ -13,3 +13,27 @@
         cursor: pointer;
     }
 }
+
+.workspace-editor.object-list {
+    table.table {
+        border: #c1c1c1 1px solid;
+        thead {
+            td, th {
+                padding: 0.1em 0.4em;
+                border-right: #c1c1c1 1px solid;
+            }
+            border-bottom: #6d6d6d 2px solid;
+        }
+        tbody {
+            tr {
+                border-bottom: rgb(224, 224, 224) 1px solid;
+                margin: 1em 0;
+
+                td, th {
+                    padding: 0.1em 0.4em;
+                    border-right: #c1c1c1 1px solid;
+                }
+            }
+        }
+    }   
+}

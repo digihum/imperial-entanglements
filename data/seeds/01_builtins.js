@@ -9,6 +9,7 @@ exports.seed = function(knex, Promise) {
     .then(function () {
        return knex(ENTITY_TYPES_TABLE_NAME).insert(
           {
+            uid: 0,
             name: 'Any',
             description: 'Represents a single thing',
             same_as: '',

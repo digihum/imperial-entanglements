@@ -23,7 +23,7 @@ interface ObjectListWorkspaceProps {
 
 export const ObjectListWorkspace : React.StatelessComponent<ObjectListWorkspaceProps> =
     (props: ObjectListWorkspaceProps) => (
-    <div className='workspace-editor'>
+    <div className='workspace-editor object-list'>
         {(() => {
             switch(props.listType) {
                 case 'entity':

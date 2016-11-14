@@ -3,6 +3,17 @@
 
     position: relative;
 
+    .clear-button {
+        position: absolute;
+        right: 0.4em;
+        top: 0.4em;
+        opacity: 0.5;
+        cursor: pointer;
+        &:hover {
+            opacity: 0.8;
+        }
+    }
+
     .dropdown {
         padding: 0em;
         //border: #b7b7b7 1px solid;

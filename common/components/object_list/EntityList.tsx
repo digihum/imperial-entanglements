@@ -11,7 +11,7 @@ import * as lev from 'levenshtein';
 import { ApiService, AppUrls } from '../../ApiService';
 import { DataStore } from '../../DataStore';
 import { Entity, EntityType, Predicate, Record } from '../../../common/datamodel/datamodel';
-import { ComboDropdown } from '../ComboDropdown';
+import { ComboDropdown, ComboDropdownOption } from '../ComboDropdown';
 import { noop, cloneDeep } from 'lodash';
 
 import { AddTabButton } from '../AddTabButton';
@@ -39,6 +39,7 @@ interface EntityListState {
     predicates: Predicate[];
     columns: ColumnSettings[];
     results: Record[];
+    entityType: ComboDropdownOption;
 }
 
 const sortIcons = {
@@ -85,7 +86,7 @@ const customColumns = (predicates, columns, updateColumnParams, rotateSort) => {
 
 export class EntityList extends React.Component<EntityListProps, EntityListState> {
 
-    constructor() {
+    constructor(props: EntityListProps) {
         super();
         this.state = {
             entities: [],
@@ -96,7 +97,8 @@ export class EntityList extends React.Component<EntityListProps, EntityListState
                 { predicate: -1, sort: 'none', filterType: 'any', invertFilter: false, filterValue: '' },
                 { predicate: -1, sort: 'none', filterType: 'any', invertFilter: false, filterValue: '' }
             ],
-            results: []
+            results: [],
+            entityType: { key: 'Any', value: 0}
         };
     }
 
@@ -167,6 +169,8 @@ export class EntityList extends React.Component<EntityListProps, EntityListState
         const entities = this.props.dataStore.all.entity.value;
         const predicates = this.props.dataStore.all.predicate.value;
         const entityTypes = this.props.dataStore.all.entity_type.value;
+
+        const entityTypeOptions = entityTypes.map((entityType) => ({ key: entityType.name, value: entityType.uid}));
 
         const tableData = entities.map((entity) => {
             const entityType = entityTypes.find((t) => t.uid === entity.entityType);
@@ -250,23 +254,37 @@ export class EntityList extends React.Component<EntityListProps, EntityListState
                         <tr>
                             <td></td>
                             <td></td>
-                            <td></td>
+                            <td>
+                                <ComboDropdown
+                                    value={this.state.entityType}
+                                    typeName='entity type'
+                                    allowNew={false}
+                                    setValue={(entityType) => this.setState({ entityType })}
+                                    options={entityTypeOptions}
+                                    createNewValue={noop}
+                                    compact={true}
+                                />
+                            </td>
 
                             {this.state.columns.map((col, id) => (
                                 <td key={`col-${id}`}>
-                                    <div>
-                                        <select value={col.filterType}
-                                                onChange={(e) => this.updateColumnParams(id, { filterType: e.target.value})}>
-                                            <option value='any'>Any</option>
-                                            <option value='exists'>Exists</option>
-                                            <option value='contains'>Contains</option>
-                                            <option value='similar'>Similar</option>
-                                        </select>
-                                        {col.filterType === 'similar' || col.filterType === 'contains' ? (
+                                    <div className='flex-fill'>
+                                        <div>
+                                            <select value={col.filterType}
+                                                    className='padded'
+                                                    onChange={(e) => this.updateColumnParams(id, { filterType: e.target.value})}>
+                                                <option value='any'>Any</option>
+                                                <option value='exists'>Exists</option>
+                                                <option value='contains'>Contains</option>
+                                                <option value='similar'>Similar</option>
+                                            </select>
+                                        </div>
+                                        <div>
                                             <input type='text'
+                                                disabled={col.filterType === 'any' || col.filterType === 'exists'}
                                                 onChange={(e) => this.updateColumnParams(id, { filterValue: e.target.value})}
                                                 value={col.filterValue} />
-                                        ) : null }
+                                        </div>
                                     </div>
                                 </td>
                             ))}
