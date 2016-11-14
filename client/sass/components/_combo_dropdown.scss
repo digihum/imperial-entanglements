@@ -5,8 +5,8 @@
 
     .clear-button {
         position: absolute;
-        right: 0.4em;
-        top: 0.4em;
+        top: 1.1em;
+        right: 0.8em;
         opacity: 0.5;
         cursor: pointer;
         &:hover {
@@ -16,7 +16,10 @@
 
     .dropdown {
         padding: 0em;
-        //border: #b7b7b7 1px solid;
+
+        box-shadow: -1px 2px 5px 0px rgba(0,0,0,0.44);
+        border: 1px solid #999;
+
         position: absolute;
         left: 0;
         right: 0;
@@ -54,9 +57,16 @@
     }
 
     &.compact {
+
+        .clear-button {
+            right: 0.4em;
+            top: 0.4em;
+        }
+
         .search-input {
             padding: 0.2em;
         }
+        
         .dropdown ul li {
             padding: 0.2em;
         }

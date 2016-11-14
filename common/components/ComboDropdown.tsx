@@ -212,7 +212,7 @@ export class ComboDropdown<T> extends React.Component<ComboDropdownProps, ComboD
           return;
       } else {
           this.setState({
-              dropDownHeight: window.document.body.getBoundingClientRect().bottom - val.getBoundingClientRect().top
+              dropDownHeight: window.document.body.getBoundingClientRect().bottom - val.getBoundingClientRect().top - 32
           });
           this.recalculateHeight = false;
       }
