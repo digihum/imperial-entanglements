@@ -248,16 +248,30 @@ export class SourceEditorWorkspace extends React.Component<SourceEditorProps, So
                             onChange={(value) => this.updateSource('sameAs', value)} />
                     </div>
 
-                    {this.state.dublinCore.elements.map((element) => (
-                        <div key={`${element.name}-edit`}>
-                            <h5 className='section-header'>{element.name} <small><a href={element.url}>{element.uri}</a></small></h5>
-                            <p className='element-description'>{element.description}</p>
-                            <StringEditableFieldComponent
-                                value={source.metaData.hasOwnProperty(element.name) ? (source.metaData[element.name].values[0].value) : ''}
-                                component={EditableParagraph}
-                                onChange={(value) => this.updateSourceElement(element, value)}  />
-                        </div>
-                    ))}
+                    {this.state.dublinCore.elements.map((element) => {
+
+                        const values = source.metaData.hasOwnProperty(element.name) ? 
+                            source.metaData[element.name].values : [{ source: this.props.id, value: ''}];
+                        const editableValue = values[0].source == this.props.id ? values[0].value : '';
+                           
+                        return (
+                            <div key={`${element.name}-edit`}>
+                                <h5 className='section-header'>{element.name} <small><a href={element.url}>{element.uri}</a></small></h5>
+                                <p className='element-description'>{element.description}</p>
+                                <ul>
+                                    {values.map((value) => value.source != this.props.id ? (
+                                        <li key={`${element.uid}-${value.source}`}>{
+                                            this.props.dataStore.all.source.value.find((s) => s.uid === value.source).name
+                                        }: {value.value}</li>
+                                    ) : null)}
+                                </ul>
+                                <StringEditableFieldComponent
+                                    value={editableValue}
+                                    component={EditableParagraph}
+                                    onChange={(value) => this.updateSourceElement(element, value)}  />
+                            </div>
+                        );
+                    })}
 
                     <div>
                         <h4>Direct Children</h4>
