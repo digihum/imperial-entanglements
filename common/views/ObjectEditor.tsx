@@ -31,7 +31,7 @@ import { ModalDefinition } from '../components/modal/ModalDefinition';
 import { DataStore, emptyDataStore, emptyTabs } from '../DataStore';
 
 interface ExpectedParams {
-    id: number;
+    id: string;
 }
 
 interface EntityEditorProps {
@@ -99,8 +99,8 @@ export class ObjectEditor extends React.Component<EntityEditorProps, EntityEdito
                  if (!this.props.list &&
                         ['entity', 'predicate', 'entity_type', 'source'].indexOf(this.props.workspace) !== -1 &&
                         find(this.state.tabs, (tab) => tab.tabType === this.props.workspace
-                    && tab.uid.toString() === this.props.params.id.toString()) === undefined) {
-                        this.state.tabs.push({ tabType: this.props.workspace, uid: this.props.params.id});
+                    && tab.uid === parseInt(this.props.params.id)) === undefined) {
+                        this.state.tabs.push({ tabType: this.props.workspace, uid: parseInt(this.props.params.id)});
                         this.saveTabs();
                  }
 
@@ -117,7 +117,7 @@ export class ObjectEditor extends React.Component<EntityEditorProps, EntityEdito
                             .catch((err) => {
                                 console.warn(`Attempted to load missing resource ${tab.tabType}/${tab.uid}`);
                                 this.closeTab(tab.tabType, tab.uid);
-                                if (tab.tabType === this.props.workspace && tab.uid === this.props.params.id) {
+                                if (tab.tabType === this.props.workspace && tab.uid === parseInt(this.props.params.id)) {
                                      this.context.router.transitionTo('/edit/notfound');
                                 }
                             })
