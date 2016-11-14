@@ -36,6 +36,7 @@ interface ComboDropdownState {
     boundHideFunc: any;
     selectedString: string;
     highlightedIndex: null | number;
+    dropDownHeight: number;
 }
 
 export class ComboDropdown<T> extends React.Component<ComboDropdownProps, ComboDropdownState> {
@@ -48,6 +49,9 @@ export class ComboDropdown<T> extends React.Component<ComboDropdownProps, ComboD
 
     private ignoreBlur;
     private ignoreClick;
+    private recalculateHeight;
+
+    private dropDownBoxElement;
 
     constructor() {
         super();
@@ -58,13 +62,16 @@ export class ComboDropdown<T> extends React.Component<ComboDropdownProps, ComboD
             showingDropDown: false,
             filteredOptions: [],
             selectedString: '',
-            highlightedIndex: null
+            highlightedIndex: null,
+            dropDownHeight: 0
         };
     }
 
     public componentWillMount() {
         this.ignoreBlur = false;
         this.ignoreClick = false;
+        this.recalculateHeight = true;
+        this.dropDownBoxElement = null;
 
          this.setState({
             filteredOptions: this.props.options,
@@ -108,6 +115,11 @@ export class ComboDropdown<T> extends React.Component<ComboDropdownProps, ComboD
             filtered = props.options;
         }
 
+        if (this.dropDownBoxElement !== null) {
+            this.recalculateHeight = true;
+            this.calculateDropdownHeight(this.dropDownBoxElement);
+        }
+
         this.setState({
             filteredOptions: filtered
         });
@@ -120,6 +132,7 @@ export class ComboDropdown<T> extends React.Component<ComboDropdownProps, ComboD
     public selectOption(option: ComboDropdownOption) {
         this.props.setValue(option);
         this.ignoreBlur = false;
+        this.recalculateHeight = true;
         this.setState({ showingDropDown: false, searchString: option.key });
         this.props.updateSearchString(option.key);
     }
@@ -136,7 +149,7 @@ export class ComboDropdown<T> extends React.Component<ComboDropdownProps, ComboD
                     });
                 }
             }
-
+            this.recalculateHeight = true;
             this.setState({
                 showingDropDown: false,
             });
@@ -170,8 +183,9 @@ export class ComboDropdown<T> extends React.Component<ComboDropdownProps, ComboD
   }
 
   public selectItemFromMouse (item) {
+       this.recalculateHeight = true;
     this.setState({
-      showingDropDown: false,
+      showingDropDown: false,      
       highlightedIndex: null
     }, () => {
       this.props.setValue(item);
@@ -188,6 +202,20 @@ export class ComboDropdown<T> extends React.Component<ComboDropdownProps, ComboD
       this.props.setValue({ key: '', value: ''});
       this.setState({ searchString: '' });
       this.refs.comboDropDownInputBox.focus();
+  }
+
+  public calculateDropdownHeight(val: null | HTMLElement) {
+
+    this.dropDownBoxElement = val;
+
+      if (val === null || !this.recalculateHeight) {
+          return;
+      } else {
+          this.setState({
+              dropDownHeight: window.document.body.getBoundingClientRect().bottom - val.getBoundingClientRect().top
+          });
+          this.recalculateHeight = false;
+      }
   }
 
   public render() {
@@ -210,7 +238,9 @@ export class ComboDropdown<T> extends React.Component<ComboDropdownProps, ComboD
                     ) : null}
                 </div>
                 {this.state.showingDropDown ? (
-                    <div className='dropdown'>
+                    <div className='dropdown'
+                        style={{maxHeight: this.state.dropDownHeight, overflowY: 'auto'}}
+                        ref={this.calculateDropdownHeight.bind(this)}>
                         <ul>
                             {this.state.searchString.length === 0 && this.props.allowNew ? (
                                 <li className='add'

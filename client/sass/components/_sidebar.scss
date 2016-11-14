@@ -33,8 +33,11 @@
     }
 
     .input-addon-formgroup {
-        input[type=text] {
-            border: 0;
+        .combo-dropdown {
+            width: 100%;
+            input[type='text'] {
+                padding: 0.75em;
+            }
         }
         span.input-addon-icon {
             border: 0;

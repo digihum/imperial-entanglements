@@ -194,7 +194,7 @@ export class SourceEditorWorkspace extends React.Component<SourceEditorProps, So
                 <header className='editor-header source'>
                     <div className='main-toolbar'>
                         <div className='bread-crumbs'>
-                            {source.parents
+                            {source.parents.reverse()
                                 .map((child) => this.props.dataStore.all.source.value.find((et) => et.uid === child))
                                 .map((parent, i) => (
                                 <span key={`breadcrumb-${parent.uid}`}>

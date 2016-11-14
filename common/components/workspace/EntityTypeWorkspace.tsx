@@ -107,7 +107,7 @@ export class EntityTypeWorkspace extends React.Component<EntityTypeWorkspaceProp
                 <header className='editor-header entity_type'>
                     <div className='main-toolbar'>
                         <div className='bread-crumbs'>
-                            {entityType.parents.map((parent, i) => (
+                            {entityType.parents.reverse().map((parent, i) => (
                                 <span key={`breadcrumb-${parent.uid}`}>
                                     <span>  {parent.name} <AddTabButton tabType='entity_type' uid={parent.uid} /> </span>
                                     <i className='fa fa-angle-right'></i>
