@@ -19,6 +19,7 @@ run_tests:
 
   # run sql migrations
   - npm run migrate
+  - npm run seed
 
   # ready to test!
   - npm test
