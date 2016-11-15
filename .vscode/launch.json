@@ -22,6 +22,25 @@
             "outDir": "${workspaceRoot}/build"
         },
         {
+
+            "name": "Launch Electron",
+            "type": "node",
+            "request": "launch",
+            "program": "${workspaceRoot}/build/app/index.js",
+            "stopOnEntry": false,
+            "args": [],
+            "cwd": "${workspaceRoot}",
+            "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/electron",
+            "runtimeArgs": [
+                ".",
+                "--enable-logging"
+            ],
+            "env": {},
+            "externalConsole": false,
+            "sourceMaps": false,
+            "outDir": null
+        },
+        {
             "name": "Debug Everything",
             "type": "composite",
             "configurationNames": [

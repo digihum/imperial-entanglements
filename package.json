@@ -41,7 +41,7 @@
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^0.8.7",
-    "dotenv": "^2.0.0",
+    "dotenv": "^2.0.0",    
     "etag": "^1.7.0",
     "font-awesome": "^4.7.0",
     "graphql": "^0.7.2",
@@ -75,7 +75,7 @@
     "react-select": "^1.0.0-rc.2",
     "reflect-metadata": "^0.1.8",
     "signals": "^1.0.0",
-    "sqlite3": "^3.1.4"
+    "sqlite3": "^3.1.6"
   },
   "devDependencies": {
     "Faker": "^0.7.2",
@@ -83,8 +83,9 @@
     "chai": "^3.5.0",
     "chai-http": "^3.0.0",
     "chromedriver": "^2.24.1",
-    "electron": "1.4.2",
-    "electron-builder": "^7.15.2",
+    "electron": "^1.4.6",
+    "electron-builder": "^7.26.0",
+    "electron-rebuild": "^1.4.0",
     "gulp": "^3.9.1",
     "gulp-sass": "^2.3.2",
     "mocha": "^3.0.2",
