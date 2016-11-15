@@ -22,6 +22,6 @@ module.exports = {
   "Load and login to server" : function (browser) {
     addEntity(loginToServer(browser))
     .pause(1000)
-    .expect.element('td').text.to.contain('New Test Entity');
+    .expect.element('table.table tr:last>td:nth(1)').text.to.contain('New Test Entity');
   }
 }
