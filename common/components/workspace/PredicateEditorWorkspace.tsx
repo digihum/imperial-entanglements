@@ -5,6 +5,7 @@
  */
 
 import * as React from 'react';
+import { Link } from 'react-router';
 
 import { SameAsEditor } from '../fields/SameAsEditor';
 import { Loading } from '../Loading';
@@ -191,9 +192,8 @@ export class PredicateEditorWorkspace extends React.Component<PredicateEditorPro
                 </header>
 
                 <section className='editor-body'>
-                    
-                    <div>Count: {this.state.records.length}
-                    (TODO: this should link to the search page showing all records with this predicate)</div>
+
+                    <div><Link to={`/edit/entity?col1=${this.props.id},exists`}>Uses: {this.state.records.length}</Link></div>
 
                     <div className='edit-group'>
                         <label>Description</label>

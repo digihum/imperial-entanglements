@@ -21,6 +21,8 @@ import { ModalDefinition } from '../modal/ModalDefinition';
 
 import { formatDate } from '../../helper/formatDate';
 
+import * as queryString from 'querystring';
+
 
 interface EntityListProps {
     api: ApiService;
@@ -105,7 +107,20 @@ export class EntityList extends React.Component<EntityListProps, EntityListState
     }
 
     public componentDidMount() {
-        this.reload();
+        const queryStringOptions = queryString.parse(window.location.search.substr(1));
+        const columns = cloneDeep(this.state.columns);
+        for (let i = 1; i < 4; i += 1 ) {
+            if (queryStringOptions.hasOwnProperty('col' + i)) {
+                const args = queryStringOptions['col' + i].split(',');
+                columns[i - 1].predicate = args[0];
+                if (args.length === 2) {
+                    columns[i - 1].filterType = args[1];
+                }
+            }
+        }
+         this.setState({
+            columns
+        }, this.reload.bind(this));
     }
 
     public reload() {
