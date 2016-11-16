@@ -17,6 +17,8 @@ interface CreateEntityProps {
     api: ApiService;
     complete: (s: string) => void;
     cancel: () => void;
+    initialName?: string,
+    initialType?: number
 }
 
 interface CreateEntityState {
@@ -38,7 +40,15 @@ export class CreateEntity extends React.Component<CreateEntityProps, CreateEntit
 
     public componentWillMount() {
         this.props.api.getCollection(EntityType, AppUrls.entity_type, {})
-        .then((allEntityTypes) => this.setState({ allEntityTypes }));
+        .then((allEntityTypes) => {
+            if (this.props.initialType !== undefined) {
+                const initialType = allEntityTypes.find((et) => et.uid === this.props.initialType);
+                this.setState({ 
+                    entityType:  { key: initialType.name, value: initialType.uid.toString() }
+                })
+            }
+            this.setState({ allEntityTypes });
+        });
     }
 
     public CreateEntity() {

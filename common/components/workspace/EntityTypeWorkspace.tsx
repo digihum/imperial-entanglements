@@ -54,6 +54,20 @@ export class EntityTypeWorkspace extends React.Component<EntityTypeWorkspaceProp
         .then(() => this.setState({ entityType: Object.assign({}, entityType, data)}));
     }
 
+
+    public copy() {
+
+        const entityType = this.props.dataStore.tabs.entity_type.get('entity_type-' + this.props.id).value;
+
+        const newEntityType = new EntityType().deserialize(
+            Object.assign({}, entityType.serialize(), { name: 'Copy of ' + entityType.name}));
+
+        this.props.api.postItem(EntityType, AppUrls.entity_type, newEntityType)
+            .then(([id]) => {
+                createTab.dispatch('entity_type', id);
+        });
+    }
+
     public del() {
         this.props.api.delItem(EntityType, AppUrls.entity_type, this.props.id)
         .then(() => this.context.router.transitionTo('/edit/notfound'))
@@ -87,6 +101,22 @@ export class EntityTypeWorkspace extends React.Component<EntityTypeWorkspaceProp
         });
     }
 
+    public createEntity() {
+        const a : ModalDefinition = {
+            name: 'entity',
+            complete: ([id]) => {
+                 createTab.dispatch('entity', id);
+            },
+            cancel: () => { console.log('cancel'); },
+            settings: {
+                initialName: '',
+                initialType: this.props.id
+            }
+        };
+
+        showModal.dispatch(a);
+    }
+
     public render() {
 
         const entityType = this.props.dataStore.tabs.entity_type.get('entity_type-' + this.props.id).value;
@@ -107,7 +137,7 @@ export class EntityTypeWorkspace extends React.Component<EntityTypeWorkspaceProp
                 <header className='editor-header entity_type'>
                     <div className='main-toolbar'>
                         <div className='bread-crumbs'>
-                            {entityType.parents.reverse().map((parent, i) => (
+                            {entityType.parents.map((parent, i) => (
                                 <span key={`breadcrumb-${parent.uid}`}>
                                     <span>  {parent.name} <AddTabButton tabType='entity_type' uid={parent.uid} /> </span>
                                     <i className='fa fa-angle-right'></i>
@@ -121,6 +151,11 @@ export class EntityTypeWorkspace extends React.Component<EntityTypeWorkspaceProp
                             onChange={(value) => this.update({'name': value})}  />
                     </div>
                     <div className='sub-toolbar'>
+                        <i
+                            className='fa fa-plus add button'
+                            aria-hidden='true'
+                            onClick={this.createEntity.bind(this)}
+                        ></i>
                          <i
                             className='fa fa-trash delete button'
                             aria-hidden='true'
@@ -129,7 +164,7 @@ export class EntityTypeWorkspace extends React.Component<EntityTypeWorkspaceProp
                         <i
                             className='fa fa-clone button'
                             aria-hidden='true'
-                            onClick={() => console.log('copy')}
+                            onClick={this.copy.bind(this)}
                         ></i>
                     </div>
                 </header>

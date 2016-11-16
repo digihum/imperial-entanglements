@@ -172,6 +172,20 @@ export class SourceEditorWorkspace extends React.Component<SourceEditorProps, So
         });
     }
 
+
+    public createChild() {
+
+        const source = this.props.dataStore.tabs.source.get('source-' + this.props.id).value.source;
+
+        const newSource = new Source().deserialize(
+            Object.assign({}, source.serialize(), { name: 'Child of ' + source.name, parent: this.props.id }));
+
+        this.props.api.postItem(Source, AppUrls.source, newSource)
+            .then(([id]) => {
+                createTab.dispatch('source', id);
+        });
+    }
+
     public render() {
 
         if (this.state.dublinCore === null) {
@@ -194,7 +208,7 @@ export class SourceEditorWorkspace extends React.Component<SourceEditorProps, So
                 <header className='editor-header source'>
                     <div className='main-toolbar'>
                         <div className='bread-crumbs'>
-                            {source.parents.reverse()
+                            {source.parents
                                 .map((child) => this.props.dataStore.all.source.value.find((et) => et.uid === child))
                                 .map((parent, i) => (
                                 <span key={`breadcrumb-${parent.uid}`}>
@@ -216,14 +230,9 @@ export class SourceEditorWorkspace extends React.Component<SourceEditorProps, So
                             onClick={() => this.del()}
                         ></i>
                         <i
-                            className='fa fa-clone button'
+                            className='fa fa-arrow-circle-o-down button'
                             aria-hidden='true'
-                            onClick={() => console.log('copy')}
-                        ></i>
-                        <i
-                            className='fa fa-arrow-circle-o-down'
-                            aria-hidden='true'
-                            onClick={() => console.log('copy')}
+                            onClick={this.createChild.bind(this)}
                         ></i>
                     </div>
                 </header>

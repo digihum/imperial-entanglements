@@ -92,6 +92,19 @@ export class PredicateEditorWorkspace extends React.Component<PredicateEditorPro
         });
     }
 
+    public copy() {
+
+        const predicate = this.props.dataStore.tabs.predicate.get('predicate-' + this.props.id).value;
+
+        const newPredicate = new Predicate().deserialize(
+            Object.assign({}, predicate.serialize(), { name: 'Copy of ' + predicate.name}));
+
+        this.props.api.postItem(Predicate, AppUrls.predicate, newPredicate)
+            .then(([id]) => {
+                createTab.dispatch('predicate', id);
+        });
+    }
+
     public del() {
         this.props.api.delItem(Predicate, AppUrls.predicate, this.props.id)
         .then(() => this.context.router.transitionTo('/edit/notfound'))
@@ -186,7 +199,7 @@ export class PredicateEditorWorkspace extends React.Component<PredicateEditorPro
                         <i
                             className='fa fa-clone button'
                             aria-hidden='true'
-                            onClick={() => console.log('copy')}
+                            onClick={this.copy.bind(this)}
                         ></i>
                     </div>
                 </header>
