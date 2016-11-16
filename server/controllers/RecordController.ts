@@ -81,7 +81,7 @@ export class RecordController extends GenericController<RecordPersistable> {
         super(db, RecordPersistable.tableName);
     }
 
-    public postItem(obj: { new(): RecordPersistable; }, data: RecordPersistable) : Promise<string> {
+    public postItem(obj: { new(): RecordPersistable; }, data: RecordPersistable) : PromiseLike<string> {
 
         // predicate domain must equal value_type
         return this.db.query()('predicates').select('range_type').where({ uid: data.predicate })
@@ -93,15 +93,38 @@ export class RecordController extends GenericController<RecordPersistable> {
             throw new OperationNotPermittedException({
                 message: 'Attempted to add a record with an incorrect type!',
                 data: []
-            })
+            });
         });
     }
 
-    public putItem(obj: { new(): RecordPersistable; }, uid: number, data: RecordPersistable) : Promise<string> {
-        return super.putItem(obj, uid, data);
+    public putItem(obj: { new(): RecordPersistable; }, uid: number, data: RecordPersistable) : PromiseLike<string> {
+
+        //TODO: what happens if we only update the value - and do not send the valueType again?
+
+        return this.db.query()('predicates').select('range_type').where({ uid: data.predicate })
+        .then(([predicate]) => {
+            if (data.valueType === predicate.range_type) {
+                //TODO: still need to check entity type constraints
+                return super.putItem(obj, uid, data);
+            }
+            throw new OperationNotPermittedException({
+                message: 'Attempted to add a record with an incorrect type!',
+                data: []
+            });
+        });
     }
 
-    public patchItem(obj: { new(): RecordPersistable; }, uid: number, data: RecordPersistable) : Promise<boolean> {
-        return super.patchItem(obj, uid, data);
+    public patchItem(obj: { new(): RecordPersistable; }, uid: number, data: RecordPersistable) : PromiseLike<boolean> {
+        return this.db.query()('predicates').select('range_type').where({ uid: data.predicate })
+        .then(([predicate]) => {
+            if (data.valueType === predicate.range_type) {
+                //TODO: still need to check entity type constraints
+                return super.patchItem(obj, uid, data);
+            }
+            throw new OperationNotPermittedException({
+                message: 'Attempted to add a record with an incorrect type!',
+                data: []
+            });
+        });
     }
 }

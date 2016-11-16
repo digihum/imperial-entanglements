@@ -52,31 +52,16 @@ export class EntityTypeController extends GenericController<EntityTypePersistabl
         super(db, EntityTypePersistable.tableName);
     }
 
-    // WITH RECURSIVE parent_of(uid, parent) AS  (SELECT uid, parent FROM entity_types),
-	// ancestor(uid) AS (
-	// SELECT parent FROM parent_of WHERE uid='26'
-	// UNION ALL
-	// SELECT parent FROM parent_of JOIN ancestor USING(uid) )
-	
-	// SELECT *
-	// FROM entity_types
-	// WHERE entity_types.uid in ancestor;
-
     public getItemJson(obj: { new(): EntityTypePersistable; }, uid: number) : PromiseLike<EntityTypePersistable> {
         return super.getItemJson(obj, uid)
         .then((result) => {
             return Promise.all([
-                this.db.query().raw(`
-                    WITH RECURSIVE parent_of(uid, parent) AS  (SELECT uid, parent FROM entity_types),
-                    ancestor(uid) AS (
-                    SELECT parent FROM parent_of WHERE uid=?
-                    UNION ALL
-                    SELECT parent FROM parent_of JOIN ancestor USING(uid) )
-                    
-                    SELECT *
-                    FROM entity_types
-                    WHERE entity_types.uid in ancestor;
-                `, uid),
+
+                this.db.getAncestorsOf(uid, 'entity_types')
+                .then((ancestors) => {
+                    return this.db.query()('entity_types').whereIn('uid', ancestors)
+                    .then((results) => results.map((result) => new obj().fromSchema(result)));
+                }),
 
                 this.db.query().select('uid').from('entity_types').where({ parent: uid })
             ])

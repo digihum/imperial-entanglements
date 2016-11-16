@@ -64,4 +64,17 @@ export class Database {
             .where({ uid })
             .del();
     }
+
+    public getAncestorsOf(uid: number, tableName: string) : PromiseLike<number[]> {
+        return this.knex.raw(`
+            WITH RECURSIVE parent_of(uid, parent) AS  (SELECT uid, parent FROM ${tableName}),
+                ancestor(uid) AS (
+                SELECT parent FROM parent_of WHERE uid=${uid}
+                UNION ALL
+                SELECT parent FROM parent_of JOIN ancestor USING(uid) )
+				SELECT * from ancestor`)
+            .then((result) => {
+                return result.filter((a) => a.uid !== null).map((a) => a.uid);
+            });
+    }
 }

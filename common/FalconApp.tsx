@@ -29,10 +29,25 @@ interface FalconAppProps {
     connected: boolean;
 }
 
-export class FalconApp extends React.Component<FalconAppProps, {}> {
+interface FalconAppState {
+    user: string;
+}
+
+export class FalconApp extends React.Component<FalconAppProps, FalconAppState> {
 
     constructor() {
         super();
+        this.state = {
+            user: ''
+        };
+    }
+
+    public componentDidMount() {
+        if (this.props.environment === 'website' && window !== undefined) {
+            fetch('/admin/currentuser', { credentials: 'same-origin' })
+                .then((response) => response.json())
+                .then((userData) => this.setState({ user: userData.username }));
+        }
     }
 
     public render() {
@@ -41,7 +56,7 @@ export class FalconApp extends React.Component<FalconAppProps, {}> {
             <this.props.router {...this.props.routerSettings} className='flex-fill' basename='/admin'>
                 <div className='flex-fill' style={{ flexDirection: 'column' }}>
                     <div className='header'>
-                        <h1>VRE</h1>
+                        <div className='logo'>VRE</div>
                         <Link to='/' className='header-link'>Home</Link>
                         <Link accessKey='e' to={'/edit/' + AppUrls.entity} className='header-link'>{itemTypes.entity.plural}</Link>
                         <Link accessKey='p'
@@ -52,6 +67,7 @@ export class FalconApp extends React.Component<FalconAppProps, {}> {
 
                         { this.props.environment === 'website' ? (
                             <div className='right-header'>
+                                <span className='current-user'>{this.state.user}</span>
                                 <a href='/admin/logout'>Logout</a>
                             </div>
                         ) : null}

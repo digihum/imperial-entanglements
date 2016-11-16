@@ -5,9 +5,11 @@ div.header {
     color: white;
     padding: 0.2em 1em;
 
-    h1 {
-        margin: 0 0.5em 0 0;
+    .logo {
+        font-size: 20pt;
         display: inline;
+        font-weight: 600;
+        font-family: 'Roboto', sans-serif;
     }
 
     a.header-link {

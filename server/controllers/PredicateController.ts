@@ -70,27 +70,35 @@ export class PredicateController extends GenericController<PredicatePersistable>
 
     public getCollectionJson(obj: { new(): PredicatePersistable; }, params: any = {}) : PromiseLike<PredicatePersistable[]>  {
         if (params.domain !== undefined) {
-            return this.db.query().raw(`
-            WITH RECURSIVE parent_of(uid, parent) AS  (SELECT uid, parent FROM entity_types),
-                ancestor(uid) AS (
-                SELECT parent FROM parent_of WHERE uid=:uid
-                UNION ALL
-                SELECT parent FROM parent_of JOIN ancestor USING(uid) ),
-				currentType(uid) AS (
-					SELECT uid from entity_types WHERE uid=:uid
-					UNION ALL
-					SELECT * from ancestor
-				)
-                
-                SELECT *
-                FROM predicates
-                WHERE predicates.domain IN currentType
-            `, {
-                uid: params.domain
-            }).then((results) => results.map((result) => new obj().fromSchema(result)));
+            return this.db.getAncestorsOf(params.domain[0], 'entity_types')
+            .then((ancestors) => {
+                return this.db.query()('predicates').whereIn('domain', ancestors.concat([params.domain[0]]))
+                .then((results) => results.map((result) => new obj().fromSchema(result)));
+            });
         } else {
             return super.getCollectionJson(obj, params);
         }
+    }
+
+    public putItem(obj: { new(): PredicatePersistable; }, uid: number, data: PredicatePersistable) : PromiseLike<string> {
+
+        if (typeof(uid) !== 'number') {
+            throw new Error('Expected single column identifier');
+        }
+
+        return this.db.updateItem(new obj().deserialize(data));
+    }
+
+    public patchItem(obj: { new(): PredicatePersistable; }, uid: number, data: PredicatePersistable) : PromiseLike<boolean> {
+        
+        return Promise.all([
+            this.db.query()('records').where({ predicate: uid}).count('*'),
+
+
+        ]).then(([records]) => {
+
+            return super.patchItem(obj, uid, data);
+        });
     }
 
      public deleteItem(obj: { new(): PredicatePersistable; }, uid: number) : PromiseLike<string> {
