@@ -18,23 +18,18 @@ import * as koaMount from 'koa-mount';
 import { Config as KnexConfig } from 'knex';
 import { Database } from './Database';
 
-import { FalconApp } from '../../common/FalconApp';
-
-import { renderToStaticMarkup } from 'react-dom/server';
-import { createElement } from 'react';
-
 import { template } from 'lodash';
 import { readFileSync } from 'fs';
 
 import { api, wrapDatabase } from '../routes/api';
-
-import { ServerRouter, createServerRenderContext } from 'react-router';
+import { adminApp } from '../routes/adminApp';
+import { auth  } from '../routes/auth';
+import { snapshot  } from '../routes/snapshot';
+import { stats  } from '../routes/stats';
 
 import { setupAuth } from './Auth';
 
 import { SqliteSnapshot } from './SqliteSnapshot';
-
-import { AdminApp } from './AdminApp';
 
 export class Server {
 
@@ -45,9 +40,6 @@ export class Server {
     private adminEditRoute: string;
 
     private snapshot: SqliteSnapshot;
-
-    // TODO: type this properly
-    private routingContext: any;
 
     public init(databaseConfig: KnexConfig) : void {
 
@@ -72,8 +64,6 @@ export class Server {
         this.adminRoute = 'admin';
         this.adminEditRoute = 'edit';
 
-        this.routingContext = createServerRenderContext();
-
         const db = new Database(databaseConfig);
         this.snapshot = new SqliteSnapshot(databaseConfig);
 
@@ -90,7 +80,12 @@ export class Server {
 
         this.app.use(router.middleware());
 
-        this.app.use(koaMount('/admin', AdminApp(this.snapshot, this.skeleton, serverApiContext)));
+        const admin = new Koa();
+        admin.use(koaMount('/', auth()));
+        admin.use(koaMount('/snapshot', snapshot(this.snapshot)));
+        admin.use(koaMount('/stats', stats(databaseConfig)));
+        admin.use(koaMount('/', adminApp(this.skeleton, serverApiContext)));
+        this.app.use(koaMount('/admin', admin));
 
         const frontendApp = new Koa();
 
@@ -98,7 +93,7 @@ export class Server {
             this.body = 'Frontend under construction';
         });
 
-         this.app.use(koaMount('/', frontendApp));
+        this.app.use(koaMount('/', frontendApp));
 
         this.app.use(function* (next: Koa.Context) { this.body = '404'; });
     }

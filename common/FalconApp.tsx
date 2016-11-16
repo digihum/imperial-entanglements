@@ -79,29 +79,29 @@ export class FalconApp extends React.Component<FalconAppProps, {}> {
                                 workspace={'notfound'} />)
                     } />
 
-                    {Object.keys(itemTypes).map((name) => [name, itemTypes[name]]).map(([name, routeUrl]) => ([
+                    {Object.keys(itemTypes).map((name) => [name, itemTypes[name]]).map(([name, itemType]) => ([
 
                             <Match
                                 exactly key={`${name}-cv`}
-                                pattern={`/edit/${routeUrl.url}`}
+                                pattern={`/edit/${itemType.machineName}`}
                                 render={
                                     (matchprops) => (
                                         <ObjectEditor
                                             api={this.props.api} {...matchprops} 
-                                            workspace={routeUrl.workspaceType}
-                                            name={routeUrl.plural} 
+                                            workspace={itemType.workspace}
+                                            name={itemType.plural} 
                                             list={true} />)
                                 } />,
 
                             <Match
                                 exactly key={`${name}-iv`}
-                                pattern={`/edit/${routeUrl.url}/:id`}
+                                pattern={`/edit/${itemType.machineName}/:id`}
                                 className="flex-fill"
                                 render={
                                     (matchprops) => (
                                         <ObjectEditor
                                         api={this.props.api} {...matchprops}
-                                        workspace={routeUrl.workspaceType}
+                                        workspace={itemType.workspace}
                                         list={false} />)
                                 } />
                     ]
