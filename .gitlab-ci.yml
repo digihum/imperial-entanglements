@@ -9,7 +9,7 @@ run_tests:
   - npm install
 
   # build typescript
-  - npm run tsc && exit 0
+  - npm run compile && exit 0
   
   # copy test db
   - cp blank.sqlite mydb.sqlite

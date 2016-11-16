@@ -5,19 +5,25 @@
   "main": "./build/app/index.js",
   "scripts": {
     "dist": "build",
-    "tsc": "tsc",
-    "tsc:watch": "tsc --watch",
     "electron": "electron ./build/app",
-    "asar": "asar pack build bin/falcon.asar",
+
     "test": "mocha --grep=#api --invert",
     "migrate": "knex migrate:latest",
     "seed": "knex seed:run",
-    "style": "node-sass ./client/sass/app.scss --include-path node_modules -o build/static",
-    "style:watch": "node-sass --watch ./client/sass/app.scss --include-path node_modules -o build/static",
+
     "webpack": "webpack",
     "webpack:watch": "webpack --watch",
-    "sql": "node scripts/build_sql.js",
-    "docker-pg": "docker run --name ie-postgres -e POSTGRES_PASSWORD=password -e POSTGRES_USER=admin -e POSTGRES_DB=db1 -d postgres"
+
+    "tsc": "tsc",
+    "tsc:watch": "tsc --watch",
+
+    "docker-pg": "docker run --name ie-postgres -e POSTGRES_PASSWORD=password -e POSTGRES_USER=admin -e POSTGRES_DB=db1 -d postgres",
+
+    "gulp": "gulp",
+
+    "clean": "rimraf build",
+    "precompile": "npm run clean",
+    "compile": "npm-run-all tsc webpack gulp"
   },
   "repository": {
     "type": "git",
@@ -97,6 +103,7 @@
     "nightwatch-cucumber": "^5.6.1",
     "node-refills": "^1.0.1",
     "node-sass": "^3.10.0",
+    "rimraf": "^2.5.4",
     "source-map-loader": "^0.1.5",
     "tslint": "^3.15.1",
     "tslint-microsoft-contrib": "^2.0.10",
