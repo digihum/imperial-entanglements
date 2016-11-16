@@ -13,7 +13,7 @@ import { RouteNotFound } from './views/RouteNotFound';
 
 import { ApiService, AppUrls } from './ApiService';
 
-import { routeUrls } from './routeUrls';
+import { itemTypes } from './itemTypes';
 
 import { Admin } from './views/Admin';
 import { AdminApp } from '../app/AdminApp';
@@ -43,12 +43,12 @@ export class FalconApp extends React.Component<FalconAppProps, {}> {
                     <div className='header'>
                         <h1>VRE</h1>
                         <Link to='/' className='header-link'>Home</Link>
-                        <Link accessKey='e' to={'/edit/' + AppUrls.entity} className='header-link'>{routeUrls[AppUrls.entity].plural}</Link>
+                        <Link accessKey='e' to={'/edit/' + AppUrls.entity} className='header-link'>{itemTypes[AppUrls.entity].plural}</Link>
                         <Link accessKey='p'
-                            to={'/edit/' + AppUrls.predicate} className='header-link'>{routeUrls[AppUrls.predicate].plural}</Link>
-                        <Link accessKey='s' to={'/edit/' + AppUrls.source} className='header-link'>{routeUrls[AppUrls.source].plural}</Link>
+                            to={'/edit/' + AppUrls.predicate} className='header-link'>{itemTypes[AppUrls.predicate].plural}</Link>
+                        <Link accessKey='s' to={'/edit/' + AppUrls.source} className='header-link'>{itemTypes[AppUrls.source].plural}</Link>
                         <Link accessKey='t'
-                            to={'/edit/' + AppUrls.entity_type} className='header-link'>{routeUrls[AppUrls.entity_type].plural}</Link>
+                            to={'/edit/' + AppUrls.entity_type} className='header-link'>{itemTypes[AppUrls.entity_type].plural}</Link>
 
                         { this.props.environment === 'website' ? (
                             <div className='right-header'>
@@ -79,7 +79,7 @@ export class FalconApp extends React.Component<FalconAppProps, {}> {
                                 workspace={'notfound'} />)
                     } />
 
-                    {Object.keys(routeUrls).map((name) => [name, routeUrls[name]]).map(([name, routeUrl]) => ([
+                    {Object.keys(itemTypes).map((name) => [name, itemTypes[name]]).map(([name, routeUrl]) => ([
 
                             <Match
                                 exactly key={`${name}-cv`}

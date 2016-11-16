@@ -6,6 +6,8 @@
 
 import { Serializable, CompositeKey } from './datamodel/Serializable';
 
+import { itemTypes } from './itemTypes';
+
 export const AppUrls : {
     element_set: string,
     record: string,
@@ -13,17 +15,15 @@ export const AppUrls : {
     entity_type: string,
     predicate: string,
     source: string,
-    element: string,
     source_element: string
 } = {
-    element_set: 'element_set',
-    record: 'record',
-    entity: 'entity',
-    entity_type: 'entity_type',
-    predicate: 'property',
-    source: 'source',
-    element: 'element',
-    source_element: 'source_element'
+    element_set: itemTypes.element_set.machineName,
+    record:  itemTypes.record.machineName,
+    entity:  itemTypes.entity.machineName,
+    entity_type:  itemTypes.entity_type.machineName,
+    predicate:  itemTypes.predicate.machineName,
+    source:  itemTypes.source.machineName,
+    source_element:  itemTypes.source_element.machineName
 };
 
 export interface ApiService {

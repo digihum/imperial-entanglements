@@ -5,9 +5,8 @@
  */
 
 import * as React from 'react';
-import { PageProps } from '../routeUrls';
 
-export const RouteNotFound = (props: PageProps) => (
+export const RouteNotFound = (props: { url: string }) => (
     <section>
         <h1>The page at {props.url} does not exist :(</h1>
     </section>
