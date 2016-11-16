@@ -72,7 +72,7 @@ export class PredicateController extends GenericController<PredicatePersistable>
         if (params.domain !== undefined) {
             return this.db.getAncestorsOf(params.domain[0], 'entity_types')
             .then((ancestors) => {
-                return this.db.query()('predicates').whereIn('domain', ancestors.concat([params.domain[0]]))
+                return this.db.select('predicates').whereIn('domain', ancestors.concat([params.domain[0]]))
                 .then((results) => results.map((result) => new obj().fromSchema(result)));
             });
         } else {
@@ -90,15 +90,71 @@ export class PredicateController extends GenericController<PredicatePersistable>
     }
 
     public patchItem(obj: { new(): PredicatePersistable; }, uid: number, data: PredicatePersistable) : PromiseLike<boolean> {
-        
-        return Promise.all([
-            this.db.query()('records').where({ predicate: uid}).count('*'),
 
+        if (data.domain !== undefined) {
+            return this.db.select('records', ['entities.type as entityType'])
+                .distinct()
+                .where({ predicate: uid })
+                .innerJoin('entities', 'records.entity', 'entities.uid')
+            .then((records) => {
 
-        ]).then(([records]) => {
+                if (records.length > 0) {
 
-            return super.patchItem(obj, uid, data);
-        });
+                    return this.db.getChildrenOf(data.domain, 'entity_types')
+                    .then((res) => {
+                        records.map((e) => e.entityType)
+                        .forEach((e) => {
+                            if (res.indexOf(e) === -1) {
+                                throw new OperationNotPermittedException({
+                                    message: 'The operation could not be completed as it would invalidate predicate relationships',
+                                    data: {
+                                    }
+                                });
+                            }
+                        });
+                    }).then(() => super.patchItem(obj, uid, data));
+                }
+
+                return super.patchItem(obj, uid, data);
+            });
+        }
+
+        //TODO: fix range enforcement
+        if (data.range !== undefined) {
+
+            return this.db.select('records')
+                .where({ predicate: uid })
+            .then((records) => {
+
+                if (records.length > 0) {
+
+                    if (data.rangeIsReference === false) {
+                        throw new OperationNotPermittedException({
+                            message: 'The operation could not be completed as it would invalidate predicate relationships',
+                            data: {}
+                        });
+                    }
+
+                    return this.db.getChildrenOf(data.range, 'entity_types')
+                    .then((res) => {
+                        records.map((e) => e.value_entity)
+                        .forEach((e) => {
+                            if (res.indexOf(e) === -1) {
+                                throw new OperationNotPermittedException({
+                                    message: 'The operation could not be completed as it would invalidate predicate relationships',
+                                    data: {
+                                    }
+                                });
+                            }
+                        });
+                    }).then(() => super.patchItem(obj, uid, data));
+                }
+
+                return super.patchItem(obj, uid, data);
+            });
+        }
+
+        return super.patchItem(obj, uid, data);
     }
 
      public deleteItem(obj: { new(): PredicatePersistable; }, uid: number) : PromiseLike<string> {

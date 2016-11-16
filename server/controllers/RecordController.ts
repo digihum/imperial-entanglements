@@ -84,7 +84,7 @@ export class RecordController extends GenericController<RecordPersistable> {
     public postItem(obj: { new(): RecordPersistable; }, data: RecordPersistable) : PromiseLike<string> {
 
         // predicate domain must equal value_type
-        return this.db.query()('predicates').select('range_type').where({ uid: data.predicate })
+        return this.db.select('predicates', ['range_type']).where({ uid: data.predicate })
         .then(([predicate]) => {
             if (data.valueType === predicate.range_type) {
                 //TODO: still need to check entity type constraints
@@ -101,7 +101,7 @@ export class RecordController extends GenericController<RecordPersistable> {
 
         //TODO: what happens if we only update the value - and do not send the valueType again?
 
-        return this.db.query()('predicates').select('range_type').where({ uid: data.predicate })
+        return this.db.select('predicates', ['range_type']).where({ uid: data.predicate })
         .then(([predicate]) => {
             if (data.valueType === predicate.range_type) {
                 //TODO: still need to check entity type constraints
@@ -115,7 +115,7 @@ export class RecordController extends GenericController<RecordPersistable> {
     }
 
     public patchItem(obj: { new(): RecordPersistable; }, uid: number, data: RecordPersistable) : PromiseLike<boolean> {
-        return this.db.query()('predicates').select('range_type').where({ uid: data.predicate })
+        return this.db.select('predicates', ['range_type']).where({ uid: data.predicate })
         .then(([predicate]) => {
             if (data.valueType === predicate.range_type) {
                 //TODO: still need to check entity type constraints

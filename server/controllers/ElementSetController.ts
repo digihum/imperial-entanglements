@@ -36,7 +36,7 @@ export class ElementSetController extends GenericController<ElementSetPersistabl
         super(db, ElementSetPersistable.tableName);
     }
 
-    public getItemJson(obj: { new(): ElementSetPersistable; }, uid: number) : Promise<ElementSetPersistable> {
+    public getItemJson(obj: { new(): ElementSetPersistable; }, uid: number) : PromiseLike<ElementSetPersistable> {
         return super.getItemJson(obj, uid)
         .then((elementSet) => {
 
@@ -44,8 +44,7 @@ export class ElementSetController extends GenericController<ElementSetPersistabl
                 throw new Error('could not find source');
             }
 
-            return this.db.query().select()
-                .from('elements')
+            return this.db.select('elements')
                 .where({ 'element_set': elementSet.uid })
                 .then((elements) => {
                     elementSet.elements = elements;

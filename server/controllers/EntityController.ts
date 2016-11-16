@@ -45,16 +45,29 @@ export class EntityPersistable extends Entity implements Persistable {
 }
 
 export class EntityController extends GenericController<EntityPersistable> {
+
     constructor(db : Database) {
         super(db, EntityPersistable.tableName);
+    }
+
+    public getCollectionJson(obj: { new(): EntityPersistable; }, params: any = {}) : PromiseLike<EntityPersistable[]>  {
+        if (params.type !== undefined) {
+            return this.db.getChildrenOf(params.type[0], 'entity_types')
+            .then((ancestors) => {
+                return this.db.select('entities').whereIn('type', ancestors)
+                .then((results) => results.map((result) => new obj().fromSchema(result)));
+            });
+        } else {
+            return super.getCollectionJson(obj, params);
+        }
     }
 
     public deleteItem(obj: { new(): EntityPersistable; }, uid: number) : Promise<string> {
         // check if this entity is the parent of another entity or if it has any relationships
         // pointing towards it.
         return Promise.all([
-            this.db.query()(EntityPersistable.tableName).select().where('parent', '=', uid),
-            this.db.query()('records').select().where('value_entity', '=', uid)
+            this.db.select(EntityPersistable.tableName).where('parent', '=', uid),
+            this.db.select('records').where('value_entity', '=', uid)
         ]).then(([entities, records]) => {
             if (entities.length + records.length === 0) {
                 return this.db.deleteItem(this.tableName, uid);

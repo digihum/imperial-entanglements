@@ -40,7 +40,7 @@ export class RecordPredicate extends React.Component<RecordPredicateProps, Recor
 
     public componentDidMount() {
         if (this.props.predicate.rangeIsReference) {
-            this.props.api.getCollection(Entity, AppUrls.entity, { type: this.props.predicate.range})
+            this.props.api.getCollection(Entity, AppUrls.entity, { type: this.props.predicate.range })
             .then((potentialValues) => this.setState({ potentialValues }));
         }
     }

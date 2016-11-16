@@ -10,7 +10,7 @@ import { omit } from 'lodash';
 
 import { Persistable } from './Persistable';
 
-import { KeyNotFoundException } from './Exceptions';
+import { KeyNotFoundException, DatabaseIntegrityError } from './Exceptions';
 
 export class Database {
 
@@ -22,6 +22,10 @@ export class Database {
 
     public query() : Knex {
         return this.knex;
+    }
+
+    public select(tableName: string, options: string[] | '*' = '*') {
+        return this.knex.select().from(tableName);
     }
 
     public loadItem(a: string, uid: number) : Promise<any> {
@@ -44,25 +48,66 @@ export class Database {
         return query.then((results) => results === undefined ? Promise.reject(new KeyNotFoundException()) : results);
     }
 
-    public createItem(a: Persistable) : Promise<any> {
+    public createItem(a: Persistable) : PromiseLike<any> {
         // throw warning if called with uid
         // validate that everything else has been sent
         const withoutUid = omit(a.toSchema(), ['uid', 'tableName']);
-        return this.knex.insert(withoutUid, 'uid').into(a.getTableName()).returning('uid');
+
+        return this.knex.transaction((trx) => {
+            return this.knex(a.getTableName()).transacting(trx).insert(withoutUid, 'uid').returning('uid')
+            .then((results) => {
+                return this.checkIntegrity(trx)
+                .then((valid) => {
+                    if (!valid) {
+                        throw new DatabaseIntegrityError();
+                    }
+                    return results;
+                });
+            })
+            .then(trx.commit)
+            .catch(trx.rollback);
+        });
     }
 
     public updateItem(a: Persistable) : PromiseLike<any> {
         // assert - must have uid
         // validation?
-        return this.knex(a.getTableName())
+        return this.knex.transaction((trx) => {
+            return this.knex(a.getTableName()).transacting(trx)
             .where({ 'uid': a.uid })
-            .update(omit(a.toSchema(), ['tableName']));
+            .update(omit(a.toSchema(), ['tableName']))
+            .then((results) => {
+                return this.checkIntegrity(trx)
+                .then((valid) => {
+                    if (!valid) {
+                        throw new DatabaseIntegrityError();
+                    }
+                    return results;
+                });
+            })
+            .then(trx.commit)
+            .catch(trx.rollback);
+        });
     }
 
     public deleteItem(tableName: string, uid: number) : PromiseLike<any> {
-        return this.knex(tableName)
+
+        return this.knex.transaction((trx) => {
+            return this.knex(tableName).transacting(trx)
             .where({ uid })
-            .del();
+            .del()
+            .then((results) => {
+                return this.checkIntegrity(trx)
+                .then((valid) => {
+                    if (!valid) {
+                        throw new DatabaseIntegrityError();
+                    }
+                    return results;
+                });
+            })
+            .then(trx.commit)
+            .catch(trx.rollback);
+        });
     }
 
     public getAncestorsOf(uid: number, tableName: string) : PromiseLike<number[]> {
@@ -76,5 +121,66 @@ export class Database {
             .then((result) => {
                 return result.filter((a) => a.uid !== null).map((a) => a.uid);
             });
+    }
+
+    public getChildrenOf(uid: number, tableName: string) : PromiseLike<number[]> {
+        return this.knex.raw(`
+            WITH RECURSIVE parent_of(uid, parent) AS  (SELECT uid, parent FROM ${tableName}),
+                ancestor(parent) AS (
+                SELECT uid FROM parent_of WHERE uid=${uid}
+                UNION ALL
+                SELECT uid FROM parent_of JOIN ancestor USING(parent) )
+				SELECT * from ancestor`)
+            .then((result) => {
+                return result.filter((a) => a.parent !== null).map((a) => a.parent);
+            });
+    }
+
+    public checkIntegrity(trx: Knex.Transaction) : PromiseLike<boolean> {
+        return Promise.all([
+            this.knex.transacting(trx).select(this.knex.raw('SUM((records.value_type != predicates.range_type)) AS valid'))
+            .from('records')
+            .innerJoin('predicates', 'records.predicate', 'predicates.uid'),
+
+            this.knex.transacting(trx).select(this.knex.raw(`
+                SUM((
+
+                entities.type not in (
+                    WITH RECURSIVE parent_of(uid, parent) AS  (SELECT uid, parent FROM entity_types),
+                                ancestor(parent) AS (
+                                SELECT uid FROM parent_of WHERE uid=predicates.range_ref
+                                UNION ALL
+                                SELECT uid FROM parent_of JOIN ancestor USING(parent) )
+                                SELECT * from ancestor
+                )
+
+                )) as valid
+            `))
+            .from('records')
+            .innerJoin('predicates', 'records.predicate', 'predicates.uid')
+            .innerJoin('entities', 'entities.uid', 'records.value_entity')
+            .where('records.value_type', '=', 'entity'),
+
+            this.knex.transacting(trx).select(this.knex.raw(`
+               SUM((
+
+                entities.type not in (
+                    WITH RECURSIVE parent_of(uid, parent) AS  (SELECT uid, parent FROM entity_types),
+                                ancestor(parent) AS (
+                                SELECT uid FROM parent_of WHERE uid=predicates.domain
+                                UNION ALL
+                                SELECT uid FROM parent_of JOIN ancestor USING(parent) )
+                                SELECT * from ancestor
+                )
+
+                )) as valid
+            `))
+            .from('records')
+            .innerJoin('predicates', 'records.predicate', 'predicates.uid')
+            .innerJoin('entities', 'entities.uid', 'records.entity')
+
+          ]).then(([[a], [b], [c]]) => {
+            return (a.valid + b.valid + c.valid) === 0;
+        });
     }
 }

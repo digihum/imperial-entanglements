@@ -69,11 +69,10 @@ export abstract class GenericController<T extends Persistable> implements IContr
             }
         }
 
-        return this.db.query()(this.tableName)
-            .where({ uid })
-            .update(updateObject)
-            .then(() => true)
-            .catch((err) => { throw new Error(err); });
+        return this.db.loadItem(this.tableName, uid)
+        .then((originalData) => {
+            return this.putItem(obj, uid, Object.assign(new obj().fromSchema(originalData).serialize(), updateObject));
+        });
     }
 
     public deleteItem(obj: { new(): T; }, uid: number | CompositeKey) : PromiseLike<string> {

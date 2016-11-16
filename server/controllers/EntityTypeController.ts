@@ -59,11 +59,11 @@ export class EntityTypeController extends GenericController<EntityTypePersistabl
 
                 this.db.getAncestorsOf(uid, 'entity_types')
                 .then((ancestors) => {
-                    return this.db.query()('entity_types').whereIn('uid', ancestors)
+                    return this.db.select('entity_types').whereIn('uid', ancestors)
                     .then((results) => results.map((result) => new obj().fromSchema(result)));
                 }),
 
-                this.db.query().select('uid').from('entity_types').where({ parent: uid })
+                this.db.select('entity_types', ['uid']).where({ parent: uid })
             ])
             .then(([parents, children]) => {
                 result.parents = parents;
@@ -77,9 +77,9 @@ export class EntityTypeController extends GenericController<EntityTypePersistabl
         // check if this entity is the parent of another entity or if it has any relationships
         // pointing towards it.
         return Promise.all([
-            this.db.query()(EntityTypePersistable.tableName).select().where('parent', '=', uid),
-            this.db.query()('entities').select().where('type', '=', uid),
-            this.db.query()('predicates').select().where('domain', '=', uid).orWhere('range_ref', '=', uid)
+            this.db.select(EntityTypePersistable.tableName).where('parent', '=', uid),
+            this.db.select('entities').where('type', '=', uid),
+            this.db.select('predicates').where('domain', '=', uid).orWhere('range_ref', '=', uid)
         ]).then(([entityTypes, entities, predicates]) => {
             if (entities.length + entityTypes.length + predicates.length === 0) {
                 return this.db.deleteItem(this.tableName, uid);
