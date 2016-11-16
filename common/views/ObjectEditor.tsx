@@ -92,71 +92,73 @@ export class ObjectEditor extends React.Component<EntityEditorProps, EntityEdito
 
     public reload(props: EntityEditorProps) {
 
-        // load data required by the current tabs
-        let tabPromise = Promise.resolve(cloneDeep(emptyTabs));
+        this.setState({ loading: true }, () => {
+            // load data required by the current tabs
+            let tabPromise = Promise.resolve(cloneDeep(emptyTabs));
 
-        if (this.state.inBrowser) {
-            const tabsString = window.localStorage.getItem('open_tabs');
-            if (tabsString !== null) {
-                this.state.tabs = JSON.parse(tabsString);
+            if (this.state.inBrowser) {
+                const tabsString = window.localStorage.getItem('open_tabs');
+                if (tabsString !== null) {
+                    this.state.tabs = JSON.parse(tabsString);
 
-                 if (!props.list &&
-                        ['entity', 'predicate', 'entity_type', 'source'].indexOf(props.workspace) !== -1 &&
-                        find(this.state.tabs, (tab) => tab.tabType === props.workspace
-                    && tab.uid == parseInt(props.params.id)) === undefined) {
-                        this.state.tabs.push({ tabType: props.workspace, uid: parseInt(props.params.id)});
-                        this.saveTabs();
-                 }
+                    if (!props.list &&
+                            ['entity', 'predicate', 'entity_type', 'source'].indexOf(props.workspace) !== -1 &&
+                            find(this.state.tabs, (tab) => tab.tabType === props.workspace
+                        && tab.uid == parseInt(props.params.id)) === undefined) {
+                            this.state.tabs.push({ tabType: props.workspace, uid: parseInt(props.params.id)});
+                            this.saveTabs();
+                    }
 
-                const groupedTabs = groupBy(this.state.tabs, 'tabType');
+                    const groupedTabs = groupBy(this.state.tabs, 'tabType');
 
-                tabPromise = Promise.all(
-                    Object.keys(groupedTabs).map((tabType) =>
+                    tabPromise = Promise.all(
+                        Object.keys(groupedTabs).map((tabType) =>
 
-                        Promise.all(groupedTabs[tabType].map((tab) =>
-                            this.loadTabData(tab.tabType, tab.uid)
-                            .then((value) => {
-                                return { [`${tab.tabType}-${tab.uid}`]: { value, lastUpdate: moment() }};
+                            Promise.all(groupedTabs[tabType].map((tab) =>
+                                this.loadTabData(tab.tabType, tab.uid)
+                                .then((value) => {
+                                    return { [`${tab.tabType}-${tab.uid}`]: { value, lastUpdate: moment() }};
+                                })
+                                .catch((err) => {
+                                    console.warn(`Attempted to load missing resource ${tab.tabType}/${tab.uid}`);
+                                    this.closeTab(tab.tabType, tab.uid);
+                                    if (tab.tabType === props.workspace && tab.uid === parseInt(props.params.id)) {
+                                        this.context.router.transitionTo('/edit/notfound');
+                                    }
+                                })
+                            ))
+                            .then((tabData) => {
+                                return { [tabType]: Map(Object.assign({}, ...tabData)) };
                             })
-                            .catch((err) => {
-                                console.warn(`Attempted to load missing resource ${tab.tabType}/${tab.uid}`);
-                                this.closeTab(tab.tabType, tab.uid);
-                                if (tab.tabType === props.workspace && tab.uid === parseInt(props.params.id)) {
-                                     this.context.router.transitionTo('/edit/notfound');
-                                }
-                            })
-                        ))
-                        .then((tabData) => {
-                            return { [tabType]: Map(Object.assign({}, ...tabData)) };
-                        })
-                    )
-                );
+                        )
+                    );
+                }
             }
-        }
 
-        // load lists of data commonly required by views
-        const allPromise = Promise.all([
-            props.api.getCollection(Predicate, AppUrls.predicate, {}),
-            props.api.getCollection(Source, AppUrls.source, {}),
-            props.api.getCollection(Entity, AppUrls.entity, {}),
-            props.api.getCollection(EntityType, AppUrls.entity_type, {})
-        ])
-        .then(([predicates, sources, entities, entityType]) => {
+            // load lists of data commonly required by views
+            const allPromise = Promise.all([
+                props.api.getCollection(Predicate, AppUrls.predicate, {}),
+                props.api.getCollection(Source, AppUrls.source, {}),
+                props.api.getCollection(Entity, AppUrls.entity, {}),
+                props.api.getCollection(EntityType, AppUrls.entity_type, {})
+            ])
+            .then(([predicates, sources, entities, entityType]) => {
 
-            return {
-                predicate: { value: predicates, lastUpdate: moment() },
-                source: { value: sources, lastUpdate: moment() },
-                entity: { value: entities, lastUpdate: moment() },
-                entity_type: { value: entityType, lastUpdate: moment() }
-            };
-        });
+                return {
+                    predicate: { value: predicates, lastUpdate: moment() },
+                    source: { value: sources, lastUpdate: moment() },
+                    entity: { value: entities, lastUpdate: moment() },
+                    entity_type: { value: entityType, lastUpdate: moment() }
+                };
+            });
 
-        Promise.all([tabPromise, allPromise])
-        .then(([tabsArray, all]) => {
-            const tabs = Object.assign({}, ...tabsArray);
-            this.setState({
-                dataStore: Object.assign({}, this.state.dataStore, { tabs, all }),
-                loading: false
+            Promise.all([tabPromise, allPromise])
+            .then(([tabsArray, all]) => {
+                const tabs = Object.assign({}, ...tabsArray);
+                this.setState({
+                    dataStore: Object.assign({}, this.state.dataStore, { tabs, all }),
+                    loading: false
+                });
             });
         });
     }

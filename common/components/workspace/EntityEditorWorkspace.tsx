@@ -16,7 +16,7 @@ import { ModalDefinition } from '../modal/ModalDefinition';
 
 import { Dictionary, groupBy } from 'lodash';
 
-import { showModal, createTab } from '../../Signaller';
+import { showModal, createTab, closeTab } from '../../Signaller';
 import { AddTabButton } from '../AddTabButton';
 
 import { findParentTree } from '../../helper/findParentTree';
@@ -74,6 +74,7 @@ export class EntityEditorWorkspace extends React.Component<EntityEditorProps, En
     public del() {
         this.props.api.delItem(Entity, AppUrls.entity, this.props.id)
         .then(() => {
+            closeTab.dispatch('entity', this.props.id);
             this.context.router.transitionTo('/edit/notfound');
         })
          .catch((e) => {
