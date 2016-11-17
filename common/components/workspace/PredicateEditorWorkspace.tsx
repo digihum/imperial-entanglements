@@ -66,11 +66,11 @@ export class PredicateEditorWorkspace extends React.Component<PredicateEditorPro
     }
 
     public loadData(props: PredicateEditorProps) {
-        Promise.all([
-            props.api.getCollection(Record, AppUrls.record, { predicate: props.id })
-        ]).then(([records]) => {
-            this.setState({ records });
-        });
+        // Promise.all([
+        //     props.api.getCollection(Record, AppUrls.record, { predicate: props.id })
+        // ]).then(([records]) => {
+        //     this.setState({ records });
+        // });
     }
 
     public updatePredicate(field: string, value: string, rangeIsReferenceOverride: boolean | null = null) {

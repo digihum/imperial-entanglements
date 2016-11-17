@@ -36,9 +36,7 @@ interface SourceEditorProps {
 }
 
 interface SourceEditorState {
-    source : Source | null;
-    dublinCore: ElementSet | null;
-    potentialParents: Source[];
+    metaData: _.Dictionary<SourceElement>;
 }
 
 // - Should state the number of times this predicate is used
@@ -57,9 +55,7 @@ export class SourceEditorWorkspace extends React.Component<SourceEditorProps, So
     constructor() {
         super();
         this.state = {
-            source: null,
-            dublinCore: null,
-            potentialParents: []
+            metaData: {}
         };
     }
 
@@ -74,18 +70,10 @@ export class SourceEditorWorkspace extends React.Component<SourceEditorProps, So
 
     public loadData(props: SourceEditorProps) {
 
-        Promise.all([
-            props.api.getItem(Source, AppUrls.source, props.id),
-            props.api.getItem(ElementSet, AppUrls.element_set, 1), //TODO: make sure this is ALWAYS dublin core
-            props.api.getCollection(Source, AppUrls.source, {})
-        ])
-        .then(([data, dublinCore, potentialParents]) => {
-            this.setState({
-                source: data,
-                metaData: keyBy(data.metaData, 'name'),
-                dublinCore,
-                potentialParents
-            });
+        const source = props.dataStore.tabs.source.get('source-' + this.props.id).value.source;
+
+        this.setState({
+            metaData: keyBy(source.metaData, 'name')
         });
     }
 
@@ -94,16 +82,16 @@ export class SourceEditorWorkspace extends React.Component<SourceEditorProps, So
         const source = this.props.dataStore.tabs.source.get('source-' + this.props.id).value.source;
 
         this.props.api.patchItem(Source, AppUrls.source, source.uid, { [field]: value })
-        .then((success) => {
+        //.then((success) => {
 
-            const updatedSource = new Source().deserialize(Object.assign({},
-                source.serialize(), { [field]: value }));
+            // const updatedSource = new Source().deserialize(Object.assign({},
+            //     source.serialize(), { [field]: value }));
 
-            this.setState({
-                source: updatedSource,
-                metaData: keyBy(updatedSource.metaData, 'name')
-            });
-        });
+            // this.setState({
+            //     source: updatedSource,
+            //     metaData: keyBy(updatedSource.metaData, 'name')
+            // });
+        //});
     }
 
     public updateSourceElement(element: Element, value: string) {
@@ -188,10 +176,6 @@ export class SourceEditorWorkspace extends React.Component<SourceEditorProps, So
 
     public render() {
 
-        if (this.state.dublinCore === null) {
-            return (<Loading />);
-        }
-
         const source = this.props.dataStore.tabs.source.get('source-' + this.props.id).value.source;
         const potentialParents = this.props.dataStore.all.source.value;
 
@@ -257,7 +241,7 @@ export class SourceEditorWorkspace extends React.Component<SourceEditorProps, So
                             onChange={(value) => this.updateSource('sameAs', value)} />
                     </div>
 
-                    {this.state.dublinCore.elements.map((element) => {
+                    {this.props.dataStore.all.dublinCore.value.elements.map((element) => {
 
                         const values = source.metaData.hasOwnProperty(element.name) ? 
                             source.metaData[element.name].values : [{ source: this.props.id, value: ''}];

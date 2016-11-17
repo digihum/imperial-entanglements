@@ -10,7 +10,7 @@ import * as moment from 'moment';
 
 import { ApiService, AppUrls } from '../ApiService';
 
-import { EntityType, Entity, Predicate, Record, Source, SourceElement } from '../../common/datamodel/datamodel';
+import { EntityType, Entity, Predicate, Record, Source, SourceElement, ElementSet } from '../../common/datamodel/datamodel';
 
 import { Sidebar, Tab } from '../components/Sidebar';
 import { Workspace } from '../components/Workspace';
@@ -108,6 +108,10 @@ export class ObjectEditor extends React.Component<EntityEditorProps, EntityEdito
         }
 
         if (this.state.loading) {
+            this.setState({
+                id: newId,
+                list: props.location.pathname.substr(props.pathname.length + 1).length === 0
+            });
             return;
         }
 
@@ -164,15 +168,17 @@ export class ObjectEditor extends React.Component<EntityEditorProps, EntityEdito
                 props.api.getCollection(Predicate, AppUrls.predicate, {}),
                 props.api.getCollection(Source, AppUrls.source, {}),
                 props.api.getCollection(Entity, AppUrls.entity, {}),
-                props.api.getCollection(EntityType, AppUrls.entity_type, {})
+                props.api.getCollection(EntityType, AppUrls.entity_type, {}),
+                props.api.getItem(ElementSet, AppUrls.element_set, 1)
             ])
-            .then(([predicates, sources, entities, entityType]) => {
+            .then(([predicates, sources, entities, entityType, dublinCore]) => {
 
                 return {
                     predicate: { value: predicates, lastUpdate: moment() },
                     source: { value: sources, lastUpdate: moment() },
                     entity: { value: entities, lastUpdate: moment() },
-                    entity_type: { value: entityType, lastUpdate: moment() }
+                    entity_type: { value: entityType, lastUpdate: moment() },
+                    dublinCore: { value: dublinCore, lastUpdate: moment() }
                 };
             });
 

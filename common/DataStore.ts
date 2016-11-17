@@ -5,7 +5,7 @@
  */
 
 import { Map } from 'immutable';
-import { Predicate, EntityType, Entity, Record, Source, SourceElement } from '../common/datamodel/datamodel';
+import { Predicate, EntityType, Entity, Record, Source, SourceElement, ElementSet } from '../common/datamodel/datamodel';
 import * as moment from 'moment';
 
 export interface DataStoreEntry<T> {
@@ -19,6 +19,7 @@ export interface DataStore {
     entity_type: DataStoreEntry<EntityType[]>;
     predicate: DataStoreEntry<Predicate[]>;
     source: DataStoreEntry<Source[]>;
+    dublinCore: DataStoreEntry<ElementSet>;
   };
 
   tabs: {
@@ -46,7 +47,8 @@ export const emptyDataStore : DataStore = {
     entity: { value: [], lastUpdate: null },
     entity_type: { value: [], lastUpdate: null },
     predicate: { value: [], lastUpdate: null },
-    source: { value: [], lastUpdate: null }
+    source: { value: [], lastUpdate: null },
+    dublinCore: { value: new ElementSet(), lastUpdate: null }
   },
 
   tabs: {
