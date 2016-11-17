@@ -48,7 +48,7 @@ export class Toast extends React.Component<ToastProps, ToastState> {
 
         this.setState({
             toasts: this.state.toasts.concat([{ title, message, level, lifeTime, id }]),
-            nextId: id
+            nextId: id + 1
         });
 
         setTimeout(() => {

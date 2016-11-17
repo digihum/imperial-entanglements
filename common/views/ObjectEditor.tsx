@@ -8,8 +8,6 @@ import * as React from 'react';
 import { Map } from 'immutable';
 import * as moment from 'moment';
 
-import { Match, Miss } from 'react-router';
-
 import { ApiService, AppUrls } from '../ApiService';
 
 import { EntityType, Entity, Predicate, Record, Source, SourceElement } from '../../common/datamodel/datamodel';
@@ -18,7 +16,7 @@ import { Sidebar, Tab } from '../components/Sidebar';
 import { Workspace } from '../components/Workspace';
 import { Toast } from '../components/Toast';
 
-import { createTab, closeTab, showModal, triggerReload, showToast } from '../Signaller';
+import { createTab, closeTab, showModal, triggerReload } from '../Signaller';
 import { find, tail, cloneDeep, groupBy, findIndex } from 'lodash';
 
 import { CreatePredicate } from '../components/modal/CreatePredicate';
@@ -104,6 +102,10 @@ export class ObjectEditor extends React.Component<EntityEditorProps, EntityEdito
 
         const newId = parseInt(props.location.pathname.substr(props.pathname.length + 1));
         const newWorkspace = props.workspace;
+
+        if (['entity', 'source', 'predicate', 'entity_type', 'notfound'].indexOf(newWorkspace) === -1) {
+            this.context.router.transitionTo('/edit/notfound');
+        }
 
         if (this.state.loading) {
             return;

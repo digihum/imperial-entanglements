@@ -288,7 +288,7 @@ export class SourceEditorWorkspace extends React.Component<SourceEditorProps, So
                         {source.children
                             .map((child) => this.props.dataStore.all.source.value.find((et) => et.uid === child))
                             .map((childEt) =>
-                                (<li key={`dc-${childEt.uid}`}>{childEt.name} <AddTabButton tabType='entity_type' uid={childEt.uid} /></li>
+                                (<li key={`dc-${childEt.uid}`}>{childEt.name} <AddTabButton tabType='source' uid={childEt.uid} /></li>
                             ))}
                         </ul>
                     </div>
