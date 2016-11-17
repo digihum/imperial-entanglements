@@ -51,11 +51,13 @@ export class EditableFieldComponent<T> extends React.Component<EditableFieldProp
         this.setState({edit: true, internalValue: this.props.value});
     }
 
+    public setInternalValue(internalValue: T) {
+        this.setState({ internalValue });
+    }
+
     public acceptChanges() {
-        if (this.state.internalValue !== null) {
-            this.props.onChange(this.state.internalValue);
-            this.setState({edit: false});
-        }
+        this.props.onChange(this.state.internalValue);
+        this.setState({edit: false});
     }
 
     public cancelChanges() {
@@ -66,7 +68,7 @@ export class EditableFieldComponent<T> extends React.Component<EditableFieldProp
        return (<this.props.component
         edit={this.state.edit}
         value={this.state.internalValue}
-        onChange={(value) => this.setState({internalValue: value}) }
+        onChange={this.setInternalValue.bind(this)}
         setEdit={this.switchToEditState.bind(this)}
         acceptChanges={this.acceptChanges.bind(this)}
         cancelChanges={this.cancelChanges.bind(this)}

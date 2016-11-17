@@ -172,9 +172,9 @@ export class EntityTypeWorkspace extends React.Component<EntityTypeWorkspaceProp
                 <section className='editor-body'>
                     <span>Parent:</span>
                     <ComboEditableFieldComponent
-                        value={{key: parentName, value: entityType.parent}}
+                        value={entityType.parent === null ? null : {key: parentName, value: entityType.parent}}
                         component={EditableComboDropdown}
-                        onChange={(value) => this.update({'parent': value.value})}
+                        onChange={(value) => this.update({'parent': value === null ? null : value.value})}
                         additionalProps={{ comboSettings: {
                             options: potentialParents.map((par) => ({ key: par.name, value: par.uid})),
                             typeName: 'EntityType'

@@ -28,6 +28,7 @@ export const EditableComboDropdown = (props: EditableComboDropdownProps) => {
             <ComboDropdown {...props.comboSettings}
                 value={props.value}
                 setValue={props.onChange}
+                allowNew={false}
                 createNewValue={() => {}} />
             <button><i className='fa fa-check' onClick={props.acceptChanges} aria-hidden='true'></i></button>
             <button><i className='fa fa-times' aria-hidden='true' onClick={props.cancelChanges}></i></button>
@@ -36,7 +37,7 @@ export const EditableComboDropdown = (props: EditableComboDropdownProps) => {
     } else {
         return (
             <div>
-                {props.value === null || props.value.key.length > 0 ? props.value.key
+                {props.value !== null && props.value.key.length > 0 ? props.value.key
                 : (
                     <em>No value</em>
                 )}

@@ -30,12 +30,11 @@ interface FalconAppProps {
 }
 
 interface FalconAppState {
-    user: string;
-}
+    user: string
 
 export class FalconApp extends React.Component<FalconAppProps, FalconAppState> {
 
-    constructor() {
+    constructor(props: FalconAppProps) {
         super();
         this.state = {
             user: ''
@@ -92,7 +91,7 @@ export class FalconApp extends React.Component<FalconAppProps, FalconAppState> {
                             <ObjectEditor
                                 api={this.props.api} {...matchprops} 
                                 workspace={matchprops.params.workspace === 'property' ? 'predicate' : matchprops.params.workspace}
-                                 />)
+                                />)
                     } />
 
                     <Miss component={RouteNotFound} />

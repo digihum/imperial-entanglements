@@ -20,8 +20,8 @@ export interface ComboDropdownOption {
 export interface ComboDropdownProps {
     options: ComboDropdownOption[];
     typeName: string;
-    value: ComboDropdownOption;
-    setValue: (s: ComboDropdownOption) => void;
+    value: ComboDropdownOption | null;
+    setValue: (s: ComboDropdownOption | null) => void;
     createNewValue: (s: string) => void;
     updateSearchString?: (s: string) => void;
     allowNew?: boolean;
@@ -30,11 +30,9 @@ export interface ComboDropdownProps {
 
 interface ComboDropdownState {
     searchString: string;
-    selected: ComboDropdownOption;
     showingDropDown: boolean;
     filteredOptions: ComboDropdownOption[];
     boundHideFunc: any;
-    selectedString: string;
     highlightedIndex: null | number;
     dropDownHeight: number;
 }
@@ -58,10 +56,8 @@ export class ComboDropdown<T> extends React.Component<ComboDropdownProps, ComboD
 
         this.state = {
             searchString: '',
-            selected: { key: '', value: ''},
             showingDropDown: false,
             filteredOptions: [],
-            selectedString: '',
             highlightedIndex: null,
             dropDownHeight: 0
         };
@@ -75,16 +71,42 @@ export class ComboDropdown<T> extends React.Component<ComboDropdownProps, ComboD
 
          this.setState({
             filteredOptions: this.props.options,
-            searchString: this.props.value.key === null ? '' : this.props.value.key,
-            selected: this.props.value
+            searchString: this.props.value === null || this.props.value.key === null ? '' : this.props.value.key
         });
     }
 
     public componentWillReceiveProps(newProps: ComboDropdownProps) {
-        this.updateFilter(newProps.value.key !== this.props.value.key ? newProps.value.key : this.state.searchString, newProps);
+
+        let filterString = '';
+
+        if (this.props.value === null) {
+            if (newProps.value === null) {
+                // change nothing
+                filterString = this.state.searchString;
+            } else {
+                // set to newProps value
+                filterString = newProps.value.key;
+            }
+        } else {
+            if (newProps.value === null) {
+                // set to ''
+                filterString = '';
+            } else {
+                if (newProps.value === this.props.value) {
+                    // change nothing
+                    filterString = this.state.searchString;
+                } else {
+                    // set to newProps value
+                    filterString = newProps.value.key;
+                }
+            }
+        }
+
+        //const filterString = newProps.value.key !== this.props.value.key ? newProps.value.key : this.state.searchString;
+
+        this.updateFilter(filterString, newProps);
         this.setState({
-            searchString: newProps.value.key !== this.props.value.key ? newProps.value.key : this.state.searchString,
-            selected: newProps.value,
+            searchString: filterString,
             options: newProps.options
         });
     }
@@ -144,8 +166,8 @@ export class ComboDropdown<T> extends React.Component<ComboDropdownProps, ComboD
                  this.setState({ searchString: '' });
             } else {
                  if (findIndex(this.props.options, (option) => option.key === this.state.searchString) === -1) {
-                    this.setState({ searchString: this.props.value.key }, () => {
-                        this.updateFilter(this.props.value.key, this.props);
+                    this.setState({ searchString: newProps.value === null ? '' : this.props.value.key }, () => {
+                        this.updateFilter(newProps.value === null ? '' : this.props.value.key, this.props);
                     });
                 }
             }
@@ -199,7 +221,7 @@ export class ComboDropdown<T> extends React.Component<ComboDropdownProps, ComboD
   }
 
   public clearSearchBox() {
-      this.props.setValue({ key: '', value: ''});
+      this.props.setValue(null);
       this.setState({ searchString: '' });
       this.refs.comboDropDownInputBox.focus();
   }

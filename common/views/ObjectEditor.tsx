@@ -50,6 +50,7 @@ interface EntityEditorState {
     modalQueue: ModalDefinition[];
     dataStore: DataStore;
     loading: boolean;
+    loadingWheel: boolean;
 
     id: number;
     list: boolean;
@@ -74,7 +75,8 @@ export class ObjectEditor extends React.Component<EntityEditorProps, EntityEdito
             inBrowser: (typeof window !== 'undefined'),
             modalQueue: [],
             dataStore: cloneDeep(emptyDataStore),
-            loading: true,
+            loadingWheel: true,
+            loading: false,
             id: NaN,
             list: false
         };
@@ -103,8 +105,13 @@ export class ObjectEditor extends React.Component<EntityEditorProps, EntityEdito
         const newId = parseInt(props.location.pathname.substr(props.pathname.length + 1));
         const newWorkspace = props.workspace;
 
+        if (this.state.loading) {
+            return;
+        }
+
         this.setState({
-            loading: (this.state.id !== newId && !(isNaN(this.state.id) && isNaN(newId))) || this.props.workspace !== newWorkspace,
+            loading: true,
+            loadingWheel: (this.state.id !== newId && !(isNaN(this.state.id) && isNaN(newId))) || this.props.workspace !== newWorkspace,
             id: newId,
             list: props.location.pathname.substr(props.pathname.length + 1).length === 0
     }, () => {
@@ -172,7 +179,8 @@ export class ObjectEditor extends React.Component<EntityEditorProps, EntityEdito
                 const tabs = Object.assign({}, ...tabsArray);
                 this.setState({
                     dataStore: Object.assign({}, this.state.dataStore, { tabs, all }),
-                    loading: false
+                    loading: false,
+                    loadingWheel: false
                 });
             });
         });
@@ -294,7 +302,7 @@ export class ObjectEditor extends React.Component<EntityEditorProps, EntityEdito
                     <Workspace {...this.props}
                         id={this.state.id}
                         dataStore={this.state.dataStore}
-                        loading={this.state.loading}
+                        loading={this.state.loadingWheel}
                         list={this.state.list}/>
 
                     <Toast />
