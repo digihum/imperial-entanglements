@@ -94,6 +94,7 @@ export class PredicateList extends React.Component<PredicateListProps, Predicate
                         return (
                             <tr key={`predicate-${predicate.uid}`}>
                                 <td>{predicate.uid} <AddTabButton
+                                    dataStore={this.props.dataStore}
                                     uid={predicate.uid}
                                     tabType='predicate' /></td>
                                 <td>{predicate.name}</td>

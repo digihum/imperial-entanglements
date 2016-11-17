@@ -106,9 +106,11 @@ export class Sidebar extends React.Component<SidebarProps, SidebarState> {
                                             )}
                                         </Link>
                                     </div>
-                                    <span className='close-button'>
-                                        <i className='fa fa-times' onClick={(e) => this.closeTab(e, tab.tabType, tab.uid)}></i>
-                                    </span>
+                                    {!currentTab ? (
+                                        <span className='close-button'>
+                                            <i className='fa fa-times' onClick={(e) => this.closeTab(e, tab.tabType, tab.uid)}></i>
+                                        </span>
+                                    ) : null}
                                 </div>
                             </li>
                         );

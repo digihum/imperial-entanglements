@@ -21,8 +21,6 @@ import { ModalDefinition } from '../modal/ModalDefinition';
 
 import { groupBy, Dictionary } from 'lodash';
 
-import { AddTabButton } from '../AddTabButton';
-
 class RecordEditableFieldComponent extends EditableFieldComponent<Record> {}
 
 interface RecordsEditorProps {
@@ -133,6 +131,7 @@ export class RecordsEditor extends React.Component<RecordsEditorProps, RecordsEd
 							}
 
 							return (<RecordPredicate
+								dataStore={this.props.dataStore}
 								key={`section-${section}`}
 								entity_id={this.props.id}
 								api={this.props.api}

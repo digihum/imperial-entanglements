@@ -201,6 +201,7 @@ export class EntityEditorWorkspace extends React.Component<EntityEditorProps, En
                     <div className='flex-fill'>
                         <div className='flex-fill'>
                             <div><strong>Type: </strong>{entityType.name} <AddTabButton
+                                dataStore={this.props.dataStore}
                                 uid={entityType.uid}
                                 tabType='entity_type'
                             /></div>
@@ -216,7 +217,9 @@ export class EntityEditorWorkspace extends React.Component<EntityEditorProps, En
                                     options: potentialParents.map((par) => ({ key: par.label, value: par.uid})),
                                     typeName: 'Entity'
                                 }}} />
-                            {entity.parent !== null ? (<AddTabButton tabType='entity' uid={entity.parent} />) : null}
+                            {entity.parent !== null ? (<AddTabButton dataStore={this.props.dataStore} 
+                                tabType='entity' 
+                                uid={entity.parent} />) : null}
                         </div>
                     </div>
 

@@ -139,7 +139,10 @@ export class EntityTypeWorkspace extends React.Component<EntityTypeWorkspaceProp
                         <div className='bread-crumbs'>
                             {entityType.parents.map((parent, i) => (
                                 <span key={`breadcrumb-${parent.uid}`}>
-                                    <span>  {parent.name} <AddTabButton tabType='entity_type' uid={parent.uid} /> </span>
+                                    <span>  {parent.name} <AddTabButton
+                                        dataStore={this.props.dataStore}
+                                        tabType='entity_type'
+                                        uid={parent.uid} /> </span>
                                     <i className='fa fa-angle-right'></i>
                                 </span>
                             ))}
@@ -179,7 +182,10 @@ export class EntityTypeWorkspace extends React.Component<EntityTypeWorkspaceProp
                             options: potentialParents.map((par) => ({ key: par.name, value: par.uid})),
                             typeName: 'EntityType'
                         }}} />
-                    {entityType.parent !== null ? (<AddTabButton tabType='entity_type' uid={entityType.parent} />) : null}
+                    {entityType.parent !== null ? (<AddTabButton 
+                        tabType='entity_type'
+                        dataStore={this.props.dataStore}
+                        uid={entityType.parent} />) : null}
 
                     <label className='small'>Description</label>
                     <StringEditableFieldComponent
@@ -200,7 +206,10 @@ export class EntityTypeWorkspace extends React.Component<EntityTypeWorkspaceProp
                         {entityType.children
                             .map((child) => this.props.dataStore.all.entity_type.value.find((et) => et.uid === child))
                             .map((childEt) =>
-                                (<li key={`dc-${childEt.name}`}>{childEt.name} <AddTabButton tabType='entity_type' uid={childEt.uid} /></li>
+                                (<li key={`dc-${childEt.name}`}>{childEt.name} <AddTabButton 
+                                    tabType='entity_type' 
+                                    dataStore={this.props.dataStore}
+                                    uid={childEt.uid} /></li>
                             ))}
                         </ul>
                     </div>

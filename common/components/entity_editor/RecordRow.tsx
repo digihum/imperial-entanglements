@@ -14,6 +14,7 @@ import { ComboDropdown } from '../ComboDropdown';
 import { showModal } from '../../Signaller';
 import { ModalDefinition } from '../modal/ModalDefinition';
 import { AppUrls } from '../../ApiService';
+import { DataStore } from '../../DataStore';
 
 import { StringFieldEditor } from './StringFieldEditor';
 import { EntityFieldEditor } from './EntityFieldEditor';
@@ -28,6 +29,7 @@ interface RecordRowProps extends EditableSubfieldProps<Record> {
     dimension: string;
     sources: Source[];
     entities: Entity[];
+    dataStore: DataStore;
 }
 
 const createNewSource = (initialValue: string) => {
@@ -151,6 +153,7 @@ export const RecordRow = (props: RecordRowProps) => {
             <td className='record-row-item'>{dropDownValue.key}
                 {dropDownValue.key.length > 0 ? (
                     <AddTabButton 
+                        dataStore={props.dataStore}
                         uid={dropDownValue.value}
                         tabType='source' />
                 ) : null}

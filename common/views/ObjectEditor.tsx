@@ -239,7 +239,10 @@ export class ObjectEditor extends React.Component<EntityEditorProps, EntityEdito
     public closeTab(tabType: string, uid: number) {
         this.setState({
             tabs: this.state.tabs.filter((a) => a.tabType !== tabType || a.uid !== uid)
-        }, () => this.saveTabs());
+        }, () => {
+            this.saveTabs();
+            this.reload(this.props);
+        });
     }
 
     public saveTabs() {

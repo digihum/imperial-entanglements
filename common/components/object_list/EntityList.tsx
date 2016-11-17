@@ -333,6 +333,7 @@ export class EntityList extends React.Component<EntityListProps, EntityListState
                             <tr key={`entity-${row.uid}`}>
                                 <td>{row.uid}</td>
                                 <td>{row.label} <AddTabButton
+                                    dataStore={this.props.dataStore}
                                     uid={row.uid}
                                     tabType='entity'/></td>
                                 <td>{row.entityType ? row.entityType.name : ''}</td>

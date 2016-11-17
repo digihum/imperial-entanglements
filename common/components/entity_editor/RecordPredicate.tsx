@@ -6,6 +6,7 @@
 
 import * as React from 'react';
 import { ApiService, AppUrls } from '../../ApiService';
+import { DataStore } from '../../dataStore';
 import { Record, Predicate, Source, Entity } from '../../../common/datamodel/datamodel';
 import { EditableFieldComponent } from '../fields/EditableFieldComponent';
 
@@ -23,6 +24,7 @@ interface RecordPredicateProps {
 	predicate : Predicate;
 	sources: Source[];
     onChange: () => void;
+    dataStore: DataStore;
 }
 
 interface RecordPredicateState {
@@ -80,6 +82,7 @@ export class RecordPredicate extends React.Component<RecordPredicateProps, Recor
                      onClick={this.createNewRecord.bind(this)}
                 ></i>
             <AddTabButton
+                dataStore={this.props.dataStore}
                 uid={this.props.predicate.uid}
                 tabType='predicate' />
             </h5>
@@ -105,7 +108,8 @@ export class RecordPredicate extends React.Component<RecordPredicateProps, Recor
                             additionalProps={{
                                 dimension: 'predicates',
                                 sources: this.props.sources,
-                                entities: this.state.potentialValues
+                                entities: this.state.potentialValues,
+                                dataStore: this.props.dataStore
                             }}
                         />
                     ))}

@@ -196,7 +196,10 @@ export class SourceEditorWorkspace extends React.Component<SourceEditorProps, So
                                 .map((child) => this.props.dataStore.all.source.value.find((et) => et.uid === child))
                                 .map((parent, i) => (
                                 <span key={`breadcrumb-${parent.uid}`}>
-                                    <span>  {parent.name} <AddTabButton tabType='source' uid={parent.uid} /> </span>
+                                    <span>  {parent.name} <AddTabButton
+                                        dataStore={this.props.dataStore}
+                                        tabType='source' 
+                                        uid={parent.uid} /> </span>
                                     <i className='fa fa-angle-right'></i>
                                 </span>
                             ))}
@@ -232,7 +235,10 @@ export class SourceEditorWorkspace extends React.Component<SourceEditorProps, So
                             options: potentialParents.map((par) => ({ key: par.name, value: par.uid})),
                             typeName: 'Source'
                         }}} />
-                        {source.parent !== null ? (<AddTabButton tabType='source' uid={source.parent} />) : null}
+                        {source.parent !== null ? (<AddTabButton 
+                            dataStore={this.props.dataStore}
+                            tabType='source' 
+                            uid={source.parent} />) : null}
 
                     <div>
                         <StringEditableFieldComponent
@@ -272,7 +278,10 @@ export class SourceEditorWorkspace extends React.Component<SourceEditorProps, So
                         {source.children
                             .map((child) => this.props.dataStore.all.source.value.find((et) => et.uid === child))
                             .map((childEt) =>
-                                (<li key={`dc-${childEt.uid}`}>{childEt.name} <AddTabButton tabType='source' uid={childEt.uid} /></li>
+                                (<li key={`dc-${childEt.uid}`}>{childEt.name} <AddTabButton 
+                                    tabType='source' 
+                                    dataStore={this.props.dataStore}
+                                    uid={childEt.uid} /></li>
                             ))}
                         </ul>
                     </div>

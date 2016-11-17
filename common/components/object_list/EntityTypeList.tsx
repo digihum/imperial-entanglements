@@ -83,6 +83,7 @@ export class EntityTypeList extends React.Component<EntityTypeListProps, EntityT
                         return (
                             <tr key={`entityType-${entityType.uid}`}>
                                 <td>{entityType.uid} <AddTabButton
+                                    dataStore={this.props.dataStore}
                                     uid={entityType.uid}
                                     tabType='entity_type' /></td>
                                 <td>{entityType.name}</td>

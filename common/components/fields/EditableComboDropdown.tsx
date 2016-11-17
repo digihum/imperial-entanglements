@@ -5,17 +5,9 @@
  */
 
 import * as React from 'react';
-import { Record, Source } from '../../../common/datamodel/datamodel';
 import { EditableSubfieldProps } from '../fields/EditableFieldComponent';
 export { EditableFieldComponent } from '../fields/EditableFieldComponent';
-import { ScorePicker } from '../fields/ScorePicker';
 import { ComboDropdown, ComboDropdownOption, ComboDropdownProps } from '../ComboDropdown';
-import { ModalDefinition } from '../modal/ModalDefinition';
-import { AppUrls } from '../../ApiService';
-
-import { AddTabButton } from '../AddTabButton';
-
-import { omit } from 'lodash';
 
 interface EditableComboDropdownProps extends EditableSubfieldProps<ComboDropdownOption> {
     comboSettings: ComboDropdownProps;
