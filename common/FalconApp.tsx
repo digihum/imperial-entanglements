@@ -87,41 +87,13 @@ export class FalconApp extends React.Component<FalconAppProps, FalconAppState> {
                                 workspace={'search'} />)
                     } />
 
-
-                   <Match exactly pattern='/edit/notfound' render={
+                    <Match pattern='/edit/:workspace' render={
                         (matchprops) => (
                             <ObjectEditor
                                 api={this.props.api} {...matchprops} 
-                                workspace={'notfound'} />)
+                                workspace={matchprops.params.workspace === 'property' ? 'predicate' : matchprops.params.workspace}
+                                 />)
                     } />
-
-                    {Object.keys(itemTypes).map((name) => [name, itemTypes[name]]).map(([name, itemType]) => ([
-
-                            <Match
-                                exactly key={`${name}-cv`}
-                                pattern={`/edit/${itemType.machineName}`}
-                                render={
-                                    (matchprops) => (
-                                        <ObjectEditor
-                                            api={this.props.api} {...matchprops} 
-                                            workspace={itemType.workspace}
-                                            name={itemType.plural} 
-                                            list={true} />)
-                                } />,
-
-                            <Match
-                                exactly key={`${name}-iv`}
-                                pattern={`/edit/${itemType.machineName}/:id`}
-                                className="flex-fill"
-                                render={
-                                    (matchprops) => (
-                                        <ObjectEditor
-                                        api={this.props.api} {...matchprops}
-                                        workspace={itemType.workspace}
-                                        list={false} />)
-                                } />
-                    ]
-                    ))}
 
                     <Miss component={RouteNotFound} />
                 </div>

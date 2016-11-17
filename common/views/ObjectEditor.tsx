@@ -8,6 +8,8 @@ import * as React from 'react';
 import { Map } from 'immutable';
 import * as moment from 'moment';
 
+import { Match, Miss } from 'react-router';
+
 import { ApiService, AppUrls } from '../ApiService';
 
 import { EntityType, Entity, Predicate, Record, Source, SourceElement } from '../../common/datamodel/datamodel';
@@ -35,11 +37,11 @@ interface ExpectedParams {
 }
 
 interface EntityEditorProps {
-    id: number;
     api: ApiService;
     params: ExpectedParams;
     workspace: string;
-    list: boolean;
+    location: { pathname: string };
+    pathname: string;
 }
 
 interface EntityEditorState {
@@ -48,6 +50,9 @@ interface EntityEditorState {
     modalQueue: ModalDefinition[];
     dataStore: DataStore;
     loading: boolean;
+
+    id: number;
+    list: boolean;
 }
 
 export class ObjectEditor extends React.Component<EntityEditorProps, EntityEditorState> {
@@ -63,12 +68,15 @@ export class ObjectEditor extends React.Component<EntityEditorProps, EntityEdito
 
     constructor(props: EntityEditorProps, context: any) {
         super();
+
         this.state = {
             tabs: [],
             inBrowser: (typeof window !== 'undefined'),
             modalQueue: [],
             dataStore: cloneDeep(emptyDataStore),
-            loading: true
+            loading: true,
+            id: NaN,
+            list: false
         };
 
         this.boundCreateTab = this.createTab.bind(this);
@@ -92,7 +100,14 @@ export class ObjectEditor extends React.Component<EntityEditorProps, EntityEdito
 
     public reload(props: EntityEditorProps) {
 
-        this.setState({ loading: true }, () => {
+        const newId = parseInt(props.location.pathname.substr(props.pathname.length + 1));
+        const newWorkspace = props.workspace;
+
+        this.setState({
+            loading: (this.state.id !== newId && !(isNaN(this.state.id) && isNaN(newId))) || this.props.workspace !== newWorkspace,
+            id: newId,
+            list: props.location.pathname.substr(props.pathname.length + 1).length === 0
+    }, () => {
             // load data required by the current tabs
             let tabPromise = Promise.resolve(cloneDeep(emptyTabs));
 
@@ -101,11 +116,11 @@ export class ObjectEditor extends React.Component<EntityEditorProps, EntityEdito
                 if (tabsString !== null) {
                     this.state.tabs = JSON.parse(tabsString);
 
-                    if (!props.list &&
+                    if (!this.state.list &&
                             ['entity', 'predicate', 'entity_type', 'source'].indexOf(props.workspace) !== -1 &&
                             find(this.state.tabs, (tab) => tab.tabType === props.workspace
-                        && tab.uid == parseInt(props.params.id)) === undefined) {
-                            this.state.tabs.push({ tabType: props.workspace, uid: parseInt(props.params.id)});
+                        && tab.uid == this.state.id) === undefined) {
+                            this.state.tabs.push({ tabType: props.workspace, uid: this.state.id});
                             this.saveTabs();
                     }
 
@@ -122,7 +137,7 @@ export class ObjectEditor extends React.Component<EntityEditorProps, EntityEdito
                                 .catch((err) => {
                                     console.warn(`Attempted to load missing resource ${tab.tabType}/${tab.uid}`);
                                     this.closeTab(tab.tabType, tab.uid);
-                                    if (tab.tabType === props.workspace && tab.uid === parseInt(props.params.id)) {
+                                    if (tab.tabType === props.workspace && tab.uid === this.state.id) {
                                         this.context.router.transitionTo('/edit/notfound');
                                     }
                                 })
@@ -269,17 +284,18 @@ export class ObjectEditor extends React.Component<EntityEditorProps, EntityEdito
                     <Sidebar
                         tabs={this.state.tabs}
                         dataStore={this.state.dataStore}
-                        loading={this.state.loading}
+                        loading={false}
                         clearTabs={this.clearAllTabs.bind(this)}
-                        list={this.props.list}
-                        id={parseInt(this.props.params.id)}
+                        list={this.state.list}
+                        id={this.state.id}
                         workspace={this.props.workspace}
                     />
 
                     <Workspace {...this.props}
-                        id={parseInt(this.props.params.id)}
+                        id={this.state.id}
                         dataStore={this.state.dataStore}
-                        loading={this.state.loading} />
+                        loading={this.state.loading}
+                        list={this.state.list}/>
 
                     <Toast />
 

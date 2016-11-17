@@ -249,8 +249,8 @@ export class ComboDropdown<T> extends React.Component<ComboDropdownProps, ComboD
                                     <i className='fa fa-plus' aria-hidden='true'></i>
                                     Add new {this.props.typeName}</li>
                             ) : null }
-                            {this.state.filteredOptions.map((opt) => (
-                                <li key={`opt-${opt.key}`} 
+                            {this.state.filteredOptions.map((opt, i) => (
+                                <li key={`opt-${opt.key}-${i}`} 
                                 onMouseDown={() => this.ignoreBlur = true}
                                 onClick={() => this.selectOption(opt)}>{opt.key}</li>
                             ))}
