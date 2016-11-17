@@ -57,10 +57,10 @@ export class FalconApp extends React.Component<FalconAppProps, FalconAppState> {
                     <div className='header'>
                         <div className='logo'>VRE</div>
                         <Link to='/' className='header-link'>Home</Link>
+                        <Link accessKey='s' to={'/edit/' + AppUrls.source} className='header-link'>{itemTypes.source.plural}</Link>
                         <Link accessKey='e' to={'/edit/' + AppUrls.entity} className='header-link'>{itemTypes.entity.plural}</Link>
                         <Link accessKey='p'
                             to={'/edit/' + AppUrls.predicate} className='header-link'>{itemTypes.predicate.plural}</Link>
-                        <Link accessKey='s' to={'/edit/' + AppUrls.source} className='header-link'>{itemTypes.source.plural}</Link>
                         <Link accessKey='t'
                             to={'/edit/' + AppUrls.entity_type} className='header-link'>{itemTypes.entity_type.plural}</Link>
 

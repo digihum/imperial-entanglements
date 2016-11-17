@@ -122,7 +122,7 @@ export class PredicateEditorWorkspace extends React.Component<PredicateEditorPro
                         }
 
                         if (result === 'deleteAll') {
-                            Promise.all(data.data.map((datum) => this.props.api.delItem(Record, AppUrls.record, datum.uid)))
+                            Promise.all(data.data.record.map((datum) => this.props.api.delItem(Record, AppUrls.record, datum.uid)))
                             .then(() => {
                                 this.del();
                             });

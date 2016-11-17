@@ -14,8 +14,6 @@ import { isObject } from 'lodash';
 
 import { UnprocessableEntity } from '../common/Exceptions';
 
-import * as toastr from 'toastr';
-
 export { AppUrls } from '../common/ApiService';
 
 

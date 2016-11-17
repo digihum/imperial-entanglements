@@ -174,6 +174,22 @@ export class SourceEditorWorkspace extends React.Component<SourceEditorProps, So
         });
     }
 
+    // create entity with 'mentioned in' already set to this source
+    public createEntity() {
+        const a : ModalDefinition = {
+            name: 'entity',
+            complete: ([id]) => {
+                 createTab.dispatch('entity', id);
+            },
+            cancel: () => { console.log('cancel'); },
+            settings: {
+                initialName: ''
+            }
+        };
+
+        showModal.dispatch(a);
+    }
+
     public render() {
 
         const source = this.props.dataStore.tabs.source.get('source-' + this.props.id).value.source;

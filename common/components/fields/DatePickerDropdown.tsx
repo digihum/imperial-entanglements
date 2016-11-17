@@ -130,28 +130,35 @@ export class DatePickerDropdown<T> extends React.Component<DatePickerDropdownPro
   }
 
   public yearChanged(e: React.FormEvent) {
+      const base = this.props.value.length === 9 ? this.props.value : '=XXXX0000';
       let yearVal : string = e.target.value.substr(0, 4).replace(/[^0-9]/g, '');
       for (let i = yearVal.length; i < 4; i += 1) {
           yearVal += 'X';
       }
-      this.props.setValue(this.props.value.substr(0, 1) + yearVal + this.props.value.substr(5));
+      this.props.setValue(base.substr(0, 1) + yearVal + base.substr(5));
   }
 
   public monthChanged(e: React.FormEvent) {
       this.ignoreGlobalClick = true;
+      const base = this.props.value.length === 9 ? this.props.value : '=XXXX0000';
       let monthVal : string = e.target.value.substr(0, 2);
-      this.props.setValue(this.props.value.substr(0, 5) + monthVal + this.props.value.substr(7));
+      this.props.setValue(base.substr(0, 5) + monthVal + base.substr(7));
   }
 
   public dayChanged(e: React.FormEvent) {
+      const base = this.props.value.length === 9 ? this.props.value : '=XXXX0000';
       let dayVal : string = e.target.value.substr(0, 2).replace(/[^0-9]/g, '');
       dayVal = padStart(dayVal, 2, '0');
-      this.props.setValue( this.props.value.substr(0, 7) + dayVal);
+      this.props.setValue( base.substr(0, 7) + dayVal);
   }
 
   public render() {
 
-      const rangeOption = this.props.value.substr(0, 1);
+      let rangeOption = this.props.value.substr(0, 1);
+
+      if (['<', '>', '='].indexOf(rangeOption) === -1) {
+          rangeOption = '=';
+      }
 
       const rangeOptionClassName = (val: string) => {
           if (val === rangeOption) {

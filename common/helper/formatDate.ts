@@ -8,7 +8,7 @@ import * as moment from 'moment';
 
 export const formatDate : (s: string | null) => string = (str: string | null) => {
 
-      if (str === null) {
+      if (str === null || str.length === 0) {
           return '';
       }
 
@@ -18,9 +18,14 @@ export const formatDate : (s: string | null) => string = (str: string | null) =>
             '<': 'Before '
         }[str[0]];
 
-        return modifier + moment({
-            year: str.substr(1, 4),
-            month: parseInt(str.substr(5, 2)) - 1,
-            day: str.substr(7, 2)
-        }).format('Do MMM YYYY');
+        const year = str.substr(1, 4);
+
+        const rawMonth = parseInt(str.substr(5, 2)) - 1;
+        const month = rawMonth === -1 || isNaN(rawMonth) ? 'Unknown' : moment.months()[rawMonth];
+
+        const rawDay = parseInt(str.substr(7, 2));
+        const day = rawDay > 0 ? rawDay : '';
+
+
+        return `${modifier} ${day} ${month} ${year}`;
 };

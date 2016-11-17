@@ -95,10 +95,10 @@ export class ObjectEditor extends React.Component<EntityEditorProps, EntityEdito
     }
 
     public callReload() {
-        this.reload(this.props);
+        this.reload(this.props, true);
     }
 
-    public reload(props: EntityEditorProps) {
+    public reload(props: EntityEditorProps, force: boolean = false) {
 
         const newId = parseInt(props.location.pathname.substr(props.pathname.length + 1));
         const newWorkspace = props.workspace;
@@ -107,7 +107,7 @@ export class ObjectEditor extends React.Component<EntityEditorProps, EntityEdito
             this.context.router.transitionTo('/edit/notfound');
         }
 
-        if (this.state.loading) {
+        if (this.state.loading && !force) {
             this.setState({
                 id: newId,
                 list: props.location.pathname.substr(props.pathname.length + 1).length === 0

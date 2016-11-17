@@ -51,14 +51,16 @@ export class CreatePredicate extends React.Component<CreatePredicateProps, Creat
 
     public componentDidMount() {
         if (this.props.initialDomain !== undefined) {
-            this.props.api.getItem(EntityType, AppUrls.entity_type, this.props.initialDomain)
+             this.props.api.getItem(EntityType, AppUrls.entity_type, this.props.initialDomain)
             .then((result) => {
 
                 if (result.uid === null) {
                     throw new Error('Unexpected null uid');
                 }
 
-                this.setState({ domainOptions: [
+                this.setState({ 
+                domain: { key: result.name, value: result.uid.toString()},
+                domainOptions: [
                     { key: result.name, value: result.uid.toString()}
                 ].concat(result.parents.map((entityType) => {
                     if (entityType.uid === null) {
