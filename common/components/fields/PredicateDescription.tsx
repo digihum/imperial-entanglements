@@ -102,6 +102,7 @@ export class PredicateDescription extends React.Component<PredicateDescriptionPr
                     ) : null}
                 </div>
                 ) : (<div>{this.props.domain.key} <i className='fa fa-pencil-square-o'
+                    title='Edit'
                     aria-hidden='true'
                     onClick={() => this.setState({ editingDomain: true })}>
                 </i></div>)}
@@ -130,6 +131,7 @@ export class PredicateDescription extends React.Component<PredicateDescriptionPr
                     ) : null}
                     </div>
                 ) : (<div>{this.props.range.key} <i className='fa fa-pencil-square-o'
+                    title='Edit'
                     aria-hidden='true'
                     onClick={() => this.setState({ editingRange: true })}>
                 </i></div>)}

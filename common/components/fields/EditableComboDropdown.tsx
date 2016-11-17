@@ -35,6 +35,7 @@ export const EditableComboDropdown = (props: EditableComboDropdownProps) => {
                 )}
                 <sup>
                     <i className='fa fa-pencil-square-o'
+                        title='Edit'
                         aria-hidden='true'
                         onClick={props.setEdit}>
                     </i>

@@ -16,6 +16,7 @@ export const EditableHeader : React.StatelessComponent<EditableSubfieldProps<str
                     {props.value}
                     <sup>
                         <i className='fa fa-pencil-square-o'
+                            title='Edit'
                             aria-hidden='true'
                             onClick={props.setEdit}>
                         </i>

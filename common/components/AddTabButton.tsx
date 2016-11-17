@@ -21,12 +21,14 @@ export const AddTabButton : React.StatelessComponent<AddTabButtonProps> =
         if (props.dataStore.tabs[props.tabType] !== undefined
                 && props.dataStore.tabs[props.tabType].has(`${props.tabType}-${props.uid}`)) {
             return (<i className='fa fa-folder-open-o add button'
+                title='Open item'
                 onClick={() => context.router.transitionTo(`/edit/${props.tabType}/${props.uid}`)}> </i>);
         }
 
         return (
         <i className='icon-list-add add button'
-                    onClick={() => createTab.dispatch(props.tabType, props.uid, props.data)}></i>
+            title='Add to list'
+            onClick={() => createTab.dispatch(props.tabType, props.uid, props.data)}></i>
 )};
 
 AddTabButton.contextTypes = {

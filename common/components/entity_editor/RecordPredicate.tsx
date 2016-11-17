@@ -80,6 +80,7 @@ export class RecordPredicate extends React.Component<RecordPredicateProps, Recor
                     className='fa fa-plus-circle add button'
                      aria-hidden='true'
                      onClick={this.createNewRecord.bind(this)}
+                     title={`Add new ${this.props.predicate.name} record`}
                 ></i>
             <AddTabButton
                 dataStore={this.props.dataStore}

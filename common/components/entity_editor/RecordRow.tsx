@@ -165,7 +165,7 @@ export const RecordRow = (props: RecordRowProps) => {
                  {formatDate(props.value.period)}
             </td>
             <td className='record-row-item buttons'>
-                <button><i className='fa fa-pencil-square-o' onClick={props.setEdit} aria-hidden='true'></i></button>
+                <button><i className='fa fa-pencil-square-o' title='Edit' onClick={props.setEdit} aria-hidden='true'></i></button>
                 <button><i className='fa fa-trash' aria-hidden='true' onClick={props.onDelete}></i></button>
             </td>
         </tr>

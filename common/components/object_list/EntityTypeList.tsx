@@ -57,6 +57,7 @@ export class EntityTypeList extends React.Component<EntityTypeListProps, EntityT
                     <h2>All Entity Types <i
                         className='fa fa-plus-circle add button'
                         aria-hidden='true'
+                        title='Add new entity type'
                         onClick={this.addNew.bind(this)}
                     ></i></h2>
                 </div>

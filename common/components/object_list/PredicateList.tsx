@@ -63,6 +63,7 @@ export class PredicateList extends React.Component<PredicateListProps, Predicate
                 <div className='main-toolbar'>
                     <h2>All Properties <i
                         className='fa fa-plus-circle add button'
+                        title='Add new property'
                         aria-hidden='true'
                         onClick={this.addNew.bind(this)}
                     ></i></h2>

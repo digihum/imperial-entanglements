@@ -36,6 +36,7 @@ export const EditableParagraph : React.StatelessComponent<EditableSubfieldProps<
                     )}
                     <sup>
                         <i className='fa fa-pencil-square-o'
+                            title='Edit'
                             aria-hidden='true'
                             >
                         </i>

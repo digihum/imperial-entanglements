@@ -64,6 +64,7 @@ export class SourceList extends React.Component<SourceListProps, SourceListState
                     <h2>All Sources <i
                         className='fa fa-plus-circle add button'
                         aria-hidden='true'
+                        title='Add new source'
                         onClick={this.addNew.bind(this)}
                     ></i></h2>
                 </div>

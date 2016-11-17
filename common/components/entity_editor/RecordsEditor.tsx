@@ -106,6 +106,7 @@ export class RecordsEditor extends React.Component<RecordsEditorProps, RecordsEd
                         className='fa fa-plus-circle add button'
                         aria-hidden='true'
                         onClick={this.createNewRecord.bind(this)}
+						title='Add new record'
                     >
                     </i></h4>
 					<SearchBar

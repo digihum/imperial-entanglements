@@ -78,6 +78,7 @@ export class SameAsEditor extends React.Component<EditableSubfieldProps<string>,
             <h3>Same as: {!this.props.edit ? (
                 <sup>
                     <i className='fa fa-pencil-square-o'
+                        title='Edit'
                         aria-hidden='true'
                         onClick={this.props.setEdit}>
                     </i>

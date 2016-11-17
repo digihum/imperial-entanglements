@@ -274,6 +274,7 @@ export class EntityList extends React.Component<EntityListProps, EntityListState
                 <div className='main-toolbar'>
                     <h2>All Entities <i
                             className='fa fa-plus-circle add button'
+                            title='Add new entity'
                             aria-hidden='true'
                             onClick={this.addNew.bind(this)}
                     ></i></h2>
