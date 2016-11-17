@@ -14,6 +14,11 @@ import { SearchBar } from '../SearchBar';
 
 import { RecordPredicate } from './RecordPredicate';
 
+import { findParentTree } from '../../helper/findParentTree';
+import { showModal } from '../../Signaller';
+
+import { ModalDefinition } from '../modal/ModalDefinition';
+
 import { groupBy, Dictionary } from 'lodash';
 
 import { AddTabButton } from '../AddTabButton';
@@ -24,11 +29,13 @@ interface RecordsEditorProps {
     id: number;
 	api: ApiService;
 	dimension: string;
+	entityTypeId: number;
 	entityExists: boolean;
 	records: Dictionary<Record[]>;
 	onChange: () => void;
 	predicates : Predicate[];
 	sources: Source[];
+	dataStore: DataStore;
 }
 
 interface RecordsEditorState {
@@ -60,6 +67,35 @@ export class RecordsEditor extends React.Component<RecordsEditorProps, RecordsEd
 		this.props.api.putItem(Record, AppUrls.record, this.props.id, record.serialize());
 	}
 
+	public createNewRecord() {
+
+        const entity = this.props.dataStore.tabs.entity.get('entity-' + this.props.id).value.entity;
+
+        const entityType = this.props.dataStore.all.entity_type.value.find((t) => t.uid === entity.entityType);
+
+        const entityTypeParents = findParentTree(entity.entityType, this.props.dataStore.all.entity_type.value);
+        const predicates = this.props.dataStore.all.predicate
+            .value.filter((pred) => entityTypeParents.indexOf(pred.domain) !== -1);
+
+        const modalDef: ModalDefinition = {
+            name: 'record',
+            complete: (data) => {
+                console.log('Records editor called complete');
+                //this.loadData(this.props);
+            },
+            cancel: () => {
+                console.log('Records editor called cancel');
+            },
+            settings: {
+                options: predicates.map((pred) => ({ key: pred.name, value: pred.uid, meta: pred})),
+                entityUid: this.props.id,
+                entityType: this.props.entityTypeId
+            }
+        };
+
+        showModal.dispatch(modalDef);
+    }
+
 	public render() {
 
 		const predicates = this.props.predicates;
@@ -68,7 +104,12 @@ export class RecordsEditor extends React.Component<RecordsEditorProps, RecordsEd
 		<div>
 			<div>
 				<div>
-					<h4>Records</h4>
+					<h4>Records <i
+                        className='fa fa-plus-circle add button'
+                        aria-hidden='true'
+                        onClick={this.createNewRecord.bind(this)}
+                    >
+                    </i></h4>
 					<SearchBar
 						getValue={(p: Predicate) => p.name}
 						setFilterFunc={(filterFunc) => this.setState({ filterFunc })}

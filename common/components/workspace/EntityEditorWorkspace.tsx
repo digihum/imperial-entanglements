@@ -220,13 +220,6 @@ export class EntityEditorWorkspace extends React.Component<EntityEditorProps, En
                         </div>
                     </div>
 
-                    <i
-                        className='fa fa-plus-circle add button lower-large-icon'
-                        aria-hidden='true'
-                        onClick={this.createNewRecord.bind(this)}
-                    >
-                    </i>
-
                     <RecordsEditor
                         dimension='predicates'
                         entityExists={true}
@@ -236,6 +229,8 @@ export class EntityEditorWorkspace extends React.Component<EntityEditorProps, En
                         onChange={() => {}}
                         predicates={predicates}
                         sources={sources}
+                        entityTypeId={entityType.uid}
+                        dataStore={this.props.dataStore}
                     />
                 </section>
             </div>

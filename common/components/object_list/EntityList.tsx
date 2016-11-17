@@ -212,10 +212,16 @@ export class EntityList extends React.Component<EntityListProps, EntityListState
                                     }
 
                                     if (pred.valueType === 'source') {
+                                        if (pred.value === null) {
+                                            return 'Not set';
+                                        }
                                         return this.props.dataStore.all.source.value.find((source) => source.uid === pred.value).name;
                                     }
 
                                     if (pred.valueType === 'entity') {
+                                        if (pred.value === null) {
+                                            return 'Not set';
+                                        }
                                         return this.props.dataStore.all.entity.value.find((entity) => entity.uid === pred.value).label;
                                     } 
 
