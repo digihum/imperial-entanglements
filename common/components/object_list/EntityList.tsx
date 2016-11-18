@@ -71,7 +71,7 @@ const customColumns = (predicates, columns, updateColumnParams, rotateSort) => {
                             value={comboValue}
                             typeName='predicate'
                             allowNew={false}
-                            setValue={(value) => updateColumnParams(id, { predicate: value.value })}
+                            setValue={(value) => updateColumnParams(id, { predicate: value === null ? null : value.value })}
                             options={predicates.map((pred) => ({ key: pred.name, value: pred.uid.toString()}))}
                             createNewValue={noop}
                             compact={true}
@@ -107,12 +107,14 @@ export class EntityList extends React.Component<EntityListProps, EntityListState
     public componentDidMount() {
         const queryStringOptions = this.props.query;
         const columns = cloneDeep(this.state.columns);
-        for (let i = 1; i < 4; i += 1 ) {
-            if (queryStringOptions['col' + i]  !== undefined) {
-                const args = queryStringOptions['col' + i].split(',');
-                columns[i - 1].predicate = args[0];
-                if (args.length === 2) {
-                    columns[i - 1].filterType = args[1];
+        if (queryStringOptions !== null) {
+            for (let i = 1; i < 4; i += 1 ) {
+                if (queryStringOptions['col' + i]  !== undefined) {
+                    const args = queryStringOptions['col' + i].split(',');
+                    columns[i - 1].predicate = args[0];
+                    if (args.length === 2) {
+                        columns[i - 1].filterType = args[1];
+                    }
                 }
             }
         }
