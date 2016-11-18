@@ -40,5 +40,5 @@ script:
   # ready to test!
   - npm test
 
-  - if [ "$TRAVIS_OS_NAME" = "osx" ] ./node_modules/.bin/electron-rebuild  fi
-  - if [ "$TRAVIS_OS_NAME" = "osx" ] ./node_modules/.bin/build  fi
+  - if [ "$TRAVIS_OS_NAME" = "osx" ]; then ./node_modules/.bin/electron-rebuild; fi
+  - if [ "$TRAVIS_OS_NAME" = "osx" ]; then ./node_modules/.bin/build; fi
