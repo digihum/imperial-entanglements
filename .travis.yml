@@ -21,7 +21,7 @@ script:
 
   - sudo npm uninstall node-gyp -g
   - npm uninstall node-gyp
-  
+
   # print versions
   - node --version
   - npm --version
@@ -30,7 +30,7 @@ script:
   - npm install
 
   # build typescript
-  - npm run tsc && exit 0
+  - npm run tsc || true
 
   # copy test db
   - cp blank.sqlite mydb.sqlite

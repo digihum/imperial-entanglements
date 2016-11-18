@@ -19,6 +19,7 @@ interface ObjectListWorkspaceProps {
     name: string;
     listType: string;
     dataStore: DataStore;
+    query: any;
 }
 
 export const ObjectListWorkspace : React.StatelessComponent<ObjectListWorkspaceProps> =
@@ -27,7 +28,7 @@ export const ObjectListWorkspace : React.StatelessComponent<ObjectListWorkspaceP
         {(() => {
             switch(props.listType) {
                 case 'entity':
-                    return (<EntityList api={props.api} dataStore={props.dataStore} />);
+                    return (<EntityList api={props.api} query={props.query} dataStore={props.dataStore} />);
                 case 'source':
                     return (<SourceList api={props.api} dataStore={props.dataStore} />);
                 case 'predicate':

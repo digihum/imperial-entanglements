@@ -51,6 +51,7 @@ export class Workspace extends React.Component<WorkspaceProps, WorkspaceState> {
             return (<ObjectListWorkspace
                 api={this.props.api}
                 name={this.props.name}
+                query={this.props.location.query}
                 listType={this.props.workspace}
                 dataStore={this.props.dataStore} />);
         }

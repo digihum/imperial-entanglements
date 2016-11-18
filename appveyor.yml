@@ -15,7 +15,7 @@ install:
   - npm install
 
   # build typescript
-  - npm run tsc && exit 0
+  - npm run tsc || true
   
   # copy test db
   - cp blank.sqlite mydb.sqlite

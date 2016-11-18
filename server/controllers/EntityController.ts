@@ -12,7 +12,7 @@ import { GenericController } from './GenericController';
 
 import { OperationNotPermittedException } from '../core/Exceptions';
 
-import { omit } from 'lodash';
+import { omit, isArray } from 'lodash';
 
 export class EntityPersistable extends Entity implements Persistable {
 
@@ -52,7 +52,7 @@ export class EntityController extends GenericController<EntityPersistable> {
 
     public getCollectionJson(obj: { new(): EntityPersistable; }, params: any = {}) : PromiseLike<EntityPersistable[]>  {
         if (params.type !== undefined) {
-            return this.db.getChildrenOf(params.type[0], 'entity_types')
+            return this.db.getChildrenOf(isArray(params.type) ? params.type[0] : params.type, 'entity_types')
             .then((ancestors) => {
                 return this.db.select('entities').whereIn('type', ancestors)
                 .then((results) => results.map((result) => new obj().fromSchema(result)));

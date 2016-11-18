@@ -14,7 +14,7 @@ import { OperationNotPermittedException } from '../core/Exceptions';
 
 import { RecordPersistable } from './RecordController';
 
-import { omit } from 'lodash';
+import { omit, isArray } from 'lodash';
 
 export class PredicatePersistable extends Predicate implements Persistable {
 
@@ -70,7 +70,8 @@ export class PredicateController extends GenericController<PredicatePersistable>
 
     public getCollectionJson(obj: { new(): PredicatePersistable; }, params: any = {}) : PromiseLike<PredicatePersistable[]>  {
         if (params.domain !== undefined) {
-            return this.db.getAncestorsOf(params.domain[0], 'entity_types')
+            //TODO: this check should be unecessery
+            return this.db.getAncestorsOf(isArray(params.domain) ? params.domain[0] : params.domain, 'entity_types')
             .then((ancestors) => {
                 return this.db.select('predicates').whereIn('domain', ancestors.concat([params.domain[0]]))
                 .then((results) => results.map((result) => new obj().fromSchema(result)));

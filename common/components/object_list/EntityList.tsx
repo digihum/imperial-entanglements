@@ -21,12 +21,10 @@ import { ModalDefinition } from '../modal/ModalDefinition';
 
 import { formatDate } from '../../helper/formatDate';
 
-import * as queryString from 'querystring';
-
-
 interface EntityListProps {
     api: ApiService;
     dataStore: DataStore;
+    query: any;
 }
 
 interface ColumnSettings {
@@ -107,10 +105,10 @@ export class EntityList extends React.Component<EntityListProps, EntityListState
     }
 
     public componentDidMount() {
-        const queryStringOptions = queryString.parse(window.location.search.substr(1));
+        const queryStringOptions = this.props.query;
         const columns = cloneDeep(this.state.columns);
         for (let i = 1; i < 4; i += 1 ) {
-            if (queryStringOptions.hasOwnProperty('col' + i)) {
+            if (queryStringOptions['col' + i]  !== undefined) {
                 const args = queryStringOptions['col' + i].split(',');
                 columns[i - 1].predicate = args[0];
                 if (args.length === 2) {
