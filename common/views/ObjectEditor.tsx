@@ -21,6 +21,7 @@ import { find, tail, cloneDeep, groupBy, findIndex } from 'lodash';
 
 import { CreatePredicate } from '../components/modal/CreatePredicate';
 import { CreateRecord } from '../components/modal/CreateRecord';
+import { CreatePresetRecord } from '../components/modal/CreatePresetRecord';
 import { CreateSource } from '../components/modal/CreateSource';
 import { CreateEntity } from '../components/modal/CreateEntity';
 import { CreateEntityType } from '../components/modal/CreateEntityType';
@@ -336,6 +337,9 @@ export class ObjectEditor extends React.Component<EntityEditorProps, EntityEdito
 
                             case 'record':
                                 return (<CreateRecord {...sharedProps} {...this.state.modalQueue[0].settings}/>);
+
+                            case 'preset_record':
+                                return (<CreatePresetRecord {...sharedProps} {...this.state.modalQueue[0].settings}/>);
 
                             case 'source':
                                 return (<CreateSource {...sharedProps} {...this.state.modalQueue[0].settings}/>);

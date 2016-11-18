@@ -177,13 +177,13 @@ export class SourceEditorWorkspace extends React.Component<SourceEditorProps, So
     // create entity with 'mentioned in' already set to this source
     public createEntity() {
         const a : ModalDefinition = {
-            name: 'entity',
+            name: 'preset_record',
             complete: ([id]) => {
                  createTab.dispatch('entity', id);
             },
-            cancel: () => { console.log('cancel'); },
+            cancel: () => { },
             settings: {
-                initialName: ''
+                source: this.props.dataStore.tabs.source.get('source-' + this.props.id).value.source
             }
         };
 
@@ -227,6 +227,11 @@ export class SourceEditorWorkspace extends React.Component<SourceEditorProps, So
                             onChange={(value) => this.updateSource('name', value)}  />
                     </div>
                     <div className='sub-toolbar'>
+                        <i
+                            className='fa fa-plus add button'
+                            aria-hidden='true'
+                            onClick={this.createEntity.bind(this)}
+                        ></i>
                         <i
                             className='fa fa-trash delete button'
                             aria-hidden='true'
