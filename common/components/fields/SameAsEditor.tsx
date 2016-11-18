@@ -75,7 +75,7 @@ export class SameAsEditor extends React.Component<EditableSubfieldProps<string>,
 
         return (
         <div className='same-as-box'>
-            <h3>Same as: {!this.props.edit ? (
+            <label className='small'>Same As {!this.props.edit ? (
                 <sup>
                     <i className='fa fa-pencil-square-o'
                         title='Edit'
@@ -83,14 +83,11 @@ export class SameAsEditor extends React.Component<EditableSubfieldProps<string>,
                         onClick={this.props.setEdit}>
                     </i>
                 </sup>
-            ) : (
-                <span>
+            ) : null }</label>
+            {this.props.edit ? (
+                <div className='edit-group'>
                     <button onClick={this.props.acceptChanges}><i className='fa fa-check' aria-hidden='true'></i></button>
                     <button onClick={this.props.cancelChanges}><i className='fa fa-times' aria-hidden='true'></i></button>
-                </span>
-            )}</h3>
-            {this.props.edit ? (
-                <div>
                     <div className='input-addon-formgroup'>
                         <input type='text' value={this.state.temporaryValue}
                             ref={this.setupKeyboardShortcuts.bind(this)}

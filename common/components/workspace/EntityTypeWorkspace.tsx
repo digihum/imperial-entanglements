@@ -173,27 +173,33 @@ export class EntityTypeWorkspace extends React.Component<EntityTypeWorkspaceProp
                 </header>
 
                 <section className='editor-body'>
-                    <span>Parent:</span>
-                    <ComboEditableFieldComponent
-                        value={entityType.parent === null ? null : {key: parentName, value: entityType.parent}}
-                        component={EditableComboDropdown}
-                        onChange={(value) => this.update({'parent': value === null ? null : value.value})}
-                        additionalProps={{ comboSettings: {
-                            options: potentialParents.map((par) => ({ key: par.name, value: par.uid})),
-                            typeName: 'EntityType'
-                        }}} />
-                    {entityType.parent !== null ? (<AddTabButton 
-                        tabType='entity_type'
-                        dataStore={this.props.dataStore}
-                        uid={entityType.parent} />) : null}
 
-                    <label className='small'>Description</label>
-                    <StringEditableFieldComponent
-                        value={entityType.description}
-                        component={EditableParagraph}
-                        onChange={(value) => this.update({'description': value})}  />
+                    <div className='edit-group'>
 
-                    <div>
+                        <label className='small'>Parent</label>
+                        <ComboEditableFieldComponent
+                            value={entityType.parent === null ? null : {key: parentName, value: entityType.parent}}
+                            component={EditableComboDropdown}
+                            onChange={(value) => this.update({'parent': value === null ? null : value.value})}
+                            additionalProps={{ comboSettings: {
+                                options: potentialParents.map((par) => ({ key: par.name, value: par.uid})),
+                                typeName: 'EntityType'
+                            }}} />
+                        {entityType.parent !== null ? (<AddTabButton 
+                            tabType='entity_type'
+                            dataStore={this.props.dataStore}
+                            uid={entityType.parent} />) : null}
+                    </div>
+
+                    <div className='edit-group'>
+                        <label className='small'>Description</label>
+                        <StringEditableFieldComponent
+                            value={entityType.description}
+                            component={EditableParagraph}
+                            onChange={(value) => this.update({'description': value})}  />
+                    </div>
+
+                    <div className='edit-group'>
                         <StringEditableFieldComponent
                             value={entityType.sameAs}
                             component={SameAsEditor}

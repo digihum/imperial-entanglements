@@ -200,15 +200,15 @@ export class EntityEditorWorkspace extends React.Component<EntityEditorProps, En
 
                     <div className='flex-fill'>
                         <div className='flex-fill'>
-                            <div><strong>Type: </strong>{entityType.name} <AddTabButton
+                            <div><label className='small'>Type</label>{entityType.name} <AddTabButton
                                 dataStore={this.props.dataStore}
                                 uid={entityType.uid}
                                 tabType='entity_type'
                             /></div>
                         </div>
 
-                        <div className='flex-fill'>
-                            <span><strong>Parent: </strong></span>
+                        <div style={{ flex: 1 }}>
+                            <label className='small'>Parent</label>
                             <ComboEditableFieldComponent
                                 value={{key: parentName, value: entity.parent}}
                                 component={EditableComboDropdown}
@@ -223,18 +223,20 @@ export class EntityEditorWorkspace extends React.Component<EntityEditorProps, En
                         </div>
                     </div>
 
-                    <RecordsEditor
-                        dimension='predicates'
-                        entityExists={true}
-                        id={this.props.id}
-                        api={this.props.api}
-                        records={records}
-                        onChange={() => {}}
-                        predicates={predicates}
-                        sources={sources}
-                        entityTypeId={entityType.uid}
-                        dataStore={this.props.dataStore}
-                    />
+                    <div className='edit-group'>
+                        <RecordsEditor
+                            dimension='predicates'
+                            entityExists={true}
+                            id={this.props.id}
+                            api={this.props.api}
+                            records={records}
+                            onChange={() => {}}
+                            predicates={predicates}
+                            sources={sources}
+                            entityTypeId={entityType.uid}
+                            dataStore={this.props.dataStore}
+                        />
+                    </div>
                 </section>
             </div>
         );

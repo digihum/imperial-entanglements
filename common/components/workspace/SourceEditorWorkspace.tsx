@@ -247,21 +247,23 @@ export class SourceEditorWorkspace extends React.Component<SourceEditorProps, So
 
                 <section className='editor-body'>
 
-                    <span>Parent:</span>
-                    <ComboEditableFieldComponent
-                        value={{key: parentName, value: source.parent}}
-                        component={EditableComboDropdown}
-                        onChange={(value) => this.updateSource('parent', value.value)}
-                        additionalProps={{ comboSettings: {
-                            options: potentialParents.map((par) => ({ key: par.name, value: par.uid})),
-                            typeName: 'Source'
-                        }}} />
-                        {source.parent !== null ? (<AddTabButton 
-                            dataStore={this.props.dataStore}
-                            tabType='source' 
-                            uid={source.parent} />) : null}
+                    <div className='edit-group'>
+                        <label className='small'>Parent</label>
+                        <ComboEditableFieldComponent
+                            value={{key: parentName, value: source.parent}}
+                            component={EditableComboDropdown}
+                            onChange={(value) => this.updateSource('parent', value.value)}
+                            additionalProps={{ comboSettings: {
+                                options: potentialParents.map((par) => ({ key: par.name, value: par.uid})),
+                                typeName: 'Source'
+                            }}} /> 
+                            {source.parent !== null ? (<AddTabButton 
+                                dataStore={this.props.dataStore}
+                                tabType='source' 
+                                uid={source.parent} />) : null}
+                    </div>
 
-                    <div>
+                    <div className='edit-group'>
                         <StringEditableFieldComponent
                             value={source.sameAs}
                             component={SameAsEditor}

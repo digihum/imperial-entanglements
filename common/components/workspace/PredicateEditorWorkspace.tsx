@@ -209,7 +209,7 @@ export class PredicateEditorWorkspace extends React.Component<PredicateEditorPro
                     <div><Link to={`/edit/entity?col1=${this.props.id},exists`}>Uses: {this.state.records.length}</Link></div>
 
                     <div className='edit-group'>
-                        <label>Description</label>
+                        <label className='small'>Description</label>
                         <StringEditableFieldComponent
                             value={predicate.description}
                             component={EditableParagraph}
@@ -217,7 +217,7 @@ export class PredicateEditorWorkspace extends React.Component<PredicateEditorPro
                     </div>
 
                     <div className='edit-group'>
-                        <label>Typing</label>
+                        <label className='small'>Typing</label>
                         <PredicateDescription
                             domain={domain}
                             range={range}

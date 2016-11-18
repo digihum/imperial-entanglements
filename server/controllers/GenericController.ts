@@ -71,7 +71,7 @@ export abstract class GenericController<T extends Persistable> implements IContr
 
         return this.db.loadItem(this.tableName, uid)
         .then((originalData) => {
-            return this.putItem(obj, uid, Object.assign(new obj().fromSchema(originalData).serialize(), updateObject));
+            return this.db.updateItem(new obj().fromSchema(Object.assign({}, originalData, updateObject)));
         });
     }
 

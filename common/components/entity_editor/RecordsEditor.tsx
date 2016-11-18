@@ -102,17 +102,24 @@ export class RecordsEditor extends React.Component<RecordsEditorProps, RecordsEd
 		<div>
 			<div>
 				<div>
-					<h4>Records <i
-                        className='fa fa-plus-circle add button'
-                        aria-hidden='true'
-                        onClick={this.createNewRecord.bind(this)}
-						title='Add new record'
-                    >
-                    </i></h4>
-					<SearchBar
-						getValue={(p: Predicate) => p.name}
-						setFilterFunc={(filterFunc) => this.setState({ filterFunc })}
-					 />
+					<label className='small'>Records</label>
+					<div style={{ display: 'flex' }}>
+						<div style={{ flex: '1' }}>
+							<SearchBar
+								getValue={(p: Predicate) => p.name}
+								setFilterFunc={(filterFunc) => this.setState({ filterFunc })}
+							/>
+						</div>
+						<div style={{padding: '0.1em 0.4em', fontSize: '2em'}}>
+							<i
+								className='fa fa-plus-circle add button'
+								aria-hidden='true'
+								onClick={this.createNewRecord.bind(this)}
+								title='Add new record'
+							>
+                    		</i>
+						</div>
+					 </div>
 					<div>
 						{Object.keys(this.props.records).map((section) => {
 
