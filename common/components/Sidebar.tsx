@@ -60,7 +60,6 @@ export class Sidebar extends React.Component<SidebarProps, SidebarState> {
                 onChange={(evt) => this.setState({searchString: evt.currentTarget.value})} />
                 <div className='sidebar-toolbar'>
                     <button onClick={this.props.clearTabs}><i className='fa fa-trash'></i> Clear All</button>
-                    <button><i className='fa fa-floppy-o'></i> Save</button>
                     <button onClick={() => this.setState({compactMode: !this.state.compactMode})}><i className='fa fa-compress'></i> Compact</button>
                 </div>
                 <div className='card-list-container'>
