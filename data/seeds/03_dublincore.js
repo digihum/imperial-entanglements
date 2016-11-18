@@ -14,7 +14,7 @@ exports.seed = function(knex, Promise) {
       uri: data["URI"],
       element_set: 1,
       name: data["Term Name"],
-      description: data["Definition"],
+      description: data["Definition"] + (data["Comment"] !== undefined ? (" - " + data["Comment"]) : ""),
       comment: data["Note"]
     }
   });
