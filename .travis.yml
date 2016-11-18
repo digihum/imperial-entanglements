@@ -1,0 +1,24 @@
+script: 
+
+  # print versions
+  - node --version
+  - npm --version
+
+  # install dependencies
+  - npm install
+
+  # build typescript
+  - npm run tsc && exit 0
+  
+  # copy test db
+  - cp blank.sqlite mydb.sqlite
+
+  # copy .env file
+  - cp .env.example .env
+
+  # run sql migrations
+  - npm run migrate
+  - npm run seed
+
+  # ready to test!
+  - npm test
