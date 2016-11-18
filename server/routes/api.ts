@@ -143,7 +143,9 @@ export const api : (router: KoaRouter, s: ServerApiService) => KoaRouter
             }
             this.type = 'application/json';
             if ( err.data !== undefined) {
-                this.body = err.data;
+                yield err.data.data.then((data) => {
+                    this.body = JSON.stringify(Object.assign({}, err.data, { data: data }));
+                });
             } else {
                 this.body = err.message;
             }

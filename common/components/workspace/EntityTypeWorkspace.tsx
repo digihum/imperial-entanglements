@@ -72,26 +72,26 @@ export class EntityTypeWorkspace extends React.Component<EntityTypeWorkspaceProp
         this.props.api.delItem(EntityType, AppUrls.entity_type, this.props.id)
         .then(() => this.context.router.transitionTo('/edit/notfound'))
         .catch((e) => {
-            e.data.then((data) => {
+            e.data.data.then((data) => {
 
                 const conflictResolutionModal : ModalDefinition = {
                     name: 'conflict_resolution',
                     cancel: () => {},
                     complete: (result) => {
                         if (result === 'addToWorkspace') {
-                            data.data.entityType.forEach((datum) => {
+                            data.entityType.forEach((datum) => {
                                  createTab.dispatch('entity_type', datum.uid);
                             });
-                            data.data.predicate.forEach((datum) => {
+                            data.predicate.forEach((datum) => {
                                  createTab.dispatch('predicate', datum.uid);
                             });
-                            data.data.entity.forEach((datum) => {
+                            data.entity.forEach((datum) => {
                                  createTab.dispatch('entity', datum.uid);
                             });
                         }
                     },
                     settings: {
-                        conflictingItems: data.data,
+                        conflictingItems: data,
                         message: 'Deleting Entity Type'
                     }
                 };

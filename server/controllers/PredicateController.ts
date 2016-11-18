@@ -108,8 +108,7 @@ export class PredicateController extends GenericController<PredicatePersistable>
                             if (res.indexOf(e) === -1) {
                                 throw new OperationNotPermittedException({
                                     message: 'The operation could not be completed as it would invalidate predicate relationships',
-                                    data: {
-                                    }
+                                    data: Promise.resolve({})
                                 });
                             }
                         });
@@ -132,7 +131,7 @@ export class PredicateController extends GenericController<PredicatePersistable>
                     if (data.rangeIsReference === false) {
                         throw new OperationNotPermittedException({
                             message: 'The operation could not be completed as it would invalidate predicate relationships',
-                            data: {}
+                            data: Promise.resolve({})
                         });
                     }
 
@@ -143,8 +142,7 @@ export class PredicateController extends GenericController<PredicatePersistable>
                             if (res.indexOf(e) === -1) {
                                 throw new OperationNotPermittedException({
                                     message: 'The operation could not be completed as it would invalidate predicate relationships',
-                                    data: {
-                                    }
+                                    data: Promise.resolve({})
                                 });
                             }
                         });
@@ -169,9 +167,9 @@ export class PredicateController extends GenericController<PredicatePersistable>
             } else {
                 throw new OperationNotPermittedException({
                     message: 'The operation could not be completed as the predicate is used by other records',
-                    data: {
+                    data: Promise.resolve({
                         record: records.map((record) => new RecordPersistable().fromSchema(record))
-                    }
+                    })
                 });
             }
         });

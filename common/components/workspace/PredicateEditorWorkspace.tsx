@@ -109,27 +109,27 @@ export class PredicateEditorWorkspace extends React.Component<PredicateEditorPro
         this.props.api.delItem(Predicate, AppUrls.predicate, this.props.id)
         .then(() => this.context.router.transitionTo('/edit/notfound'))
         .catch((e) => {
-            e.data.then((data) => {
+            e.data.data.then((data) => {
 
                 const conflictResolutionModal : ModalDefinition = {
                     name: 'conflict_resolution',
                     cancel: () => {},
                     complete: (result) => {
                         if (result === 'addToWorkspace') {
-                            data.data.forEach((datum) => {
+                            data.forEach((datum) => {
                                  createTab.dispatch('entity', datum.entity);
                             });
                         }
 
                         if (result === 'deleteAll') {
-                            Promise.all(data.data.record.map((datum) => this.props.api.delItem(Record, AppUrls.record, datum.uid)))
+                            Promise.all(data.record.map((datum) => this.props.api.delItem(Record, AppUrls.record, datum.uid)))
                             .then(() => {
                                 this.del();
                             });
                         }
                     },
                     settings: {
-                        conflictingItems: data.data,
+                        conflictingItems: data,
                         message: 'Deleting Predicate'
                     }
                 };

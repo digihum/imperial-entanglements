@@ -86,11 +86,11 @@ export class EntityTypeController extends GenericController<EntityTypePersistabl
             } else {
                 throw new OperationNotPermittedException({
                     message: 'The operation could not be completed as the entity is referenced in other sources',
-                    data: {
+                    data: Promise.resolve({
                         entityType: entityTypes.map((entityType) => new EntityTypePersistable().fromSchema(entityType)),
                         entity: entities.map((entity) => new EntityPersistable().fromSchema(entity)),
                         predicate: predicates.map((predicate) => new PredicatePersistable().fromSchema(predicate))
-                    }
+                    })
                 });
             }
         });

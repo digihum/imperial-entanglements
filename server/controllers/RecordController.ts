@@ -92,7 +92,7 @@ export class RecordController extends GenericController<RecordPersistable> {
             }
             throw new OperationNotPermittedException({
                 message: 'Attempted to add a record with an incorrect type!',
-                data: []
+                data: Promise.resolve({})
             });
         });
     }
@@ -109,7 +109,7 @@ export class RecordController extends GenericController<RecordPersistable> {
             }
             throw new OperationNotPermittedException({
                 message: 'Attempted to add a record with an incorrect type!',
-                data: []
+                data: Promise.resolve({})
             });
         });
     }
@@ -123,7 +123,7 @@ export class RecordController extends GenericController<RecordPersistable> {
             }
             throw new OperationNotPermittedException({
                 message: 'Attempted to add a record with an incorrect type!',
-                data: []
+                data: Promise.resolve({})
             });
         });
     }

@@ -130,27 +130,27 @@ export class SourceEditorWorkspace extends React.Component<SourceEditorProps, So
         this.props.api.delItem(Source, AppUrls.source, this.props.id)
         .then(() => this.context.router.transitionTo('/edit/notfound'))
         .catch((e) => {
-            e.data.then((data) => {
+            e.data.data.then((data) => {
 
                 const conflictResolutionModal : ModalDefinition = {
                     name: 'conflict_resolution',
                     cancel: () => {},
                     complete: (result) => {
                         if (result === 'addToWorkspace') {
-                            data.data.source.forEach((datum) => {
+                            data.source.forEach((datum) => {
                                  createTab.dispatch('source', datum.uid);
                             });
                         }
 
                         if (result === 'deleteAll') {
-                            Promise.all(data.data.source.map((datum) => this.props.api.delItem(Source, AppUrls.source, datum.uid)))
+                            Promise.all(data.source.map((datum) => this.props.api.delItem(Source, AppUrls.source, datum.uid)))
                             .then(() => {
                                 this.del();
                             });
                         }
                     },
                     settings: {
-                        conflictingItems: data.data,
+                        conflictingItems: data,
                         message: 'Deleting Source'
                     }
                 };

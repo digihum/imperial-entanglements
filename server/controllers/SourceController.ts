@@ -166,10 +166,10 @@ export class SourceController extends GenericController<SourcePersistable> {
             } else {
                 throw new OperationNotPermittedException({
                     message: 'The operation could not be completed as the source is used by other records',
-                    data: {
+                    data: Promise.resolve({
                         record: records.map((record) => new RecordPersistable().fromSchema(record)),
                         source: sources.map((source) => new SourcePersistable().fromSchema(source))
-                    }
+                    })
                 });
             }
         });
