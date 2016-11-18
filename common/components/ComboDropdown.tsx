@@ -167,8 +167,8 @@ export class ComboDropdown<T> extends React.Component<ComboDropdownProps, ComboD
                  this.setState({ searchString: '' });
             } else {
                  if (findIndex(this.props.options, (option) => option.key === this.state.searchString) === -1) {
-                    this.setState({ searchString: newProps.value === null ? '' : this.props.value.key }, () => {
-                        this.updateFilter(newProps.value === null ? '' : this.props.value.key, this.props);
+                    this.setState({ searchString: this.props.value === null ? '' : this.props.value.key }, () => {
+                        this.updateFilter(this.props.value === null ? '' : this.props.value.key, this.props);
                     });
                 }
             }

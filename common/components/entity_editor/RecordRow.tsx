@@ -77,6 +77,7 @@ const formatValue = (props: RecordRowProps) => {
         if (entity !== undefined) {
             return (<span>
                 {entity.label} <AddTabButton
+                    dataStore={props.dataStore}
                     uid={entity.uid}
                     tabType='entity' />
             </span>);
@@ -152,7 +153,7 @@ export const RecordRow = (props: RecordRowProps) => {
             ) : null }
             <td className='record-row-item'>{dropDownValue.key}
                 {dropDownValue.key.length > 0 ? (
-                    <AddTabButton 
+                    <AddTabButton
                         dataStore={props.dataStore}
                         uid={dropDownValue.value}
                         tabType='source' />
