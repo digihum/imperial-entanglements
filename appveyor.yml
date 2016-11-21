@@ -27,8 +27,8 @@ install:
   - cp .env.example .env
 
   # run sql migrations
-  - npm run migrate
-  - npm run seed
+  #- npm run migrate
+  #- npm run seed
 
   - npm run dist
 
