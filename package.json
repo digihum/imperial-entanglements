@@ -18,7 +18,8 @@
     "gulp": "gulp",
     "clean": "rimraf build",
     "precompile": "npm run clean",
-    "compile": "npm-run-all tsc webpack gulp"
+    "compile": "npm-run-all tsc webpack gulp",
+    "rebuild": "electron-rebuild"
   },
   "repository": {
     "type": "git",
