@@ -10,8 +10,6 @@ environment:
   npm_config_disturl: https://atom.io/download/electron
   # Tell node-pre-gyp that we are building for Electron.
   npm_config_runtime: electron
-  # Tell node-pre-gyp to build module from source code.
-  npm_config_build_from_source: true
 
 platform:
   - x64
