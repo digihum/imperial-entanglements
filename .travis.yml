@@ -46,12 +46,15 @@ after_success:
   - rm -rf .git
   - rm README.md
   - rm .gitignore
-  
+
   - git init
   - git config user.name "Tim Hollies"
   - git config user.email "tim.hollies@warwick.ac.uk"
 
-  - git remote add upstream "https://$ACCESS_TOKEN@github.com/digihum/imperial-entanglements-app"
+  - git config credential.helper "store --file=.git/credentials"
+  - echo "https://${ACCESS_TOKEN}:@github.com" > .git/credentials
+
+  - git remote add upstream "https://github.com/digihum/imperial-entanglements-app.git"
   - git fetch upstream
   - git reset upstream/master
 
