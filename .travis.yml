@@ -14,9 +14,6 @@ node_js:
 
 script: 
 
-  - sudo npm uninstall node-gyp -g
-  - npm uninstall node-gyp
-
   # print versions
   - node --version
   - npm --version
@@ -41,3 +38,15 @@ script:
   - npm test
 
   - npm run dist
+
+after_success:
+  - rm -rf .git
+  - rm README.md
+  - rm .gitignore
+  - git init
+  - git remote add origin https://github.com/digihum/imperial-entanglements-app.git
+  - git fetch origin
+  - git checkout -b master --track origin/master # origin/master is clone's default
+  - git add .
+  - git commit -m "Build $($env:TRAVIS_BUILD_ID)"
+  - git push origin master

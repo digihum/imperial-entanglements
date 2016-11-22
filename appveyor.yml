@@ -58,5 +58,5 @@ on_success:
   - git config --global user.email "Your email"
   - git config --global user.name "Your Name"
   - git add .
-  - git commit -m "Build $env:APPVEYOR_BUILD_ID"
+  - git commit -m "Build $($env:APPVEYOR_BUILD_ID)"
   - git push origin master
