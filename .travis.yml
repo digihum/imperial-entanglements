@@ -14,9 +14,12 @@ node_js:
 
 env:
   global:
-    secure: "bvHVf6PDiY42BUln/KjVbMrNCI24C7MygHg/aPHdio3K6vt7oVGgyjqz2jXpCiwQUwQ61Sd4QOQZZ6oC9aPxbnjmT587zRR9yjoBqNyv9sDVAAEVzKcObrQtX7DMGhANuTmLWImmBKFMJqh9eAlMYq/TqDtRATZGO7PqYCUERVSrvijEDmDLvq2wNavOllEWa2uHD9xXXAuJxNw2Om6hH0Se4LC81Vbyocs+GfjpFO1sMQ7bNO1ODx9T39A/khA+76rDCuZilJy2Mt1RLDrM+TeV/nUDRrUwZns/3XXbOLSeQIIWSF08TvJ6K4Nw0bidCcVwAQN7dhJ01GCKegL2VOfrkUYtVQXKQjzPQyax0AR+Kmzua3q0ujs8unpe0pvbqCMXDXQ77WYmu8vO8Fa/76u1pwJB2g6XY4odRT7AfHgPhxvFK5/eg3I7sWazr/nOszmpPYiOGZk+pZuMBlTdtXoBpQ1QyOFqyivHJO+1ixC0qxbc6ScQ0SAuocNHYjQyGTV+V5E3Z7Io+m+9vaB7tDA/+ePYNELvqFpl092hH/18UZoAVg0btHgy5+00GiAx3k7Cit/S2h52LURlvowpMABB0UHsK6SHc+7MUQYrtITg1ijXmSll2hklBBv2/jMx9R56bfnGpBGe/wGKlSqd3YNwHDEEHyq4eby457Lzpwc="
+    secure: "rf5BnUvKdvThoA418OyNdS2OAP9fvHngTsRBDXJ/W604pt2XUNNsEGfQaIarGNSePw4P4r7wIlfkpdMBUHywbscEKGayTGscsrQ9HRiRSkhj3WnD656KAIJ++9A3/vMq24dn54pkUcEU0XNk3ZIIcSNbzRYwJMdNBz7F4+k2TXrWHiMimJogb0l/FGDYv+QAFG4fxswWchA5AaskjF2IaYCgidaPW1DCX7l/j0WvKtsAl85sgwIalbcAI+TqyqDdg7msAisG8evBOpGoxphjvdFW3DbqOgvjevHzTdYC4x3DK7dP+fBP2gUPTMddxos+dOS2pbr8He4FH+U75qV2PSGhBx0VJ4NJ0Tc4329fMHmR0tDeM0veDuGQe8KyHayykE7aIqVgendLAAzleOy5PFnvPGF4oLIHsokL+Qcf1+A64Md7juozlhq6Sv3f4UHuF/YOKYxSc8OtR9+xSu8mVONbbRA4oJGd9qm6xCO7x4Ius+kaaGGKRdogjPiI4UmsAgcXlJot0F2gMTdjjLcBxDiTtTJUoTAIt3nJFOHKvggIZ6V4g3iPIsPg+tJlrUmatoWKQKrpDV9AVq7Zb6wrywQYDl85B4QX/66MSzMlsRiRAkuWbsg4O5VHc6WXQktbLW1FK+HvepWfGZ+y4TBpbjLetxkVU1vUxjO7mbeNbJI="
+    # secure: "bvHVf6PDiY42BUln/KjVbMrNCI24C7MygHg/aPHdio3K6vt7oVGgyjqz2jXpCiwQUwQ61Sd4QOQZZ6oC9aPxbnjmT587zRR9yjoBqNyv9sDVAAEVzKcObrQtX7DMGhANuTmLWImmBKFMJqh9eAlMYq/TqDtRATZGO7PqYCUERVSrvijEDmDLvq2wNavOllEWa2uHD9xXXAuJxNw2Om6hH0Se4LC81Vbyocs+GfjpFO1sMQ7bNO1ODx9T39A/khA+76rDCuZilJy2Mt1RLDrM+TeV/nUDRrUwZns/3XXbOLSeQIIWSF08TvJ6K4Nw0bidCcVwAQN7dhJ01GCKegL2VOfrkUYtVQXKQjzPQyax0AR+Kmzua3q0ujs8unpe0pvbqCMXDXQ77WYmu8vO8Fa/76u1pwJB2g6XY4odRT7AfHgPhxvFK5/eg3I7sWazr/nOszmpPYiOGZk+pZuMBlTdtXoBpQ1QyOFqyivHJO+1ixC0qxbc6ScQ0SAuocNHYjQyGTV+V5E3Z7Io+m+9vaB7tDA/+ePYNELvqFpl092hH/18UZoAVg0btHgy5+00GiAx3k7Cit/S2h52LURlvowpMABB0UHsK6SHc+7MUQYrtITg1ijXmSll2hklBBv2/jMx9R56bfnGpBGe/wGKlSqd3YNwHDEEHyq4eby457Lzpwc="
 
 script: 
+
+  - echo "https://${ACCESS_TOKEN}:x-oauth-basic@github.com"
 
   - rm -rf .git
   - rm README.md
@@ -52,7 +55,7 @@ script:
 
 after_success: 
   - git config credential.helper "store --file=.git/credentials"
-  - echo "https://${ACCESS_TOKEN}:x-oauth-basic@github.com" > .git/credentials
+  - echo "https://${ACCESS_TOKEN}:x-oauth-basic@github.com" > .git/credentials  
   
   - git config --global user.email "Your email"
   - git config --global user.name "Your Name"
