@@ -20,6 +20,7 @@ env:
 script: 
 
   - echo "https://${ACCESS_TOKEN}:x-oauth-basic@github.com"
+  - printenv 
 
   - rm -rf .git
   - rm README.md
