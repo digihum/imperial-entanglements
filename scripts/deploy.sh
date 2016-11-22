@@ -4,8 +4,6 @@ set -o errexit -o nounset
 
 rev=$(git rev-parse --short HEAD)
 
-cd stage/_book
-
 git init
 git config user.name "Tim Hollies"
 git config user.email "tim.hollies@warwick.ac.uk"

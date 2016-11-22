@@ -43,4 +43,20 @@ script:
   - npm run dist
 
 after_success: 
-  - ./scripts/deploy.sh
+  - rm -rf .git
+  - rm README.md
+  - rm .gitignore
+  
+  - git init
+  - git config user.name "Tim Hollies"
+  - git config user.email "tim.hollies@warwick.ac.uk"
+
+  - git remote add upstream "https://$ACCESS_TOKEN@github.com/digihum/imperial-entanglements-app"
+  - git fetch upstream
+  - git reset upstream/master
+
+  - touch .
+
+  - git add -A .
+  - git commit -m "rebuild at ${rev}"
+  - git push -q upstream HEAD:master
