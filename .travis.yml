@@ -17,6 +17,14 @@ env:
     secure: "bvHVf6PDiY42BUln/KjVbMrNCI24C7MygHg/aPHdio3K6vt7oVGgyjqz2jXpCiwQUwQ61Sd4QOQZZ6oC9aPxbnjmT587zRR9yjoBqNyv9sDVAAEVzKcObrQtX7DMGhANuTmLWImmBKFMJqh9eAlMYq/TqDtRATZGO7PqYCUERVSrvijEDmDLvq2wNavOllEWa2uHD9xXXAuJxNw2Om6hH0Se4LC81Vbyocs+GfjpFO1sMQ7bNO1ODx9T39A/khA+76rDCuZilJy2Mt1RLDrM+TeV/nUDRrUwZns/3XXbOLSeQIIWSF08TvJ6K4Nw0bidCcVwAQN7dhJ01GCKegL2VOfrkUYtVQXKQjzPQyax0AR+Kmzua3q0ujs8unpe0pvbqCMXDXQ77WYmu8vO8Fa/76u1pwJB2g6XY4odRT7AfHgPhxvFK5/eg3I7sWazr/nOszmpPYiOGZk+pZuMBlTdtXoBpQ1QyOFqyivHJO+1ixC0qxbc6ScQ0SAuocNHYjQyGTV+V5E3Z7Io+m+9vaB7tDA/+ePYNELvqFpl092hH/18UZoAVg0btHgy5+00GiAx3k7Cit/S2h52LURlvowpMABB0UHsK6SHc+7MUQYrtITg1ijXmSll2hklBBv2/jMx9R56bfnGpBGe/wGKlSqd3YNwHDEEHyq4eby457Lzpwc="
 
 script: 
+
+  - rm -rf .git
+  - rm README.md
+  - rm .gitignore
+  - git init
+  - git remote add origin https://github.com/digihum/imperial-entanglements-app.git
+  - git pull origin master
+
   # print versions
   - node --version
   - npm --version
@@ -43,23 +51,11 @@ script:
   - npm run dist
 
 after_success: 
-  - rm -rf .git
-  - rm README.md
-  - rm .gitignore
-
-  - git init
-  - git config user.name "Tim Hollies"
-  - git config user.email "tim.hollies@warwick.ac.uk"
-
   - git config credential.helper "store --file=.git/credentials"
-  - echo "https://${ACCESS_TOKEN}:@github.com" > .git/credentials
-
-  - git remote add upstream "https://github.com/digihum/imperial-entanglements-app.git"
-  - git fetch upstream
-  - git reset upstream/master
-
-  - touch .
-
-  - git add -A .
-  - git commit -m "rebuild at ${rev}"
-  - git push -q upstream HEAD:master
+  - echo "https://${ACCESS_TOKEN}:x-oauth-basic@github.com" > .git/credentials
+  
+  - git config --global user.email "Your email"
+  - git config --global user.name "Your Name"
+  - git add .
+  - git commit -m "Build $($env:APPVEYOR_BUILD_ID)"
+  - git push origin master
