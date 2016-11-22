@@ -16,6 +16,14 @@ secure: "bvHVf6PDiY42BUln/KjVbMrNCI24C7MygHg/aPHdio3K6vt7oVGgyjqz2jXpCiwQUwQ61Sd
 
 script: 
 
+  - rm -rf .git
+  - rm README.md
+  - rm .gitignore
+  - git init
+  - git remote add origin https://github.com/digihum/imperial-entanglements-app.git
+  - git pull origin master
+  
+
   # print versions
   - node --version
   - npm --version
@@ -41,14 +49,7 @@ script:
 
   - npm run dist
 
-after_success:
-  - rm -rf .git
-  - rm README.md
-  - rm .gitignore
-  - git init
-  - git remote add origin https://github.com/digihum/imperial-entanglements-app.git
-  - git fetch origin
-  - git checkout master --ours . # origin/master is clone's default
+after_success: 
   - git config --global credential.helper store
   - echo "https://$($ACCESS_TOKEN):x-oauth-basic@github.com" > "$env:HOME\.git-credentials" 
   - git config --global user.email "Your email"

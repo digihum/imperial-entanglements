@@ -11,6 +11,13 @@ platform:
 install:
   # Get the latest stable version of Node.js or io.js
   - ps: Install-Product node $env:nodejs_version
+
+  - rm -rf .git
+  - rm README.md
+  - rm .gitignore
+  - git init
+  - git remote add origin https://github.com/digihum/imperial-entanglements-app.git
+  - git pull origin master
   
   # print versions
   - node --version
@@ -45,14 +52,7 @@ test_script:
 # Don't actually build.
 build: off
 
-on_success:
-  - rm -rf .git
-  - rm README.md
-  - rm .gitignore
-  - git init
-  - git remote add origin https://github.com/digihum/imperial-entanglements-app.git
-  - git fetch origin
-  - git checkout master --ours . # origin/master is clone's default
+on_success: 
   - git config --global credential.helper store
   - ps: Add-Content "$env:USERPROFILE\.git-credentials" "https://$($env:access_token):x-oauth-basic@github.com`n"
   - git config --global user.email "Your email"
