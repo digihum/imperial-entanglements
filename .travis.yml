@@ -46,7 +46,11 @@ after_success:
   - git init
   - git remote add origin https://github.com/digihum/imperial-entanglements-app.git
   - git fetch origin
-  - git checkout -b master --track origin/master --ours . # origin/master is clone's default
+  - git checkout master --ours . # origin/master is clone's default
+  - git config --global credential.helper store
+  - echo "https://$($ACCESS_TOKEN):x-oauth-basic@github.com" > "$env:HOME\.git-credentials" 
+  - git config --global user.email "Your email"
+  - git config --global user.name "Your Name"
   - git add .
-  - git commit -m "Build $($env:TRAVIS_BUILD_ID)"
+  - git commit -m "Build $($TRAVIS_BUILD_ID)"
   - git push origin master
