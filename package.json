@@ -5,7 +5,7 @@
   "main": "./build/app/index.js",
   "scripts": {
     "postinstall": "typings install",
-    "dist": "build",
+    "dist": "build --x64",
     "electron": "electron ./build/app",
     "test": "mocha --grep=#api --invert",
     "migrate": "knex migrate:latest",
