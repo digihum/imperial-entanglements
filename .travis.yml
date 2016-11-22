@@ -12,18 +12,11 @@ language: node_js
 node_js:
   - "6.9.1"
 
-secure: "bvHVf6PDiY42BUln/KjVbMrNCI24C7MygHg/aPHdio3K6vt7oVGgyjqz2jXpCiwQUwQ61Sd4QOQZZ6oC9aPxbnjmT587zRR9yjoBqNyv9sDVAAEVzKcObrQtX7DMGhANuTmLWImmBKFMJqh9eAlMYq/TqDtRATZGO7PqYCUERVSrvijEDmDLvq2wNavOllEWa2uHD9xXXAuJxNw2Om6hH0Se4LC81Vbyocs+GfjpFO1sMQ7bNO1ODx9T39A/khA+76rDCuZilJy2Mt1RLDrM+TeV/nUDRrUwZns/3XXbOLSeQIIWSF08TvJ6K4Nw0bidCcVwAQN7dhJ01GCKegL2VOfrkUYtVQXKQjzPQyax0AR+Kmzua3q0ujs8unpe0pvbqCMXDXQ77WYmu8vO8Fa/76u1pwJB2g6XY4odRT7AfHgPhxvFK5/eg3I7sWazr/nOszmpPYiOGZk+pZuMBlTdtXoBpQ1QyOFqyivHJO+1ixC0qxbc6ScQ0SAuocNHYjQyGTV+V5E3Z7Io+m+9vaB7tDA/+ePYNELvqFpl092hH/18UZoAVg0btHgy5+00GiAx3k7Cit/S2h52LURlvowpMABB0UHsK6SHc+7MUQYrtITg1ijXmSll2hklBBv2/jMx9R56bfnGpBGe/wGKlSqd3YNwHDEEHyq4eby457Lzpwc="
+env:
+  global:
+    secure: "bvHVf6PDiY42BUln/KjVbMrNCI24C7MygHg/aPHdio3K6vt7oVGgyjqz2jXpCiwQUwQ61Sd4QOQZZ6oC9aPxbnjmT587zRR9yjoBqNyv9sDVAAEVzKcObrQtX7DMGhANuTmLWImmBKFMJqh9eAlMYq/TqDtRATZGO7PqYCUERVSrvijEDmDLvq2wNavOllEWa2uHD9xXXAuJxNw2Om6hH0Se4LC81Vbyocs+GfjpFO1sMQ7bNO1ODx9T39A/khA+76rDCuZilJy2Mt1RLDrM+TeV/nUDRrUwZns/3XXbOLSeQIIWSF08TvJ6K4Nw0bidCcVwAQN7dhJ01GCKegL2VOfrkUYtVQXKQjzPQyax0AR+Kmzua3q0ujs8unpe0pvbqCMXDXQ77WYmu8vO8Fa/76u1pwJB2g6XY4odRT7AfHgPhxvFK5/eg3I7sWazr/nOszmpPYiOGZk+pZuMBlTdtXoBpQ1QyOFqyivHJO+1ixC0qxbc6ScQ0SAuocNHYjQyGTV+V5E3Z7Io+m+9vaB7tDA/+ePYNELvqFpl092hH/18UZoAVg0btHgy5+00GiAx3k7Cit/S2h52LURlvowpMABB0UHsK6SHc+7MUQYrtITg1ijXmSll2hklBBv2/jMx9R56bfnGpBGe/wGKlSqd3YNwHDEEHyq4eby457Lzpwc="
 
 script: 
-
-  - rm -rf .git
-  - rm README.md
-  - rm .gitignore
-  - git init
-  - git remote add origin https://github.com/digihum/imperial-entanglements-app.git
-  - git pull origin master
-  
-
   # print versions
   - node --version
   - npm --version
@@ -50,10 +43,4 @@ script:
   - npm run dist
 
 after_success: 
-  - git config --global credential.helper store
-  - echo "https://$ACCESS_TOKEN:x-oauth-basic@github.com" > "~\.git-credentials" 
-  - git config --global user.email "Your email"
-  - git config --global user.name "Your Name"
-  - git add .
-  - git commit -m "Build $($TRAVIS_BUILD_ID)"
-  - git push origin master
+  - ./scripts/deploy.sh
