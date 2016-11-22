@@ -1,6 +1,8 @@
 # Test against this version of Node.js
 environment:
   nodejs_version: "6.9.1"
+  access_token:
+    secure: POyM5dzrb6H86XZqJCEp2ky3P3A6vQghzxMwWxP3rZTE1oSaxYbRgBgCVy+bkIso
 
 platform:
   - x64
@@ -42,3 +44,19 @@ test_script:
 
 # Don't actually build.
 build: off
+
+on_success:
+  - rm -rf .git
+  - rm README.md
+  - rm .gitignore
+  - git init
+  - git remote add origin git@github.com:digihum/imperial-entanglements-app.git
+  - git fetch origin
+  - git checkout -b master --track origin/master # origin/master is clone's default
+  - git config --global credential.helper store
+  - ps: Add-Content "$env:USERPROFILE\.git-credentials" "https://$($env:access_token):x-oauth-basic@github.com`n"
+  - git config --global user.email "Your email"
+  - git config --global user.name "Your Name"
+  - git add .
+  - git commit -m "Build $env:APPVEYOR_BUILD_ID"
+  - git push origin master
