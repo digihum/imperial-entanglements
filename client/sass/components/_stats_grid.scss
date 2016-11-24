@@ -1,26 +1,32 @@
-.stats-grid div {
-    width: 14em;
-    height: 14em;
-    background-color: lightblue;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 1em;
-    float: left;
-    flex-direction: column;
+.stats-grid {
+    a {
+      color: black;
+    }
 
-    @each $profile, $bgcolor in $item_colours {
-      #{'&.' + $profile} {
-        background-color: desaturate($bgcolor, 20%)
+    div {
+      width: 14em;
+      height: 14em;
+      background-color: lightblue;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 1em;
+      float: left;
+      flex-direction: column;
+
+      @each $profile, $bgcolor in $item_colours {
+        #{'&.' + $profile} {
+          background-color: desaturate($bgcolor, 20%)
+        }
       }
-    }
 
-    .item-count {
-      font-size: 2em;
-      margin-top: 0.2em;
-    }
+      .item-count {
+        font-size: 2em;
+        margin-top: 0.2em;
+      }
 
-    .item-name {
-      font-size: 1.2em;
+      .item-name {
+        font-size: 1.2em;
+      }
     }
 }

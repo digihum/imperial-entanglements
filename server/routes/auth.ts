@@ -32,6 +32,12 @@ export const auth = () : Koa => {
         };
     });
 
+    // create user
+    // delete user
+    // reset user password
+    // change user permission
+
+
     server.use(authRouter.middleware());
 
 

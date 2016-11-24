@@ -16,10 +16,11 @@ export const Admin = (props : AdminProps) => (
     <div className='page'>
         <section>
             <h1>Welcome to the admin pages</h1>
-            <ul>
-                <li>Manage Users</li>
-                <li>Download app</li>
-                <li><a href='/admin/snapshot'>Download database snapshot</a></li>
+            <ul className='links-list'>
+                <li><Link to='/users'><i className='fa fa-users'></i> Manage Users</Link></li>
+                <li><Link to='/app'><i className='fa fa-download'></i> Download app</Link></li>
+                <li><a href='/admin/snapshot'><i className='fa fa-cloud-download'></i> Download database snapshot</a></li>
+                <li><Link to='/upload'><i className='fa fa-cloud-upload'></i> Upload database file</Link></li>
             </ul>
         </section>
         {props.stats !== null ? (

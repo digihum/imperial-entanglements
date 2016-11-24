@@ -18,6 +18,11 @@ import { itemTypes } from './itemTypes';
 import { Admin } from './views/Admin';
 import { AdminApp } from '../app/AdminApp';
 
+import { User } from './views/User';
+import { UserManagement } from './views/UserManagement';
+import { AppDownload } from './views/AppDownload';
+import { DatabaseUpload } from './views/DatabaseUpload';
+
 import { Link } from 'react-router';
 import { ObjectEditor } from './views/ObjectEditor';
 
@@ -64,7 +69,7 @@ export class FalconApp extends React.Component<FalconAppProps, FalconAppState> {
             <this.props.router {...this.props.routerSettings} className='flex-fill' basename='/admin'>
                 <div className='flex-fill' style={{ flexDirection: 'column' }}>
                     <div className='header'>
-                        <div className='logo'>VRE</div>
+                        <Link to='/' className='logo-link'><div className='logo'>VRE</div></Link>
                         <Link to='/' className='header-link'>Home</Link>
                         <Link accessKey='s' to={'/edit/' + AppUrls.source} className='header-link source'>{itemTypes.source.plural}</Link>
                         <Link accessKey='e' to={'/edit/' + AppUrls.entity} className='header-link entity'>{itemTypes.entity.plural}</Link>
@@ -75,8 +80,9 @@ export class FalconApp extends React.Component<FalconAppProps, FalconAppState> {
 
                         { this.props.environment === 'website' ? (
                             <div className='right-header'>
-                                <span className='current-user'>{this.state.user}</span>
-                                <a href='/admin/logout'>Logout</a>
+                                <Link to='/user' className='header-link'><span className='current-user'>{this.state.user}</span></Link>
+                                <a href='/admin/logout' className='header-link'>Logout</a>
+                                <a href='/' className='header-link'><i className='fa fa-external-link'></i></a>
                             </div>
                         ) : null}
 
@@ -90,6 +96,11 @@ export class FalconApp extends React.Component<FalconAppProps, FalconAppState> {
                     ) : (
                         <Match exactly pattern='/' component={AdminApp} />
                     )}
+
+                    <Match exactly pattern='/user' component={User} />
+                    <Match exactly pattern='/users' component={UserManagement} />
+                    <Match exactly pattern='/app' component={AppDownload} />
+                    <Match exactly pattern='/upload' component={DatabaseUpload} />
 
                     <Match exactly pattern='/search' render={
                         (matchprops) => (
