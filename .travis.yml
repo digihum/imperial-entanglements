@@ -42,6 +42,7 @@ script:
   - cp .env.example .env
 
   - npm run gulp
+  - npm run webpack
 
   # run sql migrations
   - npm run migrate
@@ -58,6 +59,7 @@ after_success:
   
   - git config --global user.email "Your email"
   - git config --global user.name "Your Name"
+  - git pull origin master
   - git add .
   - git commit -m "Build ${TRAVIS_BUILD_ID}"
   - git push origin master

@@ -36,6 +36,7 @@ install:
   - cp .env.example .env
 
   - npm run gulp
+  - npm run webpack
 
   # run sql migrations
   - npm run migrate
@@ -60,6 +61,7 @@ on_success:
   
   - git config --global user.email "Your email"
   - git config --global user.name "Your Name"
+  - git pull origin master
   - git add .
   - git commit -m "Build $env:APPVEYOR_BUILD_ID"
   - git push origin master
