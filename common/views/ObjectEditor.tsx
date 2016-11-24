@@ -16,7 +16,7 @@ import { Sidebar, Tab } from '../components/Sidebar';
 import { Workspace } from '../components/Workspace';
 import { Toast } from '../components/Toast';
 
-import { createTab, closeTab, showModal, triggerReload } from '../Signaller';
+import { createTab, closeTab, showModal, triggerReload, reorderTabs } from '../Signaller';
 import { find, tail, cloneDeep, groupBy, findIndex } from 'lodash';
 
 import { CreatePredicate } from '../components/modal/CreatePredicate';
@@ -65,6 +65,7 @@ export class ObjectEditor extends React.Component<EntityEditorProps, EntityEdito
     private boundCloseTab: any;
     private boundAddModal: any;
     private boundReload: any;
+    private boundReorderTabs: any;
 
     constructor(props: EntityEditorProps, context: any) {
         super();
@@ -84,11 +85,13 @@ export class ObjectEditor extends React.Component<EntityEditorProps, EntityEdito
         this.boundCloseTab = this.closeTab.bind(this);
         this.boundAddModal = this.addModal.bind(this);
         this.boundReload = this.callReload.bind(this);
+        this.boundReorderTabs = this.reorderTabs.bind(this);
 
         createTab.add(this.boundCreateTab);
         closeTab.add(this.boundCloseTab);
         showModal.add(this.boundAddModal);
         triggerReload.add(this.boundReload);
+        reorderTabs.add(this.boundReorderTabs);
     }
 
     public componentDidMount() {
@@ -260,6 +263,13 @@ export class ObjectEditor extends React.Component<EntityEditorProps, EntityEdito
         });
     }
 
+    public reorderTabs(reorderFunc: (tabs: Tab[]) => Tab[]) {
+      this.setState({tabs: reorderFunc(this.state.tabs)}, () => {
+            this.saveTabs();
+            this.reload(this.props);
+        });
+    }
+
     public addModal(def: ModalDefinition) {
         this.setState({ modalQueue: [def].concat(this.state.modalQueue)});
     }
@@ -290,6 +300,7 @@ export class ObjectEditor extends React.Component<EntityEditorProps, EntityEdito
         closeTab.remove(this.boundCloseTab);
         showModal.remove(this.boundAddModal);
         triggerReload.remove(this.boundReload);
+        reorderTabs.remove(this.boundReorderTabs);
     }
 
     public componentWillReceiveProps(props: EntityEditorProps) {

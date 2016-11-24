@@ -31,6 +31,7 @@
     "react-dom": "registry:dt/react-dom#0.14.0+20160412154040",
     "react-jsonschema-form": "registry:dt/react-jsonschema-form#0.30.1+20160720001748",
     "react-redux": "registry:dt/react-redux#4.4.0+20160908183346",
+    "react-sortable-hoc": "registry:dt/react-sortable-hoc#0.0.7+20160830143233",
     "redis": "registry:dt/redis#0.12.1+20160818110030",
     "redux": "registry:dt/redux#3.5.2+20160703092728",
     "reflect-metadata": "registry:dt/reflect-metadata#0.0.0+20160630155503",
