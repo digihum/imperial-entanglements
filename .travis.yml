@@ -41,6 +41,8 @@ script:
   # copy .env file
   - cp .env.example .env
 
+  - npm run gulp
+
   # run sql migrations
   - npm run migrate
   - npm run seed
