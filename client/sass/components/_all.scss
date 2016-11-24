@@ -1,5 +1,5 @@
-@import 'sidebar'; 
-@import 'workspace'; 
+@import 'sidebar';
+@import 'workspace';
 @import 'combo_dropdown';
 @import 'overlay';
 @import 'modals';
@@ -10,6 +10,7 @@
 @import 'loading_wheel';
 @import 'toast';
 @import 'breadcrumbs';
+@import 'stats_grid';
 
 .score-picker.editing  {
   unicode-bidi: bidi-override;

@@ -21,6 +21,8 @@ import { AdminApp } from '../app/AdminApp';
 import { Link } from 'react-router';
 import { ObjectEditor } from './views/ObjectEditor';
 
+import { GeneralStatistics } from './stats/GeneralStatistics';
+
 interface FalconAppProps {
     router: any;
     api: ApiService;
@@ -30,14 +32,17 @@ interface FalconAppProps {
 }
 
 interface FalconAppState {
-    user: string
+    user: string;
+    stats: GeneralStatistics | null;
+}
 
 export class FalconApp extends React.Component<FalconAppProps, FalconAppState> {
 
     constructor(props: FalconAppProps) {
         super();
         this.state = {
-            user: ''
+            user: '',
+            stats: null
         };
     }
 
@@ -46,6 +51,10 @@ export class FalconApp extends React.Component<FalconAppProps, FalconAppState> {
             fetch('/admin/currentuser', { credentials: 'same-origin' })
                 .then((response) => response.json())
                 .then((userData) => this.setState({ user: userData.username }));
+
+            fetch('/admin/stats', { credentials: 'same-origin' })
+                .then((response) => response.json())
+                .then((stats) => this.setState({ stats }));
         }
     }
 
@@ -57,12 +66,12 @@ export class FalconApp extends React.Component<FalconAppProps, FalconAppState> {
                     <div className='header'>
                         <div className='logo'>VRE</div>
                         <Link to='/' className='header-link'>Home</Link>
-                        <Link accessKey='s' to={'/edit/' + AppUrls.source} className='header-link'>{itemTypes.source.plural}</Link>
-                        <Link accessKey='e' to={'/edit/' + AppUrls.entity} className='header-link'>{itemTypes.entity.plural}</Link>
+                        <Link accessKey='s' to={'/edit/' + AppUrls.source} className='header-link source'>{itemTypes.source.plural}</Link>
+                        <Link accessKey='e' to={'/edit/' + AppUrls.entity} className='header-link entity'>{itemTypes.entity.plural}</Link>
                         <Link accessKey='p'
-                            to={'/edit/' + AppUrls.predicate} className='header-link'>{itemTypes.predicate.plural}</Link>
+                            to={'/edit/' + AppUrls.predicate} className='header-link predicate'>{itemTypes.predicate.plural}</Link>
                         <Link accessKey='t'
-                            to={'/edit/' + AppUrls.entity_type} className='header-link'>{itemTypes.entity_type.plural}</Link>
+                            to={'/edit/' + AppUrls.entity_type} className='header-link entity_type'>{itemTypes.entity_type.plural}</Link>
 
                         { this.props.environment === 'website' ? (
                             <div className='right-header'>
@@ -74,7 +83,10 @@ export class FalconApp extends React.Component<FalconAppProps, FalconAppState> {
                     </div>
 
                     { this.props.environment === 'website' ? (
-                        <Match exactly pattern='/' component={Admin} />
+                        <Match exactly pattern='/' render={
+                        (matchprops) => (
+                          <Admin {...matchprops} stats={this.state.stats}/>
+                        )}/>
                     ) : (
                         <Match exactly pattern='/' component={AdminApp} />
                     )}
@@ -82,14 +94,14 @@ export class FalconApp extends React.Component<FalconAppProps, FalconAppState> {
                     <Match exactly pattern='/search' render={
                         (matchprops) => (
                             <ObjectEditor
-                                api={this.props.api} {...matchprops} 
+                                api={this.props.api} {...matchprops}
                                 workspace={'search'} />)
                     } />
 
                     <Match pattern='/edit/:workspace' render={
                         (matchprops) => (
                             <ObjectEditor
-                                api={this.props.api} {...matchprops} 
+                                api={this.props.api} {...matchprops}
                                 workspace={matchprops.params.workspace === 'property' ? 'predicate' : matchprops.params.workspace}
                                 />)
                     } />
