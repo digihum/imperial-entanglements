@@ -58,8 +58,8 @@ export class SourceList extends React.Component<SourceListProps, SourceListState
     public render() {
         return (
          <div className='workspace-editor'>
-
             <header className='editor-header source'>
+              <div className='primary-toolbar'>
                 <div className='main-toolbar'>
                     <h2>All Sources <i
                         className='fa fa-plus-circle add button'
@@ -68,6 +68,13 @@ export class SourceList extends React.Component<SourceListProps, SourceListState
                         onClick={this.addNew.bind(this)}
                     ></i></h2>
                 </div>
+              </div>
+              <div className='secondary-toolbar'>
+                <div className='tab-bar'>
+                  <div>LIST</div>
+                  <div>TREE</div>
+                </div>
+              </div>
             </header>
 
             <section className='editor-body'>

@@ -83,7 +83,7 @@ export class Server {
         const admin = new Koa();
         admin.use(koaMount('/', auth()));
         admin.use(koaMount('/snapshot', snapshot(this.snapshot)));
-        admin.use(koaMount('/stats', stats(databaseConfig)));
+        admin.use(koaMount('/stats', stats(db)));
         admin.use(koaMount('/', adminApp(this.skeleton, serverApiContext)));
         this.app.use(koaMount('/admin', admin));
 

@@ -43,7 +43,7 @@ export const wrapDatabase : (s: Database, fakeCreator: boolean) => ServerApiServ
         [AppUrls.source_element, new SourceElementController(db)]
     ]);
 
-    return new ServerApiService(routes, new QueryEngine(db), fakeCreator);
+    return new ServerApiService(db, routes, new QueryEngine(db), fakeCreator);
 };
 
 const sourceElementSpecial = (router: any, serverApiContext: ServerApiService, typeMap: any) => {

@@ -76,7 +76,7 @@ export class ClientApiService implements ApiService {
         });
     }
 
-    public putItem<T extends Serializable>(obj: { new(): T; }, 
+    public putItem<T extends Serializable>(obj: { new(): T; },
             baseUrl : string, uid: number | CompositeKey, data: T) : PromiseLike<boolean> {
 
         const endURL = isObject(uid) ?
@@ -143,5 +143,11 @@ export class ClientApiService implements ApiService {
         return fetch('/api/v1/query?query=' + graphQLQueryString)
             .then(handleErrors)
             .then((response) => response.json());
+    }
+
+    public getStats() : PromiseLike<any> {
+      return fetch('/admin/stats', { credentials: 'same-origin' })
+        .then(handleErrors)
+        .then((response) => response.json());
     }
 }

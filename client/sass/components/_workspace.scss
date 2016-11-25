@@ -1,5 +1,5 @@
 .workspace-outer-wrapper {
-    flex-direction: column;    
+    flex-direction: column;
 }
 
 .header-colour {
@@ -43,7 +43,7 @@
 
     display: flex;
     text-align: center;
-    
+
     .domain {
         flex: 1;
     }
@@ -60,6 +60,7 @@
 
 .editor-header {
     display: flex;
+    flex-direction: column;
     padding: 1em 2em;
 
     i.fa.fa-pencil-square-o {
@@ -70,7 +71,7 @@
         padding-right: 0.5em;
         opacity: 0.5;
     }
-    
+
     &.records {
         background-color: rgba($records_colour, 0.2);
     }
@@ -97,14 +98,29 @@
     h2 {
         display: inline;
     }
-    .main-toolbar {
-        flex: 1
+
+    .primary-toolbar {
+      display: flex;
+      flex-direction: row;
+      .main-toolbar {
+          flex: 1
+      }
+      .sub-toolbar {
+          i {
+              padding: 0 0.2em;
+          }
+      }
     }
-    .sub-toolbar {
-        i {
-            padding: 0 0.2em;
+
+    .secondary-toolbar {
+      .tab-bar {
+        display: flex;
+        &>div {
+          padding: 0 0.5em 0.2em 0;
         }
+      }
     }
+
 }
 
 .editor-body {

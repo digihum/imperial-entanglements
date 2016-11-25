@@ -56,11 +56,12 @@ export class FalconApp extends React.Component<FalconAppProps, FalconAppState> {
             fetch('/admin/currentuser', { credentials: 'same-origin' })
                 .then((response) => response.json())
                 .then((userData) => this.setState({ user: userData.username }));
-
-            fetch('/admin/stats', { credentials: 'same-origin' })
-                .then((response) => response.json())
-                .then((stats) => this.setState({ stats }));
         }
+
+        this.props.api.getStats()
+        .then((stats) => {
+          this.setState({ stats })
+        });
     }
 
     public render() {
@@ -94,7 +95,10 @@ export class FalconApp extends React.Component<FalconAppProps, FalconAppState> {
                           <Admin {...matchprops} stats={this.state.stats}/>
                         )}/>
                     ) : (
-                        <Match exactly pattern='/' component={AdminApp} />
+                        <Match exactly pattern='/' render={
+                        (matchprops) => (
+                          <AdminApp {...matchprops} stats={this.state.stats}/>
+                        )}/>
                     )}
 
                     <Match exactly pattern='/user' component={User} />

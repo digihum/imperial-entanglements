@@ -19,17 +19,23 @@ import { triggerReload } from '../../common/Signaller';
 
 export { AppUrls } from '../../common/ApiService';
 
+import { Database } from './Database';
+
+import { GeneralStatisticsController } from '../stats/GeneralStatisticsController';
+
 export class ServerApiService implements ApiService {
 
     private controllerMap: Map<string, IController>;
+    private db: Database;
 
     public queryEngine: QueryEngine;
     public fakeCreator: boolean;
 
-    constructor(routesMap: Map<string, IController>, queryEngine: QueryEngine, fakeCreator: boolean) {
+    constructor(db: Database, routesMap: Map<string, IController>, queryEngine: QueryEngine, fakeCreator: boolean) {
         this.controllerMap = routesMap;
         this.queryEngine = queryEngine;
         this.fakeCreator = fakeCreator;
+        this.db = db;
     }
 
     public getItem<T extends Persistable>(obj: { new(): T; }, baseUrl : string, uid: number | CompositeKey) : PromiseLike<T> {
@@ -64,7 +70,7 @@ export class ServerApiService implements ApiService {
         });
     }
 
-    public putItem<T extends Persistable>(obj: { new(): T; }, 
+    public putItem<T extends Persistable>(obj: { new(): T; },
             baseUrl : string, uid: number | CompositeKey, data: T) : PromiseLike<boolean> {
 
         const controller = this.controllerMap.get(baseUrl);
@@ -80,7 +86,7 @@ export class ServerApiService implements ApiService {
         });
     }
 
-    public patchItem<T extends Persistable>(obj: { new(): T; }, 
+    public patchItem<T extends Persistable>(obj: { new(): T; },
             baseUrl : string, uid: number | CompositeKey, data : T) : PromiseLike<boolean> {
 
         const controller = this.controllerMap.get(baseUrl);
@@ -111,5 +117,9 @@ export class ServerApiService implements ApiService {
 
     public query(graphQLQuery: string) : PromiseLike<any> {
         return Promise.resolve({});
+    }
+
+    public getStats() : PromiseLike<any> {
+      return GeneralStatisticsController(this.db.query());
     }
 }

@@ -5,20 +5,26 @@
  */
 
 import * as React from 'react';
-import { Link } from 'react-router';
+
+import { GeneralStatistics } from '../common/stats/GeneralStatistics';
+import { StatsGrid } from '../common/stats/StatsGrid';
 
 // ideally:
 // - Open file
 // - Recent files
 // - Metrics
 
-export const AdminApp = (props) => (
+interface AdminAppProps {
+  stats: GeneralStatistics | null;
+}
+
+export const AdminApp = (props: AdminAppProps) => (
     <div className='page'>
         <section>
             <h1>VRE App</h1>
-            <ul>
-
-            </ul>
+            {props.stats !== null ? (
+              <StatsGrid stats={props.stats} />
+            ) : null}
         </section>
      </div>
 );

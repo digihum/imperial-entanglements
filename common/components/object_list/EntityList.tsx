@@ -223,7 +223,7 @@ export class EntityList extends React.Component<EntityListProps, EntityListState
                                             return 'Not set';
                                         }
                                         return this.props.dataStore.all.entity.value.find((entity) => entity.uid === pred.value).label;
-                                    } 
+                                    }
 
                                     return pred.value;
                                 }).join(', ');
@@ -254,7 +254,7 @@ export class EntityList extends React.Component<EntityListProps, EntityListState
                     }
                 }
 
-                
+
             });
             return keepRow;
         })
@@ -271,6 +271,7 @@ export class EntityList extends React.Component<EntityListProps, EntityListState
         return (
         <div className='workspace-editor'>
             <header className='editor-header entity'>
+              <div className='primary-toolbar'>
                 <div className='main-toolbar'>
                     <h2>All Entities <i
                             className='fa fa-plus-circle add button'
@@ -279,6 +280,7 @@ export class EntityList extends React.Component<EntityListProps, EntityListState
                             onClick={this.addNew.bind(this)}
                     ></i></h2>
                 </div>
+              </div>
             </header>
 
             <section className='editor-body'>

@@ -33,10 +33,11 @@ export interface ApiService {
     postItem<T extends Serializable>(obj: { new(): T; }, baseUrl : string, data: T) : PromiseLike<boolean>;
     putItem<T extends Serializable>(obj: { new(): T; }, baseUrl : string, uid: number | CompositeKey, data: T) : PromiseLike<boolean>;
 
-    //TODO: patch item takes a subset of an objects properties. This is currently being looked at in TS in the 
+    //TODO: patch item takes a subset of an objects properties. This is currently being looked at in TS in the
     //context of the 'setState' function in react
     patchItem<T extends Serializable>(obj: { new(): T; }, baseUrl : string, uid: number | CompositeKey, data : any) : PromiseLike<boolean>;
     delItem<T extends Serializable>(obj: { new(): T; }, baseUrl : string, uid: number | CompositeKey) : PromiseLike<boolean>;
 
     query(graphQLQuery: string) : PromiseLike<any>;
-} 
+    getStats() : PromiseLike<any>;
+}

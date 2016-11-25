@@ -47,15 +47,15 @@ interface EntityEditorState {
 // - Merge the entity
 // - Split the entity
 // - Add 'same-as-ses' to the entity
-// Records 
+// Records
 // - Order records by type, source and date
 // - Add new records
-// - Adding a new predicate creates a new record with the 
+// - Adding a new predicate creates a new record with the
 //   entity set, the predicate set, the score set to 3, the period set to null, source set to null
 //   it also creates a blank entry in the records sub table based on the range of the predicate.
 // - New predicates must have a name. The domain is set to the current entitytype but can be changed
 //   to one of its parents. The range MUST be set.
-// Visualisations: 
+// Visualisations:
 // - Network graph of entity relationships
 export class EntityEditorWorkspace extends React.Component<EntityEditorProps, EntityEditorState> {
 
@@ -174,6 +174,7 @@ export class EntityEditorWorkspace extends React.Component<EntityEditorProps, En
         return (
             <div className='workspace-editor'>
                 <header className='editor-header entity'>
+                  <div className='primary-toolbar'>
                     <div className='main-toolbar'>
                         <i className='fa fa-cube item-icon'></i>
                         <StringEditableFieldComponent
@@ -194,6 +195,7 @@ export class EntityEditorWorkspace extends React.Component<EntityEditorProps, En
                             onClick={() => console.log('copy')}
                         ></i>
                     </div>
+                  </div>
                 </header>
 
                 <section className='editor-body'>
@@ -217,8 +219,8 @@ export class EntityEditorWorkspace extends React.Component<EntityEditorProps, En
                                     options: potentialParents.map((par) => ({ key: par.label, value: par.uid})),
                                     typeName: 'Entity'
                                 }}} />
-                            {entity.parent !== null ? (<AddTabButton dataStore={this.props.dataStore} 
-                                tabType='entity' 
+                            {entity.parent !== null ? (<AddTabButton dataStore={this.props.dataStore}
+                                tabType='entity'
                                 uid={entity.parent} />) : null}
                         </div>
                     </div>

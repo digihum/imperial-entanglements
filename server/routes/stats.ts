@@ -6,35 +6,18 @@
 
 import * as Koa from 'koa';
 
-import * as Knex from 'knex';
+import { Database } from '../core/Database';
 
-import { GeneralStatistics } from '../../common/stats/GeneralStatistics';
+import { GeneralStatisticsController } from '../stats/GeneralStatisticsController';
 
-export const stats = (config : Knex.Config) : Koa => {
+export const stats = (db: Database) : Koa => {
 
     const server = new Koa();
 
-    const db = Knex(config);
-
     server.use( function* (next : Koa.Context) {
-
-      yield Promise.all([
-        db('entities').count(),
-        db('entity_types').count(),
-        db('sources').count(),
-        db('records').count(),
-        db('predicates').count()
-      ]).then(([[entityCount], [entityTypeCount], [sourceCount], [recordCount], [predicateCount]]) => {
-
-        const statistics : GeneralStatistics = {
-          entity: entityCount['count(*)'],
-          entityType: entityTypeCount['count(*)'],
-          source: sourceCount['count(*)'],
-          record: recordCount['count(*)'],
-          predicate: predicateCount['count(*)']
-        };
-
-        this.body = statistics;
+      yield GeneralStatisticsController(db.query())
+      .then((result) => {
+        this.body = result;
       });
     });
 

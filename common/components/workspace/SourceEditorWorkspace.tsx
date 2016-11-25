@@ -41,7 +41,7 @@ interface SourceEditorState {
 
 // - Should state the number of times this predicate is used
 // - Widening the domain or range always okay
-// - Narrowing should check for conflicts and return them 
+// - Narrowing should check for conflicts and return them
 // - Asks 'Delete conflicting records?'
 // - Strong check (double button press or type) to confirm
 // - Changing name/description/sameAs - absolutly fine
@@ -206,6 +206,7 @@ export class SourceEditorWorkspace extends React.Component<SourceEditorProps, So
         return (
             <div className='workspace-editor'>
                 <header className='editor-header source'>
+                  <div className='primary-toolbar'>
                     <div className='main-toolbar'>
                         <div className='bread-crumbs'>
                             {source.parents
@@ -216,7 +217,7 @@ export class SourceEditorWorkspace extends React.Component<SourceEditorProps, So
                                 <span key={`breadcrumb-${parent.uid}`}>
                                     <span>  {parent.name} <AddTabButton
                                         dataStore={this.props.dataStore}
-                                        tabType='source' 
+                                        tabType='source'
                                         uid={parent.uid} /> </span>
                                     <i className='fa fa-angle-right'></i>
                                 </span>
@@ -245,6 +246,7 @@ export class SourceEditorWorkspace extends React.Component<SourceEditorProps, So
                             onClick={this.createChild.bind(this)}
                         ></i>
                     </div>
+                  </div>
                 </header>
 
                 <section className='editor-body'>
@@ -258,10 +260,10 @@ export class SourceEditorWorkspace extends React.Component<SourceEditorProps, So
                             additionalProps={{ comboSettings: {
                                 options: potentialParents.map((par) => ({ key: par.name, value: par.uid})),
                                 typeName: 'Source'
-                            }}} /> 
-                            {source.parent !== null ? (<AddTabButton 
+                            }}} />
+                            {source.parent !== null ? (<AddTabButton
                                 dataStore={this.props.dataStore}
-                                tabType='source' 
+                                tabType='source'
                                 uid={source.parent} />) : null}
                     </div>
 
@@ -274,10 +276,10 @@ export class SourceEditorWorkspace extends React.Component<SourceEditorProps, So
 
                     {this.props.dataStore.all.dublinCore.value.elements.map((element) => {
 
-                        const values = source.metaData.hasOwnProperty(element.name) ? 
+                        const values = source.metaData.hasOwnProperty(element.name) ?
                             source.metaData[element.name].values : [{ source: this.props.id, value: ''}];
                         const editableValue = values[0].source == this.props.id ? values[0].value : '';
-                           
+
                         return (
                             <div key={`${element.name}-edit`}>
                                 <h5 className='section-header'>{element.name} <small><a href={element.url}>{element.uri}</a></small></h5>
@@ -303,8 +305,8 @@ export class SourceEditorWorkspace extends React.Component<SourceEditorProps, So
                         {source.children
                             .map((child) => this.props.dataStore.all.source.value.find((et) => et.uid === child))
                             .map((childEt) =>
-                                (<li key={`dc-${childEt.uid}`}>{childEt.name} <AddTabButton 
-                                    tabType='source' 
+                                (<li key={`dc-${childEt.uid}`}>{childEt.name} <AddTabButton
+                                    tabType='source'
                                     dataStore={this.props.dataStore}
                                     uid={childEt.uid} /></li>
                             ))}

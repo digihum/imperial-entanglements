@@ -39,7 +39,7 @@ interface PredicateEditorState {
 
 // - Should state the number of times this predicate is used
 // - Widening the domain or range always okay
-// - Narrowing should check for conflicts and return them 
+// - Narrowing should check for conflicts and return them
 // - Asks 'Delete conflicting records?'
 // - Strong check (double button press or type) to confirm
 // - Changing name/description/sameAs - absolutly fine
@@ -183,6 +183,7 @@ export class PredicateEditorWorkspace extends React.Component<PredicateEditorPro
         return (
             <div className='workspace-editor'>
                 <header className='editor-header predicate'>
+                  <div className='primary-toolbar'>
                     <div className='main-toolbar'>
                         <i className='fa fa-long-arrow-right item-icon'></i>
                         <StringEditableFieldComponent
@@ -202,6 +203,7 @@ export class PredicateEditorWorkspace extends React.Component<PredicateEditorPro
                             onClick={this.copy.bind(this)}
                         ></i>
                     </div>
+                  </div>
                 </header>
 
                 <section className='editor-body'>

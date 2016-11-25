@@ -60,6 +60,7 @@ export class PredicateList extends React.Component<PredicateListProps, Predicate
         return (
         <div className='workspace-editor'>
             <header className='editor-header predicate'>
+              <div className='primary-toolbar'>
                 <div className='main-toolbar'>
                     <h2>All Properties <i
                         className='fa fa-plus-circle add button'
@@ -68,6 +69,7 @@ export class PredicateList extends React.Component<PredicateListProps, Predicate
                         onClick={this.addNew.bind(this)}
                     ></i></h2>
                 </div>
+              </div>
             </header>
 
             <section className='editor-body'>

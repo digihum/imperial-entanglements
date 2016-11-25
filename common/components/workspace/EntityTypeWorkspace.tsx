@@ -135,6 +135,7 @@ export class EntityTypeWorkspace extends React.Component<EntityTypeWorkspaceProp
             <div className='workspace-editor'>
 
                 <header className='editor-header entity_type'>
+                  <div className='primary-toolbar'>
                     <div className='main-toolbar'>
                         <div className='bread-crumbs'>
                             {entityType.parents.map((parent, i) => (
@@ -170,6 +171,7 @@ export class EntityTypeWorkspace extends React.Component<EntityTypeWorkspaceProp
                             onClick={this.copy.bind(this)}
                         ></i>
                     </div>
+                  </div>
                 </header>
 
                 <section className='editor-body'>
@@ -185,7 +187,7 @@ export class EntityTypeWorkspace extends React.Component<EntityTypeWorkspaceProp
                                 options: potentialParents.map((par) => ({ key: par.name, value: par.uid})),
                                 typeName: 'EntityType'
                             }}} />
-                        {entityType.parent !== null ? (<AddTabButton 
+                        {entityType.parent !== null ? (<AddTabButton
                             tabType='entity_type'
                             dataStore={this.props.dataStore}
                             uid={entityType.parent} />) : null}
@@ -212,8 +214,8 @@ export class EntityTypeWorkspace extends React.Component<EntityTypeWorkspaceProp
                         {entityType.children
                             .map((child) => this.props.dataStore.all.entity_type.value.find((et) => et.uid === child))
                             .map((childEt) =>
-                                (<li key={`dc-${childEt.name}`}>{childEt.name} <AddTabButton 
-                                    tabType='entity_type' 
+                                (<li key={`dc-${childEt.name}`}>{childEt.name} <AddTabButton
+                                    tabType='entity_type'
                                     dataStore={this.props.dataStore}
                                     uid={childEt.uid} /></li>
                             ))}

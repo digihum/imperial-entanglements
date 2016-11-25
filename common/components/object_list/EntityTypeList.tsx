@@ -53,6 +53,7 @@ export class EntityTypeList extends React.Component<EntityTypeListProps, EntityT
         <div className='workspace-editor'>
 
             <header className='editor-header entity_type'>
+              <div className='primary-toolbar'>
                 <div className='main-toolbar'>
                     <h2>All Entity Types <i
                         className='fa fa-plus-circle add button'
@@ -61,6 +62,7 @@ export class EntityTypeList extends React.Component<EntityTypeListProps, EntityT
                         onClick={this.addNew.bind(this)}
                     ></i></h2>
                 </div>
+              </div>
             </header>
 
             <section className='editor-body'>
