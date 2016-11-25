@@ -25,6 +25,7 @@ interface SourceListProps {
 
 interface SourceListState {
     filterFunc: (p: Source) => boolean;
+    mode: 'list' | 'tree';
 }
 
 interface ColumnSettings {
@@ -38,7 +39,8 @@ export class SourceList extends React.Component<SourceListProps, SourceListState
     constructor() {
         super();
         this.state = {
-            filterFunc: () => true
+            filterFunc: () => true,
+            mode: 'list'
         };
     }
 
@@ -71,8 +73,8 @@ export class SourceList extends React.Component<SourceListProps, SourceListState
               </div>
               <div className='secondary-toolbar'>
                 <div className='tab-bar'>
-                  <div>LIST</div>
-                  <div>TREE</div>
+                  <div onClick={() => this.setState({ mode: 'list' })}>LIST</div>
+                  <div onClick={() => this.setState({ mode: 'tree' })}>TREE</div>
                 </div>
               </div>
             </header>
@@ -84,7 +86,8 @@ export class SourceList extends React.Component<SourceListProps, SourceListState
                     setFilterFunc={(f) => this.setState({ filterFunc: f })}
                 />
 
-                <table className='table gap'>
+                {this.state.mode === 'list' ? (
+                  <table className='table gap'>
                     <thead>
                         <tr>
                             <td>#</td>
@@ -106,7 +109,10 @@ export class SourceList extends React.Component<SourceListProps, SourceListState
                         );}
                     )}
                     </tbody>
-                </table>
+                  </table>
+                ) : null}
+
+
             </section>
         </div>
         );

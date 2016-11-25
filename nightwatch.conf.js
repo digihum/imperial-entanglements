@@ -1,6 +1,6 @@
 
 require('nightwatch-cucumber')({
-  nightwatchClientAsParameter: false,
+  nightwatchClientAsParameter: true,
   /* other configuration options */
   "featureFiles": ["test/features"],
   "stepDefinitions": ["test/features/step_definitions"],
@@ -22,11 +22,11 @@ module.exports = {
 
   "test_settings" : {
     "default" : {
-      screenshots : {
-        enabled : true,
-        on_failure : true,
-        path: 'test/screenshots'
-      },
+      // screenshots : {
+      //   enabled : true,
+      //   on_failure : true,
+      //   path: 'test/screenshots'
+      // },
       "selenium_port"  : 9515,
       "selenium_host"  : "localhost",
       "default_path_prefix" : "",
