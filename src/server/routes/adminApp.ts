@@ -16,6 +16,8 @@ import { ServerRouter, createServerRenderContext } from 'react-router';
 
 import { ServerApiService } from '../core/ServerApiService';
 
+import * as path from 'path';
+
 export const adminApp = (skeleton: _.TemplateExecutor, serverApiContext: ServerApiService ) : Koa => {
 
     const server = new Koa();
@@ -25,7 +27,7 @@ export const adminApp = (skeleton: _.TemplateExecutor, serverApiContext: ServerA
         if (this.isAuthenticated()) {
             yield next;
         } else {
-            this.body = readFileSync('./build/common/login.html', 'utf8');
+            this.body = readFileSync(path.join(process.cwd(), 'dist', 'server', 'login.html'), 'utf8');
         }
     });
 

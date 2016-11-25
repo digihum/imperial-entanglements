@@ -6,7 +6,7 @@
   "scripts": {
     "postinstall": "typings install",
     "dist": "build --x64",
-    "electron": "electron ./build/app",
+    "electron": "electron ./dist/app/app.electron.dist.js",
     "test": "mocha --grep=#api --invert",
     "migrate": "knex migrate:latest",
     "seed": "knex seed:run",

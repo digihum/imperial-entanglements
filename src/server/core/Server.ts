@@ -31,6 +31,8 @@ import { setupAuth } from './Auth';
 
 import { SqliteSnapshot } from './SqliteSnapshot';
 
+import * as path from 'path';
+
 export class Server {
 
     private app: Koa;
@@ -56,9 +58,9 @@ export class Server {
         this.app.use(koaPassport.initialize());
         this.app.use(koaPassport.session());
 
-        this.app.use(koaStatic('build/static'));
+        this.app.use(koaStatic(path.join(process.cwd(), 'dist', 'server', 'static')));
 
-        this.skeleton = template(readFileSync('./build/common/index.html', 'utf8'));
+        this.skeleton = template(readFileSync(path.join(process.cwd(), 'dist', 'server', 'index.html'), 'utf8'));
 
         this.apiRoute = 'api/v1';
         this.adminRoute = 'admin';

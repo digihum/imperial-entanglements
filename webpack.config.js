@@ -18,7 +18,7 @@ var frontendConfig = {
         "app.frontend": './build/client/app.frontend.js', 
 	},
     output: {  
-        path: 'build/static',                 // output folder
+        path: 'dist/server/static',                 // output folder
         filename: '[name].dist.js'     // file name
     },
     resolve: {
@@ -50,7 +50,7 @@ var backendConfig = {
         "app.backend": './build/server/index.js', 
 	},
     output: {  
-        path: 'build',                 // output folder
+        path: 'dist/server',                 // output folder
         filename: '[name].dist.js'     // file name
     },
     resolve: {
@@ -76,7 +76,7 @@ var electronConfig = {
         "app.electron": './build/app/app.electron.js'
 	},
     output: {  
-        path: 'build/static',                 // output folder
+        path: 'dist/app',                 // output folder
         filename: '[name].dist.js'     // file name
     },
     resolve: {
@@ -116,4 +116,4 @@ var electronConfig = {
     externals: nodeModules
 }
 
-module.exports = [frontendConfig, electronConfig];
+module.exports = [frontendConfig, electronConfig, backendConfig];

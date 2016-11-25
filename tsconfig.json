@@ -1,20 +1,15 @@
 {
- "version": "1.7.5",
+ "version": "2.0.11",
  "compilerOptions": {
- "target": "es6",
- "module": "commonjs",
- "emitDecoratorMetadata": true,
- "experimentalDecorators": true,
- "outDir": "build",
- "rootDir": ".",
- "jsx": "react",
- "baseUrl": ".",
- "sourceMap": true,
- "strictNullChecks": true
-},
-"exclude": [
-   "node_modules",
-   "build",
-   "bin"
- ]
+  "target": "es6",
+  "module": "commonjs",
+  "emitDecoratorMetadata": true,
+  "experimentalDecorators": true,
+  "outDir": "build",
+  "rootDir": "src",
+  "jsx": "react",
+  "baseUrl": ".",
+  "sourceMap": true,
+  "strictNullChecks": true
+  }
 }

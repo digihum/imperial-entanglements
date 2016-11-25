@@ -5,34 +5,34 @@ const sass = require('gulp-sass');
 const nightwatch = require('gulp-nightwatch')
  
 gulp.task('sass', function () {
-  return gulp.src('./client/sass/app.scss')
+  return gulp.src('./src/client/sass/app.scss')
     .pipe(sass({
 		includePaths: [
             'node_modules'
 		]    	
     }).on('error', sass.logError))
-    .pipe(gulp.dest('./build/static'))
-    .pipe(gulp.dest('./build/app'));
+    .pipe(gulp.dest('./dist/server/static'))
+    .pipe(gulp.dest('./dist/app'));
 });
  
 gulp.task('sass:watch', function () {
-  gulp.watch('./client/sass/**/*.scss', ['sass']);
+  gulp.watch('./src/client/sass/**/*.scss', ['sass']);
 });
 
 gulp.task('copy', function() {
   return [
-      gulp.src('app/index.html')
-      .pipe(gulp.dest('build/app')),
+      gulp.src('src/app/index.html')
+      .pipe(gulp.dest('dist/app')),
 
-      gulp.src('common/*.html')
-      .pipe(gulp.dest('build/common')),
+      gulp.src('src/common/*.html')
+      .pipe(gulp.dest('dist/server')),
 
-      gulp.src('favicon.ico')
-      .pipe(gulp.dest('build/static')),
+      gulp.src('src/favicon.ico')
+      .pipe(gulp.dest('dist/server/static')),
 
-      gulp.src('client/font/**/*', { base: 'client/font'})
-      .pipe(gulp.dest('build/static/font')) 
-      .pipe(gulp.dest('build/app/font'))    
+      gulp.src('src/client/font/**/*', { base: 'client/font'})
+      .pipe(gulp.dest('dist/server/static/font')) 
+      .pipe(gulp.dest('dist/app/font'))    
     ];
 });
 
