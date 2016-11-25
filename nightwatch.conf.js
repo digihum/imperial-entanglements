@@ -9,7 +9,7 @@ require('nightwatch-cucumber')({
 })
 
 module.exports = {
-  "src_folders" : ["test/browser"],
+  "src_folders" : [],
   "output_folder" : "test/reports",
   "custom_commands_path" : "",
   "custom_assertions_path" : "",

@@ -14,3 +14,12 @@ Scenario: Searching Google again
   Then the title is "Imperial Entanglements"
   And the header of the workspace is "All Properties"
   Then I close the browser
+
+Scenario: Adding an entity
+
+  Given I open the admin pages and log in
+  And I have navigated to the "Entities" page
+  Then the title is "Imperial Entanglements"
+  And the header of the workspace is "All Entities"
+  And I add an entity called "Test entity 57"
+  Then I close the browser
