@@ -30,7 +30,7 @@ gulp.task('copy', function() {
       gulp.src('src/favicon.ico')
       .pipe(gulp.dest('dist/server/static')),
 
-      gulp.src('src/client/font/**/*', { base: 'client/font'})
+      gulp.src('src/client/font/**/*', { base: 'src/client/font'})
       .pipe(gulp.dest('dist/server/static/font')) 
       .pipe(gulp.dest('dist/app/font'))    
     ];
