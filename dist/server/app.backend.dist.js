@@ -1,41 +1,41 @@
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
-/******/
+
 /******/ 	// The require function
 /******/ 	function __webpack_require__(moduleId) {
-/******/
+
 /******/ 		// Check if module is in cache
 /******/ 		if(installedModules[moduleId])
 /******/ 			return installedModules[moduleId].exports;
-/******/
+
 /******/ 		// Create a new module (and put it into the cache)
 /******/ 		var module = installedModules[moduleId] = {
 /******/ 			i: moduleId,
 /******/ 			l: false,
 /******/ 			exports: {}
 /******/ 		};
-/******/
+
 /******/ 		// Execute the module function
 /******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
-/******/
+
 /******/ 		// Flag the module as loaded
 /******/ 		module.l = true;
-/******/
+
 /******/ 		// Return the exports of the module
 /******/ 		return module.exports;
 /******/ 	}
-/******/
-/******/
+
+
 /******/ 	// expose the modules object (__webpack_modules__)
 /******/ 	__webpack_require__.m = modules;
-/******/
+
 /******/ 	// expose the module cache
 /******/ 	__webpack_require__.c = installedModules;
-/******/
+
 /******/ 	// identity function for calling harmory imports with the correct context
 /******/ 	__webpack_require__.i = function(value) { return value; };
-/******/
+
 /******/ 	// define getter function for harmory exports
 /******/ 	__webpack_require__.d = function(exports, name, getter) {
 /******/ 		Object.defineProperty(exports, name, {
@@ -44,7 +44,7 @@
 /******/ 			get: getter
 /******/ 		});
 /******/ 	};
-/******/
+
 /******/ 	// getDefaultExport function for compatibility with non-harmony modules
 /******/ 	__webpack_require__.n = function(module) {
 /******/ 		var getter = module && module.__esModule ?
@@ -53,13 +53,13 @@
 /******/ 		__webpack_require__.d(getter, 'a', getter);
 /******/ 		return getter;
 /******/ 	};
-/******/
+
 /******/ 	// Object.prototype.hasOwnProperty.call
 /******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
-/******/
+
 /******/ 	// __webpack_public_path__
 /******/ 	__webpack_require__.p = "";
-/******/
+
 /******/ 	// Load entry module and return exports
 /******/ 	return __webpack_require__(__webpack_require__.s = 290);
 /******/ })
@@ -264,7 +264,7 @@ module.exports = require("lodash");
  * @version 0.1.0
  */
 "use strict";
-const itemTypes_1 = __webpack_require__(84);
+const itemTypes_1 = __webpack_require__(111);
 exports.AppUrls = {
     element_set: itemTypes_1.itemTypes.element_set.machineName,
     record: itemTypes_1.itemTypes.record.machineName,
@@ -278,34 +278,6 @@ exports.AppUrls = {
 
 /***/ },
 /* 7 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview <Description Missing>
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.1.0
- */
-"use strict";
-const signals = __webpack_require__(289);
-exports.createTab = new signals.Signal();
-exports.closeTab = new signals.Signal();
-exports.showModal = new signals.Signal();
-exports.triggerReload = new signals.Signal();
-exports.showToast = new signals.Signal();
-exports.reorderTabs = new signals.Signal();
-exports.Signaller = {
-    createTab: exports.createTab,
-    closeTab: exports.closeTab,
-    showModal: exports.showModal,
-    triggerReload: exports.triggerReload,
-    showToast: exports.showToast,
-    reorderTabs: exports.reorderTabs
-};
-
-
-/***/ },
-/* 8 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -324,7 +296,7 @@ exports.Signaller = {
 var _prodInvariant = __webpack_require__(3);
 
 var DOMProperty = __webpack_require__(29);
-var ReactDOMComponentFlags = __webpack_require__(96);
+var ReactDOMComponentFlags = __webpack_require__(80);
 
 var invariant = __webpack_require__(1);
 
@@ -498,6 +470,34 @@ var ReactDOMComponentTree = {
 module.exports = ReactDOMComponentTree;
 
 /***/ },
+/* 8 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview <Description Missing>
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.1.0
+ */
+"use strict";
+const signals = __webpack_require__(289);
+exports.createTab = new signals.Signal();
+exports.closeTab = new signals.Signal();
+exports.showModal = new signals.Signal();
+exports.triggerReload = new signals.Signal();
+exports.showToast = new signals.Signal();
+exports.reorderTabs = new signals.Signal();
+exports.Signaller = {
+    createTab: exports.createTab,
+    closeTab: exports.closeTab,
+    showModal: exports.showModal,
+    triggerReload: exports.triggerReload,
+    showToast: exports.showToast,
+    reorderTabs: exports.reorderTabs
+};
+
+
+/***/ },
 /* 9 */
 /***/ function(module, exports) {
 
@@ -549,21 +549,21 @@ module.exports = ExecutionEnvironment;
  * @version 0.0.1
  */
 "use strict";
-var Element_1 = __webpack_require__(75);
+var Element_1 = __webpack_require__(102);
 exports.Element = Element_1.Element;
-var ElementSet_1 = __webpack_require__(76);
+var ElementSet_1 = __webpack_require__(103);
 exports.ElementSet = ElementSet_1.ElementSet;
-var SourceElement_1 = __webpack_require__(82);
+var SourceElement_1 = __webpack_require__(109);
 exports.SourceElement = SourceElement_1.SourceElement;
-var Entity_1 = __webpack_require__(77);
+var Entity_1 = __webpack_require__(104);
 exports.Entity = Entity_1.Entity;
-var EntityType_1 = __webpack_require__(78);
+var EntityType_1 = __webpack_require__(105);
 exports.EntityType = EntityType_1.EntityType;
-var Predicate_1 = __webpack_require__(79);
+var Predicate_1 = __webpack_require__(106);
 exports.Predicate = Predicate_1.Predicate;
-var Record_1 = __webpack_require__(80);
+var Record_1 = __webpack_require__(107);
 exports.Record = Record_1.Record;
-var Source_1 = __webpack_require__(81);
+var Source_1 = __webpack_require__(108);
 exports.Source = Source_1.Source;
 
 
@@ -634,7 +634,7 @@ module.exports = emptyFunction;
 var debugTool = null;
 
 if (process.env.NODE_ENV !== 'production') {
-  var ReactDebugTool = __webpack_require__(221);
+  var ReactDebugTool = __webpack_require__(161);
   debugTool = ReactDebugTool;
 }
 
@@ -660,7 +660,7 @@ module.exports = { debugTool: debugTool };
 
 var _prodInvariant = __webpack_require__(23);
 
-var ReactCurrentOwner = __webpack_require__(20);
+var ReactCurrentOwner = __webpack_require__(17);
 
 var invariant = __webpack_require__(1);
 var warning = __webpack_require__(2);
@@ -977,31 +977,6 @@ module.exports = ReactComponentTreeHook;
 
 "use strict";
 /**
- * @fileOverview Sidebar for editor
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.1.0
- */
-"use strict";
-const React = __webpack_require__(0);
-const Signaller_1 = __webpack_require__(7);
-exports.AddTabButton = (props, context) => {
-    if (props.dataStore.tabs[props.tabType] !== undefined
-        && props.dataStore.tabs[props.tabType].has(`${props.tabType}-${props.uid}`)) {
-        return (React.createElement("i", {className: 'fa fa-folder-open-o add button', title: 'Open item', onClick: () => context.router.transitionTo(`/edit/${props.tabType}/${props.uid}`)}, " "));
-    }
-    return (React.createElement("i", {className: 'icon-list-add add button', title: 'Add to list', onClick: () => Signaller_1.createTab.dispatch(props.tabType, props.uid, props.data)}));
-};
-exports.AddTabButton.contextTypes = {
-    router: React.PropTypes.object.isRequired
-};
-
-
-/***/ },
-/* 15 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
  *
@@ -1016,11 +991,11 @@ exports.AddTabButton.contextTypes = {
 var _prodInvariant = __webpack_require__(3),
     _assign = __webpack_require__(4);
 
-var CallbackQueue = __webpack_require__(94);
+var CallbackQueue = __webpack_require__(78);
 var PooledClass = __webpack_require__(21);
-var ReactFeatureFlags = __webpack_require__(226);
+var ReactFeatureFlags = __webpack_require__(166);
 var ReactReconciler = __webpack_require__(32);
-var Transaction = __webpack_require__(40);
+var Transaction = __webpack_require__(38);
 
 var invariant = __webpack_require__(1);
 
@@ -1253,7 +1228,7 @@ var ReactUpdates = {
 module.exports = ReactUpdates;
 
 /***/ },
-/* 16 */
+/* 15 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1526,7 +1501,7 @@ function getPooledWarningPropertyDefinition(propName, getVal) {
 }
 
 /***/ },
-/* 17 */
+/* 16 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1537,7 +1512,68 @@ function getPooledWarningPropertyDefinition(propName, getVal) {
  */
 "use strict";
 const React = __webpack_require__(0);
-const lunr = __webpack_require__(285);
+const Signaller_1 = __webpack_require__(8);
+exports.AddTabButton = (props, context) => {
+    if (props.dataStore.tabs[props.tabType] !== undefined
+        && props.dataStore.tabs[props.tabType].has(`${props.tabType}-${props.uid}`)) {
+        return (React.createElement("i", {className: 'fa fa-folder-open-o add button', title: 'Open item', onClick: () => context.router.transitionTo(`/edit/${props.tabType}/${props.uid}`)}, " "));
+    }
+    return (React.createElement("i", {className: 'icon-list-add add button', title: 'Add to list', onClick: () => Signaller_1.createTab.dispatch(props.tabType, props.uid, props.data)}));
+};
+exports.AddTabButton.contextTypes = {
+    router: React.PropTypes.object.isRequired
+};
+
+
+/***/ },
+/* 17 */
+/***/ function(module, exports) {
+
+"use strict";
+/**
+ * Copyright 2013-present, Facebook, Inc.
+ * All rights reserved.
+ *
+ * This source code is licensed under the BSD-style license found in the
+ * LICENSE file in the root directory of this source tree. An additional grant
+ * of patent rights can be found in the PATENTS file in the same directory.
+ *
+ * 
+ */
+
+'use strict';
+
+/**
+ * Keeps track of the current owner.
+ *
+ * The current owner is the component who should own any components that are
+ * currently being constructed.
+ */
+var ReactCurrentOwner = {
+
+  /**
+   * @internal
+   * @type {ReactComponent}
+   */
+  current: null
+
+};
+
+module.exports = ReactCurrentOwner;
+
+/***/ },
+/* 18 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview Sidebar for editor
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.1.0
+ */
+"use strict";
+const React = __webpack_require__(0);
+const lunr = __webpack_require__(286);
 const lodash_1 = __webpack_require__(5);
 class ComboDropdown extends React.Component {
     constructor() {
@@ -1740,7 +1776,7 @@ exports.ComboDropdown = ComboDropdown;
 
 
 /***/ },
-/* 18 */
+/* 19 */
 /***/ function(module, exports) {
 
 "use strict";
@@ -1804,7 +1840,7 @@ exports.GenericController = GenericController;
 
 
 /***/ },
-/* 19 */
+/* 20 */
 /***/ function(module, exports) {
 
 "use strict";
@@ -1851,42 +1887,6 @@ exports.exceptions = {
     DatabaseIntegrityError
 };
 
-
-/***/ },
-/* 20 */
-/***/ function(module, exports) {
-
-"use strict";
-/**
- * Copyright 2013-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
- *
- * 
- */
-
-'use strict';
-
-/**
- * Keeps track of the current owner.
- *
- * The current owner is the component who should own any components that are
- * currently being constructed.
- */
-var ReactCurrentOwner = {
-
-  /**
-   * @internal
-   * @type {ReactComponent}
-   */
-  current: null
-
-};
-
-module.exports = ReactCurrentOwner;
 
 /***/ },
 /* 21 */
@@ -2036,13 +2036,13 @@ module.exports = PooledClass;
 
 var _assign = __webpack_require__(4);
 
-var ReactCurrentOwner = __webpack_require__(20);
+var ReactCurrentOwner = __webpack_require__(17);
 
 var warning = __webpack_require__(2);
-var canDefineProperty = __webpack_require__(69);
+var canDefineProperty = __webpack_require__(64);
 var hasOwnProperty = Object.prototype.hasOwnProperty;
 
-var REACT_ELEMENT_TYPE = __webpack_require__(114);
+var REACT_ELEMENT_TYPE = __webpack_require__(98);
 
 var RESERVED_PROPS = {
   key: true,
@@ -2532,11 +2532,11 @@ module.exports = emptyObject;
 
 'use strict';
 
-var DOMNamespaces = __webpack_require__(50);
-var setInnerHTML = __webpack_require__(64);
+var DOMNamespaces = __webpack_require__(45);
+var setInnerHTML = __webpack_require__(59);
 
-var createMicrosoftUnsafeLocalFunction = __webpack_require__(59);
-var setTextContent = __webpack_require__(111);
+var createMicrosoftUnsafeLocalFunction = __webpack_require__(54);
+var setTextContent = __webpack_require__(95);
 
 var ELEMENT_NODE_TYPE = 1;
 var DOCUMENT_FRAGMENT_NODE_TYPE = 11;
@@ -2872,12 +2872,12 @@ module.exports = DOMProperty;
 
 var _prodInvariant = __webpack_require__(3);
 
-var EventPluginRegistry = __webpack_require__(51);
-var EventPluginUtils = __webpack_require__(52);
-var ReactErrorUtils = __webpack_require__(57);
+var EventPluginRegistry = __webpack_require__(46);
+var EventPluginUtils = __webpack_require__(47);
+var ReactErrorUtils = __webpack_require__(52);
 
-var accumulateInto = __webpack_require__(106);
-var forEachAccumulated = __webpack_require__(107);
+var accumulateInto = __webpack_require__(90);
+var forEachAccumulated = __webpack_require__(91);
 var invariant = __webpack_require__(1);
 
 /**
@@ -3127,10 +3127,10 @@ module.exports = EventPluginHub;
 'use strict';
 
 var EventPluginHub = __webpack_require__(30);
-var EventPluginUtils = __webpack_require__(52);
+var EventPluginUtils = __webpack_require__(47);
 
-var accumulateInto = __webpack_require__(106);
-var forEachAccumulated = __webpack_require__(107);
+var accumulateInto = __webpack_require__(90);
+var forEachAccumulated = __webpack_require__(91);
 var warning = __webpack_require__(2);
 
 var getListener = EventPluginHub.getListener;
@@ -3265,7 +3265,7 @@ module.exports = EventPropagators;
 
 'use strict';
 
-var ReactRef = __webpack_require__(236);
+var ReactRef = __webpack_require__(176);
 var ReactInstrumentation = __webpack_require__(12);
 
 var warning = __webpack_require__(2);
@@ -3438,9 +3438,9 @@ module.exports = ReactReconciler;
 
 'use strict';
 
-var SyntheticEvent = __webpack_require__(16);
+var SyntheticEvent = __webpack_require__(15);
 
-var getEventTarget = __webpack_require__(62);
+var getEventTarget = __webpack_require__(57);
 
 /**
  * @interface UIEvent
@@ -3504,16 +3504,16 @@ module.exports = SyntheticUIEvent;
 
 var _assign = __webpack_require__(4);
 
-var ReactChildren = __webpack_require__(267);
-var ReactComponent = __webpack_require__(66);
-var ReactPureComponent = __webpack_require__(271);
-var ReactClass = __webpack_require__(268);
-var ReactDOMFactories = __webpack_require__(269);
+var ReactChildren = __webpack_require__(207);
+var ReactComponent = __webpack_require__(61);
+var ReactPureComponent = __webpack_require__(211);
+var ReactClass = __webpack_require__(208);
+var ReactDOMFactories = __webpack_require__(209);
 var ReactElement = __webpack_require__(22);
-var ReactPropTypes = __webpack_require__(270);
-var ReactVersion = __webpack_require__(272);
+var ReactPropTypes = __webpack_require__(210);
+var ReactVersion = __webpack_require__(212);
 
-var onlyChild = __webpack_require__(274);
+var onlyChild = __webpack_require__(214);
 var warning = __webpack_require__(2);
 
 var createElement = ReactElement.createElement;
@@ -3521,7 +3521,7 @@ var createFactory = ReactElement.createFactory;
 var cloneElement = ReactElement.cloneElement;
 
 if (process.env.NODE_ENV !== 'production') {
-  var ReactElementValidator = __webpack_require__(115);
+  var ReactElementValidator = __webpack_require__(99);
   createElement = ReactElementValidator.createElement;
   createFactory = ReactElementValidator.createFactory;
   cloneElement = ReactElementValidator.cloneElement;
@@ -3597,72 +3597,6 @@ module.exports = require("moment");
 
 "use strict";
 /**
- * @fileOverview Sidebar for editor
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.1.0
- */
-"use strict";
-const React = __webpack_require__(0);
-exports.SearchBar = (props) => {
-    const filterFunc = (s) => {
-        return (a) => {
-            if (s.length === 0) {
-                return true;
-            }
-            return props.getValue(a).toLowerCase().indexOf(s.toLowerCase()) !== -1;
-        };
-    };
-    return (React.createElement("div", null, 
-        React.createElement("div", {className: 'input-addon-formgroup'}, 
-            React.createElement("span", {className: 'input-addon-icon'}, 
-                React.createElement("i", {className: 'fa fa-search fa-fw'})
-            ), 
-            React.createElement("input", {type: 'text', className: 'form-control with-addon', onChange: (e) => props.setFilterFunc(filterFunc(e.target.value))}))
-    ));
-};
-
-
-/***/ },
-/* 38 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview Sidebar for editor
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.1.0
- */
-"use strict";
-const React = __webpack_require__(0);
-var EditableFieldComponent_1 = __webpack_require__(26);
-exports.EditableFieldComponent = EditableFieldComponent_1.EditableFieldComponent;
-exports.EditableHeader = (props) => {
-    if (!props.edit || props.value == null) {
-        return (React.createElement("h2", null, 
-            props.value, 
-            React.createElement("sup", null, 
-                React.createElement("i", {className: 'fa fa-pencil-square-o', title: 'Edit', "aria-hidden": 'true', onClick: props.setEdit})
-            )));
-    }
-    else {
-        return (React.createElement("span", null, 
-            React.createElement("input", {type: 'text', value: props.value, className: 'text-edit-header', onChange: (e) => props.onChange(e.target.value)}), 
-            React.createElement("button", {onClick: props.acceptChanges}, 
-                React.createElement("i", {className: 'fa fa-check', "aria-hidden": 'true'})
-            ), 
-            React.createElement("button", {onClick: props.cancelChanges}, 
-                React.createElement("i", {className: 'fa fa-times', "aria-hidden": 'true'})
-            )));
-    }
-};
-
-
-/***/ },
-/* 39 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
  *
@@ -3675,9 +3609,9 @@ exports.EditableHeader = (props) => {
 'use strict';
 
 var SyntheticUIEvent = __webpack_require__(33);
-var ViewportMetrics = __webpack_require__(105);
+var ViewportMetrics = __webpack_require__(89);
 
-var getEventModifierState = __webpack_require__(61);
+var getEventModifierState = __webpack_require__(56);
 
 /**
  * @interface MouseEvent
@@ -3735,7 +3669,7 @@ SyntheticUIEvent.augmentClass(SyntheticMouseEvent, MouseEventInterface);
 module.exports = SyntheticMouseEvent;
 
 /***/ },
-/* 40 */
+/* 38 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3965,7 +3899,7 @@ var TransactionImpl = {
 module.exports = TransactionImpl;
 
 /***/ },
-/* 41 */
+/* 39 */
 /***/ function(module, exports) {
 
 "use strict";
@@ -4093,58 +4027,38 @@ function escapeTextContentForBrowser(text) {
 module.exports = escapeTextContentForBrowser;
 
 /***/ },
-/* 42 */
-/***/ function(module, exports) {
-
-module.exports = require("mousetrap");
-
-/***/ },
-/* 43 */
+/* 40 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
 /**
- * @fileOverview <Description Missing>
+ * @fileOverview Sidebar for editor
  * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
  * @version 0.1.0
  */
 "use strict";
-var __assign = (this && this.__assign) || Object.assign || function(t) {
-    for (var s, i = 1, n = arguments.length; i < n; i++) {
-        s = arguments[i];
-        for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
-            t[p] = s[p];
-    }
-    return t;
-};
 const React = __webpack_require__(0);
-var EditableFieldComponent_1 = __webpack_require__(26);
-exports.EditableFieldComponent = EditableFieldComponent_1.EditableFieldComponent;
-const ComboDropdown_1 = __webpack_require__(17);
-exports.EditableComboDropdown = (props) => {
-    if (props.edit) {
-        return (React.createElement("div", null, 
-            React.createElement(ComboDropdown_1.ComboDropdown, __assign({}, props.comboSettings, {value: props.value, setValue: props.onChange, allowNew: false, createNewValue: () => { }})), 
-            React.createElement("button", null, 
-                React.createElement("i", {className: 'fa fa-check', onClick: props.acceptChanges, "aria-hidden": 'true'})
+exports.SearchBar = (props) => {
+    const filterFunc = (s) => {
+        return (a) => {
+            if (s.length === 0) {
+                return true;
+            }
+            return props.getValue(a).toLowerCase().indexOf(s.toLowerCase()) !== -1;
+        };
+    };
+    return (React.createElement("div", null, 
+        React.createElement("div", {className: 'input-addon-formgroup'}, 
+            React.createElement("span", {className: 'input-addon-icon'}, 
+                React.createElement("i", {className: 'fa fa-search fa-fw'})
             ), 
-            React.createElement("button", null, 
-                React.createElement("i", {className: 'fa fa-times', "aria-hidden": 'true', onClick: props.cancelChanges})
-            )));
-    }
-    else {
-        return (React.createElement("div", null, 
-            props.value !== null && props.value.key.length > 0 ? props.value.key
-                : (React.createElement("em", null, "No value")), 
-            React.createElement("sup", null, 
-                React.createElement("i", {className: 'fa fa-pencil-square-o', title: 'Edit', "aria-hidden": 'true', onClick: props.setEdit})
-            )));
-    }
+            React.createElement("input", {type: 'text', className: 'form-control with-addon', onChange: (e) => props.setFilterFunc(filterFunc(e.target.value))}))
+    ));
 };
 
 
 /***/ },
-/* 44 */
+/* 41 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4157,33 +4071,17 @@ exports.EditableComboDropdown = (props) => {
 const React = __webpack_require__(0);
 var EditableFieldComponent_1 = __webpack_require__(26);
 exports.EditableFieldComponent = EditableFieldComponent_1.EditableFieldComponent;
-const mousetrap = __webpack_require__(42);
-exports.EditableParagraph = (props) => {
-    let keyBoardShortcuts;
-    const bindKeyboard = (val) => {
-        if (val !== null) {
-            val.focus();
-            keyBoardShortcuts = new mousetrap(val);
-            keyBoardShortcuts.bind('ctrl+return', props.acceptChanges);
-            keyBoardShortcuts.bind('escape', props.cancelChanges);
-        }
-        else {
-            keyBoardShortcuts.unbind('ctrl+return');
-        }
-    };
-    if (!props.edit) {
-        return (React.createElement("div", {onClick: props.setEdit, className: 'editable-paragraph-box'}, 
-            React.createElement("p", null, 
-                props.value === null || props.value.length > 0 ? props.value
-                    : (React.createElement("em", null, "No value")), 
-                React.createElement("sup", null, 
-                    React.createElement("i", {className: 'fa fa-pencil-square-o', title: 'Edit', "aria-hidden": 'true'})
-                ))
-        ));
+exports.EditableHeader = (props) => {
+    if (!props.edit || props.value == null) {
+        return (React.createElement("h2", null, 
+            props.value, 
+            React.createElement("sup", null, 
+                React.createElement("i", {className: 'fa fa-pencil-square-o', title: 'Edit', "aria-hidden": 'true', onClick: props.setEdit})
+            )));
     }
     else {
-        return (React.createElement("div", null, 
-            React.createElement("textarea", {value: props.value, ref: bindKeyboard, onChange: (e) => props.onChange(e.target.value), style: { width: '100%', height: '6em' }}), 
+        return (React.createElement("span", null, 
+            React.createElement("input", {type: 'text', value: props.value, className: 'text-edit-header', onChange: (e) => props.onChange(e.target.value)}), 
             React.createElement("button", {onClick: props.acceptChanges}, 
                 React.createElement("i", {className: 'fa fa-check', "aria-hidden": 'true'})
             ), 
@@ -4195,238 +4093,13 @@ exports.EditableParagraph = (props) => {
 
 
 /***/ },
-/* 45 */
-/***/ function(module, exports, __webpack_require__) {
+/* 42 */
+/***/ function(module, exports) {
 
-"use strict";
-/**
- * @fileOverview Sidebar for editor
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.1.0
- */
-"use strict";
-const React = __webpack_require__(0);
-const mousetrap = __webpack_require__(42);
-class SameAsEditor extends React.Component {
-    constructor(props) {
-        super();
-        this.state = {
-            temporaryValue: '',
-            urls: props.value === null || props.value.length === 0 ? [] : props.value.split(',')
-        };
-    }
-    componentWillReceiveProps(props) {
-        this.setState({
-            temporaryValue: '',
-            urls: props.value === null || props.value.length === 0 ? [] : props.value.split(',')
-        });
-    }
-    addItemToList() {
-        if (this.state.temporaryValue.length === 0) {
-            return;
-        }
-        this.setState({ urls: this.state.urls.concat([this.state.temporaryValue]), temporaryValue: '' }, () => this.props.onChange(this.state.urls.join(',')));
-    }
-    removeItemFromList(itemId) {
-        this.setState({
-            urls: this.state.urls.filter((val, i) => i !== itemId)
-        }, () => this.props.onChange(this.state.urls.join(',')));
-    }
-    setupKeyboardShortcuts(val) {
-        if (val !== null) {
-            val.focus();
-            this.keyboardShortcuts = new mousetrap(val);
-            this.keyboardShortcuts.bind('return', this.addItemToList.bind(this));
-            this.keyboardShortcuts.bind('escape', this.props.cancelChanges);
-            this.keyboardShortcuts.bind('ctrl+s', (e) => {
-                if (e.preventDefault) {
-                    e.preventDefault();
-                }
-                else {
-                    // internet explorer
-                    e.returnValue = false;
-                }
-                this.props.acceptChanges();
-            });
-        }
-        else {
-            this.keyboardShortcuts.unbind('return');
-            this.keyboardShortcuts.unbind('escape');
-            this.keyboardShortcuts.unbind('ctrl+s');
-        }
-    }
-    render() {
-        return (React.createElement("div", {className: 'same-as-box'}, 
-            React.createElement("label", {className: 'small'}, 
-                "Same As ", 
-                !this.props.edit ? (React.createElement("sup", null, 
-                    React.createElement("i", {className: 'fa fa-pencil-square-o', title: 'Edit', "aria-hidden": 'true', onClick: this.props.setEdit})
-                )) : null), 
-            this.props.edit ? (React.createElement("div", {className: 'edit-group'}, 
-                React.createElement("button", {onClick: this.props.acceptChanges}, 
-                    React.createElement("i", {className: 'fa fa-check', "aria-hidden": 'true'})
-                ), 
-                React.createElement("button", {onClick: this.props.cancelChanges}, 
-                    React.createElement("i", {className: 'fa fa-times', "aria-hidden": 'true'})
-                ), 
-                React.createElement("div", {className: 'input-addon-formgroup'}, 
-                    React.createElement("input", {type: 'text', value: this.state.temporaryValue, ref: this.setupKeyboardShortcuts.bind(this), onChange: (e) => this.setState({ temporaryValue: e.target.value }), className: 'form-control with-addon'}), 
-                    React.createElement("span", {className: 'input-addon-icon right button', onClick: this.addItemToList.bind(this)}, 
-                        React.createElement("i", {className: 'fa fa-plus'})
-                    )))) : null, 
-            React.createElement("ul", {className: 'same-as-list'}, this.state.urls.map((url, i) => (React.createElement("li", {key: `li-${url}`}, 
-                React.createElement("a", {target: '_blank', href: url}, url), 
-                " ", 
-                this.props.edit ? (React.createElement("i", {className: 'fa fa-times close-button', onClick: this.removeItemFromList.bind(this, i)})) : null))))));
-    }
-}
-exports.SameAsEditor = SameAsEditor;
-
+module.exports = require("mousetrap");
 
 /***/ },
-/* 46 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview <Description Missing>
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.1.0
- */
-"use strict";
-const moment = __webpack_require__(36);
-exports.formatDate = (str) => {
-    if (str === null || str.length === 0) {
-        return '';
-    }
-    const modifier = {
-        '=': '',
-        '>': 'After ',
-        '<': 'Before '
-    }[str[0]];
-    const year = str.substr(1, 4);
-    const rawMonth = parseInt(str.substr(5, 2)) - 1;
-    const month = rawMonth === -1 || isNaN(rawMonth) ? 'Unknown' : moment.months()[rawMonth];
-    const rawDay = parseInt(str.substr(7, 2));
-    const day = rawDay > 0 ? rawDay : '';
-    return `${modifier} ${day} ${month} ${year}`;
-};
-
-
-/***/ },
-/* 47 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview Controller for element sets
- * @author <a href='mailto:tim.hollies@warwick.ac.uk'>Tim Hollies</a>
- * @version 0.0.1
- */
-"use strict";
-const Record_1 = __webpack_require__(80);
-const GenericController_1 = __webpack_require__(18);
-const Exceptions_1 = __webpack_require__(19);
-const lodash_1 = __webpack_require__(5);
-class RecordPersistable extends Record_1.Record {
-    getTableName() {
-        return RecordPersistable.tableName;
-    }
-    toSchema() {
-        const schemaOutput = lodash_1.omit(this.serialize(), 'value', 'valueType', 'creationTimestamp', 'lastmodifiedTimestamp');
-        schemaOutput.value_type = this.valueType;
-        if (this.valueType !== undefined && this.valueType !== 'source') {
-            schemaOutput['value_' + this.valueType] = this.value;
-        }
-        return Object.assign({}, schemaOutput, {
-            creation_timestamp: this.creationTimestamp,
-            lastmodified_timeStamp: this.lastmodifiedTimestamp
-        });
-    }
-    fromSchema(data) {
-        data.valueType = data.value_type;
-        switch (data.value_type) {
-            case 'entity':
-                data.value = data.value_entity;
-                break;
-            case 'string':
-                data.value = data.value_string;
-                break;
-            case 'date':
-                data.value = data.value_date;
-                break;
-            case 'integer':
-                data.value = data.value_integer;
-                break;
-            case 'point':
-                data.value = data.value_point;
-                break;
-            case 'region':
-                data.value = data.value_region;
-                break;
-            case 'source':
-                data.value = data.source;
-                break;
-            default:
-                data.value = null;
-        }
-        this.deserialize(data);
-        return this;
-    }
-}
-RecordPersistable.tableName = 'records';
-exports.RecordPersistable = RecordPersistable;
-class RecordController extends GenericController_1.GenericController {
-    constructor(db) {
-        super(db, RecordPersistable.tableName);
-    }
-    postItem(obj, data) {
-        // predicate domain must equal value_type
-        return this.db.select('predicates', ['range_type']).where({ uid: data.predicate })
-            .then(([predicate]) => {
-            if (data.valueType === predicate.range_type) {
-                //TODO: still need to check entity type constraints
-                return super.postItem(obj, data);
-            }
-            throw new Exceptions_1.OperationNotPermittedException({
-                message: 'Attempted to add a record with an incorrect type!',
-                data: Promise.resolve({})
-            });
-        });
-    }
-    putItem(obj, uid, data) {
-        //TODO: what happens if we only update the value - and do not send the valueType again?
-        return this.db.select('predicates', ['range_type']).where({ uid: data.predicate })
-            .then(([predicate]) => {
-            if (data.valueType === predicate.range_type) {
-                //TODO: still need to check entity type constraints
-                return super.putItem(obj, uid, data);
-            }
-            throw new Exceptions_1.OperationNotPermittedException({
-                message: 'Attempted to add a record with an incorrect type!',
-                data: Promise.resolve({})
-            });
-        });
-    }
-    patchItem(obj, uid, data) {
-        return this.db.select('predicates', ['range_type']).where({ uid: data.predicate })
-            .then(([predicate]) => {
-            if (data.valueType === predicate.range_type) {
-                //TODO: still need to check entity type constraints
-                return super.patchItem(obj, uid, data);
-            }
-            throw new Exceptions_1.OperationNotPermittedException({
-                message: 'Attempted to add a record with an incorrect type!',
-                data: Promise.resolve({})
-            });
-        });
-    }
-}
-exports.RecordController = RecordController;
-
-
-/***/ },
-/* 48 */
+/* 43 */
 /***/ function(module, exports) {
 
 "use strict";
@@ -4499,7 +4172,7 @@ function shallowEqual(objA, objB) {
 module.exports = shallowEqual;
 
 /***/ },
-/* 49 */
+/* 44 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4516,13 +4189,13 @@ module.exports = shallowEqual;
 'use strict';
 
 var DOMLazyTree = __webpack_require__(28);
-var Danger = __webpack_require__(202);
-var ReactDOMComponentTree = __webpack_require__(8);
+var Danger = __webpack_require__(142);
+var ReactDOMComponentTree = __webpack_require__(7);
 var ReactInstrumentation = __webpack_require__(12);
 
-var createMicrosoftUnsafeLocalFunction = __webpack_require__(59);
-var setInnerHTML = __webpack_require__(64);
-var setTextContent = __webpack_require__(111);
+var createMicrosoftUnsafeLocalFunction = __webpack_require__(54);
+var setInnerHTML = __webpack_require__(59);
+var setTextContent = __webpack_require__(95);
 
 function getNodeAfter(parentNode, node) {
   // Special case for text components, which return [open, close] comments
@@ -4729,7 +4402,7 @@ var DOMChildrenOperations = {
 module.exports = DOMChildrenOperations;
 
 /***/ },
-/* 50 */
+/* 45 */
 /***/ function(module, exports) {
 
 "use strict";
@@ -4754,7 +4427,7 @@ var DOMNamespaces = {
 module.exports = DOMNamespaces;
 
 /***/ },
-/* 51 */
+/* 46 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5014,7 +4687,7 @@ var EventPluginRegistry = {
 module.exports = EventPluginRegistry;
 
 /***/ },
-/* 52 */
+/* 47 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5032,7 +4705,7 @@ module.exports = EventPluginRegistry;
 
 var _prodInvariant = __webpack_require__(3);
 
-var ReactErrorUtils = __webpack_require__(57);
+var ReactErrorUtils = __webpack_require__(52);
 
 var invariant = __webpack_require__(1);
 var warning = __webpack_require__(2);
@@ -5245,7 +4918,7 @@ var EventPluginUtils = {
 module.exports = EventPluginUtils;
 
 /***/ },
-/* 53 */
+/* 48 */
 /***/ function(module, exports) {
 
 "use strict";
@@ -5309,7 +4982,7 @@ var KeyEscapeUtils = {
 module.exports = KeyEscapeUtils;
 
 /***/ },
-/* 54 */
+/* 49 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5328,7 +5001,7 @@ module.exports = KeyEscapeUtils;
 var _prodInvariant = __webpack_require__(3);
 
 var React = __webpack_require__(34);
-var ReactPropTypesSecret = __webpack_require__(102);
+var ReactPropTypesSecret = __webpack_require__(86);
 
 var invariant = __webpack_require__(1);
 var warning = __webpack_require__(2);
@@ -5449,7 +5122,7 @@ var LinkedValueUtils = {
 module.exports = LinkedValueUtils;
 
 /***/ },
-/* 55 */
+/* 50 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5467,12 +5140,12 @@ module.exports = LinkedValueUtils;
 
 var _assign = __webpack_require__(4);
 
-var EventPluginRegistry = __webpack_require__(51);
-var ReactEventEmitterMixin = __webpack_require__(224);
-var ViewportMetrics = __webpack_require__(105);
+var EventPluginRegistry = __webpack_require__(46);
+var ReactEventEmitterMixin = __webpack_require__(164);
+var ViewportMetrics = __webpack_require__(89);
 
-var getVendorPrefixedEventName = __webpack_require__(262);
-var isEventSupported = __webpack_require__(63);
+var getVendorPrefixedEventName = __webpack_require__(202);
+var isEventSupported = __webpack_require__(58);
 
 /**
  * Summary of `ReactBrowserEventEmitter` event handling:
@@ -5782,7 +5455,7 @@ var ReactBrowserEventEmitter = _assign({}, ReactEventEmitterMixin, {
 module.exports = ReactBrowserEventEmitter;
 
 /***/ },
-/* 56 */
+/* 51 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5833,7 +5506,7 @@ var ReactComponentEnvironment = {
 module.exports = ReactComponentEnvironment;
 
 /***/ },
-/* 57 */
+/* 52 */
 /***/ function(module, exports) {
 
 "use strict";
@@ -5915,7 +5588,7 @@ if (process.env.NODE_ENV !== 'production') {
 module.exports = ReactErrorUtils;
 
 /***/ },
-/* 58 */
+/* 53 */
 /***/ function(module, exports) {
 
 "use strict";
@@ -5968,7 +5641,7 @@ var ReactInstanceMap = {
 module.exports = ReactInstanceMap;
 
 /***/ },
-/* 59 */
+/* 54 */
 /***/ function(module, exports) {
 
 "use strict";
@@ -6005,7 +5678,7 @@ var createMicrosoftUnsafeLocalFunction = function (func) {
 module.exports = createMicrosoftUnsafeLocalFunction;
 
 /***/ },
-/* 60 */
+/* 55 */
 /***/ function(module, exports) {
 
 "use strict";
@@ -6060,7 +5733,7 @@ function getEventCharCode(nativeEvent) {
 module.exports = getEventCharCode;
 
 /***/ },
-/* 61 */
+/* 56 */
 /***/ function(module, exports) {
 
 "use strict";
@@ -6108,7 +5781,7 @@ function getEventModifierState(nativeEvent) {
 module.exports = getEventModifierState;
 
 /***/ },
-/* 62 */
+/* 57 */
 /***/ function(module, exports) {
 
 "use strict";
@@ -6148,7 +5821,7 @@ function getEventTarget(nativeEvent) {
 module.exports = getEventTarget;
 
 /***/ },
-/* 63 */
+/* 58 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6213,7 +5886,7 @@ function isEventSupported(eventNameSuffix, capture) {
 module.exports = isEventSupported;
 
 /***/ },
-/* 64 */
+/* 59 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6230,12 +5903,12 @@ module.exports = isEventSupported;
 'use strict';
 
 var ExecutionEnvironment = __webpack_require__(9);
-var DOMNamespaces = __webpack_require__(50);
+var DOMNamespaces = __webpack_require__(45);
 
 var WHITESPACE_TEST = /^[ \r\n\t\f]/;
 var NONVISIBLE_TEST = /<(!--|link|noscript|meta|script|style)[ \r\n\t\f\/>]/;
 
-var createMicrosoftUnsafeLocalFunction = __webpack_require__(59);
+var createMicrosoftUnsafeLocalFunction = __webpack_require__(54);
 
 // SVG temp container for IE lacking innerHTML
 var reusableSVGContainer;
@@ -6316,7 +5989,7 @@ if (ExecutionEnvironment.canUseDOM) {
 module.exports = setInnerHTML;
 
 /***/ },
-/* 65 */
+/* 60 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6703,7 +6376,7 @@ if (process.env.NODE_ENV !== 'production') {
 module.exports = validateDOMNesting;
 
 /***/ },
-/* 66 */
+/* 61 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6721,9 +6394,9 @@ module.exports = validateDOMNesting;
 
 var _prodInvariant = __webpack_require__(23);
 
-var ReactNoopUpdateQueue = __webpack_require__(67);
+var ReactNoopUpdateQueue = __webpack_require__(62);
 
-var canDefineProperty = __webpack_require__(69);
+var canDefineProperty = __webpack_require__(64);
 var emptyObject = __webpack_require__(27);
 var invariant = __webpack_require__(1);
 var warning = __webpack_require__(2);
@@ -6826,7 +6499,7 @@ if (process.env.NODE_ENV !== 'production') {
 module.exports = ReactComponent;
 
 /***/ },
-/* 67 */
+/* 62 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6927,7 +6600,7 @@ var ReactNoopUpdateQueue = {
 module.exports = ReactNoopUpdateQueue;
 
 /***/ },
-/* 68 */
+/* 63 */
 /***/ function(module, exports) {
 
 "use strict";
@@ -6957,7 +6630,7 @@ if (process.env.NODE_ENV !== 'production') {
 module.exports = ReactPropTypeLocationNames;
 
 /***/ },
-/* 69 */
+/* 64 */
 /***/ function(module, exports) {
 
 "use strict";
@@ -6988,7 +6661,7 @@ if (process.env.NODE_ENV !== 'production') {
 module.exports = canDefineProperty;
 
 /***/ },
-/* 70 */
+/* 65 */
 /***/ function(module, exports) {
 
 "use strict";
@@ -7034,6 +6707,333 @@ function getIteratorFn(maybeIterable) {
 module.exports = getIteratorFn;
 
 /***/ },
+/* 66 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview <Description Missing>
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.1.0
+ */
+"use strict";
+var __assign = (this && this.__assign) || Object.assign || function(t) {
+    for (var s, i = 1, n = arguments.length; i < n; i++) {
+        s = arguments[i];
+        for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+            t[p] = s[p];
+    }
+    return t;
+};
+const React = __webpack_require__(0);
+var EditableFieldComponent_1 = __webpack_require__(26);
+exports.EditableFieldComponent = EditableFieldComponent_1.EditableFieldComponent;
+const ComboDropdown_1 = __webpack_require__(18);
+exports.EditableComboDropdown = (props) => {
+    if (props.edit) {
+        return (React.createElement("div", null, 
+            React.createElement(ComboDropdown_1.ComboDropdown, __assign({}, props.comboSettings, {value: props.value, setValue: props.onChange, allowNew: false, createNewValue: () => { }})), 
+            React.createElement("button", null, 
+                React.createElement("i", {className: 'fa fa-check', onClick: props.acceptChanges, "aria-hidden": 'true'})
+            ), 
+            React.createElement("button", null, 
+                React.createElement("i", {className: 'fa fa-times', "aria-hidden": 'true', onClick: props.cancelChanges})
+            )));
+    }
+    else {
+        return (React.createElement("div", null, 
+            props.value !== null && props.value.key.length > 0 ? props.value.key
+                : (React.createElement("em", null, "No value")), 
+            React.createElement("sup", null, 
+                React.createElement("i", {className: 'fa fa-pencil-square-o', title: 'Edit', "aria-hidden": 'true', onClick: props.setEdit})
+            )));
+    }
+};
+
+
+/***/ },
+/* 67 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview Sidebar for editor
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.1.0
+ */
+"use strict";
+const React = __webpack_require__(0);
+var EditableFieldComponent_1 = __webpack_require__(26);
+exports.EditableFieldComponent = EditableFieldComponent_1.EditableFieldComponent;
+const mousetrap = __webpack_require__(42);
+exports.EditableParagraph = (props) => {
+    let keyBoardShortcuts;
+    const bindKeyboard = (val) => {
+        if (val !== null) {
+            val.focus();
+            keyBoardShortcuts = new mousetrap(val);
+            keyBoardShortcuts.bind('ctrl+return', props.acceptChanges);
+            keyBoardShortcuts.bind('escape', props.cancelChanges);
+        }
+        else {
+            keyBoardShortcuts.unbind('ctrl+return');
+        }
+    };
+    if (!props.edit) {
+        return (React.createElement("div", {onClick: props.setEdit, className: 'editable-paragraph-box'}, 
+            React.createElement("p", null, 
+                props.value === null || props.value.length > 0 ? props.value
+                    : (React.createElement("em", null, "No value")), 
+                React.createElement("sup", null, 
+                    React.createElement("i", {className: 'fa fa-pencil-square-o', title: 'Edit', "aria-hidden": 'true'})
+                ))
+        ));
+    }
+    else {
+        return (React.createElement("div", null, 
+            React.createElement("textarea", {value: props.value, ref: bindKeyboard, onChange: (e) => props.onChange(e.target.value), style: { width: '100%', height: '6em' }}), 
+            React.createElement("button", {onClick: props.acceptChanges}, 
+                React.createElement("i", {className: 'fa fa-check', "aria-hidden": 'true'})
+            ), 
+            React.createElement("button", {onClick: props.cancelChanges}, 
+                React.createElement("i", {className: 'fa fa-times', "aria-hidden": 'true'})
+            )));
+    }
+};
+
+
+/***/ },
+/* 68 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview Sidebar for editor
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.1.0
+ */
+"use strict";
+const React = __webpack_require__(0);
+const mousetrap = __webpack_require__(42);
+class SameAsEditor extends React.Component {
+    constructor(props) {
+        super();
+        this.state = {
+            temporaryValue: '',
+            urls: props.value === null || props.value.length === 0 ? [] : props.value.split(',')
+        };
+    }
+    componentWillReceiveProps(props) {
+        this.setState({
+            temporaryValue: '',
+            urls: props.value === null || props.value.length === 0 ? [] : props.value.split(',')
+        });
+    }
+    addItemToList() {
+        if (this.state.temporaryValue.length === 0) {
+            return;
+        }
+        this.setState({ urls: this.state.urls.concat([this.state.temporaryValue]), temporaryValue: '' }, () => this.props.onChange(this.state.urls.join(',')));
+    }
+    removeItemFromList(itemId) {
+        this.setState({
+            urls: this.state.urls.filter((val, i) => i !== itemId)
+        }, () => this.props.onChange(this.state.urls.join(',')));
+    }
+    setupKeyboardShortcuts(val) {
+        if (val !== null) {
+            val.focus();
+            this.keyboardShortcuts = new mousetrap(val);
+            this.keyboardShortcuts.bind('return', this.addItemToList.bind(this));
+            this.keyboardShortcuts.bind('escape', this.props.cancelChanges);
+            this.keyboardShortcuts.bind('ctrl+s', (e) => {
+                if (e.preventDefault) {
+                    e.preventDefault();
+                }
+                else {
+                    // internet explorer
+                    e.returnValue = false;
+                }
+                this.props.acceptChanges();
+            });
+        }
+        else {
+            this.keyboardShortcuts.unbind('return');
+            this.keyboardShortcuts.unbind('escape');
+            this.keyboardShortcuts.unbind('ctrl+s');
+        }
+    }
+    render() {
+        return (React.createElement("div", {className: 'same-as-box'}, 
+            React.createElement("label", {className: 'small'}, 
+                "Same As ", 
+                !this.props.edit ? (React.createElement("sup", null, 
+                    React.createElement("i", {className: 'fa fa-pencil-square-o', title: 'Edit', "aria-hidden": 'true', onClick: this.props.setEdit})
+                )) : null), 
+            this.props.edit ? (React.createElement("div", {className: 'edit-group'}, 
+                React.createElement("button", {onClick: this.props.acceptChanges}, 
+                    React.createElement("i", {className: 'fa fa-check', "aria-hidden": 'true'})
+                ), 
+                React.createElement("button", {onClick: this.props.cancelChanges}, 
+                    React.createElement("i", {className: 'fa fa-times', "aria-hidden": 'true'})
+                ), 
+                React.createElement("div", {className: 'input-addon-formgroup'}, 
+                    React.createElement("input", {type: 'text', value: this.state.temporaryValue, ref: this.setupKeyboardShortcuts.bind(this), onChange: (e) => this.setState({ temporaryValue: e.target.value }), className: 'form-control with-addon'}), 
+                    React.createElement("span", {className: 'input-addon-icon right button', onClick: this.addItemToList.bind(this)}, 
+                        React.createElement("i", {className: 'fa fa-plus'})
+                    )))) : null, 
+            React.createElement("ul", {className: 'same-as-list'}, this.state.urls.map((url, i) => (React.createElement("li", {key: `li-${url}`}, 
+                React.createElement("a", {target: '_blank', href: url}, url), 
+                " ", 
+                this.props.edit ? (React.createElement("i", {className: 'fa fa-times close-button', onClick: this.removeItemFromList.bind(this, i)})) : null))))));
+    }
+}
+exports.SameAsEditor = SameAsEditor;
+
+
+/***/ },
+/* 69 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview <Description Missing>
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.1.0
+ */
+"use strict";
+const moment = __webpack_require__(36);
+exports.formatDate = (str) => {
+    if (str === null || str.length === 0) {
+        return '';
+    }
+    const modifier = {
+        '=': '',
+        '>': 'After ',
+        '<': 'Before '
+    }[str[0]];
+    const year = str.substr(1, 4);
+    const rawMonth = parseInt(str.substr(5, 2)) - 1;
+    const month = rawMonth === -1 || isNaN(rawMonth) ? 'Unknown' : moment.months()[rawMonth];
+    const rawDay = parseInt(str.substr(7, 2));
+    const day = rawDay > 0 ? rawDay : '';
+    return `${modifier} ${day} ${month} ${year}`;
+};
+
+
+/***/ },
+/* 70 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview Controller for element sets
+ * @author <a href='mailto:tim.hollies@warwick.ac.uk'>Tim Hollies</a>
+ * @version 0.0.1
+ */
+"use strict";
+const Record_1 = __webpack_require__(107);
+const GenericController_1 = __webpack_require__(19);
+const Exceptions_1 = __webpack_require__(20);
+const lodash_1 = __webpack_require__(5);
+class RecordPersistable extends Record_1.Record {
+    getTableName() {
+        return RecordPersistable.tableName;
+    }
+    toSchema() {
+        const schemaOutput = lodash_1.omit(this.serialize(), 'value', 'valueType', 'creationTimestamp', 'lastmodifiedTimestamp');
+        schemaOutput.value_type = this.valueType;
+        if (this.valueType !== undefined && this.valueType !== 'source') {
+            schemaOutput['value_' + this.valueType] = this.value;
+        }
+        return Object.assign({}, schemaOutput, {
+            creation_timestamp: this.creationTimestamp,
+            lastmodified_timeStamp: this.lastmodifiedTimestamp
+        });
+    }
+    fromSchema(data) {
+        data.valueType = data.value_type;
+        switch (data.value_type) {
+            case 'entity':
+                data.value = data.value_entity;
+                break;
+            case 'string':
+                data.value = data.value_string;
+                break;
+            case 'date':
+                data.value = data.value_date;
+                break;
+            case 'integer':
+                data.value = data.value_integer;
+                break;
+            case 'point':
+                data.value = data.value_point;
+                break;
+            case 'region':
+                data.value = data.value_region;
+                break;
+            case 'source':
+                data.value = data.source;
+                break;
+            default:
+                data.value = null;
+        }
+        this.deserialize(data);
+        return this;
+    }
+}
+RecordPersistable.tableName = 'records';
+exports.RecordPersistable = RecordPersistable;
+class RecordController extends GenericController_1.GenericController {
+    constructor(db) {
+        super(db, RecordPersistable.tableName);
+    }
+    postItem(obj, data) {
+        // predicate domain must equal value_type
+        return this.db.select('predicates', ['range_type']).where({ uid: data.predicate })
+            .then(([predicate]) => {
+            if (data.valueType === predicate.range_type) {
+                //TODO: still need to check entity type constraints
+                return super.postItem(obj, data);
+            }
+            throw new Exceptions_1.OperationNotPermittedException({
+                message: 'Attempted to add a record with an incorrect type!',
+                data: Promise.resolve({})
+            });
+        });
+    }
+    putItem(obj, uid, data) {
+        //TODO: what happens if we only update the value - and do not send the valueType again?
+        return this.db.select('predicates', ['range_type']).where({ uid: data.predicate })
+            .then(([predicate]) => {
+            if (data.valueType === predicate.range_type) {
+                //TODO: still need to check entity type constraints
+                return super.putItem(obj, uid, data);
+            }
+            throw new Exceptions_1.OperationNotPermittedException({
+                message: 'Attempted to add a record with an incorrect type!',
+                data: Promise.resolve({})
+            });
+        });
+    }
+    patchItem(obj, uid, data) {
+        return this.db.select('predicates', ['range_type']).where({ uid: data.predicate })
+            .then(([predicate]) => {
+            if (data.valueType === predicate.range_type) {
+                //TODO: still need to check entity type constraints
+                return super.patchItem(obj, uid, data);
+            }
+            throw new Exceptions_1.OperationNotPermittedException({
+                message: 'Attempted to add a record with an incorrect type!',
+                data: Promise.resolve({})
+            });
+        });
+    }
+}
+exports.RecordController = RecordController;
+
+
+/***/ },
 /* 71 */
 /***/ function(module, exports) {
 
@@ -7053,763 +7053,6 @@ module.exports = require("koa-passport");
 
 /***/ },
 /* 74 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview Sidebar for editor
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.1.0
- */
-"use strict";
-const React = __webpack_require__(0);
-const ComboDropdown_1 = __webpack_require__(17);
-const lodash_1 = __webpack_require__(5);
-class PredicateDescription extends React.Component {
-    constructor() {
-        super();
-        this.state = {
-            editingDomain: false,
-            editingRange: false,
-            rangeValue: { key: '', value: '' },
-            domainValue: { key: '', value: '' }
-        };
-    }
-    componentWillMount() {
-        this.setState({
-            rangeValue: this.props.range,
-            domainValue: this.props.domain
-        });
-    }
-    componentWillReceiveProps(newProps) {
-        this.setState({
-            rangeValue: newProps.range,
-            domainValue: newProps.domain
-        });
-    }
-    acceptDomainChanges() {
-        this.props.domainChanged(this.state.domainValue);
-        this.setState({ editingDomain: false });
-    }
-    cancelDomainChanges() {
-        this.setState({ editingDomain: false, domainValue: this.props.domain });
-    }
-    acceptRangeChanges() {
-        this.props.rangeChanged(this.state.rangeValue);
-        this.setState({ editingRange: false });
-    }
-    cancelRangeChanges() {
-        this.setState({ editingDomain: false, rangeValue: this.props.range });
-    }
-    render() {
-        const domainChanged = this.props.mode === 'editAll' ?
-            this.props.domainChanged : (c) => this.setState({ domainValue: c });
-        const rangeChanged = this.props.mode === 'editAll' ?
-            this.props.rangeChanged : (c) => this.setState({ rangeValue: c });
-        return (React.createElement("div", {className: 'predicate-function-description'}, 
-            React.createElement("div", {className: 'domain'}, this.props.mode === 'editAll' || this.state.editingDomain ? (React.createElement("div", null, 
-                React.createElement("label", {className: 'small'}, "Domain"), 
-                React.createElement(ComboDropdown_1.ComboDropdown, {options: this.props.domainOptions, typeName: 'entity type', allowNew: false, value: this.state.domainValue, setValue: domainChanged, createNewValue: lodash_1.noop}), 
-                this.props.mode === 'editSingle' ? (React.createElement("div", null, 
-                    React.createElement("button", {onClick: this.acceptDomainChanges.bind(this)}, 
-                        React.createElement("i", {className: 'fa fa-check', "aria-hidden": 'true'})
-                    ), 
-                    React.createElement("button", {onClick: this.cancelDomainChanges.bind(this)}, 
-                        React.createElement("i", {className: 'fa fa-times', "aria-hidden": 'true'})
-                    ))) : null)) : (React.createElement("div", null, 
-                this.props.domain.key, 
-                " ", 
-                React.createElement("i", {className: 'fa fa-pencil-square-o', title: 'Edit', "aria-hidden": 'true', onClick: () => this.setState({ editingDomain: true })})))), 
-            React.createElement("div", {className: 'arrow'}, 
-                React.createElement("i", {className: 'fa fa-long-arrow-right', "aria-hidden": 'true'})
-            ), 
-            React.createElement("div", {className: 'range'}, this.props.mode === 'editAll' || this.state.editingRange ? (React.createElement("div", null, 
-                React.createElement("label", {className: 'small'}, "Range"), 
-                React.createElement(ComboDropdown_1.ComboDropdown, {options: this.props.rangeOptions, typeName: 'entity type', allowNew: false, value: this.state.rangeValue, setValue: rangeChanged, createNewValue: lodash_1.noop}), 
-                this.props.mode === 'editSingle' ? (React.createElement("div", null, 
-                    React.createElement("button", {onClick: this.acceptRangeChanges.bind(this)}, 
-                        React.createElement("i", {className: 'fa fa-check', "aria-hidden": 'true'})
-                    ), 
-                    React.createElement("button", {onClick: this.cancelRangeChanges.bind(this)}, 
-                        React.createElement("i", {className: 'fa fa-times', "aria-hidden": 'true'})
-                    ))) : null)) : (React.createElement("div", null, 
-                this.props.range.key, 
-                " ", 
-                React.createElement("i", {className: 'fa fa-pencil-square-o', title: 'Edit', "aria-hidden": 'true', onClick: () => this.setState({ editingRange: true })}))))));
-    }
-}
-exports.PredicateDescription = PredicateDescription;
-
-
-/***/ },
-/* 75 */
-/***/ function(module, exports) {
-
-"use strict";
-/**
- * @fileOverview Abstract interface for sources
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.0.1
- */
-"use strict";
-class Element {
-    deserialize(data) {
-        this.name = data.name;
-        this.uid = data.uid;
-        this.elementSet = data.elementSet;
-        this.description = data.description;
-        this.comment = data.comment;
-        return this;
-    }
-    serialize() {
-        return this;
-    }
-}
-exports.Element = Element;
-
-
-/***/ },
-/* 76 */
-/***/ function(module, exports) {
-
-"use strict";
-/**
- * @fileOverview Abstract interface for sources
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.0.1
- */
-"use strict";
-class ElementSet {
-    deserialize(data) {
-        this.name = data.name;
-        this.uid = data.uid;
-        this.uri = data.uri;
-        this.description = data.description;
-        this.elements = data.elements;
-        return this;
-    }
-    serialize() {
-        return this;
-    }
-}
-exports.ElementSet = ElementSet;
-
-
-/***/ },
-/* 77 */
-/***/ function(module, exports) {
-
-"use strict";
-/**
- * @fileOverview Abstract interface for entities
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.0.1
- */
-"use strict";
-class Entity {
-    deserialize(data) {
-        this.uid = data.uid;
-        this.entityType = data.entityType;
-        this.label = data.label;
-        this.parent = data.parent;
-        this.creator = data.creator;
-        this.creationTimestamp = data.creationTimestamp;
-        this.lastmodifiedTimestamp = data.lastmodifiedTimestamp;
-        return this;
-    }
-    serialize() {
-        return this;
-    }
-}
-exports.Entity = Entity;
-
-
-/***/ },
-/* 78 */
-/***/ function(module, exports) {
-
-"use strict";
-/**
- * @fileOverview Abstract interface for entity type
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.0.1
- */
-"use strict";
-class EntityType {
-    deserialize(data) {
-        this.uid = data.uid;
-        this.name = data.name;
-        this.description = data.description;
-        this.icon = data.icon;
-        this.colour = data.colour;
-        this.sameAs = data.sameAs;
-        this.parent = data.parent;
-        this.parents = data.parents;
-        this.creator = data.creator;
-        this.children = data.children;
-        this.creationTimestamp = data.creationTimestamp;
-        this.lastmodifiedTimestamp = data.lastmodifiedTimestamp;
-        return this;
-    }
-    serialize() {
-        return this;
-    }
-}
-exports.EntityType = EntityType;
-
-
-/***/ },
-/* 79 */
-/***/ function(module, exports) {
-
-"use strict";
-/**
- * @fileOverview Abstract interface for locations
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.0.1
- */
-"use strict";
-class Predicate {
-    serialize() {
-        return this;
-    }
-    deserialize(data) {
-        this.uid = data.uid;
-        this.domain = data.domain;
-        this.range = data.range;
-        this.name = data.name;
-        this.description = data.description;
-        this.sameAs = data.sameAs;
-        this.readonly = data.readonly;
-        this.rangeIsReference = data.rangeIsReference;
-        this.creator = data.creator;
-        this.creationTimestamp = data.creationTimestamp;
-        this.lastmodifiedTimestamp = data.lastmodifiedTimestamp;
-        return this;
-    }
-}
-exports.Predicate = Predicate;
-
-
-/***/ },
-/* 80 */
-/***/ function(module, exports) {
-
-"use strict";
-"use strict";
-class Record {
-    constructor() {
-        //calculated
-        this.valueType = null;
-    }
-    deserialize(data) {
-        this.uid = data.uid;
-        this.source = data.source;
-        this.predicate = data.predicate;
-        this.entity = data.entity;
-        this.score = data.score;
-        this.valueType = data.valueType;
-        this.value = data.value;
-        this.creator = data.creator;
-        this.period = data.period;
-        this.creationTimestamp = data.creationTimestamp;
-        this.lastmodifiedTimestamp = data.lastmodifiedTimestamp;
-        return this;
-    }
-    serialize() {
-        return this;
-    }
-}
-exports.Record = Record;
-// Each value type will have it's own editor control :/
-// entity = dropdown selector
-// string = text editor
-// date = date picker
-// integer = numberic picker
-// spatial point = lat/lng or point picker (opens new tab. creates new resource)
-// spatial region = choose from a list or create new (opens new tab, creates new resource)
-// score - star picker
-// source - entity picker (with slight modification)
-// value - custom (see above)
-// entity - entity picker (with slight modification) 
-
-
-/***/ },
-/* 81 */
-/***/ function(module, exports) {
-
-"use strict";
-/**
- * @fileOverview Abstract interface for sources
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.0.1
- */
-"use strict";
-class Source {
-    serialize() {
-        return this;
-    }
-    deserialize(data) {
-        this.name = data.name;
-        this.uid = data.uid;
-        this.metaData = data.metaData;
-        this.sameAs = data.sameAs;
-        this.parent = data.parent;
-        this.parents = data.parents;
-        this.children = data.children;
-        this.creator = data.creator;
-        this.creationTimestamp = data.creationTimestamp;
-        this.lastmodifiedTimestamp = data.lastmodifiedTimestamp;
-        return this;
-    }
-}
-exports.Source = Source;
-
-
-/***/ },
-/* 82 */
-/***/ function(module, exports) {
-
-"use strict";
-/**
- * @fileOverview Abstract interface for sources
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.0.1
- */
-"use strict";
-class SourceElement {
-    deserialize(data) {
-        this.uid = data.uid;
-        this.value = data.value;
-        this.creator = data.creator;
-        this.creationTimestamp = data.creationTimestamp;
-        this.lastmodifiedTimestamp = data.lastmodifiedTimestamp;
-        return this;
-    }
-    serialize() {
-        return this;
-    }
-}
-exports.SourceElement = SourceElement;
-
-
-/***/ },
-/* 83 */
-/***/ function(module, exports) {
-
-"use strict";
-/**
- * @fileOverview <Description Missing>
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.1.0
- */
-"use strict";
-exports.findParentTree = (uid, data, ancestors = []) => {
-    const current = data.find((datum) => datum.uid === uid);
-    if (current === undefined) {
-        console.warn('Couldn\'t find parent');
-        return ancestors;
-    }
-    else {
-        if (current.parent === null || current.uid === null) {
-            if (current.uid === null) {
-                console.warn('Found entity will null uid');
-                return ancestors;
-            }
-            else {
-                return ancestors.concat([current.uid]);
-            }
-        }
-        else {
-            return exports.findParentTree(current.parent, data, ancestors.concat([current.uid]));
-        }
-    }
-};
-
-
-/***/ },
-/* 84 */
-/***/ function(module, exports) {
-
-"use strict";
-/**
- * @fileOverview <Description Missing>
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.1.0
- */
-"use strict";
-exports.itemTypes = {
-    element_set: {
-        machineName: 'element_set',
-        name: 'Element Set',
-        plural: 'Element Sets',
-        workspace: ''
-    },
-    record: {
-        machineName: 'record',
-        name: 'Record',
-        plural: 'Records',
-        workspace: ''
-    },
-    entity: {
-        machineName: 'entity',
-        name: 'Entity',
-        plural: 'Entities',
-        workspace: 'entity'
-    },
-    entity_type: {
-        machineName: 'entity_type',
-        name: 'Entity Type',
-        plural: 'Entity Types',
-        workspace: 'entity_type'
-    },
-    predicate: {
-        machineName: 'property',
-        name: 'Property',
-        plural: 'Properties',
-        workspace: 'predicate'
-    },
-    source: {
-        machineName: 'source',
-        name: 'Source',
-        plural: 'Sources',
-        workspace: 'source'
-    },
-    source_element: {
-        machineName: 'source_element',
-        name: 'Source Element',
-        plural: 'Source Elements',
-        workspace: ''
-    }
-};
-
-
-/***/ },
-/* 85 */
-/***/ function(module, exports) {
-
-"use strict";
-/**
- * @fileOverview <Description Missing>
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.1.0
- */
-"use strict";
-exports.literalTypes = [
-    { name: 'text', value: 'string', url: '', description: 'some text' },
-    { name: 'number', value: 'integer', url: '', description: 'a number' },
-    { name: 'date', value: 'date', url: '', description: 'a date' },
-    // { name: 'point', value: 'point', url: '', description: 'a point on a map '},
-    // { name: 'region', value: 'region', url: '', description: 'a region on a map'},
-    { name: 'source', value: 'source', url: '', description: 'a source in the database' }
-];
-
-
-/***/ },
-/* 86 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview Sidebar for editor
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.1.0
- */
-"use strict";
-const React = __webpack_require__(0);
-const react_router_1 = __webpack_require__(24);
-exports.StatsGrid = (props) => {
-    return (React.createElement("section", {className: 'stats-grid'}, 
-        React.createElement(react_router_1.Link, {to: '/edit/entity'}, 
-            React.createElement("div", {className: 'entity'}, 
-                React.createElement("span", {className: 'item-name'}, "Entities"), 
-                React.createElement("span", {className: 'item-count'}, props.stats.entity))
-        ), 
-        React.createElement(react_router_1.Link, {to: '/edit/entity_type'}, 
-            React.createElement("div", {className: 'entity_type'}, 
-                React.createElement("span", {className: 'item-name'}, "Entity Types"), 
-                React.createElement("span", {className: 'item-count'}, props.stats.entityType))
-        ), 
-        React.createElement(react_router_1.Link, {to: '/edit/source'}, 
-            React.createElement("div", {className: 'source'}, 
-                React.createElement("span", {className: 'item-name'}, "Sources"), 
-                React.createElement("span", {className: 'item-count'}, props.stats.source))
-        ), 
-        React.createElement(react_router_1.Link, {to: '/edit/predicate'}, 
-            React.createElement("div", {className: 'predicate'}, 
-                React.createElement("span", {className: 'item-name'}, "Properties"), 
-                React.createElement("span", {className: 'item-count'}, props.stats.predicate))
-        ), 
-        React.createElement("div", {className: 'record'}, 
-            React.createElement("span", {className: 'item-name'}, "Records"), 
-            React.createElement("span", {className: 'item-count'}, props.stats.record))));
-};
-
-
-/***/ },
-/* 87 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview Controller for element sets
- * @author <a href='mailto:tim.hollies@warwick.ac.uk'>Tim Hollies</a>
- * @version 0.0.1
- */
-"use strict";
-const Entity_1 = __webpack_require__(77);
-const GenericController_1 = __webpack_require__(18);
-const Exceptions_1 = __webpack_require__(19);
-const lodash_1 = __webpack_require__(5);
-class EntityPersistable extends Entity_1.Entity {
-    getTableName() {
-        return EntityPersistable.tableName;
-    }
-    toSchema() {
-        return Object.assign(lodash_1.omit(this.serialize(), 'entityType', 'creationTimestamp', 'lastmodifiedTimestamp'), {
-            type: this.entityType,
-            creation_timestamp: this.creationTimestamp,
-            lastmodified_timeStamp: this.lastmodifiedTimestamp
-        });
-    }
-    fromSchema(data) {
-        this.deserialize({
-            entityType: data.type,
-            uid: data.uid,
-            label: data.label,
-            parent: data.parent
-        });
-        return this;
-    }
-}
-EntityPersistable.tableName = 'entities';
-exports.EntityPersistable = EntityPersistable;
-class EntityController extends GenericController_1.GenericController {
-    constructor(db) {
-        super(db, EntityPersistable.tableName);
-    }
-    getCollectionJson(obj, params = {}) {
-        if (params.type !== undefined) {
-            return this.db.getChildrenOf(lodash_1.isArray(params.type) ? params.type[0] : params.type, 'entity_types')
-                .then((ancestors) => {
-                return this.db.select('entities').whereIn('type', ancestors)
-                    .then((results) => results.map((result) => new obj().fromSchema(result)));
-            });
-        }
-        else {
-            return super.getCollectionJson(obj, params);
-        }
-    }
-    deleteItem(obj, uid) {
-        // check if this entity is the parent of another entity or if it has any relationships
-        // pointing towards it.
-        return Promise.all([
-            this.db.select(EntityPersistable.tableName).where('parent', '=', uid),
-            this.db.select('records').where('value_entity', '=', uid)
-        ]).then(([entities, records]) => {
-            if (entities.length + records.length === 0) {
-                return this.db.deleteItem(this.tableName, uid);
-            }
-            else {
-                throw new Exceptions_1.OperationNotPermittedException({
-                    message: 'The operation could not be completed as the entity is referenced in other sources',
-                    data: Promise.resolve({
-                        entity: entities,
-                        record: records
-                    })
-                });
-            }
-        });
-    }
-}
-exports.EntityController = EntityController;
-
-
-/***/ },
-/* 88 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview Controller for element sets
- * @author <a href='mailto:tim.hollies@warwick.ac.uk'>Tim Hollies</a>
- * @version 0.0.1
- */
-"use strict";
-const Predicate_1 = __webpack_require__(79);
-const GenericController_1 = __webpack_require__(18);
-const Exceptions_1 = __webpack_require__(19);
-const RecordController_1 = __webpack_require__(47);
-const lodash_1 = __webpack_require__(5);
-class PredicatePersistable extends Predicate_1.Predicate {
-    getTableName() {
-        return PredicatePersistable.tableName;
-    }
-    toSchema() {
-        const out = Object.assign(lodash_1.omit(this.serialize(), 'range', 'rangeIsReference', 'sameAs', 'creationTimestamp', 'lastmodifiedTimestamp'), {
-            same_as: this.sameAs,
-            range_type: this.rangeIsReference ? 'entity' : this.range,
-            creation_timestamp: this.creationTimestamp,
-            lastmodified_timeStamp: this.lastmodifiedTimestamp
-        });
-        if (this.rangeIsReference) {
-            out['range_ref'] = this.range;
-        }
-        else {
-            out['range_ref'] = null;
-        }
-        return out;
-    }
-    fromSchema(data) {
-        if (data.range_type === 'entity') {
-            data.range = data.range_ref;
-            data.rangeIsReference = true;
-        }
-        else {
-            data.range = data.range_type;
-            data.rangeIsReference = false;
-        }
-        this.deserialize(Object.assign(data, {
-            'sameAs': data.same_as
-        }));
-        return this;
-    }
-}
-PredicatePersistable.tableName = 'predicates';
-exports.PredicatePersistable = PredicatePersistable;
-class PredicateController extends GenericController_1.GenericController {
-    constructor(db) {
-        super(db, PredicatePersistable.tableName);
-    }
-    getCollectionJson(obj, params = {}) {
-        if (params.domain !== undefined) {
-            //TODO: this check should be unecessery
-            return this.db.getAncestorsOf(lodash_1.isArray(params.domain) ? params.domain[0] : params.domain, 'entity_types')
-                .then((ancestors) => {
-                return this.db.select('predicates').whereIn('domain', ancestors.concat([params.domain[0]]))
-                    .then((results) => results.map((result) => new obj().fromSchema(result)));
-            });
-        }
-        else {
-            return super.getCollectionJson(obj, params);
-        }
-    }
-    putItem(obj, uid, data) {
-        if (typeof (uid) !== 'number') {
-            throw new Error('Expected single column identifier');
-        }
-        return this.db.updateItem(new obj().deserialize(data));
-    }
-    patchItem(obj, uid, data) {
-        if (data.domain !== undefined) {
-            return this.db.select('records', ['entities.type as entityType'])
-                .distinct()
-                .where({ predicate: uid })
-                .innerJoin('entities', 'records.entity', 'entities.uid')
-                .then((records) => {
-                if (records.length > 0) {
-                    return this.db.getChildrenOf(data.domain, 'entity_types')
-                        .then((res) => {
-                        records.map((e) => e.entityType)
-                            .forEach((e) => {
-                            if (res.indexOf(e) === -1) {
-                                throw new Exceptions_1.OperationNotPermittedException({
-                                    message: 'The operation could not be completed as it would invalidate predicate relationships',
-                                    data: Promise.resolve({})
-                                });
-                            }
-                        });
-                    }).then(() => super.patchItem(obj, uid, data));
-                }
-                return super.patchItem(obj, uid, data);
-            });
-        }
-        //TODO: fix range enforcement
-        if (data.range !== undefined) {
-            return this.db.select('records')
-                .where({ predicate: uid })
-                .then((records) => {
-                if (records.length > 0) {
-                    if (data.rangeIsReference === false) {
-                        throw new Exceptions_1.OperationNotPermittedException({
-                            message: 'The operation could not be completed as it would invalidate predicate relationships',
-                            data: Promise.resolve({})
-                        });
-                    }
-                    return this.db.getChildrenOf(data.range, 'entity_types')
-                        .then((res) => {
-                        records.map((e) => e.value_entity)
-                            .forEach((e) => {
-                            if (res.indexOf(e) === -1) {
-                                throw new Exceptions_1.OperationNotPermittedException({
-                                    message: 'The operation could not be completed as it would invalidate predicate relationships',
-                                    data: Promise.resolve({})
-                                });
-                            }
-                        });
-                    }).then(() => super.patchItem(obj, uid, data));
-                }
-                return super.patchItem(obj, uid, data);
-            });
-        }
-        return super.patchItem(obj, uid, data);
-    }
-    deleteItem(obj, uid) {
-        // check if this entity is the parent of another entity or if it has any relationships
-        // pointing towards it.
-        return Promise.all([
-            this.db.loadCollection('records', { predicate: uid })
-        ]).then(([records]) => {
-            if (records.length === 0) {
-                return this.db.deleteItem(this.tableName, uid);
-            }
-            else {
-                throw new Exceptions_1.OperationNotPermittedException({
-                    message: 'The operation could not be completed as the predicate is used by other records',
-                    data: Promise.resolve({
-                        record: records.map((record) => new RecordController_1.RecordPersistable().fromSchema(record))
-                    })
-                });
-            }
-        });
-    }
-}
-exports.PredicateController = PredicateController;
-
-
-/***/ },
-/* 89 */
-/***/ function(module, exports) {
-
-"use strict";
-/**
- * @fileOverview Map of URIs to controllers
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.0.1
- */
-"use strict";
-exports.GeneralStatisticsController = (db) => {
-    return Promise.all([
-        db('entities').count(),
-        db('entity_types').count(),
-        db('sources').count(),
-        db('records').count(),
-        db('predicates').count()
-    ]).then(([[entityCount], [entityTypeCount], [sourceCount], [recordCount], [predicateCount]]) => {
-        const statistics = {
-            entity: entityCount['count(*)'],
-            entityType: entityTypeCount['count(*)'],
-            source: sourceCount['count(*)'],
-            record: recordCount['count(*)'],
-            predicate: predicateCount['count(*)']
-        };
-        return statistics;
-    });
-};
-
-
-/***/ },
-/* 90 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7898,7 +7141,7 @@ var EventListener = {
 module.exports = EventListener;
 
 /***/ },
-/* 91 */
+/* 75 */
 /***/ function(module, exports) {
 
 "use strict";
@@ -7930,7 +7173,7 @@ function focusNode(node) {
 module.exports = focusNode;
 
 /***/ },
-/* 92 */
+/* 76 */
 /***/ function(module, exports) {
 
 "use strict";
@@ -7970,7 +7213,7 @@ function getActiveElement() /*?DOMElement*/{
 module.exports = getActiveElement;
 
 /***/ },
-/* 93 */
+/* 77 */
 /***/ function(module, exports) {
 
 "use strict";
@@ -8123,7 +7366,7 @@ var CSSProperty = {
 module.exports = CSSProperty;
 
 /***/ },
-/* 94 */
+/* 78 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8247,7 +7490,7 @@ var CallbackQueue = function () {
 module.exports = PooledClass.addPoolingTo(CallbackQueue);
 
 /***/ },
-/* 95 */
+/* 79 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8264,10 +7507,10 @@ module.exports = PooledClass.addPoolingTo(CallbackQueue);
 'use strict';
 
 var DOMProperty = __webpack_require__(29);
-var ReactDOMComponentTree = __webpack_require__(8);
+var ReactDOMComponentTree = __webpack_require__(7);
 var ReactInstrumentation = __webpack_require__(12);
 
-var quoteAttributeValueForBrowser = __webpack_require__(263);
+var quoteAttributeValueForBrowser = __webpack_require__(203);
 var warning = __webpack_require__(2);
 
 var VALID_ATTRIBUTE_NAME_REGEX = new RegExp('^[' + DOMProperty.ATTRIBUTE_NAME_START_CHAR + '][' + DOMProperty.ATTRIBUTE_NAME_CHAR + ']*$');
@@ -8489,7 +7732,7 @@ var DOMPropertyOperations = {
 module.exports = DOMPropertyOperations;
 
 /***/ },
-/* 96 */
+/* 80 */
 /***/ function(module, exports) {
 
 "use strict";
@@ -8512,7 +7755,7 @@ var ReactDOMComponentFlags = {
 module.exports = ReactDOMComponentFlags;
 
 /***/ },
-/* 97 */
+/* 81 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8530,9 +7773,9 @@ module.exports = ReactDOMComponentFlags;
 
 var _assign = __webpack_require__(4);
 
-var LinkedValueUtils = __webpack_require__(54);
-var ReactDOMComponentTree = __webpack_require__(8);
-var ReactUpdates = __webpack_require__(15);
+var LinkedValueUtils = __webpack_require__(49);
+var ReactDOMComponentTree = __webpack_require__(7);
+var ReactUpdates = __webpack_require__(14);
 
 var warning = __webpack_require__(2);
 
@@ -8717,7 +7960,7 @@ function _handleChange(event) {
 module.exports = ReactDOMSelect;
 
 /***/ },
-/* 98 */
+/* 82 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8735,8 +7978,8 @@ module.exports = ReactDOMSelect;
 
 var _assign = __webpack_require__(4);
 
-var ReactUpdates = __webpack_require__(15);
-var Transaction = __webpack_require__(40);
+var ReactUpdates = __webpack_require__(14);
+var Transaction = __webpack_require__(38);
 
 var emptyFunction = __webpack_require__(11);
 
@@ -8790,7 +8033,7 @@ var ReactDefaultBatchingStrategy = {
 module.exports = ReactDefaultBatchingStrategy;
 
 /***/ },
-/* 99 */
+/* 83 */
 /***/ function(module, exports) {
 
 "use strict";
@@ -8825,7 +8068,7 @@ ReactEmptyComponent.injection = ReactEmptyComponentInjection;
 module.exports = ReactEmptyComponent;
 
 /***/ },
-/* 100 */
+/* 84 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8906,7 +8149,7 @@ var ReactHostComponent = {
 module.exports = ReactHostComponent;
 
 /***/ },
-/* 101 */
+/* 85 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8922,11 +8165,11 @@ module.exports = ReactHostComponent;
 
 'use strict';
 
-var ReactDOMSelection = __webpack_require__(216);
+var ReactDOMSelection = __webpack_require__(156);
 
-var containsNode = __webpack_require__(185);
-var focusNode = __webpack_require__(91);
-var getActiveElement = __webpack_require__(92);
+var containsNode = __webpack_require__(125);
+var focusNode = __webpack_require__(75);
+var getActiveElement = __webpack_require__(76);
 
 function isInDocument(node) {
   return containsNode(document.documentElement, node);
@@ -9035,7 +8278,7 @@ var ReactInputSelection = {
 module.exports = ReactInputSelection;
 
 /***/ },
-/* 102 */
+/* 86 */
 /***/ function(module, exports) {
 
 "use strict";
@@ -9057,7 +8300,7 @@ var ReactPropTypesSecret = 'SECRET_DO_NOT_PASS_THIS_OR_YOU_WILL_BE_FIRED';
 module.exports = ReactPropTypesSecret;
 
 /***/ },
-/* 103 */
+/* 87 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9076,9 +8319,9 @@ module.exports = ReactPropTypesSecret;
 var _assign = __webpack_require__(4);
 
 var PooledClass = __webpack_require__(21);
-var Transaction = __webpack_require__(40);
+var Transaction = __webpack_require__(38);
 var ReactInstrumentation = __webpack_require__(12);
-var ReactServerUpdateQueue = __webpack_require__(239);
+var ReactServerUpdateQueue = __webpack_require__(179);
 
 /**
  * Executed within the scope of the `Transaction` instance. Consider these as
@@ -9152,7 +8395,7 @@ PooledClass.addPoolingTo(ReactServerRenderingTransaction);
 module.exports = ReactServerRenderingTransaction;
 
 /***/ },
-/* 104 */
+/* 88 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9170,10 +8413,10 @@ module.exports = ReactServerRenderingTransaction;
 
 var _prodInvariant = __webpack_require__(3);
 
-var ReactCurrentOwner = __webpack_require__(20);
-var ReactInstanceMap = __webpack_require__(58);
+var ReactCurrentOwner = __webpack_require__(17);
+var ReactInstanceMap = __webpack_require__(53);
 var ReactInstrumentation = __webpack_require__(12);
-var ReactUpdates = __webpack_require__(15);
+var ReactUpdates = __webpack_require__(14);
 
 var invariant = __webpack_require__(1);
 var warning = __webpack_require__(2);
@@ -9383,7 +8626,7 @@ var ReactUpdateQueue = {
 module.exports = ReactUpdateQueue;
 
 /***/ },
-/* 105 */
+/* 89 */
 /***/ function(module, exports) {
 
 "use strict";
@@ -9415,7 +8658,7 @@ var ViewportMetrics = {
 module.exports = ViewportMetrics;
 
 /***/ },
-/* 106 */
+/* 90 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9478,7 +8721,7 @@ function accumulateInto(current, next) {
 module.exports = accumulateInto;
 
 /***/ },
-/* 107 */
+/* 91 */
 /***/ function(module, exports) {
 
 "use strict";
@@ -9514,7 +8757,7 @@ function forEachAccumulated(arr, cb, scope) {
 module.exports = forEachAccumulated;
 
 /***/ },
-/* 108 */
+/* 92 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9552,7 +8795,7 @@ function getTextContentAccessor() {
 module.exports = getTextContentAccessor;
 
 /***/ },
-/* 109 */
+/* 93 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9571,11 +8814,11 @@ module.exports = getTextContentAccessor;
 var _prodInvariant = __webpack_require__(3),
     _assign = __webpack_require__(4);
 
-var ReactCompositeComponent = __webpack_require__(209);
-var ReactEmptyComponent = __webpack_require__(99);
-var ReactHostComponent = __webpack_require__(100);
+var ReactCompositeComponent = __webpack_require__(149);
+var ReactEmptyComponent = __webpack_require__(83);
+var ReactHostComponent = __webpack_require__(84);
 
-var getNextDebugID = __webpack_require__(260);
+var getNextDebugID = __webpack_require__(200);
 var invariant = __webpack_require__(1);
 var warning = __webpack_require__(2);
 
@@ -9675,7 +8918,7 @@ function instantiateReactComponent(node, shouldHaveDebugID) {
 module.exports = instantiateReactComponent;
 
 /***/ },
-/* 110 */
+/* 94 */
 /***/ function(module, exports) {
 
 "use strict";
@@ -9731,7 +8974,7 @@ function isTextInputElement(elem) {
 module.exports = isTextInputElement;
 
 /***/ },
-/* 111 */
+/* 95 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9748,8 +8991,8 @@ module.exports = isTextInputElement;
 'use strict';
 
 var ExecutionEnvironment = __webpack_require__(9);
-var escapeTextContentForBrowser = __webpack_require__(41);
-var setInnerHTML = __webpack_require__(64);
+var escapeTextContentForBrowser = __webpack_require__(39);
+var setInnerHTML = __webpack_require__(59);
 
 /**
  * Set the textContent property of a node, ensuring that whitespace is preserved
@@ -9788,7 +9031,7 @@ if (ExecutionEnvironment.canUseDOM) {
 module.exports = setTextContent;
 
 /***/ },
-/* 112 */
+/* 96 */
 /***/ function(module, exports) {
 
 "use strict";
@@ -9835,7 +9078,7 @@ function shouldUpdateReactComponent(prevElement, nextElement) {
 module.exports = shouldUpdateReactComponent;
 
 /***/ },
-/* 113 */
+/* 97 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9853,12 +9096,12 @@ module.exports = shouldUpdateReactComponent;
 
 var _prodInvariant = __webpack_require__(3);
 
-var ReactCurrentOwner = __webpack_require__(20);
-var REACT_ELEMENT_TYPE = __webpack_require__(223);
+var ReactCurrentOwner = __webpack_require__(17);
+var REACT_ELEMENT_TYPE = __webpack_require__(163);
 
-var getIteratorFn = __webpack_require__(259);
+var getIteratorFn = __webpack_require__(199);
 var invariant = __webpack_require__(1);
-var KeyEscapeUtils = __webpack_require__(53);
+var KeyEscapeUtils = __webpack_require__(48);
 var warning = __webpack_require__(2);
 
 var SEPARATOR = '.';
@@ -10016,7 +9259,7 @@ function traverseAllChildren(children, callback, traverseContext) {
 module.exports = traverseAllChildren;
 
 /***/ },
-/* 114 */
+/* 98 */
 /***/ function(module, exports) {
 
 "use strict";
@@ -10041,7 +9284,7 @@ var REACT_ELEMENT_TYPE = typeof Symbol === 'function' && Symbol['for'] && Symbol
 module.exports = REACT_ELEMENT_TYPE;
 
 /***/ },
-/* 115 */
+/* 99 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10064,14 +9307,14 @@ module.exports = REACT_ELEMENT_TYPE;
 
 'use strict';
 
-var ReactCurrentOwner = __webpack_require__(20);
+var ReactCurrentOwner = __webpack_require__(17);
 var ReactComponentTreeHook = __webpack_require__(13);
 var ReactElement = __webpack_require__(22);
 
-var checkReactTypeSpec = __webpack_require__(273);
+var checkReactTypeSpec = __webpack_require__(213);
 
-var canDefineProperty = __webpack_require__(69);
-var getIteratorFn = __webpack_require__(70);
+var canDefineProperty = __webpack_require__(64);
+var getIteratorFn = __webpack_require__(65);
 var warning = __webpack_require__(2);
 
 function getDeclarationErrorAddendum() {
@@ -10273,7 +9516,7 @@ var ReactElementValidator = {
 module.exports = ReactElementValidator;
 
 /***/ },
-/* 116 */
+/* 100 */
 /***/ function(module, exports) {
 
 "use strict";
@@ -10295,6 +9538,763 @@ var ReactPropTypesSecret = 'SECRET_DO_NOT_PASS_THIS_OR_YOU_WILL_BE_FIRED';
 module.exports = ReactPropTypesSecret;
 
 /***/ },
+/* 101 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview Sidebar for editor
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.1.0
+ */
+"use strict";
+const React = __webpack_require__(0);
+const ComboDropdown_1 = __webpack_require__(18);
+const lodash_1 = __webpack_require__(5);
+class PredicateDescription extends React.Component {
+    constructor() {
+        super();
+        this.state = {
+            editingDomain: false,
+            editingRange: false,
+            rangeValue: { key: '', value: '' },
+            domainValue: { key: '', value: '' }
+        };
+    }
+    componentWillMount() {
+        this.setState({
+            rangeValue: this.props.range,
+            domainValue: this.props.domain
+        });
+    }
+    componentWillReceiveProps(newProps) {
+        this.setState({
+            rangeValue: newProps.range,
+            domainValue: newProps.domain
+        });
+    }
+    acceptDomainChanges() {
+        this.props.domainChanged(this.state.domainValue);
+        this.setState({ editingDomain: false });
+    }
+    cancelDomainChanges() {
+        this.setState({ editingDomain: false, domainValue: this.props.domain });
+    }
+    acceptRangeChanges() {
+        this.props.rangeChanged(this.state.rangeValue);
+        this.setState({ editingRange: false });
+    }
+    cancelRangeChanges() {
+        this.setState({ editingDomain: false, rangeValue: this.props.range });
+    }
+    render() {
+        const domainChanged = this.props.mode === 'editAll' ?
+            this.props.domainChanged : (c) => this.setState({ domainValue: c });
+        const rangeChanged = this.props.mode === 'editAll' ?
+            this.props.rangeChanged : (c) => this.setState({ rangeValue: c });
+        return (React.createElement("div", {className: 'predicate-function-description'}, 
+            React.createElement("div", {className: 'domain'}, this.props.mode === 'editAll' || this.state.editingDomain ? (React.createElement("div", null, 
+                React.createElement("label", {className: 'small'}, "Domain"), 
+                React.createElement(ComboDropdown_1.ComboDropdown, {options: this.props.domainOptions, typeName: 'entity type', allowNew: false, value: this.state.domainValue, setValue: domainChanged, createNewValue: lodash_1.noop}), 
+                this.props.mode === 'editSingle' ? (React.createElement("div", null, 
+                    React.createElement("button", {onClick: this.acceptDomainChanges.bind(this)}, 
+                        React.createElement("i", {className: 'fa fa-check', "aria-hidden": 'true'})
+                    ), 
+                    React.createElement("button", {onClick: this.cancelDomainChanges.bind(this)}, 
+                        React.createElement("i", {className: 'fa fa-times', "aria-hidden": 'true'})
+                    ))) : null)) : (React.createElement("div", null, 
+                this.props.domain.key, 
+                " ", 
+                React.createElement("i", {className: 'fa fa-pencil-square-o', title: 'Edit', "aria-hidden": 'true', onClick: () => this.setState({ editingDomain: true })})))), 
+            React.createElement("div", {className: 'arrow'}, 
+                React.createElement("i", {className: 'fa fa-long-arrow-right', "aria-hidden": 'true'})
+            ), 
+            React.createElement("div", {className: 'range'}, this.props.mode === 'editAll' || this.state.editingRange ? (React.createElement("div", null, 
+                React.createElement("label", {className: 'small'}, "Range"), 
+                React.createElement(ComboDropdown_1.ComboDropdown, {options: this.props.rangeOptions, typeName: 'entity type', allowNew: false, value: this.state.rangeValue, setValue: rangeChanged, createNewValue: lodash_1.noop}), 
+                this.props.mode === 'editSingle' ? (React.createElement("div", null, 
+                    React.createElement("button", {onClick: this.acceptRangeChanges.bind(this)}, 
+                        React.createElement("i", {className: 'fa fa-check', "aria-hidden": 'true'})
+                    ), 
+                    React.createElement("button", {onClick: this.cancelRangeChanges.bind(this)}, 
+                        React.createElement("i", {className: 'fa fa-times', "aria-hidden": 'true'})
+                    ))) : null)) : (React.createElement("div", null, 
+                this.props.range.key, 
+                " ", 
+                React.createElement("i", {className: 'fa fa-pencil-square-o', title: 'Edit', "aria-hidden": 'true', onClick: () => this.setState({ editingRange: true })}))))));
+    }
+}
+exports.PredicateDescription = PredicateDescription;
+
+
+/***/ },
+/* 102 */
+/***/ function(module, exports) {
+
+"use strict";
+/**
+ * @fileOverview Abstract interface for sources
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.0.1
+ */
+"use strict";
+class Element {
+    deserialize(data) {
+        this.name = data.name;
+        this.uid = data.uid;
+        this.elementSet = data.elementSet;
+        this.description = data.description;
+        this.comment = data.comment;
+        return this;
+    }
+    serialize() {
+        return this;
+    }
+}
+exports.Element = Element;
+
+
+/***/ },
+/* 103 */
+/***/ function(module, exports) {
+
+"use strict";
+/**
+ * @fileOverview Abstract interface for sources
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.0.1
+ */
+"use strict";
+class ElementSet {
+    deserialize(data) {
+        this.name = data.name;
+        this.uid = data.uid;
+        this.uri = data.uri;
+        this.description = data.description;
+        this.elements = data.elements;
+        return this;
+    }
+    serialize() {
+        return this;
+    }
+}
+exports.ElementSet = ElementSet;
+
+
+/***/ },
+/* 104 */
+/***/ function(module, exports) {
+
+"use strict";
+/**
+ * @fileOverview Abstract interface for entities
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.0.1
+ */
+"use strict";
+class Entity {
+    deserialize(data) {
+        this.uid = data.uid;
+        this.entityType = data.entityType;
+        this.label = data.label;
+        this.parent = data.parent;
+        this.creator = data.creator;
+        this.creationTimestamp = data.creationTimestamp;
+        this.lastmodifiedTimestamp = data.lastmodifiedTimestamp;
+        return this;
+    }
+    serialize() {
+        return this;
+    }
+}
+exports.Entity = Entity;
+
+
+/***/ },
+/* 105 */
+/***/ function(module, exports) {
+
+"use strict";
+/**
+ * @fileOverview Abstract interface for entity type
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.0.1
+ */
+"use strict";
+class EntityType {
+    deserialize(data) {
+        this.uid = data.uid;
+        this.name = data.name;
+        this.description = data.description;
+        this.icon = data.icon;
+        this.colour = data.colour;
+        this.sameAs = data.sameAs;
+        this.parent = data.parent;
+        this.parents = data.parents;
+        this.creator = data.creator;
+        this.children = data.children;
+        this.creationTimestamp = data.creationTimestamp;
+        this.lastmodifiedTimestamp = data.lastmodifiedTimestamp;
+        return this;
+    }
+    serialize() {
+        return this;
+    }
+}
+exports.EntityType = EntityType;
+
+
+/***/ },
+/* 106 */
+/***/ function(module, exports) {
+
+"use strict";
+/**
+ * @fileOverview Abstract interface for locations
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.0.1
+ */
+"use strict";
+class Predicate {
+    serialize() {
+        return this;
+    }
+    deserialize(data) {
+        this.uid = data.uid;
+        this.domain = data.domain;
+        this.range = data.range;
+        this.name = data.name;
+        this.description = data.description;
+        this.sameAs = data.sameAs;
+        this.readonly = data.readonly;
+        this.rangeIsReference = data.rangeIsReference;
+        this.creator = data.creator;
+        this.creationTimestamp = data.creationTimestamp;
+        this.lastmodifiedTimestamp = data.lastmodifiedTimestamp;
+        return this;
+    }
+}
+exports.Predicate = Predicate;
+
+
+/***/ },
+/* 107 */
+/***/ function(module, exports) {
+
+"use strict";
+"use strict";
+class Record {
+    constructor() {
+        //calculated
+        this.valueType = null;
+    }
+    deserialize(data) {
+        this.uid = data.uid;
+        this.source = data.source;
+        this.predicate = data.predicate;
+        this.entity = data.entity;
+        this.score = data.score;
+        this.valueType = data.valueType;
+        this.value = data.value;
+        this.creator = data.creator;
+        this.period = data.period;
+        this.creationTimestamp = data.creationTimestamp;
+        this.lastmodifiedTimestamp = data.lastmodifiedTimestamp;
+        return this;
+    }
+    serialize() {
+        return this;
+    }
+}
+exports.Record = Record;
+// Each value type will have it's own editor control :/
+// entity = dropdown selector
+// string = text editor
+// date = date picker
+// integer = numberic picker
+// spatial point = lat/lng or point picker (opens new tab. creates new resource)
+// spatial region = choose from a list or create new (opens new tab, creates new resource)
+// score - star picker
+// source - entity picker (with slight modification)
+// value - custom (see above)
+// entity - entity picker (with slight modification) 
+
+
+/***/ },
+/* 108 */
+/***/ function(module, exports) {
+
+"use strict";
+/**
+ * @fileOverview Abstract interface for sources
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.0.1
+ */
+"use strict";
+class Source {
+    serialize() {
+        return this;
+    }
+    deserialize(data) {
+        this.name = data.name;
+        this.uid = data.uid;
+        this.metaData = data.metaData;
+        this.sameAs = data.sameAs;
+        this.parent = data.parent;
+        this.parents = data.parents;
+        this.children = data.children;
+        this.creator = data.creator;
+        this.creationTimestamp = data.creationTimestamp;
+        this.lastmodifiedTimestamp = data.lastmodifiedTimestamp;
+        return this;
+    }
+}
+exports.Source = Source;
+
+
+/***/ },
+/* 109 */
+/***/ function(module, exports) {
+
+"use strict";
+/**
+ * @fileOverview Abstract interface for sources
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.0.1
+ */
+"use strict";
+class SourceElement {
+    deserialize(data) {
+        this.uid = data.uid;
+        this.value = data.value;
+        this.creator = data.creator;
+        this.creationTimestamp = data.creationTimestamp;
+        this.lastmodifiedTimestamp = data.lastmodifiedTimestamp;
+        return this;
+    }
+    serialize() {
+        return this;
+    }
+}
+exports.SourceElement = SourceElement;
+
+
+/***/ },
+/* 110 */
+/***/ function(module, exports) {
+
+"use strict";
+/**
+ * @fileOverview <Description Missing>
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.1.0
+ */
+"use strict";
+exports.findParentTree = (uid, data, ancestors = []) => {
+    const current = data.find((datum) => datum.uid === uid);
+    if (current === undefined) {
+        console.warn('Couldn\'t find parent');
+        return ancestors;
+    }
+    else {
+        if (current.parent === null || current.uid === null) {
+            if (current.uid === null) {
+                console.warn('Found entity will null uid');
+                return ancestors;
+            }
+            else {
+                return ancestors.concat([current.uid]);
+            }
+        }
+        else {
+            return exports.findParentTree(current.parent, data, ancestors.concat([current.uid]));
+        }
+    }
+};
+
+
+/***/ },
+/* 111 */
+/***/ function(module, exports) {
+
+"use strict";
+/**
+ * @fileOverview <Description Missing>
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.1.0
+ */
+"use strict";
+exports.itemTypes = {
+    element_set: {
+        machineName: 'element_set',
+        name: 'Element Set',
+        plural: 'Element Sets',
+        workspace: ''
+    },
+    record: {
+        machineName: 'record',
+        name: 'Record',
+        plural: 'Records',
+        workspace: ''
+    },
+    entity: {
+        machineName: 'entity',
+        name: 'Entity',
+        plural: 'Entities',
+        workspace: 'entity'
+    },
+    entity_type: {
+        machineName: 'entity_type',
+        name: 'Entity Type',
+        plural: 'Entity Types',
+        workspace: 'entity_type'
+    },
+    predicate: {
+        machineName: 'property',
+        name: 'Property',
+        plural: 'Properties',
+        workspace: 'predicate'
+    },
+    source: {
+        machineName: 'source',
+        name: 'Source',
+        plural: 'Sources',
+        workspace: 'source'
+    },
+    source_element: {
+        machineName: 'source_element',
+        name: 'Source Element',
+        plural: 'Source Elements',
+        workspace: ''
+    }
+};
+
+
+/***/ },
+/* 112 */
+/***/ function(module, exports) {
+
+"use strict";
+/**
+ * @fileOverview <Description Missing>
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.1.0
+ */
+"use strict";
+exports.literalTypes = [
+    { name: 'text', value: 'string', url: '', description: 'some text' },
+    { name: 'number', value: 'integer', url: '', description: 'a number' },
+    { name: 'date', value: 'date', url: '', description: 'a date' },
+    // { name: 'point', value: 'point', url: '', description: 'a point on a map '},
+    // { name: 'region', value: 'region', url: '', description: 'a region on a map'},
+    { name: 'source', value: 'source', url: '', description: 'a source in the database' }
+];
+
+
+/***/ },
+/* 113 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview Sidebar for editor
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.1.0
+ */
+"use strict";
+const React = __webpack_require__(0);
+const react_router_1 = __webpack_require__(24);
+exports.StatsGrid = (props) => {
+    return (React.createElement("section", {className: 'stats-grid'}, 
+        React.createElement(react_router_1.Link, {to: '/edit/entity'}, 
+            React.createElement("div", {className: 'entity'}, 
+                React.createElement("span", {className: 'item-name'}, "Entities"), 
+                React.createElement("span", {className: 'item-count'}, props.stats.entity))
+        ), 
+        React.createElement(react_router_1.Link, {to: '/edit/entity_type'}, 
+            React.createElement("div", {className: 'entity_type'}, 
+                React.createElement("span", {className: 'item-name'}, "Entity Types"), 
+                React.createElement("span", {className: 'item-count'}, props.stats.entityType))
+        ), 
+        React.createElement(react_router_1.Link, {to: '/edit/source'}, 
+            React.createElement("div", {className: 'source'}, 
+                React.createElement("span", {className: 'item-name'}, "Sources"), 
+                React.createElement("span", {className: 'item-count'}, props.stats.source))
+        ), 
+        React.createElement(react_router_1.Link, {to: '/edit/predicate'}, 
+            React.createElement("div", {className: 'predicate'}, 
+                React.createElement("span", {className: 'item-name'}, "Properties"), 
+                React.createElement("span", {className: 'item-count'}, props.stats.predicate))
+        ), 
+        React.createElement("div", {className: 'record'}, 
+            React.createElement("span", {className: 'item-name'}, "Records"), 
+            React.createElement("span", {className: 'item-count'}, props.stats.record))));
+};
+
+
+/***/ },
+/* 114 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview Controller for element sets
+ * @author <a href='mailto:tim.hollies@warwick.ac.uk'>Tim Hollies</a>
+ * @version 0.0.1
+ */
+"use strict";
+const Entity_1 = __webpack_require__(104);
+const GenericController_1 = __webpack_require__(19);
+const Exceptions_1 = __webpack_require__(20);
+const lodash_1 = __webpack_require__(5);
+class EntityPersistable extends Entity_1.Entity {
+    getTableName() {
+        return EntityPersistable.tableName;
+    }
+    toSchema() {
+        return Object.assign(lodash_1.omit(this.serialize(), 'entityType', 'creationTimestamp', 'lastmodifiedTimestamp'), {
+            type: this.entityType,
+            creation_timestamp: this.creationTimestamp,
+            lastmodified_timeStamp: this.lastmodifiedTimestamp
+        });
+    }
+    fromSchema(data) {
+        this.deserialize({
+            entityType: data.type,
+            uid: data.uid,
+            label: data.label,
+            parent: data.parent
+        });
+        return this;
+    }
+}
+EntityPersistable.tableName = 'entities';
+exports.EntityPersistable = EntityPersistable;
+class EntityController extends GenericController_1.GenericController {
+    constructor(db) {
+        super(db, EntityPersistable.tableName);
+    }
+    getCollectionJson(obj, params = {}) {
+        if (params.type !== undefined) {
+            return this.db.getChildrenOf(lodash_1.isArray(params.type) ? params.type[0] : params.type, 'entity_types')
+                .then((ancestors) => {
+                return this.db.select('entities').whereIn('type', ancestors)
+                    .then((results) => results.map((result) => new obj().fromSchema(result)));
+            });
+        }
+        else {
+            return super.getCollectionJson(obj, params);
+        }
+    }
+    deleteItem(obj, uid) {
+        // check if this entity is the parent of another entity or if it has any relationships
+        // pointing towards it.
+        return Promise.all([
+            this.db.select(EntityPersistable.tableName).where('parent', '=', uid),
+            this.db.select('records').where('value_entity', '=', uid)
+        ]).then(([entities, records]) => {
+            if (entities.length + records.length === 0) {
+                return this.db.deleteItem(this.tableName, uid);
+            }
+            else {
+                throw new Exceptions_1.OperationNotPermittedException({
+                    message: 'The operation could not be completed as the entity is referenced in other sources',
+                    data: Promise.resolve({
+                        entity: entities,
+                        record: records
+                    })
+                });
+            }
+        });
+    }
+}
+exports.EntityController = EntityController;
+
+
+/***/ },
+/* 115 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview Controller for element sets
+ * @author <a href='mailto:tim.hollies@warwick.ac.uk'>Tim Hollies</a>
+ * @version 0.0.1
+ */
+"use strict";
+const Predicate_1 = __webpack_require__(106);
+const GenericController_1 = __webpack_require__(19);
+const Exceptions_1 = __webpack_require__(20);
+const RecordController_1 = __webpack_require__(70);
+const lodash_1 = __webpack_require__(5);
+class PredicatePersistable extends Predicate_1.Predicate {
+    getTableName() {
+        return PredicatePersistable.tableName;
+    }
+    toSchema() {
+        const out = Object.assign(lodash_1.omit(this.serialize(), 'range', 'rangeIsReference', 'sameAs', 'creationTimestamp', 'lastmodifiedTimestamp'), {
+            same_as: this.sameAs,
+            range_type: this.rangeIsReference ? 'entity' : this.range,
+            creation_timestamp: this.creationTimestamp,
+            lastmodified_timeStamp: this.lastmodifiedTimestamp
+        });
+        if (this.rangeIsReference) {
+            out['range_ref'] = this.range;
+        }
+        else {
+            out['range_ref'] = null;
+        }
+        return out;
+    }
+    fromSchema(data) {
+        if (data.range_type === 'entity') {
+            data.range = data.range_ref;
+            data.rangeIsReference = true;
+        }
+        else {
+            data.range = data.range_type;
+            data.rangeIsReference = false;
+        }
+        this.deserialize(Object.assign(data, {
+            'sameAs': data.same_as
+        }));
+        return this;
+    }
+}
+PredicatePersistable.tableName = 'predicates';
+exports.PredicatePersistable = PredicatePersistable;
+class PredicateController extends GenericController_1.GenericController {
+    constructor(db) {
+        super(db, PredicatePersistable.tableName);
+    }
+    getCollectionJson(obj, params = {}) {
+        if (params.domain !== undefined) {
+            //TODO: this check should be unecessery
+            return this.db.getAncestorsOf(lodash_1.isArray(params.domain) ? params.domain[0] : params.domain, 'entity_types')
+                .then((ancestors) => {
+                return this.db.select('predicates').whereIn('domain', ancestors.concat([params.domain[0]]))
+                    .then((results) => results.map((result) => new obj().fromSchema(result)));
+            });
+        }
+        else {
+            return super.getCollectionJson(obj, params);
+        }
+    }
+    putItem(obj, uid, data) {
+        if (typeof (uid) !== 'number') {
+            throw new Error('Expected single column identifier');
+        }
+        return this.db.updateItem(new obj().deserialize(data));
+    }
+    patchItem(obj, uid, data) {
+        if (data.domain !== undefined) {
+            return this.db.select('records', ['entities.type as entityType'])
+                .distinct()
+                .where({ predicate: uid })
+                .innerJoin('entities', 'records.entity', 'entities.uid')
+                .then((records) => {
+                if (records.length > 0) {
+                    return this.db.getChildrenOf(data.domain, 'entity_types')
+                        .then((res) => {
+                        records.map((e) => e.entityType)
+                            .forEach((e) => {
+                            if (res.indexOf(e) === -1) {
+                                throw new Exceptions_1.OperationNotPermittedException({
+                                    message: 'The operation could not be completed as it would invalidate predicate relationships',
+                                    data: Promise.resolve({})
+                                });
+                            }
+                        });
+                    }).then(() => super.patchItem(obj, uid, data));
+                }
+                return super.patchItem(obj, uid, data);
+            });
+        }
+        //TODO: fix range enforcement
+        if (data.range !== undefined) {
+            return this.db.select('records')
+                .where({ predicate: uid })
+                .then((records) => {
+                if (records.length > 0) {
+                    if (data.rangeIsReference === false) {
+                        throw new Exceptions_1.OperationNotPermittedException({
+                            message: 'The operation could not be completed as it would invalidate predicate relationships',
+                            data: Promise.resolve({})
+                        });
+                    }
+                    return this.db.getChildrenOf(data.range, 'entity_types')
+                        .then((res) => {
+                        records.map((e) => e.value_entity)
+                            .forEach((e) => {
+                            if (res.indexOf(e) === -1) {
+                                throw new Exceptions_1.OperationNotPermittedException({
+                                    message: 'The operation could not be completed as it would invalidate predicate relationships',
+                                    data: Promise.resolve({})
+                                });
+                            }
+                        });
+                    }).then(() => super.patchItem(obj, uid, data));
+                }
+                return super.patchItem(obj, uid, data);
+            });
+        }
+        return super.patchItem(obj, uid, data);
+    }
+    deleteItem(obj, uid) {
+        // check if this entity is the parent of another entity or if it has any relationships
+        // pointing towards it.
+        return Promise.all([
+            this.db.loadCollection('records', { predicate: uid })
+        ]).then(([records]) => {
+            if (records.length === 0) {
+                return this.db.deleteItem(this.tableName, uid);
+            }
+            else {
+                throw new Exceptions_1.OperationNotPermittedException({
+                    message: 'The operation could not be completed as the predicate is used by other records',
+                    data: Promise.resolve({
+                        record: records.map((record) => new RecordController_1.RecordPersistable().fromSchema(record))
+                    })
+                });
+            }
+        });
+    }
+}
+exports.PredicateController = PredicateController;
+
+
+/***/ },
+/* 116 */
+/***/ function(module, exports) {
+
+"use strict";
+/**
+ * @fileOverview Map of URIs to controllers
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.0.1
+ */
+"use strict";
+exports.GeneralStatisticsController = (db) => {
+    return Promise.all([
+        db('entities').count(),
+        db('entity_types').count(),
+        db('sources').count(),
+        db('records').count(),
+        db('predicates').count()
+    ]).then(([[entityCount], [entityTypeCount], [sourceCount], [recordCount], [predicateCount]]) => {
+        const statistics = {
+            entity: entityCount['count(*)'],
+            entityType: entityTypeCount['count(*)'],
+            source: sourceCount['count(*)'],
+            record: recordCount['count(*)'],
+            predicate: predicateCount['count(*)']
+        };
+        return statistics;
+    });
+};
+
+
+/***/ },
 /* 117 */
 /***/ function(module, exports) {
 
@@ -10314,6 +10314,12 @@ module.exports = require("koa-router");
 
 /***/ },
 /* 120 */
+/***/ function(module, exports) {
+
+module.exports = require("path");
+
+/***/ },
+/* 121 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10324,26 +10330,26 @@ module.exports = require("koa-router");
  */
 "use strict";
 const Koa = __webpack_require__(35);
-const koaStatic = __webpack_require__(283);
+const koaStatic = __webpack_require__(284);
 const KoaRouter = __webpack_require__(119);
-const koaJSON = __webpack_require__(278);
-const koaBodyParser = __webpack_require__(277);
-const koaQs = __webpack_require__(281);
-const koaLogger = __webpack_require__(279);
-const koaSession = __webpack_require__(282);
+const koaJSON = __webpack_require__(279);
+const koaBodyParser = __webpack_require__(278);
+const koaQs = __webpack_require__(282);
+const koaLogger = __webpack_require__(280);
+const koaSession = __webpack_require__(283);
 const koaPassport = __webpack_require__(73);
-const koaMount = __webpack_require__(280);
-const Database_1 = __webpack_require__(172);
+const koaMount = __webpack_require__(281);
+const Database_1 = __webpack_require__(266);
 const lodash_1 = __webpack_require__(5);
 const fs_1 = __webpack_require__(71);
-const api_1 = __webpack_require__(179);
-const adminApp_1 = __webpack_require__(178);
-const auth_1 = __webpack_require__(180);
-const snapshot_1 = __webpack_require__(181);
-const stats_1 = __webpack_require__(182);
-const Auth_1 = __webpack_require__(171);
-const SqliteSnapshot_1 = __webpack_require__(175);
-const path = __webpack_require__(287);
+const api_1 = __webpack_require__(273);
+const adminApp_1 = __webpack_require__(272);
+const auth_1 = __webpack_require__(274);
+const snapshot_1 = __webpack_require__(275);
+const stats_1 = __webpack_require__(276);
+const Auth_1 = __webpack_require__(265);
+const SqliteSnapshot_1 = __webpack_require__(269);
+const path = __webpack_require__(120);
 class Server {
     init(databaseConfig) {
         this.app = new Koa();
@@ -10392,4434 +10398,13 @@ exports.Server = Server;
 
 
 /***/ },
-/* 121 */
+/* 122 */
 /***/ function(module, exports) {
 
 module.exports = require("dotenv");
 
 /***/ },
-/* 122 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview <Description Missing>
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.1.0
- */
-"use strict";
-const React = __webpack_require__(0);
-const StatsGrid_1 = __webpack_require__(86);
-exports.AdminApp = (props) => (React.createElement("div", {className: 'page'}, 
-    React.createElement("section", null, 
-        React.createElement("h1", null, "VRE App"), 
-        props.stats !== null ? (React.createElement(StatsGrid_1.StatsGrid, {stats: props.stats})) : null)
-));
-
-
-/***/ },
 /* 123 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview <Description Missing>
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.1.0
- */
-"use strict";
-const immutable_1 = __webpack_require__(117);
-const datamodel_1 = __webpack_require__(10);
-exports.emptyDataStore = {
-    all: {
-        entity: { value: [], lastUpdate: null },
-        entity_type: { value: [], lastUpdate: null },
-        predicate: { value: [], lastUpdate: null },
-        source: { value: [], lastUpdate: null },
-        dublinCore: { value: new datamodel_1.ElementSet(), lastUpdate: null }
-    },
-    tabs: {
-        entity: immutable_1.Map(),
-        entity_type: immutable_1.Map(),
-        predicate: immutable_1.Map(),
-        source: immutable_1.Map()
-    }
-};
-exports.emptyTabs = [
-    { entity: immutable_1.Map() },
-    { entity_type: immutable_1.Map() },
-    { predicate: immutable_1.Map() },
-    { source: immutable_1.Map()
-    }];
-
-
-/***/ },
-/* 124 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview <Description Missing>
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.1.0
- */
-"use strict";
-var __assign = (this && this.__assign) || Object.assign || function(t) {
-    for (var s, i = 1, n = arguments.length; i < n; i++) {
-        s = arguments[i];
-        for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
-            t[p] = s[p];
-    }
-    return t;
-};
-//https://react-router.now.sh/Match
-const React = __webpack_require__(0);
-const react_router_1 = __webpack_require__(24);
-const RouteNotFound_1 = __webpack_require__(162);
-const ApiService_1 = __webpack_require__(6);
-const itemTypes_1 = __webpack_require__(84);
-const Admin_1 = __webpack_require__(158);
-const AdminApp_1 = __webpack_require__(122);
-const User_1 = __webpack_require__(163);
-const UserManagement_1 = __webpack_require__(164);
-const AppDownload_1 = __webpack_require__(159);
-const DatabaseUpload_1 = __webpack_require__(160);
-const react_router_2 = __webpack_require__(24);
-const ObjectEditor_1 = __webpack_require__(161);
-class FalconApp extends React.Component {
-    constructor(props) {
-        super();
-        this.state = {
-            user: '',
-            stats: null
-        };
-    }
-    componentDidMount() {
-        if (this.props.environment === 'website' && window !== undefined) {
-            fetch('/admin/currentuser', { credentials: 'same-origin' })
-                .then((response) => response.json())
-                .then((userData) => this.setState({ user: userData.username }));
-        }
-        this.props.api.getStats()
-            .then((stats) => {
-            this.setState({ stats });
-        });
-    }
-    render() {
-        return (React.createElement("div", {id: 'main', className: 'flex-fill'}, 
-            React.createElement(this.props.router, __assign({}, this.props.routerSettings, {className: 'flex-fill', basename: '/admin'}), 
-                React.createElement("div", {className: 'flex-fill', style: { flexDirection: 'column' }}, 
-                    React.createElement("div", {className: 'header'}, 
-                        React.createElement(react_router_2.Link, {to: '/', className: 'logo-link'}, 
-                            React.createElement("div", {className: 'logo'}, "VRE")
-                        ), 
-                        React.createElement(react_router_2.Link, {to: '/', className: 'header-link'}, "Home"), 
-                        React.createElement(react_router_2.Link, {accessKey: 's', to: '/edit/' + ApiService_1.AppUrls.source, className: 'header-link source'}, itemTypes_1.itemTypes.source.plural), 
-                        React.createElement(react_router_2.Link, {accessKey: 'e', to: '/edit/' + ApiService_1.AppUrls.entity, className: 'header-link entity'}, itemTypes_1.itemTypes.entity.plural), 
-                        React.createElement(react_router_2.Link, {accessKey: 'p', to: '/edit/' + ApiService_1.AppUrls.predicate, className: 'header-link predicate'}, itemTypes_1.itemTypes.predicate.plural), 
-                        React.createElement(react_router_2.Link, {accessKey: 't', to: '/edit/' + ApiService_1.AppUrls.entity_type, className: 'header-link entity_type'}, itemTypes_1.itemTypes.entity_type.plural), 
-                        this.props.environment === 'website' ? (React.createElement("div", {className: 'right-header'}, 
-                            React.createElement(react_router_2.Link, {to: '/user', className: 'header-link'}, 
-                                React.createElement("span", {className: 'current-user'}, this.state.user)
-                            ), 
-                            React.createElement("a", {href: '/admin/logout', className: 'header-link'}, "Logout"), 
-                            React.createElement("a", {href: '/', className: 'header-link'}, 
-                                React.createElement("i", {className: 'fa fa-external-link'})
-                            ))) : null), 
-                    this.props.environment === 'website' ? (React.createElement(react_router_1.Match, {exactly: true, pattern: '/', render: (matchprops) => (React.createElement(Admin_1.Admin, __assign({}, matchprops, {stats: this.state.stats})))})) : (React.createElement(react_router_1.Match, {exactly: true, pattern: '/', render: (matchprops) => (React.createElement(AdminApp_1.AdminApp, __assign({}, matchprops, {stats: this.state.stats})))})), 
-                    React.createElement(react_router_1.Match, {exactly: true, pattern: '/user', component: User_1.User}), 
-                    React.createElement(react_router_1.Match, {exactly: true, pattern: '/users', component: UserManagement_1.UserManagement}), 
-                    React.createElement(react_router_1.Match, {exactly: true, pattern: '/app', component: AppDownload_1.AppDownload}), 
-                    React.createElement(react_router_1.Match, {exactly: true, pattern: '/upload', component: DatabaseUpload_1.DatabaseUpload}), 
-                    React.createElement(react_router_1.Match, {exactly: true, pattern: '/search', render: (matchprops) => (React.createElement(ObjectEditor_1.ObjectEditor, __assign({api: this.props.api}, matchprops, {workspace: 'search'})))}), 
-                    React.createElement(react_router_1.Match, {pattern: '/edit/:workspace', render: (matchprops) => (React.createElement(ObjectEditor_1.ObjectEditor, __assign({api: this.props.api}, matchprops, {workspace: matchprops.params.workspace === 'property' ? 'predicate' : matchprops.params.workspace})))}), 
-                    React.createElement(react_router_1.Miss, {component: RouteNotFound_1.RouteNotFound}))
-            )
-        ));
-    }
-}
-exports.FalconApp = FalconApp;
-
-
-/***/ },
-/* 125 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview Sidebar for editor
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.1.0
- */
-"use strict";
-const React = __webpack_require__(0);
-exports.Loading = (props) => {
-    return (React.createElement("div", {className: 'loader-wrapper'}, 
-        React.createElement("div", {className: 'loader'})
-    ));
-};
-
-
-/***/ },
-/* 126 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview Sidebar for editor
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.1.0
- */
-"use strict";
-const React = __webpack_require__(0);
-const SearchBox_1 = __webpack_require__(149);
-const ApiService_1 = __webpack_require__(6);
-const react_router_1 = __webpack_require__(24);
-const Signaller_1 = __webpack_require__(7);
-const lodash_1 = __webpack_require__(5);
-const react_sortable_hoc_1 = __webpack_require__(288);
-const Card = react_sortable_hoc_1.SortableElement((props) => (React.createElement("li", {key: `${props.url}`}, 
-    React.createElement("div", {className: ((currentTab) => {
-        const classes = ['sidebar-card'];
-        if (currentTab) {
-            classes.push('current');
-        }
-        if (props.compact) {
-            classes.push('compact');
-        }
-        return classes.join(' ');
-    })(props.currentTab)}, 
-        React.createElement("div", {className: 'badge-container'}, 
-            React.createElement("div", {className: 'badge ' + props.tab.tabType}, 
-                React.createElement("span", null, props.tab.tabType[0].toUpperCase())
-            )
-        ), 
-        React.createElement("div", {className: 'description'}, 
-            React.createElement(react_router_1.Link, {to: props.url}, 
-                React.createElement("span", {className: 'entity-name'}, props.title), 
-                props.compact ? null : (React.createElement("span", {className: 'entity-type'}, props.subtitle)))
-        ), 
-        !props.currentTab ? (React.createElement("span", {className: 'close-button'}, 
-            React.createElement("i", {className: 'fa fa-times', onClick: (e) => this.closeTab(e, props.tab.tabType, props.tab.uid)})
-        )) : null)
-)));
-const CardList = react_sortable_hoc_1.SortableContainer((props) => {
-    return (React.createElement("ul", {className: 'card-list'}, !props.loading ? props.tabs.map((tab, index) => {
-        // TODO: shouldn't be ==
-        const item = props.dataStore.all[tab.tabType].value
-            .find((item) => item.uid == tab.uid);
-        if (item === undefined) {
-            return null;
-        }
-        const url = `/edit/${ApiService_1.AppUrls[tab.tabType]}/${tab.uid}`;
-        const title = tab.tabType === 'entity' ? item.label : item.name;
-        const subtitle = `${lodash_1.capitalize(ApiService_1.AppUrls[tab.tabType]).replace('_', ' ')} ${tab.uid}`;
-        const currentTab = !props.list && tab.tabType === props.workspace && tab.uid == props.id;
-        return (React.createElement(Card, {key: `tab-${index}`, currentTab: currentTab, url: url, tab: tab, title: title, subtitle: subtitle, index: index, compact: props.compact}));
-    }) : null));
-});
-class Sidebar extends React.Component {
-    constructor() {
-        super();
-        this.onSortEnd = ({ oldIndex, newIndex }) => {
-            Signaller_1.reorderTabs.dispatch((tabs) => {
-                return react_sortable_hoc_1.arrayMove(tabs, oldIndex, newIndex);
-            });
-        };
-        this.state = {
-            searchString: '',
-            compactMode: false
-        };
-    }
-    closeTab(e, tabType, uid) {
-        Signaller_1.closeTab.dispatch(tabType, uid);
-        e.stopPropagation();
-        e.preventDefault();
-        e.nativeEvent.stopImmediatePropagation();
-    }
-    render() {
-        return (React.createElement("section", {id: 'sidebar'}, 
-            React.createElement(SearchBox_1.SearchBox, {searchString: this.state.searchString, dataStore: this.props.dataStore, onChange: (evt) => this.setState({ searchString: evt.currentTarget.value })}), 
-            React.createElement("div", {className: 'sidebar-toolbar'}, 
-                React.createElement("button", {onClick: this.props.clearTabs}, 
-                    React.createElement("i", {className: 'fa fa-trash'}), 
-                    " Clear All"), 
-                React.createElement("button", {onClick: () => this.setState({ compactMode: !this.state.compactMode })}, 
-                    React.createElement("i", {className: 'fa fa-compress'}), 
-                    " Compact")), 
-            React.createElement("div", {className: 'card-list-container'}, 
-                React.createElement(CardList, {dataStore: this.props.dataStore, loading: this.props.loading, tabs: this.props.tabs, list: this.props.list, workspace: this.props.workspace, id: this.props.id, compact: this.state.compactMode, onSortEnd: this.onSortEnd})
-            )));
-    }
-}
-exports.Sidebar = Sidebar;
-
-
-/***/ },
-/* 127 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview Toast controller
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.1.0
- */
-"use strict";
-const React = __webpack_require__(0);
-const Signaller_1 = __webpack_require__(7);
-class Toast extends React.Component {
-    constructor() {
-        super();
-        this.state = {
-            toasts: [],
-            nextId: 0
-        };
-        this.boundShowToast = this.addToast.bind(this);
-        Signaller_1.showToast.add(this.boundShowToast);
-    }
-    componentWillUnmount() {
-        Signaller_1.showToast.remove(this.boundShowToast);
-    }
-    addToast(title, message, level = 'warning', lifeTime = 3000) {
-        const id = this.state.nextId;
-        this.setState({
-            toasts: this.state.toasts.concat([{ title, message, level, lifeTime, id }]),
-            nextId: id + 1
-        });
-        setTimeout(() => {
-            this.setState({
-                toasts: this.state.toasts.filter((toast) => toast.id !== id)
-            });
-        }, lifeTime);
-    }
-    render() {
-        return (React.createElement("span", null, this.state.toasts.map((toast, i) => (React.createElement("div", {key: `toast-${toast.id}`, style: { bottom: (1 + 7 * i) + 'em' }, className: `toast ${toast.level}`}, 
-            React.createElement("div", {className: 'title'}, toast.title), 
-            React.createElement("div", {className: 'message'}, toast.message))))));
-    }
-}
-exports.Toast = Toast;
-
-
-/***/ },
-/* 128 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview Sidebar for editor
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.1.0
- */
-"use strict";
-const React = __webpack_require__(0);
-const Loading_1 = __webpack_require__(125);
-const workspace_1 = __webpack_require__(157);
-class Workspace extends React.Component {
-    constructor() {
-        super();
-        this.state = {
-            searchString: ''
-        };
-    }
-    render() {
-        if (this.props.loading) {
-            return (React.createElement(Loading_1.Loading, null));
-        }
-        if (this.props.list) {
-            return (React.createElement(workspace_1.ObjectListWorkspace, {api: this.props.api, name: this.props.name, query: this.props.location.query, listType: this.props.workspace, dataStore: this.props.dataStore}));
-        }
-        let workspaceComponent = workspace_1.EmptyWorkspace;
-        switch (this.props.workspace) {
-            case 'entity':
-                workspaceComponent = workspace_1.EntityEditorWorkspace;
-                break;
-            case 'predicate':
-                workspaceComponent = workspace_1.PredicateEditorWorkspace;
-                break;
-            case 'source':
-                workspaceComponent = workspace_1.SourceEditorWorkspace;
-                break;
-            case 'entity_type':
-                workspaceComponent = workspace_1.EntityTypeWorkspace;
-                break;
-            case 'search':
-                workspaceComponent = workspace_1.AdvancedSearchWorkspace;
-                break;
-        }
-        return (React.createElement("div", {className: 'flex-fill workspace-outer-wrapper'}, 
-            React.createElement("div", {className: 'workspace-inner-wrapper flex-fill'}, React.createElement(workspaceComponent, { api: this.props.api, dataStore: this.props.dataStore, id: this.props.id }))
-        ));
-    }
-}
-exports.Workspace = Workspace;
-
-
-/***/ },
-/* 129 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview <Description Missing>
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.1.0
- */
-"use strict";
-const React = __webpack_require__(0);
-const DatePickerDropdown_1 = __webpack_require__(136);
-exports.DateFieldEditor = (props) => {
-    return (React.createElement("div", {className: 'date-selector'}, 
-        React.createElement(DatePickerDropdown_1.DatePickerDropdown, {value: props.value, setValue: props.onChange})
-    ));
-};
-
-
-/***/ },
-/* 130 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview <Description Missing>
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.1.0
- */
-"use strict";
-const React = __webpack_require__(0);
-const ComboDropdown_1 = __webpack_require__(17);
-const lodash_1 = __webpack_require__(5);
-exports.EntityFieldEditor = (props) => {
-    const options = props.entities.map((entity) => ({ key: entity.label, value: entity.uid }));
-    let selectedOption = options.find((opt) => opt.value == props.value);
-    if (selectedOption === undefined) {
-        selectedOption = { key: '', value: '' };
-    }
-    return (React.createElement(ComboDropdown_1.ComboDropdown, {options: options, typeName: 'entity type', allowNew: false, value: selectedOption, setValue: (val) => props.onChange(val.value), createNewValue: lodash_1.noop}));
-};
-
-
-/***/ },
-/* 131 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview <Description Missing>
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.1.0
- */
-"use strict";
-const React = __webpack_require__(0);
-exports.IntegerFieldEditor = (props) => {
-    return (React.createElement("input", {type: 'number', value: props.value, onChange: (e) => props.onChange(e.target.value)}));
-};
-
-
-/***/ },
-/* 132 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview <Description Missing>
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.1.0
- */
-"use strict";
-const React = __webpack_require__(0);
-const ApiService_1 = __webpack_require__(6);
-const datamodel_1 = __webpack_require__(10);
-const EditableFieldComponent_1 = __webpack_require__(26);
-const RecordRow_1 = __webpack_require__(133);
-const AddTabButton_1 = __webpack_require__(14);
-class RecordEditableFieldComponent extends EditableFieldComponent_1.EditableFieldComponent {
-}
-class RecordPredicate extends React.Component {
-    constructor() {
-        super();
-        this.state = {
-            potentialValues: []
-        };
-    }
-    componentDidMount() {
-        if (this.props.predicate.rangeIsReference) {
-            this.props.api.getCollection(datamodel_1.Entity, ApiService_1.AppUrls.entity, { type: this.props.predicate.range })
-                .then((potentialValues) => this.setState({ potentialValues }));
-        }
-    }
-    createNewRecord() {
-        this.props.api.postItem(datamodel_1.Record, ApiService_1.AppUrls.record, new datamodel_1.Record().deserialize({
-            predicate: this.props.predicate.uid,
-            entity: this.props.entity_id,
-            valueType: this.props.predicate.rangeIsReference ? 'entity' : this.props.predicate.range,
-            score: 3
-        }));
-    }
-    deleteRecord(record) {
-        if (record.uid === null) {
-            throw new Error('Trying to delete a record with null id');
-        }
-        this.props.api.delItem(datamodel_1.Record, ApiService_1.AppUrls.record, record.uid)
-            .then(() => {
-            this.props.onChange();
-        });
-    }
-    recordChanged(record) {
-        this.props.api.putItem(datamodel_1.Record, ApiService_1.AppUrls.record, this.props.entity_id, record.serialize());
-    }
-    render() {
-        return (React.createElement("section", null, 
-            React.createElement("h5", {className: 'section-header'}, 
-                this.props.predicate.name, 
-                " ", 
-                React.createElement("i", {className: 'fa fa-plus-circle add button', "aria-hidden": 'true', onClick: this.createNewRecord.bind(this), title: `Add new ${this.props.predicate.name} record`}), 
-                React.createElement(AddTabButton_1.AddTabButton, {dataStore: this.props.dataStore, uid: this.props.predicate.uid, tabType: 'predicate'})), 
-            React.createElement("table", {className: 'record-editing-table'}, 
-                React.createElement("thead", null, 
-                    React.createElement("tr", {className: 'record-row title'}, 
-                        React.createElement("th", {className: 'record-row-item uid'}, "ID"), 
-                        this.props.predicate.range !== 'source' ? (React.createElement("th", {className: 'record-row-item'}, "Value")) : null, 
-                        React.createElement("th", {className: 'record-row-item'}, "Source"), 
-                        React.createElement("th", {className: 'record-row-item score'}, "Score"), 
-                        React.createElement("th", {className: 'record-row-item score'}, "Period"), 
-                        React.createElement("th", {className: 'record-row-item buttons'}, "Actions"))
-                ), 
-                React.createElement("tbody", null, this.props.records.map((record) => (React.createElement(RecordEditableFieldComponent, {key: `row-${record.uid}`, value: record, onChange: this.recordChanged.bind(this), onDelete: this.deleteRecord.bind(this), component: RecordRow_1.RecordRow, additionalProps: {
-                    dimension: 'predicates',
-                    sources: this.props.sources,
-                    entities: this.state.potentialValues,
-                    dataStore: this.props.dataStore
-                }})))))));
-    }
-}
-exports.RecordPredicate = RecordPredicate;
-
-
-/***/ },
-/* 133 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview <Description Missing>
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.1.0
- */
-"use strict";
-const React = __webpack_require__(0);
-var EditableFieldComponent_1 = __webpack_require__(26);
-exports.EditableFieldComponent = EditableFieldComponent_1.EditableFieldComponent;
-const ScorePicker_1 = __webpack_require__(137);
-const ComboDropdown_1 = __webpack_require__(17);
-const Signaller_1 = __webpack_require__(7);
-const StringFieldEditor_1 = __webpack_require__(135);
-const EntityFieldEditor_1 = __webpack_require__(130);
-const DateFieldEditor_1 = __webpack_require__(129);
-const IntegerFieldEditor_1 = __webpack_require__(131);
-const AddTabButton_1 = __webpack_require__(14);
-const formatDate_1 = __webpack_require__(46);
-const createNewSource = (initialValue) => {
-    const a = {
-        name: 'source',
-        complete: () => {
-            // TODO : Automatically reload sources
-        },
-        cancel: () => { console.log('cancel'); },
-        settings: {
-            initialValue
-        }
-    };
-    Signaller_1.showModal.dispatch(a);
-};
-const recordEditor = (props) => {
-    switch (props.value.valueType) {
-        case 'string':
-            return (React.createElement(StringFieldEditor_1.StringFieldEditor, {value: props.value.value || '', onChange: (value) => props.onChange(Object.assign(props.value, { value }))}));
-        case 'date':
-            return (React.createElement(DateFieldEditor_1.DateFieldEditor, {value: props.value.value || '', onChange: (value) => props.onChange(Object.assign(props.value, { value }))}));
-        case 'integer':
-            return (React.createElement(IntegerFieldEditor_1.IntegerFieldEditor, {value: props.value.value || '', onChange: (value) => props.onChange(Object.assign(props.value, { value }))}));
-        case 'entity':
-            return (React.createElement(EntityFieldEditor_1.EntityFieldEditor, {value: props.value.value || '', onChange: (value) => props.onChange(Object.assign(props.value, { value })), entities: props.entities}));
-        default:
-            return (React.createElement("div", null, "Missing editor"));
-    }
-};
-const formatValue = (props) => {
-    if (props.value.valueType === 'entity') {
-        const entity = props.entities.find((entity) => entity.uid == props.value.value);
-        if (entity !== undefined) {
-            return (React.createElement("span", null, 
-                entity.label, 
-                " ", 
-                React.createElement(AddTabButton_1.AddTabButton, {dataStore: props.dataStore, uid: entity.uid, tabType: 'entity'})));
-        }
-        else {
-            return (React.createElement("em", null, "Missing Entity"));
-        }
-    }
-    if (props.value.valueType === 'date') {
-        return formatDate_1.formatDate(props.value.value);
-    }
-    return props.value.value;
-};
-exports.RecordRow = (props) => {
-    const recordValue = props.value;
-    if (recordValue === null) {
-        throw new Error('Should not be null!!');
-    }
-    const currentSource = props.sources.find((source) => source.uid === recordValue.source);
-    const dropDownValue = {
-        key: '', value: props.value.source
-    };
-    if (currentSource !== undefined) {
-        dropDownValue.key = currentSource.name;
-    }
-    if (props.edit) {
-        return (React.createElement("tr", {className: 'record-row'}, 
-            React.createElement("td", {className: 'record-row-item uid'}, props.value.uid), 
-            recordValue.valueType !== 'source' ? (React.createElement("td", {className: 'record-row-item'}, recordEditor(props))) : null, 
-            React.createElement("td", {className: 'record-row-item'}, 
-                React.createElement(ComboDropdown_1.ComboDropdown, {options: props.sources.map((source) => ({ key: source.name, value: source.uid })), typeName: 'source', value: dropDownValue, setValue: (combo) => props.onChange(Object.assign(props.value, { source: combo.value })), createNewValue: createNewSource})
-            ), 
-            React.createElement("td", {className: 'record-row-item score'}, 
-                React.createElement(ScorePicker_1.ScorePicker, {value: props.value.score, readOnly: false, onChange: (score) => props.onChange(Object.assign(props.value, { score }))})
-            ), 
-            React.createElement("td", {className: 'record-row-item period'}, 
-                React.createElement(DateFieldEditor_1.DateFieldEditor, {value: props.value.period || '', onChange: (period) => props.onChange(Object.assign(props.value, { period }))})
-            ), 
-            React.createElement("td", {className: 'record-row-item buttons'}, 
-                React.createElement("button", null, 
-                    React.createElement("i", {className: 'fa fa-check', onClick: props.acceptChanges, "aria-hidden": 'true'})
-                ), 
-                React.createElement("button", null, 
-                    React.createElement("i", {className: 'fa fa-times', "aria-hidden": 'true', onClick: props.cancelChanges})
-                ))));
-    }
-    else {
-        return (React.createElement("tr", {className: 'record-row'}, 
-            React.createElement("td", {className: 'record-row-item uid'}, 
-                "#", 
-                props.value.uid), 
-            recordValue.valueType !== 'source' ? (React.createElement("td", {className: 'record-row-item'}, formatValue(props))) : null, 
-            React.createElement("td", {className: 'record-row-item'}, 
-                dropDownValue.key, 
-                dropDownValue.key.length > 0 ? (React.createElement(AddTabButton_1.AddTabButton, {dataStore: props.dataStore, uid: dropDownValue.value, tabType: 'source'})) : null), 
-            React.createElement("td", {className: 'record-row-item score'}, 
-                React.createElement(ScorePicker_1.ScorePicker, {value: props.value.score, readOnly: true})
-            ), 
-            React.createElement("td", {className: 'record-row-item period'}, formatDate_1.formatDate(props.value.period)), 
-            React.createElement("td", {className: 'record-row-item buttons'}, 
-                React.createElement("button", null, 
-                    React.createElement("i", {className: 'fa fa-pencil-square-o', title: 'Edit', onClick: props.setEdit, "aria-hidden": 'true'})
-                ), 
-                React.createElement("button", null, 
-                    React.createElement("i", {className: 'fa fa-trash', "aria-hidden": 'true', onClick: props.onDelete})
-                ))));
-    }
-};
-
-
-/***/ },
-/* 134 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview <Description Missing>
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.1.0
- */
-"use strict";
-const React = __webpack_require__(0);
-const ApiService_1 = __webpack_require__(6);
-const datamodel_1 = __webpack_require__(10);
-const EditableFieldComponent_1 = __webpack_require__(26);
-const SearchBar_1 = __webpack_require__(37);
-const RecordPredicate_1 = __webpack_require__(132);
-const findParentTree_1 = __webpack_require__(83);
-const Signaller_1 = __webpack_require__(7);
-class RecordEditableFieldComponent extends EditableFieldComponent_1.EditableFieldComponent {
-}
-class RecordsEditor extends React.Component {
-    constructor() {
-        super();
-        this.state = {
-            filterFunc: () => true
-        };
-    }
-    deleteRecord(record) {
-        if (record.uid === null) {
-            throw new Error('Trying to delete a record with null id');
-        }
-        this.props.api.delItem(datamodel_1.Record, ApiService_1.AppUrls.record, record.uid)
-            .then(() => {
-            this.props.onChange();
-        });
-    }
-    recordChanged(record) {
-        this.props.api.putItem(datamodel_1.Record, ApiService_1.AppUrls.record, this.props.id, record.serialize());
-    }
-    createNewRecord() {
-        const entity = this.props.dataStore.tabs.entity.get('entity-' + this.props.id).value.entity;
-        const entityType = this.props.dataStore.all.entity_type.value.find((t) => t.uid === entity.entityType);
-        const entityTypeParents = findParentTree_1.findParentTree(entity.entityType, this.props.dataStore.all.entity_type.value);
-        const predicates = this.props.dataStore.all.predicate
-            .value.filter((pred) => entityTypeParents.indexOf(pred.domain) !== -1);
-        const modalDef = {
-            name: 'record',
-            complete: (data) => {
-                console.log('Records editor called complete');
-                //this.loadData(this.props);
-            },
-            cancel: () => {
-                console.log('Records editor called cancel');
-            },
-            settings: {
-                options: predicates.map((pred) => ({ key: pred.name, value: pred.uid, meta: pred })),
-                entityUid: this.props.id,
-                entityType: this.props.entityTypeId
-            }
-        };
-        Signaller_1.showModal.dispatch(modalDef);
-    }
-    render() {
-        const predicates = this.props.predicates;
-        return (React.createElement("div", null, 
-            React.createElement("div", null, 
-                React.createElement("div", null, 
-                    React.createElement("label", {className: 'small'}, "Records"), 
-                    React.createElement("div", {style: { display: 'flex' }}, 
-                        React.createElement("div", {style: { flex: '1' }}, 
-                            React.createElement(SearchBar_1.SearchBar, {getValue: (p) => p.name, setFilterFunc: (filterFunc) => this.setState({ filterFunc })})
-                        ), 
-                        React.createElement("div", {style: { padding: '0.1em 0.4em', fontSize: '2em' }}, 
-                            React.createElement("i", {className: 'fa fa-plus-circle add button', "aria-hidden": 'true', onClick: this.createNewRecord.bind(this), title: 'Add new record'})
-                        )), 
-                    React.createElement("div", null, Object.keys(this.props.records).map((section) => {
-                        const currentPredicate = predicates.find((pred) => {
-                            if (pred.uid === null) {
-                                throw new Error('encountered predicate with null id');
-                            }
-                            return pred.uid.toString() === section;
-                        });
-                        if (currentPredicate === undefined) {
-                            throw new Error('Could not find predicate');
-                        }
-                        if (!this.state.filterFunc(currentPredicate)) {
-                            return null;
-                        }
-                        return (React.createElement(RecordPredicate_1.RecordPredicate, {dataStore: this.props.dataStore, key: `section-${section}`, entity_id: this.props.id, api: this.props.api, dimension: 'predicate', records: this.props.records[section], predicate: currentPredicate, sources: this.props.sources, onChange: this.props.onChange}));
-                    })))
-            )
-        ));
-    }
-}
-exports.RecordsEditor = RecordsEditor;
-
-
-/***/ },
-/* 135 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview <Description Missing>
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.1.0
- */
-"use strict";
-const React = __webpack_require__(0);
-exports.StringFieldEditor = (props) => {
-    return (React.createElement("input", {type: 'text', value: props.value, onChange: (e) => props.onChange(e.target.value)}));
-};
-
-
-/***/ },
-/* 136 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview Sidebar for editor
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.1.0
- */
-"use strict";
-const React = __webpack_require__(0);
-const moment = __webpack_require__(36);
-const lodash_1 = __webpack_require__(5);
-const formatDate_1 = __webpack_require__(46);
-class DatePickerDropdown extends React.Component {
-    constructor() {
-        super();
-        //TODO: should be false
-        this.state = {
-            showingDropDown: false
-        };
-        if (document !== undefined) {
-            this.boundWindowClick = () => {
-                if (!this.ignoreGlobalClick) {
-                    this.setState({
-                        showingDropDown: false
-                    });
-                }
-                else {
-                    this.ignoreGlobalClick = false;
-                }
-            };
-            document.body.addEventListener('click', this.boundWindowClick);
-        }
-    }
-    componentWillMount() {
-        this.ignoreBlur = false;
-        this.ignoreClick = false;
-        this.ignoreGlobalClick = false;
-    }
-    componentWillUnmount() {
-        document.body.removeEventListener('click', this.boundWindowClick);
-    }
-    componentWillReceiveProps(newProps) {
-        // this.updateFilter(newProps.value.key !== this.props.value.key ? newProps.value.key : this.state.searchString, newProps);
-        // this.setState({
-        //     searchString: newProps.value.key !== this.props.value.key ? newProps.value.key : this.state.searchString,
-        //     selected: newProps.value,
-        //     options: newProps.options
-        // });
-    }
-    //should be false
-    handleInputBlur() {
-        if (!this.ignoreBlur) {
-            this.setState({
-                showingDropDown: false
-            });
-        }
-        else {
-            this.ignoreBlur = false;
-        }
-    }
-    handleInputFocus() {
-        if (this.ignoreBlur) {
-            this.ignoreBlur = true;
-            return;
-        }
-        // We don't want `selectItemFromMouse` to trigger when
-        // the user clicks into the input to focus it, so set this
-        // flag to cancel out the logic in `handleInputClick`.
-        // The event order is:  MouseDown -> Focus -> MouseUp -> Click
-        this.ignoreClick = true;
-        this.setState({ showingDropDown: true });
-    }
-    handleInputClick() {
-        // Input will not be focused if it's disabled
-        if (this.isInputFocused() && this.state.showingDropDown === false) {
-            this.setState({ showingDropDown: true });
-        }
-        else {
-            //  if (this.state.highlightedIndex !== null && !this.ignoreClick) {
-            //      this.selectItemFromMouse(this.state.filteredOptions[this.state.highlightedIndex]);
-            //  } else {
-            this.ignoreClick = false;
-        }
-    }
-    selectItemFromMouse(item) {
-        this.setState({
-            showingDropDown: false
-        }, () => {
-            this.props.setValue(item);
-        });
-    }
-    isInputFocused() {
-        const el = this.refs.datePickerDropDownInputBox;
-        return el.ownerDocument && (el === el.ownerDocument.activeElement);
-    }
-    onDropdownClick() {
-        this.ignoreBlur = true;
-        this.ignoreGlobalClick = true;
-        console.log('clicked');
-    }
-    rangeTypeChanged(rangeType) {
-        this.props.setValue(rangeType + this.props.value.substr(1));
-    }
-    yearChanged(e) {
-        const base = this.props.value.length === 9 ? this.props.value : '=XXXX0000';
-        let yearVal = e.target.value.substr(0, 4).replace(/[^0-9]/g, '');
-        for (let i = yearVal.length; i < 4; i += 1) {
-            yearVal += 'X';
-        }
-        this.props.setValue(base.substr(0, 1) + yearVal + base.substr(5));
-    }
-    monthChanged(e) {
-        this.ignoreGlobalClick = true;
-        const base = this.props.value.length === 9 ? this.props.value : '=XXXX0000';
-        let monthVal = e.target.value.substr(0, 2);
-        this.props.setValue(base.substr(0, 5) + monthVal + base.substr(7));
-    }
-    dayChanged(e) {
-        const base = this.props.value.length === 9 ? this.props.value : '=XXXX0000';
-        let dayVal = e.target.value.substr(0, 2).replace(/[^0-9]/g, '');
-        dayVal = lodash_1.padStart(dayVal, 2, '0');
-        this.props.setValue(base.substr(0, 7) + dayVal);
-    }
-    render() {
-        let rangeOption = this.props.value.substr(0, 1);
-        if (['<', '>', '='].indexOf(rangeOption) === -1) {
-            rangeOption = '=';
-        }
-        const rangeOptionClassName = (val) => {
-            if (val === rangeOption) {
-                return 'range-option selected';
-            }
-            else {
-                return 'range-option';
-            }
-        };
-        const year = this.props.value.substr(1, 4).replace(/X/g, '');
-        const month = this.props.value.substr(5, 2);
-        const day = this.props.value[7] === '0' ? this.props.value[8] === '0' ?
-            ''
-            : this.props.value.substr(8, 1)
-            : this.props.value.substr(7, 2);
-        const displayValue = formatDate_1.formatDate(this.props.value);
-        return (React.createElement("div", {className: 'combo-dropdown'}, 
-            React.createElement("div", null, 
-                React.createElement("input", {type: 'text', readOnly: true, ref: 'datePickerDropDownInputBox', className: 'search-input', value: displayValue, onBlur: this.handleInputBlur.bind(this), onFocus: this.handleInputFocus.bind(this), onClick: this.handleInputClick.bind(this)})
-            ), 
-            this.state.showingDropDown ? (React.createElement("div", {className: 'dropdown'}, 
-                React.createElement("div", {className: 'date-picker-dropdown', onMouseDown: this.onDropdownClick.bind(this)}, 
-                    React.createElement("section", {className: 'range-type'}, 
-                        React.createElement("div", {className: rangeOptionClassName('<'), onClick: () => this.rangeTypeChanged('<')}, "Before"), 
-                        React.createElement("div", {className: rangeOptionClassName('='), onClick: () => this.rangeTypeChanged('=')}, "Exactly"), 
-                        React.createElement("div", {className: rangeOptionClassName('>'), onClick: () => this.rangeTypeChanged('>')}, "After")), 
-                    React.createElement("section", {className: 'date-select'}, 
-                        React.createElement("div", {className: 'date-selector day'}, 
-                            React.createElement("label", {className: 'small'}, "Day"), 
-                            React.createElement("input", {type: 'text', maxLength: 2, value: day, onChange: this.dayChanged.bind(this)})), 
-                        React.createElement("div", {className: 'date-selector month'}, 
-                            React.createElement("label", {className: 'small'}, "Month"), 
-                            React.createElement("select", {onChange: this.monthChanged.bind(this), value: month}, 
-                                React.createElement("option", {value: '00'}, "Unknown"), 
-                                moment.months().map((month, i) => (React.createElement("option", {key: `option-${month}`, value: lodash_1.padStart((i + 1).toString(), 2, '0')}, month))))), 
-                        React.createElement("div", {className: 'date-selector year'}, 
-                            React.createElement("label", {className: 'small'}, "Year"), 
-                            React.createElement("input", {type: 'text', maxLength: 4, value: year, onChange: this.yearChanged.bind(this)}))))
-            )) : null));
-    }
-}
-exports.DatePickerDropdown = DatePickerDropdown;
-
-
-/***/ },
-/* 137 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview Sidebar for editor
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.1.0
- */
-"use strict";
-const React = __webpack_require__(0);
-const lodash_1 = __webpack_require__(5);
-exports.ScorePicker = (props) => {
-    const values = [1, 2, 3, 4, 5];
-    if (props.readOnly) {
-        return (React.createElement("span", {className: 'score-picker'}, values.map((val) => (React.createElement("i", {key: val, className: 'fa fa-star' + (val > props.value ? '-o' : ''), "aria-hidden": 'true'})))));
-    }
-    else {
-        if (props.onChange === undefined) {
-            throw new Error('An onChange handler is required');
-        }
-        return (React.createElement("span", {className: 'score-picker editing'}, lodash_1.reverse(values).map((val) => (React.createElement("i", {key: val, className: 'fa fa-star' + (val > props.value ? '-o' : ''), onClick: () => props.onChange(val), "aria-hidden": 'true'})))));
-    }
-};
-
-
-/***/ },
-/* 138 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview Sidebar for editor
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.1.0
- */
-"use strict";
-const React = __webpack_require__(0);
-const Overlay_1 = __webpack_require__(25);
-class ConflictResolution extends React.Component {
-    constructor() {
-        super();
-        this.state = {
-            label: '',
-            entityType: { key: '', value: '' },
-            allEntityTypes: []
-        };
-    }
-    render() {
-        return (React.createElement(Overlay_1.Overlay, null, 
-            React.createElement("h2", null, 
-                React.createElement("i", {className: 'fa fa-exclamation-triangle warning'}), 
-                " Conflict: ", 
-                this.props.message), 
-            this.props.conflictingItems.record !== undefined && this.props.conflictingItems.record.length > 0 ? (React.createElement("span", null, 
-                React.createElement("p", null, "The following records conflict with your request change:"), 
-                React.createElement("table", {className: 'table'}, 
-                    React.createElement("thead", null, 
-                        React.createElement("tr", null, 
-                            React.createElement("th", null, "Entity"), 
-                            React.createElement("th", null, "Predicate"), 
-                            React.createElement("th", null, "Value"))
-                    ), 
-                    React.createElement("tbody", null, this.props.conflictingItems.record.map((record) => {
-                        const entityName = this.props.dataStore.all.entity.value
-                            .find((entity) => entity.uid == record.entity).label;
-                        const predicateName = this.props.dataStore.all.predicate.value
-                            .find((predicate) => predicate.uid == record.predicate).name;
-                        return (React.createElement("tr", {key: `row-${record.uid}`}, 
-                            React.createElement("td", null, entityName), 
-                            React.createElement("td", null, predicateName), 
-                            React.createElement("td", null, record.value)));
-                    }))))) : null, 
-            this.props.conflictingItems.entity !== undefined && this.props.conflictingItems.entity.length > 0 ? (React.createElement("span", null, 
-                React.createElement("p", null, "The following entities conflict with your request change:"), 
-                React.createElement("table", {className: 'table'}, 
-                    React.createElement("thead", null, 
-                        React.createElement("tr", null, 
-                            React.createElement("th", null, "Entity")
-                        )
-                    ), 
-                    React.createElement("tbody", null, this.props.conflictingItems.entity.map((entity) => {
-                        return (React.createElement("tr", {key: `row-${entity.uid}`}, 
-                            React.createElement("td", null, entity.label)
-                        ));
-                    }))))) : null, 
-            this.props.conflictingItems.entityType !== undefined && this.props.conflictingItems.entityType.length > 0 ? (React.createElement("span", null, 
-                React.createElement("p", null, "The following entity types conflict with your request change:"), 
-                React.createElement("table", {className: 'table'}, 
-                    React.createElement("thead", null, 
-                        React.createElement("tr", null, 
-                            React.createElement("th", null, "Entity Type")
-                        )
-                    ), 
-                    React.createElement("tbody", null, this.props.conflictingItems.entityType.map((entityType) => {
-                        return (React.createElement("tr", {key: `row-${entityType.uid}`}, 
-                            React.createElement("td", null, entityType.name)
-                        ));
-                    }))))) : null, 
-            this.props.conflictingItems.source !== undefined && this.props.conflictingItems.source.length > 0 ? (React.createElement("span", null, 
-                React.createElement("p", null, "The following sources conflict with your request change:"), 
-                React.createElement("table", {className: 'table'}, 
-                    React.createElement("thead", null, 
-                        React.createElement("tr", null, 
-                            React.createElement("th", null, "Sources")
-                        )
-                    ), 
-                    React.createElement("tbody", null, this.props.conflictingItems.source.map((source) => {
-                        return (React.createElement("tr", {key: `row-${source.uid}`}, 
-                            React.createElement("td", null, source.name)
-                        ));
-                    }))))) : null, 
-            React.createElement("div", {className: 'block-buttons'}, 
-                React.createElement("button", {onClick: () => this.props.cancel()}, "Cancel"), 
-                React.createElement("button", {onClick: () => this.props.complete('addToWorkspace')}, 
-                    React.createElement("i", {className: 'icon-list-add'}), 
-                    "Cancel and add conflicting records to workspace"), 
-                React.createElement("button", {onClick: () => this.props.complete('deleteAll')}, 
-                    React.createElement("i", {className: 'fa fa-trash'}), 
-                    " Continue and delete all conflicting records"))));
-    }
-}
-exports.ConflictResolution = ConflictResolution;
-;
-
-
-/***/ },
-/* 139 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview Sidebar for editor
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.1.0
- */
-"use strict";
-const React = __webpack_require__(0);
-const Overlay_1 = __webpack_require__(25);
-const datamodel_1 = __webpack_require__(10);
-const ApiService_1 = __webpack_require__(6);
-const ComboDropdown_1 = __webpack_require__(17);
-const lodash_1 = __webpack_require__(5);
-class CreateEntity extends React.Component {
-    constructor() {
-        super();
-        this.state = {
-            label: '',
-            entityType: { key: '', value: '' },
-            allEntityTypes: []
-        };
-    }
-    componentWillMount() {
-        this.props.api.getCollection(datamodel_1.EntityType, ApiService_1.AppUrls.entity_type, {})
-            .then((allEntityTypes) => {
-            if (this.props.initialType !== undefined) {
-                const initialType = allEntityTypes.find((et) => et.uid === this.props.initialType);
-                this.setState({
-                    entityType: { key: initialType.name, value: initialType.uid.toString() }
-                });
-            }
-            this.setState({ allEntityTypes });
-        });
-    }
-    CreateEntity() {
-        this.props.api.postItem(datamodel_1.Entity, ApiService_1.AppUrls.entity, new datamodel_1.Entity().deserialize({
-            label: this.state.label,
-            entityType: this.state.entityType.value
-        }))
-            .then(this.props.complete);
-    }
-    render() {
-        return (React.createElement(Overlay_1.Overlay, null, 
-            React.createElement("h2", null, "Create Entity"), 
-            React.createElement("label", {className: 'small'}, "Label"), 
-            React.createElement("input", {type: 'text', value: this.state.label, ref: (a) => { if (a !== null)
-                a.focus(); }, name: 'new-entity-name', className: 'gap', onChange: (e) => this.setState({ label: e.target.value })}), 
-            React.createElement("label", {className: 'small'}, "Type"), 
-            React.createElement(ComboDropdown_1.ComboDropdown, {options: this.state.allEntityTypes.map((t) => ({ key: t.name, value: t.uid.toString() })), typeName: 'entity type', value: this.state.entityType, setValue: (entityType) => this.setState({ entityType }), createNewValue: lodash_1.noop, allowNew: false}), 
-            React.createElement("button", {name: 'cancel-modal', onClick: () => this.props.cancel(), className: 'pull-left'}, "Cancel"), 
-            React.createElement("button", {name: 'create-entity', onClick: this.CreateEntity.bind(this), className: 'pull-right'}, "Create Entity")));
-    }
-}
-exports.CreateEntity = CreateEntity;
-;
-
-
-/***/ },
-/* 140 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview Sidebar for editor
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.1.0
- */
-"use strict";
-const React = __webpack_require__(0);
-const Overlay_1 = __webpack_require__(25);
-const datamodel_1 = __webpack_require__(10);
-const ApiService_1 = __webpack_require__(6);
-const mousetrap = __webpack_require__(42);
-class CreateEntityType extends React.Component {
-    constructor() {
-        super();
-        this.state = {
-            internalValue: ''
-        };
-    }
-    createEntityType() {
-        this.props.api.postItem(datamodel_1.EntityType, ApiService_1.AppUrls.entity_type, new datamodel_1.EntityType().deserialize({
-            name: this.state.internalValue
-        }))
-            .then(this.props.complete);
-    }
-    inputRef(val) {
-        if (val !== null) {
-            val.focus();
-            this.keyboardShortcuts = new mousetrap(val);
-            this.keyboardShortcuts.bind('return', this.createEntityType.bind(this));
-            this.keyboardShortcuts.bind('escape', this.props.cancel);
-        }
-        else {
-            this.keyboardShortcuts.unbind('return');
-        }
-    }
-    render() {
-        return (React.createElement(Overlay_1.Overlay, null, 
-            React.createElement("h2", null, "Create Entity Type"), 
-            React.createElement("label", {className: 'small'}, "Name"), 
-            React.createElement("input", {type: 'text', value: this.state.internalValue, ref: this.inputRef.bind(this), onChange: (e) => this.setState({ internalValue: e.target.value })}), 
-            React.createElement("button", {onClick: () => this.props.cancel(), className: 'pull-left'}, "Cancel"), 
-            React.createElement("button", {onClick: this.createEntityType.bind(this), className: 'pull-right'}, "Create Entity Type")));
-    }
-}
-exports.CreateEntityType = CreateEntityType;
-;
-
-
-/***/ },
-/* 141 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview Sidebar for editor
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.1.0
- */
-"use strict";
-const React = __webpack_require__(0);
-const Overlay_1 = __webpack_require__(25);
-const PredicateDescription_1 = __webpack_require__(74);
-const datamodel_1 = __webpack_require__(10);
-const literalTypes_1 = __webpack_require__(85);
-const ApiService_1 = __webpack_require__(6);
-class CreatePredicate extends React.Component {
-    constructor() {
-        super();
-        this.state = {
-            name: '',
-            domain: { key: '', value: '' },
-            range: { key: '', value: '' },
-            domainOptions: [],
-            rangeOptions: []
-        };
-    }
-    componentWillMount() {
-        this.setState({ name: this.props.initialName });
-    }
-    componentDidMount() {
-        if (this.props.initialDomain !== undefined) {
-            this.props.api.getItem(datamodel_1.EntityType, ApiService_1.AppUrls.entity_type, this.props.initialDomain)
-                .then((result) => {
-                if (result.uid === null) {
-                    throw new Error('Unexpected null uid');
-                }
-                this.setState({
-                    domain: { key: result.name, value: result.uid.toString() },
-                    domainOptions: [
-                        { key: result.name, value: result.uid.toString() }
-                    ].concat(result.parents.map((entityType) => {
-                        if (entityType.uid === null) {
-                            throw new Error('Unexpected null uid');
-                        }
-                        return { key: entityType.name, value: entityType.uid.toString() };
-                    })) });
-            });
-        }
-        const results = this.props.dataStore.all.entity_type.value;
-        const entityTypeMap = results.map((entityType) => {
-            if (entityType.uid === null) {
-                throw new Error('Unexpected null uid');
-            }
-            return { key: entityType.name, value: entityType.uid.toString() };
-        });
-        if (this.props.initialDomain === undefined) {
-            this.setState({ domainOptions: entityTypeMap });
-        }
-        this.setState({
-            rangeOptions: literalTypes_1.literalTypes.map((lit) => ({ key: lit.name, value: lit.value, meta: 'literal' })).concat(entityTypeMap)
-        });
-    }
-    create() {
-        const newPredicate = new datamodel_1.Predicate().deserialize({
-            name: this.state.name,
-            domain: this.state.domain.value,
-            range: this.state.range.value,
-            rangeIsReference: this.state.range.meta !== 'literal'
-        });
-        this.props.api.postItem(datamodel_1.Predicate, ApiService_1.AppUrls.predicate, newPredicate)
-            .then((result) => {
-            newPredicate.uid = result[0];
-            this.props.complete(newPredicate);
-        });
-    }
-    render() {
-        return (React.createElement(Overlay_1.Overlay, null, 
-            React.createElement("h2", null, 
-                React.createElement("i", {className: 'fa fa-plus', "aria-hidden": 'true'}), 
-                " Create Property"), 
-            React.createElement("label", {className: 'small'}, "Name"), 
-            React.createElement("input", {type: 'text', className: 'gap', ref: (a) => { if (a !== null)
-                a.focus(); }, value: this.state.name, onChange: (e) => this.setState({ name: e.target.value })}), 
-            React.createElement(PredicateDescription_1.PredicateDescription, {domain: this.state.domain, range: this.state.range, domainChanged: (s) => this.setState({ domain: s }), rangeChanged: (s) => this.setState({ range: s }), domainOptions: this.state.domainOptions, rangeOptions: this.state.rangeOptions, mode: 'editAll'}), 
-            React.createElement("div", {className: 'modal-toolbar'}, 
-                React.createElement("button", {onClick: this.props.cancel, className: 'pull-left'}, "Cancel"), 
-                React.createElement("button", {onClick: this.create.bind(this), className: 'pull-right'}, "Create Property"))));
-    }
-}
-exports.CreatePredicate = CreatePredicate;
-;
-
-
-/***/ },
-/* 142 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview Sidebar for editor
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.1.0
- */
-"use strict";
-const React = __webpack_require__(0);
-const datamodel_1 = __webpack_require__(10);
-const ApiService_1 = __webpack_require__(6);
-const Signaller_1 = __webpack_require__(7);
-class CreatePresetRecord extends React.Component {
-    constructor() {
-        super();
-        this.state = {};
-    }
-    componentDidMount() {
-        if (CreatePresetRecord.openEntityDialog) {
-            CreatePresetRecord.openEntityDialog = false;
-            this.createNewEntity();
-        }
-        else {
-            CreatePresetRecord.openEntityDialog = true;
-        }
-    }
-    createNewEntity() {
-        const modalDef = {
-            name: 'entity',
-            complete: (data) => {
-                const isMentioned = this.props.dataStore.all.predicate.value.find((pred) => pred.name === 'is mentioned');
-                this.props.api.postItem(datamodel_1.Record, ApiService_1.AppUrls.record, new datamodel_1.Record().deserialize({
-                    predicate: isMentioned.uid,
-                    entity: data[0],
-                    valueType: 'source',
-                    source: this.props.source.uid,
-                    score: 3
-                }))
-                    .then((result) => {
-                    this.props.complete(result);
-                })
-                    .catch(this.props.cancel);
-            },
-            cancel: () => {
-            },
-            settings: {}
-        };
-        Signaller_1.showModal.dispatch(modalDef);
-    }
-    render() {
-        return null;
-    }
-}
-CreatePresetRecord.openEntityDialog = true;
-exports.CreatePresetRecord = CreatePresetRecord;
-;
-
-
-/***/ },
-/* 143 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview Sidebar for editor
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.1.0
- */
-"use strict";
-const React = __webpack_require__(0);
-const Overlay_1 = __webpack_require__(25);
-const datamodel_1 = __webpack_require__(10);
-const ApiService_1 = __webpack_require__(6);
-const ComboDropdown_1 = __webpack_require__(17);
-const Signaller_1 = __webpack_require__(7);
-class CreateRecord extends React.Component {
-    constructor() {
-        super();
-        this.state = {
-            comboValue: { key: '', value: '' },
-            searchValue: ''
-        };
-    }
-    componentDidMount() {
-        this.refs['comboDropDown'].refs['comboDropDownInputBox'].focus();
-    }
-    createNewPredicate() {
-        const modalDef = {
-            name: 'predicate',
-            complete: (data) => {
-                console.log('Predicate editor called complete');
-                this.setComboValue({ key: data.name, value: data.uid.toString(), meta: data });
-            },
-            cancel: () => {
-                console.log('Predicate editor called cancel');
-            },
-            settings: {
-                initialName: this.state.searchValue,
-                initialDomain: this.props.entityType
-            }
-        };
-        Signaller_1.showModal.dispatch(modalDef);
-    }
-    setComboValue(opt) {
-        this.props.api.postItem(datamodel_1.Record, ApiService_1.AppUrls.record, new datamodel_1.Record().deserialize({
-            predicate: opt.meta.uid,
-            entity: this.props.entityUid,
-            valueType: opt.meta.rangeIsReference ? 'entity' : opt.meta.range,
-            score: 3
-        }))
-            .then((result) => this.props.complete(result))
-            .catch(this.props.cancel);
-    }
-    render() {
-        return (React.createElement(Overlay_1.Overlay, null, 
-            React.createElement("h2", null, "Create Record"), 
-            React.createElement(ComboDropdown_1.ComboDropdown, {ref: 'comboDropDown', options: this.props.options, typeName: 'predicate', value: this.state.comboValue, setValue: this.setComboValue.bind(this), createNewValue: this.createNewPredicate.bind(this), updateSearchString: (s) => this.setState({ searchValue: s })})));
-    }
-}
-exports.CreateRecord = CreateRecord;
-;
-
-
-/***/ },
-/* 144 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview Sidebar for editor
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.1.0
- */
-"use strict";
-const React = __webpack_require__(0);
-const Overlay_1 = __webpack_require__(25);
-const datamodel_1 = __webpack_require__(10);
-const ApiService_1 = __webpack_require__(6);
-const mousetrap = __webpack_require__(42);
-class CreateSource extends React.Component {
-    constructor() {
-        super();
-        this.state = {
-            internalValue: ''
-        };
-    }
-    componentWillMount() {
-        this.setState({ internalValue: this.props.initialValue });
-    }
-    createSource() {
-        this.props.api.postItem(datamodel_1.Source, ApiService_1.AppUrls.source, new datamodel_1.Source().deserialize({
-            name: this.state.internalValue
-        }))
-            .then(this.props.complete);
-    }
-    inputRef(val) {
-        if (val !== null) {
-            val.focus();
-            this.keyboardShortcuts = new mousetrap(val);
-            this.keyboardShortcuts.bind('return', this.createSource.bind(this));
-            this.keyboardShortcuts.bind('escape', this.props.cancel);
-        }
-        else {
-            this.keyboardShortcuts.unbind('return');
-            this.keyboardShortcuts.unbind('escape');
-        }
-    }
-    render() {
-        return (React.createElement(Overlay_1.Overlay, null, 
-            React.createElement("h2", null, "Create Source"), 
-            React.createElement("label", {className: 'small'}, "Name"), 
-            React.createElement("input", {type: 'text', value: this.state.internalValue, ref: this.inputRef.bind(this), onChange: (e) => this.setState({ internalValue: e.target.value })}), 
-            React.createElement("button", {onClick: () => this.props.cancel(), className: 'pull-left'}, "Cancel"), 
-            React.createElement("button", {onClick: this.createSource.bind(this), className: 'pull-right'}, "Create Source")));
-    }
-}
-CreateSource.defaultProps = {
-    initialValue: ''
-};
-exports.CreateSource = CreateSource;
-
-
-/***/ },
-/* 145 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview Sidebar for editor
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.1.0
- */
-"use strict";
-const React = __webpack_require__(0);
-const lev = __webpack_require__(284);
-const ApiService_1 = __webpack_require__(6);
-const datamodel_1 = __webpack_require__(10);
-const ComboDropdown_1 = __webpack_require__(17);
-const lodash_1 = __webpack_require__(5);
-const AddTabButton_1 = __webpack_require__(14);
-const Signaller_1 = __webpack_require__(7);
-const formatDate_1 = __webpack_require__(46);
-const sortIcons = {
-    'none': 'fa fa-sort',
-    'asc': 'fa fa-sort-asc',
-    'desc': 'fa fa-sort-desc'
-};
-const customColumns = (predicates, columns, updateColumnParams, rotateSort) => {
-    return [0, 1, 2].map((id) => {
-        const comboValue = { key: '', value: '' };
-        if (columns[id].predicate !== -1) {
-            const thisPred = predicates.find((pred) => pred.uid == columns[id].predicate);
-            if (thisPred !== undefined) {
-                comboValue.key = thisPred.name;
-            }
-            comboValue.value = columns[id].predicate;
-        }
-        return (React.createElement("td", {key: `col-${id}`}, 
-            React.createElement("div", {className: 'list-combo-header'}, 
-                React.createElement("div", {className: 'combo-wrapper'}, 
-                    React.createElement(ComboDropdown_1.ComboDropdown, {value: comboValue, typeName: 'predicate', allowNew: false, setValue: (value) => updateColumnParams(id, { predicate: value === null ? null : value.value }), options: predicates.map((pred) => ({ key: pred.name, value: pred.uid.toString() })), createNewValue: lodash_1.noop, compact: true})
-                ), 
-                React.createElement("div", {className: 'order-wrapper'}, 
-                    React.createElement("i", {className: sortIcons[columns[id].sort], onClick: () => rotateSort(id)})
-                ))
-        ));
-    });
-};
-class EntityList extends React.Component {
-    constructor(props) {
-        super();
-        this.state = {
-            entities: [],
-            entityTypes: [],
-            predicates: [],
-            columns: [
-                { predicate: -1, sort: 'none', filterType: 'any', invertFilter: false, filterValue: '' },
-                { predicate: -1, sort: 'none', filterType: 'any', invertFilter: false, filterValue: '' },
-                { predicate: -1, sort: 'none', filterType: 'any', invertFilter: false, filterValue: '' }
-            ],
-            results: [],
-            entityType: { key: 'Any', value: 0 }
-        };
-    }
-    componentDidMount() {
-        const queryStringOptions = this.props.query;
-        const columns = lodash_1.cloneDeep(this.state.columns);
-        if (queryStringOptions !== null) {
-            for (let i = 1; i < 4; i += 1) {
-                if (queryStringOptions['col' + i] !== undefined) {
-                    const args = queryStringOptions['col' + i].split(',');
-                    columns[i - 1].predicate = args[0];
-                    if (args.length === 2) {
-                        columns[i - 1].filterType = args[1];
-                    }
-                }
-            }
-        }
-        this.setState({
-            columns
-        }, this.reload.bind(this));
-    }
-    reload() {
-        const setColumns = this.state.columns.filter((col) => col.predicate != -1);
-        this.props.api.getCollection(datamodel_1.Record, ApiService_1.AppUrls.record, {
-            predicate: setColumns.map((col) => col.predicate),
-            entity: this.props.dataStore.all.entity.value.map((entity) => entity.uid)
-        })
-            .then((results) => this.setState({ results }));
-    }
-    addNew() {
-        const a = {
-            name: 'entity',
-            complete: () => {
-            },
-            cancel: () => { console.log('cancel'); },
-            settings: {
-                initialName: ''
-            }
-        };
-        Signaller_1.showModal.dispatch(a);
-    }
-    setColumnPredicate(colId, predicateId) {
-        const columns = lodash_1.cloneDeep(this.state.columns);
-        columns[colId].predicate = predicateId;
-        this.setState({
-            columns
-        }, this.reload.bind(this));
-    }
-    updateColumnParams(colId, updateData) {
-        const columns = lodash_1.cloneDeep(this.state.columns);
-        columns[colId] = Object.assign(columns[colId], updateData);
-        this.setState({
-            columns
-        }, this.reload.bind(this));
-    }
-    rotateSort(colId) {
-        const columns = lodash_1.cloneDeep(this.state.columns);
-        switch (columns[colId].sort) {
-            case 'none':
-                columns[colId].sort = 'asc';
-                break;
-            case 'asc':
-                columns[colId].sort = 'desc';
-                break;
-            case 'desc':
-                columns[colId].sort = 'none';
-        }
-        this.setState({
-            columns
-        }, this.reload.bind(this));
-    }
-    render() {
-        const entities = this.props.dataStore.all.entity.value;
-        const predicates = this.props.dataStore.all.predicate.value;
-        const entityTypes = this.props.dataStore.all.entity_type.value;
-        const entityTypeOptions = entityTypes.map((entityType) => ({ key: entityType.name, value: entityType.uid }));
-        const tableData = entities.map((entity) => {
-            const entityType = entityTypes.find((t) => t.uid === entity.entityType);
-            const entityData = this.state.results.filter((res) => res.entity === entity.uid);
-            return {
-                uid: entity.uid,
-                label: entity.label,
-                entityType,
-                columns: this.state.columns.map((col) => {
-                    let value = '';
-                    if (entityData !== undefined && col.predicate !== -1) {
-                        const predicateData = entityData
-                            .filter((record) => record.predicate == col.predicate);
-                        if (predicateData !== undefined) {
-                            value = predicateData.map((pred) => {
-                                if (pred.valueType === 'date') {
-                                    return formatDate_1.formatDate(pred.value);
-                                }
-                                if (pred.valueType === 'source') {
-                                    if (pred.value === null) {
-                                        return 'Not set';
-                                    }
-                                    return this.props.dataStore.all.source.value.find((source) => source.uid === pred.value).name;
-                                }
-                                if (pred.valueType === 'entity') {
-                                    if (pred.value === null) {
-                                        return 'Not set';
-                                    }
-                                    return this.props.dataStore.all.entity.value.find((entity) => entity.uid === pred.value).label;
-                                }
-                                return pred.value;
-                            }).join(', ');
-                        }
-                        return value;
-                    }
-                })
-            };
-        })
-            .filter((row) => {
-            let keepRow = true;
-            this.state.columns.forEach((col, i) => {
-                if (col.filterType === 'contains' && col.filterValue.length > 0 && col.predicate !== null) {
-                    if (row.columns[i].toLowerCase().indexOf(col.filterValue.toLowerCase()) === -1) {
-                        keepRow = false;
-                    }
-                }
-                if (col.filterType === 'exists' && col.predicate !== null) {
-                    if (row.columns[i].length === 0) {
-                        keepRow = false;
-                    }
-                }
-                if (col.filterType === 'similar' && col.predicate !== null && col.filterValue.length > 0) {
-                    if (new lev(row.columns[i], col.filterValue).distance >= col.filterValue.length + 2) {
-                        keepRow = false;
-                    }
-                }
-            });
-            return keepRow;
-        })
-            .sort((row1, row2) => {
-            let score = 0;
-            this.state.columns.forEach((col, i) => {
-                if (col.sort !== 'none' && row1.columns[i] !== row2.columns[i]) {
-                    score += (row1.columns[i] > row2.columns[i] ? 1 : -1) * (Math.pow(10, 3 - i)) * (col.sort === 'asc' ? -1 : 1);
-                }
-            });
-            return score;
-        });
-        return (React.createElement("div", {className: 'workspace-editor'}, 
-            React.createElement("header", {className: 'editor-header entity'}, 
-                React.createElement("div", {className: 'primary-toolbar'}, 
-                    React.createElement("div", {className: 'main-toolbar'}, 
-                        React.createElement("h2", null, 
-                            "All Entities ", 
-                            React.createElement("i", {className: 'fa fa-plus-circle add button', title: 'Add new entity', "aria-hidden": 'true', onClick: this.addNew.bind(this)}))
-                    )
-                )
-            ), 
-            React.createElement("section", {className: 'editor-body'}, 
-                React.createElement("table", {className: 'table'}, 
-                    React.createElement("thead", null, 
-                        React.createElement("tr", null, 
-                            React.createElement("td", null, "#"), 
-                            React.createElement("td", null, "Label"), 
-                            React.createElement("td", null, "Type"), 
-                            customColumns(predicates, this.state.columns, this.updateColumnParams.bind(this), this.rotateSort.bind(this))), 
-                        React.createElement("tr", null, 
-                            React.createElement("td", null), 
-                            React.createElement("td", null), 
-                            React.createElement("td", null, 
-                                React.createElement(ComboDropdown_1.ComboDropdown, {value: this.state.entityType, typeName: 'entity type', allowNew: false, setValue: (entityType) => this.setState({ entityType }), options: entityTypeOptions, createNewValue: lodash_1.noop, compact: true})
-                            ), 
-                            this.state.columns.map((col, id) => (React.createElement("td", {key: `col-${id}`}, 
-                                React.createElement("div", {className: 'flex-fill'}, 
-                                    React.createElement("div", null, 
-                                        React.createElement("select", {value: col.filterType, className: 'padded', onChange: (e) => this.updateColumnParams(id, { filterType: e.target.value })}, 
-                                            React.createElement("option", {value: 'any'}, "Any"), 
-                                            React.createElement("option", {value: 'exists'}, "Exists"), 
-                                            React.createElement("option", {value: 'contains'}, "Contains"), 
-                                            React.createElement("option", {value: 'similar'}, "Similar"))
-                                    ), 
-                                    React.createElement("div", null, 
-                                        React.createElement("input", {type: 'text', disabled: col.filterType === 'any' || col.filterType === 'exists', onChange: (e) => this.updateColumnParams(id, { filterValue: e.target.value }), value: col.filterValue})
-                                    ))
-                            ))))), 
-                    React.createElement("tbody", null, tableData.map((row) => (React.createElement("tr", {key: `entity-${row.uid}`}, 
-                        React.createElement("td", null, row.uid), 
-                        React.createElement("td", null, 
-                            row.label, 
-                            " ", 
-                            React.createElement(AddTabButton_1.AddTabButton, {dataStore: this.props.dataStore, uid: row.uid, tabType: 'entity'})), 
-                        React.createElement("td", null, row.entityType ? row.entityType.name : ''), 
-                        [0, 1, 2].map((id) => (React.createElement("td", {key: `col-val-${id}`}, row.columns[id]))))))))
-            )));
-    }
-}
-exports.EntityList = EntityList;
-
-
-/***/ },
-/* 146 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview Sidebar for editor
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.1.0
- */
-"use strict";
-const React = __webpack_require__(0);
-const AddTabButton_1 = __webpack_require__(14);
-const Signaller_1 = __webpack_require__(7);
-const SearchBar_1 = __webpack_require__(37);
-class EntityTypeList extends React.Component {
-    constructor() {
-        super();
-        this.state = {
-            filterFunc: () => true
-        };
-    }
-    addNew() {
-        const a = {
-            name: 'entity_type',
-            complete: () => {
-            },
-            cancel: () => { console.log('cancel'); },
-            settings: {}
-        };
-        Signaller_1.showModal.dispatch(a);
-    }
-    render() {
-        return (React.createElement("div", {className: 'workspace-editor'}, 
-            React.createElement("header", {className: 'editor-header entity_type'}, 
-                React.createElement("div", {className: 'primary-toolbar'}, 
-                    React.createElement("div", {className: 'main-toolbar'}, 
-                        React.createElement("h2", null, 
-                            "All Entity Types ", 
-                            React.createElement("i", {className: 'fa fa-plus-circle add button', "aria-hidden": 'true', title: 'Add new entity type', onClick: this.addNew.bind(this)}))
-                    )
-                )
-            ), 
-            React.createElement("section", {className: 'editor-body'}, 
-                React.createElement(SearchBar_1.SearchBar, {getValue: (a) => a.name, setFilterFunc: (f) => this.setState({ filterFunc: f })}), 
-                React.createElement("table", {className: 'table gap'}, 
-                    React.createElement("thead", null, 
-                        React.createElement("tr", null, 
-                            React.createElement("td", null, "#"), 
-                            React.createElement("td", null, "Name"), 
-                            React.createElement("td", null, "Parent"), 
-                            React.createElement("td", null, "Description"))
-                    ), 
-                    React.createElement("tbody", null, this.props.dataStore.all.entity_type.value.filter(this.state.filterFunc).map((entityType) => {
-                        return (React.createElement("tr", {key: `entityType-${entityType.uid}`}, 
-                            React.createElement("td", null, 
-                                entityType.uid, 
-                                " ", 
-                                React.createElement(AddTabButton_1.AddTabButton, {dataStore: this.props.dataStore, uid: entityType.uid, tabType: 'entity_type'})), 
-                            React.createElement("td", null, entityType.name), 
-                            React.createElement("td", null, entityType.parent), 
-                            React.createElement("td", null, entityType.description)));
-                    }))))));
-    }
-}
-exports.EntityTypeList = EntityTypeList;
-
-
-/***/ },
-/* 147 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview Sidebar for editor
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.1.0
- */
-"use strict";
-const React = __webpack_require__(0);
-const AddTabButton_1 = __webpack_require__(14);
-const Signaller_1 = __webpack_require__(7);
-const SearchBar_1 = __webpack_require__(37);
-class PredicateList extends React.Component {
-    constructor() {
-        super();
-        this.state = {
-            filterFunc: () => true
-        };
-    }
-    addNew() {
-        const a = {
-            name: 'predicate',
-            complete: () => {
-            },
-            cancel: () => { console.log('cancel'); },
-            settings: {
-                initialName: ''
-            }
-        };
-        Signaller_1.showModal.dispatch(a);
-    }
-    render() {
-        return (React.createElement("div", {className: 'workspace-editor'}, 
-            React.createElement("header", {className: 'editor-header predicate'}, 
-                React.createElement("div", {className: 'primary-toolbar'}, 
-                    React.createElement("div", {className: 'main-toolbar'}, 
-                        React.createElement("h2", null, 
-                            "All Properties ", 
-                            React.createElement("i", {className: 'fa fa-plus-circle add button', title: 'Add new property', "aria-hidden": 'true', onClick: this.addNew.bind(this)}))
-                    )
-                )
-            ), 
-            React.createElement("section", {className: 'editor-body'}, 
-                React.createElement(SearchBar_1.SearchBar, {getValue: (a) => a.name, setFilterFunc: (f) => this.setState({ filterFunc: f })}), 
-                React.createElement("table", {className: 'table gap'}, 
-                    React.createElement("thead", null, 
-                        React.createElement("tr", null, 
-                            React.createElement("td", null, "#"), 
-                            React.createElement("td", null, "Label"), 
-                            React.createElement("td", null, "Domain"), 
-                            React.createElement("td", null, "Range"))
-                    ), 
-                    React.createElement("tbody", null, this.props.dataStore.all.predicate.value.filter(this.state.filterFunc).map((predicate) => {
-                        const entityType = this.props.dataStore.all.entity_type.value.find((t) => t.uid === predicate.domain);
-                        const rangeType = predicate.rangeIsReference ?
-                            this.props.dataStore.all.entity_type.value.find((t) => t.uid === predicate.range) :
-                            predicate.range;
-                        return (React.createElement("tr", {key: `predicate-${predicate.uid}`}, 
-                            React.createElement("td", null, 
-                                predicate.uid, 
-                                " ", 
-                                React.createElement(AddTabButton_1.AddTabButton, {dataStore: this.props.dataStore, uid: predicate.uid, tabType: 'predicate'})), 
-                            React.createElement("td", null, predicate.name), 
-                            React.createElement("td", null, entityType ? entityType.name : ''), 
-                            React.createElement("td", null, predicate.rangeIsReference ? rangeType ? rangeType.name : '' : rangeType)));
-                    }))))));
-    }
-}
-exports.PredicateList = PredicateList;
-
-
-/***/ },
-/* 148 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview Sidebar for editor
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.1.0
- */
-"use strict";
-const React = __webpack_require__(0);
-const AddTabButton_1 = __webpack_require__(14);
-const Signaller_1 = __webpack_require__(7);
-const SearchBar_1 = __webpack_require__(37);
-class SourceList extends React.Component {
-    constructor() {
-        super();
-        this.state = {
-            filterFunc: () => true,
-            mode: 'list'
-        };
-    }
-    addNew() {
-        const a = {
-            name: 'source',
-            complete: () => {
-            },
-            cancel: () => { console.log('cancel'); },
-            settings: {}
-        };
-        Signaller_1.showModal.dispatch(a);
-    }
-    render() {
-        return (React.createElement("div", {className: 'workspace-editor'}, 
-            React.createElement("header", {className: 'editor-header source'}, 
-                React.createElement("div", {className: 'primary-toolbar'}, 
-                    React.createElement("div", {className: 'main-toolbar'}, 
-                        React.createElement("h2", null, 
-                            "All Sources ", 
-                            React.createElement("i", {className: 'fa fa-plus-circle add button', "aria-hidden": 'true', title: 'Add new source', onClick: this.addNew.bind(this)}))
-                    )
-                ), 
-                React.createElement("div", {className: 'secondary-toolbar'}, 
-                    React.createElement("div", {className: 'tab-bar'}, 
-                        React.createElement("div", {onClick: () => this.setState({ mode: 'list' })}, "LIST"), 
-                        React.createElement("div", {onClick: () => this.setState({ mode: 'tree' })}, "TREE"))
-                )), 
-            React.createElement("section", {className: 'editor-body'}, 
-                React.createElement(SearchBar_1.SearchBar, {getValue: (a) => a.name, setFilterFunc: (f) => this.setState({ filterFunc: f })}), 
-                this.state.mode === 'list' ? (React.createElement("table", {className: 'table gap'}, 
-                    React.createElement("thead", null, 
-                        React.createElement("tr", null, 
-                            React.createElement("td", null, "#"), 
-                            React.createElement("td", null, "Name"), 
-                            React.createElement("td", null, "Parent"))
-                    ), 
-                    React.createElement("tbody", null, this.props.dataStore.all.source.value.filter(this.state.filterFunc).map((source) => {
-                        return (React.createElement("tr", {key: `source-${source.uid}`}, 
-                            React.createElement("td", null, 
-                                source.uid, 
-                                " ", 
-                                React.createElement(AddTabButton_1.AddTabButton, {dataStore: this.props.dataStore, uid: source.uid, tabType: 'source'})), 
-                            React.createElement("td", null, source.name), 
-                            React.createElement("td", null, source.parent)));
-                    })))) : null)));
-    }
-}
-exports.SourceList = SourceList;
-
-
-/***/ },
-/* 149 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview Searchboc for sidebar
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.1.0
- */
-"use strict";
-const React = __webpack_require__(0);
-const ComboDropdown_1 = __webpack_require__(17);
-const ApiService_1 = __webpack_require__(6);
-exports.SearchBox = (props, context) => {
-    const entities = props.dataStore.all.entity.value.map((entity) => ({ key: entity.label, value: entity.uid, meta: { itemType: ApiService_1.AppUrls.entity } }));
-    const entityTypes = props.dataStore.all.entity_type.value.map((entityType) => ({ key: entityType.name, value: entityType.uid, meta: { itemType: ApiService_1.AppUrls.entity_type } }));
-    const predicates = props.dataStore.all.predicate.value.map((predicate) => ({ key: predicate.name, value: predicate.uid, meta: { itemType: ApiService_1.AppUrls.predicate } }));
-    const sources = props.dataStore.all.source.value.map((source) => ({ key: source.name, value: source.uid, meta: { itemType: ApiService_1.AppUrls.source } }));
-    const all = entities.concat(entityTypes, predicates, sources);
-    return (React.createElement("span", null, 
-        React.createElement("div", {className: 'input-addon-formgroup'}, 
-            React.createElement("span", {className: 'input-addon-icon'}, 
-                React.createElement("i", {className: 'fa fa-search fa-fw'})
-            ), 
-            React.createElement(ComboDropdown_1.ComboDropdown, {value: { key: '', value: '' }, setValue: (val) => {
-                context.router.transitionTo(`/edit/${val.meta.itemType}/${val.value}`);
-            }, typeName: 'all', options: all, allowNew: false, createNewValue: () => { }}))
-    ));
-};
-exports.SearchBox.contextTypes = { router: React.PropTypes.object.isRequired };
-
-
-/***/ },
-/* 150 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview Empty workspace for when nothing is open!
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.1.0
- */
-"use strict";
-const React = __webpack_require__(0);
-exports.AdvancedSearchWorkspace = (props) => (React.createElement("div", {className: 'workspace-editor'}, 
-    React.createElement("h2", null, "Advanced Search")
-));
-
-
-/***/ },
-/* 151 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview Empty workspace for when nothing is open!
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.1.0
- */
-"use strict";
-const React = __webpack_require__(0);
-exports.EmptyWorkspace = () => (React.createElement("div", {className: 'workspace-editor'}, 
-    React.createElement("h2", null, "There is nothing here")
-));
-
-
-/***/ },
-/* 152 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview Empty workspace for when nothing is open!
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.1.0
- */
-"use strict";
-const React = __webpack_require__(0);
-const RecordsEditor_1 = __webpack_require__(134);
-const ApiService_1 = __webpack_require__(6);
-const datamodel_1 = __webpack_require__(10);
-const lodash_1 = __webpack_require__(5);
-const Signaller_1 = __webpack_require__(7);
-const AddTabButton_1 = __webpack_require__(14);
-const findParentTree_1 = __webpack_require__(83);
-const EditableHeader_1 = __webpack_require__(38);
-const EditableComboDropdown_1 = __webpack_require__(43);
-class StringEditableFieldComponent extends EditableHeader_1.EditableFieldComponent {
-}
-class ComboEditableFieldComponent extends EditableHeader_1.EditableFieldComponent {
-}
-// What can I do?
-// Entity Operations
-// - Delete the entity
-// - Merge the entity
-// - Split the entity
-// - Add 'same-as-ses' to the entity
-// Records
-// - Order records by type, source and date
-// - Add new records
-// - Adding a new predicate creates a new record with the
-//   entity set, the predicate set, the score set to 3, the period set to null, source set to null
-//   it also creates a blank entry in the records sub table based on the range of the predicate.
-// - New predicates must have a name. The domain is set to the current entitytype but can be changed
-//   to one of its parents. The range MUST be set.
-// Visualisations:
-// - Network graph of entity relationships
-class EntityEditorWorkspace extends React.Component {
-    constructor(props, context) {
-        super();
-        this.state = {
-            comboValue: { key: 'test', value: '' },
-            comboSearchValue: ''
-        };
-    }
-    del() {
-        this.props.api.delItem(datamodel_1.Entity, ApiService_1.AppUrls.entity, this.props.id)
-            .then(() => {
-            Signaller_1.closeTab.dispatch('entity', this.props.id);
-            this.context.router.transitionTo('/edit/notfound');
-        })
-            .catch((e) => {
-            e.data.data.then((data) => {
-                const conflictResolutionModal = {
-                    name: 'conflict_resolution',
-                    cancel: () => { },
-                    complete: (result) => {
-                        if (result === 'addToWorkspace') {
-                            data.record.forEach((datum) => {
-                                Signaller_1.createTab.dispatch('entity', datum.entity);
-                            });
-                            data.entity.forEach((datum) => {
-                                Signaller_1.createTab.dispatch('entity', datum.uid);
-                            });
-                        }
-                        if (result === 'deleteAll') {
-                            Promise.all(data.record.map((datum) => this.props.api.delItem(datamodel_1.Record, ApiService_1.AppUrls.record, datum.uid)))
-                                .then(() => {
-                                this.del();
-                            });
-                        }
-                    },
-                    settings: {
-                        conflictingItems: data,
-                        message: 'Deleting Entity'
-                    }
-                };
-                Signaller_1.showModal.dispatch(conflictResolutionModal);
-            });
-        });
-    }
-    createNewRecord() {
-        const entity = this.props.dataStore.tabs.entity.get('entity-' + this.props.id).value.entity;
-        const entityType = this.props.dataStore.all.entity_type.value.find((t) => t.uid === entity.entityType);
-        const entityTypeParents = findParentTree_1.findParentTree(entity.entityType, this.props.dataStore.all.entity_type.value);
-        const predicates = this.props.dataStore.all.predicate
-            .value.filter((pred) => entityTypeParents.indexOf(pred.domain) !== -1);
-        const modalDef = {
-            name: 'record',
-            complete: (data) => {
-                console.log('Records editor called complete');
-                //this.loadData(this.props);
-            },
-            cancel: () => {
-                console.log('Records editor called cancel');
-            },
-            settings: {
-                options: predicates.map((pred) => ({ key: pred.name, value: pred.uid, meta: pred })),
-                entityUid: this.props.id,
-                entityType: entityType.uid
-            }
-        };
-        Signaller_1.showModal.dispatch(modalDef);
-    }
-    update(data) {
-        this.props.api.patchItem(datamodel_1.Entity, ApiService_1.AppUrls.entity, this.props.id, data);
-    }
-    render() {
-        const entity = this.props.dataStore.tabs.entity.get('entity-' + this.props.id).value.entity;
-        const entityType = this.props.dataStore.all.entity_type.value.find((t) => t.uid === entity.entityType);
-        const potentialParents = this.props.dataStore.all.entity.value;
-        const entityTypeParents = findParentTree_1.findParentTree(entity.entityType, this.props.dataStore.all.entity_type.value);
-        const predicates = this.props.dataStore.all.predicate
-            .value.filter((pred) => entityTypeParents.indexOf(pred.domain) !== -1);
-        const sources = this.props.dataStore.all.source.value;
-        const records = lodash_1.groupBy(this.props.dataStore.tabs.entity.get('entity-' + this.props.id).value.records, 'predicate');
-        const options = predicates.map((pred) => ({ key: pred.name, value: pred.uid, meta: pred }));
-        let parentName = '';
-        if (potentialParents !== null && entity.parent !== undefined) {
-            const found = potentialParents.find((par) => par.uid === entity.parent);
-            if (found !== undefined) {
-                parentName = found.label;
-            }
-        }
-        return (React.createElement("div", {className: 'workspace-editor'}, 
-            React.createElement("header", {className: 'editor-header entity'}, 
-                React.createElement("div", {className: 'primary-toolbar'}, 
-                    React.createElement("div", {className: 'main-toolbar'}, 
-                        React.createElement("i", {className: 'fa fa-cube item-icon'}), 
-                        React.createElement(StringEditableFieldComponent, {value: entity.label, component: EditableHeader_1.EditableHeader, onChange: (value) => this.update({ 'label': value })})), 
-                    React.createElement("div", {className: 'sub-toolbar'}, 
-                        React.createElement("i", {className: 'fa fa-trash delete button', "aria-hidden": 'true', onClick: this.del.bind(this)}), 
-                        React.createElement("i", {className: 'fa fa-clone button', "aria-hidden": 'true', onClick: () => console.log('copy')})))
-            ), 
-            React.createElement("section", {className: 'editor-body'}, 
-                React.createElement("div", {className: 'flex-fill'}, 
-                    React.createElement("div", {className: 'flex-fill'}, 
-                        React.createElement("div", null, 
-                            React.createElement("label", {className: 'small'}, "Type"), 
-                            entityType.name, 
-                            " ", 
-                            React.createElement(AddTabButton_1.AddTabButton, {dataStore: this.props.dataStore, uid: entityType.uid, tabType: 'entity_type'}))
-                    ), 
-                    React.createElement("div", {style: { flex: 1 }}, 
-                        React.createElement("label", {className: 'small'}, "Parent"), 
-                        React.createElement(ComboEditableFieldComponent, {value: { key: parentName, value: entity.parent }, component: EditableComboDropdown_1.EditableComboDropdown, onChange: (value) => this.update({ 'parent': value.value }), additionalProps: { comboSettings: {
-                                options: potentialParents.map((par) => ({ key: par.label, value: par.uid })),
-                                typeName: 'Entity'
-                            } }}), 
-                        entity.parent !== null ? (React.createElement(AddTabButton_1.AddTabButton, {dataStore: this.props.dataStore, tabType: 'entity', uid: entity.parent})) : null)), 
-                React.createElement("div", {className: 'edit-group'}, 
-                    React.createElement(RecordsEditor_1.RecordsEditor, {dimension: 'predicates', entityExists: true, id: this.props.id, api: this.props.api, records: records, onChange: () => { }, predicates: predicates, sources: sources, entityTypeId: entityType.uid, dataStore: this.props.dataStore})
-                ))));
-    }
-}
-EntityEditorWorkspace.contextTypes = {
-    router: React.PropTypes.object.isRequired
-};
-exports.EntityEditorWorkspace = EntityEditorWorkspace;
-
-
-/***/ },
-/* 153 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview Predicate editor workspace
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.0.1
- */
-"use strict";
-const React = __webpack_require__(0);
-const SameAsEditor_1 = __webpack_require__(45);
-const ApiService_1 = __webpack_require__(6);
-const datamodel_1 = __webpack_require__(10);
-const AddTabButton_1 = __webpack_require__(14);
-const EditableHeader_1 = __webpack_require__(38);
-const EditableParagraph_1 = __webpack_require__(44);
-const EditableComboDropdown_1 = __webpack_require__(43);
-const Signaller_1 = __webpack_require__(7);
-class StringEditableFieldComponent extends EditableHeader_1.EditableFieldComponent {
-}
-class ComboEditableFieldComponent extends EditableHeader_1.EditableFieldComponent {
-}
-class EntityTypeWorkspace extends React.Component {
-    constructor() {
-        super();
-        this.state = {};
-    }
-    update(data) {
-        const entityType = this.props.dataStore.tabs.entity_type.get('entity_type-' + this.props.id).value;
-        this.props.api.patchItem(datamodel_1.EntityType, ApiService_1.AppUrls.entity_type, this.props.id, data)
-            .then(() => this.setState({ entityType: Object.assign({}, entityType, data) }));
-    }
-    copy() {
-        const entityType = this.props.dataStore.tabs.entity_type.get('entity_type-' + this.props.id).value;
-        const newEntityType = new datamodel_1.EntityType().deserialize(Object.assign({}, entityType.serialize(), { name: 'Copy of ' + entityType.name }));
-        this.props.api.postItem(datamodel_1.EntityType, ApiService_1.AppUrls.entity_type, newEntityType)
-            .then(([id]) => {
-            Signaller_1.createTab.dispatch('entity_type', id);
-        });
-    }
-    del() {
-        this.props.api.delItem(datamodel_1.EntityType, ApiService_1.AppUrls.entity_type, this.props.id)
-            .then(() => this.context.router.transitionTo('/edit/notfound'))
-            .catch((e) => {
-            e.data.data.then((data) => {
-                const conflictResolutionModal = {
-                    name: 'conflict_resolution',
-                    cancel: () => { },
-                    complete: (result) => {
-                        if (result === 'addToWorkspace') {
-                            data.entityType.forEach((datum) => {
-                                Signaller_1.createTab.dispatch('entity_type', datum.uid);
-                            });
-                            data.predicate.forEach((datum) => {
-                                Signaller_1.createTab.dispatch('predicate', datum.uid);
-                            });
-                            data.entity.forEach((datum) => {
-                                Signaller_1.createTab.dispatch('entity', datum.uid);
-                            });
-                        }
-                    },
-                    settings: {
-                        conflictingItems: data,
-                        message: 'Deleting Entity Type'
-                    }
-                };
-                Signaller_1.showModal.dispatch(conflictResolutionModal);
-            });
-        });
-    }
-    createEntity() {
-        const a = {
-            name: 'entity',
-            complete: ([id]) => {
-                Signaller_1.createTab.dispatch('entity', id);
-            },
-            cancel: () => { console.log('cancel'); },
-            settings: {
-                initialName: '',
-                initialType: this.props.id
-            }
-        };
-        Signaller_1.showModal.dispatch(a);
-    }
-    render() {
-        const entityType = this.props.dataStore.tabs.entity_type.get('entity_type-' + this.props.id).value;
-        const potentialParents = this.props.dataStore.all.entity_type.value;
-        let parentName = '';
-        if (potentialParents !== null && entityType.parent !== undefined) {
-            const found = potentialParents.find((par) => par.uid === entityType.parent);
-            if (found !== undefined) {
-                parentName = found.name;
-            }
-        }
-        return (React.createElement("div", {className: 'workspace-editor'}, 
-            React.createElement("header", {className: 'editor-header entity_type'}, 
-                React.createElement("div", {className: 'primary-toolbar'}, 
-                    React.createElement("div", {className: 'main-toolbar'}, 
-                        React.createElement("div", {className: 'bread-crumbs'}, entityType.parents.map((parent, i) => (React.createElement("span", {key: `breadcrumb-${parent.uid}`}, 
-                            React.createElement("span", null, 
-                                "  ", 
-                                parent.name, 
-                                " ", 
-                                React.createElement(AddTabButton_1.AddTabButton, {dataStore: this.props.dataStore, tabType: 'entity_type', uid: parent.uid}), 
-                                " "), 
-                            React.createElement("i", {className: 'fa fa-angle-right'}))))), 
-                        React.createElement("i", {className: 'fa fa-tag item-icon'}), 
-                        React.createElement(StringEditableFieldComponent, {value: entityType.name, component: EditableHeader_1.EditableHeader, onChange: (value) => this.update({ 'name': value })})), 
-                    React.createElement("div", {className: 'sub-toolbar'}, 
-                        React.createElement("i", {className: 'fa fa-plus add button', "aria-hidden": 'true', onClick: this.createEntity.bind(this)}), 
-                        React.createElement("i", {className: 'fa fa-trash delete button', "aria-hidden": 'true', onClick: this.del.bind(this)}), 
-                        React.createElement("i", {className: 'fa fa-clone button', "aria-hidden": 'true', onClick: this.copy.bind(this)})))
-            ), 
-            React.createElement("section", {className: 'editor-body'}, 
-                React.createElement("div", {className: 'edit-group'}, 
-                    React.createElement("label", {className: 'small'}, "Parent"), 
-                    React.createElement(ComboEditableFieldComponent, {value: entityType.parent === null ? null : { key: parentName, value: entityType.parent }, component: EditableComboDropdown_1.EditableComboDropdown, onChange: (value) => this.update({ 'parent': value === null ? null : value.value }), additionalProps: { comboSettings: {
-                            options: potentialParents.map((par) => ({ key: par.name, value: par.uid })),
-                            typeName: 'EntityType'
-                        } }}), 
-                    entityType.parent !== null ? (React.createElement(AddTabButton_1.AddTabButton, {tabType: 'entity_type', dataStore: this.props.dataStore, uid: entityType.parent})) : null), 
-                React.createElement("div", {className: 'edit-group'}, 
-                    React.createElement("label", {className: 'small'}, "Description"), 
-                    React.createElement(StringEditableFieldComponent, {value: entityType.description, component: EditableParagraph_1.EditableParagraph, onChange: (value) => this.update({ 'description': value })})), 
-                React.createElement("div", {className: 'edit-group'}, 
-                    React.createElement(StringEditableFieldComponent, {value: entityType.sameAs, component: SameAsEditor_1.SameAsEditor, onChange: (value) => this.update({ 'sameAs': value })})
-                ), 
-                React.createElement("div", null, 
-                    React.createElement("h4", null, "Direct Children"), 
-                    React.createElement("ul", null, entityType.children
-                        .map((child) => this.props.dataStore.all.entity_type.value.find((et) => et.uid === child))
-                        .map((childEt) => (React.createElement("li", {key: `dc-${childEt.name}`}, 
-                        childEt.name, 
-                        " ", 
-                        React.createElement(AddTabButton_1.AddTabButton, {tabType: 'entity_type', dataStore: this.props.dataStore, uid: childEt.uid})))))))));
-    }
-}
-EntityTypeWorkspace.contextTypes = {
-    router: React.PropTypes.object.isRequired
-};
-exports.EntityTypeWorkspace = EntityTypeWorkspace;
-
-
-/***/ },
-/* 154 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview Empty workspace for when nothing is open!
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.1.0
- */
-"use strict";
-const React = __webpack_require__(0);
-const EntityList_1 = __webpack_require__(145);
-const PredicateList_1 = __webpack_require__(147);
-const SourceList_1 = __webpack_require__(148);
-const EntityTypeList_1 = __webpack_require__(146);
-exports.ObjectListWorkspace = (props) => (React.createElement("div", {className: 'workspace-editor object-list'}, (() => {
-    switch (props.listType) {
-        case 'entity':
-            return (React.createElement(EntityList_1.EntityList, {api: props.api, query: props.query, dataStore: props.dataStore}));
-        case 'source':
-            return (React.createElement(SourceList_1.SourceList, {api: props.api, dataStore: props.dataStore}));
-        case 'predicate':
-            return (React.createElement(PredicateList_1.PredicateList, {api: props.api, dataStore: props.dataStore}));
-        case 'entity_type':
-            return (React.createElement(EntityTypeList_1.EntityTypeList, {api: props.api, dataStore: props.dataStore}));
-    }
-})()));
-
-
-/***/ },
-/* 155 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview Predicate editor workspace
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.0.1
- */
-"use strict";
-const React = __webpack_require__(0);
-const react_router_1 = __webpack_require__(24);
-const SameAsEditor_1 = __webpack_require__(45);
-const ApiService_1 = __webpack_require__(6);
-const Signaller_1 = __webpack_require__(7);
-const datamodel_1 = __webpack_require__(10);
-const EditableHeader_1 = __webpack_require__(38);
-const EditableParagraph_1 = __webpack_require__(44);
-const PredicateDescription_1 = __webpack_require__(74);
-const literalTypes_1 = __webpack_require__(85);
-class StringEditableFieldComponent extends EditableHeader_1.EditableFieldComponent {
-}
-// - Should state the number of times this predicate is used
-// - Widening the domain or range always okay
-// - Narrowing should check for conflicts and return them
-// - Asks 'Delete conflicting records?'
-// - Strong check (double button press or type) to confirm
-// - Changing name/description/sameAs - absolutly fine
-// - Cannot change 'readonly'
-class PredicateEditorWorkspace extends React.Component {
-    constructor() {
-        super();
-        this.state = {
-            records: []
-        };
-    }
-    componentDidMount() {
-        this.loadData(this.props);
-    }
-    componentWillReceiveProps(newProps) {
-        this.loadData(newProps);
-    }
-    loadData(props) {
-        // Promise.all([
-        //     props.api.getCollection(Record, AppUrls.record, { predicate: props.id })
-        // ]).then(([records]) => {
-        //     this.setState({ records });
-        // });
-    }
-    updatePredicate(field, value, rangeIsReferenceOverride = null) {
-        const predicate = this.props.dataStore.tabs.predicate.get('predicate-' + this.props.id).value;
-        if (predicate === null) {
-            console.warn('Tried to edit unready predicate');
-            return;
-        }
-        const rangeIsReferenceVal = rangeIsReferenceOverride === null
-            ? predicate.rangeIsReference : rangeIsReferenceOverride;
-        this.props.api.patchItem(datamodel_1.Predicate, ApiService_1.AppUrls.predicate, predicate.uid, {
-            [field]: value,
-            rangeIsReference: rangeIsReferenceVal
-        });
-    }
-    copy() {
-        const predicate = this.props.dataStore.tabs.predicate.get('predicate-' + this.props.id).value;
-        const newPredicate = new datamodel_1.Predicate().deserialize(Object.assign({}, predicate.serialize(), { name: 'Copy of ' + predicate.name }));
-        this.props.api.postItem(datamodel_1.Predicate, ApiService_1.AppUrls.predicate, newPredicate)
-            .then(([id]) => {
-            Signaller_1.createTab.dispatch('predicate', id);
-        });
-    }
-    del() {
-        this.props.api.delItem(datamodel_1.Predicate, ApiService_1.AppUrls.predicate, this.props.id)
-            .then(() => this.context.router.transitionTo('/edit/notfound'))
-            .catch((e) => {
-            e.data.data.then((data) => {
-                const conflictResolutionModal = {
-                    name: 'conflict_resolution',
-                    cancel: () => { },
-                    complete: (result) => {
-                        if (result === 'addToWorkspace') {
-                            data.forEach((datum) => {
-                                Signaller_1.createTab.dispatch('entity', datum.entity);
-                            });
-                        }
-                        if (result === 'deleteAll') {
-                            Promise.all(data.record.map((datum) => this.props.api.delItem(datamodel_1.Record, ApiService_1.AppUrls.record, datum.uid)))
-                                .then(() => {
-                                this.del();
-                            });
-                        }
-                    },
-                    settings: {
-                        conflictingItems: data,
-                        message: 'Deleting Predicate'
-                    }
-                };
-                Signaller_1.showModal.dispatch(conflictResolutionModal);
-            });
-        });
-    }
-    render() {
-        const predicate = this.props.dataStore.tabs.predicate.get('predicate-' + this.props.id).value;
-        const entityTypes = this.props.dataStore.all.entity_type.value;
-        const currentDomainEntityType = entityTypes.find((t) => t.uid == predicate.domain);
-        let currentDomainEntityTypeName = '';
-        if (currentDomainEntityType !== undefined) {
-            currentDomainEntityTypeName = currentDomainEntityType.name;
-        }
-        const domain = { key: currentDomainEntityTypeName, value: predicate.domain.toString() };
-        const range = { key: '', value: predicate.range.toString() };
-        if (predicate.rangeIsReference) {
-            const currentRangeEntityType = entityTypes.find((t) => t.uid == predicate.range);
-            if (currentRangeEntityType !== undefined) {
-                range.key = currentRangeEntityType.name;
-            }
-        }
-        else {
-            const literalType = literalTypes_1.literalTypes.find((t) => t.value === predicate.range);
-            if (literalType !== undefined) {
-                range.key = literalType.name;
-            }
-        }
-        const entityTypeOptions = entityTypes.map((t) => {
-            if (t.uid === null) {
-                throw new Error('Encountered entity type with no id!');
-            }
-            return { key: t.name, value: t.uid.toString() };
-        });
-        const literalTypeOptions = literalTypes_1.literalTypes.map((t) => ({ key: t.name, value: t.value, meta: 'literal' }));
-        return (React.createElement("div", {className: 'workspace-editor'}, 
-            React.createElement("header", {className: 'editor-header predicate'}, 
-                React.createElement("div", {className: 'primary-toolbar'}, 
-                    React.createElement("div", {className: 'main-toolbar'}, 
-                        React.createElement("i", {className: 'fa fa-long-arrow-right item-icon'}), 
-                        React.createElement(StringEditableFieldComponent, {value: predicate.name, component: EditableHeader_1.EditableHeader, onChange: (value) => this.updatePredicate('name', value)})), 
-                    React.createElement("div", {className: 'sub-toolbar'}, 
-                        React.createElement("i", {className: 'fa fa-trash delete button', "aria-hidden": 'true', onClick: this.del.bind(this)}), 
-                        React.createElement("i", {className: 'fa fa-clone button', "aria-hidden": 'true', onClick: this.copy.bind(this)})))
-            ), 
-            React.createElement("section", {className: 'editor-body'}, 
-                React.createElement("div", null, 
-                    React.createElement(react_router_1.Link, {to: `/edit/entity?col1=${this.props.id},exists`}, 
-                        "Uses: ", 
-                        this.state.records.length)
-                ), 
-                React.createElement("div", {className: 'edit-group'}, 
-                    React.createElement("label", {className: 'small'}, "Description"), 
-                    React.createElement(StringEditableFieldComponent, {value: predicate.description, component: EditableParagraph_1.EditableParagraph, onChange: (value) => this.updatePredicate('description', value)})), 
-                React.createElement("div", {className: 'edit-group'}, 
-                    React.createElement("label", {className: 'small'}, "Typing"), 
-                    React.createElement(PredicateDescription_1.PredicateDescription, {domain: domain, range: range, domainChanged: (value) => this.updatePredicate('domain', value.value), rangeChanged: (value) => this.updatePredicate('range', value.value, value.meta !== 'literal'), mode: 'editSingle', domainOptions: entityTypeOptions, rangeOptions: literalTypeOptions.concat(entityTypeOptions)})), 
-                React.createElement("div", null, 
-                    React.createElement(StringEditableFieldComponent, {value: predicate.sameAs, component: SameAsEditor_1.SameAsEditor, onChange: (value) => this.updatePredicate('sameAs', value)})
-                ))));
-    }
-}
-PredicateEditorWorkspace.contextTypes = {
-    router: React.PropTypes.object.isRequired
-};
-exports.PredicateEditorWorkspace = PredicateEditorWorkspace;
-
-
-/***/ },
-/* 156 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview Predicate editor workspace
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.0.1
- */
-"use strict";
-const React = __webpack_require__(0);
-const SameAsEditor_1 = __webpack_require__(45);
-const ApiService_1 = __webpack_require__(6);
-const datamodel_1 = __webpack_require__(10);
-const EditableHeader_1 = __webpack_require__(38);
-const EditableParagraph_1 = __webpack_require__(44);
-const EditableComboDropdown_1 = __webpack_require__(43);
-const lodash_1 = __webpack_require__(5);
-const Signaller_1 = __webpack_require__(7);
-const AddTabButton_1 = __webpack_require__(14);
-class StringEditableFieldComponent extends EditableHeader_1.EditableFieldComponent {
-}
-class ComboEditableFieldComponent extends EditableHeader_1.EditableFieldComponent {
-}
-// - Should state the number of times this predicate is used
-// - Widening the domain or range always okay
-// - Narrowing should check for conflicts and return them
-// - Asks 'Delete conflicting records?'
-// - Strong check (double button press or type) to confirm
-// - Changing name/description/sameAs - absolutly fine
-// - Cannot change 'readonly'
-class SourceEditorWorkspace extends React.Component {
-    constructor() {
-        super();
-        this.state = {
-            metaData: {}
-        };
-    }
-    componentDidMount() {
-        this.loadData(this.props);
-    }
-    componentWillReceiveProps(newProps) {
-        this.loadData(newProps);
-    }
-    loadData(props) {
-        const source = props.dataStore.tabs.source.get('source-' + this.props.id).value.source;
-        this.setState({
-            metaData: lodash_1.keyBy(source.metaData, 'name')
-        });
-    }
-    updateSource(field, value) {
-        const source = this.props.dataStore.tabs.source.get('source-' + this.props.id).value.source;
-        this.props.api.patchItem(datamodel_1.Source, ApiService_1.AppUrls.source, source.uid, { [field]: value });
-        //.then((success) => {
-        // const updatedSource = new Source().deserialize(Object.assign({},
-        //     source.serialize(), { [field]: value }));
-        // this.setState({
-        //     source: updatedSource,
-        //     metaData: keyBy(updatedSource.metaData, 'name')
-        // });
-        //});
-    }
-    updateSourceElement(element, value) {
-        const source = this.props.dataStore.tabs.source.get('source-' + this.props.id).value.source;
-        const compositeKey = {
-            order: ['source', 'element'],
-            values: {
-                source: this.props.id,
-                element: element.uid
-            }
-        };
-        if (source.metaData[element.name] !== undefined
-            && source.metaData[element.name].values.find((a) => a.source === this.props.id) !== undefined) {
-            this.props.api.patchItem(datamodel_1.SourceElement, ApiService_1.AppUrls.source_element, compositeKey, new datamodel_1.SourceElement().deserialize({
-                uid: compositeKey,
-                element: source.metaData[element.name].element_uid,
-                source: this.props.id,
-                value
-            }));
-        }
-        else {
-            this.props.api.postItem(datamodel_1.SourceElement, ApiService_1.AppUrls.source_element, new datamodel_1.SourceElement().deserialize({
-                uid: compositeKey,
-                value: value
-            }));
-        }
-    }
-    del() {
-        this.props.api.delItem(datamodel_1.Source, ApiService_1.AppUrls.source, this.props.id)
-            .then(() => this.context.router.transitionTo('/edit/notfound'))
-            .catch((e) => {
-            e.data.data.then((data) => {
-                const conflictResolutionModal = {
-                    name: 'conflict_resolution',
-                    cancel: () => { },
-                    complete: (result) => {
-                        if (result === 'addToWorkspace') {
-                            data.source.forEach((datum) => {
-                                Signaller_1.createTab.dispatch('source', datum.uid);
-                            });
-                        }
-                        if (result === 'deleteAll') {
-                            Promise.all(data.source.map((datum) => this.props.api.delItem(datamodel_1.Source, ApiService_1.AppUrls.source, datum.uid)))
-                                .then(() => {
-                                this.del();
-                            });
-                        }
-                    },
-                    settings: {
-                        conflictingItems: data,
-                        message: 'Deleting Source'
-                    }
-                };
-                Signaller_1.showModal.dispatch(conflictResolutionModal);
-            });
-        });
-    }
-    createChild() {
-        const source = this.props.dataStore.tabs.source.get('source-' + this.props.id).value.source;
-        const newSource = new datamodel_1.Source().deserialize(Object.assign({}, source.serialize(), { name: 'Child of ' + source.name, parent: this.props.id }));
-        this.props.api.postItem(datamodel_1.Source, ApiService_1.AppUrls.source, newSource)
-            .then(([id]) => {
-            Signaller_1.createTab.dispatch('source', id);
-        });
-    }
-    // create entity with 'mentioned in' already set to this source
-    createEntity() {
-        const a = {
-            name: 'preset_record',
-            complete: ([id]) => {
-                Signaller_1.createTab.dispatch('entity', id);
-            },
-            cancel: () => { },
-            settings: {
-                source: this.props.dataStore.tabs.source.get('source-' + this.props.id).value.source
-            }
-        };
-        Signaller_1.showModal.dispatch(a);
-    }
-    render() {
-        const source = this.props.dataStore.tabs.source.get('source-' + this.props.id).value.source;
-        const potentialParents = this.props.dataStore.all.source.value;
-        let parentName = '';
-        if (potentialParents !== null && source.parent !== undefined) {
-            const found = potentialParents.find((par) => par.uid === source.parent);
-            if (found !== undefined) {
-                parentName = found.name;
-            }
-        }
-        return (React.createElement("div", {className: 'workspace-editor'}, 
-            React.createElement("header", {className: 'editor-header source'}, 
-                React.createElement("div", {className: 'primary-toolbar'}, 
-                    React.createElement("div", {className: 'main-toolbar'}, 
-                        React.createElement("div", {className: 'bread-crumbs'}, source.parents
-                            .slice()
-                            .reverse()
-                            .map((child) => this.props.dataStore.all.source.value.find((et) => et.uid === child))
-                            .map((parent, i) => (React.createElement("span", {key: `breadcrumb-${parent.uid}`}, 
-                            React.createElement("span", null, 
-                                "  ", 
-                                parent.name, 
-                                " ", 
-                                React.createElement(AddTabButton_1.AddTabButton, {dataStore: this.props.dataStore, tabType: 'source', uid: parent.uid}), 
-                                " "), 
-                            React.createElement("i", {className: 'fa fa-angle-right'}))))), 
-                        React.createElement("i", {className: 'fa fa-sun-o item-icon'}), 
-                        React.createElement(StringEditableFieldComponent, {value: source.name, component: EditableHeader_1.EditableHeader, onChange: (value) => this.updateSource('name', value)})), 
-                    React.createElement("div", {className: 'sub-toolbar'}, 
-                        React.createElement("i", {className: 'fa fa-plus add button', "aria-hidden": 'true', onClick: this.createEntity.bind(this)}), 
-                        React.createElement("i", {className: 'fa fa-trash delete button', "aria-hidden": 'true', onClick: () => this.del()}), 
-                        React.createElement("i", {className: 'fa fa-arrow-circle-o-down button', "aria-hidden": 'true', onClick: this.createChild.bind(this)})))
-            ), 
-            React.createElement("section", {className: 'editor-body'}, 
-                React.createElement("div", {className: 'edit-group'}, 
-                    React.createElement("label", {className: 'small'}, "Parent"), 
-                    React.createElement(ComboEditableFieldComponent, {value: { key: parentName, value: source.parent }, component: EditableComboDropdown_1.EditableComboDropdown, onChange: (value) => this.updateSource('parent', value.value), additionalProps: { comboSettings: {
-                            options: potentialParents.map((par) => ({ key: par.name, value: par.uid })),
-                            typeName: 'Source'
-                        } }}), 
-                    source.parent !== null ? (React.createElement(AddTabButton_1.AddTabButton, {dataStore: this.props.dataStore, tabType: 'source', uid: source.parent})) : null), 
-                React.createElement("div", {className: 'edit-group'}, 
-                    React.createElement(StringEditableFieldComponent, {value: source.sameAs, component: SameAsEditor_1.SameAsEditor, onChange: (value) => this.updateSource('sameAs', value)})
-                ), 
-                this.props.dataStore.all.dublinCore.value.elements.map((element) => {
-                    const values = source.metaData.hasOwnProperty(element.name) ?
-                        source.metaData[element.name].values : [{ source: this.props.id, value: '' }];
-                    const editableValue = values[0].source == this.props.id ? values[0].value : '';
-                    return (React.createElement("div", {key: `${element.name}-edit`}, 
-                        React.createElement("h5", {className: 'section-header'}, 
-                            element.name, 
-                            " ", 
-                            React.createElement("small", null, 
-                                React.createElement("a", {href: element.url}, element.uri)
-                            )), 
-                        React.createElement("p", {className: 'element-description'}, element.description), 
-                        React.createElement("ul", null, values.map((value) => value.source != this.props.id ? (React.createElement("li", {key: `${element.uid}-${value.source}`}, 
-                            this.props.dataStore.all.source.value.find((s) => s.uid === value.source).name, 
-                            ": ", 
-                            value.value)) : null)), 
-                        React.createElement(StringEditableFieldComponent, {value: editableValue, component: EditableParagraph_1.EditableParagraph, onChange: (value) => this.updateSourceElement(element, value)})));
-                }), 
-                React.createElement("div", null, 
-                    React.createElement("h4", null, "Direct Children"), 
-                    React.createElement("ul", null, source.children
-                        .map((child) => this.props.dataStore.all.source.value.find((et) => et.uid === child))
-                        .map((childEt) => (React.createElement("li", {key: `dc-${childEt.uid}`}, 
-                        childEt.name, 
-                        " ", 
-                        React.createElement(AddTabButton_1.AddTabButton, {tabType: 'source', dataStore: this.props.dataStore, uid: childEt.uid})))))))));
-    }
-}
-SourceEditorWorkspace.contextTypes = {
-    router: React.PropTypes.object.isRequired
-};
-exports.SourceEditorWorkspace = SourceEditorWorkspace;
-
-
-/***/ },
-/* 157 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview Unified export of workspaces
- * @author <a href="mailto:tim.hollies@warwick.ac.uk" />Tim Hollies</a>
- * @version 0.1.0
- */
-"use strict";
-var EmptyWorkspace_1 = __webpack_require__(151);
-exports.EmptyWorkspace = EmptyWorkspace_1.EmptyWorkspace;
-var EntityEditorWorkspace_1 = __webpack_require__(152);
-exports.EntityEditorWorkspace = EntityEditorWorkspace_1.EntityEditorWorkspace;
-var EntityTypeWorkspace_1 = __webpack_require__(153);
-exports.EntityTypeWorkspace = EntityTypeWorkspace_1.EntityTypeWorkspace;
-var SourceEditorWorkspace_1 = __webpack_require__(156);
-exports.SourceEditorWorkspace = SourceEditorWorkspace_1.SourceEditorWorkspace;
-var PredicateEditorWorkspace_1 = __webpack_require__(155);
-exports.PredicateEditorWorkspace = PredicateEditorWorkspace_1.PredicateEditorWorkspace;
-var AdvancedSearchWorkspace_1 = __webpack_require__(150);
-exports.AdvancedSearchWorkspace = AdvancedSearchWorkspace_1.AdvancedSearchWorkspace;
-var ObjectListWorkspace_1 = __webpack_require__(154);
-exports.ObjectListWorkspace = ObjectListWorkspace_1.ObjectListWorkspace;
-
-
-/***/ },
-/* 158 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview <Description Missing>
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.1.0
- */
-"use strict";
-const React = __webpack_require__(0);
-const react_router_1 = __webpack_require__(24);
-const StatsGrid_1 = __webpack_require__(86);
-exports.Admin = (props) => (React.createElement("div", {className: 'page'}, 
-    React.createElement("section", null, 
-        React.createElement("h1", null, "Welcome to the admin pages"), 
-        React.createElement("ul", {className: 'links-list'}, 
-            React.createElement("li", null, 
-                React.createElement(react_router_1.Link, {to: '/users'}, 
-                    React.createElement("i", {className: 'fa fa-users'}), 
-                    " Manage Users")
-            ), 
-            React.createElement("li", null, 
-                React.createElement(react_router_1.Link, {to: '/app'}, 
-                    React.createElement("i", {className: 'fa fa-download'}), 
-                    " Download app")
-            ), 
-            React.createElement("li", null, 
-                React.createElement("a", {href: '/admin/snapshot'}, 
-                    React.createElement("i", {className: 'fa fa-cloud-download'}), 
-                    " Download database snapshot")
-            ), 
-            React.createElement("li", null, 
-                React.createElement(react_router_1.Link, {to: '/upload'}, 
-                    React.createElement("i", {className: 'fa fa-cloud-upload'}), 
-                    " Upload database file")
-            ))), 
-    props.stats !== null ? (React.createElement(StatsGrid_1.StatsGrid, {stats: props.stats})) : null));
-
-
-/***/ },
-/* 159 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview <Description Missing>
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.1.0
- */
-"use strict";
-const React = __webpack_require__(0);
-exports.AppDownload = (props) => (React.createElement("div", {className: 'page'}, 
-    React.createElement("section", null, 
-        React.createElement("h1", null, "App Download"), 
-        React.createElement("p", null, "Use this VRE without an internet connection! Simply download the app for your platform and then" + ' ' + "download a database snapshot from the main page. When you are ready, use the upload tool to merge" + ' ' + "your offline copy with the server."), 
-        React.createElement("ul", {className: 'links-list'}, 
-            React.createElement("li", null, 
-                React.createElement("a", {href: 'https://github.com/digihum/imperial-entanglements-app/raw/master/bin/imperial-entanglements%20Setup%200.1.1.exe'}, 
-                    React.createElement("i", {className: 'fa fa-windows'}), 
-                    " Windows")
-            ), 
-            React.createElement("li", null, 
-                React.createElement("a", {href: 'https://github.com/digihum/imperial-entanglements-app/raw/master/bin/mac/imperial-entanglements-0.1.1.dmg'}, 
-                    React.createElement("i", {className: 'fa fa-apple'}), 
-                    " Mac")
-            ), 
-            React.createElement("li", null, 
-                React.createElement("a", {href: 'https://github.com/digihum/imperial-entanglements-app/raw/master/bin/imperial-entanglements-0.1.1-x86_64.AppImage'}, 
-                    React.createElement("i", {className: 'fa fa-linux'}), 
-                    " Linux")
-            )))
-));
-
-
-/***/ },
-/* 160 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview <Description Missing>
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.1.0
- */
-"use strict";
-const React = __webpack_require__(0);
-exports.DatabaseUpload = (props) => (React.createElement("div", {className: 'page'}, 
-    React.createElement("section", null, 
-        React.createElement("h1", null, "This is the database upload page"), 
-        React.createElement("input", {type: 'file', id: 'input', accept: '.sqlite'}), 
-        React.createElement("button", {onClick: () => { alert('Work in process'); }}, "Upload"))
-));
-
-
-/***/ },
-/* 161 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview <Description Missing>
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.1.0
- */
-"use strict";
-var __assign = (this && this.__assign) || Object.assign || function(t) {
-    for (var s, i = 1, n = arguments.length; i < n; i++) {
-        s = arguments[i];
-        for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
-            t[p] = s[p];
-    }
-    return t;
-};
-const React = __webpack_require__(0);
-const immutable_1 = __webpack_require__(117);
-const moment = __webpack_require__(36);
-const ApiService_1 = __webpack_require__(6);
-const datamodel_1 = __webpack_require__(10);
-const Sidebar_1 = __webpack_require__(126);
-const Workspace_1 = __webpack_require__(128);
-const Toast_1 = __webpack_require__(127);
-const Signaller_1 = __webpack_require__(7);
-const lodash_1 = __webpack_require__(5);
-const CreatePredicate_1 = __webpack_require__(141);
-const CreateRecord_1 = __webpack_require__(143);
-const CreatePresetRecord_1 = __webpack_require__(142);
-const CreateSource_1 = __webpack_require__(144);
-const CreateEntity_1 = __webpack_require__(139);
-const CreateEntityType_1 = __webpack_require__(140);
-const ConflictResolution_1 = __webpack_require__(138);
-const DataStore_1 = __webpack_require__(123);
-class ObjectEditor extends React.Component {
-    constructor(props, context) {
-        super();
-        this.state = {
-            tabs: [],
-            inBrowser: (typeof window !== 'undefined'),
-            modalQueue: [],
-            dataStore: lodash_1.cloneDeep(DataStore_1.emptyDataStore),
-            loadingWheel: true,
-            loading: false,
-            id: NaN,
-            list: false
-        };
-        this.boundCreateTab = this.createTab.bind(this);
-        this.boundCloseTab = this.closeTab.bind(this);
-        this.boundAddModal = this.addModal.bind(this);
-        this.boundReload = this.callReload.bind(this);
-        this.boundReorderTabs = this.reorderTabs.bind(this);
-        Signaller_1.createTab.add(this.boundCreateTab);
-        Signaller_1.closeTab.add(this.boundCloseTab);
-        Signaller_1.showModal.add(this.boundAddModal);
-        Signaller_1.triggerReload.add(this.boundReload);
-        Signaller_1.reorderTabs.add(this.boundReorderTabs);
-    }
-    componentDidMount() {
-        this.reload(this.props);
-    }
-    callReload() {
-        this.reload(this.props, true);
-    }
-    reload(props, force = false) {
-        const newId = parseInt(props.location.pathname.substr(props.pathname.length + 1));
-        const newWorkspace = props.workspace;
-        if (['entity', 'source', 'predicate', 'entity_type', 'notfound'].indexOf(newWorkspace) === -1) {
-            this.context.router.transitionTo('/edit/notfound');
-        }
-        if (this.state.loading && !force) {
-            this.setState({
-                id: newId,
-                list: props.location.pathname.substr(props.pathname.length + 1).length === 0
-            });
-            return;
-        }
-        this.setState({
-            loading: true,
-            loadingWheel: (this.state.id !== newId && !(isNaN(this.state.id) && isNaN(newId))) || this.props.workspace !== newWorkspace,
-            id: newId,
-            list: props.location.pathname.substr(props.pathname.length + 1).length === 0
-        }, () => {
-            // load data required by the current tabs
-            let tabPromise = Promise.resolve(lodash_1.cloneDeep(DataStore_1.emptyTabs));
-            if (this.state.inBrowser) {
-                const tabsString = window.localStorage.getItem('open_tabs');
-                if (tabsString !== null) {
-                    this.state.tabs = JSON.parse(tabsString);
-                    if (!this.state.list &&
-                        ['entity', 'predicate', 'entity_type', 'source'].indexOf(props.workspace) !== -1 &&
-                        lodash_1.find(this.state.tabs, (tab) => tab.tabType === props.workspace
-                            && tab.uid == this.state.id) === undefined) {
-                        this.state.tabs.push({ tabType: props.workspace, uid: this.state.id });
-                        this.saveTabs();
-                    }
-                    const groupedTabs = lodash_1.groupBy(this.state.tabs, 'tabType');
-                    tabPromise = Promise.all(Object.keys(groupedTabs).map((tabType) => Promise.all(groupedTabs[tabType].map((tab) => this.loadTabData(tab.tabType, tab.uid)
-                        .then((value) => {
-                        return { [`${tab.tabType}-${tab.uid}`]: { value, lastUpdate: moment() } };
-                    })
-                        .catch((err) => {
-                        console.warn(`Attempted to load missing resource ${tab.tabType}/${tab.uid}`);
-                        this.closeTab(tab.tabType, tab.uid);
-                        if (tab.tabType === props.workspace && tab.uid === this.state.id) {
-                            this.context.router.transitionTo('/edit/notfound');
-                        }
-                    })))
-                        .then((tabData) => {
-                        return { [tabType]: immutable_1.Map(Object.assign({}, ...tabData)) };
-                    })));
-                }
-            }
-            // load lists of data commonly required by views
-            const allPromise = Promise.all([
-                props.api.getCollection(datamodel_1.Predicate, ApiService_1.AppUrls.predicate, {}),
-                props.api.getCollection(datamodel_1.Source, ApiService_1.AppUrls.source, {}),
-                props.api.getCollection(datamodel_1.Entity, ApiService_1.AppUrls.entity, {}),
-                props.api.getCollection(datamodel_1.EntityType, ApiService_1.AppUrls.entity_type, {}),
-                props.api.getItem(datamodel_1.ElementSet, ApiService_1.AppUrls.element_set, 1)
-            ])
-                .then(([predicates, sources, entities, entityType, dublinCore]) => {
-                return {
-                    predicate: { value: predicates, lastUpdate: moment() },
-                    source: { value: sources, lastUpdate: moment() },
-                    entity: { value: entities, lastUpdate: moment() },
-                    entity_type: { value: entityType, lastUpdate: moment() },
-                    dublinCore: { value: dublinCore, lastUpdate: moment() }
-                };
-            });
-            Promise.all([tabPromise, allPromise])
-                .then(([tabsArray, all]) => {
-                const tabs = Object.assign({}, ...tabsArray);
-                this.setState({
-                    dataStore: Object.assign({}, this.state.dataStore, { tabs, all }),
-                    loading: false,
-                    loadingWheel: false
-                });
-            });
-        });
-    }
-    loadTabData(tabType, uid) {
-        switch (tabType) {
-            case 'entity':
-                return Promise.all([
-                    this.props.api.getItem(datamodel_1.Entity, ApiService_1.AppUrls.entity, uid),
-                    this.props.api.getCollection(datamodel_1.Record, ApiService_1.AppUrls.record, { entity: uid })
-                ]).then(([entity, records]) => ({ entity, records }));
-            case 'predicate':
-                return this.props.api.getItem(datamodel_1.Predicate, ApiService_1.AppUrls.predicate, uid);
-            case 'entity_type':
-                return this.props.api.getItem(datamodel_1.EntityType, ApiService_1.AppUrls.entity_type, uid);
-            case 'source':
-                return Promise.all([
-                    this.props.api.getItem(datamodel_1.Source, ApiService_1.AppUrls.source, uid),
-                    this.props.api.getCollection(datamodel_1.SourceElement, ApiService_1.AppUrls.source_element, { source: uid })
-                ]).then(([source, source_element]) => ({ source, source_element }));
-            default:
-                throw new Error('Unexpected tab type requested');
-        }
-    }
-    createTab(tabType, uid, data) {
-        // don't add a tab if it already exists
-        if (lodash_1.find(this.state.tabs, (tab) => tab.tabType === tabType && tab.uid == uid) === undefined) {
-            this.setState({
-                tabs: this.state.tabs.concat([{ tabType, uid, data }])
-            }, () => {
-                this.saveTabs();
-                this.reload(this.props);
-            });
-        }
-    }
-    updateTab(tabType, uid, data) {
-        const tabs = lodash_1.cloneDeep(this.state.tabs);
-        const tabId = lodash_1.findIndex(tabs, (tab) => tab.tabType === tabType && tab.uid === uid);
-        if (tabId !== -1) {
-            tabs[tabId].data = data;
-            this.setState({ tabs });
-        }
-    }
-    closeTab(tabType, uid) {
-        this.setState({
-            tabs: this.state.tabs.filter((a) => a.tabType !== tabType || a.uid !== uid)
-        }, () => {
-            this.saveTabs();
-            this.reload(this.props);
-        });
-    }
-    saveTabs() {
-        const tabsString = JSON.stringify(this.state.tabs);
-        if (this.state.inBrowser) {
-            window.localStorage.setItem('open_tabs', tabsString);
-        }
-    }
-    clearAllTabs() {
-        this.setState({ tabs: [] }, () => {
-            this.saveTabs();
-            this.reload(this.props);
-        });
-    }
-    reorderTabs(reorderFunc) {
-        this.setState({ tabs: reorderFunc(this.state.tabs) }, () => {
-            this.saveTabs();
-            this.reload(this.props);
-        });
-    }
-    addModal(def) {
-        this.setState({ modalQueue: [def].concat(this.state.modalQueue) });
-    }
-    modalComplete(data) {
-        if (this.state.modalQueue.length === 0) {
-            throw new Error('Attempted to complete non-existent modal');
-        }
-        this.state.modalQueue[0].complete(data);
-        if (this.state.modalQueue.length > 0) {
-            this.setState({ modalQueue: lodash_1.tail(this.state.modalQueue) });
-        }
-    }
-    modalCancel() {
-        if (this.state.modalQueue.length === 0) {
-            throw new Error('Attempted to cancel non-existent modal');
-        }
-        this.state.modalQueue[0].cancel();
-        this.setState({
-            modalQueue: []
-        });
-    }
-    componentWillUnmount() {
-        this.saveTabs();
-        Signaller_1.createTab.remove(this.boundCreateTab);
-        Signaller_1.closeTab.remove(this.boundCloseTab);
-        Signaller_1.showModal.remove(this.boundAddModal);
-        Signaller_1.triggerReload.remove(this.boundReload);
-        Signaller_1.reorderTabs.remove(this.boundReorderTabs);
-    }
-    componentWillReceiveProps(props) {
-        this.reload(props);
-    }
-    render() {
-        return (React.createElement("section", {id: 'entity-editor', className: 'flex-fill'}, 
-            React.createElement("span", {className: 'header-colour ' + this.props.workspace}), 
-            React.createElement("span", {className: 'flex-fill'}, 
-                React.createElement(Sidebar_1.Sidebar, {tabs: this.state.tabs, dataStore: this.state.dataStore, loading: false, clearTabs: this.clearAllTabs.bind(this), list: this.state.list, id: this.state.id, workspace: this.props.workspace}), 
-                React.createElement(Workspace_1.Workspace, __assign({}, this.props, {id: this.state.id, dataStore: this.state.dataStore, loading: this.state.loadingWheel, list: this.state.list})), 
-                React.createElement(Toast_1.Toast, null), 
-                (() => {
-                    if (this.state.modalQueue.length === 0) {
-                        return null;
-                    }
-                    const sharedProps = {
-                        api: this.props.api,
-                        dataStore: this.state.dataStore,
-                        complete: this.modalComplete.bind(this),
-                        cancel: this.modalCancel.bind(this)
-                    };
-                    switch (this.state.modalQueue[0].name) {
-                        case 'predicate':
-                            return (React.createElement(CreatePredicate_1.CreatePredicate, __assign({}, sharedProps, this.state.modalQueue[0].settings)));
-                        case 'record':
-                            return (React.createElement(CreateRecord_1.CreateRecord, __assign({}, sharedProps, this.state.modalQueue[0].settings)));
-                        case 'preset_record':
-                            return (React.createElement(CreatePresetRecord_1.CreatePresetRecord, __assign({}, sharedProps, this.state.modalQueue[0].settings)));
-                        case 'source':
-                            return (React.createElement(CreateSource_1.CreateSource, __assign({}, sharedProps, this.state.modalQueue[0].settings)));
-                        case 'entity':
-                            return (React.createElement(CreateEntity_1.CreateEntity, __assign({}, sharedProps, this.state.modalQueue[0].settings)));
-                        case 'entity_type':
-                            return (React.createElement(CreateEntityType_1.CreateEntityType, __assign({}, sharedProps, this.state.modalQueue[0].settings)));
-                        case 'conflict_resolution':
-                            return (React.createElement(ConflictResolution_1.ConflictResolution, __assign({}, sharedProps, this.state.modalQueue[0].settings)));
-                    }
-                })()), 
-            React.createElement("span", {className: 'header-colour ' + this.props.workspace})));
-    }
-}
-ObjectEditor.contextTypes = {
-    router: React.PropTypes.object.isRequired
-};
-exports.ObjectEditor = ObjectEditor;
-
-
-/***/ },
-/* 162 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview <Description Missing>
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.1.0
- */
-"use strict";
-const React = __webpack_require__(0);
-exports.RouteNotFound = (props) => (React.createElement("section", null, 
-    React.createElement("h1", null, 
-        "The page at ", 
-        props.url, 
-        " does not exist :(")
-));
-
-
-/***/ },
-/* 163 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview <Description Missing>
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.1.0
- */
-"use strict";
-const React = __webpack_require__(0);
-exports.User = (props) => (React.createElement("div", {className: 'page'}, 
-    React.createElement("section", null, 
-        React.createElement("h1", null, "This is the user page")
-    )
-));
-
-
-/***/ },
-/* 164 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview <Description Missing>
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.1.0
- */
-"use strict";
-const React = __webpack_require__(0);
-exports.UserManagement = (props) => (React.createElement("div", {className: 'page'}, 
-    React.createElement("section", null, 
-        React.createElement("h1", null, "This is the user management page")
-    )
-));
-
-
-/***/ },
-/* 165 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview Controller for element sets
- * @author <a href='mailto:tim.hollies@warwick.ac.uk'>Tim Hollies</a>
- * @version 0.0.1
- */
-"use strict";
-const Element_1 = __webpack_require__(75);
-const GenericController_1 = __webpack_require__(18);
-class ElementPersistable extends Element_1.Element {
-    getTableName() {
-        return ElementPersistable.tableName;
-    }
-    toSchema() {
-        return this.serialize();
-    }
-    fromSchema(data) {
-        this.deserialize(data);
-        return this;
-    }
-}
-ElementPersistable.tableName = 'elements';
-exports.ElementPersistable = ElementPersistable;
-class ElementController extends GenericController_1.GenericController {
-    constructor(db) {
-        super(db, ElementPersistable.tableName);
-    }
-}
-exports.ElementController = ElementController;
-
-
-/***/ },
-/* 166 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview Controller for element sets
- * @author <a href='mailto:tim.hollies@warwick.ac.uk'>Tim Hollies</a>
- * @version 0.0.1
- */
-"use strict";
-const ElementSet_1 = __webpack_require__(76);
-const GenericController_1 = __webpack_require__(18);
-const lodash_1 = __webpack_require__(5);
-class ElementSetPersistable extends ElementSet_1.ElementSet {
-    getTableName() {
-        return ElementSetPersistable.tableName;
-    }
-    toSchema() {
-        return lodash_1.omit(this.serialize(), 'elements');
-    }
-    fromSchema(data) {
-        this.deserialize(data);
-        return this;
-    }
-}
-ElementSetPersistable.tableName = 'element_sets';
-exports.ElementSetPersistable = ElementSetPersistable;
-class ElementSetController extends GenericController_1.GenericController {
-    constructor(db) {
-        super(db, ElementSetPersistable.tableName);
-    }
-    getItemJson(obj, uid) {
-        return super.getItemJson(obj, uid)
-            .then((elementSet) => {
-            if (elementSet.uid === null) {
-                throw new Error('could not find source');
-            }
-            return this.db.select('elements')
-                .where({ 'element_set': elementSet.uid })
-                .then((elements) => {
-                elementSet.elements = elements;
-                return elementSet;
-            });
-        });
-    }
-}
-exports.ElementSetController = ElementSetController;
-
-
-/***/ },
-/* 167 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview Controller for element sets
- * @author <a href='mailto:tim.hollies@warwick.ac.uk'>Tim Hollies</a>
- * @version 0.0.1
- */
-"use strict";
-const EntityType_1 = __webpack_require__(78);
-const GenericController_1 = __webpack_require__(18);
-const PredicateController_1 = __webpack_require__(88);
-const EntityController_1 = __webpack_require__(87);
-const Exceptions_1 = __webpack_require__(19);
-const lodash_1 = __webpack_require__(5);
-class EntityTypePersistable extends EntityType_1.EntityType {
-    getTableName() {
-        return EntityTypePersistable.tableName;
-    }
-    toSchema() {
-        return Object.assign(lodash_1.omit(this.serialize(), 'sameAs', 'parents', 'children', 'creationTimestamp', 'lastmodifiedTimestamp'), {
-            same_as: this.sameAs,
-            creation_timestamp: this.creationTimestamp,
-            lastmodified_timeStamp: this.lastmodifiedTimestamp
-        });
-    }
-    fromSchema(data) {
-        this.deserialize(Object.assign(data, {
-            'sameAs': data.same_as
-        }));
-        return this;
-    }
-}
-EntityTypePersistable.tableName = 'entity_types';
-exports.EntityTypePersistable = EntityTypePersistable;
-class EntityTypeController extends GenericController_1.GenericController {
-    constructor(db) {
-        super(db, EntityTypePersistable.tableName);
-    }
-    getItemJson(obj, uid) {
-        return super.getItemJson(obj, uid)
-            .then((result) => {
-            return Promise.all([
-                this.db.getAncestorsOf(uid, 'entity_types')
-                    .then((ancestors) => {
-                    return this.db.select('entity_types').whereIn('uid', ancestors)
-                        .then((results) => results.map((result) => new obj().fromSchema(result)));
-                }),
-                this.db.select('entity_types', ['uid']).where({ parent: uid })
-            ])
-                .then(([parents, children]) => {
-                result.parents = parents;
-                result.children = children.map((child) => child.uid);
-                return result;
-            });
-        });
-    }
-    deleteItem(obj, uid) {
-        // check if this entity is the parent of another entity or if it has any relationships
-        // pointing towards it.
-        return Promise.all([
-            this.db.select(EntityTypePersistable.tableName).where('parent', '=', uid),
-            this.db.select('entities').where('type', '=', uid),
-            this.db.select('predicates').where('domain', '=', uid).orWhere('range_ref', '=', uid)
-        ]).then(([entityTypes, entities, predicates]) => {
-            if (entities.length + entityTypes.length + predicates.length === 0) {
-                return this.db.deleteItem(this.tableName, uid);
-            }
-            else {
-                throw new Exceptions_1.OperationNotPermittedException({
-                    message: 'The operation could not be completed as the entity is referenced in other sources',
-                    data: Promise.resolve({
-                        entityType: entityTypes.map((entityType) => new EntityTypePersistable().fromSchema(entityType)),
-                        entity: entities.map((entity) => new EntityController_1.EntityPersistable().fromSchema(entity)),
-                        predicate: predicates.map((predicate) => new PredicateController_1.PredicatePersistable().fromSchema(predicate))
-                    })
-                });
-            }
-        });
-    }
-}
-exports.EntityTypeController = EntityTypeController;
-
-
-/***/ },
-/* 168 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview Controller for element sets
- * @author <a href='mailto:tim.hollies@warwick.ac.uk'>Tim Hollies</a>
- * @version 0.0.1
- */
-"use strict";
-const Source_1 = __webpack_require__(81);
-const GenericController_1 = __webpack_require__(18);
-const Exceptions_1 = __webpack_require__(19);
-const RecordController_1 = __webpack_require__(47);
-const lodash_1 = __webpack_require__(5);
-class SourcePersistable extends Source_1.Source {
-    getTableName() {
-        return SourcePersistable.tableName;
-    }
-    toSchema() {
-        return Object.assign({}, lodash_1.omit(this.serialize(), 'metaData', 'sameAs', 'parents', 'children', 'creationTimestamp', 'lastmodifiedTimestamp'), {
-            same_as: this.sameAs,
-            creation_timestamp: this.creationTimestamp,
-            lastmodified_timeStamp: this.lastmodifiedTimestamp
-        });
-    }
-    fromSchema(data) {
-        this.deserialize(Object.assign(data, {
-            'sameAs': data.same_as
-        }));
-        return this;
-    }
-}
-SourcePersistable.tableName = 'sources';
-exports.SourcePersistable = SourcePersistable;
-class SourceController extends GenericController_1.GenericController {
-    constructor(db) {
-        super(db, SourcePersistable.tableName);
-    }
-    // override the getItemJson and getCollectionJson functions to also get information about the 
-    // metadata associated with the retrieved source
-    getMetadata(fields, sourceId) {
-        return this.db.query().raw(`
-            WITH RECURSIVE parent_of(uid, parent) AS  (SELECT uid, parent FROM sources),
-                ancestor(uid) AS (
-                SELECT parent FROM parent_of WHERE uid=?
-                UNION ALL
-                SELECT parent FROM parent_of JOIN ancestor USING(uid) )
-            
-            SELECT *
-                FROM ancestor;
-        `, sourceId).then((parents) => {
-            parents = lodash_1.map(parents, 'uid');
-            parents.pop();
-            parents = [sourceId].concat(parents);
-            return Promise.all(parents.map((parent) => this.db.query().select(fields)
-                .from('source_elements')
-                .innerJoin('elements', function () { this.on('source_elements.element', '=', 'elements.uid'); })
-                .innerJoin('element_sets', function () { this.on('element_sets.uid', '=', 'elements.element_set'); })
-                .where({ 'source_elements.source': parent }))).then((results) => {
-                const a = lodash_1.groupBy(lodash_1.flatten(results), 'name');
-                return Object.keys(a).reduce((prev, cur) => {
-                    const meta = lodash_1.omit(a[cur][0], 'source', 'value');
-                    meta['values'] = a[cur]
-                        .map((val) => ({ source: val.source, value: val.value, uid: val.uid }))
-                        .sort((a, b) => parents.indexOf(a.source) - parents.indexOf(b.source));
-                    return Object.assign(prev, { [cur]: meta });
-                }, {});
-            });
-        });
-    }
-    getItemJson(obj, uid) {
-        return super.getItemJson(obj, uid)
-            .then((source) => {
-            if (source.uid === null) {
-                throw new Error('could not find source');
-            }
-            return Promise.all([
-                this.getMetadata([
-                    'source_elements.source as source',
-                    'elements.name',
-                    'source_elements.value',
-                    'elements.description',
-                    'element_sets.name as element_set',
-                    'elements.comment',
-                    'elements.uri',
-                    'elements.uid as element_uid'], source.uid),
-                this.db.query().select('uid').from('sources').where({ parent: uid }),
-                this.db.query().raw(`
-                    WITH RECURSIVE parent_of(uid, parent) AS  (SELECT uid, parent FROM sources),
-                    ancestor(uid) AS (
-                    SELECT parent FROM parent_of WHERE uid=?
-                    UNION ALL
-                    SELECT parent FROM parent_of JOIN ancestor USING(uid) )
-                    
-                    SELECT uid
-                    FROM ancestor;
-                `, uid)
-            ])
-                .then(([sourceElements, children, parents]) => {
-                source.metaData = sourceElements;
-                source.children = children.map((child) => child.uid).filter((child) => child !== null);
-                source.parents = parents.map((parent) => parent.uid).filter((parent) => parent !== null);
-                return source;
-            });
-        });
-    }
-    getCollectionJson(obj, params = {}) {
-        return super.getCollectionJson(obj, params)
-            .then((sources) => {
-            return Promise.all(sources.map((source) => {
-                if (source.uid === null) {
-                    throw new Error('could not find source');
-                }
-                return this.getMetadata([
-                    'elements.name',
-                    'source_elements.value'
-                ], source.uid)
-                    .then((sourceElements) => {
-                    source.metaData = sourceElements;
-                    return source;
-                });
-            }));
-        });
-    }
-    //TODO should find every child source, not just the direct children
-    deleteItem(obj, uid) {
-        // check if this entity is the parent of another entity or if it has any relationships
-        // pointing towards it.
-        return Promise.all([
-            this.db.loadCollection('records', { source: uid }),
-            this.db.loadCollection('sources', { parent: uid })
-        ]).then(([records, sources]) => {
-            if (records.length + sources.length === 0) {
-                return this.db.deleteItem(this.tableName, uid);
-            }
-            else {
-                throw new Exceptions_1.OperationNotPermittedException({
-                    message: 'The operation could not be completed as the source is used by other records',
-                    data: Promise.resolve({
-                        record: records.map((record) => new RecordController_1.RecordPersistable().fromSchema(record)),
-                        source: sources.map((source) => new SourcePersistable().fromSchema(source))
-                    })
-                });
-            }
-        });
-    }
-}
-exports.SourceController = SourceController;
-
-
-/***/ },
-/* 169 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview Controller for element sets
- * @author <a href='mailto:tim.hollies@warwick.ac.uk'>Tim Hollies</a>
- * @version 0.0.1
- */
-"use strict";
-const SourceElement_1 = __webpack_require__(82);
-const GenericController_1 = __webpack_require__(18);
-const Exceptions_1 = __webpack_require__(19);
-const lodash_1 = __webpack_require__(5);
-class SourceElementPersistable extends SourceElement_1.SourceElement {
-    getTableName() {
-        return SourceElementPersistable.tableName;
-    }
-    toSchema() {
-        return Object.assign(lodash_1.omit(this.serialize(), 'creationTimestamp', 'lastmodifiedTimestamp', 'uid'), {
-            creation_timestamp: this.creationTimestamp,
-            lastmodified_timeStamp: this.lastmodifiedTimestamp,
-            source: this.uid.values.source,
-            element: this.uid.values.element
-        });
-    }
-    fromSchema(data) {
-        this.deserialize(Object.assign(data, {
-            uid: {
-                order: ['source', 'element'],
-                values: {
-                    source: data.source,
-                    element: data.element
-                }
-            }
-        }));
-        return this;
-    }
-}
-SourceElementPersistable.tableName = 'source_elements';
-exports.SourceElementPersistable = SourceElementPersistable;
-class SourceElementController extends GenericController_1.GenericController {
-    constructor(db) {
-        super(db, SourceElementPersistable.tableName);
-    }
-    getItemJson(obj, uid) {
-        return this.db.query().select()
-            .from(this.tableName)
-            .where(uid.values)
-            .first()
-            .then((result) => result === undefined ? Promise.reject(new Exceptions_1.KeyNotFoundException()) : result)
-            .then((data) => new obj().fromSchema(data));
-    }
-    putItem(obj, uid, data) {
-        return this.db.query()(this.tableName)
-            .where(uid.values)
-            .update(lodash_1.omit(data.toSchema(), ['tableName']));
-    }
-    patchItem(obj, uid, data) {
-        const o = new obj();
-        const schemaData = o.deserialize(data).toSchema();
-        const keys = Object.keys(schemaData);
-        const updateObject = {};
-        for (let i = 0; i < keys.length; i += 1) {
-            if (schemaData[keys[i]] !== undefined) {
-                updateObject[keys[i]] = schemaData[keys[i]];
-            }
-        }
-        return this.db.query()(this.tableName)
-            .where(uid.values)
-            .update(updateObject)
-            .then(() => true)
-            .catch((err) => { throw new Error(err); });
-    }
-    deleteItem(obj, uid) {
-        return this.db.query()(this.tableName)
-            .where(uid.values)
-            .del();
-    }
-}
-exports.SourceElementController = SourceElementController;
-
-
-/***/ },
-/* 170 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview Collated list of controllers
- * @author <a href='mailto:tim.hollies@warwick.ac.uk'>Tim Hollies</a>
- * @version 0.0.1
- */
-"use strict";
-var ElementSetController_1 = __webpack_require__(166);
-exports.ElementSetController = ElementSetController_1.ElementSetController;
-exports.ElementSetPersistable = ElementSetController_1.ElementSetPersistable;
-var EntityController_1 = __webpack_require__(87);
-exports.EntityController = EntityController_1.EntityController;
-exports.EntityPersistable = EntityController_1.EntityPersistable;
-var EntityTypeController_1 = __webpack_require__(167);
-exports.EntityTypeController = EntityTypeController_1.EntityTypeController;
-exports.EntityTypePersistable = EntityTypeController_1.EntityTypePersistable;
-var PredicateController_1 = __webpack_require__(88);
-exports.PredicateController = PredicateController_1.PredicateController;
-exports.PredicatePersistable = PredicateController_1.PredicatePersistable;
-var RecordController_1 = __webpack_require__(47);
-exports.RecordController = RecordController_1.RecordController;
-exports.RecordPersistable = RecordController_1.RecordPersistable;
-var SourceController_1 = __webpack_require__(168);
-exports.SourceController = SourceController_1.SourceController;
-exports.SourcePersistable = SourceController_1.SourcePersistable;
-var ElementController_1 = __webpack_require__(165);
-exports.ElementController = ElementController_1.ElementController;
-exports.ElementPersistable = ElementController_1.ElementPersistable;
-var SourceElementController_1 = __webpack_require__(169);
-exports.SourceElementController = SourceElementController_1.SourceElementController;
-exports.SourceElementPersistable = SourceElementController_1.SourceElementPersistable;
-
-
-/***/ },
-/* 171 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview Authentication
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.0.1
- */
-"use strict";
-const passport = __webpack_require__(73);
-const passport_local_1 = __webpack_require__(286);
-const bcrypt_1 = __webpack_require__(276);
-exports.setupAuth = (db) => {
-    passport.serializeUser((user, done) => {
-        done(null, user.uid);
-    });
-    passport.deserializeUser((uid, done) => {
-        db.query()('users')
-            .select().where({ uid })
-            .then(([user]) => done(null, user));
-    });
-    passport.use(new passport_local_1.Strategy((username, password, done) => {
-        // retrieve user ...
-        return db.query()('users')
-            .select().where({ username })
-            .then(([user]) => bcrypt_1.compare(password, user.password, (err, res) => {
-            if (err) {
-                done(null, false);
-            }
-            else {
-                done(null, user);
-            }
-        }));
-    }));
-};
-exports.Auth = {
-    setupAuth: exports.setupAuth
-};
-
-
-/***/ },
-/* 172 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview Abstract interface for sources
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.0.1
- */
-"use strict";
-const Knex = __webpack_require__(118);
-const lodash_1 = __webpack_require__(5);
-const Exceptions_1 = __webpack_require__(19);
-class Database {
-    constructor(config) {
-        this.knex = Knex(config);
-    }
-    query() {
-        return this.knex;
-    }
-    select(tableName, options = '*') {
-        return this.knex.select().from(tableName);
-    }
-    loadItem(a, uid) {
-        const query = this.knex.select()
-            .from(a)
-            .where({ uid: uid })
-            .first();
-        return query.then((result) => result === undefined ? Promise.reject(new Exceptions_1.KeyNotFoundException()) : result);
-    }
-    loadCollection(a, params) {
-        let query = this.knex.select()
-            .from(a);
-        Object.keys(params).forEach((param) => {
-            query = query.whereIn(param, params[param]);
-        });
-        return query.then((results) => results === undefined ? Promise.reject(new Exceptions_1.KeyNotFoundException()) : results);
-    }
-    createItem(a) {
-        // throw warning if called with uid
-        // validate that everything else has been sent
-        const withoutUid = lodash_1.omit(a.toSchema(), ['uid', 'tableName']);
-        return this.knex.transaction((trx) => {
-            return this.knex(a.getTableName()).transacting(trx).insert(withoutUid, 'uid').returning('uid')
-                .then((results) => {
-                return this.checkIntegrity(trx)
-                    .then((valid) => {
-                    if (!valid) {
-                        throw new Exceptions_1.DatabaseIntegrityError();
-                    }
-                    return results;
-                });
-            })
-                .then(trx.commit)
-                .catch(trx.rollback);
-        });
-    }
-    updateItem(a) {
-        // assert - must have uid
-        // validation?
-        return this.knex.transaction((trx) => {
-            return this.knex(a.getTableName()).transacting(trx)
-                .where({ 'uid': a.uid })
-                .update(lodash_1.omit(a.toSchema(), ['tableName']))
-                .then((results) => {
-                return this.checkIntegrity(trx)
-                    .then((valid) => {
-                    if (!valid) {
-                        throw new Exceptions_1.DatabaseIntegrityError();
-                    }
-                    return results;
-                });
-            })
-                .then(trx.commit)
-                .catch(trx.rollback);
-        });
-    }
-    deleteItem(tableName, uid) {
-        return this.knex.transaction((trx) => {
-            return this.knex(tableName).transacting(trx)
-                .where({ uid })
-                .del()
-                .then((results) => {
-                return this.checkIntegrity(trx)
-                    .then((valid) => {
-                    if (!valid) {
-                        throw new Exceptions_1.DatabaseIntegrityError();
-                    }
-                    return results;
-                });
-            })
-                .then(trx.commit)
-                .catch(trx.rollback);
-        });
-    }
-    getAncestorsOf(uid, tableName) {
-        return this.knex.raw(`
-            WITH RECURSIVE parent_of(uid, parent) AS  (SELECT uid, parent FROM ${tableName}),
-                ancestor(uid) AS (
-                SELECT parent FROM parent_of WHERE uid=${uid}
-                UNION ALL
-                SELECT parent FROM parent_of JOIN ancestor USING(uid) )
-				SELECT * from ancestor`)
-            .then((result) => {
-            return result.filter((a) => a.uid !== null).map((a) => a.uid);
-        });
-    }
-    getChildrenOf(uid, tableName) {
-        return this.knex.raw(`
-            WITH RECURSIVE parent_of(uid, parent) AS  (SELECT uid, parent FROM ${tableName}),
-                ancestor(parent) AS (
-                SELECT uid FROM parent_of WHERE uid=${uid}
-                UNION ALL
-                SELECT uid FROM parent_of JOIN ancestor USING(parent) )
-				SELECT * from ancestor`)
-            .then((result) => {
-            return result.filter((a) => a.parent !== null).map((a) => a.parent);
-        });
-    }
-    checkIntegrity(trx) {
-        return Promise.all([
-            this.knex.transacting(trx).select(this.knex.raw('SUM((records.value_type != predicates.range_type)) AS valid'))
-                .from('records')
-                .innerJoin('predicates', 'records.predicate', 'predicates.uid'),
-            this.knex.transacting(trx).select(this.knex.raw(`
-                SUM((
-
-                entities.type not in (
-                    WITH RECURSIVE parent_of(uid, parent) AS  (SELECT uid, parent FROM entity_types),
-                                ancestor(parent) AS (
-                                SELECT uid FROM parent_of WHERE uid=predicates.range_ref
-                                UNION ALL
-                                SELECT uid FROM parent_of JOIN ancestor USING(parent) )
-                                SELECT * from ancestor
-                )
-
-                )) as valid
-            `))
-                .from('records')
-                .innerJoin('predicates', 'records.predicate', 'predicates.uid')
-                .innerJoin('entities', 'entities.uid', 'records.value_entity')
-                .where('records.value_type', '=', 'entity'),
-            this.knex.transacting(trx).select(this.knex.raw(`
-               SUM((
-
-                entities.type not in (
-                    WITH RECURSIVE parent_of(uid, parent) AS  (SELECT uid, parent FROM entity_types),
-                                ancestor(parent) AS (
-                                SELECT uid FROM parent_of WHERE uid=predicates.domain
-                                UNION ALL
-                                SELECT uid FROM parent_of JOIN ancestor USING(parent) )
-                                SELECT * from ancestor
-                )
-
-                )) as valid
-            `))
-                .from('records')
-                .innerJoin('predicates', 'records.predicate', 'predicates.uid')
-                .innerJoin('entities', 'entities.uid', 'records.entity')
-        ]).then(([[a], [b], [c]]) => {
-            return (a.valid + b.valid + c.valid) === 0;
-        });
-    }
-}
-exports.Database = Database;
-
-
-/***/ },
-/* 173 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview Query processor
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.0.1
- */
-"use strict";
-const graphql_1 = __webpack_require__(72);
-const entityQLType_1 = __webpack_require__(176);
-const predicateQLType_1 = __webpack_require__(177);
-class QueryEngine {
-    constructor(db) {
-        const entityType = entityQLType_1.entityQLType(db, predicateQLType_1.predicateQLType(db));
-        // Define the Query type
-        const queryType = new graphql_1.GraphQLObjectType({
-            name: 'Query',
-            fields: {
-                entity: {
-                    type: new graphql_1.GraphQLList(entityType),
-                    // `args` describes the arguments that the `user` query accepts
-                    args: {
-                        uid: { type: graphql_1.GraphQLString }
-                    },
-                    resolve: (_, { uid }) => {
-                        if (uid === undefined) {
-                            return db.query()('entities');
-                        }
-                        return db.query()('entities').where({ uid });
-                    }
-                }
-            }
-        });
-        this.schema = new graphql_1.GraphQLSchema({
-            query: queryType
-        });
-    }
-    runQuery(query) {
-        return graphql_1.graphql(this.schema, query);
-    }
-}
-exports.QueryEngine = QueryEngine;
-
-
-/***/ },
-/* 174 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview Abstract interface for sources
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.0.1
- */
-"use strict";
-const Exceptions_1 = __webpack_require__(19);
-const moment = __webpack_require__(36);
-const Signaller_1 = __webpack_require__(7);
-var ApiService_1 = __webpack_require__(6);
-exports.AppUrls = ApiService_1.AppUrls;
-const GeneralStatisticsController_1 = __webpack_require__(89);
-class ServerApiService {
-    constructor(db, routesMap, queryEngine, fakeCreator) {
-        this.controllerMap = routesMap;
-        this.queryEngine = queryEngine;
-        this.fakeCreator = fakeCreator;
-        this.db = db;
-    }
-    getItem(obj, baseUrl, uid) {
-        const controller = this.controllerMap.get(baseUrl);
-        if (controller === undefined) {
-            return Promise.reject(new Exceptions_1.CollectionNotFoundException('Controller not found'));
-        }
-        return controller.getItemJson(obj, uid);
-    }
-    getCollection(obj, baseUrl, params) {
-        const controller = this.controllerMap.get(baseUrl);
-        if (controller === undefined) {
-            return Promise.reject(new Exceptions_1.CollectionNotFoundException('Controller not found'));
-        }
-        return controller.getCollectionJson(obj, params);
-    }
-    postItem(obj, baseUrl, data) {
-        const controller = this.controllerMap.get(baseUrl);
-        if (controller === undefined) {
-            return Promise.reject(new Exceptions_1.CollectionNotFoundException('Controller not found'));
-        }
-        return controller.postItem(obj, Object.assign(data, {
-            creationTimestamp: moment().toISOString(),
-            lastmodifiedTimestamp: moment().toISOString(),
-            creator: this.fakeCreator ? 0 : data.creator
-        }))
-            .then((result) => {
-            Signaller_1.triggerReload.dispatch();
-            return Promise.resolve(result);
-        });
-    }
-    putItem(obj, baseUrl, uid, data) {
-        const controller = this.controllerMap.get(baseUrl);
-        if (controller === undefined) {
-            return Promise.reject(new Exceptions_1.CollectionNotFoundException('Controller not found'));
-        }
-        return controller.putItem(obj, uid, Object.assign(data, {
-            lastmodifiedTimestamp: moment().toISOString()
-        }))
-            .then((result) => {
-            Signaller_1.triggerReload.dispatch();
-            return Promise.resolve(result);
-        });
-    }
-    patchItem(obj, baseUrl, uid, data) {
-        const controller = this.controllerMap.get(baseUrl);
-        if (controller === undefined) {
-            return Promise.reject(new Exceptions_1.CollectionNotFoundException('Controller not found'));
-        }
-        return controller.patchItem(obj, uid, Object.assign(data, {
-            lastmodifiedTimestamp: moment().toISOString()
-        }))
-            .then((result) => {
-            Signaller_1.triggerReload.dispatch();
-            return Promise.resolve(result);
-        });
-    }
-    delItem(obj, baseUrl, uid) {
-        const controller = this.controllerMap.get(baseUrl);
-        if (controller === undefined) {
-            return Promise.reject(new Exceptions_1.CollectionNotFoundException('Controller not found'));
-        }
-        return controller.deleteItem(obj, uid)
-            .then((result) => {
-            Signaller_1.triggerReload.dispatch();
-            return Promise.resolve(result);
-        });
-    }
-    query(graphQLQuery) {
-        return Promise.resolve({});
-    }
-    getStats() {
-        return GeneralStatisticsController_1.GeneralStatisticsController(this.db.query());
-    }
-}
-exports.ServerApiService = ServerApiService;
-
-
-/***/ },
-/* 175 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(__dirname) {/**
- * @fileOverview Database Snapshot
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.0.1
- */
-"use strict";
-const Knex = __webpack_require__(118);
-const fs = __webpack_require__(71);
-class SqliteSnapshot {
-    constructor(config) {
-        this.knex = Knex(config);
-    }
-    //TODO: use some kind of tempory file tracking package
-    getSnapshotStream() {
-        const filename = __dirname + '/test.sqlite';
-        // fs.unlinkSync(filename);
-        // const db = new sqlite.Database(filename);
-        let tempKnex = Knex({
-            client: 'sqlite3',
-            connection: { filename },
-            migrations: {
-                directory: './data/migrations'
-            },
-            useNullAsDefault: true
-        });
-        return tempKnex.migrate.latest()
-            .then(() => {
-            return new Promise((res) => {
-                tempKnex.destroy(() => {
-                    const stream = fs.createReadStream(filename);
-                    stream.on('close', () => {
-                        fs.unlinkSync(filename);
-                    });
-                    res(stream);
-                });
-            });
-        });
-    }
-}
-exports.SqliteSnapshot = SqliteSnapshot;
-
-/* WEBPACK VAR INJECTION */}.call(exports, "/"))
-
-/***/ },
-/* 176 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview Query processor
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.0.1
- */
-"use strict";
-const graphql_1 = __webpack_require__(72);
-exports.entityQLType = (db, predicateType) => {
-    return new graphql_1.GraphQLObjectType({
-        name: 'Entity',
-        fields: {
-            uid: {
-                type: graphql_1.GraphQLString,
-                resolve: (parent, {  }) => {
-                    return parent.uid;
-                }
-            },
-            label: {
-                type: graphql_1.GraphQLString,
-                resolve: (parent, {  }) => {
-                    return parent.label;
-                }
-            },
-            type: {
-                type: graphql_1.GraphQLString,
-                resolve: (parent, {  }) => {
-                    return db.query()('entity_types').where({ uid: parent.type }).first().then((data) => data.name);
-                }
-            },
-            predicate: {
-                type: predicateType,
-                args: {
-                    name: { type: graphql_1.GraphQLString },
-                    uid: { type: graphql_1.GraphQLString }
-                },
-                resolve: (entity, { name, uid }) => {
-                    if (name !== undefined) {
-                        return db.query()('predicates').where({ name }).first().then((predicate) => ({ predicate, entity }));
-                    }
-                    if (uid !== undefined) {
-                        return db.query()('predicates').where({ uid }).first().then((predicate) => ({ predicate, entity }));
-                    }
-                }
-            },
-            predicates: {
-                type: new graphql_1.GraphQLList(predicateType),
-                args: {
-                    names: { type: new graphql_1.GraphQLList(graphql_1.GraphQLString) },
-                    uids: { type: new graphql_1.GraphQLList(graphql_1.GraphQLString) }
-                },
-                resolve: (entity, { names, uids }) => {
-                    if (names !== undefined) {
-                        return db.query()('predicates')
-                            .whereIn('name', names)
-                            .then((predicates) => predicates.map((predicate) => ({ predicate, entity })));
-                    }
-                    if (uids !== undefined) {
-                        return db.query()('predicates')
-                            .whereIn('uid', uids)
-                            .then((predicates) => predicates.map((predicate) => ({ predicate, entity })));
-                    }
-                }
-            }
-        }
-    });
-};
-
-
-/***/ },
-/* 177 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview Query processor
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.0.1
- */
-"use strict";
-const graphql_1 = __webpack_require__(72);
-exports.predicateQLType = (db) => {
-    return new graphql_1.GraphQLObjectType({
-        name: 'Predicate',
-        fields: {
-            uid: {
-                type: graphql_1.GraphQLString,
-                resolve: ({ predicate }, {  }) => {
-                    return predicate.uid;
-                }
-            },
-            name: {
-                type: graphql_1.GraphQLString,
-                resolve: ({ predicate }, {  }) => {
-                    return predicate.name;
-                }
-            },
-            values: {
-                type: new graphql_1.GraphQLList(graphql_1.GraphQLString),
-                resolve: ({ entity, predicate }, {  }) => {
-                    return db.query()('records')
-                        .select('value_string')
-                        .where({ entity: entity.uid, predicate: predicate.uid })
-                        .then((results) => results.map((result) => result.value_string));
-                }
-            }
-        }
-    });
-};
-
-
-/***/ },
-/* 178 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview Map of URIs to controllers
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.0.1
- */
-"use strict";
-const Koa = __webpack_require__(35);
-const fs_1 = __webpack_require__(71);
-const FalconApp_1 = __webpack_require__(124);
-const server_1 = __webpack_require__(264);
-const react_1 = __webpack_require__(0);
-const react_router_1 = __webpack_require__(24);
-const path = __webpack_require__(287);
-exports.adminApp = (skeleton, serverApiContext) => {
-    const server = new Koa();
-    const serverRenderContext = react_router_1.createServerRenderContext();
-    server.use(function* (next) {
-        if (this.isAuthenticated()) {
-            yield next;
-        }
-        else {
-            this.body = fs_1.readFileSync(path.join(process.cwd(), 'dist', 'server', 'login.html'), 'utf8');
-        }
-    });
-    server.use(function* (next) {
-        this.body = skeleton({ body: server_1.renderToStaticMarkup(react_1.createElement(FalconApp_1.FalconApp, {
-                router: react_router_1.ServerRouter,
-                api: serverApiContext,
-                routerSettings: {
-                    context: serverRenderContext,
-                    location: this.request.url
-                }
-            })) });
-    });
-    return server;
-};
-
-
-/***/ },
-/* 179 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview Map of URIs to controllers
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.0.1
- */
-"use strict";
-const ServerApiService_1 = __webpack_require__(174);
-const QueryEngine_1 = __webpack_require__(173);
-const controllers_1 = __webpack_require__(170);
-exports.wrapDatabase = (db, fakeCreator) => {
-    const routes = new Map([
-        [ServerApiService_1.AppUrls.element_set, new controllers_1.ElementSetController(db)],
-        [ServerApiService_1.AppUrls.record, new controllers_1.RecordController(db)],
-        [ServerApiService_1.AppUrls.entity_type, new controllers_1.EntityTypeController(db)],
-        [ServerApiService_1.AppUrls.entity, new controllers_1.EntityController(db)],
-        [ServerApiService_1.AppUrls.predicate, new controllers_1.PredicateController(db)],
-        [ServerApiService_1.AppUrls.source, new controllers_1.SourceController(db)],
-        [ServerApiService_1.AppUrls.element, new controllers_1.ElementController(db)],
-        [ServerApiService_1.AppUrls.source_element, new controllers_1.SourceElementController(db)]
-    ]);
-    return new ServerApiService_1.ServerApiService(db, routes, new QueryEngine_1.QueryEngine(db), fakeCreator);
-};
-const sourceElementSpecial = (router, serverApiContext, typeMap) => {
-    router.get(`/api/v1/${ServerApiService_1.AppUrls.source_element}/:source/:element`, function* (next) {
-        yield serverApiContext
-            .getItem(typeMap[ServerApiService_1.AppUrls.source_element], ServerApiService_1.AppUrls.source_element, {
-            order: ['source', 'element'],
-            values: {
-                source: this.params.source,
-                element: this.params.element
-            }
-        })
-            .then((data) => this.body = data.serialize());
-    });
-    router.put(`/api/v1/${ServerApiService_1.AppUrls.source_element}/:source/:element`, function* (next) {
-        yield serverApiContext
-            .putItem(typeMap[ServerApiService_1.AppUrls.source_element], ServerApiService_1.AppUrls.source_element, {
-            order: ['source', 'element'],
-            values: {
-                source: this.params.source,
-                element: this.params.element
-            }
-        }, this.request.body)
-            .then((data) => this.body = data);
-    });
-    router.patch(`/api/v1/${ServerApiService_1.AppUrls.source_element}/:source/:element`, function* (next) {
-        yield serverApiContext
-            .patchItem(typeMap[ServerApiService_1.AppUrls.source_element], ServerApiService_1.AppUrls.source_element, {
-            order: ['source', 'element'],
-            values: {
-                source: this.params.source,
-                element: this.params.element
-            }
-        }, this.request.body)
-            .then((data) => this.body = data);
-    });
-    router.del(`/api/v1/${ServerApiService_1.AppUrls.source_element}/:source/:element`, function* (next) {
-        yield serverApiContext
-            .delItem(typeMap[ServerApiService_1.AppUrls.source_element], ServerApiService_1.AppUrls.source_element, {
-            order: ['source', 'element'],
-            values: {
-                source: this.params.source,
-                element: this.params.element
-            }
-        })
-            .then((data) => this.body = data);
-    });
-};
-// would be cleaner if it allowed 2nd level REST urls
-//  /entity/{entity_id}/predicate/{predicate_id}
-// /source/{source_id}/element/{element_id}
-exports.api = (router, serverApiContext) => {
-    const typeMap = {
-        [ServerApiService_1.AppUrls.element_set]: controllers_1.ElementSetPersistable,
-        [ServerApiService_1.AppUrls.record]: controllers_1.RecordPersistable,
-        [ServerApiService_1.AppUrls.entity_type]: controllers_1.EntityTypePersistable,
-        [ServerApiService_1.AppUrls.entity]: controllers_1.EntityPersistable,
-        [ServerApiService_1.AppUrls.predicate]: controllers_1.PredicatePersistable,
-        [ServerApiService_1.AppUrls.source]: controllers_1.SourcePersistable,
-        [ServerApiService_1.AppUrls.element]: controllers_1.ElementPersistable,
-        [ServerApiService_1.AppUrls.source_element]: controllers_1.SourceElementPersistable
-    };
-    router.use(function* (next) {
-        if (this.req.method === 'GET' || this.isAuthenticated()) {
-            yield next;
-        }
-        else {
-            this.status = 403;
-            this.body = 'You must be authorised to modify this resource';
-        }
-    });
-    router.use(function* (next) {
-        try {
-            yield next;
-        }
-        catch (err) {
-            switch (err.constructor.name) {
-                case 'KeyNotFoundException':
-                    this.status = 404;
-                    break;
-                case 'CollectionNotFoundException':
-                    this.status = 404;
-                    break;
-                case 'OperationNotPermittedException':
-                    this.status = 422;
-                    break;
-                default:
-                    this.status = 500;
-            }
-            this.type = 'application/json';
-            if (err.data !== undefined) {
-                yield err.data.data.then((data) => {
-                    this.body = JSON.stringify(Object.assign({}, err.data, { data: data }));
-                });
-            }
-            else {
-                this.body = err.message;
-            }
-        }
-    });
-    router.get('/api/v1/query', function* (next) {
-        yield serverApiContext.queryEngine.runQuery(this.query.query)
-            .then((result) => this.body = result);
-    });
-    sourceElementSpecial(router, serverApiContext, typeMap);
-    router.get('/api/v1/:route/:id', function* (next) {
-        yield serverApiContext
-            .getItem(typeMap[this.params.route], this.params.route, parseInt(this.params.id))
-            .then((data) => this.body = data.serialize());
-    });
-    router.get('/api/v1/:route', function* (next) {
-        yield serverApiContext
-            .getCollection(typeMap[this.params.route], this.params.route, this.query)
-            .then((data) => this.body = data.map((datum) => datum.serialize()));
-    });
-    router.post('/api/v1/:route', function* (next) {
-        yield serverApiContext
-            .postItem(typeMap[this.params.route], this.params.route, Object.assign(this.request.body, {
-            creator: this.req.user.uid
-        }))
-            .then((data) => this.body = data);
-    });
-    router.put('/api/v1/:route/:id', function* (next) {
-        yield serverApiContext
-            .putItem(typeMap[this.params.route], this.params.route, parseInt(this.params.id), this.request.body)
-            .then((data) => this.body = data);
-    });
-    router.patch('/api/v1/:route/:id', function* (next) {
-        yield serverApiContext
-            .patchItem(typeMap[this.params.route], this.params.route, parseInt(this.params.id), this.request.body)
-            .then((data) => this.body = data);
-    });
-    router.del('/api/v1/:route/:id', function* (next) {
-        yield serverApiContext
-            .delItem(typeMap[this.params.route], this.params.route, parseInt(this.params.id))
-            .then((data) => this.body = data);
-    });
-    return router;
-};
-
-
-/***/ },
-/* 180 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview Map of URIs to controllers
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.0.1
- */
-"use strict";
-// Vendor
-const Koa = __webpack_require__(35);
-const KoaRouter = __webpack_require__(119);
-const koaPassport = __webpack_require__(73);
-exports.auth = () => {
-    const server = new Koa();
-    const authRouter = new KoaRouter();
-    authRouter.post(`/login`, koaPassport.authenticate('local', {
-        successRedirect: '/admin',
-        failureRedirect: '/login'
-    }));
-    const self = this;
-    authRouter.get(`/logout`, function* () {
-        this.logout();
-        this.redirect('/admin');
-    });
-    authRouter.get(`/currentuser`, function* () {
-        this.body = {
-            username: this.req.user.name
-        };
-    });
-    // create user
-    // delete user
-    // reset user password
-    // change user permission
-    server.use(authRouter.middleware());
-    return server;
-};
-
-
-/***/ },
-/* 181 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview Map of URIs to controllers
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.0.1
- */
-"use strict";
-// Vendor
-const Koa = __webpack_require__(35);
-const moment = __webpack_require__(36);
-exports.snapshot = (snapshot) => {
-    const server = new Koa();
-    server.use(function* () {
-        this.set('Content-disposition', 'attachment; filename=' + 'snapshot_' + moment().toISOString() + '.sqlite');
-        this.set('Content-type', 'application/x-sqlite3');
-        yield snapshot.getSnapshotStream()
-            .then((snapshotStream) => {
-            this.body = snapshotStream;
-        });
-    });
-    return server;
-};
-
-
-/***/ },
-/* 182 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview Map of URIs to controllers
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.0.1
- */
-"use strict";
-const Koa = __webpack_require__(35);
-const GeneralStatisticsController_1 = __webpack_require__(89);
-exports.stats = (db) => {
-    const server = new Koa();
-    server.use(function* (next) {
-        yield GeneralStatisticsController_1.GeneralStatisticsController(db.query())
-            .then((result) => {
-            this.body = result;
-        });
-    });
-    return server;
-};
-
-
-/***/ },
-/* 183 */
 /***/ function(module, exports) {
 
 "use strict";
@@ -14856,7 +10441,7 @@ function camelize(string) {
 module.exports = camelize;
 
 /***/ },
-/* 184 */
+/* 124 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14873,7 +10458,7 @@ module.exports = camelize;
 
 'use strict';
 
-var camelize = __webpack_require__(183);
+var camelize = __webpack_require__(123);
 
 var msPattern = /^-ms-/;
 
@@ -14901,7 +10486,7 @@ function camelizeStyleName(string) {
 module.exports = camelizeStyleName;
 
 /***/ },
-/* 185 */
+/* 125 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14918,7 +10503,7 @@ module.exports = camelizeStyleName;
  * 
  */
 
-var isTextNode = __webpack_require__(193);
+var isTextNode = __webpack_require__(133);
 
 /*eslint-disable no-bitwise */
 
@@ -14946,7 +10531,7 @@ function containsNode(outerNode, innerNode) {
 module.exports = containsNode;
 
 /***/ },
-/* 186 */
+/* 126 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15078,7 +10663,7 @@ function createArrayFromMixed(obj) {
 module.exports = createArrayFromMixed;
 
 /***/ },
-/* 187 */
+/* 127 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15099,8 +10684,8 @@ module.exports = createArrayFromMixed;
 
 var ExecutionEnvironment = __webpack_require__(9);
 
-var createArrayFromMixed = __webpack_require__(186);
-var getMarkupWrap = __webpack_require__(188);
+var createArrayFromMixed = __webpack_require__(126);
+var getMarkupWrap = __webpack_require__(128);
 var invariant = __webpack_require__(1);
 
 /**
@@ -15167,7 +10752,7 @@ function createNodesFromMarkup(markup, handleScript) {
 module.exports = createNodesFromMarkup;
 
 /***/ },
-/* 188 */
+/* 128 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15267,7 +10852,7 @@ function getMarkupWrap(nodeName) {
 module.exports = getMarkupWrap;
 
 /***/ },
-/* 189 */
+/* 129 */
 /***/ function(module, exports) {
 
 "use strict";
@@ -15311,7 +10896,7 @@ function getUnboundedScrollPosition(scrollable) {
 module.exports = getUnboundedScrollPosition;
 
 /***/ },
-/* 190 */
+/* 130 */
 /***/ function(module, exports) {
 
 "use strict";
@@ -15349,7 +10934,7 @@ function hyphenate(string) {
 module.exports = hyphenate;
 
 /***/ },
-/* 191 */
+/* 131 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15366,7 +10951,7 @@ module.exports = hyphenate;
 
 'use strict';
 
-var hyphenate = __webpack_require__(190);
+var hyphenate = __webpack_require__(130);
 
 var msPattern = /^ms-/;
 
@@ -15393,7 +10978,7 @@ function hyphenateStyleName(string) {
 module.exports = hyphenateStyleName;
 
 /***/ },
-/* 192 */
+/* 132 */
 /***/ function(module, exports) {
 
 "use strict";
@@ -15421,7 +11006,7 @@ function isNode(object) {
 module.exports = isNode;
 
 /***/ },
-/* 193 */
+/* 133 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15438,7 +11023,7 @@ module.exports = isNode;
  * @typechecks
  */
 
-var isNode = __webpack_require__(192);
+var isNode = __webpack_require__(132);
 
 /**
  * @param {*} object The object to check.
@@ -15451,7 +11036,7 @@ function isTextNode(object) {
 module.exports = isTextNode;
 
 /***/ },
-/* 194 */
+/* 134 */
 /***/ function(module, exports) {
 
 "use strict";
@@ -15486,7 +11071,7 @@ function memoizeStringOnly(callback) {
 module.exports = memoizeStringOnly;
 
 /***/ },
-/* 195 */
+/* 135 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15514,7 +11099,7 @@ if (ExecutionEnvironment.canUseDOM) {
 module.exports = performance || {};
 
 /***/ },
-/* 196 */
+/* 136 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15531,7 +11116,7 @@ module.exports = performance || {};
  * @typechecks
  */
 
-var performance = __webpack_require__(195);
+var performance = __webpack_require__(135);
 
 var performanceNow;
 
@@ -15553,7 +11138,7 @@ if (performance.now) {
 module.exports = performanceNow;
 
 /***/ },
-/* 197 */
+/* 137 */
 /***/ function(module, exports) {
 
 "use strict";
@@ -15632,7 +11217,7 @@ var ARIADOMPropertyConfig = {
 module.exports = ARIADOMPropertyConfig;
 
 /***/ },
-/* 198 */
+/* 138 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15648,9 +11233,9 @@ module.exports = ARIADOMPropertyConfig;
 
 'use strict';
 
-var ReactDOMComponentTree = __webpack_require__(8);
+var ReactDOMComponentTree = __webpack_require__(7);
 
-var focusNode = __webpack_require__(91);
+var focusNode = __webpack_require__(75);
 
 var AutoFocusUtils = {
   focusDOMComponent: function () {
@@ -15661,7 +11246,7 @@ var AutoFocusUtils = {
 module.exports = AutoFocusUtils;
 
 /***/ },
-/* 199 */
+/* 139 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15679,9 +11264,9 @@ module.exports = AutoFocusUtils;
 
 var EventPropagators = __webpack_require__(31);
 var ExecutionEnvironment = __webpack_require__(9);
-var FallbackCompositionState = __webpack_require__(205);
-var SyntheticCompositionEvent = __webpack_require__(246);
-var SyntheticInputEvent = __webpack_require__(249);
+var FallbackCompositionState = __webpack_require__(145);
+var SyntheticCompositionEvent = __webpack_require__(186);
+var SyntheticInputEvent = __webpack_require__(189);
 
 var END_KEYCODES = [9, 13, 27, 32]; // Tab, Return, Esc, Space
 var START_KEYCODE = 229;
@@ -16051,7 +11636,7 @@ var BeforeInputEventPlugin = {
 module.exports = BeforeInputEventPlugin;
 
 /***/ },
-/* 200 */
+/* 140 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16067,14 +11652,14 @@ module.exports = BeforeInputEventPlugin;
 
 'use strict';
 
-var CSSProperty = __webpack_require__(93);
+var CSSProperty = __webpack_require__(77);
 var ExecutionEnvironment = __webpack_require__(9);
 var ReactInstrumentation = __webpack_require__(12);
 
-var camelizeStyleName = __webpack_require__(184);
-var dangerousStyleValue = __webpack_require__(256);
-var hyphenateStyleName = __webpack_require__(191);
-var memoizeStringOnly = __webpack_require__(194);
+var camelizeStyleName = __webpack_require__(124);
+var dangerousStyleValue = __webpack_require__(196);
+var hyphenateStyleName = __webpack_require__(131);
+var memoizeStringOnly = __webpack_require__(134);
 var warning = __webpack_require__(2);
 
 var processStyleName = memoizeStringOnly(function (styleName) {
@@ -16265,7 +11850,7 @@ var CSSPropertyOperations = {
 module.exports = CSSPropertyOperations;
 
 /***/ },
-/* 201 */
+/* 141 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16284,13 +11869,13 @@ module.exports = CSSPropertyOperations;
 var EventPluginHub = __webpack_require__(30);
 var EventPropagators = __webpack_require__(31);
 var ExecutionEnvironment = __webpack_require__(9);
-var ReactDOMComponentTree = __webpack_require__(8);
-var ReactUpdates = __webpack_require__(15);
-var SyntheticEvent = __webpack_require__(16);
+var ReactDOMComponentTree = __webpack_require__(7);
+var ReactUpdates = __webpack_require__(14);
+var SyntheticEvent = __webpack_require__(15);
 
-var getEventTarget = __webpack_require__(62);
-var isEventSupported = __webpack_require__(63);
-var isTextInputElement = __webpack_require__(110);
+var getEventTarget = __webpack_require__(57);
+var isEventSupported = __webpack_require__(58);
+var isTextInputElement = __webpack_require__(94);
 
 var eventTypes = {
   change: {
@@ -16591,7 +12176,7 @@ var ChangeEventPlugin = {
 module.exports = ChangeEventPlugin;
 
 /***/ },
-/* 202 */
+/* 142 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16612,7 +12197,7 @@ var _prodInvariant = __webpack_require__(3);
 var DOMLazyTree = __webpack_require__(28);
 var ExecutionEnvironment = __webpack_require__(9);
 
-var createNodesFromMarkup = __webpack_require__(187);
+var createNodesFromMarkup = __webpack_require__(127);
 var emptyFunction = __webpack_require__(11);
 var invariant = __webpack_require__(1);
 
@@ -16644,7 +12229,7 @@ var Danger = {
 module.exports = Danger;
 
 /***/ },
-/* 203 */
+/* 143 */
 /***/ function(module, exports) {
 
 "use strict";
@@ -16675,7 +12260,7 @@ var DefaultEventPluginOrder = ['ResponderEventPlugin', 'SimpleEventPlugin', 'Tap
 module.exports = DefaultEventPluginOrder;
 
 /***/ },
-/* 204 */
+/* 144 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16692,8 +12277,8 @@ module.exports = DefaultEventPluginOrder;
 'use strict';
 
 var EventPropagators = __webpack_require__(31);
-var ReactDOMComponentTree = __webpack_require__(8);
-var SyntheticMouseEvent = __webpack_require__(39);
+var ReactDOMComponentTree = __webpack_require__(7);
+var SyntheticMouseEvent = __webpack_require__(37);
 
 var eventTypes = {
   mouseEnter: {
@@ -16780,7 +12365,7 @@ var EnterLeaveEventPlugin = {
 module.exports = EnterLeaveEventPlugin;
 
 /***/ },
-/* 205 */
+/* 145 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16800,7 +12385,7 @@ var _assign = __webpack_require__(4);
 
 var PooledClass = __webpack_require__(21);
 
-var getTextContentAccessor = __webpack_require__(108);
+var getTextContentAccessor = __webpack_require__(92);
 
 /**
  * This helper class stores information about text content of a target node,
@@ -16880,7 +12465,7 @@ PooledClass.addPoolingTo(FallbackCompositionState);
 module.exports = FallbackCompositionState;
 
 /***/ },
-/* 206 */
+/* 146 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17097,7 +12682,7 @@ var HTMLDOMPropertyConfig = {
 module.exports = HTMLDOMPropertyConfig;
 
 /***/ },
-/* 207 */
+/* 147 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17115,10 +12700,10 @@ module.exports = HTMLDOMPropertyConfig;
 
 var ReactReconciler = __webpack_require__(32);
 
-var instantiateReactComponent = __webpack_require__(109);
-var KeyEscapeUtils = __webpack_require__(53);
-var shouldUpdateReactComponent = __webpack_require__(112);
-var traverseAllChildren = __webpack_require__(113);
+var instantiateReactComponent = __webpack_require__(93);
+var KeyEscapeUtils = __webpack_require__(48);
+var shouldUpdateReactComponent = __webpack_require__(96);
+var traverseAllChildren = __webpack_require__(97);
 var warning = __webpack_require__(2);
 
 var ReactComponentTreeHook;
@@ -17256,7 +12841,7 @@ var ReactChildReconciler = {
 module.exports = ReactChildReconciler;
 
 /***/ },
-/* 208 */
+/* 148 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17272,8 +12857,8 @@ module.exports = ReactChildReconciler;
 
 'use strict';
 
-var DOMChildrenOperations = __webpack_require__(49);
-var ReactDOMIDOperations = __webpack_require__(213);
+var DOMChildrenOperations = __webpack_require__(44);
+var ReactDOMIDOperations = __webpack_require__(153);
 
 /**
  * Abstracts away all functionality of the reconciler that requires knowledge of
@@ -17291,7 +12876,7 @@ var ReactComponentBrowserEnvironment = {
 module.exports = ReactComponentBrowserEnvironment;
 
 /***/ },
-/* 209 */
+/* 149 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17311,22 +12896,22 @@ var _prodInvariant = __webpack_require__(3),
     _assign = __webpack_require__(4);
 
 var React = __webpack_require__(34);
-var ReactComponentEnvironment = __webpack_require__(56);
-var ReactCurrentOwner = __webpack_require__(20);
-var ReactErrorUtils = __webpack_require__(57);
-var ReactInstanceMap = __webpack_require__(58);
+var ReactComponentEnvironment = __webpack_require__(51);
+var ReactCurrentOwner = __webpack_require__(17);
+var ReactErrorUtils = __webpack_require__(52);
+var ReactInstanceMap = __webpack_require__(53);
 var ReactInstrumentation = __webpack_require__(12);
-var ReactNodeTypes = __webpack_require__(232);
+var ReactNodeTypes = __webpack_require__(172);
 var ReactReconciler = __webpack_require__(32);
 
 if (process.env.NODE_ENV !== 'production') {
-  var checkReactTypeSpec = __webpack_require__(255);
+  var checkReactTypeSpec = __webpack_require__(195);
 }
 
 var emptyObject = __webpack_require__(27);
 var invariant = __webpack_require__(1);
-var shallowEqual = __webpack_require__(48);
-var shouldUpdateReactComponent = __webpack_require__(112);
+var shallowEqual = __webpack_require__(43);
+var shouldUpdateReactComponent = __webpack_require__(96);
 var warning = __webpack_require__(2);
 
 var CompositeTypes = {
@@ -18198,7 +13783,7 @@ var ReactCompositeComponent = {
 module.exports = ReactCompositeComponent;
 
 /***/ },
-/* 210 */
+/* 150 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18219,31 +13804,31 @@ module.exports = ReactCompositeComponent;
 var _prodInvariant = __webpack_require__(3),
     _assign = __webpack_require__(4);
 
-var AutoFocusUtils = __webpack_require__(198);
-var CSSPropertyOperations = __webpack_require__(200);
+var AutoFocusUtils = __webpack_require__(138);
+var CSSPropertyOperations = __webpack_require__(140);
 var DOMLazyTree = __webpack_require__(28);
-var DOMNamespaces = __webpack_require__(50);
+var DOMNamespaces = __webpack_require__(45);
 var DOMProperty = __webpack_require__(29);
-var DOMPropertyOperations = __webpack_require__(95);
+var DOMPropertyOperations = __webpack_require__(79);
 var EventPluginHub = __webpack_require__(30);
-var EventPluginRegistry = __webpack_require__(51);
-var ReactBrowserEventEmitter = __webpack_require__(55);
-var ReactDOMComponentFlags = __webpack_require__(96);
-var ReactDOMComponentTree = __webpack_require__(8);
-var ReactDOMInput = __webpack_require__(214);
-var ReactDOMOption = __webpack_require__(215);
-var ReactDOMSelect = __webpack_require__(97);
-var ReactDOMTextarea = __webpack_require__(219);
+var EventPluginRegistry = __webpack_require__(46);
+var ReactBrowserEventEmitter = __webpack_require__(50);
+var ReactDOMComponentFlags = __webpack_require__(80);
+var ReactDOMComponentTree = __webpack_require__(7);
+var ReactDOMInput = __webpack_require__(154);
+var ReactDOMOption = __webpack_require__(155);
+var ReactDOMSelect = __webpack_require__(81);
+var ReactDOMTextarea = __webpack_require__(159);
 var ReactInstrumentation = __webpack_require__(12);
-var ReactMultiChild = __webpack_require__(231);
-var ReactServerRenderingTransaction = __webpack_require__(103);
+var ReactMultiChild = __webpack_require__(171);
+var ReactServerRenderingTransaction = __webpack_require__(87);
 
 var emptyFunction = __webpack_require__(11);
-var escapeTextContentForBrowser = __webpack_require__(41);
+var escapeTextContentForBrowser = __webpack_require__(39);
 var invariant = __webpack_require__(1);
-var isEventSupported = __webpack_require__(63);
-var shallowEqual = __webpack_require__(48);
-var validateDOMNesting = __webpack_require__(65);
+var isEventSupported = __webpack_require__(58);
+var shallowEqual = __webpack_require__(43);
+var validateDOMNesting = __webpack_require__(60);
 var warning = __webpack_require__(2);
 
 var Flags = ReactDOMComponentFlags;
@@ -19198,7 +14783,7 @@ _assign(ReactDOMComponent.prototype, ReactDOMComponent.Mixin, ReactMultiChild.Mi
 module.exports = ReactDOMComponent;
 
 /***/ },
-/* 211 */
+/* 151 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19214,7 +14799,7 @@ module.exports = ReactDOMComponent;
 
 'use strict';
 
-var validateDOMNesting = __webpack_require__(65);
+var validateDOMNesting = __webpack_require__(60);
 
 var DOC_NODE_TYPE = 9;
 
@@ -19236,7 +14821,7 @@ function ReactDOMContainerInfo(topLevelWrapper, node) {
 module.exports = ReactDOMContainerInfo;
 
 /***/ },
-/* 212 */
+/* 152 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19255,7 +14840,7 @@ module.exports = ReactDOMContainerInfo;
 var _assign = __webpack_require__(4);
 
 var DOMLazyTree = __webpack_require__(28);
-var ReactDOMComponentTree = __webpack_require__(8);
+var ReactDOMComponentTree = __webpack_require__(7);
 
 var ReactDOMEmptyComponent = function (instantiate) {
   // ReactCompositeComponent uses this:
@@ -19301,7 +14886,7 @@ _assign(ReactDOMEmptyComponent.prototype, {
 module.exports = ReactDOMEmptyComponent;
 
 /***/ },
-/* 213 */
+/* 153 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19317,8 +14902,8 @@ module.exports = ReactDOMEmptyComponent;
 
 'use strict';
 
-var DOMChildrenOperations = __webpack_require__(49);
-var ReactDOMComponentTree = __webpack_require__(8);
+var DOMChildrenOperations = __webpack_require__(44);
+var ReactDOMComponentTree = __webpack_require__(7);
 
 /**
  * Operations used to process updates to DOM nodes.
@@ -19340,7 +14925,7 @@ var ReactDOMIDOperations = {
 module.exports = ReactDOMIDOperations;
 
 /***/ },
-/* 214 */
+/* 154 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19359,10 +14944,10 @@ module.exports = ReactDOMIDOperations;
 var _prodInvariant = __webpack_require__(3),
     _assign = __webpack_require__(4);
 
-var DOMPropertyOperations = __webpack_require__(95);
-var LinkedValueUtils = __webpack_require__(54);
-var ReactDOMComponentTree = __webpack_require__(8);
-var ReactUpdates = __webpack_require__(15);
+var DOMPropertyOperations = __webpack_require__(79);
+var LinkedValueUtils = __webpack_require__(49);
+var ReactDOMComponentTree = __webpack_require__(7);
+var ReactUpdates = __webpack_require__(14);
 
 var invariant = __webpack_require__(1);
 var warning = __webpack_require__(2);
@@ -19613,7 +15198,7 @@ function _handleChange(event) {
 module.exports = ReactDOMInput;
 
 /***/ },
-/* 215 */
+/* 155 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19632,8 +15217,8 @@ module.exports = ReactDOMInput;
 var _assign = __webpack_require__(4);
 
 var React = __webpack_require__(34);
-var ReactDOMComponentTree = __webpack_require__(8);
-var ReactDOMSelect = __webpack_require__(97);
+var ReactDOMComponentTree = __webpack_require__(7);
+var ReactDOMSelect = __webpack_require__(81);
 
 var warning = __webpack_require__(2);
 var didWarnInvalidOptionChildren = false;
@@ -19741,7 +15326,7 @@ var ReactDOMOption = {
 module.exports = ReactDOMOption;
 
 /***/ },
-/* 216 */
+/* 156 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19759,8 +15344,8 @@ module.exports = ReactDOMOption;
 
 var ExecutionEnvironment = __webpack_require__(9);
 
-var getNodeForCharacterOffset = __webpack_require__(261);
-var getTextContentAccessor = __webpack_require__(108);
+var getNodeForCharacterOffset = __webpack_require__(201);
+var getTextContentAccessor = __webpack_require__(92);
 
 /**
  * While `isCollapsed` is available on the Selection object and `collapsed`
@@ -19958,7 +15543,7 @@ var ReactDOMSelection = {
 module.exports = ReactDOMSelection;
 
 /***/ },
-/* 217 */
+/* 157 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19974,9 +15559,9 @@ module.exports = ReactDOMSelection;
 
 'use strict';
 
-var ReactDefaultInjection = __webpack_require__(222);
-var ReactServerRendering = __webpack_require__(238);
-var ReactVersion = __webpack_require__(240);
+var ReactDefaultInjection = __webpack_require__(162);
+var ReactServerRendering = __webpack_require__(178);
+var ReactVersion = __webpack_require__(180);
 
 ReactDefaultInjection.inject();
 
@@ -19989,7 +15574,7 @@ var ReactDOMServer = {
 module.exports = ReactDOMServer;
 
 /***/ },
-/* 218 */
+/* 158 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20008,13 +15593,13 @@ module.exports = ReactDOMServer;
 var _prodInvariant = __webpack_require__(3),
     _assign = __webpack_require__(4);
 
-var DOMChildrenOperations = __webpack_require__(49);
+var DOMChildrenOperations = __webpack_require__(44);
 var DOMLazyTree = __webpack_require__(28);
-var ReactDOMComponentTree = __webpack_require__(8);
+var ReactDOMComponentTree = __webpack_require__(7);
 
-var escapeTextContentForBrowser = __webpack_require__(41);
+var escapeTextContentForBrowser = __webpack_require__(39);
 var invariant = __webpack_require__(1);
-var validateDOMNesting = __webpack_require__(65);
+var validateDOMNesting = __webpack_require__(60);
 
 /**
  * Text nodes violate a couple assumptions that React makes about components:
@@ -20158,7 +15743,7 @@ _assign(ReactDOMTextComponent.prototype, {
 module.exports = ReactDOMTextComponent;
 
 /***/ },
-/* 219 */
+/* 159 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20177,9 +15762,9 @@ module.exports = ReactDOMTextComponent;
 var _prodInvariant = __webpack_require__(3),
     _assign = __webpack_require__(4);
 
-var LinkedValueUtils = __webpack_require__(54);
-var ReactDOMComponentTree = __webpack_require__(8);
-var ReactUpdates = __webpack_require__(15);
+var LinkedValueUtils = __webpack_require__(49);
+var ReactDOMComponentTree = __webpack_require__(7);
+var ReactUpdates = __webpack_require__(14);
 
 var invariant = __webpack_require__(1);
 var warning = __webpack_require__(2);
@@ -20317,7 +15902,7 @@ function _handleChange(event) {
 module.exports = ReactDOMTextarea;
 
 /***/ },
-/* 220 */
+/* 160 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20458,7 +16043,7 @@ module.exports = {
 };
 
 /***/ },
-/* 221 */
+/* 161 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20475,12 +16060,12 @@ module.exports = {
 
 'use strict';
 
-var ReactInvalidSetStateWarningHook = __webpack_require__(229);
-var ReactHostOperationHistoryHook = __webpack_require__(227);
+var ReactInvalidSetStateWarningHook = __webpack_require__(169);
+var ReactHostOperationHistoryHook = __webpack_require__(167);
 var ReactComponentTreeHook = __webpack_require__(13);
 var ExecutionEnvironment = __webpack_require__(9);
 
-var performanceNow = __webpack_require__(196);
+var performanceNow = __webpack_require__(136);
 var warning = __webpack_require__(2);
 
 var hooks = [];
@@ -20824,7 +16409,7 @@ if (/[?&]react_perf\b/.test(url)) {
 module.exports = ReactDebugTool;
 
 /***/ },
-/* 222 */
+/* 162 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20840,25 +16425,25 @@ module.exports = ReactDebugTool;
 
 'use strict';
 
-var ARIADOMPropertyConfig = __webpack_require__(197);
-var BeforeInputEventPlugin = __webpack_require__(199);
-var ChangeEventPlugin = __webpack_require__(201);
-var DefaultEventPluginOrder = __webpack_require__(203);
-var EnterLeaveEventPlugin = __webpack_require__(204);
-var HTMLDOMPropertyConfig = __webpack_require__(206);
-var ReactComponentBrowserEnvironment = __webpack_require__(208);
-var ReactDOMComponent = __webpack_require__(210);
-var ReactDOMComponentTree = __webpack_require__(8);
-var ReactDOMEmptyComponent = __webpack_require__(212);
-var ReactDOMTreeTraversal = __webpack_require__(220);
-var ReactDOMTextComponent = __webpack_require__(218);
-var ReactDefaultBatchingStrategy = __webpack_require__(98);
-var ReactEventListener = __webpack_require__(225);
-var ReactInjection = __webpack_require__(228);
-var ReactReconcileTransaction = __webpack_require__(235);
-var SVGDOMPropertyConfig = __webpack_require__(241);
-var SelectEventPlugin = __webpack_require__(242);
-var SimpleEventPlugin = __webpack_require__(243);
+var ARIADOMPropertyConfig = __webpack_require__(137);
+var BeforeInputEventPlugin = __webpack_require__(139);
+var ChangeEventPlugin = __webpack_require__(141);
+var DefaultEventPluginOrder = __webpack_require__(143);
+var EnterLeaveEventPlugin = __webpack_require__(144);
+var HTMLDOMPropertyConfig = __webpack_require__(146);
+var ReactComponentBrowserEnvironment = __webpack_require__(148);
+var ReactDOMComponent = __webpack_require__(150);
+var ReactDOMComponentTree = __webpack_require__(7);
+var ReactDOMEmptyComponent = __webpack_require__(152);
+var ReactDOMTreeTraversal = __webpack_require__(160);
+var ReactDOMTextComponent = __webpack_require__(158);
+var ReactDefaultBatchingStrategy = __webpack_require__(82);
+var ReactEventListener = __webpack_require__(165);
+var ReactInjection = __webpack_require__(168);
+var ReactReconcileTransaction = __webpack_require__(175);
+var SVGDOMPropertyConfig = __webpack_require__(181);
+var SelectEventPlugin = __webpack_require__(182);
+var SimpleEventPlugin = __webpack_require__(183);
 
 var alreadyInjected = false;
 
@@ -20915,7 +16500,7 @@ module.exports = {
 };
 
 /***/ },
-/* 223 */
+/* 163 */
 /***/ function(module, exports) {
 
 "use strict";
@@ -20940,7 +16525,7 @@ var REACT_ELEMENT_TYPE = typeof Symbol === 'function' && Symbol['for'] && Symbol
 module.exports = REACT_ELEMENT_TYPE;
 
 /***/ },
-/* 224 */
+/* 164 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20978,7 +16563,7 @@ var ReactEventEmitterMixin = {
 module.exports = ReactEventEmitterMixin;
 
 /***/ },
-/* 225 */
+/* 165 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20996,14 +16581,14 @@ module.exports = ReactEventEmitterMixin;
 
 var _assign = __webpack_require__(4);
 
-var EventListener = __webpack_require__(90);
+var EventListener = __webpack_require__(74);
 var ExecutionEnvironment = __webpack_require__(9);
 var PooledClass = __webpack_require__(21);
-var ReactDOMComponentTree = __webpack_require__(8);
-var ReactUpdates = __webpack_require__(15);
+var ReactDOMComponentTree = __webpack_require__(7);
+var ReactUpdates = __webpack_require__(14);
 
-var getEventTarget = __webpack_require__(62);
-var getUnboundedScrollPosition = __webpack_require__(189);
+var getEventTarget = __webpack_require__(57);
+var getUnboundedScrollPosition = __webpack_require__(129);
 
 /**
  * Find the deepest React component completely containing the root of the
@@ -21138,7 +16723,7 @@ var ReactEventListener = {
 module.exports = ReactEventListener;
 
 /***/ },
-/* 226 */
+/* 166 */
 /***/ function(module, exports) {
 
 "use strict";
@@ -21165,7 +16750,7 @@ var ReactFeatureFlags = {
 module.exports = ReactFeatureFlags;
 
 /***/ },
-/* 227 */
+/* 167 */
 /***/ function(module, exports) {
 
 "use strict";
@@ -21204,7 +16789,7 @@ var ReactHostOperationHistoryHook = {
 module.exports = ReactHostOperationHistoryHook;
 
 /***/ },
-/* 228 */
+/* 168 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21222,12 +16807,12 @@ module.exports = ReactHostOperationHistoryHook;
 
 var DOMProperty = __webpack_require__(29);
 var EventPluginHub = __webpack_require__(30);
-var EventPluginUtils = __webpack_require__(52);
-var ReactComponentEnvironment = __webpack_require__(56);
-var ReactEmptyComponent = __webpack_require__(99);
-var ReactBrowserEventEmitter = __webpack_require__(55);
-var ReactHostComponent = __webpack_require__(100);
-var ReactUpdates = __webpack_require__(15);
+var EventPluginUtils = __webpack_require__(47);
+var ReactComponentEnvironment = __webpack_require__(51);
+var ReactEmptyComponent = __webpack_require__(83);
+var ReactBrowserEventEmitter = __webpack_require__(50);
+var ReactHostComponent = __webpack_require__(84);
+var ReactUpdates = __webpack_require__(14);
 
 var ReactInjection = {
   Component: ReactComponentEnvironment.injection,
@@ -21243,7 +16828,7 @@ var ReactInjection = {
 module.exports = ReactInjection;
 
 /***/ },
-/* 229 */
+/* 169 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21285,7 +16870,7 @@ var ReactInvalidSetStateWarningHook = {
 module.exports = ReactInvalidSetStateWarningHook;
 
 /***/ },
-/* 230 */
+/* 170 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21301,7 +16886,7 @@ module.exports = ReactInvalidSetStateWarningHook;
 
 'use strict';
 
-var adler32 = __webpack_require__(254);
+var adler32 = __webpack_require__(194);
 
 var TAG_END = /\/?>/;
 var COMMENT_START = /^<\!\-\-/;
@@ -21340,7 +16925,7 @@ var ReactMarkupChecksum = {
 module.exports = ReactMarkupChecksum;
 
 /***/ },
-/* 231 */
+/* 171 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21358,16 +16943,16 @@ module.exports = ReactMarkupChecksum;
 
 var _prodInvariant = __webpack_require__(3);
 
-var ReactComponentEnvironment = __webpack_require__(56);
-var ReactInstanceMap = __webpack_require__(58);
+var ReactComponentEnvironment = __webpack_require__(51);
+var ReactInstanceMap = __webpack_require__(53);
 var ReactInstrumentation = __webpack_require__(12);
 
-var ReactCurrentOwner = __webpack_require__(20);
+var ReactCurrentOwner = __webpack_require__(17);
 var ReactReconciler = __webpack_require__(32);
-var ReactChildReconciler = __webpack_require__(207);
+var ReactChildReconciler = __webpack_require__(147);
 
 var emptyFunction = __webpack_require__(11);
-var flattenChildren = __webpack_require__(257);
+var flattenChildren = __webpack_require__(197);
 var invariant = __webpack_require__(1);
 
 /**
@@ -21795,7 +17380,7 @@ var ReactMultiChild = {
 module.exports = ReactMultiChild;
 
 /***/ },
-/* 232 */
+/* 172 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21840,7 +17425,7 @@ var ReactNodeTypes = {
 module.exports = ReactNodeTypes;
 
 /***/ },
-/* 233 */
+/* 173 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21939,7 +17524,7 @@ var ReactOwner = {
 module.exports = ReactOwner;
 
 /***/ },
-/* 234 */
+/* 174 */
 /***/ function(module, exports) {
 
 "use strict";
@@ -21969,7 +17554,7 @@ if (process.env.NODE_ENV !== 'production') {
 module.exports = ReactPropTypeLocationNames;
 
 /***/ },
-/* 235 */
+/* 175 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21987,13 +17572,13 @@ module.exports = ReactPropTypeLocationNames;
 
 var _assign = __webpack_require__(4);
 
-var CallbackQueue = __webpack_require__(94);
+var CallbackQueue = __webpack_require__(78);
 var PooledClass = __webpack_require__(21);
-var ReactBrowserEventEmitter = __webpack_require__(55);
-var ReactInputSelection = __webpack_require__(101);
+var ReactBrowserEventEmitter = __webpack_require__(50);
+var ReactInputSelection = __webpack_require__(85);
 var ReactInstrumentation = __webpack_require__(12);
-var Transaction = __webpack_require__(40);
-var ReactUpdateQueue = __webpack_require__(104);
+var Transaction = __webpack_require__(38);
+var ReactUpdateQueue = __webpack_require__(88);
 
 /**
  * Ensures that, when possible, the selection range (currently selected text
@@ -22152,7 +17737,7 @@ PooledClass.addPoolingTo(ReactReconcileTransaction);
 module.exports = ReactReconcileTransaction;
 
 /***/ },
-/* 236 */
+/* 176 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22169,7 +17754,7 @@ module.exports = ReactReconcileTransaction;
 
 'use strict';
 
-var ReactOwner = __webpack_require__(233);
+var ReactOwner = __webpack_require__(173);
 
 var ReactRef = {};
 
@@ -22246,7 +17831,7 @@ ReactRef.detachRefs = function (instance, element) {
 module.exports = ReactRef;
 
 /***/ },
-/* 237 */
+/* 177 */
 /***/ function(module, exports) {
 
 "use strict";
@@ -22273,7 +17858,7 @@ var ReactServerBatchingStrategy = {
 module.exports = ReactServerBatchingStrategy;
 
 /***/ },
-/* 238 */
+/* 178 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22291,17 +17876,17 @@ module.exports = ReactServerBatchingStrategy;
 var _prodInvariant = __webpack_require__(3);
 
 var React = __webpack_require__(34);
-var ReactDOMContainerInfo = __webpack_require__(211);
-var ReactDefaultBatchingStrategy = __webpack_require__(98);
+var ReactDOMContainerInfo = __webpack_require__(151);
+var ReactDefaultBatchingStrategy = __webpack_require__(82);
 var ReactInstrumentation = __webpack_require__(12);
-var ReactMarkupChecksum = __webpack_require__(230);
+var ReactMarkupChecksum = __webpack_require__(170);
 var ReactReconciler = __webpack_require__(32);
-var ReactServerBatchingStrategy = __webpack_require__(237);
-var ReactServerRenderingTransaction = __webpack_require__(103);
-var ReactUpdates = __webpack_require__(15);
+var ReactServerBatchingStrategy = __webpack_require__(177);
+var ReactServerRenderingTransaction = __webpack_require__(87);
+var ReactUpdates = __webpack_require__(14);
 
 var emptyObject = __webpack_require__(27);
-var instantiateReactComponent = __webpack_require__(109);
+var instantiateReactComponent = __webpack_require__(93);
 var invariant = __webpack_require__(1);
 
 var pendingTransactions = 0;
@@ -22368,7 +17953,7 @@ module.exports = {
 };
 
 /***/ },
-/* 239 */
+/* 179 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22387,7 +17972,7 @@ module.exports = {
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var ReactUpdateQueue = __webpack_require__(104);
+var ReactUpdateQueue = __webpack_require__(88);
 
 var warning = __webpack_require__(2);
 
@@ -22512,7 +18097,7 @@ var ReactServerUpdateQueue = function () {
 module.exports = ReactServerUpdateQueue;
 
 /***/ },
-/* 240 */
+/* 180 */
 /***/ function(module, exports) {
 
 "use strict";
@@ -22531,7 +18116,7 @@ module.exports = ReactServerUpdateQueue;
 module.exports = '15.4.0';
 
 /***/ },
-/* 241 */
+/* 181 */
 /***/ function(module, exports) {
 
 "use strict";
@@ -22838,7 +18423,7 @@ Object.keys(ATTRS).forEach(function (key) {
 module.exports = SVGDOMPropertyConfig;
 
 /***/ },
-/* 242 */
+/* 182 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22856,13 +18441,13 @@ module.exports = SVGDOMPropertyConfig;
 
 var EventPropagators = __webpack_require__(31);
 var ExecutionEnvironment = __webpack_require__(9);
-var ReactDOMComponentTree = __webpack_require__(8);
-var ReactInputSelection = __webpack_require__(101);
-var SyntheticEvent = __webpack_require__(16);
+var ReactDOMComponentTree = __webpack_require__(7);
+var ReactInputSelection = __webpack_require__(85);
+var SyntheticEvent = __webpack_require__(15);
 
-var getActiveElement = __webpack_require__(92);
-var isTextInputElement = __webpack_require__(110);
-var shallowEqual = __webpack_require__(48);
+var getActiveElement = __webpack_require__(76);
+var isTextInputElement = __webpack_require__(94);
+var shallowEqual = __webpack_require__(43);
 
 var skipSelectionChangeEvent = ExecutionEnvironment.canUseDOM && 'documentMode' in document && document.documentMode <= 11;
 
@@ -23034,7 +18619,7 @@ var SelectEventPlugin = {
 module.exports = SelectEventPlugin;
 
 /***/ },
-/* 243 */
+/* 183 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23053,23 +18638,23 @@ module.exports = SelectEventPlugin;
 
 var _prodInvariant = __webpack_require__(3);
 
-var EventListener = __webpack_require__(90);
+var EventListener = __webpack_require__(74);
 var EventPropagators = __webpack_require__(31);
-var ReactDOMComponentTree = __webpack_require__(8);
-var SyntheticAnimationEvent = __webpack_require__(244);
-var SyntheticClipboardEvent = __webpack_require__(245);
-var SyntheticEvent = __webpack_require__(16);
-var SyntheticFocusEvent = __webpack_require__(248);
-var SyntheticKeyboardEvent = __webpack_require__(250);
-var SyntheticMouseEvent = __webpack_require__(39);
-var SyntheticDragEvent = __webpack_require__(247);
-var SyntheticTouchEvent = __webpack_require__(251);
-var SyntheticTransitionEvent = __webpack_require__(252);
+var ReactDOMComponentTree = __webpack_require__(7);
+var SyntheticAnimationEvent = __webpack_require__(184);
+var SyntheticClipboardEvent = __webpack_require__(185);
+var SyntheticEvent = __webpack_require__(15);
+var SyntheticFocusEvent = __webpack_require__(188);
+var SyntheticKeyboardEvent = __webpack_require__(190);
+var SyntheticMouseEvent = __webpack_require__(37);
+var SyntheticDragEvent = __webpack_require__(187);
+var SyntheticTouchEvent = __webpack_require__(191);
+var SyntheticTransitionEvent = __webpack_require__(192);
 var SyntheticUIEvent = __webpack_require__(33);
-var SyntheticWheelEvent = __webpack_require__(253);
+var SyntheticWheelEvent = __webpack_require__(193);
 
 var emptyFunction = __webpack_require__(11);
-var getEventCharCode = __webpack_require__(60);
+var getEventCharCode = __webpack_require__(55);
 var invariant = __webpack_require__(1);
 
 /**
@@ -23282,7 +18867,7 @@ var SimpleEventPlugin = {
 module.exports = SimpleEventPlugin;
 
 /***/ },
-/* 244 */
+/* 184 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23298,7 +18883,7 @@ module.exports = SimpleEventPlugin;
 
 'use strict';
 
-var SyntheticEvent = __webpack_require__(16);
+var SyntheticEvent = __webpack_require__(15);
 
 /**
  * @interface Event
@@ -23326,7 +18911,7 @@ SyntheticEvent.augmentClass(SyntheticAnimationEvent, AnimationEventInterface);
 module.exports = SyntheticAnimationEvent;
 
 /***/ },
-/* 245 */
+/* 185 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23342,7 +18927,7 @@ module.exports = SyntheticAnimationEvent;
 
 'use strict';
 
-var SyntheticEvent = __webpack_require__(16);
+var SyntheticEvent = __webpack_require__(15);
 
 /**
  * @interface Event
@@ -23369,7 +18954,7 @@ SyntheticEvent.augmentClass(SyntheticClipboardEvent, ClipboardEventInterface);
 module.exports = SyntheticClipboardEvent;
 
 /***/ },
-/* 246 */
+/* 186 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23385,7 +18970,7 @@ module.exports = SyntheticClipboardEvent;
 
 'use strict';
 
-var SyntheticEvent = __webpack_require__(16);
+var SyntheticEvent = __webpack_require__(15);
 
 /**
  * @interface Event
@@ -23410,7 +18995,7 @@ SyntheticEvent.augmentClass(SyntheticCompositionEvent, CompositionEventInterface
 module.exports = SyntheticCompositionEvent;
 
 /***/ },
-/* 247 */
+/* 187 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23426,7 +19011,7 @@ module.exports = SyntheticCompositionEvent;
 
 'use strict';
 
-var SyntheticMouseEvent = __webpack_require__(39);
+var SyntheticMouseEvent = __webpack_require__(37);
 
 /**
  * @interface DragEvent
@@ -23451,7 +19036,7 @@ SyntheticMouseEvent.augmentClass(SyntheticDragEvent, DragEventInterface);
 module.exports = SyntheticDragEvent;
 
 /***/ },
-/* 248 */
+/* 188 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23492,7 +19077,7 @@ SyntheticUIEvent.augmentClass(SyntheticFocusEvent, FocusEventInterface);
 module.exports = SyntheticFocusEvent;
 
 /***/ },
-/* 249 */
+/* 189 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23508,7 +19093,7 @@ module.exports = SyntheticFocusEvent;
 
 'use strict';
 
-var SyntheticEvent = __webpack_require__(16);
+var SyntheticEvent = __webpack_require__(15);
 
 /**
  * @interface Event
@@ -23534,7 +19119,7 @@ SyntheticEvent.augmentClass(SyntheticInputEvent, InputEventInterface);
 module.exports = SyntheticInputEvent;
 
 /***/ },
-/* 250 */
+/* 190 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23552,9 +19137,9 @@ module.exports = SyntheticInputEvent;
 
 var SyntheticUIEvent = __webpack_require__(33);
 
-var getEventCharCode = __webpack_require__(60);
-var getEventKey = __webpack_require__(258);
-var getEventModifierState = __webpack_require__(61);
+var getEventCharCode = __webpack_require__(55);
+var getEventKey = __webpack_require__(198);
+var getEventModifierState = __webpack_require__(56);
 
 /**
  * @interface KeyboardEvent
@@ -23623,7 +19208,7 @@ SyntheticUIEvent.augmentClass(SyntheticKeyboardEvent, KeyboardEventInterface);
 module.exports = SyntheticKeyboardEvent;
 
 /***/ },
-/* 251 */
+/* 191 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23641,7 +19226,7 @@ module.exports = SyntheticKeyboardEvent;
 
 var SyntheticUIEvent = __webpack_require__(33);
 
-var getEventModifierState = __webpack_require__(61);
+var getEventModifierState = __webpack_require__(56);
 
 /**
  * @interface TouchEvent
@@ -23673,7 +19258,7 @@ SyntheticUIEvent.augmentClass(SyntheticTouchEvent, TouchEventInterface);
 module.exports = SyntheticTouchEvent;
 
 /***/ },
-/* 252 */
+/* 192 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23689,7 +19274,7 @@ module.exports = SyntheticTouchEvent;
 
 'use strict';
 
-var SyntheticEvent = __webpack_require__(16);
+var SyntheticEvent = __webpack_require__(15);
 
 /**
  * @interface Event
@@ -23717,7 +19302,7 @@ SyntheticEvent.augmentClass(SyntheticTransitionEvent, TransitionEventInterface);
 module.exports = SyntheticTransitionEvent;
 
 /***/ },
-/* 253 */
+/* 193 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23733,7 +19318,7 @@ module.exports = SyntheticTransitionEvent;
 
 'use strict';
 
-var SyntheticMouseEvent = __webpack_require__(39);
+var SyntheticMouseEvent = __webpack_require__(37);
 
 /**
  * @interface WheelEvent
@@ -23776,7 +19361,7 @@ SyntheticMouseEvent.augmentClass(SyntheticWheelEvent, WheelEventInterface);
 module.exports = SyntheticWheelEvent;
 
 /***/ },
-/* 254 */
+/* 194 */
 /***/ function(module, exports) {
 
 "use strict";
@@ -23825,7 +19410,7 @@ function adler32(data) {
 module.exports = adler32;
 
 /***/ },
-/* 255 */
+/* 195 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23843,8 +19428,8 @@ module.exports = adler32;
 
 var _prodInvariant = __webpack_require__(3);
 
-var ReactPropTypeLocationNames = __webpack_require__(234);
-var ReactPropTypesSecret = __webpack_require__(102);
+var ReactPropTypeLocationNames = __webpack_require__(174);
+var ReactPropTypesSecret = __webpack_require__(86);
 
 var invariant = __webpack_require__(1);
 var warning = __webpack_require__(2);
@@ -23917,7 +19502,7 @@ function checkReactTypeSpec(typeSpecs, values, location, componentName, element,
 module.exports = checkReactTypeSpec;
 
 /***/ },
-/* 256 */
+/* 196 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23933,7 +19518,7 @@ module.exports = checkReactTypeSpec;
 
 'use strict';
 
-var CSSProperty = __webpack_require__(93);
+var CSSProperty = __webpack_require__(77);
 var warning = __webpack_require__(2);
 
 var isUnitlessNumber = CSSProperty.isUnitlessNumber;
@@ -24001,7 +19586,7 @@ function dangerousStyleValue(name, value, component) {
 module.exports = dangerousStyleValue;
 
 /***/ },
-/* 257 */
+/* 197 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -24018,8 +19603,8 @@ module.exports = dangerousStyleValue;
 
 'use strict';
 
-var KeyEscapeUtils = __webpack_require__(53);
-var traverseAllChildren = __webpack_require__(113);
+var KeyEscapeUtils = __webpack_require__(48);
+var traverseAllChildren = __webpack_require__(97);
 var warning = __webpack_require__(2);
 
 var ReactComponentTreeHook;
@@ -24082,7 +19667,7 @@ function flattenChildren(children, selfDebugID) {
 module.exports = flattenChildren;
 
 /***/ },
-/* 258 */
+/* 198 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -24098,7 +19683,7 @@ module.exports = flattenChildren;
 
 'use strict';
 
-var getEventCharCode = __webpack_require__(60);
+var getEventCharCode = __webpack_require__(55);
 
 /**
  * Normalization of deprecated HTML5 `key` values
@@ -24189,7 +19774,7 @@ function getEventKey(nativeEvent) {
 module.exports = getEventKey;
 
 /***/ },
-/* 259 */
+/* 199 */
 /***/ function(module, exports) {
 
 "use strict";
@@ -24235,7 +19820,7 @@ function getIteratorFn(maybeIterable) {
 module.exports = getIteratorFn;
 
 /***/ },
-/* 260 */
+/* 200 */
 /***/ function(module, exports) {
 
 "use strict";
@@ -24261,7 +19846,7 @@ function getNextDebugID() {
 module.exports = getNextDebugID;
 
 /***/ },
-/* 261 */
+/* 201 */
 /***/ function(module, exports) {
 
 "use strict";
@@ -24340,7 +19925,7 @@ function getNodeForCharacterOffset(root, offset) {
 module.exports = getNodeForCharacterOffset;
 
 /***/ },
-/* 262 */
+/* 202 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -24446,7 +20031,7 @@ function getVendorPrefixedEventName(eventName) {
 module.exports = getVendorPrefixedEventName;
 
 /***/ },
-/* 263 */
+/* 203 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -24462,7 +20047,7 @@ module.exports = getVendorPrefixedEventName;
 
 'use strict';
 
-var escapeTextContentForBrowser = __webpack_require__(41);
+var escapeTextContentForBrowser = __webpack_require__(39);
 
 /**
  * Escapes attribute value to prevent scripting attacks.
@@ -24477,17 +20062,17 @@ function quoteAttributeValueForBrowser(value) {
 module.exports = quoteAttributeValueForBrowser;
 
 /***/ },
-/* 264 */
+/* 204 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
 'use strict';
 
-module.exports = __webpack_require__(217);
+module.exports = __webpack_require__(157);
 
 
 /***/ },
-/* 265 */
+/* 205 */
 /***/ function(module, exports) {
 
 "use strict";
@@ -24551,7 +20136,7 @@ var KeyEscapeUtils = {
 module.exports = KeyEscapeUtils;
 
 /***/ },
-/* 266 */
+/* 206 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -24680,7 +20265,7 @@ var PooledClass = {
 module.exports = PooledClass;
 
 /***/ },
-/* 267 */
+/* 207 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -24696,11 +20281,11 @@ module.exports = PooledClass;
 
 'use strict';
 
-var PooledClass = __webpack_require__(266);
+var PooledClass = __webpack_require__(206);
 var ReactElement = __webpack_require__(22);
 
 var emptyFunction = __webpack_require__(11);
-var traverseAllChildren = __webpack_require__(275);
+var traverseAllChildren = __webpack_require__(215);
 
 var twoArgumentPooler = PooledClass.twoArgumentPooler;
 var fourArgumentPooler = PooledClass.fourArgumentPooler;
@@ -24876,7 +20461,7 @@ var ReactChildren = {
 module.exports = ReactChildren;
 
 /***/ },
-/* 268 */
+/* 208 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -24895,10 +20480,10 @@ module.exports = ReactChildren;
 var _prodInvariant = __webpack_require__(23),
     _assign = __webpack_require__(4);
 
-var ReactComponent = __webpack_require__(66);
+var ReactComponent = __webpack_require__(61);
 var ReactElement = __webpack_require__(22);
-var ReactPropTypeLocationNames = __webpack_require__(68);
-var ReactNoopUpdateQueue = __webpack_require__(67);
+var ReactPropTypeLocationNames = __webpack_require__(63);
+var ReactNoopUpdateQueue = __webpack_require__(62);
 
 var emptyObject = __webpack_require__(27);
 var invariant = __webpack_require__(1);
@@ -25598,7 +21183,7 @@ var ReactClass = {
 module.exports = ReactClass;
 
 /***/ },
-/* 269 */
+/* 209 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25623,7 +21208,7 @@ var ReactElement = __webpack_require__(22);
  */
 var createDOMFactory = ReactElement.createFactory;
 if (process.env.NODE_ENV !== 'production') {
-  var ReactElementValidator = __webpack_require__(115);
+  var ReactElementValidator = __webpack_require__(99);
   createDOMFactory = ReactElementValidator.createFactory;
 }
 
@@ -25773,7 +21358,7 @@ var ReactDOMFactories = {
 module.exports = ReactDOMFactories;
 
 /***/ },
-/* 270 */
+/* 210 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25790,11 +21375,11 @@ module.exports = ReactDOMFactories;
 'use strict';
 
 var ReactElement = __webpack_require__(22);
-var ReactPropTypeLocationNames = __webpack_require__(68);
-var ReactPropTypesSecret = __webpack_require__(116);
+var ReactPropTypeLocationNames = __webpack_require__(63);
+var ReactPropTypesSecret = __webpack_require__(100);
 
 var emptyFunction = __webpack_require__(11);
-var getIteratorFn = __webpack_require__(70);
+var getIteratorFn = __webpack_require__(65);
 var warning = __webpack_require__(2);
 
 /**
@@ -26212,7 +21797,7 @@ function getClassName(propValue) {
 module.exports = ReactPropTypes;
 
 /***/ },
-/* 271 */
+/* 211 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26230,8 +21815,8 @@ module.exports = ReactPropTypes;
 
 var _assign = __webpack_require__(4);
 
-var ReactComponent = __webpack_require__(66);
-var ReactNoopUpdateQueue = __webpack_require__(67);
+var ReactComponent = __webpack_require__(61);
+var ReactNoopUpdateQueue = __webpack_require__(62);
 
 var emptyObject = __webpack_require__(27);
 
@@ -26259,7 +21844,7 @@ ReactPureComponent.prototype.isPureReactComponent = true;
 module.exports = ReactPureComponent;
 
 /***/ },
-/* 272 */
+/* 212 */
 /***/ function(module, exports) {
 
 "use strict";
@@ -26278,7 +21863,7 @@ module.exports = ReactPureComponent;
 module.exports = '15.4.0';
 
 /***/ },
-/* 273 */
+/* 213 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26296,8 +21881,8 @@ module.exports = '15.4.0';
 
 var _prodInvariant = __webpack_require__(23);
 
-var ReactPropTypeLocationNames = __webpack_require__(68);
-var ReactPropTypesSecret = __webpack_require__(116);
+var ReactPropTypeLocationNames = __webpack_require__(63);
+var ReactPropTypesSecret = __webpack_require__(100);
 
 var invariant = __webpack_require__(1);
 var warning = __webpack_require__(2);
@@ -26370,7 +21955,7 @@ function checkReactTypeSpec(typeSpecs, values, location, componentName, element,
 module.exports = checkReactTypeSpec;
 
 /***/ },
-/* 274 */
+/* 214 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26413,7 +21998,7 @@ function onlyChild(children) {
 module.exports = onlyChild;
 
 /***/ },
-/* 275 */
+/* 215 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26431,12 +22016,12 @@ module.exports = onlyChild;
 
 var _prodInvariant = __webpack_require__(23);
 
-var ReactCurrentOwner = __webpack_require__(20);
-var REACT_ELEMENT_TYPE = __webpack_require__(114);
+var ReactCurrentOwner = __webpack_require__(17);
+var REACT_ELEMENT_TYPE = __webpack_require__(98);
 
-var getIteratorFn = __webpack_require__(70);
+var getIteratorFn = __webpack_require__(65);
 var invariant = __webpack_require__(1);
-var KeyEscapeUtils = __webpack_require__(265);
+var KeyEscapeUtils = __webpack_require__(205);
 var warning = __webpack_require__(2);
 
 var SEPARATOR = '.';
@@ -26594,76 +22179,4491 @@ function traverseAllChildren(children, callback, traverseContext) {
 module.exports = traverseAllChildren;
 
 /***/ },
-/* 276 */
-/***/ function(module, exports) {
+/* 216 */
+/***/ function(module, exports, __webpack_require__) {
 
-module.exports = require("bcrypt");
+"use strict";
+/**
+ * @fileOverview <Description Missing>
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.1.0
+ */
+"use strict";
+const React = __webpack_require__(0);
+const StatsGrid_1 = __webpack_require__(113);
+exports.AdminApp = (props) => (React.createElement("div", {className: 'page'}, 
+    React.createElement("section", null, 
+        React.createElement("h1", null, "VRE App"), 
+        props.stats !== null ? (React.createElement(StatsGrid_1.StatsGrid, {stats: props.stats})) : null)
+));
+
+
+/***/ },
+/* 217 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview <Description Missing>
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.1.0
+ */
+"use strict";
+const immutable_1 = __webpack_require__(117);
+const datamodel_1 = __webpack_require__(10);
+exports.emptyDataStore = {
+    all: {
+        entity: { value: [], lastUpdate: null },
+        entity_type: { value: [], lastUpdate: null },
+        predicate: { value: [], lastUpdate: null },
+        source: { value: [], lastUpdate: null },
+        dublinCore: { value: new datamodel_1.ElementSet(), lastUpdate: null }
+    },
+    tabs: {
+        entity: immutable_1.Map(),
+        entity_type: immutable_1.Map(),
+        predicate: immutable_1.Map(),
+        source: immutable_1.Map()
+    }
+};
+exports.emptyTabs = [
+    { entity: immutable_1.Map() },
+    { entity_type: immutable_1.Map() },
+    { predicate: immutable_1.Map() },
+    { source: immutable_1.Map()
+    }];
+
+
+/***/ },
+/* 218 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview <Description Missing>
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.1.0
+ */
+"use strict";
+var __assign = (this && this.__assign) || Object.assign || function(t) {
+    for (var s, i = 1, n = arguments.length; i < n; i++) {
+        s = arguments[i];
+        for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+            t[p] = s[p];
+    }
+    return t;
+};
+//https://react-router.now.sh/Match
+const React = __webpack_require__(0);
+const react_router_1 = __webpack_require__(24);
+const RouteNotFound_1 = __webpack_require__(256);
+const ApiService_1 = __webpack_require__(6);
+const itemTypes_1 = __webpack_require__(111);
+const Admin_1 = __webpack_require__(252);
+const AdminApp_1 = __webpack_require__(216);
+const User_1 = __webpack_require__(257);
+const UserManagement_1 = __webpack_require__(258);
+const AppDownload_1 = __webpack_require__(253);
+const DatabaseUpload_1 = __webpack_require__(254);
+const react_router_2 = __webpack_require__(24);
+const ObjectEditor_1 = __webpack_require__(255);
+class FalconApp extends React.Component {
+    constructor(props) {
+        super();
+        this.state = {
+            user: '',
+            stats: null
+        };
+    }
+    componentDidMount() {
+        if (this.props.environment === 'website' && window !== undefined) {
+            fetch('/admin/currentuser', { credentials: 'same-origin' })
+                .then((response) => response.json())
+                .then((userData) => this.setState({ user: userData.username }));
+        }
+        this.props.api.getStats()
+            .then((stats) => {
+            this.setState({ stats });
+        });
+    }
+    render() {
+        return (React.createElement("div", {id: 'main', className: 'flex-fill'}, 
+            React.createElement(this.props.router, __assign({}, this.props.routerSettings, {className: 'flex-fill', basename: '/admin'}), 
+                React.createElement("div", {className: 'flex-fill', style: { flexDirection: 'column' }}, 
+                    React.createElement("div", {className: 'header'}, 
+                        React.createElement(react_router_2.Link, {to: '/', className: 'logo-link'}, 
+                            React.createElement("div", {className: 'logo'}, "VRE")
+                        ), 
+                        React.createElement(react_router_2.Link, {to: '/', className: 'header-link'}, "Home"), 
+                        React.createElement(react_router_2.Link, {accessKey: 's', to: '/edit/' + ApiService_1.AppUrls.source, className: 'header-link source'}, itemTypes_1.itemTypes.source.plural), 
+                        React.createElement(react_router_2.Link, {accessKey: 'e', to: '/edit/' + ApiService_1.AppUrls.entity, className: 'header-link entity'}, itemTypes_1.itemTypes.entity.plural), 
+                        React.createElement(react_router_2.Link, {accessKey: 'p', to: '/edit/' + ApiService_1.AppUrls.predicate, className: 'header-link predicate'}, itemTypes_1.itemTypes.predicate.plural), 
+                        React.createElement(react_router_2.Link, {accessKey: 't', to: '/edit/' + ApiService_1.AppUrls.entity_type, className: 'header-link entity_type'}, itemTypes_1.itemTypes.entity_type.plural), 
+                        this.props.environment === 'website' ? (React.createElement("div", {className: 'right-header'}, 
+                            React.createElement(react_router_2.Link, {to: '/user', className: 'header-link'}, 
+                                React.createElement("span", {className: 'current-user'}, this.state.user)
+                            ), 
+                            React.createElement("a", {href: '/admin/logout', className: 'header-link'}, "Logout"), 
+                            React.createElement("a", {href: '/', className: 'header-link'}, 
+                                React.createElement("i", {className: 'fa fa-external-link'})
+                            ))) : null), 
+                    this.props.environment === 'website' ? (React.createElement(react_router_1.Match, {exactly: true, pattern: '/', render: (matchprops) => (React.createElement(Admin_1.Admin, __assign({}, matchprops, {stats: this.state.stats})))})) : (React.createElement(react_router_1.Match, {exactly: true, pattern: '/', render: (matchprops) => (React.createElement(AdminApp_1.AdminApp, __assign({}, matchprops, {stats: this.state.stats})))})), 
+                    React.createElement(react_router_1.Match, {exactly: true, pattern: '/user', component: User_1.User}), 
+                    React.createElement(react_router_1.Match, {exactly: true, pattern: '/users', component: UserManagement_1.UserManagement}), 
+                    React.createElement(react_router_1.Match, {exactly: true, pattern: '/app', component: AppDownload_1.AppDownload}), 
+                    React.createElement(react_router_1.Match, {exactly: true, pattern: '/upload', component: DatabaseUpload_1.DatabaseUpload}), 
+                    React.createElement(react_router_1.Match, {exactly: true, pattern: '/search', render: (matchprops) => (React.createElement(ObjectEditor_1.ObjectEditor, __assign({api: this.props.api}, matchprops, {workspace: 'search'})))}), 
+                    React.createElement(react_router_1.Match, {pattern: '/edit/:workspace', render: (matchprops) => (React.createElement(ObjectEditor_1.ObjectEditor, __assign({api: this.props.api}, matchprops, {workspace: matchprops.params.workspace === 'property' ? 'predicate' : matchprops.params.workspace})))}), 
+                    React.createElement(react_router_1.Miss, {component: RouteNotFound_1.RouteNotFound}))
+            )
+        ));
+    }
+}
+exports.FalconApp = FalconApp;
+
+
+/***/ },
+/* 219 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview Sidebar for editor
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.1.0
+ */
+"use strict";
+const React = __webpack_require__(0);
+exports.Loading = (props) => {
+    return (React.createElement("div", {className: 'loader-wrapper'}, 
+        React.createElement("div", {className: 'loader'})
+    ));
+};
+
+
+/***/ },
+/* 220 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview Sidebar for editor
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.1.0
+ */
+"use strict";
+const React = __webpack_require__(0);
+const SearchBox_1 = __webpack_require__(243);
+const ApiService_1 = __webpack_require__(6);
+const react_router_1 = __webpack_require__(24);
+const Signaller_1 = __webpack_require__(8);
+const lodash_1 = __webpack_require__(5);
+const react_sortable_hoc_1 = __webpack_require__(288);
+const Card = react_sortable_hoc_1.SortableElement((props) => (React.createElement("li", {key: `${props.url}`}, 
+    React.createElement("div", {className: ((currentTab) => {
+        const classes = ['sidebar-card'];
+        if (currentTab) {
+            classes.push('current');
+        }
+        if (props.compact) {
+            classes.push('compact');
+        }
+        return classes.join(' ');
+    })(props.currentTab)}, 
+        React.createElement("div", {className: 'badge-container'}, 
+            React.createElement("div", {className: 'badge ' + props.tab.tabType}, 
+                React.createElement("span", null, props.tab.tabType[0].toUpperCase())
+            )
+        ), 
+        React.createElement("div", {className: 'description'}, 
+            React.createElement(react_router_1.Link, {to: props.url}, 
+                React.createElement("span", {className: 'entity-name'}, props.title), 
+                props.compact ? null : (React.createElement("span", {className: 'entity-type'}, props.subtitle)))
+        ), 
+        !props.currentTab ? (React.createElement("span", {className: 'close-button'}, 
+            React.createElement("i", {className: 'fa fa-times', onClick: (e) => this.closeTab(e, props.tab.tabType, props.tab.uid)})
+        )) : null)
+)));
+const CardList = react_sortable_hoc_1.SortableContainer((props) => {
+    return (React.createElement("ul", {className: 'card-list'}, !props.loading ? props.tabs.map((tab, index) => {
+        // TODO: shouldn't be ==
+        const item = props.dataStore.all[tab.tabType].value
+            .find((item) => item.uid == tab.uid);
+        if (item === undefined) {
+            return null;
+        }
+        const url = `/edit/${ApiService_1.AppUrls[tab.tabType]}/${tab.uid}`;
+        const title = tab.tabType === 'entity' ? item.label : item.name;
+        const subtitle = `${lodash_1.capitalize(ApiService_1.AppUrls[tab.tabType]).replace('_', ' ')} ${tab.uid}`;
+        const currentTab = !props.list && tab.tabType === props.workspace && tab.uid == props.id;
+        return (React.createElement(Card, {key: `tab-${index}`, currentTab: currentTab, url: url, tab: tab, title: title, subtitle: subtitle, index: index, compact: props.compact}));
+    }) : null));
+});
+class Sidebar extends React.Component {
+    constructor() {
+        super();
+        this.onSortEnd = ({ oldIndex, newIndex }) => {
+            Signaller_1.reorderTabs.dispatch((tabs) => {
+                return react_sortable_hoc_1.arrayMove(tabs, oldIndex, newIndex);
+            });
+        };
+        this.state = {
+            searchString: '',
+            compactMode: false
+        };
+    }
+    closeTab(e, tabType, uid) {
+        Signaller_1.closeTab.dispatch(tabType, uid);
+        e.stopPropagation();
+        e.preventDefault();
+        e.nativeEvent.stopImmediatePropagation();
+    }
+    render() {
+        return (React.createElement("section", {id: 'sidebar'}, 
+            React.createElement(SearchBox_1.SearchBox, {searchString: this.state.searchString, dataStore: this.props.dataStore, onChange: (evt) => this.setState({ searchString: evt.currentTarget.value })}), 
+            React.createElement("div", {className: 'sidebar-toolbar'}, 
+                React.createElement("button", {onClick: this.props.clearTabs}, 
+                    React.createElement("i", {className: 'fa fa-trash'}), 
+                    " Clear All"), 
+                React.createElement("button", {onClick: () => this.setState({ compactMode: !this.state.compactMode })}, 
+                    React.createElement("i", {className: 'fa fa-compress'}), 
+                    " Compact")), 
+            React.createElement("div", {className: 'card-list-container'}, 
+                React.createElement(CardList, {dataStore: this.props.dataStore, loading: this.props.loading, tabs: this.props.tabs, list: this.props.list, workspace: this.props.workspace, id: this.props.id, compact: this.state.compactMode, onSortEnd: this.onSortEnd})
+            )));
+    }
+}
+exports.Sidebar = Sidebar;
+
+
+/***/ },
+/* 221 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview Toast controller
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.1.0
+ */
+"use strict";
+const React = __webpack_require__(0);
+const Signaller_1 = __webpack_require__(8);
+class Toast extends React.Component {
+    constructor() {
+        super();
+        this.state = {
+            toasts: [],
+            nextId: 0
+        };
+        this.boundShowToast = this.addToast.bind(this);
+        Signaller_1.showToast.add(this.boundShowToast);
+    }
+    componentWillUnmount() {
+        Signaller_1.showToast.remove(this.boundShowToast);
+    }
+    addToast(title, message, level = 'warning', lifeTime = 3000) {
+        const id = this.state.nextId;
+        this.setState({
+            toasts: this.state.toasts.concat([{ title, message, level, lifeTime, id }]),
+            nextId: id + 1
+        });
+        setTimeout(() => {
+            this.setState({
+                toasts: this.state.toasts.filter((toast) => toast.id !== id)
+            });
+        }, lifeTime);
+    }
+    render() {
+        return (React.createElement("span", null, this.state.toasts.map((toast, i) => (React.createElement("div", {key: `toast-${toast.id}`, style: { bottom: (1 + 7 * i) + 'em' }, className: `toast ${toast.level}`}, 
+            React.createElement("div", {className: 'title'}, toast.title), 
+            React.createElement("div", {className: 'message'}, toast.message))))));
+    }
+}
+exports.Toast = Toast;
+
+
+/***/ },
+/* 222 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview Sidebar for editor
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.1.0
+ */
+"use strict";
+const React = __webpack_require__(0);
+const Loading_1 = __webpack_require__(219);
+const workspace_1 = __webpack_require__(251);
+class Workspace extends React.Component {
+    constructor() {
+        super();
+        this.state = {
+            searchString: ''
+        };
+    }
+    render() {
+        if (this.props.loading) {
+            return (React.createElement(Loading_1.Loading, null));
+        }
+        if (this.props.list) {
+            return (React.createElement(workspace_1.ObjectListWorkspace, {api: this.props.api, name: this.props.name, query: this.props.location.query, listType: this.props.workspace, dataStore: this.props.dataStore}));
+        }
+        let workspaceComponent = workspace_1.EmptyWorkspace;
+        switch (this.props.workspace) {
+            case 'entity':
+                workspaceComponent = workspace_1.EntityEditorWorkspace;
+                break;
+            case 'predicate':
+                workspaceComponent = workspace_1.PredicateEditorWorkspace;
+                break;
+            case 'source':
+                workspaceComponent = workspace_1.SourceEditorWorkspace;
+                break;
+            case 'entity_type':
+                workspaceComponent = workspace_1.EntityTypeWorkspace;
+                break;
+            case 'search':
+                workspaceComponent = workspace_1.AdvancedSearchWorkspace;
+                break;
+        }
+        return (React.createElement("div", {className: 'flex-fill workspace-outer-wrapper'}, 
+            React.createElement("div", {className: 'workspace-inner-wrapper flex-fill'}, React.createElement(workspaceComponent, { api: this.props.api, dataStore: this.props.dataStore, id: this.props.id }))
+        ));
+    }
+}
+exports.Workspace = Workspace;
+
+
+/***/ },
+/* 223 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview <Description Missing>
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.1.0
+ */
+"use strict";
+const React = __webpack_require__(0);
+const DatePickerDropdown_1 = __webpack_require__(230);
+exports.DateFieldEditor = (props) => {
+    return (React.createElement("div", {className: 'date-selector'}, 
+        React.createElement(DatePickerDropdown_1.DatePickerDropdown, {value: props.value, setValue: props.onChange})
+    ));
+};
+
+
+/***/ },
+/* 224 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview <Description Missing>
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.1.0
+ */
+"use strict";
+const React = __webpack_require__(0);
+const ComboDropdown_1 = __webpack_require__(18);
+const lodash_1 = __webpack_require__(5);
+exports.EntityFieldEditor = (props) => {
+    const options = props.entities.map((entity) => ({ key: entity.label, value: entity.uid }));
+    let selectedOption = options.find((opt) => opt.value == props.value);
+    if (selectedOption === undefined) {
+        selectedOption = { key: '', value: '' };
+    }
+    return (React.createElement(ComboDropdown_1.ComboDropdown, {options: options, typeName: 'entity type', allowNew: false, value: selectedOption, setValue: (val) => props.onChange(val.value), createNewValue: lodash_1.noop}));
+};
+
+
+/***/ },
+/* 225 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview <Description Missing>
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.1.0
+ */
+"use strict";
+const React = __webpack_require__(0);
+exports.IntegerFieldEditor = (props) => {
+    return (React.createElement("input", {type: 'number', value: props.value, onChange: (e) => props.onChange(e.target.value)}));
+};
+
+
+/***/ },
+/* 226 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview <Description Missing>
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.1.0
+ */
+"use strict";
+const React = __webpack_require__(0);
+const ApiService_1 = __webpack_require__(6);
+const datamodel_1 = __webpack_require__(10);
+const EditableFieldComponent_1 = __webpack_require__(26);
+const RecordRow_1 = __webpack_require__(227);
+const AddTabButton_1 = __webpack_require__(16);
+class RecordEditableFieldComponent extends EditableFieldComponent_1.EditableFieldComponent {
+}
+class RecordPredicate extends React.Component {
+    constructor() {
+        super();
+        this.state = {
+            potentialValues: []
+        };
+    }
+    componentDidMount() {
+        if (this.props.predicate.rangeIsReference) {
+            this.props.api.getCollection(datamodel_1.Entity, ApiService_1.AppUrls.entity, { type: this.props.predicate.range })
+                .then((potentialValues) => this.setState({ potentialValues }));
+        }
+    }
+    createNewRecord() {
+        this.props.api.postItem(datamodel_1.Record, ApiService_1.AppUrls.record, new datamodel_1.Record().deserialize({
+            predicate: this.props.predicate.uid,
+            entity: this.props.entity_id,
+            valueType: this.props.predicate.rangeIsReference ? 'entity' : this.props.predicate.range,
+            score: 3
+        }));
+    }
+    deleteRecord(record) {
+        if (record.uid === null) {
+            throw new Error('Trying to delete a record with null id');
+        }
+        this.props.api.delItem(datamodel_1.Record, ApiService_1.AppUrls.record, record.uid)
+            .then(() => {
+            this.props.onChange();
+        });
+    }
+    recordChanged(record) {
+        this.props.api.putItem(datamodel_1.Record, ApiService_1.AppUrls.record, this.props.entity_id, record.serialize());
+    }
+    render() {
+        return (React.createElement("section", null, 
+            React.createElement("h5", {className: 'section-header'}, 
+                this.props.predicate.name, 
+                " ", 
+                React.createElement("i", {className: 'fa fa-plus-circle add button', "aria-hidden": 'true', onClick: this.createNewRecord.bind(this), title: `Add new ${this.props.predicate.name} record`}), 
+                React.createElement(AddTabButton_1.AddTabButton, {dataStore: this.props.dataStore, uid: this.props.predicate.uid, tabType: 'predicate'})), 
+            React.createElement("table", {className: 'record-editing-table'}, 
+                React.createElement("thead", null, 
+                    React.createElement("tr", {className: 'record-row title'}, 
+                        React.createElement("th", {className: 'record-row-item uid'}, "ID"), 
+                        this.props.predicate.range !== 'source' ? (React.createElement("th", {className: 'record-row-item'}, "Value")) : null, 
+                        React.createElement("th", {className: 'record-row-item'}, "Source"), 
+                        React.createElement("th", {className: 'record-row-item score'}, "Score"), 
+                        React.createElement("th", {className: 'record-row-item score'}, "Period"), 
+                        React.createElement("th", {className: 'record-row-item buttons'}, "Actions"))
+                ), 
+                React.createElement("tbody", null, this.props.records.map((record) => (React.createElement(RecordEditableFieldComponent, {key: `row-${record.uid}`, value: record, onChange: this.recordChanged.bind(this), onDelete: this.deleteRecord.bind(this), component: RecordRow_1.RecordRow, additionalProps: {
+                    dimension: 'predicates',
+                    sources: this.props.sources,
+                    entities: this.state.potentialValues,
+                    dataStore: this.props.dataStore
+                }})))))));
+    }
+}
+exports.RecordPredicate = RecordPredicate;
+
+
+/***/ },
+/* 227 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview <Description Missing>
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.1.0
+ */
+"use strict";
+const React = __webpack_require__(0);
+var EditableFieldComponent_1 = __webpack_require__(26);
+exports.EditableFieldComponent = EditableFieldComponent_1.EditableFieldComponent;
+const ScorePicker_1 = __webpack_require__(231);
+const ComboDropdown_1 = __webpack_require__(18);
+const Signaller_1 = __webpack_require__(8);
+const StringFieldEditor_1 = __webpack_require__(229);
+const EntityFieldEditor_1 = __webpack_require__(224);
+const DateFieldEditor_1 = __webpack_require__(223);
+const IntegerFieldEditor_1 = __webpack_require__(225);
+const AddTabButton_1 = __webpack_require__(16);
+const formatDate_1 = __webpack_require__(69);
+const createNewSource = (initialValue) => {
+    const a = {
+        name: 'source',
+        complete: () => {
+            // TODO : Automatically reload sources
+        },
+        cancel: () => { console.log('cancel'); },
+        settings: {
+            initialValue
+        }
+    };
+    Signaller_1.showModal.dispatch(a);
+};
+const recordEditor = (props) => {
+    switch (props.value.valueType) {
+        case 'string':
+            return (React.createElement(StringFieldEditor_1.StringFieldEditor, {value: props.value.value || '', onChange: (value) => props.onChange(Object.assign(props.value, { value }))}));
+        case 'date':
+            return (React.createElement(DateFieldEditor_1.DateFieldEditor, {value: props.value.value || '', onChange: (value) => props.onChange(Object.assign(props.value, { value }))}));
+        case 'integer':
+            return (React.createElement(IntegerFieldEditor_1.IntegerFieldEditor, {value: props.value.value || '', onChange: (value) => props.onChange(Object.assign(props.value, { value }))}));
+        case 'entity':
+            return (React.createElement(EntityFieldEditor_1.EntityFieldEditor, {value: props.value.value || '', onChange: (value) => props.onChange(Object.assign(props.value, { value })), entities: props.entities}));
+        default:
+            return (React.createElement("div", null, "Missing editor"));
+    }
+};
+const formatValue = (props) => {
+    if (props.value.valueType === 'entity') {
+        const entity = props.entities.find((entity) => entity.uid == props.value.value);
+        if (entity !== undefined) {
+            return (React.createElement("span", null, 
+                entity.label, 
+                " ", 
+                React.createElement(AddTabButton_1.AddTabButton, {dataStore: props.dataStore, uid: entity.uid, tabType: 'entity'})));
+        }
+        else {
+            return (React.createElement("em", null, "Missing Entity"));
+        }
+    }
+    if (props.value.valueType === 'date') {
+        return formatDate_1.formatDate(props.value.value);
+    }
+    return props.value.value;
+};
+exports.RecordRow = (props) => {
+    const recordValue = props.value;
+    if (recordValue === null) {
+        throw new Error('Should not be null!!');
+    }
+    const currentSource = props.sources.find((source) => source.uid === recordValue.source);
+    const dropDownValue = {
+        key: '', value: props.value.source
+    };
+    if (currentSource !== undefined) {
+        dropDownValue.key = currentSource.name;
+    }
+    if (props.edit) {
+        return (React.createElement("tr", {className: 'record-row'}, 
+            React.createElement("td", {className: 'record-row-item uid'}, props.value.uid), 
+            recordValue.valueType !== 'source' ? (React.createElement("td", {className: 'record-row-item'}, recordEditor(props))) : null, 
+            React.createElement("td", {className: 'record-row-item'}, 
+                React.createElement(ComboDropdown_1.ComboDropdown, {options: props.sources.map((source) => ({ key: source.name, value: source.uid })), typeName: 'source', value: dropDownValue, setValue: (combo) => props.onChange(Object.assign(props.value, { source: combo.value })), createNewValue: createNewSource})
+            ), 
+            React.createElement("td", {className: 'record-row-item score'}, 
+                React.createElement(ScorePicker_1.ScorePicker, {value: props.value.score, readOnly: false, onChange: (score) => props.onChange(Object.assign(props.value, { score }))})
+            ), 
+            React.createElement("td", {className: 'record-row-item period'}, 
+                React.createElement(DateFieldEditor_1.DateFieldEditor, {value: props.value.period || '', onChange: (period) => props.onChange(Object.assign(props.value, { period }))})
+            ), 
+            React.createElement("td", {className: 'record-row-item buttons'}, 
+                React.createElement("button", null, 
+                    React.createElement("i", {className: 'fa fa-check', onClick: props.acceptChanges, "aria-hidden": 'true'})
+                ), 
+                React.createElement("button", null, 
+                    React.createElement("i", {className: 'fa fa-times', "aria-hidden": 'true', onClick: props.cancelChanges})
+                ))));
+    }
+    else {
+        return (React.createElement("tr", {className: 'record-row'}, 
+            React.createElement("td", {className: 'record-row-item uid'}, 
+                "#", 
+                props.value.uid), 
+            recordValue.valueType !== 'source' ? (React.createElement("td", {className: 'record-row-item'}, formatValue(props))) : null, 
+            React.createElement("td", {className: 'record-row-item'}, 
+                dropDownValue.key, 
+                dropDownValue.key.length > 0 ? (React.createElement(AddTabButton_1.AddTabButton, {dataStore: props.dataStore, uid: dropDownValue.value, tabType: 'source'})) : null), 
+            React.createElement("td", {className: 'record-row-item score'}, 
+                React.createElement(ScorePicker_1.ScorePicker, {value: props.value.score, readOnly: true})
+            ), 
+            React.createElement("td", {className: 'record-row-item period'}, formatDate_1.formatDate(props.value.period)), 
+            React.createElement("td", {className: 'record-row-item buttons'}, 
+                React.createElement("button", null, 
+                    React.createElement("i", {className: 'fa fa-pencil-square-o', title: 'Edit', onClick: props.setEdit, "aria-hidden": 'true'})
+                ), 
+                React.createElement("button", null, 
+                    React.createElement("i", {className: 'fa fa-trash', "aria-hidden": 'true', onClick: props.onDelete})
+                ))));
+    }
+};
+
+
+/***/ },
+/* 228 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview <Description Missing>
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.1.0
+ */
+"use strict";
+const React = __webpack_require__(0);
+const ApiService_1 = __webpack_require__(6);
+const datamodel_1 = __webpack_require__(10);
+const EditableFieldComponent_1 = __webpack_require__(26);
+const SearchBar_1 = __webpack_require__(40);
+const RecordPredicate_1 = __webpack_require__(226);
+const findParentTree_1 = __webpack_require__(110);
+const Signaller_1 = __webpack_require__(8);
+class RecordEditableFieldComponent extends EditableFieldComponent_1.EditableFieldComponent {
+}
+class RecordsEditor extends React.Component {
+    constructor() {
+        super();
+        this.state = {
+            filterFunc: () => true
+        };
+    }
+    deleteRecord(record) {
+        if (record.uid === null) {
+            throw new Error('Trying to delete a record with null id');
+        }
+        this.props.api.delItem(datamodel_1.Record, ApiService_1.AppUrls.record, record.uid)
+            .then(() => {
+            this.props.onChange();
+        });
+    }
+    recordChanged(record) {
+        this.props.api.putItem(datamodel_1.Record, ApiService_1.AppUrls.record, this.props.id, record.serialize());
+    }
+    createNewRecord() {
+        const entity = this.props.dataStore.tabs.entity.get('entity-' + this.props.id).value.entity;
+        const entityType = this.props.dataStore.all.entity_type.value.find((t) => t.uid === entity.entityType);
+        const entityTypeParents = findParentTree_1.findParentTree(entity.entityType, this.props.dataStore.all.entity_type.value);
+        const predicates = this.props.dataStore.all.predicate
+            .value.filter((pred) => entityTypeParents.indexOf(pred.domain) !== -1);
+        const modalDef = {
+            name: 'record',
+            complete: (data) => {
+                console.log('Records editor called complete');
+                //this.loadData(this.props);
+            },
+            cancel: () => {
+                console.log('Records editor called cancel');
+            },
+            settings: {
+                options: predicates.map((pred) => ({ key: pred.name, value: pred.uid, meta: pred })),
+                entityUid: this.props.id,
+                entityType: this.props.entityTypeId
+            }
+        };
+        Signaller_1.showModal.dispatch(modalDef);
+    }
+    render() {
+        const predicates = this.props.predicates;
+        return (React.createElement("div", null, 
+            React.createElement("div", null, 
+                React.createElement("div", null, 
+                    React.createElement("label", {className: 'small'}, "Records"), 
+                    React.createElement("div", {style: { display: 'flex' }}, 
+                        React.createElement("div", {style: { flex: '1' }}, 
+                            React.createElement(SearchBar_1.SearchBar, {getValue: (p) => p.name, setFilterFunc: (filterFunc) => this.setState({ filterFunc })})
+                        ), 
+                        React.createElement("div", {style: { padding: '0.1em 0.4em', fontSize: '2em' }}, 
+                            React.createElement("i", {className: 'fa fa-plus-circle add button', "aria-hidden": 'true', onClick: this.createNewRecord.bind(this), title: 'Add new record'})
+                        )), 
+                    React.createElement("div", null, Object.keys(this.props.records).map((section) => {
+                        const currentPredicate = predicates.find((pred) => {
+                            if (pred.uid === null) {
+                                throw new Error('encountered predicate with null id');
+                            }
+                            return pred.uid.toString() === section;
+                        });
+                        if (currentPredicate === undefined) {
+                            throw new Error('Could not find predicate');
+                        }
+                        if (!this.state.filterFunc(currentPredicate)) {
+                            return null;
+                        }
+                        return (React.createElement(RecordPredicate_1.RecordPredicate, {dataStore: this.props.dataStore, key: `section-${section}`, entity_id: this.props.id, api: this.props.api, dimension: 'predicate', records: this.props.records[section], predicate: currentPredicate, sources: this.props.sources, onChange: this.props.onChange}));
+                    })))
+            )
+        ));
+    }
+}
+exports.RecordsEditor = RecordsEditor;
+
+
+/***/ },
+/* 229 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview <Description Missing>
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.1.0
+ */
+"use strict";
+const React = __webpack_require__(0);
+exports.StringFieldEditor = (props) => {
+    return (React.createElement("input", {type: 'text', value: props.value, onChange: (e) => props.onChange(e.target.value)}));
+};
+
+
+/***/ },
+/* 230 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview Sidebar for editor
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.1.0
+ */
+"use strict";
+const React = __webpack_require__(0);
+const moment = __webpack_require__(36);
+const lodash_1 = __webpack_require__(5);
+const formatDate_1 = __webpack_require__(69);
+class DatePickerDropdown extends React.Component {
+    constructor() {
+        super();
+        //TODO: should be false
+        this.state = {
+            showingDropDown: false
+        };
+        if (document !== undefined) {
+            this.boundWindowClick = () => {
+                if (!this.ignoreGlobalClick) {
+                    this.setState({
+                        showingDropDown: false
+                    });
+                }
+                else {
+                    this.ignoreGlobalClick = false;
+                }
+            };
+            document.body.addEventListener('click', this.boundWindowClick);
+        }
+    }
+    componentWillMount() {
+        this.ignoreBlur = false;
+        this.ignoreClick = false;
+        this.ignoreGlobalClick = false;
+    }
+    componentWillUnmount() {
+        document.body.removeEventListener('click', this.boundWindowClick);
+    }
+    componentWillReceiveProps(newProps) {
+        // this.updateFilter(newProps.value.key !== this.props.value.key ? newProps.value.key : this.state.searchString, newProps);
+        // this.setState({
+        //     searchString: newProps.value.key !== this.props.value.key ? newProps.value.key : this.state.searchString,
+        //     selected: newProps.value,
+        //     options: newProps.options
+        // });
+    }
+    //should be false
+    handleInputBlur() {
+        if (!this.ignoreBlur) {
+            this.setState({
+                showingDropDown: false
+            });
+        }
+        else {
+            this.ignoreBlur = false;
+        }
+    }
+    handleInputFocus() {
+        if (this.ignoreBlur) {
+            this.ignoreBlur = true;
+            return;
+        }
+        // We don't want `selectItemFromMouse` to trigger when
+        // the user clicks into the input to focus it, so set this
+        // flag to cancel out the logic in `handleInputClick`.
+        // The event order is:  MouseDown -> Focus -> MouseUp -> Click
+        this.ignoreClick = true;
+        this.setState({ showingDropDown: true });
+    }
+    handleInputClick() {
+        // Input will not be focused if it's disabled
+        if (this.isInputFocused() && this.state.showingDropDown === false) {
+            this.setState({ showingDropDown: true });
+        }
+        else {
+            //  if (this.state.highlightedIndex !== null && !this.ignoreClick) {
+            //      this.selectItemFromMouse(this.state.filteredOptions[this.state.highlightedIndex]);
+            //  } else {
+            this.ignoreClick = false;
+        }
+    }
+    selectItemFromMouse(item) {
+        this.setState({
+            showingDropDown: false
+        }, () => {
+            this.props.setValue(item);
+        });
+    }
+    isInputFocused() {
+        const el = this.refs.datePickerDropDownInputBox;
+        return el.ownerDocument && (el === el.ownerDocument.activeElement);
+    }
+    onDropdownClick() {
+        this.ignoreBlur = true;
+        this.ignoreGlobalClick = true;
+        console.log('clicked');
+    }
+    rangeTypeChanged(rangeType) {
+        this.props.setValue(rangeType + this.props.value.substr(1));
+    }
+    yearChanged(e) {
+        const base = this.props.value.length === 9 ? this.props.value : '=XXXX0000';
+        let yearVal = e.target.value.substr(0, 4).replace(/[^0-9]/g, '');
+        for (let i = yearVal.length; i < 4; i += 1) {
+            yearVal += 'X';
+        }
+        this.props.setValue(base.substr(0, 1) + yearVal + base.substr(5));
+    }
+    monthChanged(e) {
+        this.ignoreGlobalClick = true;
+        const base = this.props.value.length === 9 ? this.props.value : '=XXXX0000';
+        let monthVal = e.target.value.substr(0, 2);
+        this.props.setValue(base.substr(0, 5) + monthVal + base.substr(7));
+    }
+    dayChanged(e) {
+        const base = this.props.value.length === 9 ? this.props.value : '=XXXX0000';
+        let dayVal = e.target.value.substr(0, 2).replace(/[^0-9]/g, '');
+        dayVal = lodash_1.padStart(dayVal, 2, '0');
+        this.props.setValue(base.substr(0, 7) + dayVal);
+    }
+    render() {
+        let rangeOption = this.props.value.substr(0, 1);
+        if (['<', '>', '='].indexOf(rangeOption) === -1) {
+            rangeOption = '=';
+        }
+        const rangeOptionClassName = (val) => {
+            if (val === rangeOption) {
+                return 'range-option selected';
+            }
+            else {
+                return 'range-option';
+            }
+        };
+        const year = this.props.value.substr(1, 4).replace(/X/g, '');
+        const month = this.props.value.substr(5, 2);
+        const day = this.props.value[7] === '0' ? this.props.value[8] === '0' ?
+            ''
+            : this.props.value.substr(8, 1)
+            : this.props.value.substr(7, 2);
+        const displayValue = formatDate_1.formatDate(this.props.value);
+        return (React.createElement("div", {className: 'combo-dropdown'}, 
+            React.createElement("div", null, 
+                React.createElement("input", {type: 'text', readOnly: true, ref: 'datePickerDropDownInputBox', className: 'search-input', value: displayValue, onBlur: this.handleInputBlur.bind(this), onFocus: this.handleInputFocus.bind(this), onClick: this.handleInputClick.bind(this)})
+            ), 
+            this.state.showingDropDown ? (React.createElement("div", {className: 'dropdown'}, 
+                React.createElement("div", {className: 'date-picker-dropdown', onMouseDown: this.onDropdownClick.bind(this)}, 
+                    React.createElement("section", {className: 'range-type'}, 
+                        React.createElement("div", {className: rangeOptionClassName('<'), onClick: () => this.rangeTypeChanged('<')}, "Before"), 
+                        React.createElement("div", {className: rangeOptionClassName('='), onClick: () => this.rangeTypeChanged('=')}, "Exactly"), 
+                        React.createElement("div", {className: rangeOptionClassName('>'), onClick: () => this.rangeTypeChanged('>')}, "After")), 
+                    React.createElement("section", {className: 'date-select'}, 
+                        React.createElement("div", {className: 'date-selector day'}, 
+                            React.createElement("label", {className: 'small'}, "Day"), 
+                            React.createElement("input", {type: 'text', maxLength: 2, value: day, onChange: this.dayChanged.bind(this)})), 
+                        React.createElement("div", {className: 'date-selector month'}, 
+                            React.createElement("label", {className: 'small'}, "Month"), 
+                            React.createElement("select", {onChange: this.monthChanged.bind(this), value: month}, 
+                                React.createElement("option", {value: '00'}, "Unknown"), 
+                                moment.months().map((month, i) => (React.createElement("option", {key: `option-${month}`, value: lodash_1.padStart((i + 1).toString(), 2, '0')}, month))))), 
+                        React.createElement("div", {className: 'date-selector year'}, 
+                            React.createElement("label", {className: 'small'}, "Year"), 
+                            React.createElement("input", {type: 'text', maxLength: 4, value: year, onChange: this.yearChanged.bind(this)}))))
+            )) : null));
+    }
+}
+exports.DatePickerDropdown = DatePickerDropdown;
+
+
+/***/ },
+/* 231 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview Sidebar for editor
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.1.0
+ */
+"use strict";
+const React = __webpack_require__(0);
+const lodash_1 = __webpack_require__(5);
+exports.ScorePicker = (props) => {
+    const values = [1, 2, 3, 4, 5];
+    if (props.readOnly) {
+        return (React.createElement("span", {className: 'score-picker'}, values.map((val) => (React.createElement("i", {key: val, className: 'fa fa-star' + (val > props.value ? '-o' : ''), "aria-hidden": 'true'})))));
+    }
+    else {
+        if (props.onChange === undefined) {
+            throw new Error('An onChange handler is required');
+        }
+        return (React.createElement("span", {className: 'score-picker editing'}, lodash_1.reverse(values).map((val) => (React.createElement("i", {key: val, className: 'fa fa-star' + (val > props.value ? '-o' : ''), onClick: () => props.onChange(val), "aria-hidden": 'true'})))));
+    }
+};
+
+
+/***/ },
+/* 232 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview Sidebar for editor
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.1.0
+ */
+"use strict";
+const React = __webpack_require__(0);
+const Overlay_1 = __webpack_require__(25);
+class ConflictResolution extends React.Component {
+    constructor() {
+        super();
+        this.state = {
+            label: '',
+            entityType: { key: '', value: '' },
+            allEntityTypes: []
+        };
+    }
+    render() {
+        return (React.createElement(Overlay_1.Overlay, null, 
+            React.createElement("h2", null, 
+                React.createElement("i", {className: 'fa fa-exclamation-triangle warning'}), 
+                " Conflict: ", 
+                this.props.message), 
+            this.props.conflictingItems.record !== undefined && this.props.conflictingItems.record.length > 0 ? (React.createElement("span", null, 
+                React.createElement("p", null, "The following records conflict with your request change:"), 
+                React.createElement("table", {className: 'table'}, 
+                    React.createElement("thead", null, 
+                        React.createElement("tr", null, 
+                            React.createElement("th", null, "Entity"), 
+                            React.createElement("th", null, "Predicate"), 
+                            React.createElement("th", null, "Value"))
+                    ), 
+                    React.createElement("tbody", null, this.props.conflictingItems.record.map((record) => {
+                        const entityName = this.props.dataStore.all.entity.value
+                            .find((entity) => entity.uid == record.entity).label;
+                        const predicateName = this.props.dataStore.all.predicate.value
+                            .find((predicate) => predicate.uid == record.predicate).name;
+                        return (React.createElement("tr", {key: `row-${record.uid}`}, 
+                            React.createElement("td", null, entityName), 
+                            React.createElement("td", null, predicateName), 
+                            React.createElement("td", null, record.value)));
+                    }))))) : null, 
+            this.props.conflictingItems.entity !== undefined && this.props.conflictingItems.entity.length > 0 ? (React.createElement("span", null, 
+                React.createElement("p", null, "The following entities conflict with your request change:"), 
+                React.createElement("table", {className: 'table'}, 
+                    React.createElement("thead", null, 
+                        React.createElement("tr", null, 
+                            React.createElement("th", null, "Entity")
+                        )
+                    ), 
+                    React.createElement("tbody", null, this.props.conflictingItems.entity.map((entity) => {
+                        return (React.createElement("tr", {key: `row-${entity.uid}`}, 
+                            React.createElement("td", null, entity.label)
+                        ));
+                    }))))) : null, 
+            this.props.conflictingItems.entityType !== undefined && this.props.conflictingItems.entityType.length > 0 ? (React.createElement("span", null, 
+                React.createElement("p", null, "The following entity types conflict with your request change:"), 
+                React.createElement("table", {className: 'table'}, 
+                    React.createElement("thead", null, 
+                        React.createElement("tr", null, 
+                            React.createElement("th", null, "Entity Type")
+                        )
+                    ), 
+                    React.createElement("tbody", null, this.props.conflictingItems.entityType.map((entityType) => {
+                        return (React.createElement("tr", {key: `row-${entityType.uid}`}, 
+                            React.createElement("td", null, entityType.name)
+                        ));
+                    }))))) : null, 
+            this.props.conflictingItems.source !== undefined && this.props.conflictingItems.source.length > 0 ? (React.createElement("span", null, 
+                React.createElement("p", null, "The following sources conflict with your request change:"), 
+                React.createElement("table", {className: 'table'}, 
+                    React.createElement("thead", null, 
+                        React.createElement("tr", null, 
+                            React.createElement("th", null, "Sources")
+                        )
+                    ), 
+                    React.createElement("tbody", null, this.props.conflictingItems.source.map((source) => {
+                        return (React.createElement("tr", {key: `row-${source.uid}`}, 
+                            React.createElement("td", null, source.name)
+                        ));
+                    }))))) : null, 
+            React.createElement("div", {className: 'block-buttons'}, 
+                React.createElement("button", {onClick: () => this.props.cancel()}, "Cancel"), 
+                React.createElement("button", {onClick: () => this.props.complete('addToWorkspace')}, 
+                    React.createElement("i", {className: 'icon-list-add'}), 
+                    "Cancel and add conflicting records to workspace"), 
+                React.createElement("button", {onClick: () => this.props.complete('deleteAll')}, 
+                    React.createElement("i", {className: 'fa fa-trash'}), 
+                    " Continue and delete all conflicting records"))));
+    }
+}
+exports.ConflictResolution = ConflictResolution;
+;
+
+
+/***/ },
+/* 233 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview Sidebar for editor
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.1.0
+ */
+"use strict";
+const React = __webpack_require__(0);
+const Overlay_1 = __webpack_require__(25);
+const datamodel_1 = __webpack_require__(10);
+const ApiService_1 = __webpack_require__(6);
+const ComboDropdown_1 = __webpack_require__(18);
+const lodash_1 = __webpack_require__(5);
+class CreateEntity extends React.Component {
+    constructor() {
+        super();
+        this.state = {
+            label: '',
+            entityType: { key: '', value: '' },
+            allEntityTypes: []
+        };
+    }
+    componentWillMount() {
+        this.props.api.getCollection(datamodel_1.EntityType, ApiService_1.AppUrls.entity_type, {})
+            .then((allEntityTypes) => {
+            if (this.props.initialType !== undefined) {
+                const initialType = allEntityTypes.find((et) => et.uid === this.props.initialType);
+                this.setState({
+                    entityType: { key: initialType.name, value: initialType.uid.toString() }
+                });
+            }
+            this.setState({ allEntityTypes });
+        });
+    }
+    CreateEntity() {
+        this.props.api.postItem(datamodel_1.Entity, ApiService_1.AppUrls.entity, new datamodel_1.Entity().deserialize({
+            label: this.state.label,
+            entityType: this.state.entityType.value
+        }))
+            .then(this.props.complete);
+    }
+    render() {
+        return (React.createElement(Overlay_1.Overlay, null, 
+            React.createElement("h2", null, "Create Entity"), 
+            React.createElement("label", {className: 'small'}, "Label"), 
+            React.createElement("input", {type: 'text', value: this.state.label, ref: (a) => { if (a !== null)
+                a.focus(); }, name: 'new-entity-name', className: 'gap', onChange: (e) => this.setState({ label: e.target.value })}), 
+            React.createElement("label", {className: 'small'}, "Type"), 
+            React.createElement(ComboDropdown_1.ComboDropdown, {options: this.state.allEntityTypes.map((t) => ({ key: t.name, value: t.uid.toString() })), typeName: 'entity type', value: this.state.entityType, setValue: (entityType) => this.setState({ entityType }), createNewValue: lodash_1.noop, allowNew: false}), 
+            React.createElement("button", {name: 'cancel-modal', onClick: () => this.props.cancel(), className: 'pull-left'}, "Cancel"), 
+            React.createElement("button", {name: 'create-entity', onClick: this.CreateEntity.bind(this), className: 'pull-right'}, "Create Entity")));
+    }
+}
+exports.CreateEntity = CreateEntity;
+;
+
+
+/***/ },
+/* 234 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview Sidebar for editor
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.1.0
+ */
+"use strict";
+const React = __webpack_require__(0);
+const Overlay_1 = __webpack_require__(25);
+const datamodel_1 = __webpack_require__(10);
+const ApiService_1 = __webpack_require__(6);
+const mousetrap = __webpack_require__(42);
+class CreateEntityType extends React.Component {
+    constructor() {
+        super();
+        this.state = {
+            internalValue: ''
+        };
+    }
+    createEntityType() {
+        this.props.api.postItem(datamodel_1.EntityType, ApiService_1.AppUrls.entity_type, new datamodel_1.EntityType().deserialize({
+            name: this.state.internalValue
+        }))
+            .then(this.props.complete);
+    }
+    inputRef(val) {
+        if (val !== null) {
+            val.focus();
+            this.keyboardShortcuts = new mousetrap(val);
+            this.keyboardShortcuts.bind('return', this.createEntityType.bind(this));
+            this.keyboardShortcuts.bind('escape', this.props.cancel);
+        }
+        else {
+            this.keyboardShortcuts.unbind('return');
+        }
+    }
+    render() {
+        return (React.createElement(Overlay_1.Overlay, null, 
+            React.createElement("h2", null, "Create Entity Type"), 
+            React.createElement("label", {className: 'small'}, "Name"), 
+            React.createElement("input", {type: 'text', value: this.state.internalValue, ref: this.inputRef.bind(this), onChange: (e) => this.setState({ internalValue: e.target.value })}), 
+            React.createElement("button", {onClick: () => this.props.cancel(), className: 'pull-left'}, "Cancel"), 
+            React.createElement("button", {onClick: this.createEntityType.bind(this), className: 'pull-right'}, "Create Entity Type")));
+    }
+}
+exports.CreateEntityType = CreateEntityType;
+;
+
+
+/***/ },
+/* 235 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview Sidebar for editor
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.1.0
+ */
+"use strict";
+const React = __webpack_require__(0);
+const Overlay_1 = __webpack_require__(25);
+const PredicateDescription_1 = __webpack_require__(101);
+const datamodel_1 = __webpack_require__(10);
+const literalTypes_1 = __webpack_require__(112);
+const ApiService_1 = __webpack_require__(6);
+class CreatePredicate extends React.Component {
+    constructor() {
+        super();
+        this.state = {
+            name: '',
+            domain: { key: '', value: '' },
+            range: { key: '', value: '' },
+            domainOptions: [],
+            rangeOptions: []
+        };
+    }
+    componentWillMount() {
+        this.setState({ name: this.props.initialName });
+    }
+    componentDidMount() {
+        if (this.props.initialDomain !== undefined) {
+            this.props.api.getItem(datamodel_1.EntityType, ApiService_1.AppUrls.entity_type, this.props.initialDomain)
+                .then((result) => {
+                if (result.uid === null) {
+                    throw new Error('Unexpected null uid');
+                }
+                this.setState({
+                    domain: { key: result.name, value: result.uid.toString() },
+                    domainOptions: [
+                        { key: result.name, value: result.uid.toString() }
+                    ].concat(result.parents.map((entityType) => {
+                        if (entityType.uid === null) {
+                            throw new Error('Unexpected null uid');
+                        }
+                        return { key: entityType.name, value: entityType.uid.toString() };
+                    })) });
+            });
+        }
+        const results = this.props.dataStore.all.entity_type.value;
+        const entityTypeMap = results.map((entityType) => {
+            if (entityType.uid === null) {
+                throw new Error('Unexpected null uid');
+            }
+            return { key: entityType.name, value: entityType.uid.toString() };
+        });
+        if (this.props.initialDomain === undefined) {
+            this.setState({ domainOptions: entityTypeMap });
+        }
+        this.setState({
+            rangeOptions: literalTypes_1.literalTypes.map((lit) => ({ key: lit.name, value: lit.value, meta: 'literal' })).concat(entityTypeMap)
+        });
+    }
+    create() {
+        const newPredicate = new datamodel_1.Predicate().deserialize({
+            name: this.state.name,
+            domain: this.state.domain.value,
+            range: this.state.range.value,
+            rangeIsReference: this.state.range.meta !== 'literal'
+        });
+        this.props.api.postItem(datamodel_1.Predicate, ApiService_1.AppUrls.predicate, newPredicate)
+            .then((result) => {
+            newPredicate.uid = result[0];
+            this.props.complete(newPredicate);
+        });
+    }
+    render() {
+        return (React.createElement(Overlay_1.Overlay, null, 
+            React.createElement("h2", null, 
+                React.createElement("i", {className: 'fa fa-plus', "aria-hidden": 'true'}), 
+                " Create Property"), 
+            React.createElement("label", {className: 'small'}, "Name"), 
+            React.createElement("input", {type: 'text', className: 'gap', ref: (a) => { if (a !== null)
+                a.focus(); }, value: this.state.name, onChange: (e) => this.setState({ name: e.target.value })}), 
+            React.createElement(PredicateDescription_1.PredicateDescription, {domain: this.state.domain, range: this.state.range, domainChanged: (s) => this.setState({ domain: s }), rangeChanged: (s) => this.setState({ range: s }), domainOptions: this.state.domainOptions, rangeOptions: this.state.rangeOptions, mode: 'editAll'}), 
+            React.createElement("div", {className: 'modal-toolbar'}, 
+                React.createElement("button", {onClick: this.props.cancel, className: 'pull-left'}, "Cancel"), 
+                React.createElement("button", {onClick: this.create.bind(this), className: 'pull-right'}, "Create Property"))));
+    }
+}
+exports.CreatePredicate = CreatePredicate;
+;
+
+
+/***/ },
+/* 236 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview Sidebar for editor
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.1.0
+ */
+"use strict";
+const React = __webpack_require__(0);
+const datamodel_1 = __webpack_require__(10);
+const ApiService_1 = __webpack_require__(6);
+const Signaller_1 = __webpack_require__(8);
+class CreatePresetRecord extends React.Component {
+    constructor() {
+        super();
+        this.state = {};
+    }
+    componentDidMount() {
+        if (CreatePresetRecord.openEntityDialog) {
+            CreatePresetRecord.openEntityDialog = false;
+            this.createNewEntity();
+        }
+        else {
+            CreatePresetRecord.openEntityDialog = true;
+        }
+    }
+    createNewEntity() {
+        const modalDef = {
+            name: 'entity',
+            complete: (data) => {
+                const isMentioned = this.props.dataStore.all.predicate.value.find((pred) => pred.name === 'is mentioned');
+                this.props.api.postItem(datamodel_1.Record, ApiService_1.AppUrls.record, new datamodel_1.Record().deserialize({
+                    predicate: isMentioned.uid,
+                    entity: data[0],
+                    valueType: 'source',
+                    source: this.props.source.uid,
+                    score: 3
+                }))
+                    .then((result) => {
+                    this.props.complete(result);
+                })
+                    .catch(this.props.cancel);
+            },
+            cancel: () => {
+            },
+            settings: {}
+        };
+        Signaller_1.showModal.dispatch(modalDef);
+    }
+    render() {
+        return null;
+    }
+}
+CreatePresetRecord.openEntityDialog = true;
+exports.CreatePresetRecord = CreatePresetRecord;
+;
+
+
+/***/ },
+/* 237 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview Sidebar for editor
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.1.0
+ */
+"use strict";
+const React = __webpack_require__(0);
+const Overlay_1 = __webpack_require__(25);
+const datamodel_1 = __webpack_require__(10);
+const ApiService_1 = __webpack_require__(6);
+const ComboDropdown_1 = __webpack_require__(18);
+const Signaller_1 = __webpack_require__(8);
+class CreateRecord extends React.Component {
+    constructor() {
+        super();
+        this.state = {
+            comboValue: { key: '', value: '' },
+            searchValue: ''
+        };
+    }
+    componentDidMount() {
+        this.refs['comboDropDown'].refs['comboDropDownInputBox'].focus();
+    }
+    createNewPredicate() {
+        const modalDef = {
+            name: 'predicate',
+            complete: (data) => {
+                console.log('Predicate editor called complete');
+                this.setComboValue({ key: data.name, value: data.uid.toString(), meta: data });
+            },
+            cancel: () => {
+                console.log('Predicate editor called cancel');
+            },
+            settings: {
+                initialName: this.state.searchValue,
+                initialDomain: this.props.entityType
+            }
+        };
+        Signaller_1.showModal.dispatch(modalDef);
+    }
+    setComboValue(opt) {
+        this.props.api.postItem(datamodel_1.Record, ApiService_1.AppUrls.record, new datamodel_1.Record().deserialize({
+            predicate: opt.meta.uid,
+            entity: this.props.entityUid,
+            valueType: opt.meta.rangeIsReference ? 'entity' : opt.meta.range,
+            score: 3
+        }))
+            .then((result) => this.props.complete(result))
+            .catch(this.props.cancel);
+    }
+    render() {
+        return (React.createElement(Overlay_1.Overlay, null, 
+            React.createElement("h2", null, "Create Record"), 
+            React.createElement(ComboDropdown_1.ComboDropdown, {ref: 'comboDropDown', options: this.props.options, typeName: 'predicate', value: this.state.comboValue, setValue: this.setComboValue.bind(this), createNewValue: this.createNewPredicate.bind(this), updateSearchString: (s) => this.setState({ searchValue: s })})));
+    }
+}
+exports.CreateRecord = CreateRecord;
+;
+
+
+/***/ },
+/* 238 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview Sidebar for editor
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.1.0
+ */
+"use strict";
+const React = __webpack_require__(0);
+const Overlay_1 = __webpack_require__(25);
+const datamodel_1 = __webpack_require__(10);
+const ApiService_1 = __webpack_require__(6);
+const mousetrap = __webpack_require__(42);
+class CreateSource extends React.Component {
+    constructor() {
+        super();
+        this.state = {
+            internalValue: ''
+        };
+    }
+    componentWillMount() {
+        this.setState({ internalValue: this.props.initialValue });
+    }
+    createSource() {
+        this.props.api.postItem(datamodel_1.Source, ApiService_1.AppUrls.source, new datamodel_1.Source().deserialize({
+            name: this.state.internalValue
+        }))
+            .then(this.props.complete);
+    }
+    inputRef(val) {
+        if (val !== null) {
+            val.focus();
+            this.keyboardShortcuts = new mousetrap(val);
+            this.keyboardShortcuts.bind('return', this.createSource.bind(this));
+            this.keyboardShortcuts.bind('escape', this.props.cancel);
+        }
+        else {
+            this.keyboardShortcuts.unbind('return');
+            this.keyboardShortcuts.unbind('escape');
+        }
+    }
+    render() {
+        return (React.createElement(Overlay_1.Overlay, null, 
+            React.createElement("h2", null, "Create Source"), 
+            React.createElement("label", {className: 'small'}, "Name"), 
+            React.createElement("input", {type: 'text', value: this.state.internalValue, ref: this.inputRef.bind(this), onChange: (e) => this.setState({ internalValue: e.target.value })}), 
+            React.createElement("button", {onClick: () => this.props.cancel(), className: 'pull-left'}, "Cancel"), 
+            React.createElement("button", {onClick: this.createSource.bind(this), className: 'pull-right'}, "Create Source")));
+    }
+}
+CreateSource.defaultProps = {
+    initialValue: ''
+};
+exports.CreateSource = CreateSource;
+
+
+/***/ },
+/* 239 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview Sidebar for editor
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.1.0
+ */
+"use strict";
+const React = __webpack_require__(0);
+const lev = __webpack_require__(285);
+const ApiService_1 = __webpack_require__(6);
+const datamodel_1 = __webpack_require__(10);
+const ComboDropdown_1 = __webpack_require__(18);
+const lodash_1 = __webpack_require__(5);
+const AddTabButton_1 = __webpack_require__(16);
+const Signaller_1 = __webpack_require__(8);
+const formatDate_1 = __webpack_require__(69);
+const sortIcons = {
+    'none': 'fa fa-sort',
+    'asc': 'fa fa-sort-asc',
+    'desc': 'fa fa-sort-desc'
+};
+const customColumns = (predicates, columns, updateColumnParams, rotateSort) => {
+    return [0, 1, 2].map((id) => {
+        const comboValue = { key: '', value: '' };
+        if (columns[id].predicate !== -1) {
+            const thisPred = predicates.find((pred) => pred.uid == columns[id].predicate);
+            if (thisPred !== undefined) {
+                comboValue.key = thisPred.name;
+            }
+            comboValue.value = columns[id].predicate;
+        }
+        return (React.createElement("td", {key: `col-${id}`}, 
+            React.createElement("div", {className: 'list-combo-header'}, 
+                React.createElement("div", {className: 'combo-wrapper'}, 
+                    React.createElement(ComboDropdown_1.ComboDropdown, {value: comboValue, typeName: 'predicate', allowNew: false, setValue: (value) => updateColumnParams(id, { predicate: value === null ? null : value.value }), options: predicates.map((pred) => ({ key: pred.name, value: pred.uid.toString() })), createNewValue: lodash_1.noop, compact: true})
+                ), 
+                React.createElement("div", {className: 'order-wrapper'}, 
+                    React.createElement("i", {className: sortIcons[columns[id].sort], onClick: () => rotateSort(id)})
+                ))
+        ));
+    });
+};
+class EntityList extends React.Component {
+    constructor(props) {
+        super();
+        this.state = {
+            entities: [],
+            entityTypes: [],
+            predicates: [],
+            columns: [
+                { predicate: -1, sort: 'none', filterType: 'any', invertFilter: false, filterValue: '' },
+                { predicate: -1, sort: 'none', filterType: 'any', invertFilter: false, filterValue: '' },
+                { predicate: -1, sort: 'none', filterType: 'any', invertFilter: false, filterValue: '' }
+            ],
+            results: [],
+            entityType: { key: 'Any', value: 0 }
+        };
+    }
+    componentDidMount() {
+        const queryStringOptions = this.props.query;
+        const columns = lodash_1.cloneDeep(this.state.columns);
+        if (queryStringOptions !== null) {
+            for (let i = 1; i < 4; i += 1) {
+                if (queryStringOptions['col' + i] !== undefined) {
+                    const args = queryStringOptions['col' + i].split(',');
+                    columns[i - 1].predicate = args[0];
+                    if (args.length === 2) {
+                        columns[i - 1].filterType = args[1];
+                    }
+                }
+            }
+        }
+        this.setState({
+            columns
+        }, this.reload.bind(this));
+    }
+    reload() {
+        const setColumns = this.state.columns.filter((col) => col.predicate != -1);
+        this.props.api.getCollection(datamodel_1.Record, ApiService_1.AppUrls.record, {
+            predicate: setColumns.map((col) => col.predicate),
+            entity: this.props.dataStore.all.entity.value.map((entity) => entity.uid)
+        })
+            .then((results) => this.setState({ results }));
+    }
+    addNew() {
+        const a = {
+            name: 'entity',
+            complete: () => {
+            },
+            cancel: () => { console.log('cancel'); },
+            settings: {
+                initialName: ''
+            }
+        };
+        Signaller_1.showModal.dispatch(a);
+    }
+    setColumnPredicate(colId, predicateId) {
+        const columns = lodash_1.cloneDeep(this.state.columns);
+        columns[colId].predicate = predicateId;
+        this.setState({
+            columns
+        }, this.reload.bind(this));
+    }
+    updateColumnParams(colId, updateData) {
+        const columns = lodash_1.cloneDeep(this.state.columns);
+        columns[colId] = Object.assign(columns[colId], updateData);
+        this.setState({
+            columns
+        }, this.reload.bind(this));
+    }
+    rotateSort(colId) {
+        const columns = lodash_1.cloneDeep(this.state.columns);
+        switch (columns[colId].sort) {
+            case 'none':
+                columns[colId].sort = 'asc';
+                break;
+            case 'asc':
+                columns[colId].sort = 'desc';
+                break;
+            case 'desc':
+                columns[colId].sort = 'none';
+        }
+        this.setState({
+            columns
+        }, this.reload.bind(this));
+    }
+    render() {
+        const entities = this.props.dataStore.all.entity.value;
+        const predicates = this.props.dataStore.all.predicate.value;
+        const entityTypes = this.props.dataStore.all.entity_type.value;
+        const entityTypeOptions = entityTypes.map((entityType) => ({ key: entityType.name, value: entityType.uid }));
+        const tableData = entities.map((entity) => {
+            const entityType = entityTypes.find((t) => t.uid === entity.entityType);
+            const entityData = this.state.results.filter((res) => res.entity === entity.uid);
+            return {
+                uid: entity.uid,
+                label: entity.label,
+                entityType,
+                columns: this.state.columns.map((col) => {
+                    let value = '';
+                    if (entityData !== undefined && col.predicate !== -1) {
+                        const predicateData = entityData
+                            .filter((record) => record.predicate == col.predicate);
+                        if (predicateData !== undefined) {
+                            value = predicateData.map((pred) => {
+                                if (pred.valueType === 'date') {
+                                    return formatDate_1.formatDate(pred.value);
+                                }
+                                if (pred.valueType === 'source') {
+                                    if (pred.value === null) {
+                                        return 'Not set';
+                                    }
+                                    return this.props.dataStore.all.source.value.find((source) => source.uid === pred.value).name;
+                                }
+                                if (pred.valueType === 'entity') {
+                                    if (pred.value === null) {
+                                        return 'Not set';
+                                    }
+                                    return this.props.dataStore.all.entity.value.find((entity) => entity.uid === pred.value).label;
+                                }
+                                return pred.value;
+                            }).join(', ');
+                        }
+                        return value;
+                    }
+                })
+            };
+        })
+            .filter((row) => {
+            let keepRow = true;
+            this.state.columns.forEach((col, i) => {
+                if (col.filterType === 'contains' && col.filterValue.length > 0 && col.predicate !== null) {
+                    if (row.columns[i].toLowerCase().indexOf(col.filterValue.toLowerCase()) === -1) {
+                        keepRow = false;
+                    }
+                }
+                if (col.filterType === 'exists' && col.predicate !== null) {
+                    if (row.columns[i].length === 0) {
+                        keepRow = false;
+                    }
+                }
+                if (col.filterType === 'similar' && col.predicate !== null && col.filterValue.length > 0) {
+                    if (new lev(row.columns[i], col.filterValue).distance >= col.filterValue.length + 2) {
+                        keepRow = false;
+                    }
+                }
+            });
+            return keepRow;
+        })
+            .sort((row1, row2) => {
+            let score = 0;
+            this.state.columns.forEach((col, i) => {
+                if (col.sort !== 'none' && row1.columns[i] !== row2.columns[i]) {
+                    score += (row1.columns[i] > row2.columns[i] ? 1 : -1) * (Math.pow(10, 3 - i)) * (col.sort === 'asc' ? -1 : 1);
+                }
+            });
+            return score;
+        });
+        return (React.createElement("div", {className: 'workspace-editor'}, 
+            React.createElement("header", {className: 'editor-header entity'}, 
+                React.createElement("div", {className: 'primary-toolbar'}, 
+                    React.createElement("div", {className: 'main-toolbar'}, 
+                        React.createElement("h2", null, 
+                            "All Entities ", 
+                            React.createElement("i", {className: 'fa fa-plus-circle add button', title: 'Add new entity', "aria-hidden": 'true', onClick: this.addNew.bind(this)}))
+                    )
+                )
+            ), 
+            React.createElement("section", {className: 'editor-body'}, 
+                React.createElement("table", {className: 'table'}, 
+                    React.createElement("thead", null, 
+                        React.createElement("tr", null, 
+                            React.createElement("td", null, "#"), 
+                            React.createElement("td", null, "Label"), 
+                            React.createElement("td", null, "Type"), 
+                            customColumns(predicates, this.state.columns, this.updateColumnParams.bind(this), this.rotateSort.bind(this))), 
+                        React.createElement("tr", null, 
+                            React.createElement("td", null), 
+                            React.createElement("td", null), 
+                            React.createElement("td", null, 
+                                React.createElement(ComboDropdown_1.ComboDropdown, {value: this.state.entityType, typeName: 'entity type', allowNew: false, setValue: (entityType) => this.setState({ entityType }), options: entityTypeOptions, createNewValue: lodash_1.noop, compact: true})
+                            ), 
+                            this.state.columns.map((col, id) => (React.createElement("td", {key: `col-${id}`}, 
+                                React.createElement("div", {className: 'flex-fill'}, 
+                                    React.createElement("div", null, 
+                                        React.createElement("select", {value: col.filterType, className: 'padded', onChange: (e) => this.updateColumnParams(id, { filterType: e.target.value })}, 
+                                            React.createElement("option", {value: 'any'}, "Any"), 
+                                            React.createElement("option", {value: 'exists'}, "Exists"), 
+                                            React.createElement("option", {value: 'contains'}, "Contains"), 
+                                            React.createElement("option", {value: 'similar'}, "Similar"))
+                                    ), 
+                                    React.createElement("div", null, 
+                                        React.createElement("input", {type: 'text', disabled: col.filterType === 'any' || col.filterType === 'exists', onChange: (e) => this.updateColumnParams(id, { filterValue: e.target.value }), value: col.filterValue})
+                                    ))
+                            ))))), 
+                    React.createElement("tbody", null, tableData.map((row) => (React.createElement("tr", {key: `entity-${row.uid}`}, 
+                        React.createElement("td", null, row.uid), 
+                        React.createElement("td", null, 
+                            row.label, 
+                            " ", 
+                            React.createElement(AddTabButton_1.AddTabButton, {dataStore: this.props.dataStore, uid: row.uid, tabType: 'entity'})), 
+                        React.createElement("td", null, row.entityType ? row.entityType.name : ''), 
+                        [0, 1, 2].map((id) => (React.createElement("td", {key: `col-val-${id}`}, row.columns[id]))))))))
+            )));
+    }
+}
+exports.EntityList = EntityList;
+
+
+/***/ },
+/* 240 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview Sidebar for editor
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.1.0
+ */
+"use strict";
+const React = __webpack_require__(0);
+const AddTabButton_1 = __webpack_require__(16);
+const Signaller_1 = __webpack_require__(8);
+const SearchBar_1 = __webpack_require__(40);
+class EntityTypeList extends React.Component {
+    constructor() {
+        super();
+        this.state = {
+            filterFunc: () => true
+        };
+    }
+    addNew() {
+        const a = {
+            name: 'entity_type',
+            complete: () => {
+            },
+            cancel: () => { console.log('cancel'); },
+            settings: {}
+        };
+        Signaller_1.showModal.dispatch(a);
+    }
+    render() {
+        return (React.createElement("div", {className: 'workspace-editor'}, 
+            React.createElement("header", {className: 'editor-header entity_type'}, 
+                React.createElement("div", {className: 'primary-toolbar'}, 
+                    React.createElement("div", {className: 'main-toolbar'}, 
+                        React.createElement("h2", null, 
+                            "All Entity Types ", 
+                            React.createElement("i", {className: 'fa fa-plus-circle add button', "aria-hidden": 'true', title: 'Add new entity type', onClick: this.addNew.bind(this)}))
+                    )
+                )
+            ), 
+            React.createElement("section", {className: 'editor-body'}, 
+                React.createElement(SearchBar_1.SearchBar, {getValue: (a) => a.name, setFilterFunc: (f) => this.setState({ filterFunc: f })}), 
+                React.createElement("table", {className: 'table gap'}, 
+                    React.createElement("thead", null, 
+                        React.createElement("tr", null, 
+                            React.createElement("td", null, "#"), 
+                            React.createElement("td", null, "Name"), 
+                            React.createElement("td", null, "Parent"), 
+                            React.createElement("td", null, "Description"))
+                    ), 
+                    React.createElement("tbody", null, this.props.dataStore.all.entity_type.value.filter(this.state.filterFunc).map((entityType) => {
+                        return (React.createElement("tr", {key: `entityType-${entityType.uid}`}, 
+                            React.createElement("td", null, 
+                                entityType.uid, 
+                                " ", 
+                                React.createElement(AddTabButton_1.AddTabButton, {dataStore: this.props.dataStore, uid: entityType.uid, tabType: 'entity_type'})), 
+                            React.createElement("td", null, entityType.name), 
+                            React.createElement("td", null, entityType.parent), 
+                            React.createElement("td", null, entityType.description)));
+                    }))))));
+    }
+}
+exports.EntityTypeList = EntityTypeList;
+
+
+/***/ },
+/* 241 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview Sidebar for editor
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.1.0
+ */
+"use strict";
+const React = __webpack_require__(0);
+const AddTabButton_1 = __webpack_require__(16);
+const Signaller_1 = __webpack_require__(8);
+const SearchBar_1 = __webpack_require__(40);
+class PredicateList extends React.Component {
+    constructor() {
+        super();
+        this.state = {
+            filterFunc: () => true
+        };
+    }
+    addNew() {
+        const a = {
+            name: 'predicate',
+            complete: () => {
+            },
+            cancel: () => { console.log('cancel'); },
+            settings: {
+                initialName: ''
+            }
+        };
+        Signaller_1.showModal.dispatch(a);
+    }
+    render() {
+        return (React.createElement("div", {className: 'workspace-editor'}, 
+            React.createElement("header", {className: 'editor-header predicate'}, 
+                React.createElement("div", {className: 'primary-toolbar'}, 
+                    React.createElement("div", {className: 'main-toolbar'}, 
+                        React.createElement("h2", null, 
+                            "All Properties ", 
+                            React.createElement("i", {className: 'fa fa-plus-circle add button', title: 'Add new property', "aria-hidden": 'true', onClick: this.addNew.bind(this)}))
+                    )
+                )
+            ), 
+            React.createElement("section", {className: 'editor-body'}, 
+                React.createElement(SearchBar_1.SearchBar, {getValue: (a) => a.name, setFilterFunc: (f) => this.setState({ filterFunc: f })}), 
+                React.createElement("table", {className: 'table gap'}, 
+                    React.createElement("thead", null, 
+                        React.createElement("tr", null, 
+                            React.createElement("td", null, "#"), 
+                            React.createElement("td", null, "Label"), 
+                            React.createElement("td", null, "Domain"), 
+                            React.createElement("td", null, "Range"))
+                    ), 
+                    React.createElement("tbody", null, this.props.dataStore.all.predicate.value.filter(this.state.filterFunc).map((predicate) => {
+                        const entityType = this.props.dataStore.all.entity_type.value.find((t) => t.uid === predicate.domain);
+                        const rangeType = predicate.rangeIsReference ?
+                            this.props.dataStore.all.entity_type.value.find((t) => t.uid === predicate.range) :
+                            predicate.range;
+                        return (React.createElement("tr", {key: `predicate-${predicate.uid}`}, 
+                            React.createElement("td", null, 
+                                predicate.uid, 
+                                " ", 
+                                React.createElement(AddTabButton_1.AddTabButton, {dataStore: this.props.dataStore, uid: predicate.uid, tabType: 'predicate'})), 
+                            React.createElement("td", null, predicate.name), 
+                            React.createElement("td", null, entityType ? entityType.name : ''), 
+                            React.createElement("td", null, predicate.rangeIsReference ? rangeType ? rangeType.name : '' : rangeType)));
+                    }))))));
+    }
+}
+exports.PredicateList = PredicateList;
+
+
+/***/ },
+/* 242 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview Sidebar for editor
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.1.0
+ */
+"use strict";
+const React = __webpack_require__(0);
+const AddTabButton_1 = __webpack_require__(16);
+const Signaller_1 = __webpack_require__(8);
+const SearchBar_1 = __webpack_require__(40);
+class SourceList extends React.Component {
+    constructor() {
+        super();
+        this.state = {
+            filterFunc: () => true,
+            mode: 'list'
+        };
+    }
+    addNew() {
+        const a = {
+            name: 'source',
+            complete: () => {
+            },
+            cancel: () => { console.log('cancel'); },
+            settings: {}
+        };
+        Signaller_1.showModal.dispatch(a);
+    }
+    render() {
+        return (React.createElement("div", {className: 'workspace-editor'}, 
+            React.createElement("header", {className: 'editor-header source'}, 
+                React.createElement("div", {className: 'primary-toolbar'}, 
+                    React.createElement("div", {className: 'main-toolbar'}, 
+                        React.createElement("h2", null, 
+                            "All Sources ", 
+                            React.createElement("i", {className: 'fa fa-plus-circle add button', "aria-hidden": 'true', title: 'Add new source', onClick: this.addNew.bind(this)}))
+                    )
+                ), 
+                React.createElement("div", {className: 'secondary-toolbar'}, 
+                    React.createElement("div", {className: 'tab-bar'}, 
+                        React.createElement("div", {onClick: () => this.setState({ mode: 'list' })}, "LIST"), 
+                        React.createElement("div", {onClick: () => this.setState({ mode: 'tree' })}, "TREE"))
+                )), 
+            React.createElement("section", {className: 'editor-body'}, 
+                React.createElement(SearchBar_1.SearchBar, {getValue: (a) => a.name, setFilterFunc: (f) => this.setState({ filterFunc: f })}), 
+                this.state.mode === 'list' ? (React.createElement("table", {className: 'table gap'}, 
+                    React.createElement("thead", null, 
+                        React.createElement("tr", null, 
+                            React.createElement("td", null, "#"), 
+                            React.createElement("td", null, "Name"), 
+                            React.createElement("td", null, "Parent"))
+                    ), 
+                    React.createElement("tbody", null, this.props.dataStore.all.source.value.filter(this.state.filterFunc).map((source) => {
+                        return (React.createElement("tr", {key: `source-${source.uid}`}, 
+                            React.createElement("td", null, 
+                                source.uid, 
+                                " ", 
+                                React.createElement(AddTabButton_1.AddTabButton, {dataStore: this.props.dataStore, uid: source.uid, tabType: 'source'})), 
+                            React.createElement("td", null, source.name), 
+                            React.createElement("td", null, source.parent)));
+                    })))) : null)));
+    }
+}
+exports.SourceList = SourceList;
+
+
+/***/ },
+/* 243 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview Searchboc for sidebar
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.1.0
+ */
+"use strict";
+const React = __webpack_require__(0);
+const ComboDropdown_1 = __webpack_require__(18);
+const ApiService_1 = __webpack_require__(6);
+exports.SearchBox = (props, context) => {
+    const entities = props.dataStore.all.entity.value.map((entity) => ({ key: entity.label, value: entity.uid, meta: { itemType: ApiService_1.AppUrls.entity } }));
+    const entityTypes = props.dataStore.all.entity_type.value.map((entityType) => ({ key: entityType.name, value: entityType.uid, meta: { itemType: ApiService_1.AppUrls.entity_type } }));
+    const predicates = props.dataStore.all.predicate.value.map((predicate) => ({ key: predicate.name, value: predicate.uid, meta: { itemType: ApiService_1.AppUrls.predicate } }));
+    const sources = props.dataStore.all.source.value.map((source) => ({ key: source.name, value: source.uid, meta: { itemType: ApiService_1.AppUrls.source } }));
+    const all = entities.concat(entityTypes, predicates, sources);
+    return (React.createElement("span", null, 
+        React.createElement("div", {className: 'input-addon-formgroup'}, 
+            React.createElement("span", {className: 'input-addon-icon'}, 
+                React.createElement("i", {className: 'fa fa-search fa-fw'})
+            ), 
+            React.createElement(ComboDropdown_1.ComboDropdown, {value: { key: '', value: '' }, setValue: (val) => {
+                context.router.transitionTo(`/edit/${val.meta.itemType}/${val.value}`);
+            }, typeName: 'all', options: all, allowNew: false, createNewValue: () => { }}))
+    ));
+};
+exports.SearchBox.contextTypes = { router: React.PropTypes.object.isRequired };
+
+
+/***/ },
+/* 244 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview Empty workspace for when nothing is open!
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.1.0
+ */
+"use strict";
+const React = __webpack_require__(0);
+exports.AdvancedSearchWorkspace = (props) => (React.createElement("div", {className: 'workspace-editor'}, 
+    React.createElement("h2", null, "Advanced Search")
+));
+
+
+/***/ },
+/* 245 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview Empty workspace for when nothing is open!
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.1.0
+ */
+"use strict";
+const React = __webpack_require__(0);
+exports.EmptyWorkspace = () => (React.createElement("div", {className: 'workspace-editor'}, 
+    React.createElement("h2", null, "There is nothing here")
+));
+
+
+/***/ },
+/* 246 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview Empty workspace for when nothing is open!
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.1.0
+ */
+"use strict";
+const React = __webpack_require__(0);
+const RecordsEditor_1 = __webpack_require__(228);
+const ApiService_1 = __webpack_require__(6);
+const datamodel_1 = __webpack_require__(10);
+const lodash_1 = __webpack_require__(5);
+const Signaller_1 = __webpack_require__(8);
+const AddTabButton_1 = __webpack_require__(16);
+const findParentTree_1 = __webpack_require__(110);
+const EditableHeader_1 = __webpack_require__(41);
+const EditableComboDropdown_1 = __webpack_require__(66);
+class StringEditableFieldComponent extends EditableHeader_1.EditableFieldComponent {
+}
+class ComboEditableFieldComponent extends EditableHeader_1.EditableFieldComponent {
+}
+// What can I do?
+// Entity Operations
+// - Delete the entity
+// - Merge the entity
+// - Split the entity
+// - Add 'same-as-ses' to the entity
+// Records
+// - Order records by type, source and date
+// - Add new records
+// - Adding a new predicate creates a new record with the
+//   entity set, the predicate set, the score set to 3, the period set to null, source set to null
+//   it also creates a blank entry in the records sub table based on the range of the predicate.
+// - New predicates must have a name. The domain is set to the current entitytype but can be changed
+//   to one of its parents. The range MUST be set.
+// Visualisations:
+// - Network graph of entity relationships
+class EntityEditorWorkspace extends React.Component {
+    constructor(props, context) {
+        super();
+        this.state = {
+            comboValue: { key: 'test', value: '' },
+            comboSearchValue: ''
+        };
+    }
+    del() {
+        this.props.api.delItem(datamodel_1.Entity, ApiService_1.AppUrls.entity, this.props.id)
+            .then(() => {
+            Signaller_1.closeTab.dispatch('entity', this.props.id);
+            this.context.router.transitionTo('/edit/notfound');
+        })
+            .catch((e) => {
+            e.data.data.then((data) => {
+                const conflictResolutionModal = {
+                    name: 'conflict_resolution',
+                    cancel: () => { },
+                    complete: (result) => {
+                        if (result === 'addToWorkspace') {
+                            data.record.forEach((datum) => {
+                                Signaller_1.createTab.dispatch('entity', datum.entity);
+                            });
+                            data.entity.forEach((datum) => {
+                                Signaller_1.createTab.dispatch('entity', datum.uid);
+                            });
+                        }
+                        if (result === 'deleteAll') {
+                            Promise.all(data.record.map((datum) => this.props.api.delItem(datamodel_1.Record, ApiService_1.AppUrls.record, datum.uid)))
+                                .then(() => {
+                                this.del();
+                            });
+                        }
+                    },
+                    settings: {
+                        conflictingItems: data,
+                        message: 'Deleting Entity'
+                    }
+                };
+                Signaller_1.showModal.dispatch(conflictResolutionModal);
+            });
+        });
+    }
+    createNewRecord() {
+        const entity = this.props.dataStore.tabs.entity.get('entity-' + this.props.id).value.entity;
+        const entityType = this.props.dataStore.all.entity_type.value.find((t) => t.uid === entity.entityType);
+        const entityTypeParents = findParentTree_1.findParentTree(entity.entityType, this.props.dataStore.all.entity_type.value);
+        const predicates = this.props.dataStore.all.predicate
+            .value.filter((pred) => entityTypeParents.indexOf(pred.domain) !== -1);
+        const modalDef = {
+            name: 'record',
+            complete: (data) => {
+                console.log('Records editor called complete');
+                //this.loadData(this.props);
+            },
+            cancel: () => {
+                console.log('Records editor called cancel');
+            },
+            settings: {
+                options: predicates.map((pred) => ({ key: pred.name, value: pred.uid, meta: pred })),
+                entityUid: this.props.id,
+                entityType: entityType.uid
+            }
+        };
+        Signaller_1.showModal.dispatch(modalDef);
+    }
+    update(data) {
+        this.props.api.patchItem(datamodel_1.Entity, ApiService_1.AppUrls.entity, this.props.id, data);
+    }
+    render() {
+        const entity = this.props.dataStore.tabs.entity.get('entity-' + this.props.id).value.entity;
+        const entityType = this.props.dataStore.all.entity_type.value.find((t) => t.uid === entity.entityType);
+        const potentialParents = this.props.dataStore.all.entity.value;
+        const entityTypeParents = findParentTree_1.findParentTree(entity.entityType, this.props.dataStore.all.entity_type.value);
+        const predicates = this.props.dataStore.all.predicate
+            .value.filter((pred) => entityTypeParents.indexOf(pred.domain) !== -1);
+        const sources = this.props.dataStore.all.source.value;
+        const records = lodash_1.groupBy(this.props.dataStore.tabs.entity.get('entity-' + this.props.id).value.records, 'predicate');
+        const options = predicates.map((pred) => ({ key: pred.name, value: pred.uid, meta: pred }));
+        let parentName = '';
+        if (potentialParents !== null && entity.parent !== undefined) {
+            const found = potentialParents.find((par) => par.uid === entity.parent);
+            if (found !== undefined) {
+                parentName = found.label;
+            }
+        }
+        return (React.createElement("div", {className: 'workspace-editor'}, 
+            React.createElement("header", {className: 'editor-header entity'}, 
+                React.createElement("div", {className: 'primary-toolbar'}, 
+                    React.createElement("div", {className: 'main-toolbar'}, 
+                        React.createElement("i", {className: 'fa fa-cube item-icon'}), 
+                        React.createElement(StringEditableFieldComponent, {value: entity.label, component: EditableHeader_1.EditableHeader, onChange: (value) => this.update({ 'label': value })})), 
+                    React.createElement("div", {className: 'sub-toolbar'}, 
+                        React.createElement("i", {className: 'fa fa-trash delete button', "aria-hidden": 'true', onClick: this.del.bind(this)}), 
+                        React.createElement("i", {className: 'fa fa-clone button', "aria-hidden": 'true', onClick: () => console.log('copy')})))
+            ), 
+            React.createElement("section", {className: 'editor-body'}, 
+                React.createElement("div", {className: 'flex-fill'}, 
+                    React.createElement("div", {className: 'flex-fill'}, 
+                        React.createElement("div", null, 
+                            React.createElement("label", {className: 'small'}, "Type"), 
+                            entityType.name, 
+                            " ", 
+                            React.createElement(AddTabButton_1.AddTabButton, {dataStore: this.props.dataStore, uid: entityType.uid, tabType: 'entity_type'}))
+                    ), 
+                    React.createElement("div", {style: { flex: 1 }}, 
+                        React.createElement("label", {className: 'small'}, "Parent"), 
+                        React.createElement(ComboEditableFieldComponent, {value: { key: parentName, value: entity.parent }, component: EditableComboDropdown_1.EditableComboDropdown, onChange: (value) => this.update({ 'parent': value.value }), additionalProps: { comboSettings: {
+                                options: potentialParents.map((par) => ({ key: par.label, value: par.uid })),
+                                typeName: 'Entity'
+                            } }}), 
+                        entity.parent !== null ? (React.createElement(AddTabButton_1.AddTabButton, {dataStore: this.props.dataStore, tabType: 'entity', uid: entity.parent})) : null)), 
+                React.createElement("div", {className: 'edit-group'}, 
+                    React.createElement(RecordsEditor_1.RecordsEditor, {dimension: 'predicates', entityExists: true, id: this.props.id, api: this.props.api, records: records, onChange: () => { }, predicates: predicates, sources: sources, entityTypeId: entityType.uid, dataStore: this.props.dataStore})
+                ))));
+    }
+}
+EntityEditorWorkspace.contextTypes = {
+    router: React.PropTypes.object.isRequired
+};
+exports.EntityEditorWorkspace = EntityEditorWorkspace;
+
+
+/***/ },
+/* 247 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview Predicate editor workspace
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.0.1
+ */
+"use strict";
+const React = __webpack_require__(0);
+const SameAsEditor_1 = __webpack_require__(68);
+const ApiService_1 = __webpack_require__(6);
+const datamodel_1 = __webpack_require__(10);
+const AddTabButton_1 = __webpack_require__(16);
+const EditableHeader_1 = __webpack_require__(41);
+const EditableParagraph_1 = __webpack_require__(67);
+const EditableComboDropdown_1 = __webpack_require__(66);
+const Signaller_1 = __webpack_require__(8);
+class StringEditableFieldComponent extends EditableHeader_1.EditableFieldComponent {
+}
+class ComboEditableFieldComponent extends EditableHeader_1.EditableFieldComponent {
+}
+class EntityTypeWorkspace extends React.Component {
+    constructor() {
+        super();
+        this.state = {};
+    }
+    update(data) {
+        const entityType = this.props.dataStore.tabs.entity_type.get('entity_type-' + this.props.id).value;
+        this.props.api.patchItem(datamodel_1.EntityType, ApiService_1.AppUrls.entity_type, this.props.id, data)
+            .then(() => this.setState({ entityType: Object.assign({}, entityType, data) }));
+    }
+    copy() {
+        const entityType = this.props.dataStore.tabs.entity_type.get('entity_type-' + this.props.id).value;
+        const newEntityType = new datamodel_1.EntityType().deserialize(Object.assign({}, entityType.serialize(), { name: 'Copy of ' + entityType.name }));
+        this.props.api.postItem(datamodel_1.EntityType, ApiService_1.AppUrls.entity_type, newEntityType)
+            .then(([id]) => {
+            Signaller_1.createTab.dispatch('entity_type', id);
+        });
+    }
+    del() {
+        this.props.api.delItem(datamodel_1.EntityType, ApiService_1.AppUrls.entity_type, this.props.id)
+            .then(() => this.context.router.transitionTo('/edit/notfound'))
+            .catch((e) => {
+            e.data.data.then((data) => {
+                const conflictResolutionModal = {
+                    name: 'conflict_resolution',
+                    cancel: () => { },
+                    complete: (result) => {
+                        if (result === 'addToWorkspace') {
+                            data.entityType.forEach((datum) => {
+                                Signaller_1.createTab.dispatch('entity_type', datum.uid);
+                            });
+                            data.predicate.forEach((datum) => {
+                                Signaller_1.createTab.dispatch('predicate', datum.uid);
+                            });
+                            data.entity.forEach((datum) => {
+                                Signaller_1.createTab.dispatch('entity', datum.uid);
+                            });
+                        }
+                    },
+                    settings: {
+                        conflictingItems: data,
+                        message: 'Deleting Entity Type'
+                    }
+                };
+                Signaller_1.showModal.dispatch(conflictResolutionModal);
+            });
+        });
+    }
+    createEntity() {
+        const a = {
+            name: 'entity',
+            complete: ([id]) => {
+                Signaller_1.createTab.dispatch('entity', id);
+            },
+            cancel: () => { console.log('cancel'); },
+            settings: {
+                initialName: '',
+                initialType: this.props.id
+            }
+        };
+        Signaller_1.showModal.dispatch(a);
+    }
+    render() {
+        const entityType = this.props.dataStore.tabs.entity_type.get('entity_type-' + this.props.id).value;
+        const potentialParents = this.props.dataStore.all.entity_type.value;
+        let parentName = '';
+        if (potentialParents !== null && entityType.parent !== undefined) {
+            const found = potentialParents.find((par) => par.uid === entityType.parent);
+            if (found !== undefined) {
+                parentName = found.name;
+            }
+        }
+        return (React.createElement("div", {className: 'workspace-editor'}, 
+            React.createElement("header", {className: 'editor-header entity_type'}, 
+                React.createElement("div", {className: 'primary-toolbar'}, 
+                    React.createElement("div", {className: 'main-toolbar'}, 
+                        React.createElement("div", {className: 'bread-crumbs'}, entityType.parents.map((parent, i) => (React.createElement("span", {key: `breadcrumb-${parent.uid}`}, 
+                            React.createElement("span", null, 
+                                "  ", 
+                                parent.name, 
+                                " ", 
+                                React.createElement(AddTabButton_1.AddTabButton, {dataStore: this.props.dataStore, tabType: 'entity_type', uid: parent.uid}), 
+                                " "), 
+                            React.createElement("i", {className: 'fa fa-angle-right'}))))), 
+                        React.createElement("i", {className: 'fa fa-tag item-icon'}), 
+                        React.createElement(StringEditableFieldComponent, {value: entityType.name, component: EditableHeader_1.EditableHeader, onChange: (value) => this.update({ 'name': value })})), 
+                    React.createElement("div", {className: 'sub-toolbar'}, 
+                        React.createElement("i", {className: 'fa fa-plus add button', "aria-hidden": 'true', onClick: this.createEntity.bind(this)}), 
+                        React.createElement("i", {className: 'fa fa-trash delete button', "aria-hidden": 'true', onClick: this.del.bind(this)}), 
+                        React.createElement("i", {className: 'fa fa-clone button', "aria-hidden": 'true', onClick: this.copy.bind(this)})))
+            ), 
+            React.createElement("section", {className: 'editor-body'}, 
+                React.createElement("div", {className: 'edit-group'}, 
+                    React.createElement("label", {className: 'small'}, "Parent"), 
+                    React.createElement(ComboEditableFieldComponent, {value: entityType.parent === null ? null : { key: parentName, value: entityType.parent }, component: EditableComboDropdown_1.EditableComboDropdown, onChange: (value) => this.update({ 'parent': value === null ? null : value.value }), additionalProps: { comboSettings: {
+                            options: potentialParents.map((par) => ({ key: par.name, value: par.uid })),
+                            typeName: 'EntityType'
+                        } }}), 
+                    entityType.parent !== null ? (React.createElement(AddTabButton_1.AddTabButton, {tabType: 'entity_type', dataStore: this.props.dataStore, uid: entityType.parent})) : null), 
+                React.createElement("div", {className: 'edit-group'}, 
+                    React.createElement("label", {className: 'small'}, "Description"), 
+                    React.createElement(StringEditableFieldComponent, {value: entityType.description, component: EditableParagraph_1.EditableParagraph, onChange: (value) => this.update({ 'description': value })})), 
+                React.createElement("div", {className: 'edit-group'}, 
+                    React.createElement(StringEditableFieldComponent, {value: entityType.sameAs, component: SameAsEditor_1.SameAsEditor, onChange: (value) => this.update({ 'sameAs': value })})
+                ), 
+                React.createElement("div", null, 
+                    React.createElement("h4", null, "Direct Children"), 
+                    React.createElement("ul", null, entityType.children
+                        .map((child) => this.props.dataStore.all.entity_type.value.find((et) => et.uid === child))
+                        .map((childEt) => (React.createElement("li", {key: `dc-${childEt.name}`}, 
+                        childEt.name, 
+                        " ", 
+                        React.createElement(AddTabButton_1.AddTabButton, {tabType: 'entity_type', dataStore: this.props.dataStore, uid: childEt.uid})))))))));
+    }
+}
+EntityTypeWorkspace.contextTypes = {
+    router: React.PropTypes.object.isRequired
+};
+exports.EntityTypeWorkspace = EntityTypeWorkspace;
+
+
+/***/ },
+/* 248 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview Empty workspace for when nothing is open!
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.1.0
+ */
+"use strict";
+const React = __webpack_require__(0);
+const EntityList_1 = __webpack_require__(239);
+const PredicateList_1 = __webpack_require__(241);
+const SourceList_1 = __webpack_require__(242);
+const EntityTypeList_1 = __webpack_require__(240);
+exports.ObjectListWorkspace = (props) => (React.createElement("div", {className: 'workspace-editor object-list'}, (() => {
+    switch (props.listType) {
+        case 'entity':
+            return (React.createElement(EntityList_1.EntityList, {api: props.api, query: props.query, dataStore: props.dataStore}));
+        case 'source':
+            return (React.createElement(SourceList_1.SourceList, {api: props.api, dataStore: props.dataStore}));
+        case 'predicate':
+            return (React.createElement(PredicateList_1.PredicateList, {api: props.api, dataStore: props.dataStore}));
+        case 'entity_type':
+            return (React.createElement(EntityTypeList_1.EntityTypeList, {api: props.api, dataStore: props.dataStore}));
+    }
+})()));
+
+
+/***/ },
+/* 249 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview Predicate editor workspace
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.0.1
+ */
+"use strict";
+const React = __webpack_require__(0);
+const react_router_1 = __webpack_require__(24);
+const SameAsEditor_1 = __webpack_require__(68);
+const ApiService_1 = __webpack_require__(6);
+const Signaller_1 = __webpack_require__(8);
+const datamodel_1 = __webpack_require__(10);
+const EditableHeader_1 = __webpack_require__(41);
+const EditableParagraph_1 = __webpack_require__(67);
+const PredicateDescription_1 = __webpack_require__(101);
+const literalTypes_1 = __webpack_require__(112);
+class StringEditableFieldComponent extends EditableHeader_1.EditableFieldComponent {
+}
+// - Should state the number of times this predicate is used
+// - Widening the domain or range always okay
+// - Narrowing should check for conflicts and return them
+// - Asks 'Delete conflicting records?'
+// - Strong check (double button press or type) to confirm
+// - Changing name/description/sameAs - absolutly fine
+// - Cannot change 'readonly'
+class PredicateEditorWorkspace extends React.Component {
+    constructor() {
+        super();
+        this.state = {
+            records: []
+        };
+    }
+    componentDidMount() {
+        this.loadData(this.props);
+    }
+    componentWillReceiveProps(newProps) {
+        this.loadData(newProps);
+    }
+    loadData(props) {
+        // Promise.all([
+        //     props.api.getCollection(Record, AppUrls.record, { predicate: props.id })
+        // ]).then(([records]) => {
+        //     this.setState({ records });
+        // });
+    }
+    updatePredicate(field, value, rangeIsReferenceOverride = null) {
+        const predicate = this.props.dataStore.tabs.predicate.get('predicate-' + this.props.id).value;
+        if (predicate === null) {
+            console.warn('Tried to edit unready predicate');
+            return;
+        }
+        const rangeIsReferenceVal = rangeIsReferenceOverride === null
+            ? predicate.rangeIsReference : rangeIsReferenceOverride;
+        this.props.api.patchItem(datamodel_1.Predicate, ApiService_1.AppUrls.predicate, predicate.uid, {
+            [field]: value,
+            rangeIsReference: rangeIsReferenceVal
+        });
+    }
+    copy() {
+        const predicate = this.props.dataStore.tabs.predicate.get('predicate-' + this.props.id).value;
+        const newPredicate = new datamodel_1.Predicate().deserialize(Object.assign({}, predicate.serialize(), { name: 'Copy of ' + predicate.name }));
+        this.props.api.postItem(datamodel_1.Predicate, ApiService_1.AppUrls.predicate, newPredicate)
+            .then(([id]) => {
+            Signaller_1.createTab.dispatch('predicate', id);
+        });
+    }
+    del() {
+        this.props.api.delItem(datamodel_1.Predicate, ApiService_1.AppUrls.predicate, this.props.id)
+            .then(() => this.context.router.transitionTo('/edit/notfound'))
+            .catch((e) => {
+            e.data.data.then((data) => {
+                const conflictResolutionModal = {
+                    name: 'conflict_resolution',
+                    cancel: () => { },
+                    complete: (result) => {
+                        if (result === 'addToWorkspace') {
+                            data.forEach((datum) => {
+                                Signaller_1.createTab.dispatch('entity', datum.entity);
+                            });
+                        }
+                        if (result === 'deleteAll') {
+                            Promise.all(data.record.map((datum) => this.props.api.delItem(datamodel_1.Record, ApiService_1.AppUrls.record, datum.uid)))
+                                .then(() => {
+                                this.del();
+                            });
+                        }
+                    },
+                    settings: {
+                        conflictingItems: data,
+                        message: 'Deleting Predicate'
+                    }
+                };
+                Signaller_1.showModal.dispatch(conflictResolutionModal);
+            });
+        });
+    }
+    render() {
+        const predicate = this.props.dataStore.tabs.predicate.get('predicate-' + this.props.id).value;
+        const entityTypes = this.props.dataStore.all.entity_type.value;
+        const currentDomainEntityType = entityTypes.find((t) => t.uid == predicate.domain);
+        let currentDomainEntityTypeName = '';
+        if (currentDomainEntityType !== undefined) {
+            currentDomainEntityTypeName = currentDomainEntityType.name;
+        }
+        const domain = { key: currentDomainEntityTypeName, value: predicate.domain.toString() };
+        const range = { key: '', value: predicate.range.toString() };
+        if (predicate.rangeIsReference) {
+            const currentRangeEntityType = entityTypes.find((t) => t.uid == predicate.range);
+            if (currentRangeEntityType !== undefined) {
+                range.key = currentRangeEntityType.name;
+            }
+        }
+        else {
+            const literalType = literalTypes_1.literalTypes.find((t) => t.value === predicate.range);
+            if (literalType !== undefined) {
+                range.key = literalType.name;
+            }
+        }
+        const entityTypeOptions = entityTypes.map((t) => {
+            if (t.uid === null) {
+                throw new Error('Encountered entity type with no id!');
+            }
+            return { key: t.name, value: t.uid.toString() };
+        });
+        const literalTypeOptions = literalTypes_1.literalTypes.map((t) => ({ key: t.name, value: t.value, meta: 'literal' }));
+        return (React.createElement("div", {className: 'workspace-editor'}, 
+            React.createElement("header", {className: 'editor-header predicate'}, 
+                React.createElement("div", {className: 'primary-toolbar'}, 
+                    React.createElement("div", {className: 'main-toolbar'}, 
+                        React.createElement("i", {className: 'fa fa-long-arrow-right item-icon'}), 
+                        React.createElement(StringEditableFieldComponent, {value: predicate.name, component: EditableHeader_1.EditableHeader, onChange: (value) => this.updatePredicate('name', value)})), 
+                    React.createElement("div", {className: 'sub-toolbar'}, 
+                        React.createElement("i", {className: 'fa fa-trash delete button', "aria-hidden": 'true', onClick: this.del.bind(this)}), 
+                        React.createElement("i", {className: 'fa fa-clone button', "aria-hidden": 'true', onClick: this.copy.bind(this)})))
+            ), 
+            React.createElement("section", {className: 'editor-body'}, 
+                React.createElement("div", null, 
+                    React.createElement(react_router_1.Link, {to: `/edit/entity?col1=${this.props.id},exists`}, 
+                        "Uses: ", 
+                        this.state.records.length)
+                ), 
+                React.createElement("div", {className: 'edit-group'}, 
+                    React.createElement("label", {className: 'small'}, "Description"), 
+                    React.createElement(StringEditableFieldComponent, {value: predicate.description, component: EditableParagraph_1.EditableParagraph, onChange: (value) => this.updatePredicate('description', value)})), 
+                React.createElement("div", {className: 'edit-group'}, 
+                    React.createElement("label", {className: 'small'}, "Typing"), 
+                    React.createElement(PredicateDescription_1.PredicateDescription, {domain: domain, range: range, domainChanged: (value) => this.updatePredicate('domain', value.value), rangeChanged: (value) => this.updatePredicate('range', value.value, value.meta !== 'literal'), mode: 'editSingle', domainOptions: entityTypeOptions, rangeOptions: literalTypeOptions.concat(entityTypeOptions)})), 
+                React.createElement("div", null, 
+                    React.createElement(StringEditableFieldComponent, {value: predicate.sameAs, component: SameAsEditor_1.SameAsEditor, onChange: (value) => this.updatePredicate('sameAs', value)})
+                ))));
+    }
+}
+PredicateEditorWorkspace.contextTypes = {
+    router: React.PropTypes.object.isRequired
+};
+exports.PredicateEditorWorkspace = PredicateEditorWorkspace;
+
+
+/***/ },
+/* 250 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview Predicate editor workspace
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.0.1
+ */
+"use strict";
+const React = __webpack_require__(0);
+const SameAsEditor_1 = __webpack_require__(68);
+const ApiService_1 = __webpack_require__(6);
+const datamodel_1 = __webpack_require__(10);
+const EditableHeader_1 = __webpack_require__(41);
+const EditableParagraph_1 = __webpack_require__(67);
+const EditableComboDropdown_1 = __webpack_require__(66);
+const lodash_1 = __webpack_require__(5);
+const Signaller_1 = __webpack_require__(8);
+const AddTabButton_1 = __webpack_require__(16);
+class StringEditableFieldComponent extends EditableHeader_1.EditableFieldComponent {
+}
+class ComboEditableFieldComponent extends EditableHeader_1.EditableFieldComponent {
+}
+// - Should state the number of times this predicate is used
+// - Widening the domain or range always okay
+// - Narrowing should check for conflicts and return them
+// - Asks 'Delete conflicting records?'
+// - Strong check (double button press or type) to confirm
+// - Changing name/description/sameAs - absolutly fine
+// - Cannot change 'readonly'
+class SourceEditorWorkspace extends React.Component {
+    constructor() {
+        super();
+        this.state = {
+            metaData: {}
+        };
+    }
+    componentDidMount() {
+        this.loadData(this.props);
+    }
+    componentWillReceiveProps(newProps) {
+        this.loadData(newProps);
+    }
+    loadData(props) {
+        const source = props.dataStore.tabs.source.get('source-' + this.props.id).value.source;
+        this.setState({
+            metaData: lodash_1.keyBy(source.metaData, 'name')
+        });
+    }
+    updateSource(field, value) {
+        const source = this.props.dataStore.tabs.source.get('source-' + this.props.id).value.source;
+        this.props.api.patchItem(datamodel_1.Source, ApiService_1.AppUrls.source, source.uid, { [field]: value });
+        //.then((success) => {
+        // const updatedSource = new Source().deserialize(Object.assign({},
+        //     source.serialize(), { [field]: value }));
+        // this.setState({
+        //     source: updatedSource,
+        //     metaData: keyBy(updatedSource.metaData, 'name')
+        // });
+        //});
+    }
+    updateSourceElement(element, value) {
+        const source = this.props.dataStore.tabs.source.get('source-' + this.props.id).value.source;
+        const compositeKey = {
+            order: ['source', 'element'],
+            values: {
+                source: this.props.id,
+                element: element.uid
+            }
+        };
+        if (source.metaData[element.name] !== undefined
+            && source.metaData[element.name].values.find((a) => a.source === this.props.id) !== undefined) {
+            this.props.api.patchItem(datamodel_1.SourceElement, ApiService_1.AppUrls.source_element, compositeKey, new datamodel_1.SourceElement().deserialize({
+                uid: compositeKey,
+                element: source.metaData[element.name].element_uid,
+                source: this.props.id,
+                value
+            }));
+        }
+        else {
+            this.props.api.postItem(datamodel_1.SourceElement, ApiService_1.AppUrls.source_element, new datamodel_1.SourceElement().deserialize({
+                uid: compositeKey,
+                value: value
+            }));
+        }
+    }
+    del() {
+        this.props.api.delItem(datamodel_1.Source, ApiService_1.AppUrls.source, this.props.id)
+            .then(() => this.context.router.transitionTo('/edit/notfound'))
+            .catch((e) => {
+            e.data.data.then((data) => {
+                const conflictResolutionModal = {
+                    name: 'conflict_resolution',
+                    cancel: () => { },
+                    complete: (result) => {
+                        if (result === 'addToWorkspace') {
+                            data.source.forEach((datum) => {
+                                Signaller_1.createTab.dispatch('source', datum.uid);
+                            });
+                        }
+                        if (result === 'deleteAll') {
+                            Promise.all(data.source.map((datum) => this.props.api.delItem(datamodel_1.Source, ApiService_1.AppUrls.source, datum.uid)))
+                                .then(() => {
+                                this.del();
+                            });
+                        }
+                    },
+                    settings: {
+                        conflictingItems: data,
+                        message: 'Deleting Source'
+                    }
+                };
+                Signaller_1.showModal.dispatch(conflictResolutionModal);
+            });
+        });
+    }
+    createChild() {
+        const source = this.props.dataStore.tabs.source.get('source-' + this.props.id).value.source;
+        const newSource = new datamodel_1.Source().deserialize(Object.assign({}, source.serialize(), { name: 'Child of ' + source.name, parent: this.props.id }));
+        this.props.api.postItem(datamodel_1.Source, ApiService_1.AppUrls.source, newSource)
+            .then(([id]) => {
+            Signaller_1.createTab.dispatch('source', id);
+        });
+    }
+    // create entity with 'mentioned in' already set to this source
+    createEntity() {
+        const a = {
+            name: 'preset_record',
+            complete: ([id]) => {
+                Signaller_1.createTab.dispatch('entity', id);
+            },
+            cancel: () => { },
+            settings: {
+                source: this.props.dataStore.tabs.source.get('source-' + this.props.id).value.source
+            }
+        };
+        Signaller_1.showModal.dispatch(a);
+    }
+    render() {
+        const source = this.props.dataStore.tabs.source.get('source-' + this.props.id).value.source;
+        const potentialParents = this.props.dataStore.all.source.value;
+        let parentName = '';
+        if (potentialParents !== null && source.parent !== undefined) {
+            const found = potentialParents.find((par) => par.uid === source.parent);
+            if (found !== undefined) {
+                parentName = found.name;
+            }
+        }
+        return (React.createElement("div", {className: 'workspace-editor'}, 
+            React.createElement("header", {className: 'editor-header source'}, 
+                React.createElement("div", {className: 'primary-toolbar'}, 
+                    React.createElement("div", {className: 'main-toolbar'}, 
+                        React.createElement("div", {className: 'bread-crumbs'}, source.parents
+                            .slice()
+                            .reverse()
+                            .map((child) => this.props.dataStore.all.source.value.find((et) => et.uid === child))
+                            .map((parent, i) => (React.createElement("span", {key: `breadcrumb-${parent.uid}`}, 
+                            React.createElement("span", null, 
+                                "  ", 
+                                parent.name, 
+                                " ", 
+                                React.createElement(AddTabButton_1.AddTabButton, {dataStore: this.props.dataStore, tabType: 'source', uid: parent.uid}), 
+                                " "), 
+                            React.createElement("i", {className: 'fa fa-angle-right'}))))), 
+                        React.createElement("i", {className: 'fa fa-sun-o item-icon'}), 
+                        React.createElement(StringEditableFieldComponent, {value: source.name, component: EditableHeader_1.EditableHeader, onChange: (value) => this.updateSource('name', value)})), 
+                    React.createElement("div", {className: 'sub-toolbar'}, 
+                        React.createElement("i", {className: 'fa fa-plus add button', "aria-hidden": 'true', onClick: this.createEntity.bind(this)}), 
+                        React.createElement("i", {className: 'fa fa-trash delete button', "aria-hidden": 'true', onClick: () => this.del()}), 
+                        React.createElement("i", {className: 'fa fa-arrow-circle-o-down button', "aria-hidden": 'true', onClick: this.createChild.bind(this)})))
+            ), 
+            React.createElement("section", {className: 'editor-body'}, 
+                React.createElement("div", {className: 'edit-group'}, 
+                    React.createElement("label", {className: 'small'}, "Parent"), 
+                    React.createElement(ComboEditableFieldComponent, {value: { key: parentName, value: source.parent }, component: EditableComboDropdown_1.EditableComboDropdown, onChange: (value) => this.updateSource('parent', value.value), additionalProps: { comboSettings: {
+                            options: potentialParents.map((par) => ({ key: par.name, value: par.uid })),
+                            typeName: 'Source'
+                        } }}), 
+                    source.parent !== null ? (React.createElement(AddTabButton_1.AddTabButton, {dataStore: this.props.dataStore, tabType: 'source', uid: source.parent})) : null), 
+                React.createElement("div", {className: 'edit-group'}, 
+                    React.createElement(StringEditableFieldComponent, {value: source.sameAs, component: SameAsEditor_1.SameAsEditor, onChange: (value) => this.updateSource('sameAs', value)})
+                ), 
+                this.props.dataStore.all.dublinCore.value.elements.map((element) => {
+                    const values = source.metaData.hasOwnProperty(element.name) ?
+                        source.metaData[element.name].values : [{ source: this.props.id, value: '' }];
+                    const editableValue = values[0].source == this.props.id ? values[0].value : '';
+                    return (React.createElement("div", {key: `${element.name}-edit`}, 
+                        React.createElement("h5", {className: 'section-header'}, 
+                            element.name, 
+                            " ", 
+                            React.createElement("small", null, 
+                                React.createElement("a", {href: element.url}, element.uri)
+                            )), 
+                        React.createElement("p", {className: 'element-description'}, element.description), 
+                        React.createElement("ul", null, values.map((value) => value.source != this.props.id ? (React.createElement("li", {key: `${element.uid}-${value.source}`}, 
+                            this.props.dataStore.all.source.value.find((s) => s.uid === value.source).name, 
+                            ": ", 
+                            value.value)) : null)), 
+                        React.createElement(StringEditableFieldComponent, {value: editableValue, component: EditableParagraph_1.EditableParagraph, onChange: (value) => this.updateSourceElement(element, value)})));
+                }), 
+                React.createElement("div", null, 
+                    React.createElement("h4", null, "Direct Children"), 
+                    React.createElement("ul", null, source.children
+                        .map((child) => this.props.dataStore.all.source.value.find((et) => et.uid === child))
+                        .map((childEt) => (React.createElement("li", {key: `dc-${childEt.uid}`}, 
+                        childEt.name, 
+                        " ", 
+                        React.createElement(AddTabButton_1.AddTabButton, {tabType: 'source', dataStore: this.props.dataStore, uid: childEt.uid})))))))));
+    }
+}
+SourceEditorWorkspace.contextTypes = {
+    router: React.PropTypes.object.isRequired
+};
+exports.SourceEditorWorkspace = SourceEditorWorkspace;
+
+
+/***/ },
+/* 251 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview Unified export of workspaces
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk" />Tim Hollies</a>
+ * @version 0.1.0
+ */
+"use strict";
+var EmptyWorkspace_1 = __webpack_require__(245);
+exports.EmptyWorkspace = EmptyWorkspace_1.EmptyWorkspace;
+var EntityEditorWorkspace_1 = __webpack_require__(246);
+exports.EntityEditorWorkspace = EntityEditorWorkspace_1.EntityEditorWorkspace;
+var EntityTypeWorkspace_1 = __webpack_require__(247);
+exports.EntityTypeWorkspace = EntityTypeWorkspace_1.EntityTypeWorkspace;
+var SourceEditorWorkspace_1 = __webpack_require__(250);
+exports.SourceEditorWorkspace = SourceEditorWorkspace_1.SourceEditorWorkspace;
+var PredicateEditorWorkspace_1 = __webpack_require__(249);
+exports.PredicateEditorWorkspace = PredicateEditorWorkspace_1.PredicateEditorWorkspace;
+var AdvancedSearchWorkspace_1 = __webpack_require__(244);
+exports.AdvancedSearchWorkspace = AdvancedSearchWorkspace_1.AdvancedSearchWorkspace;
+var ObjectListWorkspace_1 = __webpack_require__(248);
+exports.ObjectListWorkspace = ObjectListWorkspace_1.ObjectListWorkspace;
+
+
+/***/ },
+/* 252 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview <Description Missing>
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.1.0
+ */
+"use strict";
+const React = __webpack_require__(0);
+const react_router_1 = __webpack_require__(24);
+const StatsGrid_1 = __webpack_require__(113);
+exports.Admin = (props) => (React.createElement("div", {className: 'page'}, 
+    React.createElement("section", null, 
+        React.createElement("h1", null, "Welcome to the admin pages"), 
+        React.createElement("ul", {className: 'links-list'}, 
+            React.createElement("li", null, 
+                React.createElement(react_router_1.Link, {to: '/users'}, 
+                    React.createElement("i", {className: 'fa fa-users'}), 
+                    " Manage Users")
+            ), 
+            React.createElement("li", null, 
+                React.createElement(react_router_1.Link, {to: '/app'}, 
+                    React.createElement("i", {className: 'fa fa-download'}), 
+                    " Download app")
+            ), 
+            React.createElement("li", null, 
+                React.createElement("a", {href: '/admin/snapshot'}, 
+                    React.createElement("i", {className: 'fa fa-cloud-download'}), 
+                    " Download database snapshot")
+            ), 
+            React.createElement("li", null, 
+                React.createElement(react_router_1.Link, {to: '/upload'}, 
+                    React.createElement("i", {className: 'fa fa-cloud-upload'}), 
+                    " Upload database file")
+            ))), 
+    props.stats !== null ? (React.createElement(StatsGrid_1.StatsGrid, {stats: props.stats})) : null));
+
+
+/***/ },
+/* 253 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview <Description Missing>
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.1.0
+ */
+"use strict";
+const React = __webpack_require__(0);
+exports.AppDownload = (props) => (React.createElement("div", {className: 'page'}, 
+    React.createElement("section", null, 
+        React.createElement("h1", null, "App Download"), 
+        React.createElement("p", null, "Use this VRE without an internet connection! Simply download the app for your platform and then" + ' ' + "download a database snapshot from the main page. When you are ready, use the upload tool to merge" + ' ' + "your offline copy with the server."), 
+        React.createElement("ul", {className: 'links-list'}, 
+            React.createElement("li", null, 
+                React.createElement("a", {href: 'https://github.com/digihum/imperial-entanglements-app/raw/master/bin/imperial-entanglements%20Setup%200.1.1.exe'}, 
+                    React.createElement("i", {className: 'fa fa-windows'}), 
+                    " Windows")
+            ), 
+            React.createElement("li", null, 
+                React.createElement("a", {href: 'https://github.com/digihum/imperial-entanglements-app/raw/master/bin/mac/imperial-entanglements-0.1.1.dmg'}, 
+                    React.createElement("i", {className: 'fa fa-apple'}), 
+                    " Mac")
+            ), 
+            React.createElement("li", null, 
+                React.createElement("a", {href: 'https://github.com/digihum/imperial-entanglements-app/raw/master/bin/imperial-entanglements-0.1.1-x86_64.AppImage'}, 
+                    React.createElement("i", {className: 'fa fa-linux'}), 
+                    " Linux")
+            )))
+));
+
+
+/***/ },
+/* 254 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview <Description Missing>
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.1.0
+ */
+"use strict";
+const React = __webpack_require__(0);
+exports.DatabaseUpload = (props) => (React.createElement("div", {className: 'page'}, 
+    React.createElement("section", null, 
+        React.createElement("h1", null, "This is the database upload page"), 
+        React.createElement("input", {type: 'file', id: 'input', accept: '.sqlite'}), 
+        React.createElement("button", {onClick: () => { alert('Work in process'); }}, "Upload"))
+));
+
+
+/***/ },
+/* 255 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview <Description Missing>
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.1.0
+ */
+"use strict";
+var __assign = (this && this.__assign) || Object.assign || function(t) {
+    for (var s, i = 1, n = arguments.length; i < n; i++) {
+        s = arguments[i];
+        for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+            t[p] = s[p];
+    }
+    return t;
+};
+const React = __webpack_require__(0);
+const immutable_1 = __webpack_require__(117);
+const moment = __webpack_require__(36);
+const ApiService_1 = __webpack_require__(6);
+const datamodel_1 = __webpack_require__(10);
+const Sidebar_1 = __webpack_require__(220);
+const Workspace_1 = __webpack_require__(222);
+const Toast_1 = __webpack_require__(221);
+const Signaller_1 = __webpack_require__(8);
+const lodash_1 = __webpack_require__(5);
+const CreatePredicate_1 = __webpack_require__(235);
+const CreateRecord_1 = __webpack_require__(237);
+const CreatePresetRecord_1 = __webpack_require__(236);
+const CreateSource_1 = __webpack_require__(238);
+const CreateEntity_1 = __webpack_require__(233);
+const CreateEntityType_1 = __webpack_require__(234);
+const ConflictResolution_1 = __webpack_require__(232);
+const DataStore_1 = __webpack_require__(217);
+class ObjectEditor extends React.Component {
+    constructor(props, context) {
+        super();
+        this.state = {
+            tabs: [],
+            inBrowser: (typeof window !== 'undefined'),
+            modalQueue: [],
+            dataStore: lodash_1.cloneDeep(DataStore_1.emptyDataStore),
+            loadingWheel: true,
+            loading: false,
+            id: NaN,
+            list: false
+        };
+        this.boundCreateTab = this.createTab.bind(this);
+        this.boundCloseTab = this.closeTab.bind(this);
+        this.boundAddModal = this.addModal.bind(this);
+        this.boundReload = this.callReload.bind(this);
+        this.boundReorderTabs = this.reorderTabs.bind(this);
+        Signaller_1.createTab.add(this.boundCreateTab);
+        Signaller_1.closeTab.add(this.boundCloseTab);
+        Signaller_1.showModal.add(this.boundAddModal);
+        Signaller_1.triggerReload.add(this.boundReload);
+        Signaller_1.reorderTabs.add(this.boundReorderTabs);
+    }
+    componentDidMount() {
+        this.reload(this.props);
+    }
+    callReload() {
+        this.reload(this.props, true);
+    }
+    reload(props, force = false) {
+        const newId = parseInt(props.location.pathname.substr(props.pathname.length + 1));
+        const newWorkspace = props.workspace;
+        if (['entity', 'source', 'predicate', 'entity_type', 'notfound'].indexOf(newWorkspace) === -1) {
+            this.context.router.transitionTo('/edit/notfound');
+        }
+        if (this.state.loading && !force) {
+            this.setState({
+                id: newId,
+                list: props.location.pathname.substr(props.pathname.length + 1).length === 0
+            });
+            return;
+        }
+        this.setState({
+            loading: true,
+            loadingWheel: (this.state.id !== newId && !(isNaN(this.state.id) && isNaN(newId))) || this.props.workspace !== newWorkspace,
+            id: newId,
+            list: props.location.pathname.substr(props.pathname.length + 1).length === 0
+        }, () => {
+            // load data required by the current tabs
+            let tabPromise = Promise.resolve(lodash_1.cloneDeep(DataStore_1.emptyTabs));
+            if (this.state.inBrowser) {
+                const tabsString = window.localStorage.getItem('open_tabs');
+                if (tabsString !== null) {
+                    this.state.tabs = JSON.parse(tabsString);
+                    if (!this.state.list &&
+                        ['entity', 'predicate', 'entity_type', 'source'].indexOf(props.workspace) !== -1 &&
+                        lodash_1.find(this.state.tabs, (tab) => tab.tabType === props.workspace
+                            && tab.uid == this.state.id) === undefined) {
+                        this.state.tabs.push({ tabType: props.workspace, uid: this.state.id });
+                        this.saveTabs();
+                    }
+                    const groupedTabs = lodash_1.groupBy(this.state.tabs, 'tabType');
+                    tabPromise = Promise.all(Object.keys(groupedTabs).map((tabType) => Promise.all(groupedTabs[tabType].map((tab) => this.loadTabData(tab.tabType, tab.uid)
+                        .then((value) => {
+                        return { [`${tab.tabType}-${tab.uid}`]: { value, lastUpdate: moment() } };
+                    })
+                        .catch((err) => {
+                        console.warn(`Attempted to load missing resource ${tab.tabType}/${tab.uid}`);
+                        this.closeTab(tab.tabType, tab.uid);
+                        if (tab.tabType === props.workspace && tab.uid === this.state.id) {
+                            this.context.router.transitionTo('/edit/notfound');
+                        }
+                    })))
+                        .then((tabData) => {
+                        return { [tabType]: immutable_1.Map(Object.assign({}, ...tabData)) };
+                    })));
+                }
+            }
+            // load lists of data commonly required by views
+            const allPromise = Promise.all([
+                props.api.getCollection(datamodel_1.Predicate, ApiService_1.AppUrls.predicate, {}),
+                props.api.getCollection(datamodel_1.Source, ApiService_1.AppUrls.source, {}),
+                props.api.getCollection(datamodel_1.Entity, ApiService_1.AppUrls.entity, {}),
+                props.api.getCollection(datamodel_1.EntityType, ApiService_1.AppUrls.entity_type, {}),
+                props.api.getItem(datamodel_1.ElementSet, ApiService_1.AppUrls.element_set, 1)
+            ])
+                .then(([predicates, sources, entities, entityType, dublinCore]) => {
+                return {
+                    predicate: { value: predicates, lastUpdate: moment() },
+                    source: { value: sources, lastUpdate: moment() },
+                    entity: { value: entities, lastUpdate: moment() },
+                    entity_type: { value: entityType, lastUpdate: moment() },
+                    dublinCore: { value: dublinCore, lastUpdate: moment() }
+                };
+            });
+            Promise.all([tabPromise, allPromise])
+                .then(([tabsArray, all]) => {
+                const tabs = Object.assign({}, ...tabsArray);
+                this.setState({
+                    dataStore: Object.assign({}, this.state.dataStore, { tabs, all }),
+                    loading: false,
+                    loadingWheel: false
+                });
+            });
+        });
+    }
+    loadTabData(tabType, uid) {
+        switch (tabType) {
+            case 'entity':
+                return Promise.all([
+                    this.props.api.getItem(datamodel_1.Entity, ApiService_1.AppUrls.entity, uid),
+                    this.props.api.getCollection(datamodel_1.Record, ApiService_1.AppUrls.record, { entity: uid })
+                ]).then(([entity, records]) => ({ entity, records }));
+            case 'predicate':
+                return this.props.api.getItem(datamodel_1.Predicate, ApiService_1.AppUrls.predicate, uid);
+            case 'entity_type':
+                return this.props.api.getItem(datamodel_1.EntityType, ApiService_1.AppUrls.entity_type, uid);
+            case 'source':
+                return Promise.all([
+                    this.props.api.getItem(datamodel_1.Source, ApiService_1.AppUrls.source, uid),
+                    this.props.api.getCollection(datamodel_1.SourceElement, ApiService_1.AppUrls.source_element, { source: uid })
+                ]).then(([source, source_element]) => ({ source, source_element }));
+            default:
+                throw new Error('Unexpected tab type requested');
+        }
+    }
+    createTab(tabType, uid, data) {
+        // don't add a tab if it already exists
+        if (lodash_1.find(this.state.tabs, (tab) => tab.tabType === tabType && tab.uid == uid) === undefined) {
+            this.setState({
+                tabs: this.state.tabs.concat([{ tabType, uid, data }])
+            }, () => {
+                this.saveTabs();
+                this.reload(this.props);
+            });
+        }
+    }
+    updateTab(tabType, uid, data) {
+        const tabs = lodash_1.cloneDeep(this.state.tabs);
+        const tabId = lodash_1.findIndex(tabs, (tab) => tab.tabType === tabType && tab.uid === uid);
+        if (tabId !== -1) {
+            tabs[tabId].data = data;
+            this.setState({ tabs });
+        }
+    }
+    closeTab(tabType, uid) {
+        this.setState({
+            tabs: this.state.tabs.filter((a) => a.tabType !== tabType || a.uid !== uid)
+        }, () => {
+            this.saveTabs();
+            this.reload(this.props);
+        });
+    }
+    saveTabs() {
+        const tabsString = JSON.stringify(this.state.tabs);
+        if (this.state.inBrowser) {
+            window.localStorage.setItem('open_tabs', tabsString);
+        }
+    }
+    clearAllTabs() {
+        this.setState({ tabs: [] }, () => {
+            this.saveTabs();
+            this.reload(this.props);
+        });
+    }
+    reorderTabs(reorderFunc) {
+        this.setState({ tabs: reorderFunc(this.state.tabs) }, () => {
+            this.saveTabs();
+            this.reload(this.props);
+        });
+    }
+    addModal(def) {
+        this.setState({ modalQueue: [def].concat(this.state.modalQueue) });
+    }
+    modalComplete(data) {
+        if (this.state.modalQueue.length === 0) {
+            throw new Error('Attempted to complete non-existent modal');
+        }
+        this.state.modalQueue[0].complete(data);
+        if (this.state.modalQueue.length > 0) {
+            this.setState({ modalQueue: lodash_1.tail(this.state.modalQueue) });
+        }
+    }
+    modalCancel() {
+        if (this.state.modalQueue.length === 0) {
+            throw new Error('Attempted to cancel non-existent modal');
+        }
+        this.state.modalQueue[0].cancel();
+        this.setState({
+            modalQueue: []
+        });
+    }
+    componentWillUnmount() {
+        this.saveTabs();
+        Signaller_1.createTab.remove(this.boundCreateTab);
+        Signaller_1.closeTab.remove(this.boundCloseTab);
+        Signaller_1.showModal.remove(this.boundAddModal);
+        Signaller_1.triggerReload.remove(this.boundReload);
+        Signaller_1.reorderTabs.remove(this.boundReorderTabs);
+    }
+    componentWillReceiveProps(props) {
+        this.reload(props);
+    }
+    render() {
+        return (React.createElement("section", {id: 'entity-editor', className: 'flex-fill'}, 
+            React.createElement("span", {className: 'header-colour ' + this.props.workspace}), 
+            React.createElement("span", {className: 'flex-fill'}, 
+                React.createElement(Sidebar_1.Sidebar, {tabs: this.state.tabs, dataStore: this.state.dataStore, loading: false, clearTabs: this.clearAllTabs.bind(this), list: this.state.list, id: this.state.id, workspace: this.props.workspace}), 
+                React.createElement(Workspace_1.Workspace, __assign({}, this.props, {id: this.state.id, dataStore: this.state.dataStore, loading: this.state.loadingWheel, list: this.state.list})), 
+                React.createElement(Toast_1.Toast, null), 
+                (() => {
+                    if (this.state.modalQueue.length === 0) {
+                        return null;
+                    }
+                    const sharedProps = {
+                        api: this.props.api,
+                        dataStore: this.state.dataStore,
+                        complete: this.modalComplete.bind(this),
+                        cancel: this.modalCancel.bind(this)
+                    };
+                    switch (this.state.modalQueue[0].name) {
+                        case 'predicate':
+                            return (React.createElement(CreatePredicate_1.CreatePredicate, __assign({}, sharedProps, this.state.modalQueue[0].settings)));
+                        case 'record':
+                            return (React.createElement(CreateRecord_1.CreateRecord, __assign({}, sharedProps, this.state.modalQueue[0].settings)));
+                        case 'preset_record':
+                            return (React.createElement(CreatePresetRecord_1.CreatePresetRecord, __assign({}, sharedProps, this.state.modalQueue[0].settings)));
+                        case 'source':
+                            return (React.createElement(CreateSource_1.CreateSource, __assign({}, sharedProps, this.state.modalQueue[0].settings)));
+                        case 'entity':
+                            return (React.createElement(CreateEntity_1.CreateEntity, __assign({}, sharedProps, this.state.modalQueue[0].settings)));
+                        case 'entity_type':
+                            return (React.createElement(CreateEntityType_1.CreateEntityType, __assign({}, sharedProps, this.state.modalQueue[0].settings)));
+                        case 'conflict_resolution':
+                            return (React.createElement(ConflictResolution_1.ConflictResolution, __assign({}, sharedProps, this.state.modalQueue[0].settings)));
+                    }
+                })()), 
+            React.createElement("span", {className: 'header-colour ' + this.props.workspace})));
+    }
+}
+ObjectEditor.contextTypes = {
+    router: React.PropTypes.object.isRequired
+};
+exports.ObjectEditor = ObjectEditor;
+
+
+/***/ },
+/* 256 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview <Description Missing>
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.1.0
+ */
+"use strict";
+const React = __webpack_require__(0);
+exports.RouteNotFound = (props) => (React.createElement("section", null, 
+    React.createElement("h1", null, 
+        "The page at ", 
+        props.url, 
+        " does not exist :(")
+));
+
+
+/***/ },
+/* 257 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview <Description Missing>
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.1.0
+ */
+"use strict";
+const React = __webpack_require__(0);
+exports.User = (props) => (React.createElement("div", {className: 'page'}, 
+    React.createElement("section", null, 
+        React.createElement("h1", null, "This is the user page")
+    )
+));
+
+
+/***/ },
+/* 258 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview <Description Missing>
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.1.0
+ */
+"use strict";
+const React = __webpack_require__(0);
+exports.UserManagement = (props) => (React.createElement("div", {className: 'page'}, 
+    React.createElement("section", null, 
+        React.createElement("h1", null, "This is the user management page")
+    )
+));
+
+
+/***/ },
+/* 259 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview Controller for element sets
+ * @author <a href='mailto:tim.hollies@warwick.ac.uk'>Tim Hollies</a>
+ * @version 0.0.1
+ */
+"use strict";
+const Element_1 = __webpack_require__(102);
+const GenericController_1 = __webpack_require__(19);
+class ElementPersistable extends Element_1.Element {
+    getTableName() {
+        return ElementPersistable.tableName;
+    }
+    toSchema() {
+        return this.serialize();
+    }
+    fromSchema(data) {
+        this.deserialize(data);
+        return this;
+    }
+}
+ElementPersistable.tableName = 'elements';
+exports.ElementPersistable = ElementPersistable;
+class ElementController extends GenericController_1.GenericController {
+    constructor(db) {
+        super(db, ElementPersistable.tableName);
+    }
+}
+exports.ElementController = ElementController;
+
+
+/***/ },
+/* 260 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview Controller for element sets
+ * @author <a href='mailto:tim.hollies@warwick.ac.uk'>Tim Hollies</a>
+ * @version 0.0.1
+ */
+"use strict";
+const ElementSet_1 = __webpack_require__(103);
+const GenericController_1 = __webpack_require__(19);
+const lodash_1 = __webpack_require__(5);
+class ElementSetPersistable extends ElementSet_1.ElementSet {
+    getTableName() {
+        return ElementSetPersistable.tableName;
+    }
+    toSchema() {
+        return lodash_1.omit(this.serialize(), 'elements');
+    }
+    fromSchema(data) {
+        this.deserialize(data);
+        return this;
+    }
+}
+ElementSetPersistable.tableName = 'element_sets';
+exports.ElementSetPersistable = ElementSetPersistable;
+class ElementSetController extends GenericController_1.GenericController {
+    constructor(db) {
+        super(db, ElementSetPersistable.tableName);
+    }
+    getItemJson(obj, uid) {
+        return super.getItemJson(obj, uid)
+            .then((elementSet) => {
+            if (elementSet.uid === null) {
+                throw new Error('could not find source');
+            }
+            return this.db.select('elements')
+                .where({ 'element_set': elementSet.uid })
+                .then((elements) => {
+                elementSet.elements = elements;
+                return elementSet;
+            });
+        });
+    }
+}
+exports.ElementSetController = ElementSetController;
+
+
+/***/ },
+/* 261 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview Controller for element sets
+ * @author <a href='mailto:tim.hollies@warwick.ac.uk'>Tim Hollies</a>
+ * @version 0.0.1
+ */
+"use strict";
+const EntityType_1 = __webpack_require__(105);
+const GenericController_1 = __webpack_require__(19);
+const PredicateController_1 = __webpack_require__(115);
+const EntityController_1 = __webpack_require__(114);
+const Exceptions_1 = __webpack_require__(20);
+const lodash_1 = __webpack_require__(5);
+class EntityTypePersistable extends EntityType_1.EntityType {
+    getTableName() {
+        return EntityTypePersistable.tableName;
+    }
+    toSchema() {
+        return Object.assign(lodash_1.omit(this.serialize(), 'sameAs', 'parents', 'children', 'creationTimestamp', 'lastmodifiedTimestamp'), {
+            same_as: this.sameAs,
+            creation_timestamp: this.creationTimestamp,
+            lastmodified_timeStamp: this.lastmodifiedTimestamp
+        });
+    }
+    fromSchema(data) {
+        this.deserialize(Object.assign(data, {
+            'sameAs': data.same_as
+        }));
+        return this;
+    }
+}
+EntityTypePersistable.tableName = 'entity_types';
+exports.EntityTypePersistable = EntityTypePersistable;
+class EntityTypeController extends GenericController_1.GenericController {
+    constructor(db) {
+        super(db, EntityTypePersistable.tableName);
+    }
+    getItemJson(obj, uid) {
+        return super.getItemJson(obj, uid)
+            .then((result) => {
+            return Promise.all([
+                this.db.getAncestorsOf(uid, 'entity_types')
+                    .then((ancestors) => {
+                    return this.db.select('entity_types').whereIn('uid', ancestors)
+                        .then((results) => results.map((result) => new obj().fromSchema(result)));
+                }),
+                this.db.select('entity_types', ['uid']).where({ parent: uid })
+            ])
+                .then(([parents, children]) => {
+                result.parents = parents;
+                result.children = children.map((child) => child.uid);
+                return result;
+            });
+        });
+    }
+    deleteItem(obj, uid) {
+        // check if this entity is the parent of another entity or if it has any relationships
+        // pointing towards it.
+        return Promise.all([
+            this.db.select(EntityTypePersistable.tableName).where('parent', '=', uid),
+            this.db.select('entities').where('type', '=', uid),
+            this.db.select('predicates').where('domain', '=', uid).orWhere('range_ref', '=', uid)
+        ]).then(([entityTypes, entities, predicates]) => {
+            if (entities.length + entityTypes.length + predicates.length === 0) {
+                return this.db.deleteItem(this.tableName, uid);
+            }
+            else {
+                throw new Exceptions_1.OperationNotPermittedException({
+                    message: 'The operation could not be completed as the entity is referenced in other sources',
+                    data: Promise.resolve({
+                        entityType: entityTypes.map((entityType) => new EntityTypePersistable().fromSchema(entityType)),
+                        entity: entities.map((entity) => new EntityController_1.EntityPersistable().fromSchema(entity)),
+                        predicate: predicates.map((predicate) => new PredicateController_1.PredicatePersistable().fromSchema(predicate))
+                    })
+                });
+            }
+        });
+    }
+}
+exports.EntityTypeController = EntityTypeController;
+
+
+/***/ },
+/* 262 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview Controller for element sets
+ * @author <a href='mailto:tim.hollies@warwick.ac.uk'>Tim Hollies</a>
+ * @version 0.0.1
+ */
+"use strict";
+const Source_1 = __webpack_require__(108);
+const GenericController_1 = __webpack_require__(19);
+const Exceptions_1 = __webpack_require__(20);
+const RecordController_1 = __webpack_require__(70);
+const lodash_1 = __webpack_require__(5);
+class SourcePersistable extends Source_1.Source {
+    getTableName() {
+        return SourcePersistable.tableName;
+    }
+    toSchema() {
+        return Object.assign({}, lodash_1.omit(this.serialize(), 'metaData', 'sameAs', 'parents', 'children', 'creationTimestamp', 'lastmodifiedTimestamp'), {
+            same_as: this.sameAs,
+            creation_timestamp: this.creationTimestamp,
+            lastmodified_timeStamp: this.lastmodifiedTimestamp
+        });
+    }
+    fromSchema(data) {
+        this.deserialize(Object.assign(data, {
+            'sameAs': data.same_as
+        }));
+        return this;
+    }
+}
+SourcePersistable.tableName = 'sources';
+exports.SourcePersistable = SourcePersistable;
+class SourceController extends GenericController_1.GenericController {
+    constructor(db) {
+        super(db, SourcePersistable.tableName);
+    }
+    // override the getItemJson and getCollectionJson functions to also get information about the 
+    // metadata associated with the retrieved source
+    getMetadata(fields, sourceId) {
+        return this.db.query().raw(`
+            WITH RECURSIVE parent_of(uid, parent) AS  (SELECT uid, parent FROM sources),
+                ancestor(uid) AS (
+                SELECT parent FROM parent_of WHERE uid=?
+                UNION ALL
+                SELECT parent FROM parent_of JOIN ancestor USING(uid) )
+            
+            SELECT *
+                FROM ancestor;
+        `, sourceId).then((parents) => {
+            parents = lodash_1.map(parents, 'uid');
+            parents.pop();
+            parents = [sourceId].concat(parents);
+            return Promise.all(parents.map((parent) => this.db.query().select(fields)
+                .from('source_elements')
+                .innerJoin('elements', function () { this.on('source_elements.element', '=', 'elements.uid'); })
+                .innerJoin('element_sets', function () { this.on('element_sets.uid', '=', 'elements.element_set'); })
+                .where({ 'source_elements.source': parent }))).then((results) => {
+                const a = lodash_1.groupBy(lodash_1.flatten(results), 'name');
+                return Object.keys(a).reduce((prev, cur) => {
+                    const meta = lodash_1.omit(a[cur][0], 'source', 'value');
+                    meta['values'] = a[cur]
+                        .map((val) => ({ source: val.source, value: val.value, uid: val.uid }))
+                        .sort((a, b) => parents.indexOf(a.source) - parents.indexOf(b.source));
+                    return Object.assign(prev, { [cur]: meta });
+                }, {});
+            });
+        });
+    }
+    getItemJson(obj, uid) {
+        return super.getItemJson(obj, uid)
+            .then((source) => {
+            if (source.uid === null) {
+                throw new Error('could not find source');
+            }
+            return Promise.all([
+                this.getMetadata([
+                    'source_elements.source as source',
+                    'elements.name',
+                    'source_elements.value',
+                    'elements.description',
+                    'element_sets.name as element_set',
+                    'elements.comment',
+                    'elements.uri',
+                    'elements.uid as element_uid'], source.uid),
+                this.db.query().select('uid').from('sources').where({ parent: uid }),
+                this.db.query().raw(`
+                    WITH RECURSIVE parent_of(uid, parent) AS  (SELECT uid, parent FROM sources),
+                    ancestor(uid) AS (
+                    SELECT parent FROM parent_of WHERE uid=?
+                    UNION ALL
+                    SELECT parent FROM parent_of JOIN ancestor USING(uid) )
+                    
+                    SELECT uid
+                    FROM ancestor;
+                `, uid)
+            ])
+                .then(([sourceElements, children, parents]) => {
+                source.metaData = sourceElements;
+                source.children = children.map((child) => child.uid).filter((child) => child !== null);
+                source.parents = parents.map((parent) => parent.uid).filter((parent) => parent !== null);
+                return source;
+            });
+        });
+    }
+    getCollectionJson(obj, params = {}) {
+        return super.getCollectionJson(obj, params)
+            .then((sources) => {
+            return Promise.all(sources.map((source) => {
+                if (source.uid === null) {
+                    throw new Error('could not find source');
+                }
+                return this.getMetadata([
+                    'elements.name',
+                    'source_elements.value'
+                ], source.uid)
+                    .then((sourceElements) => {
+                    source.metaData = sourceElements;
+                    return source;
+                });
+            }));
+        });
+    }
+    //TODO should find every child source, not just the direct children
+    deleteItem(obj, uid) {
+        // check if this entity is the parent of another entity or if it has any relationships
+        // pointing towards it.
+        return Promise.all([
+            this.db.loadCollection('records', { source: uid }),
+            this.db.loadCollection('sources', { parent: uid })
+        ]).then(([records, sources]) => {
+            if (records.length + sources.length === 0) {
+                return this.db.deleteItem(this.tableName, uid);
+            }
+            else {
+                throw new Exceptions_1.OperationNotPermittedException({
+                    message: 'The operation could not be completed as the source is used by other records',
+                    data: Promise.resolve({
+                        record: records.map((record) => new RecordController_1.RecordPersistable().fromSchema(record)),
+                        source: sources.map((source) => new SourcePersistable().fromSchema(source))
+                    })
+                });
+            }
+        });
+    }
+}
+exports.SourceController = SourceController;
+
+
+/***/ },
+/* 263 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview Controller for element sets
+ * @author <a href='mailto:tim.hollies@warwick.ac.uk'>Tim Hollies</a>
+ * @version 0.0.1
+ */
+"use strict";
+const SourceElement_1 = __webpack_require__(109);
+const GenericController_1 = __webpack_require__(19);
+const Exceptions_1 = __webpack_require__(20);
+const lodash_1 = __webpack_require__(5);
+class SourceElementPersistable extends SourceElement_1.SourceElement {
+    getTableName() {
+        return SourceElementPersistable.tableName;
+    }
+    toSchema() {
+        return Object.assign(lodash_1.omit(this.serialize(), 'creationTimestamp', 'lastmodifiedTimestamp', 'uid'), {
+            creation_timestamp: this.creationTimestamp,
+            lastmodified_timeStamp: this.lastmodifiedTimestamp,
+            source: this.uid.values.source,
+            element: this.uid.values.element
+        });
+    }
+    fromSchema(data) {
+        this.deserialize(Object.assign(data, {
+            uid: {
+                order: ['source', 'element'],
+                values: {
+                    source: data.source,
+                    element: data.element
+                }
+            }
+        }));
+        return this;
+    }
+}
+SourceElementPersistable.tableName = 'source_elements';
+exports.SourceElementPersistable = SourceElementPersistable;
+class SourceElementController extends GenericController_1.GenericController {
+    constructor(db) {
+        super(db, SourceElementPersistable.tableName);
+    }
+    getItemJson(obj, uid) {
+        return this.db.query().select()
+            .from(this.tableName)
+            .where(uid.values)
+            .first()
+            .then((result) => result === undefined ? Promise.reject(new Exceptions_1.KeyNotFoundException()) : result)
+            .then((data) => new obj().fromSchema(data));
+    }
+    putItem(obj, uid, data) {
+        return this.db.query()(this.tableName)
+            .where(uid.values)
+            .update(lodash_1.omit(data.toSchema(), ['tableName']));
+    }
+    patchItem(obj, uid, data) {
+        const o = new obj();
+        const schemaData = o.deserialize(data).toSchema();
+        const keys = Object.keys(schemaData);
+        const updateObject = {};
+        for (let i = 0; i < keys.length; i += 1) {
+            if (schemaData[keys[i]] !== undefined) {
+                updateObject[keys[i]] = schemaData[keys[i]];
+            }
+        }
+        return this.db.query()(this.tableName)
+            .where(uid.values)
+            .update(updateObject)
+            .then(() => true)
+            .catch((err) => { throw new Error(err); });
+    }
+    deleteItem(obj, uid) {
+        return this.db.query()(this.tableName)
+            .where(uid.values)
+            .del();
+    }
+}
+exports.SourceElementController = SourceElementController;
+
+
+/***/ },
+/* 264 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview Collated list of controllers
+ * @author <a href='mailto:tim.hollies@warwick.ac.uk'>Tim Hollies</a>
+ * @version 0.0.1
+ */
+"use strict";
+var ElementSetController_1 = __webpack_require__(260);
+exports.ElementSetController = ElementSetController_1.ElementSetController;
+exports.ElementSetPersistable = ElementSetController_1.ElementSetPersistable;
+var EntityController_1 = __webpack_require__(114);
+exports.EntityController = EntityController_1.EntityController;
+exports.EntityPersistable = EntityController_1.EntityPersistable;
+var EntityTypeController_1 = __webpack_require__(261);
+exports.EntityTypeController = EntityTypeController_1.EntityTypeController;
+exports.EntityTypePersistable = EntityTypeController_1.EntityTypePersistable;
+var PredicateController_1 = __webpack_require__(115);
+exports.PredicateController = PredicateController_1.PredicateController;
+exports.PredicatePersistable = PredicateController_1.PredicatePersistable;
+var RecordController_1 = __webpack_require__(70);
+exports.RecordController = RecordController_1.RecordController;
+exports.RecordPersistable = RecordController_1.RecordPersistable;
+var SourceController_1 = __webpack_require__(262);
+exports.SourceController = SourceController_1.SourceController;
+exports.SourcePersistable = SourceController_1.SourcePersistable;
+var ElementController_1 = __webpack_require__(259);
+exports.ElementController = ElementController_1.ElementController;
+exports.ElementPersistable = ElementController_1.ElementPersistable;
+var SourceElementController_1 = __webpack_require__(263);
+exports.SourceElementController = SourceElementController_1.SourceElementController;
+exports.SourceElementPersistable = SourceElementController_1.SourceElementPersistable;
+
+
+/***/ },
+/* 265 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview Authentication
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.0.1
+ */
+"use strict";
+const passport = __webpack_require__(73);
+const passport_local_1 = __webpack_require__(287);
+const bcrypt_1 = __webpack_require__(277);
+exports.setupAuth = (db) => {
+    passport.serializeUser((user, done) => {
+        done(null, user.uid);
+    });
+    passport.deserializeUser((uid, done) => {
+        db.query()('users')
+            .select().where({ uid })
+            .then(([user]) => done(null, user));
+    });
+    passport.use(new passport_local_1.Strategy((username, password, done) => {
+        // retrieve user ...
+        return db.query()('users')
+            .select().where({ username })
+            .then(([user]) => bcrypt_1.compare(password, user.password, (err, res) => {
+            if (err) {
+                done(null, false);
+            }
+            else {
+                done(null, user);
+            }
+        }));
+    }));
+};
+exports.Auth = {
+    setupAuth: exports.setupAuth
+};
+
+
+/***/ },
+/* 266 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview Abstract interface for sources
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.0.1
+ */
+"use strict";
+const Knex = __webpack_require__(118);
+const lodash_1 = __webpack_require__(5);
+const Exceptions_1 = __webpack_require__(20);
+class Database {
+    constructor(config) {
+        this.knex = Knex(config);
+    }
+    query() {
+        return this.knex;
+    }
+    select(tableName, options = '*') {
+        return this.knex.select().from(tableName);
+    }
+    loadItem(a, uid) {
+        const query = this.knex.select()
+            .from(a)
+            .where({ uid: uid })
+            .first();
+        return query.then((result) => result === undefined ? Promise.reject(new Exceptions_1.KeyNotFoundException()) : result);
+    }
+    loadCollection(a, params) {
+        let query = this.knex.select()
+            .from(a);
+        Object.keys(params).forEach((param) => {
+            query = query.whereIn(param, params[param]);
+        });
+        return query.then((results) => results === undefined ? Promise.reject(new Exceptions_1.KeyNotFoundException()) : results);
+    }
+    createItem(a) {
+        // throw warning if called with uid
+        // validate that everything else has been sent
+        const withoutUid = lodash_1.omit(a.toSchema(), ['uid', 'tableName']);
+        return this.knex.transaction((trx) => {
+            return this.knex(a.getTableName()).transacting(trx).insert(withoutUid, 'uid').returning('uid')
+                .then((results) => {
+                return this.checkIntegrity(trx)
+                    .then((valid) => {
+                    if (!valid) {
+                        throw new Exceptions_1.DatabaseIntegrityError();
+                    }
+                    return results;
+                });
+            })
+                .then(trx.commit)
+                .catch(trx.rollback);
+        });
+    }
+    updateItem(a) {
+        // assert - must have uid
+        // validation?
+        return this.knex.transaction((trx) => {
+            return this.knex(a.getTableName()).transacting(trx)
+                .where({ 'uid': a.uid })
+                .update(lodash_1.omit(a.toSchema(), ['tableName']))
+                .then((results) => {
+                return this.checkIntegrity(trx)
+                    .then((valid) => {
+                    if (!valid) {
+                        throw new Exceptions_1.DatabaseIntegrityError();
+                    }
+                    return results;
+                });
+            })
+                .then(trx.commit)
+                .catch(trx.rollback);
+        });
+    }
+    deleteItem(tableName, uid) {
+        return this.knex.transaction((trx) => {
+            return this.knex(tableName).transacting(trx)
+                .where({ uid })
+                .del()
+                .then((results) => {
+                return this.checkIntegrity(trx)
+                    .then((valid) => {
+                    if (!valid) {
+                        throw new Exceptions_1.DatabaseIntegrityError();
+                    }
+                    return results;
+                });
+            })
+                .then(trx.commit)
+                .catch(trx.rollback);
+        });
+    }
+    getAncestorsOf(uid, tableName) {
+        return this.knex.raw(`
+            WITH RECURSIVE parent_of(uid, parent) AS  (SELECT uid, parent FROM ${tableName}),
+                ancestor(uid) AS (
+                SELECT parent FROM parent_of WHERE uid=${uid}
+                UNION ALL
+                SELECT parent FROM parent_of JOIN ancestor USING(uid) )
+				SELECT * from ancestor`)
+            .then((result) => {
+            return result.filter((a) => a.uid !== null).map((a) => a.uid);
+        });
+    }
+    getChildrenOf(uid, tableName) {
+        return this.knex.raw(`
+            WITH RECURSIVE parent_of(uid, parent) AS  (SELECT uid, parent FROM ${tableName}),
+                ancestor(parent) AS (
+                SELECT uid FROM parent_of WHERE uid=${uid}
+                UNION ALL
+                SELECT uid FROM parent_of JOIN ancestor USING(parent) )
+				SELECT * from ancestor`)
+            .then((result) => {
+            return result.filter((a) => a.parent !== null).map((a) => a.parent);
+        });
+    }
+    checkIntegrity(trx) {
+        return Promise.all([
+            this.knex.transacting(trx).select(this.knex.raw('SUM((records.value_type != predicates.range_type)) AS valid'))
+                .from('records')
+                .innerJoin('predicates', 'records.predicate', 'predicates.uid'),
+            this.knex.transacting(trx).select(this.knex.raw(`
+                SUM((
+
+                entities.type not in (
+                    WITH RECURSIVE parent_of(uid, parent) AS  (SELECT uid, parent FROM entity_types),
+                                ancestor(parent) AS (
+                                SELECT uid FROM parent_of WHERE uid=predicates.range_ref
+                                UNION ALL
+                                SELECT uid FROM parent_of JOIN ancestor USING(parent) )
+                                SELECT * from ancestor
+                )
+
+                )) as valid
+            `))
+                .from('records')
+                .innerJoin('predicates', 'records.predicate', 'predicates.uid')
+                .innerJoin('entities', 'entities.uid', 'records.value_entity')
+                .where('records.value_type', '=', 'entity'),
+            this.knex.transacting(trx).select(this.knex.raw(`
+               SUM((
+
+                entities.type not in (
+                    WITH RECURSIVE parent_of(uid, parent) AS  (SELECT uid, parent FROM entity_types),
+                                ancestor(parent) AS (
+                                SELECT uid FROM parent_of WHERE uid=predicates.domain
+                                UNION ALL
+                                SELECT uid FROM parent_of JOIN ancestor USING(parent) )
+                                SELECT * from ancestor
+                )
+
+                )) as valid
+            `))
+                .from('records')
+                .innerJoin('predicates', 'records.predicate', 'predicates.uid')
+                .innerJoin('entities', 'entities.uid', 'records.entity')
+        ]).then(([[a], [b], [c]]) => {
+            return (a.valid + b.valid + c.valid) === 0;
+        });
+    }
+}
+exports.Database = Database;
+
+
+/***/ },
+/* 267 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview Query processor
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.0.1
+ */
+"use strict";
+const graphql_1 = __webpack_require__(72);
+const entityQLType_1 = __webpack_require__(270);
+const predicateQLType_1 = __webpack_require__(271);
+class QueryEngine {
+    constructor(db) {
+        const entityType = entityQLType_1.entityQLType(db, predicateQLType_1.predicateQLType(db));
+        // Define the Query type
+        const queryType = new graphql_1.GraphQLObjectType({
+            name: 'Query',
+            fields: {
+                entity: {
+                    type: new graphql_1.GraphQLList(entityType),
+                    // `args` describes the arguments that the `user` query accepts
+                    args: {
+                        uid: { type: graphql_1.GraphQLString }
+                    },
+                    resolve: (_, { uid }) => {
+                        if (uid === undefined) {
+                            return db.query()('entities');
+                        }
+                        return db.query()('entities').where({ uid });
+                    }
+                }
+            }
+        });
+        this.schema = new graphql_1.GraphQLSchema({
+            query: queryType
+        });
+    }
+    runQuery(query) {
+        return graphql_1.graphql(this.schema, query);
+    }
+}
+exports.QueryEngine = QueryEngine;
+
+
+/***/ },
+/* 268 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview Abstract interface for sources
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.0.1
+ */
+"use strict";
+const Exceptions_1 = __webpack_require__(20);
+const moment = __webpack_require__(36);
+const Signaller_1 = __webpack_require__(8);
+var ApiService_1 = __webpack_require__(6);
+exports.AppUrls = ApiService_1.AppUrls;
+const GeneralStatisticsController_1 = __webpack_require__(116);
+class ServerApiService {
+    constructor(db, routesMap, queryEngine, fakeCreator) {
+        this.controllerMap = routesMap;
+        this.queryEngine = queryEngine;
+        this.fakeCreator = fakeCreator;
+        this.db = db;
+    }
+    getItem(obj, baseUrl, uid) {
+        const controller = this.controllerMap.get(baseUrl);
+        if (controller === undefined) {
+            return Promise.reject(new Exceptions_1.CollectionNotFoundException('Controller not found'));
+        }
+        return controller.getItemJson(obj, uid);
+    }
+    getCollection(obj, baseUrl, params) {
+        const controller = this.controllerMap.get(baseUrl);
+        if (controller === undefined) {
+            return Promise.reject(new Exceptions_1.CollectionNotFoundException('Controller not found'));
+        }
+        return controller.getCollectionJson(obj, params);
+    }
+    postItem(obj, baseUrl, data) {
+        const controller = this.controllerMap.get(baseUrl);
+        if (controller === undefined) {
+            return Promise.reject(new Exceptions_1.CollectionNotFoundException('Controller not found'));
+        }
+        return controller.postItem(obj, Object.assign(data, {
+            creationTimestamp: moment().toISOString(),
+            lastmodifiedTimestamp: moment().toISOString(),
+            creator: this.fakeCreator ? 0 : data.creator
+        }))
+            .then((result) => {
+            Signaller_1.triggerReload.dispatch();
+            return Promise.resolve(result);
+        });
+    }
+    putItem(obj, baseUrl, uid, data) {
+        const controller = this.controllerMap.get(baseUrl);
+        if (controller === undefined) {
+            return Promise.reject(new Exceptions_1.CollectionNotFoundException('Controller not found'));
+        }
+        return controller.putItem(obj, uid, Object.assign(data, {
+            lastmodifiedTimestamp: moment().toISOString()
+        }))
+            .then((result) => {
+            Signaller_1.triggerReload.dispatch();
+            return Promise.resolve(result);
+        });
+    }
+    patchItem(obj, baseUrl, uid, data) {
+        const controller = this.controllerMap.get(baseUrl);
+        if (controller === undefined) {
+            return Promise.reject(new Exceptions_1.CollectionNotFoundException('Controller not found'));
+        }
+        return controller.patchItem(obj, uid, Object.assign(data, {
+            lastmodifiedTimestamp: moment().toISOString()
+        }))
+            .then((result) => {
+            Signaller_1.triggerReload.dispatch();
+            return Promise.resolve(result);
+        });
+    }
+    delItem(obj, baseUrl, uid) {
+        const controller = this.controllerMap.get(baseUrl);
+        if (controller === undefined) {
+            return Promise.reject(new Exceptions_1.CollectionNotFoundException('Controller not found'));
+        }
+        return controller.deleteItem(obj, uid)
+            .then((result) => {
+            Signaller_1.triggerReload.dispatch();
+            return Promise.resolve(result);
+        });
+    }
+    query(graphQLQuery) {
+        return Promise.resolve({});
+    }
+    getStats() {
+        return GeneralStatisticsController_1.GeneralStatisticsController(this.db.query());
+    }
+}
+exports.ServerApiService = ServerApiService;
+
+
+/***/ },
+/* 269 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(__dirname) {/**
+ * @fileOverview Database Snapshot
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.0.1
+ */
+"use strict";
+const Knex = __webpack_require__(118);
+const fs = __webpack_require__(71);
+class SqliteSnapshot {
+    constructor(config) {
+        this.knex = Knex(config);
+    }
+    //TODO: use some kind of tempory file tracking package
+    getSnapshotStream() {
+        const filename = __dirname + '/test.sqlite';
+        // fs.unlinkSync(filename);
+        // const db = new sqlite.Database(filename);
+        let tempKnex = Knex({
+            client: 'sqlite3',
+            connection: { filename },
+            migrations: {
+                directory: './data/migrations'
+            },
+            useNullAsDefault: true
+        });
+        return tempKnex.migrate.latest()
+            .then(() => {
+            return new Promise((res) => {
+                tempKnex.destroy(() => {
+                    const stream = fs.createReadStream(filename);
+                    stream.on('close', () => {
+                        fs.unlinkSync(filename);
+                    });
+                    res(stream);
+                });
+            });
+        });
+    }
+}
+exports.SqliteSnapshot = SqliteSnapshot;
+
+/* WEBPACK VAR INJECTION */}.call(exports, "/"))
+
+/***/ },
+/* 270 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview Query processor
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.0.1
+ */
+"use strict";
+const graphql_1 = __webpack_require__(72);
+exports.entityQLType = (db, predicateType) => {
+    return new graphql_1.GraphQLObjectType({
+        name: 'Entity',
+        fields: {
+            uid: {
+                type: graphql_1.GraphQLString,
+                resolve: (parent, {  }) => {
+                    return parent.uid;
+                }
+            },
+            label: {
+                type: graphql_1.GraphQLString,
+                resolve: (parent, {  }) => {
+                    return parent.label;
+                }
+            },
+            type: {
+                type: graphql_1.GraphQLString,
+                resolve: (parent, {  }) => {
+                    return db.query()('entity_types').where({ uid: parent.type }).first().then((data) => data.name);
+                }
+            },
+            predicate: {
+                type: predicateType,
+                args: {
+                    name: { type: graphql_1.GraphQLString },
+                    uid: { type: graphql_1.GraphQLString }
+                },
+                resolve: (entity, { name, uid }) => {
+                    if (name !== undefined) {
+                        return db.query()('predicates').where({ name }).first().then((predicate) => ({ predicate, entity }));
+                    }
+                    if (uid !== undefined) {
+                        return db.query()('predicates').where({ uid }).first().then((predicate) => ({ predicate, entity }));
+                    }
+                }
+            },
+            predicates: {
+                type: new graphql_1.GraphQLList(predicateType),
+                args: {
+                    names: { type: new graphql_1.GraphQLList(graphql_1.GraphQLString) },
+                    uids: { type: new graphql_1.GraphQLList(graphql_1.GraphQLString) }
+                },
+                resolve: (entity, { names, uids }) => {
+                    if (names !== undefined) {
+                        return db.query()('predicates')
+                            .whereIn('name', names)
+                            .then((predicates) => predicates.map((predicate) => ({ predicate, entity })));
+                    }
+                    if (uids !== undefined) {
+                        return db.query()('predicates')
+                            .whereIn('uid', uids)
+                            .then((predicates) => predicates.map((predicate) => ({ predicate, entity })));
+                    }
+                }
+            }
+        }
+    });
+};
+
+
+/***/ },
+/* 271 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview Query processor
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.0.1
+ */
+"use strict";
+const graphql_1 = __webpack_require__(72);
+exports.predicateQLType = (db) => {
+    return new graphql_1.GraphQLObjectType({
+        name: 'Predicate',
+        fields: {
+            uid: {
+                type: graphql_1.GraphQLString,
+                resolve: ({ predicate }, {  }) => {
+                    return predicate.uid;
+                }
+            },
+            name: {
+                type: graphql_1.GraphQLString,
+                resolve: ({ predicate }, {  }) => {
+                    return predicate.name;
+                }
+            },
+            values: {
+                type: new graphql_1.GraphQLList(graphql_1.GraphQLString),
+                resolve: ({ entity, predicate }, {  }) => {
+                    return db.query()('records')
+                        .select('value_string')
+                        .where({ entity: entity.uid, predicate: predicate.uid })
+                        .then((results) => results.map((result) => result.value_string));
+                }
+            }
+        }
+    });
+};
+
+
+/***/ },
+/* 272 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview Map of URIs to controllers
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.0.1
+ */
+"use strict";
+const Koa = __webpack_require__(35);
+const fs_1 = __webpack_require__(71);
+const FalconApp_1 = __webpack_require__(218);
+const server_1 = __webpack_require__(204);
+const react_1 = __webpack_require__(0);
+const react_router_1 = __webpack_require__(24);
+const path = __webpack_require__(120);
+exports.adminApp = (skeleton, serverApiContext) => {
+    const server = new Koa();
+    const serverRenderContext = react_router_1.createServerRenderContext();
+    server.use(function* (next) {
+        if (this.isAuthenticated()) {
+            yield next;
+        }
+        else {
+            this.body = fs_1.readFileSync(path.join(process.cwd(), 'dist', 'server', 'login.html'), 'utf8');
+        }
+    });
+    server.use(function* (next) {
+        this.body = skeleton({ body: server_1.renderToStaticMarkup(react_1.createElement(FalconApp_1.FalconApp, {
+                router: react_router_1.ServerRouter,
+                api: serverApiContext,
+                routerSettings: {
+                    context: serverRenderContext,
+                    location: this.request.url
+                }
+            })) });
+    });
+    return server;
+};
+
+
+/***/ },
+/* 273 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview Map of URIs to controllers
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.0.1
+ */
+"use strict";
+const ServerApiService_1 = __webpack_require__(268);
+const QueryEngine_1 = __webpack_require__(267);
+const controllers_1 = __webpack_require__(264);
+exports.wrapDatabase = (db, fakeCreator) => {
+    const routes = new Map([
+        [ServerApiService_1.AppUrls.element_set, new controllers_1.ElementSetController(db)],
+        [ServerApiService_1.AppUrls.record, new controllers_1.RecordController(db)],
+        [ServerApiService_1.AppUrls.entity_type, new controllers_1.EntityTypeController(db)],
+        [ServerApiService_1.AppUrls.entity, new controllers_1.EntityController(db)],
+        [ServerApiService_1.AppUrls.predicate, new controllers_1.PredicateController(db)],
+        [ServerApiService_1.AppUrls.source, new controllers_1.SourceController(db)],
+        [ServerApiService_1.AppUrls.element, new controllers_1.ElementController(db)],
+        [ServerApiService_1.AppUrls.source_element, new controllers_1.SourceElementController(db)]
+    ]);
+    return new ServerApiService_1.ServerApiService(db, routes, new QueryEngine_1.QueryEngine(db), fakeCreator);
+};
+const sourceElementSpecial = (router, serverApiContext, typeMap) => {
+    router.get(`/api/v1/${ServerApiService_1.AppUrls.source_element}/:source/:element`, function* (next) {
+        yield serverApiContext
+            .getItem(typeMap[ServerApiService_1.AppUrls.source_element], ServerApiService_1.AppUrls.source_element, {
+            order: ['source', 'element'],
+            values: {
+                source: this.params.source,
+                element: this.params.element
+            }
+        })
+            .then((data) => this.body = data.serialize());
+    });
+    router.put(`/api/v1/${ServerApiService_1.AppUrls.source_element}/:source/:element`, function* (next) {
+        yield serverApiContext
+            .putItem(typeMap[ServerApiService_1.AppUrls.source_element], ServerApiService_1.AppUrls.source_element, {
+            order: ['source', 'element'],
+            values: {
+                source: this.params.source,
+                element: this.params.element
+            }
+        }, this.request.body)
+            .then((data) => this.body = data);
+    });
+    router.patch(`/api/v1/${ServerApiService_1.AppUrls.source_element}/:source/:element`, function* (next) {
+        yield serverApiContext
+            .patchItem(typeMap[ServerApiService_1.AppUrls.source_element], ServerApiService_1.AppUrls.source_element, {
+            order: ['source', 'element'],
+            values: {
+                source: this.params.source,
+                element: this.params.element
+            }
+        }, this.request.body)
+            .then((data) => this.body = data);
+    });
+    router.del(`/api/v1/${ServerApiService_1.AppUrls.source_element}/:source/:element`, function* (next) {
+        yield serverApiContext
+            .delItem(typeMap[ServerApiService_1.AppUrls.source_element], ServerApiService_1.AppUrls.source_element, {
+            order: ['source', 'element'],
+            values: {
+                source: this.params.source,
+                element: this.params.element
+            }
+        })
+            .then((data) => this.body = data);
+    });
+};
+// would be cleaner if it allowed 2nd level REST urls
+//  /entity/{entity_id}/predicate/{predicate_id}
+// /source/{source_id}/element/{element_id}
+exports.api = (router, serverApiContext) => {
+    const typeMap = {
+        [ServerApiService_1.AppUrls.element_set]: controllers_1.ElementSetPersistable,
+        [ServerApiService_1.AppUrls.record]: controllers_1.RecordPersistable,
+        [ServerApiService_1.AppUrls.entity_type]: controllers_1.EntityTypePersistable,
+        [ServerApiService_1.AppUrls.entity]: controllers_1.EntityPersistable,
+        [ServerApiService_1.AppUrls.predicate]: controllers_1.PredicatePersistable,
+        [ServerApiService_1.AppUrls.source]: controllers_1.SourcePersistable,
+        [ServerApiService_1.AppUrls.element]: controllers_1.ElementPersistable,
+        [ServerApiService_1.AppUrls.source_element]: controllers_1.SourceElementPersistable
+    };
+    router.use(function* (next) {
+        if (this.req.method === 'GET' || this.isAuthenticated()) {
+            yield next;
+        }
+        else {
+            this.status = 403;
+            this.body = 'You must be authorised to modify this resource';
+        }
+    });
+    router.use(function* (next) {
+        try {
+            yield next;
+        }
+        catch (err) {
+            switch (err.constructor.name) {
+                case 'KeyNotFoundException':
+                    this.status = 404;
+                    break;
+                case 'CollectionNotFoundException':
+                    this.status = 404;
+                    break;
+                case 'OperationNotPermittedException':
+                    this.status = 422;
+                    break;
+                default:
+                    this.status = 500;
+            }
+            this.type = 'application/json';
+            if (err.data !== undefined) {
+                yield err.data.data.then((data) => {
+                    this.body = JSON.stringify(Object.assign({}, err.data, { data: data }));
+                });
+            }
+            else {
+                this.body = err.message;
+            }
+        }
+    });
+    router.get('/api/v1/query', function* (next) {
+        yield serverApiContext.queryEngine.runQuery(this.query.query)
+            .then((result) => this.body = result);
+    });
+    sourceElementSpecial(router, serverApiContext, typeMap);
+    router.get('/api/v1/:route/:id', function* (next) {
+        yield serverApiContext
+            .getItem(typeMap[this.params.route], this.params.route, parseInt(this.params.id))
+            .then((data) => this.body = data.serialize());
+    });
+    router.get('/api/v1/:route', function* (next) {
+        yield serverApiContext
+            .getCollection(typeMap[this.params.route], this.params.route, this.query)
+            .then((data) => this.body = data.map((datum) => datum.serialize()));
+    });
+    router.post('/api/v1/:route', function* (next) {
+        yield serverApiContext
+            .postItem(typeMap[this.params.route], this.params.route, Object.assign(this.request.body, {
+            creator: this.req.user.uid
+        }))
+            .then((data) => this.body = data);
+    });
+    router.put('/api/v1/:route/:id', function* (next) {
+        yield serverApiContext
+            .putItem(typeMap[this.params.route], this.params.route, parseInt(this.params.id), this.request.body)
+            .then((data) => this.body = data);
+    });
+    router.patch('/api/v1/:route/:id', function* (next) {
+        yield serverApiContext
+            .patchItem(typeMap[this.params.route], this.params.route, parseInt(this.params.id), this.request.body)
+            .then((data) => this.body = data);
+    });
+    router.del('/api/v1/:route/:id', function* (next) {
+        yield serverApiContext
+            .delItem(typeMap[this.params.route], this.params.route, parseInt(this.params.id))
+            .then((data) => this.body = data);
+    });
+    return router;
+};
+
+
+/***/ },
+/* 274 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview Map of URIs to controllers
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.0.1
+ */
+"use strict";
+// Vendor
+const Koa = __webpack_require__(35);
+const KoaRouter = __webpack_require__(119);
+const koaPassport = __webpack_require__(73);
+exports.auth = () => {
+    const server = new Koa();
+    const authRouter = new KoaRouter();
+    authRouter.post(`/login`, koaPassport.authenticate('local', {
+        successRedirect: '/admin',
+        failureRedirect: '/login'
+    }));
+    const self = this;
+    authRouter.get(`/logout`, function* () {
+        this.logout();
+        this.redirect('/admin');
+    });
+    authRouter.get(`/currentuser`, function* () {
+        this.body = {
+            username: this.req.user.name
+        };
+    });
+    // create user
+    // delete user
+    // reset user password
+    // change user permission
+    server.use(authRouter.middleware());
+    return server;
+};
+
+
+/***/ },
+/* 275 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview Map of URIs to controllers
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.0.1
+ */
+"use strict";
+// Vendor
+const Koa = __webpack_require__(35);
+const moment = __webpack_require__(36);
+exports.snapshot = (snapshot) => {
+    const server = new Koa();
+    server.use(function* () {
+        this.set('Content-disposition', 'attachment; filename=' + 'snapshot_' + moment().toISOString() + '.sqlite');
+        this.set('Content-type', 'application/x-sqlite3');
+        yield snapshot.getSnapshotStream()
+            .then((snapshotStream) => {
+            this.body = snapshotStream;
+        });
+    });
+    return server;
+};
+
+
+/***/ },
+/* 276 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview Map of URIs to controllers
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.0.1
+ */
+"use strict";
+const Koa = __webpack_require__(35);
+const GeneralStatisticsController_1 = __webpack_require__(116);
+exports.stats = (db) => {
+    const server = new Koa();
+    server.use(function* (next) {
+        yield GeneralStatisticsController_1.GeneralStatisticsController(db.query())
+            .then((result) => {
+            this.body = result;
+        });
+    });
+    return server;
+};
+
 
 /***/ },
 /* 277 */
 /***/ function(module, exports) {
 
-module.exports = require("koa-bodyparser");
+module.exports = require("bcrypt");
 
 /***/ },
 /* 278 */
 /***/ function(module, exports) {
 
-module.exports = require("koa-json");
+module.exports = require("koa-bodyparser");
 
 /***/ },
 /* 279 */
 /***/ function(module, exports) {
 
-module.exports = require("koa-logger");
+module.exports = require("koa-json");
 
 /***/ },
 /* 280 */
 /***/ function(module, exports) {
 
-module.exports = require("koa-mount");
+module.exports = require("koa-logger");
 
 /***/ },
 /* 281 */
 /***/ function(module, exports) {
 
-module.exports = require("koa-qs");
+module.exports = require("koa-mount");
 
 /***/ },
 /* 282 */
 /***/ function(module, exports) {
 
-module.exports = require("koa-session");
+module.exports = require("koa-qs");
 
 /***/ },
 /* 283 */
 /***/ function(module, exports) {
 
-module.exports = require("koa-static");
+module.exports = require("koa-session");
 
 /***/ },
 /* 284 */
 /***/ function(module, exports) {
 
-module.exports = require("levenshtein");
+module.exports = require("koa-static");
 
 /***/ },
 /* 285 */
 /***/ function(module, exports) {
 
-module.exports = require("lunr");
+module.exports = require("levenshtein");
 
 /***/ },
 /* 286 */
 /***/ function(module, exports) {
 
-module.exports = require("passport-local");
+module.exports = require("lunr");
 
 /***/ },
 /* 287 */
 /***/ function(module, exports) {
 
-module.exports = require("path");
+module.exports = require("passport-local");
 
 /***/ },
 /* 288 */
@@ -26688,8 +26688,8 @@ module.exports = require("signals");
  * @version 0.0.1
  */
 "use strict";
-const Server_1 = __webpack_require__(120);
-const dotenv_1 = __webpack_require__(121);
+const Server_1 = __webpack_require__(121);
+const dotenv_1 = __webpack_require__(122);
 dotenv_1.config();
 const server = new Server_1.Server();
 const databaseConnection = {

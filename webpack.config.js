@@ -2,6 +2,9 @@ var webpack = require('webpack');
 var path = require('path');
 var fs = require('fs');
 
+var ClosureCompilerPlugin = require('webpack-closure-compiler');
+
+
 var nodeModules = {};
 fs.readdirSync('node_modules')
   .filter(function(x) {
@@ -15,25 +18,21 @@ fs.readdirSync('node_modules')
 var frontendConfig = {
     devtool: 'source-map',
     entry: {
-        "app.frontend": './build/client/app.frontend.js', 
+        "app.frontend": './src/client/app.frontend.ts', 
 	},
     output: {  
         path: 'dist/server/static',                 // output folder
         filename: '[name].dist.js'     // file name
     },
     resolve: {
-        extensions: ['.js'],
+        extensions: ['.js', '.ts', '.tsx'],
         modules: [path.resolve(__dirname, 'build'), 'node_modules']
     },
-    // module:  {
-    //     rules: [
-    //         {
-    //             enforce: 'pre',
-    //             test:   /\.js$/,
-    //             loader: 'source-map-loader'
-    //         }
-    //     ]
-    // },
+    module:  {
+        rules: [
+            { test: /\.tsx?$/, loader: 'ts-loader' }
+        ]
+    },
     plugins: [
        // new webpack.optimize.UglifyJsPlugin()
     ],
@@ -47,14 +46,14 @@ var frontendConfig = {
 var backendConfig = {
     devtool: 'source-map',
     entry: {
-        "app.backend": './build/server/index.js', 
+        "app.backend": './src/server/index.ts', 
 	},
     output: {  
         path: 'dist/server',                 // output folder
         filename: '[name].dist.js'     // file name
     },
     resolve: {
-        extensions: ['.js'],
+        extensions: ['.js', '.ts', '.tsx'],
         modules: [path.resolve(__dirname, 'build'), 'node_modules']
     },
     module:  {
@@ -63,7 +62,8 @@ var backendConfig = {
                 enforce: 'pre',
                 test:   /\.js$/,
                 loader: 'source-map-loader'
-            }
+            },
+            { test: /\.tsx?$/, loader: 'ts-loader' }
         ]
     },
     target: 'node',
@@ -73,14 +73,14 @@ var backendConfig = {
 var electronConfig = {
     devtool: 'source-map',
     entry: {
-        "app.electron": './build/app/app.electron.js'
+        "app.electron": './src/app/app.electron.ts'
 	},
     output: {  
         path: 'dist/app',                 // output folder
         filename: '[name].dist.js'     // file name
     },
     resolve: {
-        extensions: ['.js', '.json'],
+        extensions: ['.js', '.json', '.ts', '.tsx'],
         modules: [path.resolve(__dirname, 'build'), 'node_modules']
     },
     module:  {
@@ -99,7 +99,9 @@ var electronConfig = {
             { 
                 test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/, 
                 loader: "file-loader" 
-            }
+            },
+
+            { test: /\.tsx?$/, loader: 'ts-loader' }
         ]
     },
     plugins: [
