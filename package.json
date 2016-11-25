@@ -4,7 +4,7 @@
   "description": "VRE for Imperial Entanglements project",
   "main": "./build/app/index.js",
   "scripts": {
-    "postinstall": "typings install",
+    "postinstall": "install-app-deps ./dist/app",
     "dist": "build --x64",
     "electron": "electron ./dist/app/app.electron.dist.js",
     "test": "mocha --grep=#api --invert",
@@ -35,8 +35,8 @@
     }
   },
   "directories": {
-    "output": "bin",
-    "app": ".",
+    "output": "./dist/bin",
+    "app": "./dist/app",
     "buildResources": "tmp"
   },
   "author": "",
