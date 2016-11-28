@@ -26,13 +26,13 @@
             "name": "Launch Electron",
             "type": "node",
             "request": "launch",
-            "program": "${workspaceRoot}/dist/app/app.electron.dist.js",
+            "program": "${workspaceRoot}/dist/app/app.electron.index.dist.js",
             "stopOnEntry": false,
             "args": [],
             "cwd": "${workspaceRoot}",
             "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/electron.cmd",
             "runtimeArgs": [
-                ".",
+                "${workspaceRoot}/dist/app/app.electron.index.dist.js",
                 "--enable-logging"
             ],
             "env": {},

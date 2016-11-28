@@ -117,10 +117,56 @@ var electronConfig = {
             require.resolve('./build/app/app.datamodel')
         )
     ],
-    target: 'electron',    
-    externals: Object.assign(nodeModules, {
-        electron: 'commonjs electron'
-    })
+    target: 'electron-renderer',    
+    externals: nodeModules
 }
 
-module.exports = [frontendConfig, electronConfig, backendConfig];
+var electronAppConfig = {
+    devtool: 'source-map',
+    entry: {
+        //"app.electron": './src/app/app.electron.ts'
+        "app.electron.index": './build/app/index.js'
+	},
+    output: {  
+        path: 'dist/app',                 // output folder
+        filename: '[name].dist.js'     // file name
+    },
+    resolve: {
+        extensions: ['.js', '.json', '.ts', '.tsx'],
+        modules: [path.resolve(__dirname, 'build'), 'node_modules']
+    },
+    node: {
+        __dirname: false,
+        __filename: false
+    },
+    module:  {
+        rules: [
+            {
+                enforce: 'pre',
+                test:   /\.js$/,
+                loader: 'source-map-loader'
+            },
+            
+            { 
+                test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/, 
+                loader: "url-loader?limit=10000&mimetype=application/font-woff" 
+            },
+
+            { 
+                test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/, 
+                loader: "file-loader" 
+            },
+
+            //{ test: /\.tsx?$/, loader: 'ts-loader' }
+        ]
+    },
+    plugins: [
+
+        // swap out /common/datamodel/datamodel with app/app.datamodel to inject
+        // server side models into the frontend!
+    ],
+    target: 'electron',    
+    externals: nodeModules
+}
+
+module.exports = [frontendConfig, electronConfig, electronAppConfig, backendConfig];

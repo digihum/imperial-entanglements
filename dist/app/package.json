@@ -2,7 +2,7 @@
   "name": "imperial-entanglements",
   "version": "0.1.1",
   "description": "VRE for Imperial Entanglements project",
-  "main": "./app.electron.dist.js",
+  "main": "./app.electron.index.dist.js",
   "repository": {
     "type": "git",
     "url": "https://actechlab.warwick.ac.uk/u1572229/imperial-entanglements"
