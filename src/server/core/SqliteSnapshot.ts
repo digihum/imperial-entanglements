@@ -30,10 +30,14 @@ export class SqliteSnapshot {
             migrations: {
                 directory: path.join(process.cwd(), 'data', 'migrations')
             },
+            seeds: {
+              directory: path.join(process.cwd(), 'data', 'seeds')
+            },
             useNullAsDefault: true
         });
 
         return tempKnex.migrate.latest()
+        .then(() => tempKnex.seed.run())
         .then(() => {
             return new Promise((res) => {
                 tempKnex.destroy(() => {
