@@ -7,6 +7,7 @@
 import * as Knex from 'knex';
 import * as sqlite from 'sqlite3';
 import * as fs from 'fs';
+import * as path from 'path';
 
 export class SqliteSnapshot {
 
@@ -19,7 +20,7 @@ export class SqliteSnapshot {
     //TODO: use some kind of tempory file tracking package
 
     public getSnapshotStream() : Promise<fs.ReadStream> {
-        const filename = __dirname + '/test.sqlite';
+        const filename = path.join(process.cwd(), 'data', 'test.sqlite');
        // fs.unlinkSync(filename);
        // const db = new sqlite.Database(filename);
 
@@ -27,7 +28,7 @@ export class SqliteSnapshot {
             client: 'sqlite3',
             connection: { filename },
             migrations: {
-                directory: './data/migrations'
+                directory: path.join(process.cwd(), 'data', 'migrations')
             },
             useNullAsDefault: true
         });

@@ -1,256 +1,6059 @@
-var m="function"==typeof Object.defineProperties?Object.defineProperty:function(g,d,c){if(c.get||c.set)throw new TypeError("ES3 does not support getters and setters.");g!=Array.prototype&&g!=Object.prototype&&(g[d]=c.value)},n="undefined"!=typeof window&&window===this?this:"undefined"!=typeof global&&null!=global?global:this;function v(){v=function(){};n.Symbol||(n.Symbol=w)}var y=0;function w(g){return"jscomp_symbol_"+(g||"")+y++}
-function A(){v();var g=n.Symbol.iterator;g||(g=n.Symbol.iterator=n.Symbol("iterator"));"function"!=typeof Array.prototype[g]&&m(Array.prototype,g,{configurable:!0,writable:!0,value:function(){return C(this)}});A=function(){}}function C(g){var d=0;return E(function(){return d<g.length?{done:!1,value:g[d++]}:{done:!0}})}function E(g){A();g={next:g};g[n.Symbol.iterator]=function(){return this};return g}function F(g){A();v();A();var d=g[Symbol.iterator];return d?d.call(g):C(g)}
-function G(g,d){function c(){}c.prototype=d.prototype;g.prototype=new c;g.prototype.constructor=g;for(var a in d)if(Object.defineProperties){var b=Object.getOwnPropertyDescriptor(d,a);b&&Object.defineProperty(g,a,b)}else g[a]=d[a]}function H(g){for(var d,c=[];!(d=g.next()).done;)c.push(d.value);return c}
-function I(g,d){A();g instanceof String&&(g+="");var c=0,a={next:function(){if(c<g.length){var b=c++;return{value:d(b,g[b]),done:!1}}a.next=function(){return{done:!0,value:void 0}};return a.next()}};a[Symbol.iterator]=function(){return a};return a}function M(g,d){if(d){var c=n;g=g.split(".");for(var a=0;a<g.length-1;a++){var b=g[a];b in c||(c[b]={});c=c[b]}g=g[g.length-1];a=c[g];d=d(a);d!=a&&null!=d&&m(c,g,{configurable:!0,writable:!0,value:d})}}
-function N(g,d){return Object.prototype.hasOwnProperty.call(g,d)}M("Object.assign",function(g){return g?g:function(d,c){for(var a=1;a<arguments.length;a++){var b=arguments[a];if(b)for(var e in b)N(b,e)&&(d[e]=b[e])}return d}});function O(g,d,c){g instanceof String&&(g=String(g));for(var a=g.length,b=0;b<a;b++){var e=g[b];if(d.call(c,e,b,g))return{yc:b,se:e}}return{yc:-1,se:void 0}}M("Array.prototype.findIndex",function(g){return g?g:function(d,c){return O(this,d,c).yc}});
-M("Promise",function(g){function d(a){this.Zb=0;this.xd=void 0;this.Vb=[];var b=this.$c();try{a(b.resolve,b.reject)}catch(k){b.reject(k)}}function c(){this.gb=null}if(g)return g;c.prototype.Nd=function(a){null==this.gb&&(this.gb=[],this.ef());this.gb.push(a)};c.prototype.ef=function(){var a=this;this.Od(function(){a.If()})};var a=n.setTimeout;c.prototype.Od=function(b){a(b,0)};c.prototype.If=function(){for(;this.gb&&this.gb.length;){var a=this.gb;this.gb=[];for(var b=0;b<a.length;++b){var c=a[b];
-delete a[b];try{c()}catch(l){this.ff(l)}}}this.gb=null};c.prototype.ff=function(a){this.Od(function(){throw a;})};d.prototype.$c=function(){function a(a){return function(f){c||(c=!0,a.call(b,f))}}var b=this,c=!1;return{resolve:a(this.gg),reject:a(this.wd)}};d.prototype.gg=function(a){if(a===this)this.wd(new TypeError("A Promise cannot resolve to itself"));else if(a instanceof d)this.ng(a);else{var b;a:switch(typeof a){case "object":b=null!=a;break a;case "function":b=!0;break a;default:b=!1}b?this.fg(a):
-this.de(a)}};d.prototype.fg=function(a){var b=void 0;try{b=a.then}catch(k){this.wd(k);return}"function"==typeof b?this.og(b,a):this.de(a)};d.prototype.wd=function(a){this.pe(2,a)};d.prototype.de=function(a){this.pe(1,a)};d.prototype.pe=function(a,b){if(0!=this.Zb)throw Error("Cannot settle("+a+", "+b|"): Promise already settled in state"+this.Zb);this.Zb=a;this.xd=b;this.Jf()};d.prototype.Jf=function(){if(null!=this.Vb){for(var a=this.Vb,b=0;b<a.length;++b)a[b].call(),a[b]=null;this.Vb=null}};var b=
-new c;d.prototype.ng=function(a){var b=this.$c();a.qc(b.resolve,b.reject)};d.prototype.og=function(a,b){var c=this.$c();try{a.call(b,c.resolve,c.reject)}catch(l){c.reject(l)}};d.prototype.then=function(a,b){function c(a,b){return"function"==typeof a?function(b){try{f(a(b))}catch(p){h(p)}}:b}var f,h,e=new d(function(a,b){f=a;h=b});this.qc(c(a,f),c(b,h));return e};d.prototype.catch=function(a){return this.then(void 0,a)};d.prototype.qc=function(a,c){function f(){switch(e.Zb){case 1:a(e.xd);break;case 2:c(e.xd);
-break;default:throw Error("Unexpected state: "+e.Zb);}}var e=this;null==this.Vb?b.Nd(f):this.Vb.push(function(){b.Nd(f)})};d.resolve=function(a){return a instanceof d?a:new d(function(b){b(a)})};d.reject=function(a){return new d(function(b,c){c(a)})};d.race=function(a){return new d(function(b,c){for(var f=F(a),h=f.next();!h.done;h=f.next())d.resolve(h.value).qc(b,c)})};d.all=function(a){var b=F(a),c=b.next();return c.done?d.resolve([]):new d(function(a,f){function h(b){return function(c){e[b]=c;k--;
-0==k&&a(e)}}var e=[],k=0;do e.push(void 0),k++,d.resolve(c.value).qc(h(e.length-1),f),c=b.next();while(!c.done)})};d.$jscomp$new$AsyncExecutor=function(){return new c};return d});M("Array.prototype.find",function(g){return g?g:function(d,c){return O(this,d,c).se}});
-M("WeakMap",function(g){function d(a){this.Ub=(e+=Math.random()+1).toString();if(a){v();A();a=F(a);for(var b;!(b=a.next()).done;)b=b.value,this.set(b[0],b[1])}}function c(a){N(a,b)||m(a,b,{value:{}})}function a(a){var b=Object[a];b&&(Object[a]=function(a){c(a);return b(a)})}if(function(){if(!g||!Object.seal)return!1;try{var a=Object.seal({}),b=Object.seal({}),c=new g([[a,2],[b,3]]);if(2!=c.get(a)||3!=c.get(b))return!1;c.delete(a);c.set(b,4);return!c.has(a)&&4==c.get(b)}catch(h){return!1}}())return g;
-var b="$jscomp_hidden_"+Math.random().toString().substring(2);a("freeze");a("preventExtensions");a("seal");var e=0;d.prototype.set=function(a,e){c(a);if(!N(a,b))throw Error("WeakMap key fail: "+a);a[b][this.Ub]=e;return this};d.prototype.get=function(a){return N(a,b)?a[b][this.Ub]:void 0};d.prototype.has=function(a){return N(a,b)&&N(a[b],this.Ub)};d.prototype.delete=function(a){return N(a,b)&&N(a[b],this.Ub)?delete a[b][this.Ub]:!1};return d});
-M("Map",function(g){function d(){var a={};return a.eb=a.next=a.head=a}function c(a,b){var c=a.bb;return E(function(){if(c){for(;c.head!=a.bb;)c=c.eb;for(;c.next!=c.head;)return c=c.next,{done:!1,value:b(c)};c=null}return{done:!0,value:void 0}})}function a(a,b){var c;c=b&&typeof b;"object"==c||"function"==c?e.has(b)?c=e.get(b):(c=""+ ++f,e.set(b,c)):c="p_"+b;var d=a.Rb[c];if(d&&N(a.Rb,c))for(a=0;a<d.length;a++){var k=d[a];if(b!==b&&k.key!==k.key||b===k.key)return{id:c,list:d,index:a,sa:k}}return{id:c,
-list:d,index:-1,sa:void 0}}function b(a){this.Rb={};this.bb=d();this.size=0;if(a){a=F(a);for(var b;!(b=a.next()).done;)b=b.value,this.set(b[0],b[1])}}if(function(){if(!g||!g.prototype.entries||"function"!=typeof Object.seal)return!1;try{var a=Object.seal({x:4}),b=new g(F([[a,"s"]]));if("s"!=b.get(a)||1!=b.size||b.get({x:4})||b.set({x:4},"t")!=b||2!=b.size)return!1;var c=b.entries(),f=c.next();if(f.done||f.value[0]!=a||"s"!=f.value[1])return!1;f=c.next();return f.done||4!=f.value[0].x||"t"!=f.value[1]||
-!c.next().done?!1:!0}catch(r){return!1}}())return g;v();A();var e=new WeakMap;b.prototype.set=function(b,c){var f=a(this,b);f.list||(f.list=this.Rb[f.id]=[]);f.sa?f.sa.value=c:(f.sa={next:this.bb,eb:this.bb.eb,head:this.bb,key:b,value:c},f.list.push(f.sa),this.bb.eb.next=f.sa,this.bb.eb=f.sa,this.size++);return this};b.prototype.delete=function(b){b=a(this,b);return b.sa&&b.list?(b.list.splice(b.index,1),b.list.length||delete this.Rb[b.id],b.sa.eb.next=b.sa.next,b.sa.next.eb=b.sa.eb,b.sa.head=null,
-this.size--,!0):!1};b.prototype.clear=function(){this.Rb={};this.bb=this.bb.eb=d();this.size=0};b.prototype.has=function(b){return!!a(this,b).sa};b.prototype.get=function(b){return(b=a(this,b).sa)&&b.value};b.prototype.entries=function(){return c(this,function(a){return[a.key,a.value]})};b.prototype.keys=function(){return c(this,function(a){return a.key})};b.prototype.values=function(){return c(this,function(a){return a.value})};b.prototype.forEach=function(a,b){for(var c=this.entries(),f;!(f=c.next()).done;)f=
-f.value,a.call(b,f[1],f[0],this)};b.prototype[Symbol.iterator]=b.prototype.entries;var f=0;return b});M("Array.prototype.values",function(g){return g?g:function(){return I(this,function(d,c){return c})}});
-(function(g){function d(a){if(c[a])return c[a].fa;var b=c[a]={yc:a,Nf:!1,fa:{}};g[a].call(b.fa,b,b.fa,d);b.Nf=!0;return b.fa}var c={};d.gh=g;d.Lg=c;d.yc=function(a){return a};d.d=function(a,b,c){Object.defineProperty(a,b,{configurable:!1,enumerable:!0,get:c})};d.n=function(a){var b=a&&a.Gg?function(){return a["default"]}:function(){return a};d.d(b,"a",b);return b};d.jh=function(a,b){return Object.prototype.hasOwnProperty.call(a,b)};d.p="";return d(d.sh=119)})([function(g){g.fa=require("react")},function(g){g.fa=
-require("lodash")},function(g,d,c){g=c(29);d.f={Tb:g.Ka.Tb.Ba,M:g.Ka.M.Ba,o:g.Ka.o.Ba,H:g.Ka.H.Ba,c:g.Ka.c.Ba,source:g.Ka.source.Ba,Z:g.Ka.Z.Ba}},function(g,d,c){g=c(118);d.ea=new g.Ob;d.Sa=new g.Ob;d.showModal=new g.Ob;d.vb=new g.Ob;d.yd=new g.Ob;d.Hb=new g.Ob;d.Dg={ea:d.ea,Sa:d.Sa,showModal:d.showModal,vb:d.vb,yd:d.yd,Hb:d.Hb}},function(g,d,c){g=c(49);d.fb=g.Mb;g=c(25);d.Entity=g.nb;g=c(50);d.wa=g.Nb;g=c(26);d.xa=g.qb;g=c(18);d.da=g.Za;g=c(51);d.pa=g.Qb;g=c(48);d.Element=g.Lb;c=c(52);d.Fa=c.Pb},
-function(g,d,c){var a=c(0),b=c(3);d.ka=function(c,f){return void 0!==c.b.F[c.D]&&c.b.F[c.D].has(c.D+"-"+c.uid)?a.createElement("i",{className:"fa fa-folder-open-o add button",title:"Open item",h:function(){return f.ma.ub("/edit/"+c.D+"/"+c.uid)}}," "):a.createElement("i",{className:"icon-list-add add button",title:"Add to list",h:function(){return b.ea.I(c.D,c.uid,c.data)}})};d.ka.Ab={ma:a.zb.object.Eb}},function(g,d){function c(a,b){this.db=a;this.g=b}c.prototype.la=function(a,b){if("number"!==typeof b)throw Error("Expected single column identifier");
-return this.db.Bc(this.g,b).then(function(b){return(new a).w(b)})};c.prototype.ya=function(a,b){b=void 0===b?{}:b;return this.db.jb(this.g,b).then(function(b){return b.map(function(b){return(new a).w(b)})})};c.prototype.ha=function(a,b){return this.db.Td((new a).u(b))};c.prototype.ta=function(a,b,c){if("number"!==typeof b)throw Error("Expected single column identifier");return this.db.Kb((new a).u(c))};c.prototype.L=function(a,b,c){var f=this;c=(new a).u(c).U();var e=Object.keys(c),d={};if("number"!==
-typeof b)throw Error("Expected single column identifier");for(var h=0;h<e.length;h+=1)void 0!==c[e[h]]&&(d[e[h]]=c[e[h]]);return this.db.Bc(this.g,b).then(function(b){return f.db.Kb((new a).w(Object.assign({},b,d)))})};c.prototype.T=function(a,b){if("number"!==typeof b)throw Error("Expected single column identifier");return this.db.T(this.g,b)};d.j=c},function(g,d,c){function a(){b.s.call(this);this.state={X:"",na:!1,dd:[],jd:null,Yd:0}}var b=c(0),e=c(116),f=c(1);G(a,b.s);a.prototype.sf=function(a){var b=
-this;this.i({X:a.target.value,na:!0},function(){b.qe(b.state.X,b.a);b.a.Ad(b.state.X)})};a.prototype.qe=function(a,b){var c=[];if(0<a.length){var f=e(function(){this.Wg("key",{Kg:10})});b.options.forEach(function(a,b){return f.add(Object.assign({},a,{id:b}))});a=f.search(a);for(var d=0;d<a.length;d+=1)c.push(b.options[a[d].Xa])}else c=b.options;null!==this.Xd&&(this.Wb=!0,this.Pd(this.Xd));this.i({dd:c})};a.prototype.Kd=function(a){this.a.Ta(a)};a.prototype.lg=function(a){this.a.ia(a);this.Ja=!1;
-this.Wb=!0;this.i({na:!1,X:a.key});this.a.Ad(a.key)};a.prototype.fd=function(){var a=this;this.Ja||(0===this.state.X.length?this.i({X:""}):-1===f.findIndex(this.a.options,function(b){return b.key===a.state.X})&&this.i({X:null===this.a.value?"":this.a.value.key},function(){a.qe(null===a.a.value?"":a.a.value.key,a.a)}),this.Wb=!0,this.i({na:!1}))};a.prototype.hd=function(){this.Ja?this.Ja=!0:(this.zc=!0,this.i({na:!0}))};a.prototype.gd=function(){this.nd()&&!1===this.state.na?this.i({na:!0}):null===
-this.state.jd||this.zc?this.zc=!1:this.ne(this.state.dd[this.state.jd])};a.prototype.ne=function(a){var b=this;this.Wb=!0;this.i({na:!1,jd:null},function(){b.a.ia(a);b.vd.Qd.focus()})};a.prototype.nd=function(){var a=this.vd.Qd;return a.ownerDocument&&a===a.ownerDocument.activeElement};a.prototype.uf=function(){this.a.ia(null);this.i({X:""});this.vd.Qd.focus()};a.prototype.Pd=function(a){this.Xd=a;null!==a&&this.Wb&&(this.i({Yd:window.document.body.getBoundingClientRect().bottom-a.getBoundingClientRect().top-
-32}),this.Wb=!1)};a.prototype.K=function(){var a=this;return b.createElement("div",{className:this.a.compact?"compact combo-dropdown":"combo-dropdown"},b.createElement("div",null,b.createElement("input",{type:"text",Xa:"comboDropDownInputBox",className:"search-input",value:this.state.X,placeholder:"Click here and start typing..",Uf:this.fd.bind(this),Wf:this.hd.bind(this),m:this.sf.bind(this),h:this.gd.bind(this)}),0<this.state.X.length?b.createElement("i",{className:"fa fa-times clear-button",h:this.uf.bind(this)}):
-null),this.state.na?b.createElement("div",{className:"dropdown",style:{maxHeight:this.state.Yd,overflowY:"auto"},Xa:this.Pd.bind(this)},b.createElement("ul",null,0===this.state.X.length&&this.a.Ra?b.createElement("li",{className:"add",qd:function(){return a.Ja=!0},h:function(){return a.Kd("")}},b.createElement("i",{className:"fa fa-plus","aria-hidden":"true"}),"Add new ",this.a.typeName):null,this.state.dd.map(function(c,f){return b.createElement("li",{key:"opt-"+c.key+"-"+f,qd:function(){return a.Ja=
-!0},h:function(){return a.lg(c)}},c.key)}),0<this.state.X.length&&this.a.Ra?b.createElement("li",{className:"add",qd:function(){return a.Ja=!0},h:function(){return a.Kd(a.state.X)}},b.createElement("i",{className:"fa fa-plus","aria-hidden":"true"}),"Add new ",this.a.typeName,": '",this.state.X,"'"):null)):null)};a.Bf={Ra:!0,compact:!1,Ad:f.Fb};d.Pa=a},function(g,d){function c(a,b){this.db=a;this.g=b}c.prototype.la=function(a,b){if("number"!==typeof b)throw Error("Expected single column identifier");
-return this.db.Bc(this.g,b).then(function(b){return(new a).w(b)})};c.prototype.ya=function(a,b){b=void 0===b?{}:b;return this.db.jb(this.g,b).then(function(b){return b.map(function(b){return(new a).w(b)})})};c.prototype.ha=function(a,b){return this.db.Td((new a).u(b))};c.prototype.ta=function(a,b,c){if("number"!==typeof b)throw Error("Expected single column identifier");return this.db.Kb((new a).u(c))};c.prototype.L=function(a,b,c){var f=this;c=(new a).u(c).U();var e=Object.keys(c),d={};if("number"!==
-typeof b)throw Error("Expected single column identifier");for(var h=0;h<e.length;h+=1)void 0!==c[e[h]]&&(d[e[h]]=c[e[h]]);return this.db.Bc(this.g,b).then(function(b){return f.db.Kb((new a).w(Object.assign({},b,d)))})};c.prototype.T=function(a,b){if("number"!==typeof b)throw Error("Expected single column identifier");return this.db.T(this.g,b)};d.j=c},function(g,d){function c(a){this.data=void 0===a?"A database integrity constraint has been broken - your change has not been\n submitted. This is likely due to a change which violates the property types model; please check the types of \n what you are trying to do. Please also contact the Digital Humanities team, this error should not occur.":
-a}function a(a){this.data=a}function b(a){this.data=void 0===a?"Could not find the given collection":a}function e(a){this.data=void 0===a?"Could not find the given key":a}G(e,Error);d.ob=e;G(b,Error);d.Ya=b;G(a,Error);d.S=a;G(c,Error);d.xb=c;d.Hf={ob:e,Ya:b,S:a,xb:c}},function(g){g.fa=require("react-router")},function(g,d){function c(a){this.data=void 0===a?"A database integrity constraint has been broken - your change has not been\n submitted. This is likely due to a change which violates the property types model; please check the types of \n what you are trying to do. Please also contact the Digital Humanities team, this error should not occur.":
-a}function a(a){this.data=a}function b(a){this.data=void 0===a?"Could not find the given collection":a}function e(a){this.data=void 0===a?"Could not find the given key":a}G(e,Error);d.ob=e;G(b,Error);d.Ya=b;G(a,Error);d.S=a;G(c,Error);d.xb=c;d.Hf={ob:e,Ya:b,S:a,xb:c}},function(g,d,c){function a(a){b.s.apply(this,arguments)}var b=c(0);G(a,b.s);a.prototype.K=function(){return b.createElement("div",{className:"full-page-overlay"},b.createElement("div",{className:"overlay-container"},this.a.children))};
-d.yb=a},function(g,d,c){function a(){e.s.call(this);this.state={Ea:!1,Aa:null}}var b=this&&this.Rc||Object.assign||function(a){for(var b,c=1,f=arguments.length;c<f;c++){b=arguments[c];for(var e in b)Object.prototype.hasOwnProperty.call(b,e)&&(a[e]=b[e])}return a},e=c(0);G(a,e.s);a.prototype.rg=function(){this.i({Ea:!0,Aa:this.a.value})};a.prototype.mg=function(a){this.i({Aa:a})};a.prototype.rb=function(){this.a.m(this.state.Aa);this.i({Ea:!1})};a.prototype.tb=function(){this.i({Ea:!1,Aa:this.a.value})};
-a.prototype.K=function(){var a=this;return e.createElement(this.a.aa,b({Ea:this.state.Ea,value:this.state.Aa,m:this.mg.bind(this),Yb:this.rg.bind(this),rb:this.rb.bind(this),tb:this.tb.bind(this),Cc:function(){return void 0!==a.a.Cc?a.a.Cc(a.a.value):null}},this.a.pc))};d.N=a},function(g,d,c){var a=c(0);d.mc=function(b){function c(a){return function(c){return 0===a.length?!0:-1!==b.xc(c).toLowerCase().indexOf(a.toLowerCase())}}return a.createElement("div",null,a.createElement("div",{className:"input-addon-formgroup"},
-a.createElement("span",{className:"input-addon-icon"},a.createElement("i",{className:"fa fa-search fa-fw"})),a.createElement("input",{type:"text",className:"form-control with-addon",m:function(a){return b.Fc(c(a.target.value))}})))}},function(g,d,c){var a=c(0);g=c(13);d.N=g.N;d.ec=function(b){return b.Ea&&null!=b.value?a.createElement("span",null,a.createElement("input",{type:"text",value:b.value,className:"text-edit-header",m:function(a){return b.m(a.target.value)}}),a.createElement("button",{h:b.rb},
-a.createElement("i",{className:"fa fa-check","aria-hidden":"true"})),a.createElement("button",{h:b.tb},a.createElement("i",{className:"fa fa-times","aria-hidden":"true"}))):a.createElement("h2",null,b.value,a.createElement("sup",null,a.createElement("i",{className:"fa fa-pencil-square-o",title:"Edit","aria-hidden":"true",h:b.Yb})))}},function(g){g.fa=require("moment")},function(g){g.fa=require("mousetrap")},function(g,d,c){function a(a){f.j.call(this,a,b.g)}function b(a){e.da.apply(this,arguments)}
-var e=c(45),f=c(6),k=c(11),l=c(1);G(b,e.da);b.prototype.ja=function(){return b.g};b.prototype.U=function(){var a=l.ca(this.B(),"value","valueType","creationTimestamp","lastmodifiedTimestamp");a.dc=this.valueType;void 0!==this.valueType&&"source"!==this.valueType&&(a["value_"+this.valueType]=this.value);return Object.assign({},a,{Ga:this.G,La:this.C})};b.prototype.w=function(a){a.valueType=a.dc;switch(a.dc){case "entity":a.value=a.Cd;break;case "string":a.value=a.te;break;case "date":a.value=a.ug;
-break;case "integer":a.value=a.vg;break;case "point":a.value=a.wg;break;case "region":a.value=a.xg;break;case "source":a.value=a.source;break;default:a.value=null}this.u(a);return this};b.g="records";d.Za=b;G(a,f.j);a.prototype.ha=function(a,b){var c=this;return this.db.select("predicates",["range_type"]).v({uid:b.c}).then(function(e){e=F(e).next().value;if(b.valueType===e.Ma)return f.j.prototype.ha.call(c,a,b);throw new k.S({message:"Attempted to add a record with an incorrect type!",data:Promise.resolve({})});
-})};a.prototype.ta=function(a,b,c){var e=this;return this.db.select("predicates",["range_type"]).v({uid:c.c}).then(function(d){d=F(d).next().value;if(c.valueType===d.Ma)return f.j.prototype.ta.call(e,a,b,c);throw new k.S({message:"Attempted to add a record with an incorrect type!",data:Promise.resolve({})});})};a.prototype.L=function(a,b,c){var e=this;return this.db.select("predicates",["range_type"]).v({uid:c.c}).then(function(d){d=F(d).next().value;if(c.valueType===d.Ma)return f.j.prototype.L.call(e,
-a,b,c);throw new k.S({message:"Attempted to add a record with an incorrect type!",data:Promise.resolve({})});})};d.lc=a},function(g,d,c){var a=this&&this.Rc||Object.assign||function(a){for(var b,c=1,f=arguments.length;c<f;c++){b=arguments[c];for(var e in b)Object.prototype.hasOwnProperty.call(b,e)&&(a[e]=b[e])}return a},b=c(0);g=c(13);d.N=g.N;var e=c(7);d.Ic=function(c){return c.Ea?b.createElement("div",null,b.createElement(e.Pa,a({},c.Vc,{value:c.value,ia:c.m,Ra:!1,Ta:function(){}})),b.createElement("button",
-null,b.createElement("i",{className:"fa fa-check",h:c.rb,"aria-hidden":"true"})),b.createElement("button",null,b.createElement("i",{className:"fa fa-times","aria-hidden":"true",h:c.tb}))):b.createElement("div",null,null!==c.value&&0<c.value.key.length?c.value.key:b.createElement("em",null,"No value"),b.createElement("sup",null,b.createElement("i",{className:"fa fa-pencil-square-o",title:"Edit","aria-hidden":"true",h:c.Yb})))}},function(g,d,c){var a=c(0);g=c(13);d.N=g.N;var b=c(17);d.Jc=function(c){function f(a){null!==
-a?(a.focus(),e=new b(a)):e.Jb("ctrl+return")}var e;return c.Ea?a.createElement("div",null,a.createElement("textarea",{value:c.value,Xa:f,m:function(a){return c.m(a.target.value)},style:{width:"100%",height:"6em"}}),a.createElement("button",{h:c.rb},a.createElement("i",{className:"fa fa-check","aria-hidden":"true"})),a.createElement("button",{h:c.tb},a.createElement("i",{className:"fa fa-times","aria-hidden":"true"}))):a.createElement("div",{h:c.Yb,className:"editable-paragraph-box"},a.createElement("p",
-null,null===c.value||0<c.value.length?c.value:a.createElement("em",null,"No value"),a.createElement("sup",null,a.createElement("i",{className:"fa fa-pencil-square-o",title:"Edit","aria-hidden":"true"}))))}},function(g,d,c){function a(a){b.s.call(this);this.state={$b:"",wb:null===a.value||0===a.value.length?[]:a.value.split(",")}}var b=c(0),e=c(17);G(a,b.s);a.prototype.bf=function(){var a=this;0!==this.state.$b.length&&this.i({wb:this.state.wb.concat([this.state.$b]),$b:""},function(){return a.a.m(a.state.wb.join(","))})};
-a.prototype.dg=function(a){var b=this;this.i({wb:this.state.wb.filter(function(b,c){return c!==a})},function(){return b.a.m(b.state.wb.join(","))})};a.prototype.pg=function(a){null!==a?(a.focus(),this.ib=new e(a)):(this.ib.Jb("return"),this.ib.Jb("escape"),this.ib.Jb("ctrl+s"))};a.prototype.K=function(){var a=this;return b.createElement("div",{className:"same-as-box"},b.createElement("label",{className:"small"},"Same As ",this.a.Ea?null:b.createElement("sup",null,b.createElement("i",{className:"fa fa-pencil-square-o",
-title:"Edit","aria-hidden":"true",h:this.a.Yb}))),this.a.Ea?b.createElement("div",{className:"edit-group"},b.createElement("button",{h:this.a.rb},b.createElement("i",{className:"fa fa-check","aria-hidden":"true"})),b.createElement("button",{h:this.a.tb},b.createElement("i",{className:"fa fa-times","aria-hidden":"true"})),b.createElement("div",{className:"input-addon-formgroup"},b.createElement("input",{type:"text",value:this.state.$b,Xa:this.pg.bind(this),m:function(b){return a.i({$b:b.target.value})},
-className:"form-control with-addon"}),b.createElement("span",{className:"input-addon-icon right button",h:this.bf.bind(this)},b.createElement("i",{className:"fa fa-plus"})))):null,b.createElement("ul",{className:"same-as-list"},this.state.wb.map(function(c,f){return b.createElement("li",{key:"li-"+c},b.createElement("a",{target:"_blank",href:c},c)," ",a.a.Ea?b.createElement("i",{className:"fa fa-times close-button",h:a.dg.bind(a,f)}):null)})))};d.Pc=a},function(g,d,c){var a=c(16);d.vc=function(b){if(null===
-b||0===b.length)return"";var c={"=":"",">":"After ","<":"Before "}[b[0]],f=b.substr(1,4),d=parseInt(b.substr(5,2))-1,d=-1===d||isNaN(d)?"Unknown":a.Tf()[d];b=parseInt(b.substr(7,2));return c+" "+(0<b?b:"")+" "+d+" "+f}},function(g,d,c){function a(a){f.j.call(this,a,b.g)}function b(a){e.da.apply(this,arguments)}var e=c(93),f=c(8),k=c(9),l=c(1);G(b,e.da);b.prototype.ja=function(){return b.g};b.prototype.U=function(){var a=l.ca(this.B(),"value","valueType","creationTimestamp","lastmodifiedTimestamp");
-a.dc=this.valueType;void 0!==this.valueType&&"source"!==this.valueType&&(a["value_"+this.valueType]=this.value);return Object.assign({},a,{Ga:this.G,La:this.C})};b.prototype.w=function(a){a.valueType=a.dc;switch(a.dc){case "entity":a.value=a.Cd;break;case "string":a.value=a.te;break;case "date":a.value=a.ug;break;case "integer":a.value=a.vg;break;case "point":a.value=a.wg;break;case "region":a.value=a.xg;break;case "source":a.value=a.source;break;default:a.value=null}this.u(a);return this};b.g="records";
-d.Za=b;G(a,f.j);a.prototype.ha=function(a,b){var c=this;return this.db.select("predicates",["range_type"]).v({uid:b.c}).then(function(e){e=F(e).next().value;if(b.valueType===e.Ma)return f.j.prototype.ha.call(c,a,b);throw new k.S({message:"Attempted to add a record with an incorrect type!",data:Promise.resolve({})});})};a.prototype.ta=function(a,b,c){var e=this;return this.db.select("predicates",["range_type"]).v({uid:c.c}).then(function(d){d=F(d).next().value;if(c.valueType===d.Ma)return f.j.prototype.ta.call(e,
-a,b,c);throw new k.S({message:"Attempted to add a record with an incorrect type!",data:Promise.resolve({})});})};a.prototype.L=function(a,b,c){var e=this;return this.db.select("predicates",["range_type"]).v({uid:c.c}).then(function(d){d=F(d).next().value;if(c.valueType===d.Ma)return f.j.prototype.L.call(e,a,b,c);throw new k.S({message:"Attempted to add a record with an incorrect type!",data:Promise.resolve({})});})};d.lc=a},function(g){g.fa=require("graphql")},function(g,d,c){function a(a){f.j.call(this,
-a,b.g)}function b(a){e.Entity.apply(this,arguments)}var e=c(42),f=c(6),k=c(11),l=c(1);G(b,e.Entity);b.prototype.ja=function(){return b.g};b.prototype.U=function(){return Object.assign(l.ca(this.B(),"entityType","creationTimestamp","lastmodifiedTimestamp"),{type:this.A,Ga:this.G,La:this.C})};b.prototype.w=function(a){this.u({A:a.type,uid:a.uid,label:a.label,parent:a.parent});return this};b.g="entities";d.nb=b;G(a,f.j);a.prototype.ya=function(a,b){b=void 0===b?{}:b;var c=this;return void 0!==b.type?
-this.db.Db(l.isArray(b.type)?b.type[0]:b.type).then(function(b){return c.db.select("entities").mb("type",b).then(function(b){return b.map(function(b){return(new a).w(b)})})}):f.j.prototype.ya.call(this,a,b)};a.prototype.T=function(a,c){var e=this;return Promise.all([this.db.select(b.g).v("parent","=",c),this.db.select("records").v("value_entity","=",c)]).then(function(a){var b=F(a);a=b.next().value;b=b.next().value;if(0===a.length+b.length)return e.db.T(e.g,c);throw new k.S({message:"The operation could not be completed as the entity is referenced in other sources",
-data:Promise.resolve({o:a,M:b})});})};d.hc=a},function(g,d,c){function a(a){f.j.call(this,a,b.g)}function b(a){e.xa.apply(this,arguments)}var e=c(44),f=c(6),k=c(11),l=c(18),h=c(1);G(b,e.xa);b.prototype.ja=function(){return b.g};b.prototype.U=function(){var a=Object.assign(h.ca(this.B(),"range","rangeIsReference","sameAs","creationTimestamp","lastmodifiedTimestamp"),{Oa:this.W,Ma:this.V?"entity":this.J,Ga:this.G,La:this.C});a.range_ref=this.V?this.J:null;return a};b.prototype.w=function(a){"entity"===
-a.Ma?(a.J=a.cg,a.V=!0):(a.J=a.Ma,a.V=!1);this.u(Object.assign(a,{sameAs:a.Oa}));return this};b.g="predicates";d.qb=b;G(a,f.j);a.prototype.ya=function(a,b){b=void 0===b?{}:b;var c=this;return void 0!==b.domain?this.db.wc(h.isArray(b.domain)?b.domain[0]:b.domain).then(function(e){return c.db.select("predicates").mb("domain",e.concat([b.domain[0]])).then(function(b){return b.map(function(b){return(new a).w(b)})})}):f.j.prototype.ya.call(this,a,b)};a.prototype.ta=function(a,b,c){if("number"!==typeof b)throw Error("Expected single column identifier");
-return this.db.Kb((new a).u(c))};a.prototype.L=function(a,b,c){var e=this;return void 0!==c.domain?this.db.select("records",["entities.type as entityType"]).Cf().v({c:b}).Ua("entities","records.entity","entities.uid").then(function(d){return 0<d.length?e.db.Db(c.domain).then(function(a){d.map(function(a){return a.A}).forEach(function(b){if(-1===a.indexOf(b))throw new k.S({message:"The operation could not be completed as it would invalidate predicate relationships",data:Promise.resolve({})});})}).then(function(){return f.j.prototype.L.call(e,
-a,b,c)}):f.j.prototype.L.call(e,a,b,c)}):void 0!==c.J?this.db.select("records").v({c:b}).then(function(d){if(0<d.length){if(!1===c.V)throw new k.S({message:"The operation could not be completed as it would invalidate predicate relationships",data:Promise.resolve({})});return e.db.Db(c.J).then(function(a){d.map(function(a){return a.Cd}).forEach(function(b){if(-1===a.indexOf(b))throw new k.S({message:"The operation could not be completed as it would invalidate predicate relationships",data:Promise.resolve({})});
-})}).then(function(){return f.j.prototype.L.call(e,a,b,c)})}return f.j.prototype.L.call(e,a,b,c)}):f.j.prototype.L.call(this,a,b,c)};a.prototype.T=function(a,b){var c=this;return Promise.all([this.db.jb("records",{c:b})]).then(function(a){a=F(a).next().value;if(0===a.length)return c.db.T(c.g,b);throw new k.S({message:"The operation could not be completed as the predicate is used by other records",data:Promise.resolve({M:a.map(function(a){return(new l.Za).w(a)})})});})};d.kc=a},function(g,d,c){function a(){b.s.call(this);
-this.state={Sb:!1,bd:!1,Ec:{key:"",value:""},tc:{key:"",value:""}}}var b=c(0),e=c(7),f=c(1);G(a,b.s);a.prototype.$e=function(){this.a.ad(this.state.tc);this.i({Sb:!1})};a.prototype.qf=function(){this.i({Sb:!1,tc:this.a.domain})};a.prototype.af=function(){this.a.sd(this.state.Ec);this.i({bd:!1})};a.prototype.rf=function(){this.i({Sb:!1,Ec:this.a.J})};a.prototype.K=function(){var a=this,c="editAll"===this.a.mode?this.a.ad:function(b){return a.i({tc:b})},d="editAll"===this.a.mode?this.a.sd:function(b){return a.i({Ec:b})};
-return b.createElement("div",{className:"predicate-function-description"},b.createElement("div",{className:"domain"},"editAll"===this.a.mode||this.state.Sb?b.createElement("div",null,b.createElement("label",{className:"small"},"Domain"),b.createElement(e.Pa,{options:this.a.sc,typeName:"entity type",Ra:!1,value:this.state.tc,ia:c,Ta:f.Fb}),"editSingle"===this.a.mode?b.createElement("div",null,b.createElement("button",{h:this.$e.bind(this)},b.createElement("i",{className:"fa fa-check","aria-hidden":"true"})),
-b.createElement("button",{h:this.qf.bind(this)},b.createElement("i",{className:"fa fa-times","aria-hidden":"true"}))):null):b.createElement("div",null,this.a.domain.key," ",b.createElement("i",{className:"fa fa-pencil-square-o",title:"Edit","aria-hidden":"true",h:function(){return a.i({Sb:!0})}}))),b.createElement("div",{className:"arrow"},b.createElement("i",{className:"fa fa-long-arrow-right","aria-hidden":"true"})),b.createElement("div",{className:"range"},"editAll"===this.a.mode||this.state.bd?
-b.createElement("div",null,b.createElement("label",{className:"small"},"Range"),b.createElement(e.Pa,{options:this.a.Dc,typeName:"entity type",Ra:!1,value:this.state.Ec,ia:d,Ta:f.Fb}),"editSingle"===this.a.mode?b.createElement("div",null,b.createElement("button",{h:this.af.bind(this)},b.createElement("i",{className:"fa fa-check","aria-hidden":"true"})),b.createElement("button",{h:this.rf.bind(this)},b.createElement("i",{className:"fa fa-times","aria-hidden":"true"}))):null):b.createElement("div",
-null,this.a.J.key," ",b.createElement("i",{className:"fa fa-pencil-square-o",title:"Edit","aria-hidden":"true",h:function(){return a.i({bd:!0})}}))))};d.Gd=a},function(g,d){d.uc=function(c,a,b){b=void 0===b?[]:b;var e=a.find(function(a){return a.uid===c});return void 0===e?(console.warn("Couldn't find parent"),b):null===e.parent||null===e.uid?null===e.uid?(console.warn("Found entity will null uid"),b):b.concat([e.uid]):d.uc(e.parent,a,b.concat([e.uid]))}},function(g,d){d.Ka={Tb:{Ba:"element_set",
-name:"Element Set",Wa:"Element Sets",R:""},M:{Ba:"record",name:"Record",Wa:"Records",R:""},o:{Ba:"entity",name:"Entity",Wa:"Entities",R:"entity"},H:{Ba:"entity_type",name:"Entity Type",Wa:"Entity Types",R:"entity_type"},c:{Ba:"property",name:"Property",Wa:"Properties",R:"predicate"},source:{Ba:"source",name:"Source",Wa:"Sources",R:"source"},Z:{Ba:"source_element",name:"Source Element",Wa:"Source Elements",R:""}}},function(g,d){d.ge=[{name:"text",value:"string",url:"",description:"some text"},{name:"number",
-value:"integer",url:"",description:"a number"},{name:"date",value:"date",url:"",description:"a date"},{name:"source",value:"source",url:"",description:"a source in the database"}]},function(g,d,c){var a=c(0),b=c(10);d.Jd=function(c){return a.createElement("section",{className:"stats-grid"},a.createElement(b.oa,{va:"/edit/entity"},a.createElement("div",{className:"entity"},a.createElement("span",{className:"item-name"},"Entities"),a.createElement("span",{className:"item-count"},c.ua.o))),a.createElement(b.oa,
-{va:"/edit/entity_type"},a.createElement("div",{className:"entity_type"},a.createElement("span",{className:"item-name"},"Entity Types"),a.createElement("span",{className:"item-count"},c.ua.A))),a.createElement(b.oa,{va:"/edit/source"},a.createElement("div",{className:"source"},a.createElement("span",{className:"item-name"},"Sources"),a.createElement("span",{className:"item-count"},c.ua.source))),a.createElement(b.oa,{va:"/edit/predicate"},a.createElement("div",{className:"predicate"},a.createElement("span",
-{className:"item-name"},"Properties"),a.createElement("span",{className:"item-count"},c.ua.c))),a.createElement("div",{className:"record"},a.createElement("span",{className:"item-name"},"Records"),a.createElement("span",{className:"item-count"},c.ua.M)))}},function(g,d,c){function a(a){f.j.call(this,a,b.g)}function b(a){e.Entity.apply(this,arguments)}var e=c(90),f=c(8),k=c(9),l=c(1);G(b,e.Entity);b.prototype.ja=function(){return b.g};b.prototype.U=function(){return Object.assign(l.ca(this.B(),"entityType",
-"creationTimestamp","lastmodifiedTimestamp"),{type:this.A,Ga:this.G,La:this.C})};b.prototype.w=function(a){this.u({A:a.type,uid:a.uid,label:a.label,parent:a.parent});return this};b.g="entities";d.nb=b;G(a,f.j);a.prototype.ya=function(a,b){b=void 0===b?{}:b;var c=this;return void 0!==b.type?this.db.Db(l.isArray(b.type)?b.type[0]:b.type).then(function(b){return c.db.select("entities").mb("type",b).then(function(b){return b.map(function(b){return(new a).w(b)})})}):f.j.prototype.ya.call(this,a,b)};a.prototype.T=
-function(a,c){var e=this;return Promise.all([this.db.select(b.g).v("parent","=",c),this.db.select("records").v("value_entity","=",c)]).then(function(a){var b=F(a);a=b.next().value;b=b.next().value;if(0===a.length+b.length)return e.db.T(e.g,c);throw new k.S({message:"The operation could not be completed as the entity is referenced in other sources",data:Promise.resolve({o:a,M:b})});})};d.hc=a},function(g,d,c){function a(a){f.j.call(this,a,b.g)}function b(a){e.xa.apply(this,arguments)}var e=c(92),f=
-c(8),k=c(9),l=c(23),h=c(1);G(b,e.xa);b.prototype.ja=function(){return b.g};b.prototype.U=function(){var a=Object.assign(h.ca(this.B(),"range","rangeIsReference","sameAs","creationTimestamp","lastmodifiedTimestamp"),{Oa:this.W,Ma:this.V?"entity":this.J,Ga:this.G,La:this.C});a.range_ref=this.V?this.J:null;return a};b.prototype.w=function(a){"entity"===a.Ma?(a.J=a.cg,a.V=!0):(a.J=a.Ma,a.V=!1);this.u(Object.assign(a,{sameAs:a.Oa}));return this};b.g="predicates";d.qb=b;G(a,f.j);a.prototype.ya=function(a,
-b){b=void 0===b?{}:b;var c=this;return void 0!==b.domain?this.db.wc(h.isArray(b.domain)?b.domain[0]:b.domain).then(function(e){return c.db.select("predicates").mb("domain",e.concat([b.domain[0]])).then(function(b){return b.map(function(b){return(new a).w(b)})})}):f.j.prototype.ya.call(this,a,b)};a.prototype.ta=function(a,b,c){if("number"!==typeof b)throw Error("Expected single column identifier");return this.db.Kb((new a).u(c))};a.prototype.L=function(a,b,c){var e=this;return void 0!==c.domain?this.db.select("records",
-["entities.type as entityType"]).Cf().v({c:b}).Ua("entities","records.entity","entities.uid").then(function(d){return 0<d.length?e.db.Db(c.domain).then(function(a){d.map(function(a){return a.A}).forEach(function(b){if(-1===a.indexOf(b))throw new k.S({message:"The operation could not be completed as it would invalidate predicate relationships",data:Promise.resolve({})});})}).then(function(){return f.j.prototype.L.call(e,a,b,c)}):f.j.prototype.L.call(e,a,b,c)}):void 0!==c.J?this.db.select("records").v({c:b}).then(function(d){if(0<
-d.length){if(!1===c.V)throw new k.S({message:"The operation could not be completed as it would invalidate predicate relationships",data:Promise.resolve({})});return e.db.Db(c.J).then(function(a){d.map(function(a){return a.Cd}).forEach(function(b){if(-1===a.indexOf(b))throw new k.S({message:"The operation could not be completed as it would invalidate predicate relationships",data:Promise.resolve({})});})}).then(function(){return f.j.prototype.L.call(e,a,b,c)})}return f.j.prototype.L.call(e,a,b,c)}):
-f.j.prototype.L.call(this,a,b,c)};a.prototype.T=function(a,b){var c=this;return Promise.all([this.db.jb("records",{c:b})]).then(function(a){a=F(a).next().value;if(0===a.length)return c.db.T(c.g,b);throw new k.S({message:"The operation could not be completed as the predicate is used by other records",data:Promise.resolve({M:a.map(function(a){return(new l.Za).w(a)})})});})};d.kc=a},function(g){g.fa=require("immutable")},function(g,d,c){function a(){e.s.call(this);this.state={re:"",ua:null}}var b=this&&
-this.Rc||Object.assign||function(a){for(var b,c=1,e=arguments.length;c<e;c++){b=arguments[c];for(var d in b)Object.prototype.hasOwnProperty.call(b,d)&&(a[d]=b[d])}return a},e=c(0),f=c(10),k=c(100),l=c(2),h=c(29),q=c(96),r=c(53),u=c(101),t=c(102),p=c(97),z=c(98),x=c(10),D=c(99);G(a,e.s);a.prototype.K=function(){var a=this;return e.createElement("div",{id:"main",className:"flex-fill"},e.createElement(this.a.ma,b({},this.a.ig,{className:"flex-fill",Jg:"/admin"}),e.createElement("div",{className:"flex-fill",
-style:{flexDirection:"column"}},e.createElement("div",{className:"header"},e.createElement(x.oa,{va:"/",className:"logo-link"},e.createElement("div",{className:"logo"},"VRE")),e.createElement(x.oa,{va:"/",className:"header-link"},"Home"),e.createElement(x.oa,{accessKey:"s",va:"/edit/"+l.f.source,className:"header-link source"},h.Ka.source.Wa),e.createElement(x.oa,{accessKey:"e",va:"/edit/"+l.f.o,className:"header-link entity"},h.Ka.o.Wa),e.createElement(x.oa,{accessKey:"p",va:"/edit/"+l.f.c,className:"header-link predicate"},
-h.Ka.c.Wa),e.createElement(x.oa,{accessKey:"t",va:"/edit/"+l.f.H,className:"header-link entity_type"},h.Ka.H.Wa),"website"===this.a.be?e.createElement("div",{className:"right-header"},e.createElement(x.oa,{va:"/user",className:"header-link"},e.createElement("span",{className:"current-user"},this.state.re)),e.createElement("a",{href:"/admin/logout",className:"header-link"},"Logout"),e.createElement("a",{href:"/",className:"header-link"},e.createElement("i",{className:"fa fa-external-link"}))):null),
-"website"===this.a.be?e.createElement(f.pb,{Cb:!0,pattern:"/",K:function(c){return e.createElement(q.ue,b({},c,{ua:a.state.ua}))}}):e.createElement(f.pb,{Cb:!0,pattern:"/",K:function(c){return e.createElement(r.ve,b({},c,{ua:a.state.ua}))}}),e.createElement(f.pb,{Cb:!0,pattern:"/user",aa:u.Xe}),e.createElement(f.pb,{Cb:!0,pattern:"/users",aa:t.Ye}),e.createElement(f.pb,{Cb:!0,pattern:"/app",aa:p.we}),e.createElement(f.pb,{Cb:!0,pattern:"/upload",aa:z.De}),e.createElement(f.pb,{Cb:!0,pattern:"/search",
-K:function(c){return e.createElement(D.Fd,b({l:a.a.l},c,{R:"search"}))}}),e.createElement(f.pb,{pattern:"/edit/:workspace",K:function(c){return e.createElement(D.Fd,b({l:a.a.l},c,{R:"property"===c.P.R?"predicate":c.P.R}))}}),e.createElement(f.Cg,{aa:k.Re}))))};d.Ie=a},function(g,d,c){function a(a){this.ga=b(a)}var b=c(114),e=c(1),f=c(9);a.prototype.query=function(){return this.ga};a.prototype.select=function(a){return this.ga.select().from(a)};a.prototype.Bc=function(a,b){return this.ga.select().from(a).v({uid:b}).first().then(function(a){return void 0===
-a?Promise.reject(new f.ob):a})};a.prototype.jb=function(a,b){var c=this.ga.select().from(a);Object.keys(b).forEach(function(a){c=c.mb(a,b[a])});return c.then(function(a){return void 0===a?Promise.reject(new f.ob):a})};a.prototype.Td=function(a){var b=this,c=e.ca(a.U(),["uid","tableName"]);return this.ga.transaction(function(e){return b.ga(a.ja()).bc(e).dh(c,"uid").qh("uid").then(function(a){return b.Sc(e).then(function(b){if(!b)throw new f.xb;return a})}).then(e.Sd).catch(e.le)})};a.prototype.Kb=
-function(a){var b=this;return this.ga.transaction(function(c){return b.ga(a.ja()).bc(c).v({uid:a.uid}).update(e.ca(a.U(),["tableName"])).then(function(a){return b.Sc(c).then(function(b){if(!b)throw new f.xb;return a})}).then(c.Sd).catch(c.le)})};a.prototype.T=function(a,b){var c=this;return this.ga.transaction(function(e){return c.ga(a).bc(e).v({uid:b}).ra().then(function(a){return c.Sc(e).then(function(b){if(!b)throw new f.xb;return a})}).then(e.Sd).catch(e.le)})};a.prototype.wc=function(a){return this.ga.raw("\n            WITH RECURSIVE parent_of(uid, parent) AS  (SELECT uid, parent FROM entity_types),\n                ancestor(uid) AS (\n                SELECT parent FROM parent_of WHERE uid="+
-a+"\n                UNION ALL\n                SELECT parent FROM parent_of JOIN ancestor USING(uid) )\n\t\t\t\tSELECT * from ancestor").then(function(a){return a.filter(function(a){return null!==a.uid}).map(function(a){return a.uid})})};a.prototype.Db=function(a){return this.ga.raw("\n            WITH RECURSIVE parent_of(uid, parent) AS  (SELECT uid, parent FROM entity_types),\n                ancestor(parent) AS (\n                SELECT uid FROM parent_of WHERE uid="+a+"\n                UNION ALL\n                SELECT uid FROM parent_of JOIN ancestor USING(parent) )\n\t\t\t\tSELECT * from ancestor").then(function(a){return a.filter(function(a){return null!==
-a.parent}).map(function(a){return a.parent})})};a.prototype.Sc=function(a){return Promise.all([this.ga.bc(a).select(this.ga.raw("SUM((records.value_type != predicates.range_type)) AS valid")).from("records").Ua("predicates","records.predicate","predicates.uid"),this.ga.bc(a).select(this.ga.raw("\n                SUM((\n\n                entities.type not in (\n                    WITH RECURSIVE parent_of(uid, parent) AS  (SELECT uid, parent FROM entity_types),\n                                ancestor(parent) AS (\n                                SELECT uid FROM parent_of WHERE uid=predicates.range_ref\n                                UNION ALL\n                                SELECT uid FROM parent_of JOIN ancestor USING(parent) )\n                                SELECT * from ancestor\n                )\n\n                )) as valid\n            ")).from("records").Ua("predicates",
-"records.predicate","predicates.uid").Ua("entities","entities.uid","records.value_entity").v("records.value_type","=","entity"),this.ga.bc(a).select(this.ga.raw("\n               SUM((\n\n                entities.type not in (\n                    WITH RECURSIVE parent_of(uid, parent) AS  (SELECT uid, parent FROM entity_types),\n                                ancestor(parent) AS (\n                                SELECT uid FROM parent_of WHERE uid=predicates.domain\n                                UNION ALL\n                                SELECT uid FROM parent_of JOIN ancestor USING(parent) )\n                                SELECT * from ancestor\n                )\n\n                )) as valid\n            ")).from("records").Ua("predicates",
-"records.predicate","predicates.uid").Ua("entities","entities.uid","records.entity")]).then(function(a){var b=F(a);a=F(b.next().value).next().value;var c=F(b.next().value).next().value,b=F(b.next().value).next().value;return 0===a.valid+c.valid+b.valid})};d.Database=a},function(g,d,c){function a(a,c,e){a.get("/api/v1/"+b.f.Z+"/:source/:element",function(){function a(a){for(;;)switch(d){case 0:return f=g,d=1,{value:c.getItem(e[b.f.Z],b.f.Z,{order:["source","element"],values:{source:g.P.source,element:g.P.element}}).then(function(a){return f.body=
-a.B()}),done:!1};case 1:if(void 0===a){d=2;break}d=-1;throw a;case 2:d=-1;default:return{value:void 0,done:!0}}}var d=0,f,g=this,h={next:function(){return a(void 0)},throw:function(b){return a(b)},return:function(){throw Error("Not yet implemented");}};A();h[Symbol.iterator]=function(){return this};return h});a.put("/api/v1/"+b.f.Z+"/:source/:element",function(){function a(a){for(;;)switch(d){case 0:return f=g,d=1,{value:c.ta(e[b.f.Z],b.f.Z,{order:["source","element"],values:{source:g.P.source,element:g.P.element}},
-g.request.body).then(function(a){return f.body=a}),done:!1};case 1:if(void 0===a){d=2;break}d=-1;throw a;case 2:d=-1;default:return{value:void 0,done:!0}}}var d=0,f,g=this,h={next:function(){return a(void 0)},throw:function(b){return a(b)},return:function(){throw Error("Not yet implemented");}};A();h[Symbol.iterator]=function(){return this};return h});a.Zf("/api/v1/"+b.f.Z+"/:source/:element",function(){function a(a){for(;;)switch(d){case 0:return f=g,d=1,{value:c.L(e[b.f.Z],b.f.Z,{order:["source",
-"element"],values:{source:g.P.source,element:g.P.element}},g.request.body).then(function(a){return f.body=a}),done:!1};case 1:if(void 0===a){d=2;break}d=-1;throw a;case 2:d=-1;default:return{value:void 0,done:!0}}}var d=0,f,g=this,h={next:function(){return a(void 0)},throw:function(b){return a(b)},return:function(){throw Error("Not yet implemented");}};A();h[Symbol.iterator]=function(){return this};return h});a.ra("/api/v1/"+b.f.Z+"/:source/:element",function(){function a(a){for(;;)switch(d){case 0:return f=
-g,d=1,{value:c.Ha(e[b.f.Z],b.f.Z,{order:["source","element"],values:{source:g.P.source,element:g.P.element}}).then(function(a){return f.body=a}),done:!1};case 1:if(void 0===a){d=2;break}d=-1;throw a;case 2:d=-1;default:return{value:void 0,done:!0}}}var d=0,f,g=this,h={next:function(){return a(void 0)},throw:function(b){return a(b)},return:function(){throw Error("Not yet implemented");}};A();h[Symbol.iterator]=function(){return this};return h})}var b=c(110),e=c(109),f=c(108);d.yg=function(a){var c=
-new Map([[b.f.Tb,new f.gc(a)],[b.f.M,new f.lc(a)],[b.f.H,new f.ic(a)],[b.f.o,new f.hc(a)],[b.f.c,new f.kc(a)],[b.f.source,new f.nc(a)],[b.f.element,new f.fc(a)],[b.f.Z,new f.oc(a)]]);return new b.Se(a,c,new e.Ne(a),!0)};d.l=function(c,d){var e={},g=(e[b.f.Tb]=f.Mb,e[b.f.M]=f.Za,e[b.f.H]=f.Nb,e[b.f.o]=f.nb,e[b.f.c]=f.qb,e[b.f.source]=f.Qb,e[b.f.element]=f.Lb,e[b.f.Z]=f.Pb,e);c.use(function(a){function b(b){for(;;)switch(c){case 0:if("GET"!==d.eg.method&&!d.eh()){c=1;break}c=3;return{value:a,done:!1};
-case 3:if(void 0===b){c=4;break}c=-1;throw b;case 4:c=2;break;case 1:d.status=403,d.body="You must be authorised to modify this resource";case 2:c=-1;default:return{value:void 0,done:!0}}}var c=0,d=this,e={next:function(){return b(void 0)},throw:function(a){return b(a)},return:function(){throw Error("Not yet implemented");}};A();e[Symbol.iterator]=function(){return this};return e});c.use(function(a){function b(b){for(;;)switch(c){case 0:f=g;try{return c=3,{value:a,done:!1}}catch(B){e=B;c=1;break}case 3:try{if(void 0===
-b){c=4;break}c=-1;throw b;}catch(B){e=B;c=1;break}case 4:try{c=2;break}catch(B){e=B;c=1;break}case 1:d=e;switch(d.constructor.name){case "KeyNotFoundException":g.status=404;break;case "CollectionNotFoundException":g.status=404;break;case "OperationNotPermittedException":g.status=422;break;default:g.status=500}g.type="application/json";if(void 0===d.data){c=5;break}c=7;return{value:d.data.data.then(function(a){f.body=JSON.stringify(Object.assign({},d.data,{data:a}))}),done:!1};case 7:if(void 0===b){c=
-8;break}c=-1;throw b;case 8:c=6;break;case 5:g.body=d.message;case 6:case 2:c=-1;default:return{value:void 0,done:!0}}}var c=0,d,e,f,g=this,h={next:function(){return b(void 0)},throw:function(a){return b(a)},return:function(){throw Error("Not yet implemented");}};A();h[Symbol.iterator]=function(){return this};return h});c.get("/api/v1/query",function(){function a(a){for(;;)switch(b){case 0:return c=e,b=1,{value:d.bg.jg(e.query.query).then(function(a){return c.body=a}),done:!1};case 1:if(void 0===
-a){b=2;break}b=-1;throw a;case 2:b=-1;default:return{value:void 0,done:!0}}}var b=0,c,e=this,f={next:function(){return a(void 0)},throw:function(b){return a(b)},return:function(){throw Error("Not yet implemented");}};A();f[Symbol.iterator]=function(){return this};return f});a(c,d,g);c.get("/api/v1/:route/:id",function(){function a(a){for(;;)switch(b){case 0:return c=e,b=1,{value:d.getItem(g[e.P.Na],e.P.Na,parseInt(e.P.id)).then(function(a){return c.body=a.B()}),done:!1};case 1:if(void 0===a){b=2;
-break}b=-1;throw a;case 2:b=-1;default:return{value:void 0,done:!0}}}var b=0,c,e=this,f={next:function(){return a(void 0)},throw:function(b){return a(b)},return:function(){throw Error("Not yet implemented");}};A();f[Symbol.iterator]=function(){return this};return f});c.get("/api/v1/:route",function(){function a(a){for(;;)switch(b){case 0:return c=e,b=1,{value:d.hb(g[e.P.Na],e.P.Na,e.query).then(function(a){return c.body=a.map(function(a){return a.B()})}),done:!1};case 1:if(void 0===a){b=2;break}b=
--1;throw a;case 2:b=-1;default:return{value:void 0,done:!0}}}var b=0,c,e=this,f={next:function(){return a(void 0)},throw:function(b){return a(b)},return:function(){throw Error("Not yet implemented");}};A();f[Symbol.iterator]=function(){return this};return f});c.nh("/api/v1/:route",function(){function a(a){for(;;)switch(b){case 0:return c=e,b=1,{value:d.ha(g[e.P.Na],e.P.Na,Object.assign(e.request.body,{O:e.eg.re.uid})).then(function(a){return c.body=a}),done:!1};case 1:if(void 0===a){b=2;break}b=-1;
-throw a;case 2:b=-1;default:return{value:void 0,done:!0}}}var b=0,c,e=this,f={next:function(){return a(void 0)},throw:function(b){return a(b)},return:function(){throw Error("Not yet implemented");}};A();f[Symbol.iterator]=function(){return this};return f});c.put("/api/v1/:route/:id",function(){function a(a){for(;;)switch(b){case 0:return c=e,b=1,{value:d.ta(g[e.P.Na],e.P.Na,parseInt(e.P.id),e.request.body).then(function(a){return c.body=a}),done:!1};case 1:if(void 0===a){b=2;break}b=-1;throw a;case 2:b=
--1;default:return{value:void 0,done:!0}}}var b=0,c,e=this,f={next:function(){return a(void 0)},throw:function(b){return a(b)},return:function(){throw Error("Not yet implemented");}};A();f[Symbol.iterator]=function(){return this};return f});c.Zf("/api/v1/:route/:id",function(){function a(a){for(;;)switch(b){case 0:return c=e,b=1,{value:d.L(g[e.P.Na],e.P.Na,parseInt(e.P.id),e.request.body).then(function(a){return c.body=a}),done:!1};case 1:if(void 0===a){b=2;break}b=-1;throw a;case 2:b=-1;default:return{value:void 0,
-done:!0}}}var b=0,c,e=this,f={next:function(){return a(void 0)},throw:function(b){return a(b)},return:function(){throw Error("Not yet implemented");}};A();f[Symbol.iterator]=function(){return this};return f});c.ra("/api/v1/:route/:id",function(){function a(a){for(;;)switch(b){case 0:return c=e,b=1,{value:d.Ha(g[e.P.Na],e.P.Na,parseInt(e.P.id)).then(function(a){return c.body=a}),done:!1};case 1:if(void 0===a){b=2;break}b=-1;throw a;case 2:b=-1;default:return{value:void 0,done:!0}}}var b=0,c,e=this,
-f={next:function(){return a(void 0)},throw:function(b){return a(b)},return:function(){throw Error("Not yet implemented");}};A();f[Symbol.iterator]=function(){return this};return f});return c}},function(g){g.fa=require("electron")},function(g){g.fa=require("react-dom")},function(g,d){function c(){}c.prototype.u=function(a){this.name=a.name;this.uid=a.uid;this.cd=a.cd;this.description=a.description;this.Wc=a.Wc;return this};c.prototype.B=function(){return this};d.Element=c},function(g,d){function c(){}
-c.prototype.u=function(a){this.name=a.name;this.uid=a.uid;this.uri=a.uri;this.description=a.description;this.elements=a.elements;return this};c.prototype.B=function(){return this};d.fb=c},function(g,d){function c(){}c.prototype.u=function(a){this.uid=a.uid;this.A=a.A;this.label=a.label;this.parent=a.parent;this.O=a.O;this.G=a.G;this.C=a.C;return this};c.prototype.B=function(){return this};d.Entity=c},function(g,d){function c(){}c.prototype.u=function(a){this.uid=a.uid;this.name=a.name;this.description=
-a.description;this.icon=a.icon;this.Uc=a.Uc;this.W=a.W;this.parent=a.parent;this.Da=a.Da;this.O=a.O;this.children=a.children;this.G=a.G;this.C=a.C;return this};c.prototype.B=function(){return this};d.wa=c},function(g,d){function c(){}c.prototype.B=function(){return this};c.prototype.u=function(a){this.uid=a.uid;this.domain=a.domain;this.J=a.J;this.name=a.name;this.description=a.description;this.W=a.W;this.ud=a.ud;this.V=a.V;this.O=a.O;this.G=a.G;this.C=a.C;return this};d.xa=c},function(g,d){function c(){this.valueType=
-null}c.prototype.u=function(a){this.uid=a.uid;this.source=a.source;this.c=a.c;this.o=a.o;this.lb=a.lb;this.valueType=a.valueType;this.value=a.value;this.O=a.O;this.Gb=a.Gb;this.G=a.G;this.C=a.C;return this};c.prototype.B=function(){return this};d.da=c},function(g,d){function c(){}c.prototype.B=function(){return this};c.prototype.u=function(a){this.name=a.name;this.uid=a.uid;this.Ca=a.Ca;this.W=a.W;this.parent=a.parent;this.Da=a.Da;this.children=a.children;this.O=a.O;this.G=a.G;this.C=a.C;return this};
-d.pa=c},function(g,d){function c(){}c.prototype.u=function(a){this.uid=a.uid;this.value=a.value;this.O=a.O;this.G=a.G;this.C=a.C;return this};c.prototype.B=function(){return this};d.Fa=c},function(g,d,c){function a(a){f.j.call(this,a,b.g)}function b(a){e.Element.apply(this,arguments)}var e=c(40),f=c(6);G(b,e.Element);b.prototype.ja=function(){return b.g};b.prototype.U=function(){return this.B()};b.prototype.w=function(a){this.u(a);return this};b.g="elements";d.Lb=b;G(a,f.j);d.fc=a},function(g,d,c){function a(a){f.j.call(this,
-a,b.g)}function b(a){e.fb.apply(this,arguments)}var e=c(41),f=c(6),k=c(1);G(b,e.fb);b.prototype.ja=function(){return b.g};b.prototype.U=function(){return k.ca(this.B(),"elements")};b.prototype.w=function(a){this.u(a);return this};b.g="element_sets";d.Mb=b;G(a,f.j);a.prototype.la=function(a,b){var c=this;return f.j.prototype.la.call(this,a,b).then(function(a){if(null===a.uid)throw Error("could not find source");return c.db.select("elements").v({element_set:a.uid}).then(function(b){a.elements=b;return a})})};
-d.gc=a},function(g,d,c){function a(a){f.j.call(this,a,b.g)}function b(a){e.wa.apply(this,arguments)}var e=c(43),f=c(6),k=c(26),l=c(25),h=c(11),q=c(1);G(b,e.wa);b.prototype.ja=function(){return b.g};b.prototype.U=function(){return Object.assign(q.ca(this.B(),"sameAs","parents","children","creationTimestamp","lastmodifiedTimestamp"),{Oa:this.W,Ga:this.G,La:this.C})};b.prototype.w=function(a){this.u(Object.assign(a,{sameAs:a.Oa}));return this};b.g="entity_types";d.Nb=b;G(a,f.j);a.prototype.la=function(a,
-b){var c=this;return f.j.prototype.la.call(this,a,b).then(function(e){return Promise.all([c.db.wc(b).then(function(b){return c.db.select("entity_types").mb("uid",b).then(function(b){return b.map(function(b){return(new a).w(b)})})}),c.db.select("entity_types",["uid"]).v({parent:b})]).then(function(a){var b=F(a);a=b.next().value;b=b.next().value;e.Da=a;e.children=b.map(function(a){return a.uid});return e})})};a.prototype.T=function(a,c){var e=this;return Promise.all([this.db.select(b.g).v("parent",
-"=",c),this.db.select("entities").v("type","=",c),this.db.select("predicates").v("domain","=",c).Xf("range_ref","=",c)]).then(function(a){var d=F(a);a=d.next().value;var f=d.next().value,d=d.next().value;if(0===f.length+a.length+d.length)return e.db.T(e.g,c);throw new h.S({message:"The operation could not be completed as the entity is referenced in other sources",data:Promise.resolve({A:a.map(function(a){return(new b).w(a)}),o:f.map(function(a){return(new l.nb).w(a)}),c:d.map(function(a){return(new k.qb).w(a)})})});
-})};d.ic=a},function(g,d,c){function a(a){f.j.call(this,a,b.g)}function b(a){e.pa.apply(this,arguments)}var e=c(46),f=c(6),k=c(11),l=c(18),h=c(1);G(b,e.pa);b.prototype.ja=function(){return b.g};b.prototype.U=function(){return Object.assign({},h.ca(this.B(),"metaData","sameAs","parents","children","creationTimestamp","lastmodifiedTimestamp"),{Oa:this.W,Ga:this.G,La:this.C})};b.prototype.w=function(a){this.u(Object.assign(a,{sameAs:a.Oa}));return this};b.g="sources";d.Qb=b;G(a,f.j);a.prototype.getMetadata=
-function(a,b){var c=this;return this.db.query().raw("\n            WITH RECURSIVE parent_of(uid, parent) AS  (SELECT uid, parent FROM sources),\n                ancestor(uid) AS (\n                SELECT parent FROM parent_of WHERE uid=?\n                UNION ALL\n                SELECT parent FROM parent_of JOIN ancestor USING(uid) )\n            \n            SELECT *\n                FROM ancestor;\n        ",b).then(function(e){e=h.map(e,"uid");e.pop();e=[b].concat(e);return Promise.all(e.map(function(b){return c.db.query().select(a).from("source_elements").Ua("elements",
-function(){this.pd("source_elements.element","=","elements.uid")}).Ua("element_sets",function(){this.pd("element_sets.uid","=","elements.element_set")}).v({"source_elements.source":b})})).then(function(a){var b=h.ed(h.Lf(a),"name");return Object.keys(b).reduce(function(a,c){var d=h.ca(b[c][0],"source","value");d.values=b[c].map(function(a){return{source:a.source,value:a.value,uid:a.uid}}).sort(function(a,b){return e.indexOf(a.source)-e.indexOf(b.source)});var f={};return Object.assign(a,(f[c]=d,f))},
-{})})})};a.prototype.la=function(a,b){var c=this;return f.j.prototype.la.call(this,a,b).then(function(a){if(null===a.uid)throw Error("could not find source");return Promise.all([c.getMetadata("source_elements.source as source;elements.name;source_elements.value;elements.description;element_sets.name as element_set;elements.comment;elements.uri;elements.uid as element_uid".split(";"),a.uid),c.db.query().select("uid").from("sources").v({parent:b}),c.db.query().raw("\n                    WITH RECURSIVE parent_of(uid, parent) AS  (SELECT uid, parent FROM sources),\n                    ancestor(uid) AS (\n                    SELECT parent FROM parent_of WHERE uid=?\n                    UNION ALL\n                    SELECT parent FROM parent_of JOIN ancestor USING(uid) )\n                    \n                    SELECT uid\n                    FROM ancestor;\n                ",
-b)]).then(function(b){var c=F(b);b=c.next().value;var e=c.next().value,c=c.next().value;a.Ca=b;a.children=e.map(function(a){return a.uid}).filter(function(a){return null!==a});a.Da=c.map(function(a){return a.uid}).filter(function(a){return null!==a});return a})})};a.prototype.ya=function(a,b){b=void 0===b?{}:b;var c=this;return f.j.prototype.ya.call(this,a,b).then(function(a){return Promise.all(a.map(function(a){if(null===a.uid)throw Error("could not find source");return c.getMetadata(["elements.name",
-"source_elements.value"],a.uid).then(function(b){a.Ca=b;return a})}))})};a.prototype.T=function(a,c){var e=this;return Promise.all([this.db.jb("records",{source:c}),this.db.jb("sources",{parent:c})]).then(function(a){var d=F(a);a=d.next().value;d=d.next().value;if(0===a.length+d.length)return e.db.T(e.g,c);throw new k.S({message:"The operation could not be completed as the source is used by other records",data:Promise.resolve({M:a.map(function(a){return(new l.Za).w(a)}),source:d.map(function(a){return(new b).w(a)})})});
-})};d.nc=a},function(g,d,c){function a(a){f.j.call(this,a,b.g)}function b(a){e.Fa.apply(this,arguments)}var e=c(47),f=c(6),k=c(11),l=c(1);G(b,e.Fa);b.prototype.ja=function(){return b.g};b.prototype.U=function(){return Object.assign(l.ca(this.B(),"creationTimestamp","lastmodifiedTimestamp","uid"),{Ga:this.G,La:this.C,source:this.uid.values.source,element:this.uid.values.element})};b.prototype.w=function(a){this.u(Object.assign(a,{uid:{order:["source","element"],values:{source:a.source,element:a.element}}}));
-return this};b.g="source_elements";d.Pb=b;G(a,f.j);a.prototype.la=function(a,b){return this.db.query().select().from(this.g).v(b.values).first().then(function(a){return void 0===a?Promise.reject(new k.ob):a}).then(function(b){return(new a).w(b)})};a.prototype.ta=function(a,b,c){return this.db.query()(this.g).v(b.values).update(l.ca(c.U(),["tableName"]))};a.prototype.L=function(a,b,c){a=(new a).u(c).U();c=Object.keys(a);for(var e={},d=0;d<c.length;d+=1)void 0!==a[c[d]]&&(e[c[d]]=a[c[d]]);return this.db.query()(this.g).v(b.values).update(e).then(function(){return!0}).catch(function(a){throw Error(a);
-})};a.prototype.T=function(a,b){return this.db.query()(this.g).v(b.values).ra()};d.oc=a},function(g,d,c){var a=c(0),b=c(31);d.ve=function(c){return a.createElement("div",{className:"page"},a.createElement("section",null,a.createElement("h1",null,"VRE App"),null!==c.ua?a.createElement(b.Jd,{ua:c.ua}):null))}},function(g,d,c){g=c(34);c=c(4);d.Df={all:{o:{value:[],Va:null},H:{value:[],Va:null},c:{value:[],Va:null},source:{value:[],Va:null},Zd:{value:new c.fb,Va:null}},F:{o:g.Map(),H:g.Map(),c:g.Map(),
-source:g.Map()}};d.Ef=[{o:g.Map()},{H:g.Map()},{c:g.Map()},{source:g.Map()}]},function(g,d,c){var a=c(0);d.Le=function(){return a.createElement("div",{className:"loader-wrapper"},a.createElement("div",{className:"loader"}))}},function(g,d,c){function a(){e.s.call(this);this.ie=function(a){var b=a.kh,c=a.ih;h.Hb.I(function(a){return r.Ig(a,b,c)})};this.state={X:"",Xc:!1}}var b=this,e=c(0),f=c(79),k=c(2),l=c(10),h=c(3),q=c(1),r=c(117),u=r.Fg(function(a){return e.createElement("li",{key:""+a.url},e.createElement("div",
-{className:function(b){var c=["sidebar-card"];b&&c.push("current");a.compact&&c.push("compact");return c.join(" ")}(a.Ud)},e.createElement("div",{className:"badge-container"},e.createElement("div",{className:"badge "+a.tab.D},e.createElement("span",null,a.tab.D[0].toUpperCase()))),e.createElement("div",{className:"description"},e.createElement(l.oa,{va:a.url},e.createElement("span",{className:"entity-name"},a.title),a.compact?null:e.createElement("span",{className:"entity-type"},a.qg))),a.Ud?null:
-e.createElement("span",{className:"close-button"},e.createElement("i",{className:"fa fa-times",h:function(c){return b.Sa(c,a.tab.D,a.tab.uid)}}))))}),t=r.Eg(function(a){return e.createElement("ul",{className:"card-list"},a.cb?null:a.F.map(function(b,c){var d=a.b.all[b.D].value.find(function(a){return a.uid==b.uid});if(void 0===d)return null;var f="/edit/"+k.f[b.D]+"/"+b.uid,d="entity"===b.D?d.label:d.name,g=q.Mg(k.f[b.D]).replace("_"," ")+" "+b.uid;return e.createElement(u,{key:"tab-"+c,Ud:!a.list&&
-b.D===a.R&&b.uid==a.id,url:f,tab:b,title:d,qg:g,index:c,compact:a.compact})}))});G(a,e.s);a.prototype.Sa=function(a,b,c){h.Sa.I(b,c);a.stopPropagation();a.preventDefault();a.hh.stopImmediatePropagation()};a.prototype.K=function(){var a=this;return e.createElement("section",{id:"sidebar"},e.createElement(f.Id,{X:this.state.X,b:this.a.b,m:function(b){return a.i({X:b.currentTarget.value})}}),e.createElement("div",{className:"sidebar-toolbar"},e.createElement("button",{h:this.a.vf},e.createElement("i",
-{className:"fa fa-trash"})," Clear All"),e.createElement("button",{h:function(){return a.i({Xc:!a.state.Xc})}},e.createElement("i",{className:"fa fa-compress"})," Compact")),e.createElement("div",{className:"card-list-container"},e.createElement(t,{b:this.a.b,cb:this.a.cb,F:this.a.F,list:this.a.list,R:this.a.R,id:this.a.id,compact:this.state.Xc,ie:this.ie})))};d.Te=a},function(g,d,c){function a(){b.s.call(this);this.state={ac:[],he:0};this.mf=this.df.bind(this);e.yd.add(this.mf)}var b=c(0),e=c(3);
-G(a,b.s);a.prototype.df=function(a,b,c,e){e=void 0===e?3E3:e;var d=this,f=this.state.he;this.i({ac:this.state.ac.concat([{title:a,message:b,level:void 0===c?"warning":c,fh:e,id:f}]),he:f+1});setTimeout(function(){d.i({ac:d.state.ac.filter(function(a){return a.id!==f})})},e)};a.prototype.K=function(){return b.createElement("span",null,this.state.ac.map(function(a,c){return b.createElement("div",{key:"toast-"+a.id,style:{bottom:1+7*c+"em"},className:"toast "+a.level},b.createElement("div",{className:"title"},
-a.title),b.createElement("div",{className:"message"},a.message))}))};d.We=a},function(g,d,c){function a(){b.s.call(this);this.state={X:""}}var b=c(0),e=c(55),f=c(87);G(a,b.s);a.prototype.K=function(){if(this.a.cb)return b.createElement(e.Le,null);if(this.a.list)return b.createElement(f.Nc,{l:this.a.l,name:this.a.name,query:this.a.location.query,Of:this.a.R,b:this.a.b});var a=f.Kc;switch(this.a.R){case "entity":a=f.Lc;break;case "predicate":a=f.Oc;break;case "source":a=f.Qc;break;case "entity_type":a=
-f.Mc;break;case "search":a=f.Gc}return b.createElement("div",{className:"flex-fill workspace-outer-wrapper"},b.createElement("div",{className:"workspace-inner-wrapper flex-fill"},b.createElement(a,{l:this.a.l,b:this.a.b,id:this.a.id})))};d.Ze=a},function(g,d,c){var a=c(0),b=c(66);d.Dd=function(c){return a.createElement("div",{className:"date-selector"},a.createElement(b.Ee,{value:c.value,ia:c.m}))}},function(g,d,c){var a=c(0),b=c(7),e=c(1);d.Fe=function(c){var d=c.entities.map(function(a){return{key:a.label,
-value:a.uid}}),f=d.find(function(a){return a.value==c.value});void 0===f&&(f={key:"",value:""});return a.createElement(b.Pa,{options:d,typeName:"entity type",Ra:!1,value:f,ia:function(a){return c.m(a.value)},Ta:e.Fb})}},function(g,d,c){var a=c(0);d.Ke=function(b){return a.createElement("input",{type:"number",value:b.value,m:function(a){return b.m(a.target.value)}})}},function(g,d,c){function a(){e.s.call(this);this.state={$f:[]}}function b(a){l.N.apply(this,arguments)}var e=c(0),f=c(2),k=c(4),l=c(13),
-h=c(63),q=c(5);G(b,l.N);G(a,e.s);a.prototype.rc=function(){this.a.l.ha(k.da,f.f.M,(new k.da).u({c:this.a.c.uid,o:this.a.ae,valueType:this.a.c.V?"entity":this.a.c.J,lb:3}))};a.prototype.Vd=function(a){var b=this;if(null===a.uid)throw Error("Trying to delete a record with null id");this.a.l.Ha(k.da,f.f.M,a.uid).then(function(){b.a.m()})};a.prototype.je=function(a){this.a.l.ta(k.da,f.f.M,this.a.ae,a.B())};a.prototype.K=function(){var a=this;return e.createElement("section",null,e.createElement("h5",
-{className:"section-header"},this.a.c.name," ",e.createElement("i",{className:"fa fa-plus-circle add button","aria-hidden":"true",h:this.rc.bind(this),title:"Add new "+this.a.c.name+" record"}),e.createElement(q.ka,{b:this.a.b,uid:this.a.c.uid,D:"predicate"})),e.createElement("table",{className:"record-editing-table"},e.createElement("thead",null,e.createElement("tr",{className:"record-row title"},e.createElement("th",{className:"record-row-item uid"},"ID"),"source"!==this.a.c.J?e.createElement("th",
-{className:"record-row-item"},"Value"):null,e.createElement("th",{className:"record-row-item"},"Source"),e.createElement("th",{className:"record-row-item score"},"Score"),e.createElement("th",{className:"record-row-item score"},"Period"),e.createElement("th",{className:"record-row-item buttons"},"Actions"))),e.createElement("tbody",null,this.a.kb.map(function(c){return e.createElement(b,{key:"row-"+c.uid,value:c,m:a.je.bind(a),Cc:a.Vd.bind(a),aa:h.Pe,pc:{Wd:"predicates",Ib:a.a.Ib,entities:a.state.$f,
-b:a.a.b}})}))))};d.Oe=a},function(g,d,c){function a(a){if("entity"===a.value.valueType){var b=a.entities.find(function(b){return b.uid==a.value.value});return void 0!==b?f.createElement("span",null,b.label," ",f.createElement(p.ka,{b:a.b,uid:b.uid,D:"entity"})):f.createElement("em",null,"Missing Entity")}return"date"===a.value.valueType?z.vc(a.value.value):a.value.value}function b(a){switch(a.value.valueType){case "string":return f.createElement(q.Ve,{value:a.value.value||"",m:function(b){return a.m(Object.assign(a.value,
-{value:b}))}});case "date":return f.createElement(u.Dd,{value:a.value.value||"",m:function(b){return a.m(Object.assign(a.value,{value:b}))}});case "integer":return f.createElement(t.Ke,{value:a.value.value||"",m:function(b){return a.m(Object.assign(a.value,{value:b}))}});case "entity":return f.createElement(r.Fe,{value:a.value.value||"",m:function(b){return a.m(Object.assign(a.value,{value:b}))},entities:a.entities});default:return f.createElement("div",null,"Missing editor")}}function e(a){h.showModal.I({name:"source",
-complete:function(){},cancel:function(){console.log("cancel")},Y:{Mf:a}})}var f=c(0);g=c(13);d.N=g.N;var k=c(67),l=c(7),h=c(3),q=c(65),r=c(60),u=c(59),t=c(61),p=c(5),z=c(22);d.Pe=function(c){var d=c.value;if(null===d)throw Error("Should not be null!!");var g=c.Ib.find(function(a){return a.uid===d.source}),h={key:"",value:c.value.source};void 0!==g&&(h.key=g.name);return c.Ea?f.createElement("tr",{className:"record-row"},f.createElement("td",{className:"record-row-item uid"},c.value.uid),"source"!==
-d.valueType?f.createElement("td",{className:"record-row-item"},b(c)):null,f.createElement("td",{className:"record-row-item"},f.createElement(l.Pa,{options:c.Ib.map(function(a){return{key:a.name,value:a.uid}}),typeName:"source",value:h,ia:function(a){return c.m(Object.assign(c.value,{source:a.value}))},Ta:e})),f.createElement("td",{className:"record-row-item score"},f.createElement(k.Hd,{value:c.value.lb,readOnly:!1,m:function(a){return c.m(Object.assign(c.value,{lb:a}))}})),f.createElement("td",{className:"record-row-item period"},
-f.createElement(u.Dd,{value:c.value.Gb||"",m:function(a){return c.m(Object.assign(c.value,{Gb:a}))}})),f.createElement("td",{className:"record-row-item buttons"},f.createElement("button",null,f.createElement("i",{className:"fa fa-check",h:c.rb,"aria-hidden":"true"})),f.createElement("button",null,f.createElement("i",{className:"fa fa-times","aria-hidden":"true",h:c.tb})))):f.createElement("tr",{className:"record-row"},f.createElement("td",{className:"record-row-item uid"},"#",c.value.uid),"source"!==
-d.valueType?f.createElement("td",{className:"record-row-item"},a(c)):null,f.createElement("td",{className:"record-row-item"},h.key,0<h.key.length?f.createElement(p.ka,{b:c.b,uid:h.value,D:"source"}):null),f.createElement("td",{className:"record-row-item score"},f.createElement(k.Hd,{value:c.value.lb,readOnly:!0})),f.createElement("td",{className:"record-row-item period"},z.vc(c.value.Gb)),f.createElement("td",{className:"record-row-item buttons"},f.createElement("button",null,f.createElement("i",
-{className:"fa fa-pencil-square-o",title:"Edit",h:c.Yb,"aria-hidden":"true"})),f.createElement("button",null,f.createElement("i",{className:"fa fa-trash","aria-hidden":"true",h:c.Cc}))))}},function(g,d,c){function a(){e.s.call(this);this.state={Ia:function(){return!0}}}function b(a){l.N.apply(this,arguments)}var e=c(0),f=c(2),k=c(4),l=c(13),h=c(14),q=c(62),r=c(28),u=c(3);G(b,l.N);G(a,e.s);a.prototype.Vd=function(a){var b=this;if(null===a.uid)throw Error("Trying to delete a record with null id");this.a.l.Ha(k.da,
-f.f.M,a.uid).then(function(){b.a.m()})};a.prototype.je=function(a){this.a.l.ta(k.da,f.f.M,this.a.id,a.B())};a.prototype.rc=function(){var a=this.a.b.F.o.get("entity-"+this.a.id).value.o;this.a.b.all.H.value.find(function(b){return b.uid===a.A});var b=r.uc(a.A,this.a.b.all.H.value),c={name:"record",complete:function(){console.log("Records editor called complete")},cancel:function(){console.log("Records editor called cancel")},Y:{options:this.a.b.all.c.value.filter(function(a){return-1!==b.indexOf(a.domain)}).map(function(a){return{key:a.name,
-value:a.uid,za:a}}),$d:this.a.id,A:this.a.Gf}};u.showModal.I(c)};a.prototype.K=function(){var a=this,b=this.a.rd;return e.createElement("div",null,e.createElement("div",null,e.createElement("div",null,e.createElement("label",{className:"small"},"Records"),e.createElement("div",{style:{display:"flex"}},e.createElement("div",{style:{flex:"1"}},e.createElement(h.mc,{xc:function(a){return a.name},Fc:function(b){return a.i({Ia:b})}})),e.createElement("div",{style:{padding:"0.1em 0.4em",fontSize:"2em"}},
-e.createElement("i",{className:"fa fa-plus-circle add button","aria-hidden":"true",h:this.rc.bind(this),title:"Add new record"}))),e.createElement("div",null,Object.keys(this.a.kb).map(function(c){var d=b.find(function(a){if(null===a.uid)throw Error("encountered predicate with null id");return a.uid.toString()===c});if(void 0===d)throw Error("Could not find predicate");return a.state.Ia(d)?e.createElement(q.Oe,{b:a.a.b,key:"section-"+c,ae:a.a.id,l:a.a.l,Wd:"predicate",kb:a.a.kb[c],c:d,Ib:a.a.Ib,m:a.a.m}):
-null})))))};d.Qe=a},function(g,d,c){var a=c(0);d.Ve=function(b){return a.createElement("input",{type:"text",value:b.value,m:function(a){return b.m(a.target.value)}})}},function(g,d,c){function a(){var a=this;b.s.call(this);this.state={na:!1};void 0!==document&&(this.nf=function(){a.kd?a.kd=!1:a.i({na:!1})},document.body.addEventListener("click",this.nf))}var b=c(0),e=c(16),f=c(1),k=c(22);G(a,b.s);a.prototype.fd=function(){this.Ja?this.Ja=!1:this.i({na:!1})};a.prototype.hd=function(){this.Ja?this.Ja=
-!0:(this.zc=!0,this.i({na:!0}))};a.prototype.gd=function(){this.nd()&&!1===this.state.na?this.i({na:!0}):this.zc=!1};a.prototype.ne=function(a){var b=this;this.i({na:!1},function(){b.a.ia(a)})};a.prototype.nd=function(){var a=this.vd.Pg;return a.ownerDocument&&a===a.ownerDocument.activeElement};a.prototype.Vf=function(){this.kd=this.Ja=!0;console.log("clicked")};a.prototype.td=function(a){this.a.ia(a+this.a.value.substr(1))};a.prototype.zg=function(a){var b=9===this.a.value.length?this.a.value:"=XXXX0000";
-a=a.target.value.substr(0,4).replace(/[^0-9]/g,"");for(var c=a.length;4>c;c+=1)a+="X";this.a.ia(b.substr(0,1)+a+b.substr(5))};a.prototype.Sf=function(a){this.kd=!0;var b=9===this.a.value.length?this.a.value:"=XXXX0000";this.a.ia(b.substr(0,5)+a.target.value.substr(0,2)+b.substr(7))};a.prototype.Af=function(a){var b=9===this.a.value.length?this.a.value:"=XXXX0000";a=a.target.value.substr(0,2).replace(/[^0-9]/g,"");a=f.Yf(a,2,"0");this.a.ia(b.substr(0,7)+a)};a.prototype.K=function(){function a(a){return a===
-d?"range-option selected":"range-option"}var c=this,d=this.a.value.substr(0,1);-1===["<",">","="].indexOf(d)&&(d="=");var g=this.a.value.substr(1,4).replace(/X/g,""),u=this.a.value.substr(5,2),t="0"===this.a.value[7]?"0"===this.a.value[8]?"":this.a.value.substr(8,1):this.a.value.substr(7,2),p=k.vc(this.a.value);return b.createElement("div",{className:"combo-dropdown"},b.createElement("div",null,b.createElement("input",{type:"text",readOnly:!0,Xa:"datePickerDropDownInputBox",className:"search-input",
-value:p,Uf:this.fd.bind(this),Wf:this.hd.bind(this),h:this.gd.bind(this)})),this.state.na?b.createElement("div",{className:"dropdown"},b.createElement("div",{className:"date-picker-dropdown",qd:this.Vf.bind(this)},b.createElement("section",{className:"range-type"},b.createElement("div",{className:a("<"),h:function(){return c.td("<")}},"Before"),b.createElement("div",{className:a("="),h:function(){return c.td("=")}},"Exactly"),b.createElement("div",{className:a(">"),h:function(){return c.td(">")}},
-"After")),b.createElement("section",{className:"date-select"},b.createElement("div",{className:"date-selector day"},b.createElement("label",{className:"small"},"Day"),b.createElement("input",{type:"text",maxLength:2,value:t,m:this.Af.bind(this)})),b.createElement("div",{className:"date-selector month"},b.createElement("label",{className:"small"},"Month"),b.createElement("select",{m:this.Sf.bind(this),value:u},b.createElement("option",{value:"00"},"Unknown"),e.Tf().map(function(a,c){return b.createElement("option",
-{key:"option-"+a,value:f.Yf((c+1).toString(),2,"0")},a)}))),b.createElement("div",{className:"date-selector year"},b.createElement("label",{className:"small"},"Year"),b.createElement("input",{type:"text",maxLength:4,value:g,m:this.zg.bind(this)}))))):null)};d.Ee=a},function(g,d,c){var a=c(0),b=c(1);d.Hd=function(c){var d=[1,2,3,4,5];if(c.readOnly)return a.createElement("span",{className:"score-picker"},d.map(function(b){return a.createElement("i",{key:b,className:"fa fa-star"+(b>c.value?"-o":""),
-"aria-hidden":"true"})}));if(void 0===c.m)throw Error("An onChange handler is required");return a.createElement("span",{className:"score-picker editing"},b.reverse(d).map(function(b){return a.createElement("i",{key:b,className:"fa fa-star"+(b>c.value?"-o":""),h:function(){return c.m(b)},"aria-hidden":"true"})}))}},function(g,d,c){function a(){b.s.call(this);this.state={label:"",A:{key:"",value:""},Ld:[]}}var b=c(0),e=c(12);G(a,b.s);a.prototype.K=function(){var a=this;return b.createElement(e.yb,null,
-b.createElement("h2",null,b.createElement("i",{className:"fa fa-exclamation-triangle warning"})," Conflict: ",this.a.message),void 0!==this.a.qa.M&&0<this.a.qa.M.length?b.createElement("span",null,b.createElement("p",null,"The following records conflict with your request change:"),b.createElement("table",{className:"table"},b.createElement("thead",null,b.createElement("tr",null,b.createElement("th",null,"Entity"),b.createElement("th",null,"Predicate"),b.createElement("th",null,"Value"))),b.createElement("tbody",
-null,this.a.qa.M.map(function(c){var d=a.a.b.all.o.value.find(function(a){return a.uid==c.o}).label,e=a.a.b.all.c.value.find(function(a){return a.uid==c.c}).name;return b.createElement("tr",{key:"row-"+c.uid},b.createElement("td",null,d),b.createElement("td",null,e),b.createElement("td",null,c.value))})))):null,void 0!==this.a.qa.o&&0<this.a.qa.o.length?b.createElement("span",null,b.createElement("p",null,"The following entities conflict with your request change:"),b.createElement("table",{className:"table"},
-b.createElement("thead",null,b.createElement("tr",null,b.createElement("th",null,"Entity"))),b.createElement("tbody",null,this.a.qa.o.map(function(a){return b.createElement("tr",{key:"row-"+a.uid},b.createElement("td",null,a.label))})))):null,void 0!==this.a.qa.A&&0<this.a.qa.A.length?b.createElement("span",null,b.createElement("p",null,"The following entity types conflict with your request change:"),b.createElement("table",{className:"table"},b.createElement("thead",null,b.createElement("tr",null,
-b.createElement("th",null,"Entity Type"))),b.createElement("tbody",null,this.a.qa.A.map(function(a){return b.createElement("tr",{key:"row-"+a.uid},b.createElement("td",null,a.name))})))):null,void 0!==this.a.qa.source&&0<this.a.qa.source.length?b.createElement("span",null,b.createElement("p",null,"The following sources conflict with your request change:"),b.createElement("table",{className:"table"},b.createElement("thead",null,b.createElement("tr",null,b.createElement("th",null,"Sources"))),b.createElement("tbody",
-null,this.a.qa.source.map(function(a){return b.createElement("tr",{key:"row-"+a.uid},b.createElement("td",null,a.name))})))):null,b.createElement("div",{className:"block-buttons"},b.createElement("button",{h:function(){return a.a.cancel()}},"Cancel"),b.createElement("button",{h:function(){return a.a.complete("addToWorkspace")}},b.createElement("i",{className:"icon-list-add"}),"Cancel and add conflicting records to workspace"),b.createElement("button",{h:function(){return a.a.complete("deleteAll")}},
-b.createElement("i",{className:"fa fa-trash"})," Continue and delete all conflicting records")))};d.xe=a},function(g,d,c){function a(){b.s.call(this);this.state={label:"",A:{key:"",value:""},Ld:[]}}var b=c(0),e=c(12),f=c(4),k=c(2),l=c(7),h=c(1);G(a,b.s);a.prototype.Hc=function(){this.a.l.ha(f.Entity,k.f.o,(new f.Entity).u({label:this.state.label,A:this.state.A.value})).then(this.a.complete)};a.prototype.K=function(){var a=this;return b.createElement(e.yb,null,b.createElement("h2",null,"Create Entity"),
-b.createElement("label",{className:"small"},"Label"),b.createElement("input",{type:"text",value:this.state.label,Xa:function(a){null!==a&&a.focus()},name:"new-entity-name",className:"gap",m:function(b){return a.i({label:b.target.value})}}),b.createElement("label",{className:"small"},"Type"),b.createElement(l.Pa,{options:this.state.Ld.map(function(a){return{key:a.name,value:a.uid.toString()}}),typeName:"entity type",value:this.state.A,ia:function(b){return a.i({A:b})},Ta:h.Fb,Ra:!1}),b.createElement("button",
-{name:"cancel-modal",h:function(){return a.a.cancel()},className:"pull-left"},"Cancel"),b.createElement("button",{name:"create-entity",h:this.Hc.bind(this),className:"pull-right"},"Create Entity"))};d.Hc=a},function(g,d,c){function a(){b.s.call(this);this.state={Aa:""}}var b=c(0),e=c(12),f=c(4),k=c(2),l=c(17);G(a,b.s);a.prototype.xf=function(){this.a.l.ha(f.wa,k.f.H,(new f.wa).u({name:this.state.Aa})).then(this.a.complete)};a.prototype.md=function(a){null!==a?(a.focus(),this.ib=new l(a)):this.ib.Jb("return")};
-a.prototype.K=function(){var a=this;return b.createElement(e.yb,null,b.createElement("h2",null,"Create Entity Type"),b.createElement("label",{className:"small"},"Name"),b.createElement("input",{type:"text",value:this.state.Aa,Xa:this.md.bind(this),m:function(b){return a.i({Aa:b.target.value})}}),b.createElement("button",{h:function(){return a.a.cancel()},className:"pull-left"},"Cancel"),b.createElement("button",{h:this.xf.bind(this),className:"pull-right"},"Create Entity Type"))};d.ye=a},function(g,
-d,c){function a(){b.s.call(this);this.state={name:"",domain:{key:"",value:""},J:{key:"",value:""},sc:[],Dc:[]}}var b=c(0),e=c(12),f=c(27),k=c(4);c(30);var l=c(2);G(a,b.s);a.prototype.create=function(){var a=this,b=(new k.xa).u({name:this.state.name,domain:this.state.domain.value,J:this.state.J.value,V:"literal"!==this.state.J.za});this.a.l.ha(k.xa,l.f.c,b).then(function(c){b.uid=c[0];a.a.complete(b)})};a.prototype.K=function(){var a=this;return b.createElement(e.yb,null,b.createElement("h2",null,
-b.createElement("i",{className:"fa fa-plus","aria-hidden":"true"})," Create Property"),b.createElement("label",{className:"small"},"Name"),b.createElement("input",{type:"text",className:"gap",Xa:function(a){null!==a&&a.focus()},value:this.state.name,m:function(b){return a.i({name:b.target.value})}}),b.createElement(f.Gd,{domain:this.state.domain,J:this.state.J,ad:function(b){return a.i({domain:b})},sd:function(b){return a.i({J:b})},sc:this.state.sc,Dc:this.state.Dc,mode:"editAll"}),b.createElement("div",
-{className:"modal-toolbar"},b.createElement("button",{h:this.a.cancel,className:"pull-left"},"Cancel"),b.createElement("button",{h:this.create.bind(this),className:"pull-right"},"Create Property")))};d.ze=a},function(g,d,c){function a(){b.s.call(this);this.state={}}var b=c(0);c(4);c(2);c(3);G(a,b.s);a.prototype.K=function(){return null};a.lh=!0;d.Ae=a},function(g,d,c){function a(){b.s.call(this);this.state={Rd:{key:"",value:""},me:""}}var b=c(0),e=c(12),f=c(4),k=c(2),l=c(7),h=c(3);G(a,b.s);a.prototype.yf=
-function(){var a=this;h.showModal.I({name:"predicate",complete:function(b){console.log("Predicate editor called complete");a.oe({key:b.name,value:b.uid.toString(),za:b})},cancel:function(){console.log("Predicate editor called cancel")},Y:{ld:this.state.me,Zg:this.a.A}})};a.prototype.oe=function(a){var b=this;this.a.l.ha(f.da,k.f.M,(new f.da).u({c:a.za.uid,o:this.a.$d,valueType:a.za.V?"entity":a.za.J,lb:3})).then(function(a){return b.a.complete(a)}).catch(this.a.cancel)};a.prototype.K=function(){var a=
-this;return b.createElement(e.yb,null,b.createElement("h2",null,"Create Record"),b.createElement(l.Pa,{Xa:"comboDropDown",options:this.a.options,typeName:"predicate",value:this.state.Rd,ia:this.oe.bind(this),Ta:this.yf.bind(this),Ad:function(b){return a.i({me:b})}}))};d.Be=a},function(g,d,c){function a(){b.s.call(this);this.state={Aa:""}}var b=c(0),e=c(12),f=c(4),k=c(2),l=c(17);G(a,b.s);a.prototype.zf=function(){this.a.l.ha(f.pa,k.f.source,(new f.pa).u({name:this.state.Aa})).then(this.a.complete)};
-a.prototype.md=function(a){null!==a?(a.focus(),this.ib=new l(a)):(this.ib.Jb("return"),this.ib.Jb("escape"))};a.prototype.K=function(){var a=this;return b.createElement(e.yb,null,b.createElement("h2",null,"Create Source"),b.createElement("label",{className:"small"},"Name"),b.createElement("input",{type:"text",value:this.state.Aa,Xa:this.md.bind(this),m:function(b){return a.i({Aa:b.target.value})}}),b.createElement("button",{h:function(){return a.a.cancel()},className:"pull-left"},"Cancel"),b.createElement("button",
-{h:this.zf.bind(this),className:"pull-right"},"Create Source"))};a.Bf={Mf:""};d.Ce=a},function(g,d,c){function a(){e.s.call(this);this.state={entities:[],Ug:[],rd:[],$:[{c:-1,sort:"none",$a:"any",fe:!1,ab:""},{c:-1,sort:"none",$a:"any",fe:!1,ab:""},{c:-1,sort:"none",$a:"any",fe:!1,ab:""}],ke:[],A:{key:"Any",value:0}}}function b(a,b,c,d){return[0,1,2].map(function(f){var g={key:"",value:""};if(-1!==b[f].c){var l=a.find(function(a){return a.uid==b[f].c});void 0!==l&&(g.key=l.name);g.value=b[f].c}return e.createElement("td",
-{key:"col-"+f},e.createElement("div",{className:"list-combo-header"},e.createElement("div",{className:"combo-wrapper"},e.createElement(h.Pa,{value:g,typeName:"predicate",Ra:!1,ia:function(a){return c(f,{c:null===a?null:a.value})},options:a.map(function(a){return{key:a.name,value:a.uid.toString()}}),Ta:q.Fb,compact:!0})),e.createElement("div",{className:"order-wrapper"},e.createElement("i",{className:p[b[f].sort],h:function(){return d(f)}}))))})}var e=c(0),f=c(115),k=c(2),l=c(4),h=c(7),q=c(1),r=c(5),
-u=c(3),t=c(22),p={none:"fa fa-sort",asc:"fa fa-sort-asc",desc:"fa fa-sort-desc"};G(a,e.s);a.prototype.reload=function(){var a=this,b=this.state.$.filter(function(a){return-1!=a.c});this.a.l.hb(l.da,k.f.M,{c:b.map(function(a){return a.c}),o:this.a.b.all.o.value.map(function(a){return a.uid})}).then(function(b){return a.i({ke:b})})};a.prototype.sb=function(){u.showModal.I({name:"entity",complete:function(){},cancel:function(){console.log("cancel")},Y:{ld:""}})};a.prototype.zd=function(a,b){var c=q.Tc(this.state.$);
-c[a]=Object.assign(c[a],b);this.i({$:c},this.reload.bind(this))};a.prototype.hg=function(a){var b=q.Tc(this.state.$);switch(b[a].sort){case "none":b[a].sort="asc";break;case "asc":b[a].sort="desc";break;case "desc":b[a].sort="none"}this.i({$:b},this.reload.bind(this))};a.prototype.K=function(){var a=this,c=this.a.b.all.o.value,d=this.a.b.all.c.value,g=this.a.b.all.H.value,l=g.map(function(a){return{key:a.name,value:a.uid}}),c=c.map(function(b){var c=g.find(function(a){return a.uid===b.A}),d=a.state.ke.filter(function(a){return a.o===
-b.uid});return{uid:b.uid,label:b.label,A:c,$:a.state.$.map(function(b){var c="";if(void 0!==d&&-1!==b.c){var e=d.filter(function(a){return a.c==b.c});void 0!==e&&(c=e.map(function(b){return"date"===b.valueType?t.vc(b.value):"source"===b.valueType?null===b.value?"Not set":a.a.b.all.source.value.find(function(a){return a.uid===b.value}).name:"entity"===b.valueType?null===b.value?"Not set":a.a.b.all.o.value.find(function(a){return a.uid===b.value}).label:b.value}).join(", "));return c}})}}).filter(function(b){var c=
-!0;a.state.$.forEach(function(a,d){"contains"===a.$a&&0<a.ab.length&&null!==a.c&&-1===b.$[d].toLowerCase().indexOf(a.ab.toLowerCase())&&(c=!1);"exists"===a.$a&&null!==a.c&&0===b.$[d].length&&(c=!1);"similar"===a.$a&&null!==a.c&&0<a.ab.length&&(new f(b.$[d],a.ab)).Rg>=a.ab.length+2&&(c=!1)});return c}).sort(function(b,c){var d=0;a.state.$.forEach(function(a,e){"none"!==a.sort&&b.$[e]!==c.$[e]&&(d+=(b.$[e]>c.$[e]?1:-1)*Math.pow(10,3-e)*("asc"===a.sort?-1:1))});return d});return e.createElement("div",
-{className:"workspace-editor"},e.createElement("header",{className:"editor-header entity"},e.createElement("div",{className:"primary-toolbar"},e.createElement("div",{className:"main-toolbar"},e.createElement("h2",null,"All Entities ",e.createElement("i",{className:"fa fa-plus-circle add button",title:"Add new entity","aria-hidden":"true",h:this.sb.bind(this)}))))),e.createElement("section",{className:"editor-body"},e.createElement("table",{className:"table"},e.createElement("thead",null,e.createElement("tr",
-null,e.createElement("td",null,"#"),e.createElement("td",null,"Label"),e.createElement("td",null,"Type"),b(d,this.state.$,this.zd.bind(this),this.hg.bind(this))),e.createElement("tr",null,e.createElement("td",null),e.createElement("td",null),e.createElement("td",null,e.createElement(h.Pa,{value:this.state.A,typeName:"entity type",Ra:!1,ia:function(b){return a.i({A:b})},options:l,Ta:q.Fb,compact:!0})),this.state.$.map(function(b,c){return e.createElement("td",{key:"col-"+c},e.createElement("div",{className:"flex-fill"},
-e.createElement("div",null,e.createElement("select",{value:b.$a,className:"padded",m:function(b){return a.zd(c,{$a:b.target.value})}},e.createElement("option",{value:"any"},"Any"),e.createElement("option",{value:"exists"},"Exists"),e.createElement("option",{value:"contains"},"Contains"),e.createElement("option",{value:"similar"},"Similar"))),e.createElement("div",null,e.createElement("input",{type:"text",disabled:"any"===b.$a||"exists"===b.$a,m:function(b){return a.zd(c,{ab:b.target.value})},value:b.ab}))))}))),
-e.createElement("tbody",null,c.map(function(b){return e.createElement("tr",{key:"entity-"+b.uid},e.createElement("td",null,b.uid),e.createElement("td",null,b.label," ",e.createElement(r.ka,{b:a.a.b,uid:b.uid,D:"entity"})),e.createElement("td",null,b.A?b.A.name:""),[0,1,2].map(function(a){return e.createElement("td",{key:"col-val-"+a},b.$[a])}))})))))};d.Ge=a},function(g,d,c){function a(){b.s.call(this);this.state={Ia:function(){return!0}}}var b=c(0),e=c(5),f=c(3),k=c(14);G(a,b.s);a.prototype.sb=function(){f.showModal.I({name:"entity_type",
-complete:function(){},cancel:function(){console.log("cancel")},Y:{}})};a.prototype.K=function(){var a=this;return b.createElement("div",{className:"workspace-editor"},b.createElement("header",{className:"editor-header entity_type"},b.createElement("div",{className:"primary-toolbar"},b.createElement("div",{className:"main-toolbar"},b.createElement("h2",null,"All Entity Types ",b.createElement("i",{className:"fa fa-plus-circle add button","aria-hidden":"true",title:"Add new entity type",h:this.sb.bind(this)}))))),
-b.createElement("section",{className:"editor-body"},b.createElement(k.mc,{xc:function(a){return a.name},Fc:function(b){return a.i({Ia:b})}}),b.createElement("table",{className:"table gap"},b.createElement("thead",null,b.createElement("tr",null,b.createElement("td",null,"#"),b.createElement("td",null,"Name"),b.createElement("td",null,"Parent"),b.createElement("td",null,"Description"))),b.createElement("tbody",null,this.a.b.all.H.value.filter(this.state.Ia).map(function(c){return b.createElement("tr",
-{key:"entityType-"+c.uid},b.createElement("td",null,c.uid," ",b.createElement(e.ka,{b:a.a.b,uid:c.uid,D:"entity_type"})),b.createElement("td",null,c.name),b.createElement("td",null,c.parent),b.createElement("td",null,c.description))})))))};d.He=a},function(g,d,c){function a(){b.s.call(this);this.state={Ia:function(){return!0}}}var b=c(0),e=c(5),f=c(3),k=c(14);G(a,b.s);a.prototype.sb=function(){f.showModal.I({name:"predicate",complete:function(){},cancel:function(){console.log("cancel")},Y:{ld:""}})};
-a.prototype.K=function(){var a=this;return b.createElement("div",{className:"workspace-editor"},b.createElement("header",{className:"editor-header predicate"},b.createElement("div",{className:"primary-toolbar"},b.createElement("div",{className:"main-toolbar"},b.createElement("h2",null,"All Properties ",b.createElement("i",{className:"fa fa-plus-circle add button",title:"Add new property","aria-hidden":"true",h:this.sb.bind(this)}))))),b.createElement("section",{className:"editor-body"},b.createElement(k.mc,
-{xc:function(a){return a.name},Fc:function(b){return a.i({Ia:b})}}),b.createElement("table",{className:"table gap"},b.createElement("thead",null,b.createElement("tr",null,b.createElement("td",null,"#"),b.createElement("td",null,"Label"),b.createElement("td",null,"Domain"),b.createElement("td",null,"Range"))),b.createElement("tbody",null,this.a.b.all.c.value.filter(this.state.Ia).map(function(c){var d=a.a.b.all.H.value.find(function(a){return a.uid===c.domain}),f=c.V?a.a.b.all.H.value.find(function(a){return a.uid===
-c.J}):c.J;return b.createElement("tr",{key:"predicate-"+c.uid},b.createElement("td",null,c.uid," ",b.createElement(e.ka,{b:a.a.b,uid:c.uid,D:"predicate"})),b.createElement("td",null,c.name),b.createElement("td",null,d?d.name:""),b.createElement("td",null,c.V?f?f.name:"":f))})))))};d.Me=a},function(g,d,c){function a(){b.s.call(this);this.state={Ia:function(){return!0},mode:"list"}}var b=c(0),e=c(5),f=c(3),k=c(14);G(a,b.s);a.prototype.sb=function(){f.showModal.I({name:"source",complete:function(){},
-cancel:function(){console.log("cancel")},Y:{}})};a.prototype.K=function(){var a=this;return b.createElement("div",{className:"workspace-editor"},b.createElement("header",{className:"editor-header source"},b.createElement("div",{className:"primary-toolbar"},b.createElement("div",{className:"main-toolbar"},b.createElement("h2",null,"All Sources ",b.createElement("i",{className:"fa fa-plus-circle add button","aria-hidden":"true",title:"Add new source",h:this.sb.bind(this)})))),b.createElement("div",
-{className:"secondary-toolbar"},b.createElement("div",{className:"tab-bar"},b.createElement("div",{h:function(){return a.i({mode:"list"})}},"LIST"),b.createElement("div",{h:function(){return a.i({mode:"tree"})}},"TREE")))),b.createElement("section",{className:"editor-body"},b.createElement(k.mc,{xc:function(a){return a.name},Fc:function(b){return a.i({Ia:b})}}),"list"===this.state.mode?b.createElement("table",{className:"table gap"},b.createElement("thead",null,b.createElement("tr",null,b.createElement("td",
-null,"#"),b.createElement("td",null,"Name"),b.createElement("td",null,"Parent"))),b.createElement("tbody",null,this.a.b.all.source.value.filter(this.state.Ia).map(function(c){return b.createElement("tr",{key:"source-"+c.uid},b.createElement("td",null,c.uid," ",b.createElement(e.ka,{b:a.a.b,uid:c.uid,D:"source"})),b.createElement("td",null,c.name),b.createElement("td",null,c.parent))}))):null))};d.Ue=a},function(g,d,c){var a=c(0),b=c(7),e=c(2);d.Id=function(c,d){var f=c.b.all.o.value.map(function(a){return{key:a.label,
-value:a.uid,za:{Ac:e.f.o}}}),g=c.b.all.H.value.map(function(a){return{key:a.name,value:a.uid,za:{Ac:e.f.H}}}),k=c.b.all.c.value.map(function(a){return{key:a.name,value:a.uid,za:{Ac:e.f.c}}});c=c.b.all.source.value.map(function(a){return{key:a.name,value:a.uid,za:{Ac:e.f.source}}});return a.createElement("span",null,a.createElement("div",{className:"input-addon-formgroup"},a.createElement("span",{className:"input-addon-icon"},a.createElement("i",{className:"fa fa-search fa-fw"})),a.createElement(b.Pa,
-{value:{key:"",value:""},ia:function(a){d.ma.ub("/edit/"+a.za.Ac+"/"+a.value)},typeName:"all",options:f.concat(g,k,c),Ra:!1,Ta:function(){}})))};d.Id.Ab={ma:a.zb.object.Eb}},function(g,d,c){var a=c(0);d.Gc=function(){return a.createElement("div",{className:"workspace-editor"},a.createElement("h2",null,"Advanced Search"))}},function(g,d,c){var a=c(0);d.Kc=function(){return a.createElement("div",{className:"workspace-editor"},a.createElement("h2",null,"There is nothing here"))}},function(g,d,c){function a(){f.s.call(this);
-this.state={Rd:{key:"test",value:""},Ng:""}}function b(a){p.N.apply(this,arguments)}function e(a){p.N.apply(this,arguments)}var f=c(0),k=c(64),l=c(2),h=c(4),q=c(1),r=c(3),u=c(5),t=c(28),p=c(15),z=c(19);G(e,p.N);G(b,p.N);G(a,f.s);a.prototype.ra=function(){var a=this;this.a.l.Ha(h.Entity,l.f.o,this.a.id).then(function(){r.Sa.I("entity",a.a.id);a.context.ma.ub("/edit/notfound")}).catch(function(b){b.data.data.then(function(b){r.showModal.I({name:"conflict_resolution",cancel:function(){},complete:function(c){"addToWorkspace"===
-c&&(b.M.forEach(function(a){r.ea.I("entity",a.o)}),b.o.forEach(function(a){r.ea.I("entity",a.uid)}));"deleteAll"===c&&Promise.all(b.M.map(function(b){return a.a.l.Ha(h.da,l.f.M,b.uid)})).then(function(){a.ra()})},Y:{qa:b,message:"Deleting Entity"}})})})};a.prototype.rc=function(){var a=this.a.b.F.o.get("entity-"+this.a.id).value.o,b=this.a.b.all.H.value.find(function(b){return b.uid===a.A}),c=t.uc(a.A,this.a.b.all.H.value),b={name:"record",complete:function(){console.log("Records editor called complete")},
-cancel:function(){console.log("Records editor called cancel")},Y:{options:this.a.b.all.c.value.filter(function(a){return-1!==c.indexOf(a.domain)}).map(function(a){return{key:a.name,value:a.uid,za:a}}),$d:this.a.id,A:b.uid}};r.showModal.I(b)};a.prototype.update=function(a){this.a.l.L(h.Entity,l.f.o,this.a.id,a)};a.prototype.K=function(){var a=this,c=this.a.b.F.o.get("entity-"+this.a.id).value.o,d=this.a.b.all.H.value.find(function(a){return a.uid===c.A}),g=this.a.b.all.o.value,h=t.uc(c.A,this.a.b.all.H.value),
-l=this.a.b.all.c.value.filter(function(a){return-1!==h.indexOf(a.domain)}),r=this.a.b.all.source.value,S=q.ed(this.a.b.F.o.get("entity-"+this.a.id).value.kb,"predicate");l.map(function(a){return{key:a.name,value:a.uid,za:a}});var K="";if(null!==g&&void 0!==c.parent){var L=g.find(function(a){return a.uid===c.parent});void 0!==L&&(K=L.label)}return f.createElement("div",{className:"workspace-editor"},f.createElement("header",{className:"editor-header entity"},f.createElement("div",{className:"primary-toolbar"},
-f.createElement("div",{className:"main-toolbar"},f.createElement("i",{className:"fa fa-cube item-icon"}),f.createElement(e,{value:c.label,aa:p.ec,m:function(b){return a.update({label:b})}})),f.createElement("div",{className:"sub-toolbar"},f.createElement("i",{className:"fa fa-trash delete button","aria-hidden":"true",h:this.ra.bind(this)}),f.createElement("i",{className:"fa fa-clone button","aria-hidden":"true",h:function(){return console.log("copy")}})))),f.createElement("section",{className:"editor-body"},
-f.createElement("div",{className:"flex-fill"},f.createElement("div",{className:"flex-fill"},f.createElement("div",null,f.createElement("label",{className:"small"},"Type"),d.name," ",f.createElement(u.ka,{b:this.a.b,uid:d.uid,D:"entity_type"}))),f.createElement("div",{style:{flex:1}},f.createElement("label",{className:"small"},"Parent"),f.createElement(b,{value:{key:K,value:c.parent},aa:z.Ic,m:function(b){return a.update({parent:b.value})},pc:{Vc:{options:g.map(function(a){return{key:a.label,value:a.uid}}),
-typeName:"Entity"}}}),null!==c.parent?f.createElement(u.ka,{b:this.a.b,D:"entity",uid:c.parent}):null)),f.createElement("div",{className:"edit-group"},f.createElement(k.Qe,{Wd:"predicates",Tg:!0,id:this.a.id,l:this.a.l,kb:S,m:function(){},rd:l,Ib:r,Gf:d.uid,b:this.a.b}))))};a.Ab={ma:f.zb.object.Eb};d.Lc=a},function(g,d,c){function a(){f.s.call(this);this.state={}}function b(a){r.N.apply(this,arguments)}function e(a){r.N.apply(this,arguments)}var f=c(0),k=c(21),l=c(2),h=c(4),q=c(5),r=c(15),u=c(20),
-t=c(19),p=c(3);G(e,r.N);G(b,r.N);G(a,f.s);a.prototype.update=function(a){var b=this,c=this.a.b.F.H.get("entity_type-"+this.a.id).value;this.a.l.L(h.wa,l.f.H,this.a.id,a).then(function(){return b.i({A:Object.assign({},c,a)})})};a.prototype.Yc=function(){var a=this.a.b.F.H.get("entity_type-"+this.a.id).value,a=(new h.wa).u(Object.assign({},a.B(),{name:"Copy of "+a.name}));this.a.l.ha(h.wa,l.f.H,a).then(function(a){a=F(a).next().value;p.ea.I("entity_type",a)})};a.prototype.ra=function(){var a=this;this.a.l.Ha(h.wa,
-l.f.H,this.a.id).then(function(){return a.context.ma.ub("/edit/notfound")}).catch(function(a){a.data.data.then(function(a){p.showModal.I({name:"conflict_resolution",cancel:function(){},complete:function(b){"addToWorkspace"===b&&(a.A.forEach(function(a){p.ea.I("entity_type",a.uid)}),a.c.forEach(function(a){p.ea.I("predicate",a.uid)}),a.o.forEach(function(a){p.ea.I("entity",a.uid)}))},Y:{qa:a,message:"Deleting Entity Type"}})})})};a.prototype.Zc=function(){p.showModal.I({name:"entity",complete:function(a){a=
-F(a).next().value;p.ea.I("entity",a)},cancel:function(){console.log("cancel")},Y:{ld:"",bh:this.a.id}})};a.prototype.K=function(){var a=this,c=this.a.b.F.H.get("entity_type-"+this.a.id).value,d=this.a.b.all.H.value,g="";if(null!==d&&void 0!==c.parent){var h=d.find(function(a){return a.uid===c.parent});void 0!==h&&(g=h.name)}return f.createElement("div",{className:"workspace-editor"},f.createElement("header",{className:"editor-header entity_type"},f.createElement("div",{className:"primary-toolbar"},
-f.createElement("div",{className:"main-toolbar"},f.createElement("div",{className:"bread-crumbs"},c.Da.map(function(b){return f.createElement("span",{key:"breadcrumb-"+b.uid},f.createElement("span",null,"  ",b.name," ",f.createElement(q.ka,{b:a.a.b,D:"entity_type",uid:b.uid})," "),f.createElement("i",{className:"fa fa-angle-right"}))})),f.createElement("i",{className:"fa fa-tag item-icon"}),f.createElement(e,{value:c.name,aa:r.ec,m:function(b){return a.update({name:b})}})),f.createElement("div",{className:"sub-toolbar"},
-f.createElement("i",{className:"fa fa-plus add button","aria-hidden":"true",h:this.Zc.bind(this)}),f.createElement("i",{className:"fa fa-trash delete button","aria-hidden":"true",h:this.ra.bind(this)}),f.createElement("i",{className:"fa fa-clone button","aria-hidden":"true",h:this.Yc.bind(this)})))),f.createElement("section",{className:"editor-body"},f.createElement("div",{className:"edit-group"},f.createElement("label",{className:"small"},"Parent"),f.createElement(b,{value:null===c.parent?null:{key:g,
-value:c.parent},aa:t.Ic,m:function(b){return a.update({parent:null===b?null:b.value})},pc:{Vc:{options:d.map(function(a){return{key:a.name,value:a.uid}}),typeName:"EntityType"}}}),null!==c.parent?f.createElement(q.ka,{D:"entity_type",b:this.a.b,uid:c.parent}):null),f.createElement("div",{className:"edit-group"},f.createElement("label",{className:"small"},"Description"),f.createElement(e,{value:c.description,aa:u.Jc,m:function(b){return a.update({description:b})}})),f.createElement("div",{className:"edit-group"},
-f.createElement(e,{value:c.W,aa:k.Pc,m:function(b){return a.update({sameAs:b})}})),f.createElement("div",null,f.createElement("h4",null,"Direct Children"),f.createElement("ul",null,c.children.map(function(b){return a.a.b.all.H.value.find(function(a){return a.uid===b})}).map(function(b){return f.createElement("li",{key:"dc-"+b.name},b.name," ",f.createElement(q.ka,{D:"entity_type",b:a.a.b,uid:b.uid}))})))))};a.Ab={ma:f.zb.object.Eb};d.Mc=a},function(g,d,c){var a=c(0),b=c(75),e=c(77),f=c(78),k=c(76);
-d.Nc=function(c){return a.createElement("div",{className:"workspace-editor object-list"},function(){switch(c.Of){case "entity":return a.createElement(b.Ge,{l:c.l,query:c.query,b:c.b});case "source":return a.createElement(f.Ue,{l:c.l,b:c.b});case "predicate":return a.createElement(e.Me,{l:c.l,b:c.b});case "entity_type":return a.createElement(k.He,{l:c.l,b:c.b})}}())}},function(g,d,c){function a(){e.s.call(this);this.state={kb:[]}}function b(a){r.N.apply(this,arguments)}var e=c(0),f=c(10),k=c(21),l=
-c(2),h=c(3),q=c(4),r=c(15),u=c(20),t=c(27),p=c(30);G(b,r.N);G(a,e.s);a.prototype.cc=function(a,b,c){c=void 0===c?null:c;var d=this.a.b.F.c.get("predicate-"+this.a.id).value;if(null===d)console.warn("Tried to edit unready predicate");else{c=null===c?d.V:c;var e={};this.a.l.L(q.xa,l.f.c,d.uid,(e[a]=b,e.V=c,e))}};a.prototype.Yc=function(){var a=this.a.b.F.c.get("predicate-"+this.a.id).value,a=(new q.xa).u(Object.assign({},a.B(),{name:"Copy of "+a.name}));this.a.l.ha(q.xa,l.f.c,a).then(function(a){a=
-F(a).next().value;h.ea.I("predicate",a)})};a.prototype.ra=function(){var a=this;this.a.l.Ha(q.xa,l.f.c,this.a.id).then(function(){return a.context.ma.ub("/edit/notfound")}).catch(function(b){b.data.data.then(function(b){h.showModal.I({name:"conflict_resolution",cancel:function(){},complete:function(c){"addToWorkspace"===c&&b.forEach(function(a){h.ea.I("entity",a.o)});"deleteAll"===c&&Promise.all(b.M.map(function(b){return a.a.l.Ha(q.da,l.f.M,b.uid)})).then(function(){a.ra()})},Y:{qa:b,message:"Deleting Predicate"}})})})};
-a.prototype.K=function(){var a=this,c=this.a.b.F.c.get("predicate-"+this.a.id).value,d=this.a.b.all.H.value,g=d.find(function(a){return a.uid==c.domain}),h="";void 0!==g&&(h=g.name);var g={key:h,value:c.domain.toString()},h={key:"",value:c.J.toString()},l=c.V?d.find(function(a){return a.uid==c.J}):p.ge.find(function(a){return a.value===c.J});void 0!==l&&(h.key=l.name);d=d.map(function(a){if(null===a.uid)throw Error("Encountered entity type with no id!");return{key:a.name,value:a.uid.toString()}});
-l=p.ge.map(function(a){return{key:a.name,value:a.value,za:"literal"}});return e.createElement("div",{className:"workspace-editor"},e.createElement("header",{className:"editor-header predicate"},e.createElement("div",{className:"primary-toolbar"},e.createElement("div",{className:"main-toolbar"},e.createElement("i",{className:"fa fa-long-arrow-right item-icon"}),e.createElement(b,{value:c.name,aa:r.ec,m:function(b){return a.cc("name",b)}})),e.createElement("div",{className:"sub-toolbar"},e.createElement("i",
-{className:"fa fa-trash delete button","aria-hidden":"true",h:this.ra.bind(this)}),e.createElement("i",{className:"fa fa-clone button","aria-hidden":"true",h:this.Yc.bind(this)})))),e.createElement("section",{className:"editor-body"},e.createElement("div",null,e.createElement(f.oa,{va:"/edit/entity?col1="+this.a.id+",exists"},"Uses: ",this.state.kb.length)),e.createElement("div",{className:"edit-group"},e.createElement("label",{className:"small"},"Description"),e.createElement(b,{value:c.description,
-aa:u.Jc,m:function(b){return a.cc("description",b)}})),e.createElement("div",{className:"edit-group"},e.createElement("label",{className:"small"},"Typing"),e.createElement(t.Gd,{domain:g,J:h,ad:function(b){return a.cc("domain",b.value)},sd:function(b){return a.cc("range",b.value,"literal"!==b.za)},mode:"editSingle",sc:d,Dc:l.concat(d)})),e.createElement("div",null,e.createElement(b,{value:c.W,aa:k.Pc,m:function(b){return a.cc("sameAs",b)}}))))};a.Ab={ma:e.zb.object.Eb};d.Oc=a},function(g,d,c){function a(){f.s.call(this);
-this.state={Ca:{}}}function b(a){q.N.apply(this,arguments)}function e(a){q.N.apply(this,arguments)}var f=c(0),k=c(21),l=c(2),h=c(4),q=c(15),r=c(20),u=c(19);c(1);var t=c(3),p=c(5);G(e,q.N);G(b,q.N);G(a,f.s);a.prototype.Bd=function(a,b){var c=this.a.b.F.source.get("source-"+this.a.id).value.source,d={};this.a.l.L(h.pa,l.f.source,c.uid,(d[a]=b,d))};a.prototype.tg=function(a,b){var c=this,d=this.a.b.F.source.get("source-"+this.a.id).value.source,e={order:["source","element"],values:{source:this.a.id,
-element:a.uid}};void 0!==d.Ca[a.name]&&void 0!==d.Ca[a.name].values.find(function(a){return a.source===c.a.id})?this.a.l.L(h.Fa,l.f.Z,e,(new h.Fa).u({uid:e,element:d.Ca[a.name].Sg,source:this.a.id,value:b})):this.a.l.ha(h.Fa,l.f.Z,(new h.Fa).u({uid:e,value:b}))};a.prototype.ra=function(){var a=this;this.a.l.Ha(h.pa,l.f.source,this.a.id).then(function(){return a.context.ma.ub("/edit/notfound")}).catch(function(b){b.data.data.then(function(b){t.showModal.I({name:"conflict_resolution",cancel:function(){},
-complete:function(c){"addToWorkspace"===c&&b.source.forEach(function(a){t.ea.I("source",a.uid)});"deleteAll"===c&&Promise.all(b.source.map(function(b){return a.a.l.Ha(h.pa,l.f.source,b.uid)})).then(function(){a.ra()})},Y:{qa:b,message:"Deleting Source"}})})})};a.prototype.wf=function(){var a=this.a.b.F.source.get("source-"+this.a.id).value.source,a=(new h.pa).u(Object.assign({},a.B(),{name:"Child of "+a.name,parent:this.a.id}));this.a.l.ha(h.pa,l.f.source,a).then(function(a){a=F(a).next().value;t.ea.I("source",
-a)})};a.prototype.Zc=function(){var a={name:"preset_record",complete:function(a){a=F(a).next().value;t.ea.I("entity",a)},cancel:function(){},Y:{source:this.a.b.F.source.get("source-"+this.a.id).value.source}};t.showModal.I(a)};a.prototype.K=function(){var a=this,c=this.a.b.F.source.get("source-"+this.a.id).value.source,d=this.a.b.all.source.value,g="";if(null!==d&&void 0!==c.parent){var h=d.find(function(a){return a.uid===c.parent});void 0!==h&&(g=h.name)}return f.createElement("div",{className:"workspace-editor"},
-f.createElement("header",{className:"editor-header source"},f.createElement("div",{className:"primary-toolbar"},f.createElement("div",{className:"main-toolbar"},f.createElement("div",{className:"bread-crumbs"},c.Da.slice().reverse().map(function(b){return a.a.b.all.source.value.find(function(a){return a.uid===b})}).map(function(b){return f.createElement("span",{key:"breadcrumb-"+b.uid},f.createElement("span",null,"  ",b.name," ",f.createElement(p.ka,{b:a.a.b,D:"source",uid:b.uid})," "),f.createElement("i",
-{className:"fa fa-angle-right"}))})),f.createElement("i",{className:"fa fa-sun-o item-icon"}),f.createElement(e,{value:c.name,aa:q.ec,m:function(b){return a.Bd("name",b)}})),f.createElement("div",{className:"sub-toolbar"},f.createElement("i",{className:"fa fa-plus add button","aria-hidden":"true",h:this.Zc.bind(this)}),f.createElement("i",{className:"fa fa-trash delete button","aria-hidden":"true",h:function(){return a.ra()}}),f.createElement("i",{className:"fa fa-arrow-circle-o-down button","aria-hidden":"true",
-h:this.wf.bind(this)})))),f.createElement("section",{className:"editor-body"},f.createElement("div",{className:"edit-group"},f.createElement("label",{className:"small"},"Parent"),f.createElement(b,{value:{key:g,value:c.parent},aa:u.Ic,m:function(b){return a.Bd("parent",b.value)},pc:{Vc:{options:d.map(function(a){return{key:a.name,value:a.uid}}),typeName:"Source"}}}),null!==c.parent?f.createElement(p.ka,{b:this.a.b,D:"source",uid:c.parent}):null),f.createElement("div",{className:"edit-group"},f.createElement(e,
-{value:c.W,aa:k.Pc,m:function(b){return a.Bd("sameAs",b)}})),this.a.b.all.Zd.value.elements.map(function(b){var d=c.Ca.hasOwnProperty(b.name)?c.Ca[b.name].values:[{source:a.a.id,value:""}],g=d[0].source==a.a.id?d[0].value:"";return f.createElement("div",{key:b.name+"-edit"},f.createElement("h5",{className:"section-header"},b.name," ",f.createElement("small",null,f.createElement("a",{href:b.url},b.uri))),f.createElement("p",{className:"element-description"},b.description),f.createElement("ul",null,
-d.map(function(c){return c.source!=a.a.id?f.createElement("li",{key:b.uid+"-"+c.source},a.a.b.all.source.value.find(function(a){return a.uid===c.source}).name,": ",c.value):null})),f.createElement(e,{value:g,aa:r.Jc,m:function(c){return a.tg(b,c)}}))}),f.createElement("div",null,f.createElement("h4",null,"Direct Children"),f.createElement("ul",null,c.children.map(function(b){return a.a.b.all.source.value.find(function(a){return a.uid===b})}).map(function(b){return f.createElement("li",{key:"dc-"+
-b.uid},b.name," ",f.createElement(p.ka,{D:"source",b:a.a.b,uid:b.uid}))})))))};a.Ab={ma:f.zb.object.Eb};d.Qc=a},function(g,d,c){g=c(81);d.Kc=g.Kc;g=c(82);d.Lc=g.Lc;g=c(83);d.Mc=g.Mc;g=c(86);d.Qc=g.Qc;g=c(85);d.Oc=g.Oc;g=c(80);d.Gc=g.Gc;c=c(84);d.Nc=c.Nc},function(g,d){function c(){}c.prototype.u=function(a){this.name=a.name;this.uid=a.uid;this.cd=a.cd;this.description=a.description;this.Wc=a.Wc;return this};c.prototype.B=function(){return this};d.Element=c},function(g,d){function c(){}c.prototype.u=
-function(a){this.name=a.name;this.uid=a.uid;this.uri=a.uri;this.description=a.description;this.elements=a.elements;return this};c.prototype.B=function(){return this};d.fb=c},function(g,d){function c(){}c.prototype.u=function(a){this.uid=a.uid;this.A=a.A;this.label=a.label;this.parent=a.parent;this.O=a.O;this.G=a.G;this.C=a.C;return this};c.prototype.B=function(){return this};d.Entity=c},function(g,d){function c(){}c.prototype.u=function(a){this.uid=a.uid;this.name=a.name;this.description=a.description;
-this.icon=a.icon;this.Uc=a.Uc;this.W=a.W;this.parent=a.parent;this.Da=a.Da;this.O=a.O;this.children=a.children;this.G=a.G;this.C=a.C;return this};c.prototype.B=function(){return this};d.wa=c},function(g,d){function c(){}c.prototype.B=function(){return this};c.prototype.u=function(a){this.uid=a.uid;this.domain=a.domain;this.J=a.J;this.name=a.name;this.description=a.description;this.W=a.W;this.ud=a.ud;this.V=a.V;this.O=a.O;this.G=a.G;this.C=a.C;return this};d.xa=c},function(g,d){function c(){this.valueType=
-null}c.prototype.u=function(a){this.uid=a.uid;this.source=a.source;this.c=a.c;this.o=a.o;this.lb=a.lb;this.valueType=a.valueType;this.value=a.value;this.O=a.O;this.Gb=a.Gb;this.G=a.G;this.C=a.C;return this};c.prototype.B=function(){return this};d.da=c},function(g,d){function c(){}c.prototype.B=function(){return this};c.prototype.u=function(a){this.name=a.name;this.uid=a.uid;this.Ca=a.Ca;this.W=a.W;this.parent=a.parent;this.Da=a.Da;this.children=a.children;this.O=a.O;this.G=a.G;this.C=a.C;return this};
-d.pa=c},function(g,d){function c(){}c.prototype.u=function(a){this.uid=a.uid;this.value=a.value;this.O=a.O;this.G=a.G;this.C=a.C;return this};c.prototype.B=function(){return this};d.Fa=c},function(g,d,c){var a=c(0),b=c(10),e=c(31);d.ue=function(c){return a.createElement("div",{className:"page"},a.createElement("section",null,a.createElement("h1",null,"Welcome to the admin pages"),a.createElement("ul",{className:"links-list"},a.createElement("li",null,a.createElement(b.oa,{va:"/users"},a.createElement("i",
-{className:"fa fa-users"})," Manage Users")),a.createElement("li",null,a.createElement(b.oa,{va:"/app"},a.createElement("i",{className:"fa fa-download"})," Download app")),a.createElement("li",null,a.createElement("a",{href:"/admin/snapshot"},a.createElement("i",{className:"fa fa-cloud-download"})," Download database snapshot")),a.createElement("li",null,a.createElement(b.oa,{va:"/upload"},a.createElement("i",{className:"fa fa-cloud-upload"})," Upload database file")))),null!==c.ua?a.createElement(e.Jd,
-{ua:c.ua}):null)}},function(g,d,c){var a=c(0);d.we=function(){return a.createElement("div",{className:"page"},a.createElement("section",null,a.createElement("h1",null,"App Download"),a.createElement("p",null,"Use this VRE without an internet connection! Simply download the app for your platform and then download a database snapshot from the main page. When you are ready, use the upload tool to merge your offline copy with the server."),a.createElement("ul",{className:"links-list"},a.createElement("li",
-null,a.createElement("a",{href:"https://github.com/digihum/imperial-entanglements-app/raw/master/bin/imperial-entanglements%20Setup%200.1.1.exe"},a.createElement("i",{className:"fa fa-windows"})," Windows")),a.createElement("li",null,a.createElement("a",{href:"https://github.com/digihum/imperial-entanglements-app/raw/master/bin/mac/imperial-entanglements-0.1.1.dmg"},a.createElement("i",{className:"fa fa-apple"})," Mac")),a.createElement("li",null,a.createElement("a",{href:"https://github.com/digihum/imperial-entanglements-app/raw/master/bin/imperial-entanglements-0.1.1-x86_64.AppImage"},
-a.createElement("i",{className:"fa fa-linux"})," Linux")))))}},function(g,d,c){var a=c(0);d.De=function(){return a.createElement("div",{className:"page"},a.createElement("section",null,a.createElement("h1",null,"This is the database upload page"),a.createElement("input",{type:"file",id:"input",accept:".sqlite"}),a.createElement("button",{h:function(){alert("Work in process")}},"Upload")))}},function(g,d,c){function a(){e.s.call(this);this.state={F:[],ee:"undefined"!==typeof window,ba:[],b:p.Tc(J.Df),
-od:!0,cb:!1,id:NaN,list:!1};this.jf=this.ea.bind(this);this.hf=this.Sa.bind(this);this.gf=this.cf.bind(this);this.kf=this.pf.bind(this);this.lf=this.Hb.bind(this);t.ea.add(this.jf);t.Sa.add(this.hf);t.showModal.add(this.gf);t.vb.add(this.kf);t.Hb.add(this.lf)}var b=this&&this.Rc||Object.assign||function(a){for(var b,c=1,d=arguments.length;c<d;c++){b=arguments[c];for(var e in b)Object.prototype.hasOwnProperty.call(b,e)&&(a[e]=b[e])}return a},e=c(0),f=c(34),k=c(16),l=c(2),h=c(4),q=c(56),r=c(58),u=c(57),
-t=c(3),p=c(1),z=c(71),x=c(73),D=c(72),P=c(74),Q=c(69),B=c(70),R=c(68),J=c(54);G(a,e.s);a.prototype.pf=function(){this.reload(this.a,!0)};a.prototype.reload=function(a,b){b=void 0===b?!1:b;var c=this,d=parseInt(a.location.pathname.substr(a.pathname.length+1)),e=a.R;-1===["entity","source","predicate","entity_type","notfound"].indexOf(e)&&this.context.ma.ub("/edit/notfound");this.state.cb&&!b?this.i({id:d,list:0===a.location.pathname.substr(a.pathname.length+1).length}):this.i({cb:!0,od:this.state.id!==
-d&&!(isNaN(this.state.id)&&isNaN(d))||this.a.R!==e,id:d,list:0===a.location.pathname.substr(a.pathname.length+1).length},function(){var b=Promise.resolve(p.Tc(J.Ef));if(c.state.ee){var d=window.localStorage.getItem("open_tabs");if(null!==d){c.state.F=JSON.parse(d);c.state.list||-1===["entity","predicate","entity_type","source"].indexOf(a.R)||void 0!==p.find(c.state.F,function(b){return b.D===a.R&&b.uid==c.state.id})||(c.state.F.push({D:a.R,uid:c.state.id}),c.Xb());var e=p.ed(c.state.F,"tabType"),
-b=Promise.all(Object.keys(e).map(function(b){return Promise.all(e[b].map(function(b){return c.Pf(b.D,b.uid).then(function(a){var c={};return c[b.D+"-"+b.uid]={value:a,Va:k()},c}).catch(function(){console.warn("Attempted to load missing resource "+b.D+"/"+b.uid);c.Sa(b.D,b.uid);b.D===a.R&&b.uid===c.state.id&&c.context.ma.ub("/edit/notfound")})})).then(function(a){var c={};return c[b]=f.Map(Object.assign.apply(Object,[].concat([{}],a instanceof Array?a:H(F(a))))),c})}))}}d=Promise.all([a.l.hb(h.xa,
-l.f.c,{}),a.l.hb(h.pa,l.f.source,{}),a.l.hb(h.Entity,l.f.o,{}),a.l.hb(h.wa,l.f.H,{}),a.l.getItem(h.fb,l.f.Tb,1)]).then(function(a){var b=F(a);a=b.next().value;var c=b.next().value,d=b.next().value,e=b.next().value,b=b.next().value;return{c:{value:a,Va:k()},source:{value:c,Va:k()},o:{value:d,Va:k()},H:{value:e,Va:k()},Zd:{value:b,Va:k()}}});Promise.all([b,d]).then(function(a){var b=F(a);a=b.next().value;b=b.next().value;a=Object.assign.apply(Object,[].concat([{}],a instanceof Array?a:H(F(a))));c.i({b:Object.assign({},
-c.state.b,{F:a,all:b}),cb:!1,od:!1})})})};a.prototype.Pf=function(a,b){switch(a){case "entity":return Promise.all([this.a.l.getItem(h.Entity,l.f.o,b),this.a.l.hb(h.da,l.f.M,{o:b})]).then(function(a){var b=F(a);a=b.next().value;b=b.next().value;return{o:a,kb:b}});case "predicate":return this.a.l.getItem(h.xa,l.f.c,b);case "entity_type":return this.a.l.getItem(h.wa,l.f.H,b);case "source":return Promise.all([this.a.l.getItem(h.pa,l.f.source,b),this.a.l.hb(h.Fa,l.f.Z,{source:b})]).then(function(a){var b=
-F(a);a=b.next().value;b=b.next().value;return{source:a,Z:b}});default:throw Error("Unexpected tab type requested");}};a.prototype.ea=function(a,b,c){var d=this;void 0===p.find(this.state.F,function(c){return c.D===a&&c.uid==b})&&this.i({F:this.state.F.concat([{D:a,uid:b,data:c}])},function(){d.Xb();d.reload(d.a)})};a.prototype.Sa=function(a,b){var c=this;this.i({F:this.state.F.filter(function(c){return c.D!==a||c.uid!==b})},function(){c.Xb();c.reload(c.a)})};a.prototype.Xb=function(){var a=JSON.stringify(this.state.F);
-this.state.ee&&window.localStorage.setItem("open_tabs",a)};a.prototype.tf=function(){var a=this;this.i({F:[]},function(){a.Xb();a.reload(a.a)})};a.prototype.Hb=function(a){var b=this;this.i({F:a(this.state.F)},function(){b.Xb();b.reload(b.a)})};a.prototype.cf=function(a){this.i({ba:[a].concat(this.state.ba)})};a.prototype.Rf=function(a){if(0===this.state.ba.length)throw Error("Attempted to complete non-existent modal");this.state.ba[0].complete(a);0<this.state.ba.length&&this.i({ba:p.vh(this.state.ba)})};
-a.prototype.Qf=function(){if(0===this.state.ba.length)throw Error("Attempted to cancel non-existent modal");this.state.ba[0].cancel();this.i({ba:[]})};a.prototype.K=function(){var a=this;return e.createElement("section",{id:"entity-editor",className:"flex-fill"},e.createElement("span",{className:"header-colour "+this.a.R}),e.createElement("span",{className:"flex-fill"},e.createElement(q.Te,{F:this.state.F,b:this.state.b,cb:!1,vf:this.tf.bind(this),list:this.state.list,id:this.state.id,R:this.a.R}),
-e.createElement(r.Ze,b({},this.a,{id:this.state.id,b:this.state.b,cb:this.state.od,list:this.state.list})),e.createElement(u.We,null),function(){if(0===a.state.ba.length)return null;var c={l:a.a.l,b:a.state.b,complete:a.Rf.bind(a),cancel:a.Qf.bind(a)};switch(a.state.ba[0].name){case "predicate":return e.createElement(z.ze,b({},c,a.state.ba[0].Y));case "record":return e.createElement(x.Be,b({},c,a.state.ba[0].Y));case "preset_record":return e.createElement(D.Ae,b({},c,a.state.ba[0].Y));case "source":return e.createElement(P.Ce,
-b({},c,a.state.ba[0].Y));case "entity":return e.createElement(Q.Hc,b({},c,a.state.ba[0].Y));case "entity_type":return e.createElement(B.ye,b({},c,a.state.ba[0].Y));case "conflict_resolution":return e.createElement(R.xe,b({},c,a.state.ba[0].Y))}}()),e.createElement("span",{className:"header-colour "+this.a.R}))};a.Ab={ma:e.zb.object.Eb};d.Fd=a},function(g,d,c){var a=c(0);d.Re=function(b){return a.createElement("section",null,a.createElement("h1",null,"The page at ",b.url," does not exist :("))}},function(g,
-d,c){var a=c(0);d.Xe=function(){return a.createElement("div",{className:"page"},a.createElement("section",null,a.createElement("h1",null,"This is the user page")))}},function(g,d,c){var a=c(0);d.Ye=function(){return a.createElement("div",{className:"page"},a.createElement("section",null,a.createElement("h1",null,"This is the user management page")))}},function(g,d,c){function a(a){f.j.call(this,a,b.g)}function b(a){e.Element.apply(this,arguments)}var e=c(88),f=c(8);G(b,e.Element);b.prototype.ja=function(){return b.g};
-b.prototype.U=function(){return this.B()};b.prototype.w=function(a){this.u(a);return this};b.g="elements";d.Lb=b;G(a,f.j);d.fc=a},function(g,d,c){function a(a){f.j.call(this,a,b.g)}function b(a){e.fb.apply(this,arguments)}var e=c(89),f=c(8),k=c(1);G(b,e.fb);b.prototype.ja=function(){return b.g};b.prototype.U=function(){return k.ca(this.B(),"elements")};b.prototype.w=function(a){this.u(a);return this};b.g="element_sets";d.Mb=b;G(a,f.j);a.prototype.la=function(a,b){var c=this;return f.j.prototype.la.call(this,
-a,b).then(function(a){if(null===a.uid)throw Error("could not find source");return c.db.select("elements").v({element_set:a.uid}).then(function(b){a.elements=b;return a})})};d.gc=a},function(g,d,c){function a(a){f.j.call(this,a,b.g)}function b(a){e.wa.apply(this,arguments)}var e=c(91),f=c(8),k=c(33),l=c(32),h=c(9),q=c(1);G(b,e.wa);b.prototype.ja=function(){return b.g};b.prototype.U=function(){return Object.assign(q.ca(this.B(),"sameAs","parents","children","creationTimestamp","lastmodifiedTimestamp"),
-{Oa:this.W,Ga:this.G,La:this.C})};b.prototype.w=function(a){this.u(Object.assign(a,{sameAs:a.Oa}));return this};b.g="entity_types";d.Nb=b;G(a,f.j);a.prototype.la=function(a,b){var c=this;return f.j.prototype.la.call(this,a,b).then(function(d){return Promise.all([c.db.wc(b).then(function(b){return c.db.select("entity_types").mb("uid",b).then(function(b){return b.map(function(b){return(new a).w(b)})})}),c.db.select("entity_types",["uid"]).v({parent:b})]).then(function(a){var b=F(a);a=b.next().value;
-b=b.next().value;d.Da=a;d.children=b.map(function(a){return a.uid});return d})})};a.prototype.T=function(a,c){var d=this;return Promise.all([this.db.select(b.g).v("parent","=",c),this.db.select("entities").v("type","=",c),this.db.select("predicates").v("domain","=",c).Xf("range_ref","=",c)]).then(function(a){var e=F(a);a=e.next().value;var f=e.next().value,e=e.next().value;if(0===f.length+a.length+e.length)return d.db.T(d.g,c);throw new h.S({message:"The operation could not be completed as the entity is referenced in other sources",
-data:Promise.resolve({A:a.map(function(a){return(new b).w(a)}),o:f.map(function(a){return(new l.nb).w(a)}),c:e.map(function(a){return(new k.qb).w(a)})})});})};d.ic=a},function(g,d,c){function a(a){f.j.call(this,a,b.g)}function b(a){e.pa.apply(this,arguments)}var e=c(94),f=c(8),k=c(9),l=c(23),h=c(1);G(b,e.pa);b.prototype.ja=function(){return b.g};b.prototype.U=function(){return Object.assign({},h.ca(this.B(),"metaData","sameAs","parents","children","creationTimestamp","lastmodifiedTimestamp"),{Oa:this.W,
-Ga:this.G,La:this.C})};b.prototype.w=function(a){this.u(Object.assign(a,{sameAs:a.Oa}));return this};b.g="sources";d.Qb=b;G(a,f.j);a.prototype.getMetadata=function(a,b){var c=this;return this.db.query().raw("\n            WITH RECURSIVE parent_of(uid, parent) AS  (SELECT uid, parent FROM sources),\n                ancestor(uid) AS (\n                SELECT parent FROM parent_of WHERE uid=?\n                UNION ALL\n                SELECT parent FROM parent_of JOIN ancestor USING(uid) )\n            \n            SELECT *\n                FROM ancestor;\n        ",
-b).then(function(d){d=h.map(d,"uid");d.pop();d=[b].concat(d);return Promise.all(d.map(function(b){return c.db.query().select(a).from("source_elements").Ua("elements",function(){this.pd("source_elements.element","=","elements.uid")}).Ua("element_sets",function(){this.pd("element_sets.uid","=","elements.element_set")}).v({"source_elements.source":b})})).then(function(a){var b=h.ed(h.Lf(a),"name");return Object.keys(b).reduce(function(a,c){var e=h.ca(b[c][0],"source","value");e.values=b[c].map(function(a){return{source:a.source,
-value:a.value,uid:a.uid}}).sort(function(a,b){return d.indexOf(a.source)-d.indexOf(b.source)});var f={};return Object.assign(a,(f[c]=e,f))},{})})})};a.prototype.la=function(a,b){var c=this;return f.j.prototype.la.call(this,a,b).then(function(a){if(null===a.uid)throw Error("could not find source");return Promise.all([c.getMetadata("source_elements.source as source;elements.name;source_elements.value;elements.description;element_sets.name as element_set;elements.comment;elements.uri;elements.uid as element_uid".split(";"),
-a.uid),c.db.query().select("uid").from("sources").v({parent:b}),c.db.query().raw("\n                    WITH RECURSIVE parent_of(uid, parent) AS  (SELECT uid, parent FROM sources),\n                    ancestor(uid) AS (\n                    SELECT parent FROM parent_of WHERE uid=?\n                    UNION ALL\n                    SELECT parent FROM parent_of JOIN ancestor USING(uid) )\n                    \n                    SELECT uid\n                    FROM ancestor;\n                ",b)]).then(function(b){var c=
-F(b);b=c.next().value;var d=c.next().value,c=c.next().value;a.Ca=b;a.children=d.map(function(a){return a.uid}).filter(function(a){return null!==a});a.Da=c.map(function(a){return a.uid}).filter(function(a){return null!==a});return a})})};a.prototype.ya=function(a,b){b=void 0===b?{}:b;var c=this;return f.j.prototype.ya.call(this,a,b).then(function(a){return Promise.all(a.map(function(a){if(null===a.uid)throw Error("could not find source");return c.getMetadata(["elements.name","source_elements.value"],
-a.uid).then(function(b){a.Ca=b;return a})}))})};a.prototype.T=function(a,c){var d=this;return Promise.all([this.db.jb("records",{source:c}),this.db.jb("sources",{parent:c})]).then(function(a){var e=F(a);a=e.next().value;e=e.next().value;if(0===a.length+e.length)return d.db.T(d.g,c);throw new k.S({message:"The operation could not be completed as the source is used by other records",data:Promise.resolve({M:a.map(function(a){return(new l.Za).w(a)}),source:e.map(function(a){return(new b).w(a)})})});})};
-d.nc=a},function(g,d,c){function a(a){f.j.call(this,a,b.g)}function b(a){e.Fa.apply(this,arguments)}var e=c(95),f=c(8),k=c(9),l=c(1);G(b,e.Fa);b.prototype.ja=function(){return b.g};b.prototype.U=function(){return Object.assign(l.ca(this.B(),"creationTimestamp","lastmodifiedTimestamp","uid"),{Ga:this.G,La:this.C,source:this.uid.values.source,element:this.uid.values.element})};b.prototype.w=function(a){this.u(Object.assign(a,{uid:{order:["source","element"],values:{source:a.source,element:a.element}}}));
-return this};b.g="source_elements";d.Pb=b;G(a,f.j);a.prototype.la=function(a,b){return this.db.query().select().from(this.g).v(b.values).first().then(function(a){return void 0===a?Promise.reject(new k.ob):a}).then(function(b){return(new a).w(b)})};a.prototype.ta=function(a,b,c){return this.db.query()(this.g).v(b.values).update(l.ca(c.U(),["tableName"]))};a.prototype.L=function(a,b,c){a=(new a).u(c).U();c=Object.keys(a);for(var d={},e=0;e<c.length;e+=1)void 0!==a[c[e]]&&(d[c[e]]=a[c[e]]);return this.db.query()(this.g).v(b.values).update(d).then(function(){return!0}).catch(function(a){throw Error(a);
-})};a.prototype.T=function(a,b){return this.db.query()(this.g).v(b.values).ra()};d.oc=a},function(g,d,c){g=c(104);d.gc=g.gc;d.Mb=g.Mb;g=c(32);d.hc=g.hc;d.nb=g.nb;g=c(105);d.ic=g.ic;d.Nb=g.Nb;g=c(33);d.kc=g.kc;d.qb=g.qb;g=c(23);d.lc=g.lc;d.Za=g.Za;g=c(106);d.nc=g.nc;d.Qb=g.Qb;g=c(103);d.fc=g.fc;d.Lb=g.Lb;c=c(107);d.oc=c.oc;d.Pb=c.Pb},function(g,d,c){function a(a){var c=e.Ff(a,f.ag(a)),c=new b.Ed({name:"Query",ce:{o:{type:new b.jc(c),Md:{uid:{type:b.Qa}},resolve:function(b,c){b=c.uid;return void 0===
-b?a.query()("entities"):a.query()("entities").v({uid:b})}}}});this.kg=new b.Ag({query:c})}var b=c(24),e=c(111),f=c(112);a.prototype.jg=function(a){return b.Yg(this.kg,a)};d.Ne=a},function(g,d,c){function a(a,b,c,d){this.Bb=b;this.bg=c;this.Kf=d;this.db=a}var b=c(9),e=c(16),f=c(3);g=c(2);d.f=g.f;var k=c(113);a.prototype.getItem=function(a,c,d){c=this.Bb.get(c);return void 0===c?Promise.reject(new b.Ya("Controller not found")):c.la(a,d)};a.prototype.hb=function(a,c,d){c=this.Bb.get(c);return void 0===
-c?Promise.reject(new b.Ya("Controller not found")):c.ya(a,d)};a.prototype.ha=function(a,c,d){c=this.Bb.get(c);return void 0===c?Promise.reject(new b.Ya("Controller not found")):c.ha(a,Object.assign(d,{G:e().toISOString(),C:e().toISOString(),O:this.Kf?0:d.O})).then(function(a){f.vb.I();return Promise.resolve(a)})};a.prototype.ta=function(a,c,d,g){c=this.Bb.get(c);return void 0===c?Promise.reject(new b.Ya("Controller not found")):c.ta(a,d,Object.assign(g,{C:e().toISOString()})).then(function(a){f.vb.I();
-return Promise.resolve(a)})};a.prototype.L=function(a,c,d,g){c=this.Bb.get(c);return void 0===c?Promise.reject(new b.Ya("Controller not found")):c.L(a,d,Object.assign(g,{C:e().toISOString()})).then(function(a){f.vb.I();return Promise.resolve(a)})};a.prototype.Ha=function(a,c,d){c=this.Bb.get(c);return void 0===c?Promise.reject(new b.Ya("Controller not found")):c.T(a,d).then(function(a){f.vb.I();return Promise.resolve(a)})};a.prototype.query=function(){return Promise.resolve({})};a.prototype.getStats=
-function(){return k.Je(this.db.query())};d.Se=a},function(g,d,c){var a=c(24);d.Ff=function(b,c){return new a.Ed({name:"Entity",ce:{uid:{type:a.Qa,resolve:function(a){return a.uid}},label:{type:a.Qa,resolve:function(a){return a.label}},type:{type:a.Qa,resolve:function(a){return b.query()("entity_types").v({uid:a.type}).first().then(function(a){return a.name})}},c:{type:c,Md:{name:{type:a.Qa},uid:{type:a.Qa}},resolve:function(a,c){var d=c.name;c=c.uid;if(void 0!==d)return b.query()("predicates").v({name:d}).first().then(function(b){return{c:b,
-o:a}});if(void 0!==c)return b.query()("predicates").v({uid:c}).first().then(function(b){return{c:b,o:a}})}},rd:{type:new a.jc(c),Md:{names:{type:new a.jc(a.Qa)},sg:{type:new a.jc(a.Qa)}},resolve:function(a,c){var d=c.names;c=c.sg;if(void 0!==d)return b.query()("predicates").mb("name",d).then(function(b){return b.map(function(b){return{c:b,o:a}})});if(void 0!==c)return b.query()("predicates").mb("uid",c).then(function(b){return b.map(function(b){return{c:b,o:a}})})}}}})}},function(g,d,c){var a=c(24);
-d.ag=function(b){return new a.Ed({name:"Predicate",ce:{uid:{type:a.Qa,resolve:function(a){return a.c.uid}},name:{type:a.Qa,resolve:function(a){return a.c.name}},values:{type:new a.jc(a.Qa),resolve:function(a){var c=a.o;a=a.c;return b.query()("records").select("value_string").v({o:c.uid,c:a.uid}).then(function(a){return a.map(function(a){return a.te})})}}}})}},function(g,d){d.Je=function(c){return Promise.all([c("entities").count(),c("entity_types").count(),c("sources").count(),c("records").count(),
-c("predicates").count()]).then(function(a){var b=F(a);a=F(b.next().value).next().value;var c=F(b.next().value).next().value,d=F(b.next().value).next().value,g=F(b.next().value).next().value,b=F(b.next().value).next().value;return{o:a["count(*)"],A:c["count(*)"],source:d["count(*)"],M:g["count(*)"],c:b["count(*)"]}})}},function(g){g.fa=require("knex")},function(g){g.fa=require("levenshtein")},function(g){g.fa=require("lunr")},function(g){g.fa=require("react-sortable-hoc")},function(g){g.fa=require("signals")},
-function(g,d,c){var a=c(39),b=c(0),e=c(35);g=c(36);var f=c(37),k=c(10);c=c(38);d=c.remote.Qg.uh({oh:["openFile"],filters:[{name:"Database Files",Vg:["sqlite"]}]});if(void 0!==d){c.remote.Xg().th("Imperial Entanglements ("+d[0]+")");var l=new g.Database({client:"sqlite3",wh:!0,Og:{filename:d[0]},mh:{Hg:function(a,b){a.rh("PRAGMA foreign_keys = ON",b)}}});document.addEventListener("DOMContentLoaded",function(){a.K(b.createElement(e.Ie,{l:f.yg(l),be:"app",connected:!1,ma:k.Bg,ig:{$g:["/"],ah:0}}),document.getElementById("falcon-container"))})}else c.remote.app.ph()}]);
+/******/ (function(modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
+/******/
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId])
+/******/ 			return installedModules[moduleId].exports;
+/******/
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			i: moduleId,
+/******/ 			l: false,
+/******/ 			exports: {}
+/******/ 		};
+/******/
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/
+/******/ 		// Flag the module as loaded
+/******/ 		module.l = true;
+/******/
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/
+/******/
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
+/******/
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
+/******/
+/******/ 	// identity function for calling harmory imports with the correct context
+/******/ 	__webpack_require__.i = function(value) { return value; };
+/******/
+/******/ 	// define getter function for harmory exports
+/******/ 	__webpack_require__.d = function(exports, name, getter) {
+/******/ 		Object.defineProperty(exports, name, {
+/******/ 			configurable: false,
+/******/ 			enumerable: true,
+/******/ 			get: getter
+/******/ 		});
+/******/ 	};
+/******/
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function getDefault() { return module['default']; } :
+/******/ 			function getModuleExports() { return module; };
+/******/ 		__webpack_require__.d(getter, 'a', getter);
+/******/ 		return getter;
+/******/ 	};
+/******/
+/******/ 	// Object.prototype.hasOwnProperty.call
+/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
+/******/
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "";
+/******/
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(__webpack_require__.s = 101);
+/******/ })
+/************************************************************************/
+/******/ ([
+/* 0 */
+/***/ function(module, exports) {
+
+module.exports = require("react");
+
+/***/ },
+/* 1 */
+/***/ function(module, exports) {
+
+module.exports = require("lodash");
+
+/***/ },
+/* 2 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview <Description Missing>
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.1.0
+ */
+"use strict";
+const itemTypes_1 = __webpack_require__(26);
+exports.AppUrls = {
+    element_set: itemTypes_1.itemTypes.element_set.machineName,
+    record: itemTypes_1.itemTypes.record.machineName,
+    entity: itemTypes_1.itemTypes.entity.machineName,
+    entity_type: itemTypes_1.itemTypes.entity_type.machineName,
+    predicate: itemTypes_1.itemTypes.predicate.machineName,
+    source: itemTypes_1.itemTypes.source.machineName,
+    source_element: itemTypes_1.itemTypes.source_element.machineName
+};
+
+
+/***/ },
+/* 3 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview <Description Missing>
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.1.0
+ */
+"use strict";
+const signals = __webpack_require__(100);
+exports.createTab = new signals.Signal();
+exports.closeTab = new signals.Signal();
+exports.showModal = new signals.Signal();
+exports.triggerReload = new signals.Signal();
+exports.showToast = new signals.Signal();
+exports.reorderTabs = new signals.Signal();
+exports.Signaller = {
+    createTab: exports.createTab,
+    closeTab: exports.closeTab,
+    showModal: exports.showModal,
+    triggerReload: exports.triggerReload,
+    showToast: exports.showToast,
+    reorderTabs: exports.reorderTabs
+};
+
+
+/***/ },
+/* 4 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview Datamodel override for electron
+ * @author <a href='mailto:tim.hollies@warwick.ac.uk'>Tim Hollies</a>
+ * @version 0.0.1
+ */
+"use strict";
+var ElementSetController_1 = __webpack_require__(30);
+exports.ElementSet = ElementSetController_1.ElementSetPersistable;
+var EntityController_1 = __webpack_require__(21);
+exports.Entity = EntityController_1.EntityPersistable;
+var EntityTypeController_1 = __webpack_require__(31);
+exports.EntityType = EntityTypeController_1.EntityTypePersistable;
+var PredicateController_1 = __webpack_require__(22);
+exports.Predicate = PredicateController_1.PredicatePersistable;
+var RecordController_1 = __webpack_require__(14);
+exports.Record = RecordController_1.RecordPersistable;
+var SourceController_1 = __webpack_require__(32);
+exports.Source = SourceController_1.SourcePersistable;
+var ElementController_1 = __webpack_require__(29);
+exports.Element = ElementController_1.ElementPersistable;
+var SourceElementController_1 = __webpack_require__(33);
+exports.SourceElement = SourceElementController_1.SourceElementPersistable;
+
+
+/***/ },
+/* 5 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview Sidebar for editor
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.1.0
+ */
+"use strict";
+const React = __webpack_require__(0);
+const Signaller_1 = __webpack_require__(3);
+exports.AddTabButton = (props, context) => {
+    if (props.dataStore.tabs[props.tabType] !== undefined
+        && props.dataStore.tabs[props.tabType].has(`${props.tabType}-${props.uid}`)) {
+        return (React.createElement("i", {className: 'fa fa-folder-open-o add button', title: 'Open item', onClick: () => context.router.transitionTo(`/edit/${props.tabType}/${props.uid}`)}, " "));
+    }
+    return (React.createElement("i", {className: 'icon-list-add add button', title: 'Add to list', onClick: () => Signaller_1.createTab.dispatch(props.tabType, props.uid, props.data)}));
+};
+exports.AddTabButton.contextTypes = {
+    router: React.PropTypes.object.isRequired
+};
+
+
+/***/ },
+/* 6 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview Sidebar for editor
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.1.0
+ */
+"use strict";
+const React = __webpack_require__(0);
+const lunr = __webpack_require__(98);
+const lodash_1 = __webpack_require__(1);
+class ComboDropdown extends React.Component {
+    constructor() {
+        super();
+        this.state = {
+            searchString: '',
+            showingDropDown: false,
+            filteredOptions: [],
+            highlightedIndex: null,
+            dropDownHeight: 0
+        };
+    }
+    componentWillMount() {
+        this.ignoreBlur = false;
+        this.ignoreClick = false;
+        this.recalculateHeight = true;
+        this.dropDownBoxElement = null;
+        this.setState({
+            filteredOptions: this.props.options,
+            searchString: this.props.value === null || this.props.value.key === null ? '' : this.props.value.key
+        });
+    }
+    componentWillReceiveProps(newProps) {
+        let filterString = '';
+        if (this.props.value === null) {
+            if (newProps.value === null) {
+                // change nothing
+                filterString = this.state.searchString;
+            }
+            else {
+                // set to newProps value
+                filterString = newProps.value.key;
+            }
+        }
+        else {
+            if (newProps.value === null) {
+                // set to ''
+                filterString = '';
+            }
+            else {
+                if (newProps.value === this.props.value) {
+                    // change nothing
+                    filterString = this.state.searchString;
+                }
+                else {
+                    // set to newProps value
+                    filterString = newProps.value.key;
+                }
+            }
+        }
+        //const filterString = newProps.value.key !== this.props.value.key ? newProps.value.key : this.state.searchString;
+        this.updateFilter(filterString, newProps);
+        this.setState({
+            searchString: filterString,
+            options: newProps.options
+        });
+    }
+    changeSearchString(event) {
+        this.setState({ searchString: event.target.value, showingDropDown: true }, () => {
+            this.updateFilter(this.state.searchString, this.props);
+            this.props.updateSearchString(this.state.searchString);
+        });
+    }
+    updateFilter(filter, props) {
+        let filtered = [];
+        if (filter.length > 0) {
+            const idx = lunr(function () {
+                this.field('key', { boost: 10 });
+            });
+            props.options.forEach((opt, i) => idx.add(Object.assign({}, opt, { id: i })));
+            const result = idx.search(filter);
+            for (let i = 0; i < result.length; i += 1) {
+                filtered.push(props.options[result[i].ref]);
+            }
+        }
+        else {
+            filtered = props.options;
+        }
+        if (this.dropDownBoxElement !== null) {
+            this.recalculateHeight = true;
+            this.calculateDropdownHeight(this.dropDownBoxElement);
+        }
+        this.setState({
+            filteredOptions: filtered
+        });
+    }
+    addNewAction(option) {
+        this.props.createNewValue(option);
+    }
+    selectOption(option) {
+        this.props.setValue(option);
+        this.ignoreBlur = false;
+        this.recalculateHeight = true;
+        this.setState({ showingDropDown: false, searchString: option.key });
+        this.props.updateSearchString(option.key);
+    }
+    handleInputBlur() {
+        if (!this.ignoreBlur) {
+            if (this.state.searchString.length === 0) {
+                this.setState({ searchString: '' });
+            }
+            else {
+                if (lodash_1.findIndex(this.props.options, (option) => option.key === this.state.searchString) === -1) {
+                    this.setState({ searchString: this.props.value === null ? '' : this.props.value.key }, () => {
+                        this.updateFilter(this.props.value === null ? '' : this.props.value.key, this.props);
+                    });
+                }
+            }
+            this.recalculateHeight = true;
+            this.setState({
+                showingDropDown: false,
+            });
+        }
+    }
+    handleInputFocus() {
+        if (this.ignoreBlur) {
+            this.ignoreBlur = true;
+            return;
+        }
+        // We don't want `selectItemFromMouse` to trigger when
+        // the user clicks into the input to focus it, so set this
+        // flag to cancel out the logic in `handleInputClick`.
+        // The event order is:  MouseDown -> Focus -> MouseUp -> Click
+        this.ignoreClick = true;
+        this.setState({ showingDropDown: true });
+    }
+    handleInputClick() {
+        // Input will not be focused if it's disabled
+        if (this.isInputFocused() && this.state.showingDropDown === false) {
+            this.setState({ showingDropDown: true });
+        }
+        else {
+            if (this.state.highlightedIndex !== null && !this.ignoreClick) {
+                this.selectItemFromMouse(this.state.filteredOptions[this.state.highlightedIndex]);
+            }
+            else {
+                this.ignoreClick = false;
+            }
+        }
+    }
+    selectItemFromMouse(item) {
+        this.recalculateHeight = true;
+        this.setState({
+            showingDropDown: false,
+            highlightedIndex: null
+        }, () => {
+            this.props.setValue(item);
+            this.refs.comboDropDownInputBox.focus();
+        });
+    }
+    isInputFocused() {
+        const el = this.refs.comboDropDownInputBox;
+        return el.ownerDocument && (el === el.ownerDocument.activeElement);
+    }
+    clearSearchBox() {
+        this.props.setValue(null);
+        this.setState({ searchString: '' });
+        this.refs.comboDropDownInputBox.focus();
+    }
+    calculateDropdownHeight(val) {
+        this.dropDownBoxElement = val;
+        if (val === null || !this.recalculateHeight) {
+            return;
+        }
+        else {
+            this.setState({
+                dropDownHeight: window.document.body.getBoundingClientRect().bottom - val.getBoundingClientRect().top - 32
+            });
+            this.recalculateHeight = false;
+        }
+    }
+    render() {
+        return (React.createElement("div", {className: this.props.compact ? 'compact combo-dropdown' : 'combo-dropdown'}, 
+            React.createElement("div", null, 
+                React.createElement("input", {type: 'text', ref: 'comboDropDownInputBox', className: 'search-input', value: this.state.searchString, placeholder: 'Click here and start typing..', onBlur: this.handleInputBlur.bind(this), onFocus: this.handleInputFocus.bind(this), onChange: this.changeSearchString.bind(this), onClick: this.handleInputClick.bind(this)}), 
+                this.state.searchString.length > 0 ? (React.createElement("i", {className: 'fa fa-times clear-button', onClick: this.clearSearchBox.bind(this)})) : null), 
+            this.state.showingDropDown ? (React.createElement("div", {className: 'dropdown', style: { maxHeight: this.state.dropDownHeight, overflowY: 'auto' }, ref: this.calculateDropdownHeight.bind(this)}, 
+                React.createElement("ul", null, 
+                    this.state.searchString.length === 0 && this.props.allowNew ? (React.createElement("li", {className: 'add', onMouseDown: () => this.ignoreBlur = true, onClick: () => this.addNewAction('')}, 
+                        React.createElement("i", {className: 'fa fa-plus', "aria-hidden": 'true'}), 
+                        "Add new ", 
+                        this.props.typeName)) : null, 
+                    this.state.filteredOptions.map((opt, i) => (React.createElement("li", {key: `opt-${opt.key}-${i}`, onMouseDown: () => this.ignoreBlur = true, onClick: () => this.selectOption(opt)}, opt.key))), 
+                    this.state.searchString.length > 0 && this.props.allowNew ? (React.createElement("li", {className: 'add', onMouseDown: () => this.ignoreBlur = true, onClick: () => this.addNewAction(this.state.searchString)}, 
+                        React.createElement("i", {className: 'fa fa-plus', "aria-hidden": 'true'}), 
+                        "Add new ", 
+                        this.props.typeName, 
+                        ": '", 
+                        this.state.searchString, 
+                        "'")) : null)
+            )) : null));
+    }
+}
+ComboDropdown.defaultProps = {
+    allowNew: true,
+    compact: false,
+    updateSearchString: lodash_1.noop
+};
+exports.ComboDropdown = ComboDropdown;
+
+
+/***/ },
+/* 7 */
+/***/ function(module, exports) {
+
+"use strict";
+/**
+ * @fileOverview Controller for element sets
+ * @author <a href='mailto:tim.hollies@warwick.ac.uk'>Tim Hollies</a>
+ * @version 0.0.1
+ */
+"use strict";
+class GenericController {
+    constructor(db, table) {
+        this.db = db;
+        this.tableName = table;
+    }
+    getItemJson(obj, uid) {
+        if (typeof (uid) !== 'number') {
+            throw new Error('Expected single column identifier');
+        }
+        return this.db.loadItem(this.tableName, uid)
+            .then((data) => new obj().fromSchema(data));
+    }
+    getCollectionJson(obj, params = {}) {
+        return this.db.loadCollection(this.tableName, params)
+            .then((data) => data.map((datum) => new obj().fromSchema(datum)));
+    }
+    postItem(obj, data) {
+        return this.db.createItem(new obj().deserialize(data));
+    }
+    putItem(obj, uid, data) {
+        if (typeof (uid) !== 'number') {
+            throw new Error('Expected single column identifier');
+        }
+        return this.db.updateItem(new obj().deserialize(data));
+    }
+    patchItem(obj, uid, data) {
+        const o = new obj();
+        const schemaData = o.deserialize(data).toSchema();
+        const keys = Object.keys(schemaData);
+        const updateObject = {};
+        if (typeof (uid) !== 'number') {
+            throw new Error('Expected single column identifier');
+        }
+        for (let i = 0; i < keys.length; i += 1) {
+            if (schemaData[keys[i]] !== undefined) {
+                updateObject[keys[i]] = schemaData[keys[i]];
+            }
+        }
+        return this.db.loadItem(this.tableName, uid)
+            .then((originalData) => {
+            return this.db.updateItem(new obj().fromSchema(Object.assign({}, originalData, updateObject)));
+        });
+    }
+    deleteItem(obj, uid) {
+        if (typeof (uid) !== 'number') {
+            throw new Error('Expected single column identifier');
+        }
+        return this.db.deleteItem(this.tableName, uid);
+    }
+}
+exports.GenericController = GenericController;
+
+
+/***/ },
+/* 8 */
+/***/ function(module, exports) {
+
+"use strict";
+/**
+ * @fileOverview <Description Missing>
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.1.0
+ */
+"use strict";
+class KeyNotFoundException extends Error {
+    constructor(message = 'Could not find the given key') {
+        super(message);
+        this.data = message;
+    }
+}
+exports.KeyNotFoundException = KeyNotFoundException;
+class CollectionNotFoundException extends Error {
+    constructor(message = 'Could not find the given collection') {
+        super(message);
+        this.data = message;
+    }
+}
+exports.CollectionNotFoundException = CollectionNotFoundException;
+class OperationNotPermittedException extends Error {
+    constructor(data) {
+        super(data.message);
+        this.data = data;
+    }
+}
+exports.OperationNotPermittedException = OperationNotPermittedException;
+class DatabaseIntegrityError extends Error {
+    constructor(message = `A database integrity constraint has been broken - your change has not been
+ submitted. This is likely due to a change which violates the property types model; please check the types of 
+ what you are trying to do. Please also contact the Digital Humanities team, this error should not occur.`) {
+        super(message);
+        this.data = message;
+    }
+}
+exports.DatabaseIntegrityError = DatabaseIntegrityError;
+exports.exceptions = {
+    KeyNotFoundException,
+    CollectionNotFoundException,
+    OperationNotPermittedException,
+    DatabaseIntegrityError
+};
+
+
+/***/ },
+/* 9 */
+/***/ function(module, exports) {
+
+module.exports = require("react-router");
+
+/***/ },
+/* 10 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview Sidebar for editor
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.1.0
+ */
+"use strict";
+const React = __webpack_require__(0);
+class Overlay extends React.Component {
+    render() {
+        return (React.createElement("div", {className: 'full-page-overlay'}, 
+            React.createElement("div", {className: 'overlay-container'}, this.props.children)
+        ));
+    }
+}
+exports.Overlay = Overlay;
+;
+
+
+/***/ },
+/* 11 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview Sidebar for editor
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.1.0
+ */
+"use strict";
+var __assign = (this && this.__assign) || Object.assign || function(t) {
+    for (var s, i = 1, n = arguments.length; i < n; i++) {
+        s = arguments[i];
+        for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+            t[p] = s[p];
+    }
+    return t;
+};
+const React = __webpack_require__(0);
+class EditableFieldComponent extends React.Component {
+    constructor() {
+        super();
+        this.state = {
+            edit: false,
+            internalValue: null
+        };
+    }
+    componentWillMount() {
+        this.setState({ internalValue: this.props.value === undefined ? null : this.props.value });
+    }
+    componentWillReceiveProps(newProps) {
+        this.setState({ internalValue: newProps.value });
+    }
+    switchToEditState() {
+        this.setState({ edit: true, internalValue: this.props.value });
+    }
+    setInternalValue(internalValue) {
+        this.setState({ internalValue });
+    }
+    acceptChanges() {
+        this.props.onChange(this.state.internalValue);
+        this.setState({ edit: false });
+    }
+    cancelChanges() {
+        this.setState({ edit: false, internalValue: this.props.value });
+    }
+    render() {
+        return (React.createElement(this.props.component, __assign({edit: this.state.edit, value: this.state.internalValue, onChange: this.setInternalValue.bind(this), setEdit: this.switchToEditState.bind(this), acceptChanges: this.acceptChanges.bind(this), cancelChanges: this.cancelChanges.bind(this), onDelete: (e) => this.props.onDelete !== undefined ? this.props.onDelete(this.props.value) : null}, this.props.additionalProps)));
+    }
+}
+exports.EditableFieldComponent = EditableFieldComponent;
+
+
+/***/ },
+/* 12 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview Sidebar for editor
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.1.0
+ */
+"use strict";
+const React = __webpack_require__(0);
+exports.SearchBar = (props) => {
+    const filterFunc = (s) => {
+        return (a) => {
+            if (s.length === 0) {
+                return true;
+            }
+            return props.getValue(a).toLowerCase().indexOf(s.toLowerCase()) !== -1;
+        };
+    };
+    return (React.createElement("div", null, 
+        React.createElement("div", {className: 'input-addon-formgroup'}, 
+            React.createElement("span", {className: 'input-addon-icon'}, 
+                React.createElement("i", {className: 'fa fa-search fa-fw'})
+            ), 
+            React.createElement("input", {type: 'text', className: 'form-control with-addon', onChange: (e) => props.setFilterFunc(filterFunc(e.target.value))}))
+    ));
+};
+
+
+/***/ },
+/* 13 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview Sidebar for editor
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.1.0
+ */
+"use strict";
+const React = __webpack_require__(0);
+var EditableFieldComponent_1 = __webpack_require__(11);
+exports.EditableFieldComponent = EditableFieldComponent_1.EditableFieldComponent;
+exports.EditableHeader = (props) => {
+    if (!props.edit || props.value == null) {
+        return (React.createElement("h2", null, 
+            props.value, 
+            React.createElement("sup", null, 
+                React.createElement("i", {className: 'fa fa-pencil-square-o', title: 'Edit', "aria-hidden": 'true', onClick: props.setEdit})
+            )));
+    }
+    else {
+        return (React.createElement("span", null, 
+            React.createElement("input", {type: 'text', value: props.value, className: 'text-edit-header', onChange: (e) => props.onChange(e.target.value)}), 
+            React.createElement("button", {onClick: props.acceptChanges}, 
+                React.createElement("i", {className: 'fa fa-check', "aria-hidden": 'true'})
+            ), 
+            React.createElement("button", {onClick: props.cancelChanges}, 
+                React.createElement("i", {className: 'fa fa-times', "aria-hidden": 'true'})
+            )));
+    }
+};
+
+
+/***/ },
+/* 14 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview Controller for element sets
+ * @author <a href='mailto:tim.hollies@warwick.ac.uk'>Tim Hollies</a>
+ * @version 0.0.1
+ */
+"use strict";
+const Record_1 = __webpack_require__(80);
+const GenericController_1 = __webpack_require__(7);
+const Exceptions_1 = __webpack_require__(8);
+const lodash_1 = __webpack_require__(1);
+class RecordPersistable extends Record_1.Record {
+    getTableName() {
+        return RecordPersistable.tableName;
+    }
+    toSchema() {
+        const schemaOutput = lodash_1.omit(this.serialize(), 'value', 'valueType', 'creationTimestamp', 'lastmodifiedTimestamp');
+        schemaOutput.value_type = this.valueType;
+        if (this.valueType !== undefined && this.valueType !== 'source') {
+            schemaOutput['value_' + this.valueType] = this.value;
+        }
+        return Object.assign({}, schemaOutput, {
+            creation_timestamp: this.creationTimestamp,
+            lastmodified_timeStamp: this.lastmodifiedTimestamp
+        });
+    }
+    fromSchema(data) {
+        data.valueType = data.value_type;
+        switch (data.value_type) {
+            case 'entity':
+                data.value = data.value_entity;
+                break;
+            case 'string':
+                data.value = data.value_string;
+                break;
+            case 'date':
+                data.value = data.value_date;
+                break;
+            case 'integer':
+                data.value = data.value_integer;
+                break;
+            case 'point':
+                data.value = data.value_point;
+                break;
+            case 'region':
+                data.value = data.value_region;
+                break;
+            case 'source':
+                data.value = data.source;
+                break;
+            default:
+                data.value = null;
+        }
+        this.deserialize(data);
+        return this;
+    }
+}
+RecordPersistable.tableName = 'records';
+exports.RecordPersistable = RecordPersistable;
+class RecordController extends GenericController_1.GenericController {
+    constructor(db) {
+        super(db, RecordPersistable.tableName);
+    }
+    postItem(obj, data) {
+        // predicate domain must equal value_type
+        return this.db.select('predicates', ['range_type']).where({ uid: data.predicate })
+            .then(([predicate]) => {
+            if (data.valueType === predicate.range_type) {
+                //TODO: still need to check entity type constraints
+                return super.postItem(obj, data);
+            }
+            throw new Exceptions_1.OperationNotPermittedException({
+                message: 'Attempted to add a record with an incorrect type!',
+                data: Promise.resolve({})
+            });
+        });
+    }
+    putItem(obj, uid, data) {
+        //TODO: what happens if we only update the value - and do not send the valueType again?
+        return this.db.select('predicates', ['range_type']).where({ uid: data.predicate })
+            .then(([predicate]) => {
+            if (data.valueType === predicate.range_type) {
+                //TODO: still need to check entity type constraints
+                return super.putItem(obj, uid, data);
+            }
+            throw new Exceptions_1.OperationNotPermittedException({
+                message: 'Attempted to add a record with an incorrect type!',
+                data: Promise.resolve({})
+            });
+        });
+    }
+    patchItem(obj, uid, data) {
+        return this.db.select('predicates', ['range_type']).where({ uid: data.predicate })
+            .then(([predicate]) => {
+            if (data.valueType === predicate.range_type) {
+                //TODO: still need to check entity type constraints
+                return super.patchItem(obj, uid, data);
+            }
+            throw new Exceptions_1.OperationNotPermittedException({
+                message: 'Attempted to add a record with an incorrect type!',
+                data: Promise.resolve({})
+            });
+        });
+    }
+}
+exports.RecordController = RecordController;
+
+
+/***/ },
+/* 15 */
+/***/ function(module, exports) {
+
+module.exports = require("moment");
+
+/***/ },
+/* 16 */
+/***/ function(module, exports) {
+
+module.exports = require("mousetrap");
+
+/***/ },
+/* 17 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview <Description Missing>
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.1.0
+ */
+"use strict";
+var __assign = (this && this.__assign) || Object.assign || function(t) {
+    for (var s, i = 1, n = arguments.length; i < n; i++) {
+        s = arguments[i];
+        for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+            t[p] = s[p];
+    }
+    return t;
+};
+const React = __webpack_require__(0);
+var EditableFieldComponent_1 = __webpack_require__(11);
+exports.EditableFieldComponent = EditableFieldComponent_1.EditableFieldComponent;
+const ComboDropdown_1 = __webpack_require__(6);
+exports.EditableComboDropdown = (props) => {
+    if (props.edit) {
+        return (React.createElement("div", null, 
+            React.createElement(ComboDropdown_1.ComboDropdown, __assign({}, props.comboSettings, {value: props.value, setValue: props.onChange, allowNew: false, createNewValue: () => { }})), 
+            React.createElement("button", null, 
+                React.createElement("i", {className: 'fa fa-check', onClick: props.acceptChanges, "aria-hidden": 'true'})
+            ), 
+            React.createElement("button", null, 
+                React.createElement("i", {className: 'fa fa-times', "aria-hidden": 'true', onClick: props.cancelChanges})
+            )));
+    }
+    else {
+        return (React.createElement("div", null, 
+            props.value !== null && props.value.key.length > 0 ? props.value.key
+                : (React.createElement("em", null, "No value")), 
+            React.createElement("sup", null, 
+                React.createElement("i", {className: 'fa fa-pencil-square-o', title: 'Edit', "aria-hidden": 'true', onClick: props.setEdit})
+            )));
+    }
+};
+
+
+/***/ },
+/* 18 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview Sidebar for editor
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.1.0
+ */
+"use strict";
+const React = __webpack_require__(0);
+var EditableFieldComponent_1 = __webpack_require__(11);
+exports.EditableFieldComponent = EditableFieldComponent_1.EditableFieldComponent;
+const mousetrap = __webpack_require__(16);
+exports.EditableParagraph = (props) => {
+    let keyBoardShortcuts;
+    const bindKeyboard = (val) => {
+        if (val !== null) {
+            val.focus();
+            keyBoardShortcuts = new mousetrap(val);
+            keyBoardShortcuts.bind('ctrl+return', props.acceptChanges);
+            keyBoardShortcuts.bind('escape', props.cancelChanges);
+        }
+        else {
+            keyBoardShortcuts.unbind('ctrl+return');
+        }
+    };
+    if (!props.edit) {
+        return (React.createElement("div", {onClick: props.setEdit, className: 'editable-paragraph-box'}, 
+            React.createElement("p", null, 
+                props.value === null || props.value.length > 0 ? props.value
+                    : (React.createElement("em", null, "No value")), 
+                React.createElement("sup", null, 
+                    React.createElement("i", {className: 'fa fa-pencil-square-o', title: 'Edit', "aria-hidden": 'true'})
+                ))
+        ));
+    }
+    else {
+        return (React.createElement("div", null, 
+            React.createElement("textarea", {value: props.value, ref: bindKeyboard, onChange: (e) => props.onChange(e.target.value), style: { width: '100%', height: '6em' }}), 
+            React.createElement("button", {onClick: props.acceptChanges}, 
+                React.createElement("i", {className: 'fa fa-check', "aria-hidden": 'true'})
+            ), 
+            React.createElement("button", {onClick: props.cancelChanges}, 
+                React.createElement("i", {className: 'fa fa-times', "aria-hidden": 'true'})
+            )));
+    }
+};
+
+
+/***/ },
+/* 19 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview Sidebar for editor
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.1.0
+ */
+"use strict";
+const React = __webpack_require__(0);
+const mousetrap = __webpack_require__(16);
+class SameAsEditor extends React.Component {
+    constructor(props) {
+        super();
+        this.state = {
+            temporaryValue: '',
+            urls: props.value === null || props.value.length === 0 ? [] : props.value.split(',')
+        };
+    }
+    componentWillReceiveProps(props) {
+        this.setState({
+            temporaryValue: '',
+            urls: props.value === null || props.value.length === 0 ? [] : props.value.split(',')
+        });
+    }
+    addItemToList() {
+        if (this.state.temporaryValue.length === 0) {
+            return;
+        }
+        this.setState({ urls: this.state.urls.concat([this.state.temporaryValue]), temporaryValue: '' }, () => this.props.onChange(this.state.urls.join(',')));
+    }
+    removeItemFromList(itemId) {
+        this.setState({
+            urls: this.state.urls.filter((val, i) => i !== itemId)
+        }, () => this.props.onChange(this.state.urls.join(',')));
+    }
+    setupKeyboardShortcuts(val) {
+        if (val !== null) {
+            val.focus();
+            this.keyboardShortcuts = new mousetrap(val);
+            this.keyboardShortcuts.bind('return', this.addItemToList.bind(this));
+            this.keyboardShortcuts.bind('escape', this.props.cancelChanges);
+            this.keyboardShortcuts.bind('ctrl+s', (e) => {
+                if (e.preventDefault) {
+                    e.preventDefault();
+                }
+                else {
+                    // internet explorer
+                    e.returnValue = false;
+                }
+                this.props.acceptChanges();
+            });
+        }
+        else {
+            this.keyboardShortcuts.unbind('return');
+            this.keyboardShortcuts.unbind('escape');
+            this.keyboardShortcuts.unbind('ctrl+s');
+        }
+    }
+    render() {
+        return (React.createElement("div", {className: 'same-as-box'}, 
+            React.createElement("label", {className: 'small'}, 
+                "Same As ", 
+                !this.props.edit ? (React.createElement("sup", null, 
+                    React.createElement("i", {className: 'fa fa-pencil-square-o', title: 'Edit', "aria-hidden": 'true', onClick: this.props.setEdit})
+                )) : null), 
+            this.props.edit ? (React.createElement("div", {className: 'edit-group'}, 
+                React.createElement("button", {onClick: this.props.acceptChanges}, 
+                    React.createElement("i", {className: 'fa fa-check', "aria-hidden": 'true'})
+                ), 
+                React.createElement("button", {onClick: this.props.cancelChanges}, 
+                    React.createElement("i", {className: 'fa fa-times', "aria-hidden": 'true'})
+                ), 
+                React.createElement("div", {className: 'input-addon-formgroup'}, 
+                    React.createElement("input", {type: 'text', value: this.state.temporaryValue, ref: this.setupKeyboardShortcuts.bind(this), onChange: (e) => this.setState({ temporaryValue: e.target.value }), className: 'form-control with-addon'}), 
+                    React.createElement("span", {className: 'input-addon-icon right button', onClick: this.addItemToList.bind(this)}, 
+                        React.createElement("i", {className: 'fa fa-plus'})
+                    )))) : null, 
+            React.createElement("ul", {className: 'same-as-list'}, this.state.urls.map((url, i) => (React.createElement("li", {key: `li-${url}`}, 
+                React.createElement("a", {target: '_blank', href: url}, url), 
+                " ", 
+                this.props.edit ? (React.createElement("i", {className: 'fa fa-times close-button', onClick: this.removeItemFromList.bind(this, i)})) : null))))));
+    }
+}
+exports.SameAsEditor = SameAsEditor;
+
+
+/***/ },
+/* 20 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview <Description Missing>
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.1.0
+ */
+"use strict";
+const moment = __webpack_require__(15);
+exports.formatDate = (str) => {
+    if (str === null || str.length === 0) {
+        return '';
+    }
+    const modifier = {
+        '=': '',
+        '>': 'After ',
+        '<': 'Before '
+    }[str[0]];
+    const year = str.substr(1, 4);
+    const rawMonth = parseInt(str.substr(5, 2)) - 1;
+    const month = rawMonth === -1 || isNaN(rawMonth) ? 'Unknown' : moment.months()[rawMonth];
+    const rawDay = parseInt(str.substr(7, 2));
+    const day = rawDay > 0 ? rawDay : '';
+    return `${modifier} ${day} ${month} ${year}`;
+};
+
+
+/***/ },
+/* 21 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview Controller for element sets
+ * @author <a href='mailto:tim.hollies@warwick.ac.uk'>Tim Hollies</a>
+ * @version 0.0.1
+ */
+"use strict";
+const Entity_1 = __webpack_require__(77);
+const GenericController_1 = __webpack_require__(7);
+const Exceptions_1 = __webpack_require__(8);
+const lodash_1 = __webpack_require__(1);
+class EntityPersistable extends Entity_1.Entity {
+    getTableName() {
+        return EntityPersistable.tableName;
+    }
+    toSchema() {
+        return Object.assign(lodash_1.omit(this.serialize(), 'entityType', 'creationTimestamp', 'lastmodifiedTimestamp'), {
+            type: this.entityType,
+            creation_timestamp: this.creationTimestamp,
+            lastmodified_timeStamp: this.lastmodifiedTimestamp
+        });
+    }
+    fromSchema(data) {
+        this.deserialize({
+            entityType: data.type,
+            uid: data.uid,
+            label: data.label,
+            parent: data.parent
+        });
+        return this;
+    }
+}
+EntityPersistable.tableName = 'entities';
+exports.EntityPersistable = EntityPersistable;
+class EntityController extends GenericController_1.GenericController {
+    constructor(db) {
+        super(db, EntityPersistable.tableName);
+    }
+    getCollectionJson(obj, params = {}) {
+        if (params.type !== undefined) {
+            return this.db.getChildrenOf(lodash_1.isArray(params.type) ? params.type[0] : params.type, 'entity_types')
+                .then((ancestors) => {
+                return this.db.select('entities').whereIn('type', ancestors)
+                    .then((results) => results.map((result) => new obj().fromSchema(result)));
+            });
+        }
+        else {
+            return super.getCollectionJson(obj, params);
+        }
+    }
+    deleteItem(obj, uid) {
+        // check if this entity is the parent of another entity or if it has any relationships
+        // pointing towards it.
+        return Promise.all([
+            this.db.select(EntityPersistable.tableName).where('parent', '=', uid),
+            this.db.select('records').where('value_entity', '=', uid)
+        ]).then(([entities, records]) => {
+            if (entities.length + records.length === 0) {
+                return this.db.deleteItem(this.tableName, uid);
+            }
+            else {
+                throw new Exceptions_1.OperationNotPermittedException({
+                    message: 'The operation could not be completed as the entity is referenced in other sources',
+                    data: Promise.resolve({
+                        entity: entities,
+                        record: records
+                    })
+                });
+            }
+        });
+    }
+}
+exports.EntityController = EntityController;
+
+
+/***/ },
+/* 22 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview Controller for element sets
+ * @author <a href='mailto:tim.hollies@warwick.ac.uk'>Tim Hollies</a>
+ * @version 0.0.1
+ */
+"use strict";
+const Predicate_1 = __webpack_require__(79);
+const GenericController_1 = __webpack_require__(7);
+const Exceptions_1 = __webpack_require__(8);
+const RecordController_1 = __webpack_require__(14);
+const lodash_1 = __webpack_require__(1);
+class PredicatePersistable extends Predicate_1.Predicate {
+    getTableName() {
+        return PredicatePersistable.tableName;
+    }
+    toSchema() {
+        const out = Object.assign(lodash_1.omit(this.serialize(), 'range', 'rangeIsReference', 'sameAs', 'creationTimestamp', 'lastmodifiedTimestamp'), {
+            same_as: this.sameAs,
+            range_type: this.rangeIsReference ? 'entity' : this.range,
+            creation_timestamp: this.creationTimestamp,
+            lastmodified_timeStamp: this.lastmodifiedTimestamp
+        });
+        if (this.rangeIsReference) {
+            out['range_ref'] = this.range;
+        }
+        else {
+            out['range_ref'] = null;
+        }
+        return out;
+    }
+    fromSchema(data) {
+        if (data.range_type === 'entity') {
+            data.range = data.range_ref;
+            data.rangeIsReference = true;
+        }
+        else {
+            data.range = data.range_type;
+            data.rangeIsReference = false;
+        }
+        this.deserialize(Object.assign(data, {
+            'sameAs': data.same_as
+        }));
+        return this;
+    }
+}
+PredicatePersistable.tableName = 'predicates';
+exports.PredicatePersistable = PredicatePersistable;
+class PredicateController extends GenericController_1.GenericController {
+    constructor(db) {
+        super(db, PredicatePersistable.tableName);
+    }
+    getCollectionJson(obj, params = {}) {
+        if (params.domain !== undefined) {
+            //TODO: this check should be unecessery
+            return this.db.getAncestorsOf(lodash_1.isArray(params.domain) ? params.domain[0] : params.domain, 'entity_types')
+                .then((ancestors) => {
+                return this.db.select('predicates').whereIn('domain', ancestors.concat([params.domain[0]]))
+                    .then((results) => results.map((result) => new obj().fromSchema(result)));
+            });
+        }
+        else {
+            return super.getCollectionJson(obj, params);
+        }
+    }
+    putItem(obj, uid, data) {
+        if (typeof (uid) !== 'number') {
+            throw new Error('Expected single column identifier');
+        }
+        return this.db.updateItem(new obj().deserialize(data));
+    }
+    patchItem(obj, uid, data) {
+        if (data.domain !== undefined) {
+            return this.db.select('records', ['entities.type as entityType'])
+                .distinct()
+                .where({ predicate: uid })
+                .innerJoin('entities', 'records.entity', 'entities.uid')
+                .then((records) => {
+                if (records.length > 0) {
+                    return this.db.getChildrenOf(data.domain, 'entity_types')
+                        .then((res) => {
+                        records.map((e) => e.entityType)
+                            .forEach((e) => {
+                            if (res.indexOf(e) === -1) {
+                                throw new Exceptions_1.OperationNotPermittedException({
+                                    message: 'The operation could not be completed as it would invalidate predicate relationships',
+                                    data: Promise.resolve({})
+                                });
+                            }
+                        });
+                    }).then(() => super.patchItem(obj, uid, data));
+                }
+                return super.patchItem(obj, uid, data);
+            });
+        }
+        //TODO: fix range enforcement
+        if (data.range !== undefined) {
+            return this.db.select('records')
+                .where({ predicate: uid })
+                .then((records) => {
+                if (records.length > 0) {
+                    if (data.rangeIsReference === false) {
+                        throw new Exceptions_1.OperationNotPermittedException({
+                            message: 'The operation could not be completed as it would invalidate predicate relationships',
+                            data: Promise.resolve({})
+                        });
+                    }
+                    return this.db.getChildrenOf(data.range, 'entity_types')
+                        .then((res) => {
+                        records.map((e) => e.value_entity)
+                            .forEach((e) => {
+                            if (res.indexOf(e) === -1) {
+                                throw new Exceptions_1.OperationNotPermittedException({
+                                    message: 'The operation could not be completed as it would invalidate predicate relationships',
+                                    data: Promise.resolve({})
+                                });
+                            }
+                        });
+                    }).then(() => super.patchItem(obj, uid, data));
+                }
+                return super.patchItem(obj, uid, data);
+            });
+        }
+        return super.patchItem(obj, uid, data);
+    }
+    deleteItem(obj, uid) {
+        // check if this entity is the parent of another entity or if it has any relationships
+        // pointing towards it.
+        return Promise.all([
+            this.db.loadCollection('records', { predicate: uid })
+        ]).then(([records]) => {
+            if (records.length === 0) {
+                return this.db.deleteItem(this.tableName, uid);
+            }
+            else {
+                throw new Exceptions_1.OperationNotPermittedException({
+                    message: 'The operation could not be completed as the predicate is used by other records',
+                    data: Promise.resolve({
+                        record: records.map((record) => new RecordController_1.RecordPersistable().fromSchema(record))
+                    })
+                });
+            }
+        });
+    }
+}
+exports.PredicateController = PredicateController;
+
+
+/***/ },
+/* 23 */
+/***/ function(module, exports) {
+
+module.exports = require("graphql");
+
+/***/ },
+/* 24 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview Sidebar for editor
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.1.0
+ */
+"use strict";
+const React = __webpack_require__(0);
+const ComboDropdown_1 = __webpack_require__(6);
+const lodash_1 = __webpack_require__(1);
+class PredicateDescription extends React.Component {
+    constructor() {
+        super();
+        this.state = {
+            editingDomain: false,
+            editingRange: false,
+            rangeValue: { key: '', value: '' },
+            domainValue: { key: '', value: '' }
+        };
+    }
+    componentWillMount() {
+        this.setState({
+            rangeValue: this.props.range,
+            domainValue: this.props.domain
+        });
+    }
+    componentWillReceiveProps(newProps) {
+        this.setState({
+            rangeValue: newProps.range,
+            domainValue: newProps.domain
+        });
+    }
+    acceptDomainChanges() {
+        this.props.domainChanged(this.state.domainValue);
+        this.setState({ editingDomain: false });
+    }
+    cancelDomainChanges() {
+        this.setState({ editingDomain: false, domainValue: this.props.domain });
+    }
+    acceptRangeChanges() {
+        this.props.rangeChanged(this.state.rangeValue);
+        this.setState({ editingRange: false });
+    }
+    cancelRangeChanges() {
+        this.setState({ editingDomain: false, rangeValue: this.props.range });
+    }
+    render() {
+        const domainChanged = this.props.mode === 'editAll' ?
+            this.props.domainChanged : (c) => this.setState({ domainValue: c });
+        const rangeChanged = this.props.mode === 'editAll' ?
+            this.props.rangeChanged : (c) => this.setState({ rangeValue: c });
+        return (React.createElement("div", {className: 'predicate-function-description'}, 
+            React.createElement("div", {className: 'domain'}, this.props.mode === 'editAll' || this.state.editingDomain ? (React.createElement("div", null, 
+                React.createElement("label", {className: 'small'}, "Domain"), 
+                React.createElement(ComboDropdown_1.ComboDropdown, {options: this.props.domainOptions, typeName: 'entity type', allowNew: false, value: this.state.domainValue, setValue: domainChanged, createNewValue: lodash_1.noop}), 
+                this.props.mode === 'editSingle' ? (React.createElement("div", null, 
+                    React.createElement("button", {onClick: this.acceptDomainChanges.bind(this)}, 
+                        React.createElement("i", {className: 'fa fa-check', "aria-hidden": 'true'})
+                    ), 
+                    React.createElement("button", {onClick: this.cancelDomainChanges.bind(this)}, 
+                        React.createElement("i", {className: 'fa fa-times', "aria-hidden": 'true'})
+                    ))) : null)) : (React.createElement("div", null, 
+                this.props.domain.key, 
+                " ", 
+                React.createElement("i", {className: 'fa fa-pencil-square-o', title: 'Edit', "aria-hidden": 'true', onClick: () => this.setState({ editingDomain: true })})))), 
+            React.createElement("div", {className: 'arrow'}, 
+                React.createElement("i", {className: 'fa fa-long-arrow-right', "aria-hidden": 'true'})
+            ), 
+            React.createElement("div", {className: 'range'}, this.props.mode === 'editAll' || this.state.editingRange ? (React.createElement("div", null, 
+                React.createElement("label", {className: 'small'}, "Range"), 
+                React.createElement(ComboDropdown_1.ComboDropdown, {options: this.props.rangeOptions, typeName: 'entity type', allowNew: false, value: this.state.rangeValue, setValue: rangeChanged, createNewValue: lodash_1.noop}), 
+                this.props.mode === 'editSingle' ? (React.createElement("div", null, 
+                    React.createElement("button", {onClick: this.acceptRangeChanges.bind(this)}, 
+                        React.createElement("i", {className: 'fa fa-check', "aria-hidden": 'true'})
+                    ), 
+                    React.createElement("button", {onClick: this.cancelRangeChanges.bind(this)}, 
+                        React.createElement("i", {className: 'fa fa-times', "aria-hidden": 'true'})
+                    ))) : null)) : (React.createElement("div", null, 
+                this.props.range.key, 
+                " ", 
+                React.createElement("i", {className: 'fa fa-pencil-square-o', title: 'Edit', "aria-hidden": 'true', onClick: () => this.setState({ editingRange: true })}))))));
+    }
+}
+exports.PredicateDescription = PredicateDescription;
+
+
+/***/ },
+/* 25 */
+/***/ function(module, exports) {
+
+"use strict";
+/**
+ * @fileOverview <Description Missing>
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.1.0
+ */
+"use strict";
+exports.findParentTree = (uid, data, ancestors = []) => {
+    const current = data.find((datum) => datum.uid === uid);
+    if (current === undefined) {
+        console.warn('Couldn\'t find parent');
+        return ancestors;
+    }
+    else {
+        if (current.parent === null || current.uid === null) {
+            if (current.uid === null) {
+                console.warn('Found entity will null uid');
+                return ancestors;
+            }
+            else {
+                return ancestors.concat([current.uid]);
+            }
+        }
+        else {
+            return exports.findParentTree(current.parent, data, ancestors.concat([current.uid]));
+        }
+    }
+};
+
+
+/***/ },
+/* 26 */
+/***/ function(module, exports) {
+
+"use strict";
+/**
+ * @fileOverview <Description Missing>
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.1.0
+ */
+"use strict";
+exports.itemTypes = {
+    element_set: {
+        machineName: 'element_set',
+        name: 'Element Set',
+        plural: 'Element Sets',
+        workspace: ''
+    },
+    record: {
+        machineName: 'record',
+        name: 'Record',
+        plural: 'Records',
+        workspace: ''
+    },
+    entity: {
+        machineName: 'entity',
+        name: 'Entity',
+        plural: 'Entities',
+        workspace: 'entity'
+    },
+    entity_type: {
+        machineName: 'entity_type',
+        name: 'Entity Type',
+        plural: 'Entity Types',
+        workspace: 'entity_type'
+    },
+    predicate: {
+        machineName: 'property',
+        name: 'Property',
+        plural: 'Properties',
+        workspace: 'predicate'
+    },
+    source: {
+        machineName: 'source',
+        name: 'Source',
+        plural: 'Sources',
+        workspace: 'source'
+    },
+    source_element: {
+        machineName: 'source_element',
+        name: 'Source Element',
+        plural: 'Source Elements',
+        workspace: ''
+    }
+};
+
+
+/***/ },
+/* 27 */
+/***/ function(module, exports) {
+
+"use strict";
+/**
+ * @fileOverview <Description Missing>
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.1.0
+ */
+"use strict";
+exports.literalTypes = [
+    { name: 'text', value: 'string', url: '', description: 'some text' },
+    { name: 'number', value: 'integer', url: '', description: 'a number' },
+    { name: 'date', value: 'date', url: '', description: 'a date' },
+    // { name: 'point', value: 'point', url: '', description: 'a point on a map '},
+    // { name: 'region', value: 'region', url: '', description: 'a region on a map'},
+    { name: 'source', value: 'source', url: '', description: 'a source in the database' }
+];
+
+
+/***/ },
+/* 28 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview Sidebar for editor
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.1.0
+ */
+"use strict";
+const React = __webpack_require__(0);
+const react_router_1 = __webpack_require__(9);
+exports.StatsGrid = (props) => {
+    return (React.createElement("section", {className: 'stats-grid'}, 
+        React.createElement(react_router_1.Link, {to: '/edit/entity'}, 
+            React.createElement("div", {className: 'entity'}, 
+                React.createElement("span", {className: 'item-name'}, "Entities"), 
+                React.createElement("span", {className: 'item-count'}, props.stats.entity))
+        ), 
+        React.createElement(react_router_1.Link, {to: '/edit/entity_type'}, 
+            React.createElement("div", {className: 'entity_type'}, 
+                React.createElement("span", {className: 'item-name'}, "Entity Types"), 
+                React.createElement("span", {className: 'item-count'}, props.stats.entityType))
+        ), 
+        React.createElement(react_router_1.Link, {to: '/edit/source'}, 
+            React.createElement("div", {className: 'source'}, 
+                React.createElement("span", {className: 'item-name'}, "Sources"), 
+                React.createElement("span", {className: 'item-count'}, props.stats.source))
+        ), 
+        React.createElement(react_router_1.Link, {to: '/edit/predicate'}, 
+            React.createElement("div", {className: 'predicate'}, 
+                React.createElement("span", {className: 'item-name'}, "Properties"), 
+                React.createElement("span", {className: 'item-count'}, props.stats.predicate))
+        ), 
+        React.createElement("div", {className: 'record'}, 
+            React.createElement("span", {className: 'item-name'}, "Records"), 
+            React.createElement("span", {className: 'item-count'}, props.stats.record))));
+};
+
+
+/***/ },
+/* 29 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview Controller for element sets
+ * @author <a href='mailto:tim.hollies@warwick.ac.uk'>Tim Hollies</a>
+ * @version 0.0.1
+ */
+"use strict";
+const Element_1 = __webpack_require__(75);
+const GenericController_1 = __webpack_require__(7);
+class ElementPersistable extends Element_1.Element {
+    getTableName() {
+        return ElementPersistable.tableName;
+    }
+    toSchema() {
+        return this.serialize();
+    }
+    fromSchema(data) {
+        this.deserialize(data);
+        return this;
+    }
+}
+ElementPersistable.tableName = 'elements';
+exports.ElementPersistable = ElementPersistable;
+class ElementController extends GenericController_1.GenericController {
+    constructor(db) {
+        super(db, ElementPersistable.tableName);
+    }
+}
+exports.ElementController = ElementController;
+
+
+/***/ },
+/* 30 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview Controller for element sets
+ * @author <a href='mailto:tim.hollies@warwick.ac.uk'>Tim Hollies</a>
+ * @version 0.0.1
+ */
+"use strict";
+const ElementSet_1 = __webpack_require__(76);
+const GenericController_1 = __webpack_require__(7);
+const lodash_1 = __webpack_require__(1);
+class ElementSetPersistable extends ElementSet_1.ElementSet {
+    getTableName() {
+        return ElementSetPersistable.tableName;
+    }
+    toSchema() {
+        return lodash_1.omit(this.serialize(), 'elements');
+    }
+    fromSchema(data) {
+        this.deserialize(data);
+        return this;
+    }
+}
+ElementSetPersistable.tableName = 'element_sets';
+exports.ElementSetPersistable = ElementSetPersistable;
+class ElementSetController extends GenericController_1.GenericController {
+    constructor(db) {
+        super(db, ElementSetPersistable.tableName);
+    }
+    getItemJson(obj, uid) {
+        return super.getItemJson(obj, uid)
+            .then((elementSet) => {
+            if (elementSet.uid === null) {
+                throw new Error('could not find source');
+            }
+            return this.db.select('elements')
+                .where({ 'element_set': elementSet.uid })
+                .then((elements) => {
+                elementSet.elements = elements;
+                return elementSet;
+            });
+        });
+    }
+}
+exports.ElementSetController = ElementSetController;
+
+
+/***/ },
+/* 31 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview Controller for element sets
+ * @author <a href='mailto:tim.hollies@warwick.ac.uk'>Tim Hollies</a>
+ * @version 0.0.1
+ */
+"use strict";
+const EntityType_1 = __webpack_require__(78);
+const GenericController_1 = __webpack_require__(7);
+const PredicateController_1 = __webpack_require__(22);
+const EntityController_1 = __webpack_require__(21);
+const Exceptions_1 = __webpack_require__(8);
+const lodash_1 = __webpack_require__(1);
+class EntityTypePersistable extends EntityType_1.EntityType {
+    getTableName() {
+        return EntityTypePersistable.tableName;
+    }
+    toSchema() {
+        return Object.assign(lodash_1.omit(this.serialize(), 'sameAs', 'parents', 'children', 'creationTimestamp', 'lastmodifiedTimestamp'), {
+            same_as: this.sameAs,
+            creation_timestamp: this.creationTimestamp,
+            lastmodified_timeStamp: this.lastmodifiedTimestamp
+        });
+    }
+    fromSchema(data) {
+        this.deserialize(Object.assign(data, {
+            'sameAs': data.same_as
+        }));
+        return this;
+    }
+}
+EntityTypePersistable.tableName = 'entity_types';
+exports.EntityTypePersistable = EntityTypePersistable;
+class EntityTypeController extends GenericController_1.GenericController {
+    constructor(db) {
+        super(db, EntityTypePersistable.tableName);
+    }
+    getItemJson(obj, uid) {
+        return super.getItemJson(obj, uid)
+            .then((result) => {
+            return Promise.all([
+                this.db.getAncestorsOf(uid, 'entity_types')
+                    .then((ancestors) => {
+                    return this.db.select('entity_types').whereIn('uid', ancestors)
+                        .then((results) => results.map((result) => new obj().fromSchema(result)));
+                }),
+                this.db.select('entity_types', ['uid']).where({ parent: uid })
+            ])
+                .then(([parents, children]) => {
+                result.parents = parents;
+                result.children = children.map((child) => child.uid);
+                return result;
+            });
+        });
+    }
+    deleteItem(obj, uid) {
+        // check if this entity is the parent of another entity or if it has any relationships
+        // pointing towards it.
+        return Promise.all([
+            this.db.select(EntityTypePersistable.tableName).where('parent', '=', uid),
+            this.db.select('entities').where('type', '=', uid),
+            this.db.select('predicates').where('domain', '=', uid).orWhere('range_ref', '=', uid)
+        ]).then(([entityTypes, entities, predicates]) => {
+            if (entities.length + entityTypes.length + predicates.length === 0) {
+                return this.db.deleteItem(this.tableName, uid);
+            }
+            else {
+                throw new Exceptions_1.OperationNotPermittedException({
+                    message: 'The operation could not be completed as the entity is referenced in other sources',
+                    data: Promise.resolve({
+                        entityType: entityTypes.map((entityType) => new EntityTypePersistable().fromSchema(entityType)),
+                        entity: entities.map((entity) => new EntityController_1.EntityPersistable().fromSchema(entity)),
+                        predicate: predicates.map((predicate) => new PredicateController_1.PredicatePersistable().fromSchema(predicate))
+                    })
+                });
+            }
+        });
+    }
+}
+exports.EntityTypeController = EntityTypeController;
+
+
+/***/ },
+/* 32 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview Controller for element sets
+ * @author <a href='mailto:tim.hollies@warwick.ac.uk'>Tim Hollies</a>
+ * @version 0.0.1
+ */
+"use strict";
+const Source_1 = __webpack_require__(81);
+const GenericController_1 = __webpack_require__(7);
+const Exceptions_1 = __webpack_require__(8);
+const RecordController_1 = __webpack_require__(14);
+const lodash_1 = __webpack_require__(1);
+class SourcePersistable extends Source_1.Source {
+    getTableName() {
+        return SourcePersistable.tableName;
+    }
+    toSchema() {
+        return Object.assign({}, lodash_1.omit(this.serialize(), 'metaData', 'sameAs', 'parents', 'children', 'creationTimestamp', 'lastmodifiedTimestamp'), {
+            same_as: this.sameAs,
+            creation_timestamp: this.creationTimestamp,
+            lastmodified_timeStamp: this.lastmodifiedTimestamp
+        });
+    }
+    fromSchema(data) {
+        this.deserialize(Object.assign(data, {
+            'sameAs': data.same_as
+        }));
+        return this;
+    }
+}
+SourcePersistable.tableName = 'sources';
+exports.SourcePersistable = SourcePersistable;
+class SourceController extends GenericController_1.GenericController {
+    constructor(db) {
+        super(db, SourcePersistable.tableName);
+    }
+    // override the getItemJson and getCollectionJson functions to also get information about the 
+    // metadata associated with the retrieved source
+    getMetadata(fields, sourceId) {
+        return this.db.query().raw(`
+            WITH RECURSIVE parent_of(uid, parent) AS  (SELECT uid, parent FROM sources),
+                ancestor(uid) AS (
+                SELECT parent FROM parent_of WHERE uid=?
+                UNION ALL
+                SELECT parent FROM parent_of JOIN ancestor USING(uid) )
+            
+            SELECT *
+                FROM ancestor;
+        `, sourceId).then((parents) => {
+            parents = lodash_1.map(parents, 'uid');
+            parents.pop();
+            parents = [sourceId].concat(parents);
+            return Promise.all(parents.map((parent) => this.db.query().select(fields)
+                .from('source_elements')
+                .innerJoin('elements', function () { this.on('source_elements.element', '=', 'elements.uid'); })
+                .innerJoin('element_sets', function () { this.on('element_sets.uid', '=', 'elements.element_set'); })
+                .where({ 'source_elements.source': parent }))).then((results) => {
+                const a = lodash_1.groupBy(lodash_1.flatten(results), 'name');
+                return Object.keys(a).reduce((prev, cur) => {
+                    const meta = lodash_1.omit(a[cur][0], 'source', 'value');
+                    meta['values'] = a[cur]
+                        .map((val) => ({ source: val.source, value: val.value, uid: val.uid }))
+                        .sort((a, b) => parents.indexOf(a.source) - parents.indexOf(b.source));
+                    return Object.assign(prev, { [cur]: meta });
+                }, {});
+            });
+        });
+    }
+    getItemJson(obj, uid) {
+        return super.getItemJson(obj, uid)
+            .then((source) => {
+            if (source.uid === null) {
+                throw new Error('could not find source');
+            }
+            return Promise.all([
+                this.getMetadata([
+                    'source_elements.source as source',
+                    'elements.name',
+                    'source_elements.value',
+                    'elements.description',
+                    'element_sets.name as element_set',
+                    'elements.comment',
+                    'elements.uri',
+                    'elements.uid as element_uid'], source.uid),
+                this.db.query().select('uid').from('sources').where({ parent: uid }),
+                this.db.query().raw(`
+                    WITH RECURSIVE parent_of(uid, parent) AS  (SELECT uid, parent FROM sources),
+                    ancestor(uid) AS (
+                    SELECT parent FROM parent_of WHERE uid=?
+                    UNION ALL
+                    SELECT parent FROM parent_of JOIN ancestor USING(uid) )
+                    
+                    SELECT uid
+                    FROM ancestor;
+                `, uid)
+            ])
+                .then(([sourceElements, children, parents]) => {
+                source.metaData = sourceElements;
+                source.children = children.map((child) => child.uid).filter((child) => child !== null);
+                source.parents = parents.map((parent) => parent.uid).filter((parent) => parent !== null);
+                return source;
+            });
+        });
+    }
+    getCollectionJson(obj, params = {}) {
+        return super.getCollectionJson(obj, params)
+            .then((sources) => {
+            return Promise.all(sources.map((source) => {
+                if (source.uid === null) {
+                    throw new Error('could not find source');
+                }
+                return this.getMetadata([
+                    'elements.name',
+                    'source_elements.value'
+                ], source.uid)
+                    .then((sourceElements) => {
+                    source.metaData = sourceElements;
+                    return source;
+                });
+            }));
+        });
+    }
+    //TODO should find every child source, not just the direct children
+    deleteItem(obj, uid) {
+        // check if this entity is the parent of another entity or if it has any relationships
+        // pointing towards it.
+        return Promise.all([
+            this.db.loadCollection('records', { source: uid }),
+            this.db.loadCollection('sources', { parent: uid })
+        ]).then(([records, sources]) => {
+            if (records.length + sources.length === 0) {
+                return this.db.deleteItem(this.tableName, uid);
+            }
+            else {
+                throw new Exceptions_1.OperationNotPermittedException({
+                    message: 'The operation could not be completed as the source is used by other records',
+                    data: Promise.resolve({
+                        record: records.map((record) => new RecordController_1.RecordPersistable().fromSchema(record)),
+                        source: sources.map((source) => new SourcePersistable().fromSchema(source))
+                    })
+                });
+            }
+        });
+    }
+}
+exports.SourceController = SourceController;
+
+
+/***/ },
+/* 33 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview Controller for element sets
+ * @author <a href='mailto:tim.hollies@warwick.ac.uk'>Tim Hollies</a>
+ * @version 0.0.1
+ */
+"use strict";
+const SourceElement_1 = __webpack_require__(82);
+const GenericController_1 = __webpack_require__(7);
+const Exceptions_1 = __webpack_require__(8);
+const lodash_1 = __webpack_require__(1);
+class SourceElementPersistable extends SourceElement_1.SourceElement {
+    getTableName() {
+        return SourceElementPersistable.tableName;
+    }
+    toSchema() {
+        return Object.assign(lodash_1.omit(this.serialize(), 'creationTimestamp', 'lastmodifiedTimestamp', 'uid'), {
+            creation_timestamp: this.creationTimestamp,
+            lastmodified_timeStamp: this.lastmodifiedTimestamp,
+            source: this.uid.values.source,
+            element: this.uid.values.element
+        });
+    }
+    fromSchema(data) {
+        this.deserialize(Object.assign(data, {
+            uid: {
+                order: ['source', 'element'],
+                values: {
+                    source: data.source,
+                    element: data.element
+                }
+            }
+        }));
+        return this;
+    }
+}
+SourceElementPersistable.tableName = 'source_elements';
+exports.SourceElementPersistable = SourceElementPersistable;
+class SourceElementController extends GenericController_1.GenericController {
+    constructor(db) {
+        super(db, SourceElementPersistable.tableName);
+    }
+    getItemJson(obj, uid) {
+        return this.db.query().select()
+            .from(this.tableName)
+            .where(uid.values)
+            .first()
+            .then((result) => result === undefined ? Promise.reject(new Exceptions_1.KeyNotFoundException()) : result)
+            .then((data) => new obj().fromSchema(data));
+    }
+    putItem(obj, uid, data) {
+        return this.db.query()(this.tableName)
+            .where(uid.values)
+            .update(lodash_1.omit(data.toSchema(), ['tableName']));
+    }
+    patchItem(obj, uid, data) {
+        const o = new obj();
+        const schemaData = o.deserialize(data).toSchema();
+        const keys = Object.keys(schemaData);
+        const updateObject = {};
+        for (let i = 0; i < keys.length; i += 1) {
+            if (schemaData[keys[i]] !== undefined) {
+                updateObject[keys[i]] = schemaData[keys[i]];
+            }
+        }
+        return this.db.query()(this.tableName)
+            .where(uid.values)
+            .update(updateObject)
+            .then(() => true)
+            .catch((err) => { throw new Error(err); });
+    }
+    deleteItem(obj, uid) {
+        return this.db.query()(this.tableName)
+            .where(uid.values)
+            .del();
+    }
+}
+exports.SourceElementController = SourceElementController;
+
+
+/***/ },
+/* 34 */
+/***/ function(module, exports) {
+
+module.exports = require("immutable");
+
+/***/ },
+/* 35 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview <Description Missing>
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.1.0
+ */
+"use strict";
+var __assign = (this && this.__assign) || Object.assign || function(t) {
+    for (var s, i = 1, n = arguments.length; i < n; i++) {
+        s = arguments[i];
+        for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+            t[p] = s[p];
+    }
+    return t;
+};
+//https://react-router.now.sh/Match
+const React = __webpack_require__(0);
+const react_router_1 = __webpack_require__(9);
+const RouteNotFound_1 = __webpack_require__(87);
+const ApiService_1 = __webpack_require__(2);
+const itemTypes_1 = __webpack_require__(26);
+const Admin_1 = __webpack_require__(83);
+const AdminApp_1 = __webpack_require__(40);
+const User_1 = __webpack_require__(88);
+const UserManagement_1 = __webpack_require__(89);
+const AppDownload_1 = __webpack_require__(84);
+const DatabaseUpload_1 = __webpack_require__(85);
+const react_router_2 = __webpack_require__(9);
+const ObjectEditor_1 = __webpack_require__(86);
+class FalconApp extends React.Component {
+    constructor(props) {
+        super();
+        this.state = {
+            user: '',
+            stats: null
+        };
+    }
+    componentDidMount() {
+        if (this.props.environment === 'website' && window !== undefined) {
+            fetch('/admin/currentuser', { credentials: 'same-origin' })
+                .then((response) => response.json())
+                .then((userData) => this.setState({ user: userData.username }));
+        }
+        this.props.api.getStats()
+            .then((stats) => {
+            this.setState({ stats });
+        });
+    }
+    render() {
+        return (React.createElement("div", {id: 'main', className: 'flex-fill'}, 
+            React.createElement(this.props.router, __assign({}, this.props.routerSettings, {className: 'flex-fill', basename: '/admin'}), 
+                React.createElement("div", {className: 'flex-fill', style: { flexDirection: 'column' }}, 
+                    React.createElement("div", {className: 'header'}, 
+                        React.createElement(react_router_2.Link, {to: '/', className: 'logo-link'}, 
+                            React.createElement("div", {className: 'logo'}, "VRE")
+                        ), 
+                        React.createElement(react_router_2.Link, {to: '/', className: 'header-link'}, "Home"), 
+                        React.createElement(react_router_2.Link, {accessKey: 's', to: '/edit/' + ApiService_1.AppUrls.source, className: 'header-link source'}, itemTypes_1.itemTypes.source.plural), 
+                        React.createElement(react_router_2.Link, {accessKey: 'e', to: '/edit/' + ApiService_1.AppUrls.entity, className: 'header-link entity'}, itemTypes_1.itemTypes.entity.plural), 
+                        React.createElement(react_router_2.Link, {accessKey: 'p', to: '/edit/' + ApiService_1.AppUrls.predicate, className: 'header-link predicate'}, itemTypes_1.itemTypes.predicate.plural), 
+                        React.createElement(react_router_2.Link, {accessKey: 't', to: '/edit/' + ApiService_1.AppUrls.entity_type, className: 'header-link entity_type'}, itemTypes_1.itemTypes.entity_type.plural), 
+                        this.props.environment === 'website' ? (React.createElement("div", {className: 'right-header'}, 
+                            React.createElement(react_router_2.Link, {to: '/user', className: 'header-link'}, 
+                                React.createElement("span", {className: 'current-user'}, this.state.user)
+                            ), 
+                            React.createElement("a", {href: '/admin/logout', className: 'header-link'}, "Logout"), 
+                            React.createElement("a", {href: '/', className: 'header-link'}, 
+                                React.createElement("i", {className: 'fa fa-external-link'})
+                            ))) : null), 
+                    this.props.environment === 'website' ? (React.createElement(react_router_1.Match, {exactly: true, pattern: '/', render: (matchprops) => (React.createElement(Admin_1.Admin, __assign({}, matchprops, {stats: this.state.stats})))})) : (React.createElement(react_router_1.Match, {exactly: true, pattern: '/', render: (matchprops) => (React.createElement(AdminApp_1.AdminApp, __assign({}, matchprops, {stats: this.state.stats})))})), 
+                    React.createElement(react_router_1.Match, {exactly: true, pattern: '/user', component: User_1.User}), 
+                    React.createElement(react_router_1.Match, {exactly: true, pattern: '/users', component: UserManagement_1.UserManagement}), 
+                    React.createElement(react_router_1.Match, {exactly: true, pattern: '/app', component: AppDownload_1.AppDownload}), 
+                    React.createElement(react_router_1.Match, {exactly: true, pattern: '/upload', component: DatabaseUpload_1.DatabaseUpload}), 
+                    React.createElement(react_router_1.Match, {exactly: true, pattern: '/search', render: (matchprops) => (React.createElement(ObjectEditor_1.ObjectEditor, __assign({api: this.props.api}, matchprops, {workspace: 'search'})))}), 
+                    React.createElement(react_router_1.Match, {pattern: '/edit/:workspace', render: (matchprops) => (React.createElement(ObjectEditor_1.ObjectEditor, __assign({api: this.props.api}, matchprops, {workspace: matchprops.params.workspace === 'property' ? 'predicate' : matchprops.params.workspace})))}), 
+                    React.createElement(react_router_1.Miss, {component: RouteNotFound_1.RouteNotFound}))
+            )
+        ));
+    }
+}
+exports.FalconApp = FalconApp;
+
+
+/***/ },
+/* 36 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview Abstract interface for sources
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.0.1
+ */
+"use strict";
+const Knex = __webpack_require__(96);
+const lodash_1 = __webpack_require__(1);
+const Exceptions_1 = __webpack_require__(8);
+class Database {
+    constructor(config) {
+        this.knex = Knex(config);
+    }
+    query() {
+        return this.knex;
+    }
+    select(tableName, options = '*') {
+        return this.knex.select().from(tableName);
+    }
+    loadItem(a, uid) {
+        const query = this.knex.select()
+            .from(a)
+            .where({ uid: uid })
+            .first();
+        return query.then((result) => result === undefined ? Promise.reject(new Exceptions_1.KeyNotFoundException()) : result);
+    }
+    loadCollection(a, params) {
+        let query = this.knex.select()
+            .from(a);
+        Object.keys(params).forEach((param) => {
+            query = query.whereIn(param, params[param]);
+        });
+        return query.then((results) => results === undefined ? Promise.reject(new Exceptions_1.KeyNotFoundException()) : results);
+    }
+    createItem(a) {
+        // throw warning if called with uid
+        // validate that everything else has been sent
+        const withoutUid = lodash_1.omit(a.toSchema(), ['uid', 'tableName']);
+        return this.knex.transaction((trx) => {
+            return this.knex(a.getTableName()).transacting(trx).insert(withoutUid, 'uid').returning('uid')
+                .then((results) => {
+                return this.checkIntegrity(trx)
+                    .then((valid) => {
+                    if (!valid) {
+                        throw new Exceptions_1.DatabaseIntegrityError();
+                    }
+                    return results;
+                });
+            })
+                .then(trx.commit)
+                .catch(trx.rollback);
+        });
+    }
+    updateItem(a) {
+        // assert - must have uid
+        // validation?
+        return this.knex.transaction((trx) => {
+            return this.knex(a.getTableName()).transacting(trx)
+                .where({ 'uid': a.uid })
+                .update(lodash_1.omit(a.toSchema(), ['tableName']))
+                .then((results) => {
+                return this.checkIntegrity(trx)
+                    .then((valid) => {
+                    if (!valid) {
+                        throw new Exceptions_1.DatabaseIntegrityError();
+                    }
+                    return results;
+                });
+            })
+                .then(trx.commit)
+                .catch(trx.rollback);
+        });
+    }
+    deleteItem(tableName, uid) {
+        return this.knex.transaction((trx) => {
+            return this.knex(tableName).transacting(trx)
+                .where({ uid })
+                .del()
+                .then((results) => {
+                return this.checkIntegrity(trx)
+                    .then((valid) => {
+                    if (!valid) {
+                        throw new Exceptions_1.DatabaseIntegrityError();
+                    }
+                    return results;
+                });
+            })
+                .then(trx.commit)
+                .catch(trx.rollback);
+        });
+    }
+    getAncestorsOf(uid, tableName) {
+        return this.knex.raw(`
+            WITH RECURSIVE parent_of(uid, parent) AS  (SELECT uid, parent FROM ${tableName}),
+                ancestor(uid) AS (
+                SELECT parent FROM parent_of WHERE uid=${uid}
+                UNION ALL
+                SELECT parent FROM parent_of JOIN ancestor USING(uid) )
+				SELECT * from ancestor`)
+            .then((result) => {
+            return result.filter((a) => a.uid !== null).map((a) => a.uid);
+        });
+    }
+    getChildrenOf(uid, tableName) {
+        return this.knex.raw(`
+            WITH RECURSIVE parent_of(uid, parent) AS  (SELECT uid, parent FROM ${tableName}),
+                ancestor(parent) AS (
+                SELECT uid FROM parent_of WHERE uid=${uid}
+                UNION ALL
+                SELECT uid FROM parent_of JOIN ancestor USING(parent) )
+				SELECT * from ancestor`)
+            .then((result) => {
+            return result.filter((a) => a.parent !== null).map((a) => a.parent);
+        });
+    }
+    checkIntegrity(trx) {
+        return Promise.all([
+            this.knex.transacting(trx).select(this.knex.raw('SUM((records.value_type != predicates.range_type)) AS valid'))
+                .from('records')
+                .innerJoin('predicates', 'records.predicate', 'predicates.uid'),
+            this.knex.transacting(trx).select(this.knex.raw(`
+                SUM((
+
+                entities.type not in (
+                    WITH RECURSIVE parent_of(uid, parent) AS  (SELECT uid, parent FROM entity_types),
+                                ancestor(parent) AS (
+                                SELECT uid FROM parent_of WHERE uid=predicates.range_ref
+                                UNION ALL
+                                SELECT uid FROM parent_of JOIN ancestor USING(parent) )
+                                SELECT * from ancestor
+                )
+
+                )) as valid
+            `))
+                .from('records')
+                .innerJoin('predicates', 'records.predicate', 'predicates.uid')
+                .innerJoin('entities', 'entities.uid', 'records.value_entity')
+                .where('records.value_type', '=', 'entity'),
+            this.knex.transacting(trx).select(this.knex.raw(`
+               SUM((
+
+                entities.type not in (
+                    WITH RECURSIVE parent_of(uid, parent) AS  (SELECT uid, parent FROM entity_types),
+                                ancestor(parent) AS (
+                                SELECT uid FROM parent_of WHERE uid=predicates.domain
+                                UNION ALL
+                                SELECT uid FROM parent_of JOIN ancestor USING(parent) )
+                                SELECT * from ancestor
+                )
+
+                )) as valid
+            `))
+                .from('records')
+                .innerJoin('predicates', 'records.predicate', 'predicates.uid')
+                .innerJoin('entities', 'entities.uid', 'records.entity')
+        ]).then(([[a], [b], [c]]) => {
+            return (a.valid + b.valid + c.valid) === 0;
+        });
+    }
+}
+exports.Database = Database;
+
+
+/***/ },
+/* 37 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview Map of URIs to controllers
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.0.1
+ */
+"use strict";
+const ServerApiService_1 = __webpack_require__(92);
+const QueryEngine_1 = __webpack_require__(91);
+const controllers_1 = __webpack_require__(90);
+exports.wrapDatabase = (db, fakeCreator) => {
+    const routes = new Map([
+        [ServerApiService_1.AppUrls.element_set, new controllers_1.ElementSetController(db)],
+        [ServerApiService_1.AppUrls.record, new controllers_1.RecordController(db)],
+        [ServerApiService_1.AppUrls.entity_type, new controllers_1.EntityTypeController(db)],
+        [ServerApiService_1.AppUrls.entity, new controllers_1.EntityController(db)],
+        [ServerApiService_1.AppUrls.predicate, new controllers_1.PredicateController(db)],
+        [ServerApiService_1.AppUrls.source, new controllers_1.SourceController(db)],
+        [ServerApiService_1.AppUrls.element, new controllers_1.ElementController(db)],
+        [ServerApiService_1.AppUrls.source_element, new controllers_1.SourceElementController(db)]
+    ]);
+    return new ServerApiService_1.ServerApiService(db, routes, new QueryEngine_1.QueryEngine(db), fakeCreator);
+};
+const sourceElementSpecial = (router, serverApiContext, typeMap) => {
+    router.get(`/api/v1/${ServerApiService_1.AppUrls.source_element}/:source/:element`, function* (next) {
+        yield serverApiContext
+            .getItem(typeMap[ServerApiService_1.AppUrls.source_element], ServerApiService_1.AppUrls.source_element, {
+            order: ['source', 'element'],
+            values: {
+                source: this.params.source,
+                element: this.params.element
+            }
+        })
+            .then((data) => this.body = data.serialize());
+    });
+    router.put(`/api/v1/${ServerApiService_1.AppUrls.source_element}/:source/:element`, function* (next) {
+        yield serverApiContext
+            .putItem(typeMap[ServerApiService_1.AppUrls.source_element], ServerApiService_1.AppUrls.source_element, {
+            order: ['source', 'element'],
+            values: {
+                source: this.params.source,
+                element: this.params.element
+            }
+        }, this.request.body)
+            .then((data) => this.body = data);
+    });
+    router.patch(`/api/v1/${ServerApiService_1.AppUrls.source_element}/:source/:element`, function* (next) {
+        yield serverApiContext
+            .patchItem(typeMap[ServerApiService_1.AppUrls.source_element], ServerApiService_1.AppUrls.source_element, {
+            order: ['source', 'element'],
+            values: {
+                source: this.params.source,
+                element: this.params.element
+            }
+        }, this.request.body)
+            .then((data) => this.body = data);
+    });
+    router.del(`/api/v1/${ServerApiService_1.AppUrls.source_element}/:source/:element`, function* (next) {
+        yield serverApiContext
+            .delItem(typeMap[ServerApiService_1.AppUrls.source_element], ServerApiService_1.AppUrls.source_element, {
+            order: ['source', 'element'],
+            values: {
+                source: this.params.source,
+                element: this.params.element
+            }
+        })
+            .then((data) => this.body = data);
+    });
+};
+// would be cleaner if it allowed 2nd level REST urls
+//  /entity/{entity_id}/predicate/{predicate_id}
+// /source/{source_id}/element/{element_id}
+exports.api = (router, serverApiContext) => {
+    const typeMap = {
+        [ServerApiService_1.AppUrls.element_set]: controllers_1.ElementSetPersistable,
+        [ServerApiService_1.AppUrls.record]: controllers_1.RecordPersistable,
+        [ServerApiService_1.AppUrls.entity_type]: controllers_1.EntityTypePersistable,
+        [ServerApiService_1.AppUrls.entity]: controllers_1.EntityPersistable,
+        [ServerApiService_1.AppUrls.predicate]: controllers_1.PredicatePersistable,
+        [ServerApiService_1.AppUrls.source]: controllers_1.SourcePersistable,
+        [ServerApiService_1.AppUrls.element]: controllers_1.ElementPersistable,
+        [ServerApiService_1.AppUrls.source_element]: controllers_1.SourceElementPersistable
+    };
+    router.use(function* (next) {
+        if (this.req.method === 'GET' || this.isAuthenticated()) {
+            yield next;
+        }
+        else {
+            this.status = 403;
+            this.body = 'You must be authorised to modify this resource';
+        }
+    });
+    router.use(function* (next) {
+        try {
+            yield next;
+        }
+        catch (err) {
+            switch (err.constructor.name) {
+                case 'KeyNotFoundException':
+                    this.status = 404;
+                    break;
+                case 'CollectionNotFoundException':
+                    this.status = 404;
+                    break;
+                case 'OperationNotPermittedException':
+                    this.status = 422;
+                    break;
+                default:
+                    this.status = 500;
+            }
+            this.type = 'application/json';
+            if (err.data !== undefined) {
+                yield err.data.data.then((data) => {
+                    this.body = JSON.stringify(Object.assign({}, err.data, { data: data }));
+                });
+            }
+            else {
+                this.body = err.message;
+            }
+        }
+    });
+    router.get('/api/v1/query', function* (next) {
+        yield serverApiContext.queryEngine.runQuery(this.query.query)
+            .then((result) => this.body = result);
+    });
+    sourceElementSpecial(router, serverApiContext, typeMap);
+    router.get('/api/v1/:route/:id', function* (next) {
+        yield serverApiContext
+            .getItem(typeMap[this.params.route], this.params.route, parseInt(this.params.id))
+            .then((data) => this.body = data.serialize());
+    });
+    router.get('/api/v1/:route', function* (next) {
+        yield serverApiContext
+            .getCollection(typeMap[this.params.route], this.params.route, this.query)
+            .then((data) => this.body = data.map((datum) => datum.serialize()));
+    });
+    router.post('/api/v1/:route', function* (next) {
+        yield serverApiContext
+            .postItem(typeMap[this.params.route], this.params.route, Object.assign(this.request.body, {
+            creator: this.req.user.uid
+        }))
+            .then((data) => this.body = data);
+    });
+    router.put('/api/v1/:route/:id', function* (next) {
+        yield serverApiContext
+            .putItem(typeMap[this.params.route], this.params.route, parseInt(this.params.id), this.request.body)
+            .then((data) => this.body = data);
+    });
+    router.patch('/api/v1/:route/:id', function* (next) {
+        yield serverApiContext
+            .patchItem(typeMap[this.params.route], this.params.route, parseInt(this.params.id), this.request.body)
+            .then((data) => this.body = data);
+    });
+    router.del('/api/v1/:route/:id', function* (next) {
+        yield serverApiContext
+            .delItem(typeMap[this.params.route], this.params.route, parseInt(this.params.id))
+            .then((data) => this.body = data);
+    });
+    return router;
+};
+
+
+/***/ },
+/* 38 */
+/***/ function(module, exports) {
+
+module.exports = require("electron");
+
+/***/ },
+/* 39 */
+/***/ function(module, exports) {
+
+module.exports = require("react-dom");
+
+/***/ },
+/* 40 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview <Description Missing>
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.1.0
+ */
+"use strict";
+const React = __webpack_require__(0);
+const StatsGrid_1 = __webpack_require__(28);
+exports.AdminApp = (props) => (React.createElement("div", {className: 'page'}, 
+    React.createElement("section", null, 
+        React.createElement("h1", null, "VRE App"), 
+        props.stats !== null ? (React.createElement(StatsGrid_1.StatsGrid, {stats: props.stats})) : null)
+));
+
+
+/***/ },
+/* 41 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview <Description Missing>
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.1.0
+ */
+"use strict";
+const immutable_1 = __webpack_require__(34);
+const datamodel_1 = __webpack_require__(4);
+exports.emptyDataStore = {
+    all: {
+        entity: { value: [], lastUpdate: null },
+        entity_type: { value: [], lastUpdate: null },
+        predicate: { value: [], lastUpdate: null },
+        source: { value: [], lastUpdate: null },
+        dublinCore: { value: new datamodel_1.ElementSet(), lastUpdate: null }
+    },
+    tabs: {
+        entity: immutable_1.Map(),
+        entity_type: immutable_1.Map(),
+        predicate: immutable_1.Map(),
+        source: immutable_1.Map()
+    }
+};
+exports.emptyTabs = [
+    { entity: immutable_1.Map() },
+    { entity_type: immutable_1.Map() },
+    { predicate: immutable_1.Map() },
+    { source: immutable_1.Map()
+    }];
+
+
+/***/ },
+/* 42 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview Sidebar for editor
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.1.0
+ */
+"use strict";
+const React = __webpack_require__(0);
+exports.Loading = (props) => {
+    return (React.createElement("div", {className: 'loader-wrapper'}, 
+        React.createElement("div", {className: 'loader'})
+    ));
+};
+
+
+/***/ },
+/* 43 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview Sidebar for editor
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.1.0
+ */
+"use strict";
+const React = __webpack_require__(0);
+const SearchBox_1 = __webpack_require__(66);
+const ApiService_1 = __webpack_require__(2);
+const react_router_1 = __webpack_require__(9);
+const Signaller_1 = __webpack_require__(3);
+const lodash_1 = __webpack_require__(1);
+const react_sortable_hoc_1 = __webpack_require__(99);
+const Card = react_sortable_hoc_1.SortableElement((props) => (React.createElement("li", {key: `${props.url}`}, 
+    React.createElement("div", {className: ((currentTab) => {
+        const classes = ['sidebar-card'];
+        if (currentTab) {
+            classes.push('current');
+        }
+        if (props.compact) {
+            classes.push('compact');
+        }
+        return classes.join(' ');
+    })(props.currentTab)}, 
+        React.createElement("div", {className: 'badge-container'}, 
+            React.createElement("div", {className: 'badge ' + props.tab.tabType}, 
+                React.createElement("span", null, props.tab.tabType[0].toUpperCase())
+            )
+        ), 
+        React.createElement("div", {className: 'description'}, 
+            React.createElement(react_router_1.Link, {to: props.url}, 
+                React.createElement("span", {className: 'entity-name'}, props.title), 
+                props.compact ? null : (React.createElement("span", {className: 'entity-type'}, props.subtitle)))
+        ), 
+        !props.currentTab ? (React.createElement("span", {className: 'close-button'}, 
+            React.createElement("i", {className: 'fa fa-times', onClick: (e) => this.closeTab(e, props.tab.tabType, props.tab.uid)})
+        )) : null)
+)));
+const CardList = react_sortable_hoc_1.SortableContainer((props) => {
+    return (React.createElement("ul", {className: 'card-list'}, !props.loading ? props.tabs.map((tab, index) => {
+        // TODO: shouldn't be ==
+        const item = props.dataStore.all[tab.tabType].value
+            .find((item) => item.uid == tab.uid);
+        if (item === undefined) {
+            return null;
+        }
+        const url = `/edit/${ApiService_1.AppUrls[tab.tabType]}/${tab.uid}`;
+        const title = tab.tabType === 'entity' ? item.label : item.name;
+        const subtitle = `${lodash_1.capitalize(ApiService_1.AppUrls[tab.tabType]).replace('_', ' ')} ${tab.uid}`;
+        const currentTab = !props.list && tab.tabType === props.workspace && tab.uid == props.id;
+        return (React.createElement(Card, {key: `tab-${index}`, currentTab: currentTab, url: url, tab: tab, title: title, subtitle: subtitle, index: index, compact: props.compact}));
+    }) : null));
+});
+class Sidebar extends React.Component {
+    constructor() {
+        super();
+        this.onSortEnd = ({ oldIndex, newIndex }) => {
+            Signaller_1.reorderTabs.dispatch((tabs) => {
+                return react_sortable_hoc_1.arrayMove(tabs, oldIndex, newIndex);
+            });
+        };
+        this.state = {
+            searchString: '',
+            compactMode: false
+        };
+    }
+    closeTab(e, tabType, uid) {
+        Signaller_1.closeTab.dispatch(tabType, uid);
+        e.stopPropagation();
+        e.preventDefault();
+        e.nativeEvent.stopImmediatePropagation();
+    }
+    render() {
+        return (React.createElement("section", {id: 'sidebar'}, 
+            React.createElement(SearchBox_1.SearchBox, {searchString: this.state.searchString, dataStore: this.props.dataStore, onChange: (evt) => this.setState({ searchString: evt.currentTarget.value })}), 
+            React.createElement("div", {className: 'sidebar-toolbar'}, 
+                React.createElement("button", {onClick: this.props.clearTabs}, 
+                    React.createElement("i", {className: 'fa fa-trash'}), 
+                    " Clear All"), 
+                React.createElement("button", {onClick: () => this.setState({ compactMode: !this.state.compactMode })}, 
+                    React.createElement("i", {className: 'fa fa-compress'}), 
+                    " Compact")), 
+            React.createElement("div", {className: 'card-list-container'}, 
+                React.createElement(CardList, {dataStore: this.props.dataStore, loading: this.props.loading, tabs: this.props.tabs, list: this.props.list, workspace: this.props.workspace, id: this.props.id, compact: this.state.compactMode, onSortEnd: this.onSortEnd})
+            )));
+    }
+}
+exports.Sidebar = Sidebar;
+
+
+/***/ },
+/* 44 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview Toast controller
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.1.0
+ */
+"use strict";
+const React = __webpack_require__(0);
+const Signaller_1 = __webpack_require__(3);
+class Toast extends React.Component {
+    constructor() {
+        super();
+        this.state = {
+            toasts: [],
+            nextId: 0
+        };
+        this.boundShowToast = this.addToast.bind(this);
+        Signaller_1.showToast.add(this.boundShowToast);
+    }
+    componentWillUnmount() {
+        Signaller_1.showToast.remove(this.boundShowToast);
+    }
+    addToast(title, message, level = 'warning', lifeTime = 3000) {
+        const id = this.state.nextId;
+        this.setState({
+            toasts: this.state.toasts.concat([{ title, message, level, lifeTime, id }]),
+            nextId: id + 1
+        });
+        setTimeout(() => {
+            this.setState({
+                toasts: this.state.toasts.filter((toast) => toast.id !== id)
+            });
+        }, lifeTime);
+    }
+    render() {
+        return (React.createElement("span", null, this.state.toasts.map((toast, i) => (React.createElement("div", {key: `toast-${toast.id}`, style: { bottom: (1 + 7 * i) + 'em' }, className: `toast ${toast.level}`}, 
+            React.createElement("div", {className: 'title'}, toast.title), 
+            React.createElement("div", {className: 'message'}, toast.message))))));
+    }
+}
+exports.Toast = Toast;
+
+
+/***/ },
+/* 45 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview Sidebar for editor
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.1.0
+ */
+"use strict";
+const React = __webpack_require__(0);
+const Loading_1 = __webpack_require__(42);
+const workspace_1 = __webpack_require__(74);
+class Workspace extends React.Component {
+    constructor() {
+        super();
+        this.state = {
+            searchString: ''
+        };
+    }
+    render() {
+        if (this.props.loading) {
+            return (React.createElement(Loading_1.Loading, null));
+        }
+        if (this.props.list) {
+            return (React.createElement(workspace_1.ObjectListWorkspace, {api: this.props.api, name: this.props.name, query: this.props.location.query, listType: this.props.workspace, dataStore: this.props.dataStore}));
+        }
+        let workspaceComponent = workspace_1.EmptyWorkspace;
+        switch (this.props.workspace) {
+            case 'entity':
+                workspaceComponent = workspace_1.EntityEditorWorkspace;
+                break;
+            case 'predicate':
+                workspaceComponent = workspace_1.PredicateEditorWorkspace;
+                break;
+            case 'source':
+                workspaceComponent = workspace_1.SourceEditorWorkspace;
+                break;
+            case 'entity_type':
+                workspaceComponent = workspace_1.EntityTypeWorkspace;
+                break;
+            case 'search':
+                workspaceComponent = workspace_1.AdvancedSearchWorkspace;
+                break;
+        }
+        return (React.createElement("div", {className: 'flex-fill workspace-outer-wrapper'}, 
+            React.createElement("div", {className: 'workspace-inner-wrapper flex-fill'}, React.createElement(workspaceComponent, { api: this.props.api, dataStore: this.props.dataStore, id: this.props.id }))
+        ));
+    }
+}
+exports.Workspace = Workspace;
+
+
+/***/ },
+/* 46 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview <Description Missing>
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.1.0
+ */
+"use strict";
+const React = __webpack_require__(0);
+const DatePickerDropdown_1 = __webpack_require__(53);
+exports.DateFieldEditor = (props) => {
+    return (React.createElement("div", {className: 'date-selector'}, 
+        React.createElement(DatePickerDropdown_1.DatePickerDropdown, {value: props.value, setValue: props.onChange})
+    ));
+};
+
+
+/***/ },
+/* 47 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview <Description Missing>
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.1.0
+ */
+"use strict";
+const React = __webpack_require__(0);
+const ComboDropdown_1 = __webpack_require__(6);
+const lodash_1 = __webpack_require__(1);
+exports.EntityFieldEditor = (props) => {
+    const options = props.entities.map((entity) => ({ key: entity.label, value: entity.uid }));
+    let selectedOption = options.find((opt) => opt.value == props.value);
+    if (selectedOption === undefined) {
+        selectedOption = { key: '', value: '' };
+    }
+    return (React.createElement(ComboDropdown_1.ComboDropdown, {options: options, typeName: 'entity type', allowNew: false, value: selectedOption, setValue: (val) => props.onChange(val.value), createNewValue: lodash_1.noop}));
+};
+
+
+/***/ },
+/* 48 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview <Description Missing>
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.1.0
+ */
+"use strict";
+const React = __webpack_require__(0);
+exports.IntegerFieldEditor = (props) => {
+    return (React.createElement("input", {type: 'number', value: props.value, onChange: (e) => props.onChange(e.target.value)}));
+};
+
+
+/***/ },
+/* 49 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview <Description Missing>
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.1.0
+ */
+"use strict";
+const React = __webpack_require__(0);
+const ApiService_1 = __webpack_require__(2);
+const datamodel_1 = __webpack_require__(4);
+const EditableFieldComponent_1 = __webpack_require__(11);
+const RecordRow_1 = __webpack_require__(50);
+const AddTabButton_1 = __webpack_require__(5);
+class RecordEditableFieldComponent extends EditableFieldComponent_1.EditableFieldComponent {
+}
+class RecordPredicate extends React.Component {
+    constructor() {
+        super();
+        this.state = {
+            potentialValues: []
+        };
+    }
+    componentDidMount() {
+        if (this.props.predicate.rangeIsReference) {
+            this.props.api.getCollection(datamodel_1.Entity, ApiService_1.AppUrls.entity, { type: this.props.predicate.range })
+                .then((potentialValues) => this.setState({ potentialValues }));
+        }
+    }
+    createNewRecord() {
+        this.props.api.postItem(datamodel_1.Record, ApiService_1.AppUrls.record, new datamodel_1.Record().deserialize({
+            predicate: this.props.predicate.uid,
+            entity: this.props.entity_id,
+            valueType: this.props.predicate.rangeIsReference ? 'entity' : this.props.predicate.range,
+            score: 3
+        }));
+    }
+    deleteRecord(record) {
+        if (record.uid === null) {
+            throw new Error('Trying to delete a record with null id');
+        }
+        this.props.api.delItem(datamodel_1.Record, ApiService_1.AppUrls.record, record.uid)
+            .then(() => {
+            this.props.onChange();
+        });
+    }
+    recordChanged(record) {
+        this.props.api.putItem(datamodel_1.Record, ApiService_1.AppUrls.record, this.props.entity_id, record.serialize());
+    }
+    render() {
+        return (React.createElement("section", null, 
+            React.createElement("h5", {className: 'section-header'}, 
+                this.props.predicate.name, 
+                " ", 
+                React.createElement("i", {className: 'fa fa-plus-circle add button', "aria-hidden": 'true', onClick: this.createNewRecord.bind(this), title: `Add new ${this.props.predicate.name} record`}), 
+                React.createElement(AddTabButton_1.AddTabButton, {dataStore: this.props.dataStore, uid: this.props.predicate.uid, tabType: 'predicate'})), 
+            React.createElement("table", {className: 'record-editing-table'}, 
+                React.createElement("thead", null, 
+                    React.createElement("tr", {className: 'record-row title'}, 
+                        React.createElement("th", {className: 'record-row-item uid'}, "ID"), 
+                        this.props.predicate.range !== 'source' ? (React.createElement("th", {className: 'record-row-item'}, "Value")) : null, 
+                        React.createElement("th", {className: 'record-row-item'}, "Source"), 
+                        React.createElement("th", {className: 'record-row-item score'}, "Score"), 
+                        React.createElement("th", {className: 'record-row-item score'}, "Period"), 
+                        React.createElement("th", {className: 'record-row-item buttons'}, "Actions"))
+                ), 
+                React.createElement("tbody", null, this.props.records.map((record) => (React.createElement(RecordEditableFieldComponent, {key: `row-${record.uid}`, value: record, onChange: this.recordChanged.bind(this), onDelete: this.deleteRecord.bind(this), component: RecordRow_1.RecordRow, additionalProps: {
+                    dimension: 'predicates',
+                    sources: this.props.sources,
+                    entities: this.state.potentialValues,
+                    dataStore: this.props.dataStore
+                }})))))));
+    }
+}
+exports.RecordPredicate = RecordPredicate;
+
+
+/***/ },
+/* 50 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview <Description Missing>
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.1.0
+ */
+"use strict";
+const React = __webpack_require__(0);
+var EditableFieldComponent_1 = __webpack_require__(11);
+exports.EditableFieldComponent = EditableFieldComponent_1.EditableFieldComponent;
+const ScorePicker_1 = __webpack_require__(54);
+const ComboDropdown_1 = __webpack_require__(6);
+const Signaller_1 = __webpack_require__(3);
+const StringFieldEditor_1 = __webpack_require__(52);
+const EntityFieldEditor_1 = __webpack_require__(47);
+const DateFieldEditor_1 = __webpack_require__(46);
+const IntegerFieldEditor_1 = __webpack_require__(48);
+const AddTabButton_1 = __webpack_require__(5);
+const formatDate_1 = __webpack_require__(20);
+const createNewSource = (initialValue) => {
+    const a = {
+        name: 'source',
+        complete: () => {
+            // TODO : Automatically reload sources
+        },
+        cancel: () => { console.log('cancel'); },
+        settings: {
+            initialValue
+        }
+    };
+    Signaller_1.showModal.dispatch(a);
+};
+const recordEditor = (props) => {
+    switch (props.value.valueType) {
+        case 'string':
+            return (React.createElement(StringFieldEditor_1.StringFieldEditor, {value: props.value.value || '', onChange: (value) => props.onChange(Object.assign(props.value, { value }))}));
+        case 'date':
+            return (React.createElement(DateFieldEditor_1.DateFieldEditor, {value: props.value.value || '', onChange: (value) => props.onChange(Object.assign(props.value, { value }))}));
+        case 'integer':
+            return (React.createElement(IntegerFieldEditor_1.IntegerFieldEditor, {value: props.value.value || '', onChange: (value) => props.onChange(Object.assign(props.value, { value }))}));
+        case 'entity':
+            return (React.createElement(EntityFieldEditor_1.EntityFieldEditor, {value: props.value.value || '', onChange: (value) => props.onChange(Object.assign(props.value, { value })), entities: props.entities}));
+        default:
+            return (React.createElement("div", null, "Missing editor"));
+    }
+};
+const formatValue = (props) => {
+    if (props.value.valueType === 'entity') {
+        const entity = props.entities.find((entity) => entity.uid == props.value.value);
+        if (entity !== undefined) {
+            return (React.createElement("span", null, 
+                entity.label, 
+                " ", 
+                React.createElement(AddTabButton_1.AddTabButton, {dataStore: props.dataStore, uid: entity.uid, tabType: 'entity'})));
+        }
+        else {
+            return (React.createElement("em", null, "Missing Entity"));
+        }
+    }
+    if (props.value.valueType === 'date') {
+        return formatDate_1.formatDate(props.value.value);
+    }
+    return props.value.value;
+};
+exports.RecordRow = (props) => {
+    const recordValue = props.value;
+    if (recordValue === null) {
+        throw new Error('Should not be null!!');
+    }
+    const currentSource = props.sources.find((source) => source.uid === recordValue.source);
+    const dropDownValue = {
+        key: '', value: props.value.source
+    };
+    if (currentSource !== undefined) {
+        dropDownValue.key = currentSource.name;
+    }
+    if (props.edit) {
+        return (React.createElement("tr", {className: 'record-row'}, 
+            React.createElement("td", {className: 'record-row-item uid'}, props.value.uid), 
+            recordValue.valueType !== 'source' ? (React.createElement("td", {className: 'record-row-item'}, recordEditor(props))) : null, 
+            React.createElement("td", {className: 'record-row-item'}, 
+                React.createElement(ComboDropdown_1.ComboDropdown, {options: props.sources.map((source) => ({ key: source.name, value: source.uid })), typeName: 'source', value: dropDownValue, setValue: (combo) => props.onChange(Object.assign(props.value, { source: combo.value })), createNewValue: createNewSource})
+            ), 
+            React.createElement("td", {className: 'record-row-item score'}, 
+                React.createElement(ScorePicker_1.ScorePicker, {value: props.value.score, readOnly: false, onChange: (score) => props.onChange(Object.assign(props.value, { score }))})
+            ), 
+            React.createElement("td", {className: 'record-row-item period'}, 
+                React.createElement(DateFieldEditor_1.DateFieldEditor, {value: props.value.period || '', onChange: (period) => props.onChange(Object.assign(props.value, { period }))})
+            ), 
+            React.createElement("td", {className: 'record-row-item buttons'}, 
+                React.createElement("button", null, 
+                    React.createElement("i", {className: 'fa fa-check', onClick: props.acceptChanges, "aria-hidden": 'true'})
+                ), 
+                React.createElement("button", null, 
+                    React.createElement("i", {className: 'fa fa-times', "aria-hidden": 'true', onClick: props.cancelChanges})
+                ))));
+    }
+    else {
+        return (React.createElement("tr", {className: 'record-row'}, 
+            React.createElement("td", {className: 'record-row-item uid'}, 
+                "#", 
+                props.value.uid), 
+            recordValue.valueType !== 'source' ? (React.createElement("td", {className: 'record-row-item'}, formatValue(props))) : null, 
+            React.createElement("td", {className: 'record-row-item'}, 
+                dropDownValue.key, 
+                dropDownValue.key.length > 0 ? (React.createElement(AddTabButton_1.AddTabButton, {dataStore: props.dataStore, uid: dropDownValue.value, tabType: 'source'})) : null), 
+            React.createElement("td", {className: 'record-row-item score'}, 
+                React.createElement(ScorePicker_1.ScorePicker, {value: props.value.score, readOnly: true})
+            ), 
+            React.createElement("td", {className: 'record-row-item period'}, formatDate_1.formatDate(props.value.period)), 
+            React.createElement("td", {className: 'record-row-item buttons'}, 
+                React.createElement("button", null, 
+                    React.createElement("i", {className: 'fa fa-pencil-square-o', title: 'Edit', onClick: props.setEdit, "aria-hidden": 'true'})
+                ), 
+                React.createElement("button", null, 
+                    React.createElement("i", {className: 'fa fa-trash', "aria-hidden": 'true', onClick: props.onDelete})
+                ))));
+    }
+};
+
+
+/***/ },
+/* 51 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview <Description Missing>
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.1.0
+ */
+"use strict";
+const React = __webpack_require__(0);
+const ApiService_1 = __webpack_require__(2);
+const datamodel_1 = __webpack_require__(4);
+const EditableFieldComponent_1 = __webpack_require__(11);
+const SearchBar_1 = __webpack_require__(12);
+const RecordPredicate_1 = __webpack_require__(49);
+const findParentTree_1 = __webpack_require__(25);
+const Signaller_1 = __webpack_require__(3);
+class RecordEditableFieldComponent extends EditableFieldComponent_1.EditableFieldComponent {
+}
+class RecordsEditor extends React.Component {
+    constructor() {
+        super();
+        this.state = {
+            filterFunc: () => true
+        };
+    }
+    deleteRecord(record) {
+        if (record.uid === null) {
+            throw new Error('Trying to delete a record with null id');
+        }
+        this.props.api.delItem(datamodel_1.Record, ApiService_1.AppUrls.record, record.uid)
+            .then(() => {
+            this.props.onChange();
+        });
+    }
+    recordChanged(record) {
+        this.props.api.putItem(datamodel_1.Record, ApiService_1.AppUrls.record, this.props.id, record.serialize());
+    }
+    createNewRecord() {
+        const entity = this.props.dataStore.tabs.entity.get('entity-' + this.props.id).value.entity;
+        const entityType = this.props.dataStore.all.entity_type.value.find((t) => t.uid === entity.entityType);
+        const entityTypeParents = findParentTree_1.findParentTree(entity.entityType, this.props.dataStore.all.entity_type.value);
+        const predicates = this.props.dataStore.all.predicate
+            .value.filter((pred) => entityTypeParents.indexOf(pred.domain) !== -1);
+        const modalDef = {
+            name: 'record',
+            complete: (data) => {
+                console.log('Records editor called complete');
+                //this.loadData(this.props);
+            },
+            cancel: () => {
+                console.log('Records editor called cancel');
+            },
+            settings: {
+                options: predicates.map((pred) => ({ key: pred.name, value: pred.uid, meta: pred })),
+                entityUid: this.props.id,
+                entityType: this.props.entityTypeId
+            }
+        };
+        Signaller_1.showModal.dispatch(modalDef);
+    }
+    render() {
+        const predicates = this.props.predicates;
+        return (React.createElement("div", null, 
+            React.createElement("div", null, 
+                React.createElement("div", null, 
+                    React.createElement("label", {className: 'small'}, "Records"), 
+                    React.createElement("div", {style: { display: 'flex' }}, 
+                        React.createElement("div", {style: { flex: '1' }}, 
+                            React.createElement(SearchBar_1.SearchBar, {getValue: (p) => p.name, setFilterFunc: (filterFunc) => this.setState({ filterFunc })})
+                        ), 
+                        React.createElement("div", {style: { padding: '0.1em 0.4em', fontSize: '2em' }}, 
+                            React.createElement("i", {className: 'fa fa-plus-circle add button', "aria-hidden": 'true', onClick: this.createNewRecord.bind(this), title: 'Add new record'})
+                        )), 
+                    React.createElement("div", null, Object.keys(this.props.records).map((section) => {
+                        const currentPredicate = predicates.find((pred) => {
+                            if (pred.uid === null) {
+                                throw new Error('encountered predicate with null id');
+                            }
+                            return pred.uid.toString() === section;
+                        });
+                        if (currentPredicate === undefined) {
+                            throw new Error('Could not find predicate');
+                        }
+                        if (!this.state.filterFunc(currentPredicate)) {
+                            return null;
+                        }
+                        return (React.createElement(RecordPredicate_1.RecordPredicate, {dataStore: this.props.dataStore, key: `section-${section}`, entity_id: this.props.id, api: this.props.api, dimension: 'predicate', records: this.props.records[section], predicate: currentPredicate, sources: this.props.sources, onChange: this.props.onChange}));
+                    })))
+            )
+        ));
+    }
+}
+exports.RecordsEditor = RecordsEditor;
+
+
+/***/ },
+/* 52 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview <Description Missing>
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.1.0
+ */
+"use strict";
+const React = __webpack_require__(0);
+exports.StringFieldEditor = (props) => {
+    return (React.createElement("input", {type: 'text', value: props.value, onChange: (e) => props.onChange(e.target.value)}));
+};
+
+
+/***/ },
+/* 53 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview Sidebar for editor
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.1.0
+ */
+"use strict";
+const React = __webpack_require__(0);
+const moment = __webpack_require__(15);
+const lodash_1 = __webpack_require__(1);
+const formatDate_1 = __webpack_require__(20);
+class DatePickerDropdown extends React.Component {
+    constructor() {
+        super();
+        //TODO: should be false
+        this.state = {
+            showingDropDown: false
+        };
+        if (document !== undefined) {
+            this.boundWindowClick = () => {
+                if (!this.ignoreGlobalClick) {
+                    this.setState({
+                        showingDropDown: false
+                    });
+                }
+                else {
+                    this.ignoreGlobalClick = false;
+                }
+            };
+            document.body.addEventListener('click', this.boundWindowClick);
+        }
+    }
+    componentWillMount() {
+        this.ignoreBlur = false;
+        this.ignoreClick = false;
+        this.ignoreGlobalClick = false;
+    }
+    componentWillUnmount() {
+        document.body.removeEventListener('click', this.boundWindowClick);
+    }
+    componentWillReceiveProps(newProps) {
+        // this.updateFilter(newProps.value.key !== this.props.value.key ? newProps.value.key : this.state.searchString, newProps);
+        // this.setState({
+        //     searchString: newProps.value.key !== this.props.value.key ? newProps.value.key : this.state.searchString,
+        //     selected: newProps.value,
+        //     options: newProps.options
+        // });
+    }
+    //should be false
+    handleInputBlur() {
+        if (!this.ignoreBlur) {
+            this.setState({
+                showingDropDown: false
+            });
+        }
+        else {
+            this.ignoreBlur = false;
+        }
+    }
+    handleInputFocus() {
+        if (this.ignoreBlur) {
+            this.ignoreBlur = true;
+            return;
+        }
+        // We don't want `selectItemFromMouse` to trigger when
+        // the user clicks into the input to focus it, so set this
+        // flag to cancel out the logic in `handleInputClick`.
+        // The event order is:  MouseDown -> Focus -> MouseUp -> Click
+        this.ignoreClick = true;
+        this.setState({ showingDropDown: true });
+    }
+    handleInputClick() {
+        // Input will not be focused if it's disabled
+        if (this.isInputFocused() && this.state.showingDropDown === false) {
+            this.setState({ showingDropDown: true });
+        }
+        else {
+            //  if (this.state.highlightedIndex !== null && !this.ignoreClick) {
+            //      this.selectItemFromMouse(this.state.filteredOptions[this.state.highlightedIndex]);
+            //  } else {
+            this.ignoreClick = false;
+        }
+    }
+    selectItemFromMouse(item) {
+        this.setState({
+            showingDropDown: false
+        }, () => {
+            this.props.setValue(item);
+        });
+    }
+    isInputFocused() {
+        const el = this.refs.datePickerDropDownInputBox;
+        return el.ownerDocument && (el === el.ownerDocument.activeElement);
+    }
+    onDropdownClick() {
+        this.ignoreBlur = true;
+        this.ignoreGlobalClick = true;
+        console.log('clicked');
+    }
+    rangeTypeChanged(rangeType) {
+        this.props.setValue(rangeType + this.props.value.substr(1));
+    }
+    yearChanged(e) {
+        const base = this.props.value.length === 9 ? this.props.value : '=XXXX0000';
+        let yearVal = e.target.value.substr(0, 4).replace(/[^0-9]/g, '');
+        for (let i = yearVal.length; i < 4; i += 1) {
+            yearVal += 'X';
+        }
+        this.props.setValue(base.substr(0, 1) + yearVal + base.substr(5));
+    }
+    monthChanged(e) {
+        this.ignoreGlobalClick = true;
+        const base = this.props.value.length === 9 ? this.props.value : '=XXXX0000';
+        let monthVal = e.target.value.substr(0, 2);
+        this.props.setValue(base.substr(0, 5) + monthVal + base.substr(7));
+    }
+    dayChanged(e) {
+        const base = this.props.value.length === 9 ? this.props.value : '=XXXX0000';
+        let dayVal = e.target.value.substr(0, 2).replace(/[^0-9]/g, '');
+        dayVal = lodash_1.padStart(dayVal, 2, '0');
+        this.props.setValue(base.substr(0, 7) + dayVal);
+    }
+    render() {
+        let rangeOption = this.props.value.substr(0, 1);
+        if (['<', '>', '='].indexOf(rangeOption) === -1) {
+            rangeOption = '=';
+        }
+        const rangeOptionClassName = (val) => {
+            if (val === rangeOption) {
+                return 'range-option selected';
+            }
+            else {
+                return 'range-option';
+            }
+        };
+        const year = this.props.value.substr(1, 4).replace(/X/g, '');
+        const month = this.props.value.substr(5, 2);
+        const day = this.props.value[7] === '0' ? this.props.value[8] === '0' ?
+            ''
+            : this.props.value.substr(8, 1)
+            : this.props.value.substr(7, 2);
+        const displayValue = formatDate_1.formatDate(this.props.value);
+        return (React.createElement("div", {className: 'combo-dropdown'}, 
+            React.createElement("div", null, 
+                React.createElement("input", {type: 'text', readOnly: true, ref: 'datePickerDropDownInputBox', className: 'search-input', value: displayValue, onBlur: this.handleInputBlur.bind(this), onFocus: this.handleInputFocus.bind(this), onClick: this.handleInputClick.bind(this)})
+            ), 
+            this.state.showingDropDown ? (React.createElement("div", {className: 'dropdown'}, 
+                React.createElement("div", {className: 'date-picker-dropdown', onMouseDown: this.onDropdownClick.bind(this)}, 
+                    React.createElement("section", {className: 'range-type'}, 
+                        React.createElement("div", {className: rangeOptionClassName('<'), onClick: () => this.rangeTypeChanged('<')}, "Before"), 
+                        React.createElement("div", {className: rangeOptionClassName('='), onClick: () => this.rangeTypeChanged('=')}, "Exactly"), 
+                        React.createElement("div", {className: rangeOptionClassName('>'), onClick: () => this.rangeTypeChanged('>')}, "After")), 
+                    React.createElement("section", {className: 'date-select'}, 
+                        React.createElement("div", {className: 'date-selector day'}, 
+                            React.createElement("label", {className: 'small'}, "Day"), 
+                            React.createElement("input", {type: 'text', maxLength: 2, value: day, onChange: this.dayChanged.bind(this)})), 
+                        React.createElement("div", {className: 'date-selector month'}, 
+                            React.createElement("label", {className: 'small'}, "Month"), 
+                            React.createElement("select", {onChange: this.monthChanged.bind(this), value: month}, 
+                                React.createElement("option", {value: '00'}, "Unknown"), 
+                                moment.months().map((month, i) => (React.createElement("option", {key: `option-${month}`, value: lodash_1.padStart((i + 1).toString(), 2, '0')}, month))))), 
+                        React.createElement("div", {className: 'date-selector year'}, 
+                            React.createElement("label", {className: 'small'}, "Year"), 
+                            React.createElement("input", {type: 'text', maxLength: 4, value: year, onChange: this.yearChanged.bind(this)}))))
+            )) : null));
+    }
+}
+exports.DatePickerDropdown = DatePickerDropdown;
+
+
+/***/ },
+/* 54 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview Sidebar for editor
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.1.0
+ */
+"use strict";
+const React = __webpack_require__(0);
+const lodash_1 = __webpack_require__(1);
+exports.ScorePicker = (props) => {
+    const values = [1, 2, 3, 4, 5];
+    if (props.readOnly) {
+        return (React.createElement("span", {className: 'score-picker'}, values.map((val) => (React.createElement("i", {key: val, className: 'fa fa-star' + (val > props.value ? '-o' : ''), "aria-hidden": 'true'})))));
+    }
+    else {
+        if (props.onChange === undefined) {
+            throw new Error('An onChange handler is required');
+        }
+        return (React.createElement("span", {className: 'score-picker editing'}, lodash_1.reverse(values).map((val) => (React.createElement("i", {key: val, className: 'fa fa-star' + (val > props.value ? '-o' : ''), onClick: () => props.onChange(val), "aria-hidden": 'true'})))));
+    }
+};
+
+
+/***/ },
+/* 55 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview Sidebar for editor
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.1.0
+ */
+"use strict";
+const React = __webpack_require__(0);
+const Overlay_1 = __webpack_require__(10);
+class ConflictResolution extends React.Component {
+    constructor() {
+        super();
+        this.state = {
+            label: '',
+            entityType: { key: '', value: '' },
+            allEntityTypes: []
+        };
+    }
+    render() {
+        return (React.createElement(Overlay_1.Overlay, null, 
+            React.createElement("h2", null, 
+                React.createElement("i", {className: 'fa fa-exclamation-triangle warning'}), 
+                " Conflict: ", 
+                this.props.message), 
+            this.props.conflictingItems.record !== undefined && this.props.conflictingItems.record.length > 0 ? (React.createElement("span", null, 
+                React.createElement("p", null, "The following records conflict with your request change:"), 
+                React.createElement("table", {className: 'table'}, 
+                    React.createElement("thead", null, 
+                        React.createElement("tr", null, 
+                            React.createElement("th", null, "Entity"), 
+                            React.createElement("th", null, "Predicate"), 
+                            React.createElement("th", null, "Value"))
+                    ), 
+                    React.createElement("tbody", null, this.props.conflictingItems.record.map((record) => {
+                        const entityName = this.props.dataStore.all.entity.value
+                            .find((entity) => entity.uid == record.entity).label;
+                        const predicateName = this.props.dataStore.all.predicate.value
+                            .find((predicate) => predicate.uid == record.predicate).name;
+                        return (React.createElement("tr", {key: `row-${record.uid}`}, 
+                            React.createElement("td", null, entityName), 
+                            React.createElement("td", null, predicateName), 
+                            React.createElement("td", null, record.value)));
+                    }))))) : null, 
+            this.props.conflictingItems.entity !== undefined && this.props.conflictingItems.entity.length > 0 ? (React.createElement("span", null, 
+                React.createElement("p", null, "The following entities conflict with your request change:"), 
+                React.createElement("table", {className: 'table'}, 
+                    React.createElement("thead", null, 
+                        React.createElement("tr", null, 
+                            React.createElement("th", null, "Entity")
+                        )
+                    ), 
+                    React.createElement("tbody", null, this.props.conflictingItems.entity.map((entity) => {
+                        return (React.createElement("tr", {key: `row-${entity.uid}`}, 
+                            React.createElement("td", null, entity.label)
+                        ));
+                    }))))) : null, 
+            this.props.conflictingItems.entityType !== undefined && this.props.conflictingItems.entityType.length > 0 ? (React.createElement("span", null, 
+                React.createElement("p", null, "The following entity types conflict with your request change:"), 
+                React.createElement("table", {className: 'table'}, 
+                    React.createElement("thead", null, 
+                        React.createElement("tr", null, 
+                            React.createElement("th", null, "Entity Type")
+                        )
+                    ), 
+                    React.createElement("tbody", null, this.props.conflictingItems.entityType.map((entityType) => {
+                        return (React.createElement("tr", {key: `row-${entityType.uid}`}, 
+                            React.createElement("td", null, entityType.name)
+                        ));
+                    }))))) : null, 
+            this.props.conflictingItems.source !== undefined && this.props.conflictingItems.source.length > 0 ? (React.createElement("span", null, 
+                React.createElement("p", null, "The following sources conflict with your request change:"), 
+                React.createElement("table", {className: 'table'}, 
+                    React.createElement("thead", null, 
+                        React.createElement("tr", null, 
+                            React.createElement("th", null, "Sources")
+                        )
+                    ), 
+                    React.createElement("tbody", null, this.props.conflictingItems.source.map((source) => {
+                        return (React.createElement("tr", {key: `row-${source.uid}`}, 
+                            React.createElement("td", null, source.name)
+                        ));
+                    }))))) : null, 
+            React.createElement("div", {className: 'block-buttons'}, 
+                React.createElement("button", {onClick: () => this.props.cancel()}, "Cancel"), 
+                React.createElement("button", {onClick: () => this.props.complete('addToWorkspace')}, 
+                    React.createElement("i", {className: 'icon-list-add'}), 
+                    "Cancel and add conflicting records to workspace"), 
+                React.createElement("button", {onClick: () => this.props.complete('deleteAll')}, 
+                    React.createElement("i", {className: 'fa fa-trash'}), 
+                    " Continue and delete all conflicting records"))));
+    }
+}
+exports.ConflictResolution = ConflictResolution;
+;
+
+
+/***/ },
+/* 56 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview Sidebar for editor
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.1.0
+ */
+"use strict";
+const React = __webpack_require__(0);
+const Overlay_1 = __webpack_require__(10);
+const datamodel_1 = __webpack_require__(4);
+const ApiService_1 = __webpack_require__(2);
+const ComboDropdown_1 = __webpack_require__(6);
+const lodash_1 = __webpack_require__(1);
+class CreateEntity extends React.Component {
+    constructor() {
+        super();
+        this.state = {
+            label: '',
+            entityType: { key: '', value: '' },
+            allEntityTypes: []
+        };
+    }
+    componentWillMount() {
+        this.props.api.getCollection(datamodel_1.EntityType, ApiService_1.AppUrls.entity_type, {})
+            .then((allEntityTypes) => {
+            if (this.props.initialType !== undefined) {
+                const initialType = allEntityTypes.find((et) => et.uid === this.props.initialType);
+                this.setState({
+                    entityType: { key: initialType.name, value: initialType.uid.toString() }
+                });
+            }
+            this.setState({ allEntityTypes });
+        });
+    }
+    CreateEntity() {
+        this.props.api.postItem(datamodel_1.Entity, ApiService_1.AppUrls.entity, new datamodel_1.Entity().deserialize({
+            label: this.state.label,
+            entityType: this.state.entityType.value
+        }))
+            .then(this.props.complete);
+    }
+    render() {
+        return (React.createElement(Overlay_1.Overlay, null, 
+            React.createElement("h2", null, "Create Entity"), 
+            React.createElement("label", {className: 'small'}, "Label"), 
+            React.createElement("input", {type: 'text', value: this.state.label, ref: (a) => { if (a !== null)
+                a.focus(); }, name: 'new-entity-name', className: 'gap', onChange: (e) => this.setState({ label: e.target.value })}), 
+            React.createElement("label", {className: 'small'}, "Type"), 
+            React.createElement(ComboDropdown_1.ComboDropdown, {options: this.state.allEntityTypes.map((t) => ({ key: t.name, value: t.uid.toString() })), typeName: 'entity type', value: this.state.entityType, setValue: (entityType) => this.setState({ entityType }), createNewValue: lodash_1.noop, allowNew: false}), 
+            React.createElement("button", {name: 'cancel-modal', onClick: () => this.props.cancel(), className: 'pull-left'}, "Cancel"), 
+            React.createElement("button", {name: 'create-entity', onClick: this.CreateEntity.bind(this), className: 'pull-right'}, "Create Entity")));
+    }
+}
+exports.CreateEntity = CreateEntity;
+;
+
+
+/***/ },
+/* 57 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview Sidebar for editor
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.1.0
+ */
+"use strict";
+const React = __webpack_require__(0);
+const Overlay_1 = __webpack_require__(10);
+const datamodel_1 = __webpack_require__(4);
+const ApiService_1 = __webpack_require__(2);
+const mousetrap = __webpack_require__(16);
+class CreateEntityType extends React.Component {
+    constructor() {
+        super();
+        this.state = {
+            internalValue: ''
+        };
+    }
+    createEntityType() {
+        this.props.api.postItem(datamodel_1.EntityType, ApiService_1.AppUrls.entity_type, new datamodel_1.EntityType().deserialize({
+            name: this.state.internalValue
+        }))
+            .then(this.props.complete);
+    }
+    inputRef(val) {
+        if (val !== null) {
+            val.focus();
+            this.keyboardShortcuts = new mousetrap(val);
+            this.keyboardShortcuts.bind('return', this.createEntityType.bind(this));
+            this.keyboardShortcuts.bind('escape', this.props.cancel);
+        }
+        else {
+            this.keyboardShortcuts.unbind('return');
+        }
+    }
+    render() {
+        return (React.createElement(Overlay_1.Overlay, null, 
+            React.createElement("h2", null, "Create Entity Type"), 
+            React.createElement("label", {className: 'small'}, "Name"), 
+            React.createElement("input", {type: 'text', value: this.state.internalValue, ref: this.inputRef.bind(this), onChange: (e) => this.setState({ internalValue: e.target.value })}), 
+            React.createElement("button", {onClick: () => this.props.cancel(), className: 'pull-left'}, "Cancel"), 
+            React.createElement("button", {onClick: this.createEntityType.bind(this), className: 'pull-right'}, "Create Entity Type")));
+    }
+}
+exports.CreateEntityType = CreateEntityType;
+;
+
+
+/***/ },
+/* 58 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview Sidebar for editor
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.1.0
+ */
+"use strict";
+const React = __webpack_require__(0);
+const Overlay_1 = __webpack_require__(10);
+const PredicateDescription_1 = __webpack_require__(24);
+const datamodel_1 = __webpack_require__(4);
+const literalTypes_1 = __webpack_require__(27);
+const ApiService_1 = __webpack_require__(2);
+class CreatePredicate extends React.Component {
+    constructor() {
+        super();
+        this.state = {
+            name: '',
+            domain: { key: '', value: '' },
+            range: { key: '', value: '' },
+            domainOptions: [],
+            rangeOptions: []
+        };
+    }
+    componentWillMount() {
+        this.setState({ name: this.props.initialName });
+    }
+    componentDidMount() {
+        if (this.props.initialDomain !== undefined) {
+            this.props.api.getItem(datamodel_1.EntityType, ApiService_1.AppUrls.entity_type, this.props.initialDomain)
+                .then((result) => {
+                if (result.uid === null) {
+                    throw new Error('Unexpected null uid');
+                }
+                this.setState({
+                    domain: { key: result.name, value: result.uid.toString() },
+                    domainOptions: [
+                        { key: result.name, value: result.uid.toString() }
+                    ].concat(result.parents.map((entityType) => {
+                        if (entityType.uid === null) {
+                            throw new Error('Unexpected null uid');
+                        }
+                        return { key: entityType.name, value: entityType.uid.toString() };
+                    })) });
+            });
+        }
+        const results = this.props.dataStore.all.entity_type.value;
+        const entityTypeMap = results.map((entityType) => {
+            if (entityType.uid === null) {
+                throw new Error('Unexpected null uid');
+            }
+            return { key: entityType.name, value: entityType.uid.toString() };
+        });
+        if (this.props.initialDomain === undefined) {
+            this.setState({ domainOptions: entityTypeMap });
+        }
+        this.setState({
+            rangeOptions: literalTypes_1.literalTypes.map((lit) => ({ key: lit.name, value: lit.value, meta: 'literal' })).concat(entityTypeMap)
+        });
+    }
+    create() {
+        const newPredicate = new datamodel_1.Predicate().deserialize({
+            name: this.state.name,
+            domain: this.state.domain.value,
+            range: this.state.range.value,
+            rangeIsReference: this.state.range.meta !== 'literal'
+        });
+        this.props.api.postItem(datamodel_1.Predicate, ApiService_1.AppUrls.predicate, newPredicate)
+            .then((result) => {
+            newPredicate.uid = result[0];
+            this.props.complete(newPredicate);
+        });
+    }
+    render() {
+        return (React.createElement(Overlay_1.Overlay, null, 
+            React.createElement("h2", null, 
+                React.createElement("i", {className: 'fa fa-plus', "aria-hidden": 'true'}), 
+                " Create Property"), 
+            React.createElement("label", {className: 'small'}, "Name"), 
+            React.createElement("input", {type: 'text', className: 'gap', ref: (a) => { if (a !== null)
+                a.focus(); }, value: this.state.name, onChange: (e) => this.setState({ name: e.target.value })}), 
+            React.createElement(PredicateDescription_1.PredicateDescription, {domain: this.state.domain, range: this.state.range, domainChanged: (s) => this.setState({ domain: s }), rangeChanged: (s) => this.setState({ range: s }), domainOptions: this.state.domainOptions, rangeOptions: this.state.rangeOptions, mode: 'editAll'}), 
+            React.createElement("div", {className: 'modal-toolbar'}, 
+                React.createElement("button", {onClick: this.props.cancel, className: 'pull-left'}, "Cancel"), 
+                React.createElement("button", {onClick: this.create.bind(this), className: 'pull-right'}, "Create Property"))));
+    }
+}
+exports.CreatePredicate = CreatePredicate;
+;
+
+
+/***/ },
+/* 59 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview Sidebar for editor
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.1.0
+ */
+"use strict";
+const React = __webpack_require__(0);
+const datamodel_1 = __webpack_require__(4);
+const ApiService_1 = __webpack_require__(2);
+const Signaller_1 = __webpack_require__(3);
+class CreatePresetRecord extends React.Component {
+    constructor() {
+        super();
+        this.state = {};
+    }
+    componentDidMount() {
+        if (CreatePresetRecord.openEntityDialog) {
+            CreatePresetRecord.openEntityDialog = false;
+            this.createNewEntity();
+        }
+        else {
+            CreatePresetRecord.openEntityDialog = true;
+        }
+    }
+    createNewEntity() {
+        const modalDef = {
+            name: 'entity',
+            complete: (data) => {
+                const isMentioned = this.props.dataStore.all.predicate.value.find((pred) => pred.name === 'is mentioned');
+                this.props.api.postItem(datamodel_1.Record, ApiService_1.AppUrls.record, new datamodel_1.Record().deserialize({
+                    predicate: isMentioned.uid,
+                    entity: data[0],
+                    valueType: 'source',
+                    source: this.props.source.uid,
+                    score: 3
+                }))
+                    .then((result) => {
+                    this.props.complete(result);
+                })
+                    .catch(this.props.cancel);
+            },
+            cancel: () => {
+            },
+            settings: {}
+        };
+        Signaller_1.showModal.dispatch(modalDef);
+    }
+    render() {
+        return null;
+    }
+}
+CreatePresetRecord.openEntityDialog = true;
+exports.CreatePresetRecord = CreatePresetRecord;
+;
+
+
+/***/ },
+/* 60 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview Sidebar for editor
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.1.0
+ */
+"use strict";
+const React = __webpack_require__(0);
+const Overlay_1 = __webpack_require__(10);
+const datamodel_1 = __webpack_require__(4);
+const ApiService_1 = __webpack_require__(2);
+const ComboDropdown_1 = __webpack_require__(6);
+const Signaller_1 = __webpack_require__(3);
+class CreateRecord extends React.Component {
+    constructor() {
+        super();
+        this.state = {
+            comboValue: { key: '', value: '' },
+            searchValue: ''
+        };
+    }
+    componentDidMount() {
+        this.refs['comboDropDown'].refs['comboDropDownInputBox'].focus();
+    }
+    createNewPredicate() {
+        const modalDef = {
+            name: 'predicate',
+            complete: (data) => {
+                console.log('Predicate editor called complete');
+                this.setComboValue({ key: data.name, value: data.uid.toString(), meta: data });
+            },
+            cancel: () => {
+                console.log('Predicate editor called cancel');
+            },
+            settings: {
+                initialName: this.state.searchValue,
+                initialDomain: this.props.entityType
+            }
+        };
+        Signaller_1.showModal.dispatch(modalDef);
+    }
+    setComboValue(opt) {
+        this.props.api.postItem(datamodel_1.Record, ApiService_1.AppUrls.record, new datamodel_1.Record().deserialize({
+            predicate: opt.meta.uid,
+            entity: this.props.entityUid,
+            valueType: opt.meta.rangeIsReference ? 'entity' : opt.meta.range,
+            score: 3
+        }))
+            .then((result) => this.props.complete(result))
+            .catch(this.props.cancel);
+    }
+    render() {
+        return (React.createElement(Overlay_1.Overlay, null, 
+            React.createElement("h2", null, "Create Record"), 
+            React.createElement(ComboDropdown_1.ComboDropdown, {ref: 'comboDropDown', options: this.props.options, typeName: 'predicate', value: this.state.comboValue, setValue: this.setComboValue.bind(this), createNewValue: this.createNewPredicate.bind(this), updateSearchString: (s) => this.setState({ searchValue: s })})));
+    }
+}
+exports.CreateRecord = CreateRecord;
+;
+
+
+/***/ },
+/* 61 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview Sidebar for editor
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.1.0
+ */
+"use strict";
+const React = __webpack_require__(0);
+const Overlay_1 = __webpack_require__(10);
+const datamodel_1 = __webpack_require__(4);
+const ApiService_1 = __webpack_require__(2);
+const mousetrap = __webpack_require__(16);
+class CreateSource extends React.Component {
+    constructor() {
+        super();
+        this.state = {
+            internalValue: ''
+        };
+    }
+    componentWillMount() {
+        this.setState({ internalValue: this.props.initialValue });
+    }
+    createSource() {
+        this.props.api.postItem(datamodel_1.Source, ApiService_1.AppUrls.source, new datamodel_1.Source().deserialize({
+            name: this.state.internalValue
+        }))
+            .then(this.props.complete);
+    }
+    inputRef(val) {
+        if (val !== null) {
+            val.focus();
+            this.keyboardShortcuts = new mousetrap(val);
+            this.keyboardShortcuts.bind('return', this.createSource.bind(this));
+            this.keyboardShortcuts.bind('escape', this.props.cancel);
+        }
+        else {
+            this.keyboardShortcuts.unbind('return');
+            this.keyboardShortcuts.unbind('escape');
+        }
+    }
+    render() {
+        return (React.createElement(Overlay_1.Overlay, null, 
+            React.createElement("h2", null, "Create Source"), 
+            React.createElement("label", {className: 'small'}, "Name"), 
+            React.createElement("input", {type: 'text', value: this.state.internalValue, ref: this.inputRef.bind(this), onChange: (e) => this.setState({ internalValue: e.target.value })}), 
+            React.createElement("button", {onClick: () => this.props.cancel(), className: 'pull-left'}, "Cancel"), 
+            React.createElement("button", {onClick: this.createSource.bind(this), className: 'pull-right'}, "Create Source")));
+    }
+}
+CreateSource.defaultProps = {
+    initialValue: ''
+};
+exports.CreateSource = CreateSource;
+
+
+/***/ },
+/* 62 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview Sidebar for editor
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.1.0
+ */
+"use strict";
+const React = __webpack_require__(0);
+const lev = __webpack_require__(97);
+const ApiService_1 = __webpack_require__(2);
+const datamodel_1 = __webpack_require__(4);
+const ComboDropdown_1 = __webpack_require__(6);
+const lodash_1 = __webpack_require__(1);
+const AddTabButton_1 = __webpack_require__(5);
+const Signaller_1 = __webpack_require__(3);
+const formatDate_1 = __webpack_require__(20);
+const sortIcons = {
+    'none': 'fa fa-sort',
+    'asc': 'fa fa-sort-asc',
+    'desc': 'fa fa-sort-desc'
+};
+const customColumns = (predicates, columns, updateColumnParams, rotateSort) => {
+    return [0, 1, 2].map((id) => {
+        const comboValue = { key: '', value: '' };
+        if (columns[id].predicate !== -1) {
+            const thisPred = predicates.find((pred) => pred.uid == columns[id].predicate);
+            if (thisPred !== undefined) {
+                comboValue.key = thisPred.name;
+            }
+            comboValue.value = columns[id].predicate;
+        }
+        return (React.createElement("td", {key: `col-${id}`}, 
+            React.createElement("div", {className: 'list-combo-header'}, 
+                React.createElement("div", {className: 'combo-wrapper'}, 
+                    React.createElement(ComboDropdown_1.ComboDropdown, {value: comboValue, typeName: 'predicate', allowNew: false, setValue: (value) => updateColumnParams(id, { predicate: value === null ? null : value.value }), options: predicates.map((pred) => ({ key: pred.name, value: pred.uid.toString() })), createNewValue: lodash_1.noop, compact: true})
+                ), 
+                React.createElement("div", {className: 'order-wrapper'}, 
+                    React.createElement("i", {className: sortIcons[columns[id].sort], onClick: () => rotateSort(id)})
+                ))
+        ));
+    });
+};
+class EntityList extends React.Component {
+    constructor(props) {
+        super();
+        this.state = {
+            entities: [],
+            entityTypes: [],
+            predicates: [],
+            columns: [
+                { predicate: -1, sort: 'none', filterType: 'any', invertFilter: false, filterValue: '' },
+                { predicate: -1, sort: 'none', filterType: 'any', invertFilter: false, filterValue: '' },
+                { predicate: -1, sort: 'none', filterType: 'any', invertFilter: false, filterValue: '' }
+            ],
+            results: [],
+            entityType: { key: 'Any', value: 0 }
+        };
+    }
+    componentDidMount() {
+        const queryStringOptions = this.props.query;
+        const columns = lodash_1.cloneDeep(this.state.columns);
+        if (queryStringOptions !== null) {
+            for (let i = 1; i < 4; i += 1) {
+                if (queryStringOptions['col' + i] !== undefined) {
+                    const args = queryStringOptions['col' + i].split(',');
+                    columns[i - 1].predicate = args[0];
+                    if (args.length === 2) {
+                        columns[i - 1].filterType = args[1];
+                    }
+                }
+            }
+        }
+        this.setState({
+            columns
+        }, this.reload.bind(this));
+    }
+    reload() {
+        const setColumns = this.state.columns.filter((col) => col.predicate != -1);
+        this.props.api.getCollection(datamodel_1.Record, ApiService_1.AppUrls.record, {
+            predicate: setColumns.map((col) => col.predicate),
+            entity: this.props.dataStore.all.entity.value.map((entity) => entity.uid)
+        })
+            .then((results) => this.setState({ results }));
+    }
+    addNew() {
+        const a = {
+            name: 'entity',
+            complete: () => {
+            },
+            cancel: () => { console.log('cancel'); },
+            settings: {
+                initialName: ''
+            }
+        };
+        Signaller_1.showModal.dispatch(a);
+    }
+    setColumnPredicate(colId, predicateId) {
+        const columns = lodash_1.cloneDeep(this.state.columns);
+        columns[colId].predicate = predicateId;
+        this.setState({
+            columns
+        }, this.reload.bind(this));
+    }
+    updateColumnParams(colId, updateData) {
+        const columns = lodash_1.cloneDeep(this.state.columns);
+        columns[colId] = Object.assign(columns[colId], updateData);
+        this.setState({
+            columns
+        }, this.reload.bind(this));
+    }
+    rotateSort(colId) {
+        const columns = lodash_1.cloneDeep(this.state.columns);
+        switch (columns[colId].sort) {
+            case 'none':
+                columns[colId].sort = 'asc';
+                break;
+            case 'asc':
+                columns[colId].sort = 'desc';
+                break;
+            case 'desc':
+                columns[colId].sort = 'none';
+        }
+        this.setState({
+            columns
+        }, this.reload.bind(this));
+    }
+    render() {
+        const entities = this.props.dataStore.all.entity.value;
+        const predicates = this.props.dataStore.all.predicate.value;
+        const entityTypes = this.props.dataStore.all.entity_type.value;
+        const entityTypeOptions = entityTypes.map((entityType) => ({ key: entityType.name, value: entityType.uid }));
+        const tableData = entities.map((entity) => {
+            const entityType = entityTypes.find((t) => t.uid === entity.entityType);
+            const entityData = this.state.results.filter((res) => res.entity === entity.uid);
+            return {
+                uid: entity.uid,
+                label: entity.label,
+                entityType,
+                columns: this.state.columns.map((col) => {
+                    let value = '';
+                    if (entityData !== undefined && col.predicate !== -1) {
+                        const predicateData = entityData
+                            .filter((record) => record.predicate == col.predicate);
+                        if (predicateData !== undefined) {
+                            value = predicateData.map((pred) => {
+                                if (pred.valueType === 'date') {
+                                    return formatDate_1.formatDate(pred.value);
+                                }
+                                if (pred.valueType === 'source') {
+                                    if (pred.value === null) {
+                                        return 'Not set';
+                                    }
+                                    return this.props.dataStore.all.source.value.find((source) => source.uid === pred.value).name;
+                                }
+                                if (pred.valueType === 'entity') {
+                                    if (pred.value === null) {
+                                        return 'Not set';
+                                    }
+                                    return this.props.dataStore.all.entity.value.find((entity) => entity.uid === pred.value).label;
+                                }
+                                return pred.value;
+                            }).join(', ');
+                        }
+                        return value;
+                    }
+                })
+            };
+        })
+            .filter((row) => {
+            let keepRow = true;
+            this.state.columns.forEach((col, i) => {
+                if (col.filterType === 'contains' && col.filterValue.length > 0 && col.predicate !== null) {
+                    if (row.columns[i].toLowerCase().indexOf(col.filterValue.toLowerCase()) === -1) {
+                        keepRow = false;
+                    }
+                }
+                if (col.filterType === 'exists' && col.predicate !== null) {
+                    if (row.columns[i].length === 0) {
+                        keepRow = false;
+                    }
+                }
+                if (col.filterType === 'similar' && col.predicate !== null && col.filterValue.length > 0) {
+                    if (new lev(row.columns[i], col.filterValue).distance >= col.filterValue.length + 2) {
+                        keepRow = false;
+                    }
+                }
+            });
+            return keepRow;
+        })
+            .sort((row1, row2) => {
+            let score = 0;
+            this.state.columns.forEach((col, i) => {
+                if (col.sort !== 'none' && row1.columns[i] !== row2.columns[i]) {
+                    score += (row1.columns[i] > row2.columns[i] ? 1 : -1) * (Math.pow(10, 3 - i)) * (col.sort === 'asc' ? -1 : 1);
+                }
+            });
+            return score;
+        });
+        return (React.createElement("div", {className: 'workspace-editor'}, 
+            React.createElement("header", {className: 'editor-header entity'}, 
+                React.createElement("div", {className: 'primary-toolbar'}, 
+                    React.createElement("div", {className: 'main-toolbar'}, 
+                        React.createElement("h2", null, 
+                            "All Entities ", 
+                            React.createElement("i", {className: 'fa fa-plus-circle add button', title: 'Add new entity', "aria-hidden": 'true', onClick: this.addNew.bind(this)}))
+                    )
+                )
+            ), 
+            React.createElement("section", {className: 'editor-body'}, 
+                React.createElement("table", {className: 'table'}, 
+                    React.createElement("thead", null, 
+                        React.createElement("tr", null, 
+                            React.createElement("td", null, "#"), 
+                            React.createElement("td", null, "Label"), 
+                            React.createElement("td", null, "Type"), 
+                            customColumns(predicates, this.state.columns, this.updateColumnParams.bind(this), this.rotateSort.bind(this))), 
+                        React.createElement("tr", null, 
+                            React.createElement("td", null), 
+                            React.createElement("td", null), 
+                            React.createElement("td", null, 
+                                React.createElement(ComboDropdown_1.ComboDropdown, {value: this.state.entityType, typeName: 'entity type', allowNew: false, setValue: (entityType) => this.setState({ entityType }), options: entityTypeOptions, createNewValue: lodash_1.noop, compact: true})
+                            ), 
+                            this.state.columns.map((col, id) => (React.createElement("td", {key: `col-${id}`}, 
+                                React.createElement("div", {className: 'flex-fill'}, 
+                                    React.createElement("div", null, 
+                                        React.createElement("select", {value: col.filterType, className: 'padded', onChange: (e) => this.updateColumnParams(id, { filterType: e.target.value })}, 
+                                            React.createElement("option", {value: 'any'}, "Any"), 
+                                            React.createElement("option", {value: 'exists'}, "Exists"), 
+                                            React.createElement("option", {value: 'contains'}, "Contains"), 
+                                            React.createElement("option", {value: 'similar'}, "Similar"))
+                                    ), 
+                                    React.createElement("div", null, 
+                                        React.createElement("input", {type: 'text', disabled: col.filterType === 'any' || col.filterType === 'exists', onChange: (e) => this.updateColumnParams(id, { filterValue: e.target.value }), value: col.filterValue})
+                                    ))
+                            ))))), 
+                    React.createElement("tbody", null, tableData.map((row) => (React.createElement("tr", {key: `entity-${row.uid}`}, 
+                        React.createElement("td", null, row.uid), 
+                        React.createElement("td", null, 
+                            row.label, 
+                            " ", 
+                            React.createElement(AddTabButton_1.AddTabButton, {dataStore: this.props.dataStore, uid: row.uid, tabType: 'entity'})), 
+                        React.createElement("td", null, row.entityType ? row.entityType.name : ''), 
+                        [0, 1, 2].map((id) => (React.createElement("td", {key: `col-val-${id}`}, row.columns[id]))))))))
+            )));
+    }
+}
+exports.EntityList = EntityList;
+
+
+/***/ },
+/* 63 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview Sidebar for editor
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.1.0
+ */
+"use strict";
+const React = __webpack_require__(0);
+const AddTabButton_1 = __webpack_require__(5);
+const Signaller_1 = __webpack_require__(3);
+const SearchBar_1 = __webpack_require__(12);
+class EntityTypeList extends React.Component {
+    constructor() {
+        super();
+        this.state = {
+            filterFunc: () => true
+        };
+    }
+    addNew() {
+        const a = {
+            name: 'entity_type',
+            complete: () => {
+            },
+            cancel: () => { console.log('cancel'); },
+            settings: {}
+        };
+        Signaller_1.showModal.dispatch(a);
+    }
+    render() {
+        return (React.createElement("div", {className: 'workspace-editor'}, 
+            React.createElement("header", {className: 'editor-header entity_type'}, 
+                React.createElement("div", {className: 'primary-toolbar'}, 
+                    React.createElement("div", {className: 'main-toolbar'}, 
+                        React.createElement("h2", null, 
+                            "All Entity Types ", 
+                            React.createElement("i", {className: 'fa fa-plus-circle add button', "aria-hidden": 'true', title: 'Add new entity type', onClick: this.addNew.bind(this)}))
+                    )
+                )
+            ), 
+            React.createElement("section", {className: 'editor-body'}, 
+                React.createElement(SearchBar_1.SearchBar, {getValue: (a) => a.name, setFilterFunc: (f) => this.setState({ filterFunc: f })}), 
+                React.createElement("table", {className: 'table gap'}, 
+                    React.createElement("thead", null, 
+                        React.createElement("tr", null, 
+                            React.createElement("td", null, "#"), 
+                            React.createElement("td", null, "Name"), 
+                            React.createElement("td", null, "Parent"), 
+                            React.createElement("td", null, "Description"))
+                    ), 
+                    React.createElement("tbody", null, this.props.dataStore.all.entity_type.value.filter(this.state.filterFunc).map((entityType) => {
+                        return (React.createElement("tr", {key: `entityType-${entityType.uid}`}, 
+                            React.createElement("td", null, 
+                                entityType.uid, 
+                                " ", 
+                                React.createElement(AddTabButton_1.AddTabButton, {dataStore: this.props.dataStore, uid: entityType.uid, tabType: 'entity_type'})), 
+                            React.createElement("td", null, entityType.name), 
+                            React.createElement("td", null, entityType.parent), 
+                            React.createElement("td", null, entityType.description)));
+                    }))))));
+    }
+}
+exports.EntityTypeList = EntityTypeList;
+
+
+/***/ },
+/* 64 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview Sidebar for editor
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.1.0
+ */
+"use strict";
+const React = __webpack_require__(0);
+const AddTabButton_1 = __webpack_require__(5);
+const Signaller_1 = __webpack_require__(3);
+const SearchBar_1 = __webpack_require__(12);
+class PredicateList extends React.Component {
+    constructor() {
+        super();
+        this.state = {
+            filterFunc: () => true
+        };
+    }
+    addNew() {
+        const a = {
+            name: 'predicate',
+            complete: () => {
+            },
+            cancel: () => { console.log('cancel'); },
+            settings: {
+                initialName: ''
+            }
+        };
+        Signaller_1.showModal.dispatch(a);
+    }
+    render() {
+        return (React.createElement("div", {className: 'workspace-editor'}, 
+            React.createElement("header", {className: 'editor-header predicate'}, 
+                React.createElement("div", {className: 'primary-toolbar'}, 
+                    React.createElement("div", {className: 'main-toolbar'}, 
+                        React.createElement("h2", null, 
+                            "All Properties ", 
+                            React.createElement("i", {className: 'fa fa-plus-circle add button', title: 'Add new property', "aria-hidden": 'true', onClick: this.addNew.bind(this)}))
+                    )
+                )
+            ), 
+            React.createElement("section", {className: 'editor-body'}, 
+                React.createElement(SearchBar_1.SearchBar, {getValue: (a) => a.name, setFilterFunc: (f) => this.setState({ filterFunc: f })}), 
+                React.createElement("table", {className: 'table gap'}, 
+                    React.createElement("thead", null, 
+                        React.createElement("tr", null, 
+                            React.createElement("td", null, "#"), 
+                            React.createElement("td", null, "Label"), 
+                            React.createElement("td", null, "Domain"), 
+                            React.createElement("td", null, "Range"))
+                    ), 
+                    React.createElement("tbody", null, this.props.dataStore.all.predicate.value.filter(this.state.filterFunc).map((predicate) => {
+                        const entityType = this.props.dataStore.all.entity_type.value.find((t) => t.uid === predicate.domain);
+                        const rangeType = predicate.rangeIsReference ?
+                            this.props.dataStore.all.entity_type.value.find((t) => t.uid === predicate.range) :
+                            predicate.range;
+                        return (React.createElement("tr", {key: `predicate-${predicate.uid}`}, 
+                            React.createElement("td", null, 
+                                predicate.uid, 
+                                " ", 
+                                React.createElement(AddTabButton_1.AddTabButton, {dataStore: this.props.dataStore, uid: predicate.uid, tabType: 'predicate'})), 
+                            React.createElement("td", null, predicate.name), 
+                            React.createElement("td", null, entityType ? entityType.name : ''), 
+                            React.createElement("td", null, predicate.rangeIsReference ? rangeType ? rangeType.name : '' : rangeType)));
+                    }))))));
+    }
+}
+exports.PredicateList = PredicateList;
+
+
+/***/ },
+/* 65 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview Sidebar for editor
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.1.0
+ */
+"use strict";
+const React = __webpack_require__(0);
+const AddTabButton_1 = __webpack_require__(5);
+const Signaller_1 = __webpack_require__(3);
+const SearchBar_1 = __webpack_require__(12);
+class SourceList extends React.Component {
+    constructor() {
+        super();
+        this.state = {
+            filterFunc: () => true,
+            mode: 'list'
+        };
+    }
+    addNew() {
+        const a = {
+            name: 'source',
+            complete: () => {
+            },
+            cancel: () => { console.log('cancel'); },
+            settings: {}
+        };
+        Signaller_1.showModal.dispatch(a);
+    }
+    render() {
+        return (React.createElement("div", {className: 'workspace-editor'}, 
+            React.createElement("header", {className: 'editor-header source'}, 
+                React.createElement("div", {className: 'primary-toolbar'}, 
+                    React.createElement("div", {className: 'main-toolbar'}, 
+                        React.createElement("h2", null, 
+                            "All Sources ", 
+                            React.createElement("i", {className: 'fa fa-plus-circle add button', "aria-hidden": 'true', title: 'Add new source', onClick: this.addNew.bind(this)}))
+                    )
+                ), 
+                React.createElement("div", {className: 'secondary-toolbar'}, 
+                    React.createElement("div", {className: 'tab-bar'}, 
+                        React.createElement("div", {onClick: () => this.setState({ mode: 'list' })}, "LIST"), 
+                        React.createElement("div", {onClick: () => this.setState({ mode: 'tree' })}, "TREE"))
+                )), 
+            React.createElement("section", {className: 'editor-body'}, 
+                React.createElement(SearchBar_1.SearchBar, {getValue: (a) => a.name, setFilterFunc: (f) => this.setState({ filterFunc: f })}), 
+                this.state.mode === 'list' ? (React.createElement("table", {className: 'table gap'}, 
+                    React.createElement("thead", null, 
+                        React.createElement("tr", null, 
+                            React.createElement("td", null, "#"), 
+                            React.createElement("td", null, "Name"), 
+                            React.createElement("td", null, "Parent"))
+                    ), 
+                    React.createElement("tbody", null, this.props.dataStore.all.source.value.filter(this.state.filterFunc).map((source) => {
+                        return (React.createElement("tr", {key: `source-${source.uid}`}, 
+                            React.createElement("td", null, 
+                                source.uid, 
+                                " ", 
+                                React.createElement(AddTabButton_1.AddTabButton, {dataStore: this.props.dataStore, uid: source.uid, tabType: 'source'})), 
+                            React.createElement("td", null, source.name), 
+                            React.createElement("td", null, source.parent)));
+                    })))) : null)));
+    }
+}
+exports.SourceList = SourceList;
+
+
+/***/ },
+/* 66 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview Searchboc for sidebar
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.1.0
+ */
+"use strict";
+const React = __webpack_require__(0);
+const ComboDropdown_1 = __webpack_require__(6);
+const ApiService_1 = __webpack_require__(2);
+exports.SearchBox = (props, context) => {
+    const entities = props.dataStore.all.entity.value.map((entity) => ({ key: entity.label, value: entity.uid, meta: { itemType: ApiService_1.AppUrls.entity } }));
+    const entityTypes = props.dataStore.all.entity_type.value.map((entityType) => ({ key: entityType.name, value: entityType.uid, meta: { itemType: ApiService_1.AppUrls.entity_type } }));
+    const predicates = props.dataStore.all.predicate.value.map((predicate) => ({ key: predicate.name, value: predicate.uid, meta: { itemType: ApiService_1.AppUrls.predicate } }));
+    const sources = props.dataStore.all.source.value.map((source) => ({ key: source.name, value: source.uid, meta: { itemType: ApiService_1.AppUrls.source } }));
+    const all = entities.concat(entityTypes, predicates, sources);
+    return (React.createElement("span", null, 
+        React.createElement("div", {className: 'input-addon-formgroup'}, 
+            React.createElement("span", {className: 'input-addon-icon'}, 
+                React.createElement("i", {className: 'fa fa-search fa-fw'})
+            ), 
+            React.createElement(ComboDropdown_1.ComboDropdown, {value: { key: '', value: '' }, setValue: (val) => {
+                context.router.transitionTo(`/edit/${val.meta.itemType}/${val.value}`);
+            }, typeName: 'all', options: all, allowNew: false, createNewValue: () => { }}))
+    ));
+};
+exports.SearchBox.contextTypes = { router: React.PropTypes.object.isRequired };
+
+
+/***/ },
+/* 67 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview Empty workspace for when nothing is open!
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.1.0
+ */
+"use strict";
+const React = __webpack_require__(0);
+exports.AdvancedSearchWorkspace = (props) => (React.createElement("div", {className: 'workspace-editor'}, 
+    React.createElement("h2", null, "Advanced Search")
+));
+
+
+/***/ },
+/* 68 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview Empty workspace for when nothing is open!
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.1.0
+ */
+"use strict";
+const React = __webpack_require__(0);
+exports.EmptyWorkspace = () => (React.createElement("div", {className: 'workspace-editor'}, 
+    React.createElement("h2", null, "There is nothing here")
+));
+
+
+/***/ },
+/* 69 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview Empty workspace for when nothing is open!
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.1.0
+ */
+"use strict";
+const React = __webpack_require__(0);
+const RecordsEditor_1 = __webpack_require__(51);
+const ApiService_1 = __webpack_require__(2);
+const datamodel_1 = __webpack_require__(4);
+const lodash_1 = __webpack_require__(1);
+const Signaller_1 = __webpack_require__(3);
+const AddTabButton_1 = __webpack_require__(5);
+const findParentTree_1 = __webpack_require__(25);
+const EditableHeader_1 = __webpack_require__(13);
+const EditableComboDropdown_1 = __webpack_require__(17);
+class StringEditableFieldComponent extends EditableHeader_1.EditableFieldComponent {
+}
+class ComboEditableFieldComponent extends EditableHeader_1.EditableFieldComponent {
+}
+// What can I do?
+// Entity Operations
+// - Delete the entity
+// - Merge the entity
+// - Split the entity
+// - Add 'same-as-ses' to the entity
+// Records
+// - Order records by type, source and date
+// - Add new records
+// - Adding a new predicate creates a new record with the
+//   entity set, the predicate set, the score set to 3, the period set to null, source set to null
+//   it also creates a blank entry in the records sub table based on the range of the predicate.
+// - New predicates must have a name. The domain is set to the current entitytype but can be changed
+//   to one of its parents. The range MUST be set.
+// Visualisations:
+// - Network graph of entity relationships
+class EntityEditorWorkspace extends React.Component {
+    constructor(props, context) {
+        super();
+        this.state = {
+            comboValue: { key: 'test', value: '' },
+            comboSearchValue: ''
+        };
+    }
+    del() {
+        this.props.api.delItem(datamodel_1.Entity, ApiService_1.AppUrls.entity, this.props.id)
+            .then(() => {
+            Signaller_1.closeTab.dispatch('entity', this.props.id);
+            this.context.router.transitionTo('/edit/notfound');
+        })
+            .catch((e) => {
+            e.data.data.then((data) => {
+                const conflictResolutionModal = {
+                    name: 'conflict_resolution',
+                    cancel: () => { },
+                    complete: (result) => {
+                        if (result === 'addToWorkspace') {
+                            data.record.forEach((datum) => {
+                                Signaller_1.createTab.dispatch('entity', datum.entity);
+                            });
+                            data.entity.forEach((datum) => {
+                                Signaller_1.createTab.dispatch('entity', datum.uid);
+                            });
+                        }
+                        if (result === 'deleteAll') {
+                            Promise.all(data.record.map((datum) => this.props.api.delItem(datamodel_1.Record, ApiService_1.AppUrls.record, datum.uid)))
+                                .then(() => {
+                                this.del();
+                            });
+                        }
+                    },
+                    settings: {
+                        conflictingItems: data,
+                        message: 'Deleting Entity'
+                    }
+                };
+                Signaller_1.showModal.dispatch(conflictResolutionModal);
+            });
+        });
+    }
+    createNewRecord() {
+        const entity = this.props.dataStore.tabs.entity.get('entity-' + this.props.id).value.entity;
+        const entityType = this.props.dataStore.all.entity_type.value.find((t) => t.uid === entity.entityType);
+        const entityTypeParents = findParentTree_1.findParentTree(entity.entityType, this.props.dataStore.all.entity_type.value);
+        const predicates = this.props.dataStore.all.predicate
+            .value.filter((pred) => entityTypeParents.indexOf(pred.domain) !== -1);
+        const modalDef = {
+            name: 'record',
+            complete: (data) => {
+                console.log('Records editor called complete');
+                //this.loadData(this.props);
+            },
+            cancel: () => {
+                console.log('Records editor called cancel');
+            },
+            settings: {
+                options: predicates.map((pred) => ({ key: pred.name, value: pred.uid, meta: pred })),
+                entityUid: this.props.id,
+                entityType: entityType.uid
+            }
+        };
+        Signaller_1.showModal.dispatch(modalDef);
+    }
+    update(data) {
+        this.props.api.patchItem(datamodel_1.Entity, ApiService_1.AppUrls.entity, this.props.id, data);
+    }
+    render() {
+        const entity = this.props.dataStore.tabs.entity.get('entity-' + this.props.id).value.entity;
+        const entityType = this.props.dataStore.all.entity_type.value.find((t) => t.uid === entity.entityType);
+        const potentialParents = this.props.dataStore.all.entity.value;
+        const entityTypeParents = findParentTree_1.findParentTree(entity.entityType, this.props.dataStore.all.entity_type.value);
+        const predicates = this.props.dataStore.all.predicate
+            .value.filter((pred) => entityTypeParents.indexOf(pred.domain) !== -1);
+        const sources = this.props.dataStore.all.source.value;
+        const records = lodash_1.groupBy(this.props.dataStore.tabs.entity.get('entity-' + this.props.id).value.records, 'predicate');
+        const options = predicates.map((pred) => ({ key: pred.name, value: pred.uid, meta: pred }));
+        let parentName = '';
+        if (potentialParents !== null && entity.parent !== undefined) {
+            const found = potentialParents.find((par) => par.uid === entity.parent);
+            if (found !== undefined) {
+                parentName = found.label;
+            }
+        }
+        return (React.createElement("div", {className: 'workspace-editor'}, 
+            React.createElement("header", {className: 'editor-header entity'}, 
+                React.createElement("div", {className: 'primary-toolbar'}, 
+                    React.createElement("div", {className: 'main-toolbar'}, 
+                        React.createElement("i", {className: 'fa fa-cube item-icon'}), 
+                        React.createElement(StringEditableFieldComponent, {value: entity.label, component: EditableHeader_1.EditableHeader, onChange: (value) => this.update({ 'label': value })})), 
+                    React.createElement("div", {className: 'sub-toolbar'}, 
+                        React.createElement("i", {className: 'fa fa-trash delete button', "aria-hidden": 'true', onClick: this.del.bind(this)}), 
+                        React.createElement("i", {className: 'fa fa-clone button', "aria-hidden": 'true', onClick: () => console.log('copy')})))
+            ), 
+            React.createElement("section", {className: 'editor-body'}, 
+                React.createElement("div", {className: 'flex-fill'}, 
+                    React.createElement("div", {className: 'flex-fill'}, 
+                        React.createElement("div", null, 
+                            React.createElement("label", {className: 'small'}, "Type"), 
+                            entityType.name, 
+                            " ", 
+                            React.createElement(AddTabButton_1.AddTabButton, {dataStore: this.props.dataStore, uid: entityType.uid, tabType: 'entity_type'}))
+                    ), 
+                    React.createElement("div", {style: { flex: 1 }}, 
+                        React.createElement("label", {className: 'small'}, "Parent"), 
+                        React.createElement(ComboEditableFieldComponent, {value: { key: parentName, value: entity.parent }, component: EditableComboDropdown_1.EditableComboDropdown, onChange: (value) => this.update({ 'parent': value.value }), additionalProps: { comboSettings: {
+                                options: potentialParents.map((par) => ({ key: par.label, value: par.uid })),
+                                typeName: 'Entity'
+                            } }}), 
+                        entity.parent !== null ? (React.createElement(AddTabButton_1.AddTabButton, {dataStore: this.props.dataStore, tabType: 'entity', uid: entity.parent})) : null)), 
+                React.createElement("div", {className: 'edit-group'}, 
+                    React.createElement(RecordsEditor_1.RecordsEditor, {dimension: 'predicates', entityExists: true, id: this.props.id, api: this.props.api, records: records, onChange: () => { }, predicates: predicates, sources: sources, entityTypeId: entityType.uid, dataStore: this.props.dataStore})
+                ))));
+    }
+}
+EntityEditorWorkspace.contextTypes = {
+    router: React.PropTypes.object.isRequired
+};
+exports.EntityEditorWorkspace = EntityEditorWorkspace;
+
+
+/***/ },
+/* 70 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview Predicate editor workspace
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.0.1
+ */
+"use strict";
+const React = __webpack_require__(0);
+const SameAsEditor_1 = __webpack_require__(19);
+const ApiService_1 = __webpack_require__(2);
+const datamodel_1 = __webpack_require__(4);
+const AddTabButton_1 = __webpack_require__(5);
+const EditableHeader_1 = __webpack_require__(13);
+const EditableParagraph_1 = __webpack_require__(18);
+const EditableComboDropdown_1 = __webpack_require__(17);
+const Signaller_1 = __webpack_require__(3);
+class StringEditableFieldComponent extends EditableHeader_1.EditableFieldComponent {
+}
+class ComboEditableFieldComponent extends EditableHeader_1.EditableFieldComponent {
+}
+class EntityTypeWorkspace extends React.Component {
+    constructor() {
+        super();
+        this.state = {};
+    }
+    update(data) {
+        const entityType = this.props.dataStore.tabs.entity_type.get('entity_type-' + this.props.id).value;
+        this.props.api.patchItem(datamodel_1.EntityType, ApiService_1.AppUrls.entity_type, this.props.id, data)
+            .then(() => this.setState({ entityType: Object.assign({}, entityType, data) }));
+    }
+    copy() {
+        const entityType = this.props.dataStore.tabs.entity_type.get('entity_type-' + this.props.id).value;
+        const newEntityType = new datamodel_1.EntityType().deserialize(Object.assign({}, entityType.serialize(), { name: 'Copy of ' + entityType.name }));
+        this.props.api.postItem(datamodel_1.EntityType, ApiService_1.AppUrls.entity_type, newEntityType)
+            .then(([id]) => {
+            Signaller_1.createTab.dispatch('entity_type', id);
+        });
+    }
+    del() {
+        this.props.api.delItem(datamodel_1.EntityType, ApiService_1.AppUrls.entity_type, this.props.id)
+            .then(() => this.context.router.transitionTo('/edit/notfound'))
+            .catch((e) => {
+            e.data.data.then((data) => {
+                const conflictResolutionModal = {
+                    name: 'conflict_resolution',
+                    cancel: () => { },
+                    complete: (result) => {
+                        if (result === 'addToWorkspace') {
+                            data.entityType.forEach((datum) => {
+                                Signaller_1.createTab.dispatch('entity_type', datum.uid);
+                            });
+                            data.predicate.forEach((datum) => {
+                                Signaller_1.createTab.dispatch('predicate', datum.uid);
+                            });
+                            data.entity.forEach((datum) => {
+                                Signaller_1.createTab.dispatch('entity', datum.uid);
+                            });
+                        }
+                    },
+                    settings: {
+                        conflictingItems: data,
+                        message: 'Deleting Entity Type'
+                    }
+                };
+                Signaller_1.showModal.dispatch(conflictResolutionModal);
+            });
+        });
+    }
+    createEntity() {
+        const a = {
+            name: 'entity',
+            complete: ([id]) => {
+                Signaller_1.createTab.dispatch('entity', id);
+            },
+            cancel: () => { console.log('cancel'); },
+            settings: {
+                initialName: '',
+                initialType: this.props.id
+            }
+        };
+        Signaller_1.showModal.dispatch(a);
+    }
+    render() {
+        const entityType = this.props.dataStore.tabs.entity_type.get('entity_type-' + this.props.id).value;
+        const potentialParents = this.props.dataStore.all.entity_type.value;
+        let parentName = '';
+        if (potentialParents !== null && entityType.parent !== undefined) {
+            const found = potentialParents.find((par) => par.uid === entityType.parent);
+            if (found !== undefined) {
+                parentName = found.name;
+            }
+        }
+        return (React.createElement("div", {className: 'workspace-editor'}, 
+            React.createElement("header", {className: 'editor-header entity_type'}, 
+                React.createElement("div", {className: 'primary-toolbar'}, 
+                    React.createElement("div", {className: 'main-toolbar'}, 
+                        React.createElement("div", {className: 'bread-crumbs'}, entityType.parents.map((parent, i) => (React.createElement("span", {key: `breadcrumb-${parent.uid}`}, 
+                            React.createElement("span", null, 
+                                "  ", 
+                                parent.name, 
+                                " ", 
+                                React.createElement(AddTabButton_1.AddTabButton, {dataStore: this.props.dataStore, tabType: 'entity_type', uid: parent.uid}), 
+                                " "), 
+                            React.createElement("i", {className: 'fa fa-angle-right'}))))), 
+                        React.createElement("i", {className: 'fa fa-tag item-icon'}), 
+                        React.createElement(StringEditableFieldComponent, {value: entityType.name, component: EditableHeader_1.EditableHeader, onChange: (value) => this.update({ 'name': value })})), 
+                    React.createElement("div", {className: 'sub-toolbar'}, 
+                        React.createElement("i", {className: 'fa fa-plus add button', "aria-hidden": 'true', onClick: this.createEntity.bind(this)}), 
+                        React.createElement("i", {className: 'fa fa-trash delete button', "aria-hidden": 'true', onClick: this.del.bind(this)}), 
+                        React.createElement("i", {className: 'fa fa-clone button', "aria-hidden": 'true', onClick: this.copy.bind(this)})))
+            ), 
+            React.createElement("section", {className: 'editor-body'}, 
+                React.createElement("div", {className: 'edit-group'}, 
+                    React.createElement("label", {className: 'small'}, "Parent"), 
+                    React.createElement(ComboEditableFieldComponent, {value: entityType.parent === null ? null : { key: parentName, value: entityType.parent }, component: EditableComboDropdown_1.EditableComboDropdown, onChange: (value) => this.update({ 'parent': value === null ? null : value.value }), additionalProps: { comboSettings: {
+                            options: potentialParents.map((par) => ({ key: par.name, value: par.uid })),
+                            typeName: 'EntityType'
+                        } }}), 
+                    entityType.parent !== null ? (React.createElement(AddTabButton_1.AddTabButton, {tabType: 'entity_type', dataStore: this.props.dataStore, uid: entityType.parent})) : null), 
+                React.createElement("div", {className: 'edit-group'}, 
+                    React.createElement("label", {className: 'small'}, "Description"), 
+                    React.createElement(StringEditableFieldComponent, {value: entityType.description, component: EditableParagraph_1.EditableParagraph, onChange: (value) => this.update({ 'description': value })})), 
+                React.createElement("div", {className: 'edit-group'}, 
+                    React.createElement(StringEditableFieldComponent, {value: entityType.sameAs, component: SameAsEditor_1.SameAsEditor, onChange: (value) => this.update({ 'sameAs': value })})
+                ), 
+                React.createElement("div", null, 
+                    React.createElement("h4", null, "Direct Children"), 
+                    React.createElement("ul", null, entityType.children
+                        .map((child) => this.props.dataStore.all.entity_type.value.find((et) => et.uid === child))
+                        .map((childEt) => (React.createElement("li", {key: `dc-${childEt.name}`}, 
+                        childEt.name, 
+                        " ", 
+                        React.createElement(AddTabButton_1.AddTabButton, {tabType: 'entity_type', dataStore: this.props.dataStore, uid: childEt.uid})))))))));
+    }
+}
+EntityTypeWorkspace.contextTypes = {
+    router: React.PropTypes.object.isRequired
+};
+exports.EntityTypeWorkspace = EntityTypeWorkspace;
+
+
+/***/ },
+/* 71 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview Empty workspace for when nothing is open!
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.1.0
+ */
+"use strict";
+const React = __webpack_require__(0);
+const EntityList_1 = __webpack_require__(62);
+const PredicateList_1 = __webpack_require__(64);
+const SourceList_1 = __webpack_require__(65);
+const EntityTypeList_1 = __webpack_require__(63);
+exports.ObjectListWorkspace = (props) => (React.createElement("div", {className: 'workspace-editor object-list'}, (() => {
+    switch (props.listType) {
+        case 'entity':
+            return (React.createElement(EntityList_1.EntityList, {api: props.api, query: props.query, dataStore: props.dataStore}));
+        case 'source':
+            return (React.createElement(SourceList_1.SourceList, {api: props.api, dataStore: props.dataStore}));
+        case 'predicate':
+            return (React.createElement(PredicateList_1.PredicateList, {api: props.api, dataStore: props.dataStore}));
+        case 'entity_type':
+            return (React.createElement(EntityTypeList_1.EntityTypeList, {api: props.api, dataStore: props.dataStore}));
+    }
+})()));
+
+
+/***/ },
+/* 72 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview Predicate editor workspace
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.0.1
+ */
+"use strict";
+const React = __webpack_require__(0);
+const react_router_1 = __webpack_require__(9);
+const SameAsEditor_1 = __webpack_require__(19);
+const ApiService_1 = __webpack_require__(2);
+const Signaller_1 = __webpack_require__(3);
+const datamodel_1 = __webpack_require__(4);
+const EditableHeader_1 = __webpack_require__(13);
+const EditableParagraph_1 = __webpack_require__(18);
+const PredicateDescription_1 = __webpack_require__(24);
+const literalTypes_1 = __webpack_require__(27);
+class StringEditableFieldComponent extends EditableHeader_1.EditableFieldComponent {
+}
+// - Should state the number of times this predicate is used
+// - Widening the domain or range always okay
+// - Narrowing should check for conflicts and return them
+// - Asks 'Delete conflicting records?'
+// - Strong check (double button press or type) to confirm
+// - Changing name/description/sameAs - absolutly fine
+// - Cannot change 'readonly'
+class PredicateEditorWorkspace extends React.Component {
+    constructor() {
+        super();
+        this.state = {
+            records: []
+        };
+    }
+    componentDidMount() {
+        this.loadData(this.props);
+    }
+    componentWillReceiveProps(newProps) {
+        this.loadData(newProps);
+    }
+    loadData(props) {
+        // Promise.all([
+        //     props.api.getCollection(Record, AppUrls.record, { predicate: props.id })
+        // ]).then(([records]) => {
+        //     this.setState({ records });
+        // });
+    }
+    updatePredicate(field, value, rangeIsReferenceOverride = null) {
+        const predicate = this.props.dataStore.tabs.predicate.get('predicate-' + this.props.id).value;
+        if (predicate === null) {
+            console.warn('Tried to edit unready predicate');
+            return;
+        }
+        const rangeIsReferenceVal = rangeIsReferenceOverride === null
+            ? predicate.rangeIsReference : rangeIsReferenceOverride;
+        this.props.api.patchItem(datamodel_1.Predicate, ApiService_1.AppUrls.predicate, predicate.uid, {
+            [field]: value,
+            rangeIsReference: rangeIsReferenceVal
+        });
+    }
+    copy() {
+        const predicate = this.props.dataStore.tabs.predicate.get('predicate-' + this.props.id).value;
+        const newPredicate = new datamodel_1.Predicate().deserialize(Object.assign({}, predicate.serialize(), { name: 'Copy of ' + predicate.name }));
+        this.props.api.postItem(datamodel_1.Predicate, ApiService_1.AppUrls.predicate, newPredicate)
+            .then(([id]) => {
+            Signaller_1.createTab.dispatch('predicate', id);
+        });
+    }
+    del() {
+        this.props.api.delItem(datamodel_1.Predicate, ApiService_1.AppUrls.predicate, this.props.id)
+            .then(() => this.context.router.transitionTo('/edit/notfound'))
+            .catch((e) => {
+            e.data.data.then((data) => {
+                const conflictResolutionModal = {
+                    name: 'conflict_resolution',
+                    cancel: () => { },
+                    complete: (result) => {
+                        if (result === 'addToWorkspace') {
+                            data.forEach((datum) => {
+                                Signaller_1.createTab.dispatch('entity', datum.entity);
+                            });
+                        }
+                        if (result === 'deleteAll') {
+                            Promise.all(data.record.map((datum) => this.props.api.delItem(datamodel_1.Record, ApiService_1.AppUrls.record, datum.uid)))
+                                .then(() => {
+                                this.del();
+                            });
+                        }
+                    },
+                    settings: {
+                        conflictingItems: data,
+                        message: 'Deleting Predicate'
+                    }
+                };
+                Signaller_1.showModal.dispatch(conflictResolutionModal);
+            });
+        });
+    }
+    render() {
+        const predicate = this.props.dataStore.tabs.predicate.get('predicate-' + this.props.id).value;
+        const entityTypes = this.props.dataStore.all.entity_type.value;
+        const currentDomainEntityType = entityTypes.find((t) => t.uid == predicate.domain);
+        let currentDomainEntityTypeName = '';
+        if (currentDomainEntityType !== undefined) {
+            currentDomainEntityTypeName = currentDomainEntityType.name;
+        }
+        const domain = { key: currentDomainEntityTypeName, value: predicate.domain.toString() };
+        const range = { key: '', value: predicate.range.toString() };
+        if (predicate.rangeIsReference) {
+            const currentRangeEntityType = entityTypes.find((t) => t.uid == predicate.range);
+            if (currentRangeEntityType !== undefined) {
+                range.key = currentRangeEntityType.name;
+            }
+        }
+        else {
+            const literalType = literalTypes_1.literalTypes.find((t) => t.value === predicate.range);
+            if (literalType !== undefined) {
+                range.key = literalType.name;
+            }
+        }
+        const entityTypeOptions = entityTypes.map((t) => {
+            if (t.uid === null) {
+                throw new Error('Encountered entity type with no id!');
+            }
+            return { key: t.name, value: t.uid.toString() };
+        });
+        const literalTypeOptions = literalTypes_1.literalTypes.map((t) => ({ key: t.name, value: t.value, meta: 'literal' }));
+        return (React.createElement("div", {className: 'workspace-editor'}, 
+            React.createElement("header", {className: 'editor-header predicate'}, 
+                React.createElement("div", {className: 'primary-toolbar'}, 
+                    React.createElement("div", {className: 'main-toolbar'}, 
+                        React.createElement("i", {className: 'fa fa-long-arrow-right item-icon'}), 
+                        React.createElement(StringEditableFieldComponent, {value: predicate.name, component: EditableHeader_1.EditableHeader, onChange: (value) => this.updatePredicate('name', value)})), 
+                    React.createElement("div", {className: 'sub-toolbar'}, 
+                        React.createElement("i", {className: 'fa fa-trash delete button', "aria-hidden": 'true', onClick: this.del.bind(this)}), 
+                        React.createElement("i", {className: 'fa fa-clone button', "aria-hidden": 'true', onClick: this.copy.bind(this)})))
+            ), 
+            React.createElement("section", {className: 'editor-body'}, 
+                React.createElement("div", null, 
+                    React.createElement(react_router_1.Link, {to: `/edit/entity?col1=${this.props.id},exists`}, 
+                        "Uses: ", 
+                        this.state.records.length)
+                ), 
+                React.createElement("div", {className: 'edit-group'}, 
+                    React.createElement("label", {className: 'small'}, "Description"), 
+                    React.createElement(StringEditableFieldComponent, {value: predicate.description, component: EditableParagraph_1.EditableParagraph, onChange: (value) => this.updatePredicate('description', value)})), 
+                React.createElement("div", {className: 'edit-group'}, 
+                    React.createElement("label", {className: 'small'}, "Typing"), 
+                    React.createElement(PredicateDescription_1.PredicateDescription, {domain: domain, range: range, domainChanged: (value) => this.updatePredicate('domain', value.value), rangeChanged: (value) => this.updatePredicate('range', value.value, value.meta !== 'literal'), mode: 'editSingle', domainOptions: entityTypeOptions, rangeOptions: literalTypeOptions.concat(entityTypeOptions)})), 
+                React.createElement("div", null, 
+                    React.createElement(StringEditableFieldComponent, {value: predicate.sameAs, component: SameAsEditor_1.SameAsEditor, onChange: (value) => this.updatePredicate('sameAs', value)})
+                ))));
+    }
+}
+PredicateEditorWorkspace.contextTypes = {
+    router: React.PropTypes.object.isRequired
+};
+exports.PredicateEditorWorkspace = PredicateEditorWorkspace;
+
+
+/***/ },
+/* 73 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview Predicate editor workspace
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.0.1
+ */
+"use strict";
+const React = __webpack_require__(0);
+const SameAsEditor_1 = __webpack_require__(19);
+const ApiService_1 = __webpack_require__(2);
+const datamodel_1 = __webpack_require__(4);
+const EditableHeader_1 = __webpack_require__(13);
+const EditableParagraph_1 = __webpack_require__(18);
+const EditableComboDropdown_1 = __webpack_require__(17);
+const lodash_1 = __webpack_require__(1);
+const Signaller_1 = __webpack_require__(3);
+const AddTabButton_1 = __webpack_require__(5);
+class StringEditableFieldComponent extends EditableHeader_1.EditableFieldComponent {
+}
+class ComboEditableFieldComponent extends EditableHeader_1.EditableFieldComponent {
+}
+// - Should state the number of times this predicate is used
+// - Widening the domain or range always okay
+// - Narrowing should check for conflicts and return them
+// - Asks 'Delete conflicting records?'
+// - Strong check (double button press or type) to confirm
+// - Changing name/description/sameAs - absolutly fine
+// - Cannot change 'readonly'
+class SourceEditorWorkspace extends React.Component {
+    constructor() {
+        super();
+        this.state = {
+            metaData: {}
+        };
+    }
+    componentDidMount() {
+        this.loadData(this.props);
+    }
+    componentWillReceiveProps(newProps) {
+        this.loadData(newProps);
+    }
+    loadData(props) {
+        const source = props.dataStore.tabs.source.get('source-' + this.props.id).value.source;
+        this.setState({
+            metaData: lodash_1.keyBy(source.metaData, 'name')
+        });
+    }
+    updateSource(field, value) {
+        const source = this.props.dataStore.tabs.source.get('source-' + this.props.id).value.source;
+        this.props.api.patchItem(datamodel_1.Source, ApiService_1.AppUrls.source, source.uid, { [field]: value });
+        //.then((success) => {
+        // const updatedSource = new Source().deserialize(Object.assign({},
+        //     source.serialize(), { [field]: value }));
+        // this.setState({
+        //     source: updatedSource,
+        //     metaData: keyBy(updatedSource.metaData, 'name')
+        // });
+        //});
+    }
+    updateSourceElement(element, value) {
+        const source = this.props.dataStore.tabs.source.get('source-' + this.props.id).value.source;
+        const compositeKey = {
+            order: ['source', 'element'],
+            values: {
+                source: this.props.id,
+                element: element.uid
+            }
+        };
+        if (source.metaData[element.name] !== undefined
+            && source.metaData[element.name].values.find((a) => a.source === this.props.id) !== undefined) {
+            this.props.api.patchItem(datamodel_1.SourceElement, ApiService_1.AppUrls.source_element, compositeKey, new datamodel_1.SourceElement().deserialize({
+                uid: compositeKey,
+                element: source.metaData[element.name].element_uid,
+                source: this.props.id,
+                value
+            }));
+        }
+        else {
+            this.props.api.postItem(datamodel_1.SourceElement, ApiService_1.AppUrls.source_element, new datamodel_1.SourceElement().deserialize({
+                uid: compositeKey,
+                value: value
+            }));
+        }
+    }
+    del() {
+        this.props.api.delItem(datamodel_1.Source, ApiService_1.AppUrls.source, this.props.id)
+            .then(() => this.context.router.transitionTo('/edit/notfound'))
+            .catch((e) => {
+            e.data.data.then((data) => {
+                const conflictResolutionModal = {
+                    name: 'conflict_resolution',
+                    cancel: () => { },
+                    complete: (result) => {
+                        if (result === 'addToWorkspace') {
+                            data.source.forEach((datum) => {
+                                Signaller_1.createTab.dispatch('source', datum.uid);
+                            });
+                        }
+                        if (result === 'deleteAll') {
+                            Promise.all(data.source.map((datum) => this.props.api.delItem(datamodel_1.Source, ApiService_1.AppUrls.source, datum.uid)))
+                                .then(() => {
+                                this.del();
+                            });
+                        }
+                    },
+                    settings: {
+                        conflictingItems: data,
+                        message: 'Deleting Source'
+                    }
+                };
+                Signaller_1.showModal.dispatch(conflictResolutionModal);
+            });
+        });
+    }
+    createChild() {
+        const source = this.props.dataStore.tabs.source.get('source-' + this.props.id).value.source;
+        const newSource = new datamodel_1.Source().deserialize(Object.assign({}, source.serialize(), { name: 'Child of ' + source.name, parent: this.props.id }));
+        this.props.api.postItem(datamodel_1.Source, ApiService_1.AppUrls.source, newSource)
+            .then(([id]) => {
+            Signaller_1.createTab.dispatch('source', id);
+        });
+    }
+    // create entity with 'mentioned in' already set to this source
+    createEntity() {
+        const a = {
+            name: 'preset_record',
+            complete: ([id]) => {
+                Signaller_1.createTab.dispatch('entity', id);
+            },
+            cancel: () => { },
+            settings: {
+                source: this.props.dataStore.tabs.source.get('source-' + this.props.id).value.source
+            }
+        };
+        Signaller_1.showModal.dispatch(a);
+    }
+    render() {
+        const source = this.props.dataStore.tabs.source.get('source-' + this.props.id).value.source;
+        const potentialParents = this.props.dataStore.all.source.value;
+        let parentName = '';
+        if (potentialParents !== null && source.parent !== undefined) {
+            const found = potentialParents.find((par) => par.uid === source.parent);
+            if (found !== undefined) {
+                parentName = found.name;
+            }
+        }
+        return (React.createElement("div", {className: 'workspace-editor'}, 
+            React.createElement("header", {className: 'editor-header source'}, 
+                React.createElement("div", {className: 'primary-toolbar'}, 
+                    React.createElement("div", {className: 'main-toolbar'}, 
+                        React.createElement("div", {className: 'bread-crumbs'}, source.parents
+                            .slice()
+                            .reverse()
+                            .map((child) => this.props.dataStore.all.source.value.find((et) => et.uid === child))
+                            .map((parent, i) => (React.createElement("span", {key: `breadcrumb-${parent.uid}`}, 
+                            React.createElement("span", null, 
+                                "  ", 
+                                parent.name, 
+                                " ", 
+                                React.createElement(AddTabButton_1.AddTabButton, {dataStore: this.props.dataStore, tabType: 'source', uid: parent.uid}), 
+                                " "), 
+                            React.createElement("i", {className: 'fa fa-angle-right'}))))), 
+                        React.createElement("i", {className: 'fa fa-sun-o item-icon'}), 
+                        React.createElement(StringEditableFieldComponent, {value: source.name, component: EditableHeader_1.EditableHeader, onChange: (value) => this.updateSource('name', value)})), 
+                    React.createElement("div", {className: 'sub-toolbar'}, 
+                        React.createElement("i", {className: 'fa fa-plus add button', "aria-hidden": 'true', onClick: this.createEntity.bind(this)}), 
+                        React.createElement("i", {className: 'fa fa-trash delete button', "aria-hidden": 'true', onClick: () => this.del()}), 
+                        React.createElement("i", {className: 'fa fa-arrow-circle-o-down button', "aria-hidden": 'true', onClick: this.createChild.bind(this)})))
+            ), 
+            React.createElement("section", {className: 'editor-body'}, 
+                React.createElement("div", {className: 'edit-group'}, 
+                    React.createElement("label", {className: 'small'}, "Parent"), 
+                    React.createElement(ComboEditableFieldComponent, {value: { key: parentName, value: source.parent }, component: EditableComboDropdown_1.EditableComboDropdown, onChange: (value) => this.updateSource('parent', value.value), additionalProps: { comboSettings: {
+                            options: potentialParents.map((par) => ({ key: par.name, value: par.uid })),
+                            typeName: 'Source'
+                        } }}), 
+                    source.parent !== null ? (React.createElement(AddTabButton_1.AddTabButton, {dataStore: this.props.dataStore, tabType: 'source', uid: source.parent})) : null), 
+                React.createElement("div", {className: 'edit-group'}, 
+                    React.createElement(StringEditableFieldComponent, {value: source.sameAs, component: SameAsEditor_1.SameAsEditor, onChange: (value) => this.updateSource('sameAs', value)})
+                ), 
+                this.props.dataStore.all.dublinCore.value.elements.map((element) => {
+                    const values = source.metaData.hasOwnProperty(element.name) ?
+                        source.metaData[element.name].values : [{ source: this.props.id, value: '' }];
+                    const editableValue = values[0].source == this.props.id ? values[0].value : '';
+                    return (React.createElement("div", {key: `${element.name}-edit`}, 
+                        React.createElement("h5", {className: 'section-header'}, 
+                            element.name, 
+                            " ", 
+                            React.createElement("small", null, 
+                                React.createElement("a", {href: element.url}, element.uri)
+                            )), 
+                        React.createElement("p", {className: 'element-description'}, element.description), 
+                        React.createElement("ul", null, values.map((value) => value.source != this.props.id ? (React.createElement("li", {key: `${element.uid}-${value.source}`}, 
+                            this.props.dataStore.all.source.value.find((s) => s.uid === value.source).name, 
+                            ": ", 
+                            value.value)) : null)), 
+                        React.createElement(StringEditableFieldComponent, {value: editableValue, component: EditableParagraph_1.EditableParagraph, onChange: (value) => this.updateSourceElement(element, value)})));
+                }), 
+                React.createElement("div", null, 
+                    React.createElement("h4", null, "Direct Children"), 
+                    React.createElement("ul", null, source.children
+                        .map((child) => this.props.dataStore.all.source.value.find((et) => et.uid === child))
+                        .map((childEt) => (React.createElement("li", {key: `dc-${childEt.uid}`}, 
+                        childEt.name, 
+                        " ", 
+                        React.createElement(AddTabButton_1.AddTabButton, {tabType: 'source', dataStore: this.props.dataStore, uid: childEt.uid})))))))));
+    }
+}
+SourceEditorWorkspace.contextTypes = {
+    router: React.PropTypes.object.isRequired
+};
+exports.SourceEditorWorkspace = SourceEditorWorkspace;
+
+
+/***/ },
+/* 74 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview Unified export of workspaces
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk" />Tim Hollies</a>
+ * @version 0.1.0
+ */
+"use strict";
+var EmptyWorkspace_1 = __webpack_require__(68);
+exports.EmptyWorkspace = EmptyWorkspace_1.EmptyWorkspace;
+var EntityEditorWorkspace_1 = __webpack_require__(69);
+exports.EntityEditorWorkspace = EntityEditorWorkspace_1.EntityEditorWorkspace;
+var EntityTypeWorkspace_1 = __webpack_require__(70);
+exports.EntityTypeWorkspace = EntityTypeWorkspace_1.EntityTypeWorkspace;
+var SourceEditorWorkspace_1 = __webpack_require__(73);
+exports.SourceEditorWorkspace = SourceEditorWorkspace_1.SourceEditorWorkspace;
+var PredicateEditorWorkspace_1 = __webpack_require__(72);
+exports.PredicateEditorWorkspace = PredicateEditorWorkspace_1.PredicateEditorWorkspace;
+var AdvancedSearchWorkspace_1 = __webpack_require__(67);
+exports.AdvancedSearchWorkspace = AdvancedSearchWorkspace_1.AdvancedSearchWorkspace;
+var ObjectListWorkspace_1 = __webpack_require__(71);
+exports.ObjectListWorkspace = ObjectListWorkspace_1.ObjectListWorkspace;
+
+
+/***/ },
+/* 75 */
+/***/ function(module, exports) {
+
+"use strict";
+/**
+ * @fileOverview Abstract interface for sources
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.0.1
+ */
+"use strict";
+class Element {
+    deserialize(data) {
+        this.name = data.name;
+        this.uid = data.uid;
+        this.elementSet = data.elementSet;
+        this.description = data.description;
+        this.comment = data.comment;
+        return this;
+    }
+    serialize() {
+        return this;
+    }
+}
+exports.Element = Element;
+
+
+/***/ },
+/* 76 */
+/***/ function(module, exports) {
+
+"use strict";
+/**
+ * @fileOverview Abstract interface for sources
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.0.1
+ */
+"use strict";
+class ElementSet {
+    deserialize(data) {
+        this.name = data.name;
+        this.uid = data.uid;
+        this.uri = data.uri;
+        this.description = data.description;
+        this.elements = data.elements;
+        return this;
+    }
+    serialize() {
+        return this;
+    }
+}
+exports.ElementSet = ElementSet;
+
+
+/***/ },
+/* 77 */
+/***/ function(module, exports) {
+
+"use strict";
+/**
+ * @fileOverview Abstract interface for entities
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.0.1
+ */
+"use strict";
+class Entity {
+    deserialize(data) {
+        this.uid = data.uid;
+        this.entityType = data.entityType;
+        this.label = data.label;
+        this.parent = data.parent;
+        this.creator = data.creator;
+        this.creationTimestamp = data.creationTimestamp;
+        this.lastmodifiedTimestamp = data.lastmodifiedTimestamp;
+        return this;
+    }
+    serialize() {
+        return this;
+    }
+}
+exports.Entity = Entity;
+
+
+/***/ },
+/* 78 */
+/***/ function(module, exports) {
+
+"use strict";
+/**
+ * @fileOverview Abstract interface for entity type
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.0.1
+ */
+"use strict";
+class EntityType {
+    deserialize(data) {
+        this.uid = data.uid;
+        this.name = data.name;
+        this.description = data.description;
+        this.icon = data.icon;
+        this.colour = data.colour;
+        this.sameAs = data.sameAs;
+        this.parent = data.parent;
+        this.parents = data.parents;
+        this.creator = data.creator;
+        this.children = data.children;
+        this.creationTimestamp = data.creationTimestamp;
+        this.lastmodifiedTimestamp = data.lastmodifiedTimestamp;
+        return this;
+    }
+    serialize() {
+        return this;
+    }
+}
+exports.EntityType = EntityType;
+
+
+/***/ },
+/* 79 */
+/***/ function(module, exports) {
+
+"use strict";
+/**
+ * @fileOverview Abstract interface for locations
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.0.1
+ */
+"use strict";
+class Predicate {
+    serialize() {
+        return this;
+    }
+    deserialize(data) {
+        this.uid = data.uid;
+        this.domain = data.domain;
+        this.range = data.range;
+        this.name = data.name;
+        this.description = data.description;
+        this.sameAs = data.sameAs;
+        this.readonly = data.readonly;
+        this.rangeIsReference = data.rangeIsReference;
+        this.creator = data.creator;
+        this.creationTimestamp = data.creationTimestamp;
+        this.lastmodifiedTimestamp = data.lastmodifiedTimestamp;
+        return this;
+    }
+}
+exports.Predicate = Predicate;
+
+
+/***/ },
+/* 80 */
+/***/ function(module, exports) {
+
+"use strict";
+"use strict";
+class Record {
+    constructor() {
+        //calculated
+        this.valueType = null;
+    }
+    deserialize(data) {
+        this.uid = data.uid;
+        this.source = data.source;
+        this.predicate = data.predicate;
+        this.entity = data.entity;
+        this.score = data.score;
+        this.valueType = data.valueType;
+        this.value = data.value;
+        this.creator = data.creator;
+        this.period = data.period;
+        this.creationTimestamp = data.creationTimestamp;
+        this.lastmodifiedTimestamp = data.lastmodifiedTimestamp;
+        return this;
+    }
+    serialize() {
+        return this;
+    }
+}
+exports.Record = Record;
+// Each value type will have it's own editor control :/
+// entity = dropdown selector
+// string = text editor
+// date = date picker
+// integer = numberic picker
+// spatial point = lat/lng or point picker (opens new tab. creates new resource)
+// spatial region = choose from a list or create new (opens new tab, creates new resource)
+// score - star picker
+// source - entity picker (with slight modification)
+// value - custom (see above)
+// entity - entity picker (with slight modification) 
+
+
+/***/ },
+/* 81 */
+/***/ function(module, exports) {
+
+"use strict";
+/**
+ * @fileOverview Abstract interface for sources
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.0.1
+ */
+"use strict";
+class Source {
+    serialize() {
+        return this;
+    }
+    deserialize(data) {
+        this.name = data.name;
+        this.uid = data.uid;
+        this.metaData = data.metaData;
+        this.sameAs = data.sameAs;
+        this.parent = data.parent;
+        this.parents = data.parents;
+        this.children = data.children;
+        this.creator = data.creator;
+        this.creationTimestamp = data.creationTimestamp;
+        this.lastmodifiedTimestamp = data.lastmodifiedTimestamp;
+        return this;
+    }
+}
+exports.Source = Source;
+
+
+/***/ },
+/* 82 */
+/***/ function(module, exports) {
+
+"use strict";
+/**
+ * @fileOverview Abstract interface for sources
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.0.1
+ */
+"use strict";
+class SourceElement {
+    deserialize(data) {
+        this.uid = data.uid;
+        this.value = data.value;
+        this.creator = data.creator;
+        this.creationTimestamp = data.creationTimestamp;
+        this.lastmodifiedTimestamp = data.lastmodifiedTimestamp;
+        return this;
+    }
+    serialize() {
+        return this;
+    }
+}
+exports.SourceElement = SourceElement;
+
+
+/***/ },
+/* 83 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview <Description Missing>
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.1.0
+ */
+"use strict";
+const React = __webpack_require__(0);
+const react_router_1 = __webpack_require__(9);
+const StatsGrid_1 = __webpack_require__(28);
+exports.Admin = (props) => (React.createElement("div", {className: 'page'}, 
+    React.createElement("section", null, 
+        React.createElement("h1", null, "Welcome to the admin pages"), 
+        React.createElement("ul", {className: 'links-list'}, 
+            React.createElement("li", null, 
+                React.createElement(react_router_1.Link, {to: '/users'}, 
+                    React.createElement("i", {className: 'fa fa-users'}), 
+                    " Manage Users")
+            ), 
+            React.createElement("li", null, 
+                React.createElement(react_router_1.Link, {to: '/app'}, 
+                    React.createElement("i", {className: 'fa fa-download'}), 
+                    " Download app")
+            ), 
+            React.createElement("li", null, 
+                React.createElement("a", {href: '/admin/snapshot'}, 
+                    React.createElement("i", {className: 'fa fa-cloud-download'}), 
+                    " Download database snapshot")
+            ), 
+            React.createElement("li", null, 
+                React.createElement(react_router_1.Link, {to: '/upload'}, 
+                    React.createElement("i", {className: 'fa fa-cloud-upload'}), 
+                    " Upload database file")
+            ))), 
+    props.stats !== null ? (React.createElement(StatsGrid_1.StatsGrid, {stats: props.stats})) : null));
+
+
+/***/ },
+/* 84 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview <Description Missing>
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.1.0
+ */
+"use strict";
+const React = __webpack_require__(0);
+exports.AppDownload = (props) => (React.createElement("div", {className: 'page'}, 
+    React.createElement("section", null, 
+        React.createElement("h1", null, "App Download"), 
+        React.createElement("p", null, "Use this VRE without an internet connection! Simply download the app for your platform and then" + ' ' + "download a database snapshot from the main page. When you are ready, use the upload tool to merge" + ' ' + "your offline copy with the server."), 
+        React.createElement("ul", {className: 'links-list'}, 
+            React.createElement("li", null, 
+                React.createElement("a", {href: 'https://github.com/digihum/imperial-entanglements-app/raw/master/bin/imperial-entanglements%20Setup%200.1.1.exe'}, 
+                    React.createElement("i", {className: 'fa fa-windows'}), 
+                    " Windows")
+            ), 
+            React.createElement("li", null, 
+                React.createElement("a", {href: 'https://github.com/digihum/imperial-entanglements-app/raw/master/bin/mac/imperial-entanglements-0.1.1.dmg'}, 
+                    React.createElement("i", {className: 'fa fa-apple'}), 
+                    " Mac")
+            ), 
+            React.createElement("li", null, 
+                React.createElement("a", {href: 'https://github.com/digihum/imperial-entanglements-app/raw/master/bin/imperial-entanglements-0.1.1-x86_64.AppImage'}, 
+                    React.createElement("i", {className: 'fa fa-linux'}), 
+                    " Linux")
+            )))
+));
+
+
+/***/ },
+/* 85 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview <Description Missing>
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.1.0
+ */
+"use strict";
+const React = __webpack_require__(0);
+exports.DatabaseUpload = (props) => (React.createElement("div", {className: 'page'}, 
+    React.createElement("section", null, 
+        React.createElement("h1", null, "This is the database upload page"), 
+        React.createElement("input", {type: 'file', id: 'input', accept: '.sqlite'}), 
+        React.createElement("button", {onClick: () => { alert('Work in process'); }}, "Upload"))
+));
+
+
+/***/ },
+/* 86 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview <Description Missing>
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.1.0
+ */
+"use strict";
+var __assign = (this && this.__assign) || Object.assign || function(t) {
+    for (var s, i = 1, n = arguments.length; i < n; i++) {
+        s = arguments[i];
+        for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+            t[p] = s[p];
+    }
+    return t;
+};
+const React = __webpack_require__(0);
+const immutable_1 = __webpack_require__(34);
+const moment = __webpack_require__(15);
+const ApiService_1 = __webpack_require__(2);
+const datamodel_1 = __webpack_require__(4);
+const Sidebar_1 = __webpack_require__(43);
+const Workspace_1 = __webpack_require__(45);
+const Toast_1 = __webpack_require__(44);
+const Signaller_1 = __webpack_require__(3);
+const lodash_1 = __webpack_require__(1);
+const CreatePredicate_1 = __webpack_require__(58);
+const CreateRecord_1 = __webpack_require__(60);
+const CreatePresetRecord_1 = __webpack_require__(59);
+const CreateSource_1 = __webpack_require__(61);
+const CreateEntity_1 = __webpack_require__(56);
+const CreateEntityType_1 = __webpack_require__(57);
+const ConflictResolution_1 = __webpack_require__(55);
+const DataStore_1 = __webpack_require__(41);
+class ObjectEditor extends React.Component {
+    constructor(props, context) {
+        super();
+        this.state = {
+            tabs: [],
+            inBrowser: (typeof window !== 'undefined'),
+            modalQueue: [],
+            dataStore: lodash_1.cloneDeep(DataStore_1.emptyDataStore),
+            loadingWheel: true,
+            loading: false,
+            id: NaN,
+            list: false
+        };
+        this.boundCreateTab = this.createTab.bind(this);
+        this.boundCloseTab = this.closeTab.bind(this);
+        this.boundAddModal = this.addModal.bind(this);
+        this.boundReload = this.callReload.bind(this);
+        this.boundReorderTabs = this.reorderTabs.bind(this);
+        Signaller_1.createTab.add(this.boundCreateTab);
+        Signaller_1.closeTab.add(this.boundCloseTab);
+        Signaller_1.showModal.add(this.boundAddModal);
+        Signaller_1.triggerReload.add(this.boundReload);
+        Signaller_1.reorderTabs.add(this.boundReorderTabs);
+    }
+    componentDidMount() {
+        this.reload(this.props);
+    }
+    callReload() {
+        this.reload(this.props, true);
+    }
+    reload(props, force = false) {
+        const newId = parseInt(props.location.pathname.substr(props.pathname.length + 1));
+        const newWorkspace = props.workspace;
+        if (['entity', 'source', 'predicate', 'entity_type', 'notfound'].indexOf(newWorkspace) === -1) {
+            this.context.router.transitionTo('/edit/notfound');
+        }
+        if (this.state.loading && !force) {
+            this.setState({
+                id: newId,
+                list: props.location.pathname.substr(props.pathname.length + 1).length === 0
+            });
+            return;
+        }
+        this.setState({
+            loading: true,
+            loadingWheel: (this.state.id !== newId && !(isNaN(this.state.id) && isNaN(newId))) || this.props.workspace !== newWorkspace,
+            id: newId,
+            list: props.location.pathname.substr(props.pathname.length + 1).length === 0
+        }, () => {
+            // load data required by the current tabs
+            let tabPromise = Promise.resolve(lodash_1.cloneDeep(DataStore_1.emptyTabs));
+            if (this.state.inBrowser) {
+                const tabsString = window.localStorage.getItem('open_tabs');
+                if (tabsString !== null) {
+                    this.state.tabs = JSON.parse(tabsString);
+                    if (!this.state.list &&
+                        ['entity', 'predicate', 'entity_type', 'source'].indexOf(props.workspace) !== -1 &&
+                        lodash_1.find(this.state.tabs, (tab) => tab.tabType === props.workspace
+                            && tab.uid == this.state.id) === undefined) {
+                        this.state.tabs.push({ tabType: props.workspace, uid: this.state.id });
+                        this.saveTabs();
+                    }
+                    const groupedTabs = lodash_1.groupBy(this.state.tabs, 'tabType');
+                    tabPromise = Promise.all(Object.keys(groupedTabs).map((tabType) => Promise.all(groupedTabs[tabType].map((tab) => this.loadTabData(tab.tabType, tab.uid)
+                        .then((value) => {
+                        return { [`${tab.tabType}-${tab.uid}`]: { value, lastUpdate: moment() } };
+                    })
+                        .catch((err) => {
+                        console.warn(`Attempted to load missing resource ${tab.tabType}/${tab.uid}`);
+                        this.closeTab(tab.tabType, tab.uid);
+                        if (tab.tabType === props.workspace && tab.uid === this.state.id) {
+                            this.context.router.transitionTo('/edit/notfound');
+                        }
+                    })))
+                        .then((tabData) => {
+                        return { [tabType]: immutable_1.Map(Object.assign({}, ...tabData)) };
+                    })));
+                }
+            }
+            // load lists of data commonly required by views
+            const allPromise = Promise.all([
+                props.api.getCollection(datamodel_1.Predicate, ApiService_1.AppUrls.predicate, {}),
+                props.api.getCollection(datamodel_1.Source, ApiService_1.AppUrls.source, {}),
+                props.api.getCollection(datamodel_1.Entity, ApiService_1.AppUrls.entity, {}),
+                props.api.getCollection(datamodel_1.EntityType, ApiService_1.AppUrls.entity_type, {}),
+                props.api.getItem(datamodel_1.ElementSet, ApiService_1.AppUrls.element_set, 1)
+            ])
+                .then(([predicates, sources, entities, entityType, dublinCore]) => {
+                return {
+                    predicate: { value: predicates, lastUpdate: moment() },
+                    source: { value: sources, lastUpdate: moment() },
+                    entity: { value: entities, lastUpdate: moment() },
+                    entity_type: { value: entityType, lastUpdate: moment() },
+                    dublinCore: { value: dublinCore, lastUpdate: moment() }
+                };
+            });
+            Promise.all([tabPromise, allPromise])
+                .then(([tabsArray, all]) => {
+                const tabs = Object.assign({}, ...tabsArray);
+                this.setState({
+                    dataStore: Object.assign({}, this.state.dataStore, { tabs, all }),
+                    loading: false,
+                    loadingWheel: false
+                });
+            });
+        });
+    }
+    loadTabData(tabType, uid) {
+        switch (tabType) {
+            case 'entity':
+                return Promise.all([
+                    this.props.api.getItem(datamodel_1.Entity, ApiService_1.AppUrls.entity, uid),
+                    this.props.api.getCollection(datamodel_1.Record, ApiService_1.AppUrls.record, { entity: uid })
+                ]).then(([entity, records]) => ({ entity, records }));
+            case 'predicate':
+                return this.props.api.getItem(datamodel_1.Predicate, ApiService_1.AppUrls.predicate, uid);
+            case 'entity_type':
+                return this.props.api.getItem(datamodel_1.EntityType, ApiService_1.AppUrls.entity_type, uid);
+            case 'source':
+                return Promise.all([
+                    this.props.api.getItem(datamodel_1.Source, ApiService_1.AppUrls.source, uid),
+                    this.props.api.getCollection(datamodel_1.SourceElement, ApiService_1.AppUrls.source_element, { source: uid })
+                ]).then(([source, source_element]) => ({ source, source_element }));
+            default:
+                throw new Error('Unexpected tab type requested');
+        }
+    }
+    createTab(tabType, uid, data) {
+        // don't add a tab if it already exists
+        if (lodash_1.find(this.state.tabs, (tab) => tab.tabType === tabType && tab.uid == uid) === undefined) {
+            this.setState({
+                tabs: this.state.tabs.concat([{ tabType, uid, data }])
+            }, () => {
+                this.saveTabs();
+                this.reload(this.props);
+            });
+        }
+    }
+    updateTab(tabType, uid, data) {
+        const tabs = lodash_1.cloneDeep(this.state.tabs);
+        const tabId = lodash_1.findIndex(tabs, (tab) => tab.tabType === tabType && tab.uid === uid);
+        if (tabId !== -1) {
+            tabs[tabId].data = data;
+            this.setState({ tabs });
+        }
+    }
+    closeTab(tabType, uid) {
+        this.setState({
+            tabs: this.state.tabs.filter((a) => a.tabType !== tabType || a.uid !== uid)
+        }, () => {
+            this.saveTabs();
+            this.reload(this.props);
+        });
+    }
+    saveTabs() {
+        const tabsString = JSON.stringify(this.state.tabs);
+        if (this.state.inBrowser) {
+            window.localStorage.setItem('open_tabs', tabsString);
+        }
+    }
+    clearAllTabs() {
+        this.setState({ tabs: [] }, () => {
+            this.saveTabs();
+            this.reload(this.props);
+        });
+    }
+    reorderTabs(reorderFunc) {
+        this.setState({ tabs: reorderFunc(this.state.tabs) }, () => {
+            this.saveTabs();
+            this.reload(this.props);
+        });
+    }
+    addModal(def) {
+        this.setState({ modalQueue: [def].concat(this.state.modalQueue) });
+    }
+    modalComplete(data) {
+        if (this.state.modalQueue.length === 0) {
+            throw new Error('Attempted to complete non-existent modal');
+        }
+        this.state.modalQueue[0].complete(data);
+        if (this.state.modalQueue.length > 0) {
+            this.setState({ modalQueue: lodash_1.tail(this.state.modalQueue) });
+        }
+    }
+    modalCancel() {
+        if (this.state.modalQueue.length === 0) {
+            throw new Error('Attempted to cancel non-existent modal');
+        }
+        this.state.modalQueue[0].cancel();
+        this.setState({
+            modalQueue: []
+        });
+    }
+    componentWillUnmount() {
+        this.saveTabs();
+        Signaller_1.createTab.remove(this.boundCreateTab);
+        Signaller_1.closeTab.remove(this.boundCloseTab);
+        Signaller_1.showModal.remove(this.boundAddModal);
+        Signaller_1.triggerReload.remove(this.boundReload);
+        Signaller_1.reorderTabs.remove(this.boundReorderTabs);
+    }
+    componentWillReceiveProps(props) {
+        this.reload(props);
+    }
+    render() {
+        return (React.createElement("section", {id: 'entity-editor', className: 'flex-fill'}, 
+            React.createElement("span", {className: 'header-colour ' + this.props.workspace}), 
+            React.createElement("span", {className: 'flex-fill'}, 
+                React.createElement(Sidebar_1.Sidebar, {tabs: this.state.tabs, dataStore: this.state.dataStore, loading: false, clearTabs: this.clearAllTabs.bind(this), list: this.state.list, id: this.state.id, workspace: this.props.workspace}), 
+                React.createElement(Workspace_1.Workspace, __assign({}, this.props, {id: this.state.id, dataStore: this.state.dataStore, loading: this.state.loadingWheel, list: this.state.list})), 
+                React.createElement(Toast_1.Toast, null), 
+                (() => {
+                    if (this.state.modalQueue.length === 0) {
+                        return null;
+                    }
+                    const sharedProps = {
+                        api: this.props.api,
+                        dataStore: this.state.dataStore,
+                        complete: this.modalComplete.bind(this),
+                        cancel: this.modalCancel.bind(this)
+                    };
+                    switch (this.state.modalQueue[0].name) {
+                        case 'predicate':
+                            return (React.createElement(CreatePredicate_1.CreatePredicate, __assign({}, sharedProps, this.state.modalQueue[0].settings)));
+                        case 'record':
+                            return (React.createElement(CreateRecord_1.CreateRecord, __assign({}, sharedProps, this.state.modalQueue[0].settings)));
+                        case 'preset_record':
+                            return (React.createElement(CreatePresetRecord_1.CreatePresetRecord, __assign({}, sharedProps, this.state.modalQueue[0].settings)));
+                        case 'source':
+                            return (React.createElement(CreateSource_1.CreateSource, __assign({}, sharedProps, this.state.modalQueue[0].settings)));
+                        case 'entity':
+                            return (React.createElement(CreateEntity_1.CreateEntity, __assign({}, sharedProps, this.state.modalQueue[0].settings)));
+                        case 'entity_type':
+                            return (React.createElement(CreateEntityType_1.CreateEntityType, __assign({}, sharedProps, this.state.modalQueue[0].settings)));
+                        case 'conflict_resolution':
+                            return (React.createElement(ConflictResolution_1.ConflictResolution, __assign({}, sharedProps, this.state.modalQueue[0].settings)));
+                    }
+                })()), 
+            React.createElement("span", {className: 'header-colour ' + this.props.workspace})));
+    }
+}
+ObjectEditor.contextTypes = {
+    router: React.PropTypes.object.isRequired
+};
+exports.ObjectEditor = ObjectEditor;
+
+
+/***/ },
+/* 87 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview <Description Missing>
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.1.0
+ */
+"use strict";
+const React = __webpack_require__(0);
+exports.RouteNotFound = (props) => (React.createElement("section", null, 
+    React.createElement("h1", null, 
+        "The page at ", 
+        props.url, 
+        " does not exist :(")
+));
+
+
+/***/ },
+/* 88 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview <Description Missing>
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.1.0
+ */
+"use strict";
+const React = __webpack_require__(0);
+exports.User = (props) => (React.createElement("div", {className: 'page'}, 
+    React.createElement("section", null, 
+        React.createElement("h1", null, "This is the user page")
+    )
+));
+
+
+/***/ },
+/* 89 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview <Description Missing>
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.1.0
+ */
+"use strict";
+const React = __webpack_require__(0);
+exports.UserManagement = (props) => (React.createElement("div", {className: 'page'}, 
+    React.createElement("section", null, 
+        React.createElement("h1", null, "This is the user management page")
+    )
+));
+
+
+/***/ },
+/* 90 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview Collated list of controllers
+ * @author <a href='mailto:tim.hollies@warwick.ac.uk'>Tim Hollies</a>
+ * @version 0.0.1
+ */
+"use strict";
+var ElementSetController_1 = __webpack_require__(30);
+exports.ElementSetController = ElementSetController_1.ElementSetController;
+exports.ElementSetPersistable = ElementSetController_1.ElementSetPersistable;
+var EntityController_1 = __webpack_require__(21);
+exports.EntityController = EntityController_1.EntityController;
+exports.EntityPersistable = EntityController_1.EntityPersistable;
+var EntityTypeController_1 = __webpack_require__(31);
+exports.EntityTypeController = EntityTypeController_1.EntityTypeController;
+exports.EntityTypePersistable = EntityTypeController_1.EntityTypePersistable;
+var PredicateController_1 = __webpack_require__(22);
+exports.PredicateController = PredicateController_1.PredicateController;
+exports.PredicatePersistable = PredicateController_1.PredicatePersistable;
+var RecordController_1 = __webpack_require__(14);
+exports.RecordController = RecordController_1.RecordController;
+exports.RecordPersistable = RecordController_1.RecordPersistable;
+var SourceController_1 = __webpack_require__(32);
+exports.SourceController = SourceController_1.SourceController;
+exports.SourcePersistable = SourceController_1.SourcePersistable;
+var ElementController_1 = __webpack_require__(29);
+exports.ElementController = ElementController_1.ElementController;
+exports.ElementPersistable = ElementController_1.ElementPersistable;
+var SourceElementController_1 = __webpack_require__(33);
+exports.SourceElementController = SourceElementController_1.SourceElementController;
+exports.SourceElementPersistable = SourceElementController_1.SourceElementPersistable;
+
+
+/***/ },
+/* 91 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview Query processor
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.0.1
+ */
+"use strict";
+const graphql_1 = __webpack_require__(23);
+const entityQLType_1 = __webpack_require__(93);
+const predicateQLType_1 = __webpack_require__(94);
+class QueryEngine {
+    constructor(db) {
+        const entityType = entityQLType_1.entityQLType(db, predicateQLType_1.predicateQLType(db));
+        // Define the Query type
+        const queryType = new graphql_1.GraphQLObjectType({
+            name: 'Query',
+            fields: {
+                entity: {
+                    type: new graphql_1.GraphQLList(entityType),
+                    // `args` describes the arguments that the `user` query accepts
+                    args: {
+                        uid: { type: graphql_1.GraphQLString }
+                    },
+                    resolve: (_, { uid }) => {
+                        if (uid === undefined) {
+                            return db.query()('entities');
+                        }
+                        return db.query()('entities').where({ uid });
+                    }
+                }
+            }
+        });
+        this.schema = new graphql_1.GraphQLSchema({
+            query: queryType
+        });
+    }
+    runQuery(query) {
+        return graphql_1.graphql(this.schema, query);
+    }
+}
+exports.QueryEngine = QueryEngine;
+
+
+/***/ },
+/* 92 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview Abstract interface for sources
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.0.1
+ */
+"use strict";
+const Exceptions_1 = __webpack_require__(8);
+const moment = __webpack_require__(15);
+const Signaller_1 = __webpack_require__(3);
+var ApiService_1 = __webpack_require__(2);
+exports.AppUrls = ApiService_1.AppUrls;
+const GeneralStatisticsController_1 = __webpack_require__(95);
+class ServerApiService {
+    constructor(db, routesMap, queryEngine, fakeCreator) {
+        this.controllerMap = routesMap;
+        this.queryEngine = queryEngine;
+        this.fakeCreator = fakeCreator;
+        this.db = db;
+    }
+    getItem(obj, baseUrl, uid) {
+        const controller = this.controllerMap.get(baseUrl);
+        if (controller === undefined) {
+            return Promise.reject(new Exceptions_1.CollectionNotFoundException('Controller not found'));
+        }
+        return controller.getItemJson(obj, uid);
+    }
+    getCollection(obj, baseUrl, params) {
+        const controller = this.controllerMap.get(baseUrl);
+        if (controller === undefined) {
+            return Promise.reject(new Exceptions_1.CollectionNotFoundException('Controller not found'));
+        }
+        return controller.getCollectionJson(obj, params);
+    }
+    postItem(obj, baseUrl, data) {
+        const controller = this.controllerMap.get(baseUrl);
+        if (controller === undefined) {
+            return Promise.reject(new Exceptions_1.CollectionNotFoundException('Controller not found'));
+        }
+        return controller.postItem(obj, Object.assign(data, {
+            creationTimestamp: moment().toISOString(),
+            lastmodifiedTimestamp: moment().toISOString(),
+            creator: this.fakeCreator ? 0 : data.creator
+        }))
+            .then((result) => {
+            Signaller_1.triggerReload.dispatch();
+            return Promise.resolve(result);
+        });
+    }
+    putItem(obj, baseUrl, uid, data) {
+        const controller = this.controllerMap.get(baseUrl);
+        if (controller === undefined) {
+            return Promise.reject(new Exceptions_1.CollectionNotFoundException('Controller not found'));
+        }
+        return controller.putItem(obj, uid, Object.assign(data, {
+            lastmodifiedTimestamp: moment().toISOString()
+        }))
+            .then((result) => {
+            Signaller_1.triggerReload.dispatch();
+            return Promise.resolve(result);
+        });
+    }
+    patchItem(obj, baseUrl, uid, data) {
+        const controller = this.controllerMap.get(baseUrl);
+        if (controller === undefined) {
+            return Promise.reject(new Exceptions_1.CollectionNotFoundException('Controller not found'));
+        }
+        return controller.patchItem(obj, uid, Object.assign(data, {
+            lastmodifiedTimestamp: moment().toISOString()
+        }))
+            .then((result) => {
+            Signaller_1.triggerReload.dispatch();
+            return Promise.resolve(result);
+        });
+    }
+    delItem(obj, baseUrl, uid) {
+        const controller = this.controllerMap.get(baseUrl);
+        if (controller === undefined) {
+            return Promise.reject(new Exceptions_1.CollectionNotFoundException('Controller not found'));
+        }
+        return controller.deleteItem(obj, uid)
+            .then((result) => {
+            Signaller_1.triggerReload.dispatch();
+            return Promise.resolve(result);
+        });
+    }
+    query(graphQLQuery) {
+        return Promise.resolve({});
+    }
+    getStats() {
+        return GeneralStatisticsController_1.GeneralStatisticsController(this.db.query());
+    }
+}
+exports.ServerApiService = ServerApiService;
+
+
+/***/ },
+/* 93 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview Query processor
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.0.1
+ */
+"use strict";
+const graphql_1 = __webpack_require__(23);
+exports.entityQLType = (db, predicateType) => {
+    return new graphql_1.GraphQLObjectType({
+        name: 'Entity',
+        fields: {
+            uid: {
+                type: graphql_1.GraphQLString,
+                resolve: (parent, {  }) => {
+                    return parent.uid;
+                }
+            },
+            label: {
+                type: graphql_1.GraphQLString,
+                resolve: (parent, {  }) => {
+                    return parent.label;
+                }
+            },
+            type: {
+                type: graphql_1.GraphQLString,
+                resolve: (parent, {  }) => {
+                    return db.query()('entity_types').where({ uid: parent.type }).first().then((data) => data.name);
+                }
+            },
+            predicate: {
+                type: predicateType,
+                args: {
+                    name: { type: graphql_1.GraphQLString },
+                    uid: { type: graphql_1.GraphQLString }
+                },
+                resolve: (entity, { name, uid }) => {
+                    if (name !== undefined) {
+                        return db.query()('predicates').where({ name }).first().then((predicate) => ({ predicate, entity }));
+                    }
+                    if (uid !== undefined) {
+                        return db.query()('predicates').where({ uid }).first().then((predicate) => ({ predicate, entity }));
+                    }
+                }
+            },
+            predicates: {
+                type: new graphql_1.GraphQLList(predicateType),
+                args: {
+                    names: { type: new graphql_1.GraphQLList(graphql_1.GraphQLString) },
+                    uids: { type: new graphql_1.GraphQLList(graphql_1.GraphQLString) }
+                },
+                resolve: (entity, { names, uids }) => {
+                    if (names !== undefined) {
+                        return db.query()('predicates')
+                            .whereIn('name', names)
+                            .then((predicates) => predicates.map((predicate) => ({ predicate, entity })));
+                    }
+                    if (uids !== undefined) {
+                        return db.query()('predicates')
+                            .whereIn('uid', uids)
+                            .then((predicates) => predicates.map((predicate) => ({ predicate, entity })));
+                    }
+                }
+            }
+        }
+    });
+};
+
+
+/***/ },
+/* 94 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview Query processor
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.0.1
+ */
+"use strict";
+const graphql_1 = __webpack_require__(23);
+exports.predicateQLType = (db) => {
+    return new graphql_1.GraphQLObjectType({
+        name: 'Predicate',
+        fields: {
+            uid: {
+                type: graphql_1.GraphQLString,
+                resolve: ({ predicate }, {  }) => {
+                    return predicate.uid;
+                }
+            },
+            name: {
+                type: graphql_1.GraphQLString,
+                resolve: ({ predicate }, {  }) => {
+                    return predicate.name;
+                }
+            },
+            values: {
+                type: new graphql_1.GraphQLList(graphql_1.GraphQLString),
+                resolve: ({ entity, predicate }, {  }) => {
+                    return db.query()('records')
+                        .select('value_string')
+                        .where({ entity: entity.uid, predicate: predicate.uid })
+                        .then((results) => results.map((result) => result.value_string));
+                }
+            }
+        }
+    });
+};
+
+
+/***/ },
+/* 95 */
+/***/ function(module, exports) {
+
+"use strict";
+/**
+ * @fileOverview Map of URIs to controllers
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.0.1
+ */
+"use strict";
+exports.GeneralStatisticsController = (db) => {
+    return Promise.all([
+        db('entities').count(),
+        db('entity_types').count(),
+        db('sources').count(),
+        db('records').count(),
+        db('predicates').count()
+    ]).then(([[entityCount], [entityTypeCount], [sourceCount], [recordCount], [predicateCount]]) => {
+        const statistics = {
+            entity: entityCount['count(*)'],
+            entityType: entityTypeCount['count(*)'],
+            source: sourceCount['count(*)'],
+            record: recordCount['count(*)'],
+            predicate: predicateCount['count(*)']
+        };
+        return statistics;
+    });
+};
+
+
+/***/ },
+/* 96 */
+/***/ function(module, exports) {
+
+module.exports = require("knex");
+
+/***/ },
+/* 97 */
+/***/ function(module, exports) {
+
+module.exports = require("levenshtein");
+
+/***/ },
+/* 98 */
+/***/ function(module, exports) {
+
+module.exports = require("lunr");
+
+/***/ },
+/* 99 */
+/***/ function(module, exports) {
+
+module.exports = require("react-sortable-hoc");
+
+/***/ },
+/* 100 */
+/***/ function(module, exports) {
+
+module.exports = require("signals");
+
+/***/ },
+/* 101 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview Abstract interface for sources
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.0.1
+ */
+"use strict";
+const react_dom_1 = __webpack_require__(39);
+const react_1 = __webpack_require__(0);
+const FalconApp_1 = __webpack_require__(35);
+const Database_1 = __webpack_require__(36);
+const api_1 = __webpack_require__(37);
+const react_router_1 = __webpack_require__(9);
+const electron = __webpack_require__(38);
+const databaseFile = electron.remote.dialog.showOpenDialog({ properties: ['openFile'], filters: [
+        { name: 'Database Files', extensions: ['sqlite'] }
+    ] });
+if (databaseFile !== undefined) {
+    electron.remote.getCurrentWindow().setTitle(`Imperial Entanglements (${databaseFile[0]})`);
+    const db = new Database_1.Database({
+        client: 'sqlite3',
+        useNullAsDefault: true,
+        connection: {
+            filename: databaseFile[0]
+        },
+        pool: {
+            afterCreate: (conn, cb) => {
+                conn.run('PRAGMA foreign_keys = ON', cb);
+            }
+        }
+    });
+    document.addEventListener('DOMContentLoaded', (event) => {
+        react_dom_1.render(react_1.createElement(FalconApp_1.FalconApp, {
+            api: api_1.wrapDatabase(db, true),
+            environment: 'app',
+            connected: false,
+            router: react_router_1.MemoryRouter,
+            routerSettings: {
+                initialEntries: ['/'],
+                initialIndex: 0
+            }
+        }), document.getElementById('falcon-container'));
+    });
+}
+else {
+    electron.remote.app.quit();
+}
+
+
+/***/ }
+/******/ ]);
+//# sourceMappingURL=app.electron.dist.js.map

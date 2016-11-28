@@ -11,5 +11,10 @@
   "baseUrl": ".",
   "sourceMap": true,
   "strictNullChecks": true
-  }
+  },
+  "exclude": [
+    "node_modules",
+    "dist",
+    "build"
+  ]
 }

@@ -16,7 +16,6 @@ import { UnprocessableEntity } from '../common/Exceptions';
 
 export { AppUrls } from '../common/ApiService';
 
-
 function handleErrors(response: any) {
     if (!response.ok) {
 

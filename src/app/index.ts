@@ -23,7 +23,7 @@ function createWindow () {
   });
 
   // and load the index.html of the app.
-  win.loadURL('file:///' + __dirname + '/index.html');
+  win.loadURL('file:///' + path.join(process.cwd(), 'dist', 'app') + '/index.html');
 
   //win.setMenu(null);
 

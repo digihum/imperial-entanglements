@@ -6,7 +6,7 @@
   "scripts": {
     "postinstall": "install-app-deps ./dist/app",
     "dist": "build --x64",
-    "electron": "electron ./dist/app/app.electron.dist.js",
+    "electron": "electron .",
     "test": "mocha --grep=#api --invert",
     "migrate": "knex migrate:latest",
     "seed": "knex seed:run",
@@ -37,7 +37,7 @@
   "directories": {
     "output": "./dist/bin",
     "app": "./dist/app",
-    "buildResources": "tmp"
+    "buildResources": "./dist/app"
   },
   "author": "",
   "license": "ISC",
@@ -83,7 +83,7 @@
     "chromedriver": "^2.24.1",
     "cucumber": "^1.3.1",
     "devtron": "^1.4.0",
-    "electron": "^1.4.7",
+    "electron": "^1.4.8",
     "electron-builder": "^8.6.0",
     "faker": "^3.1.0",
     "gulp": "^3.9.1",

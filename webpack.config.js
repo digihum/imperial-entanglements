@@ -18,7 +18,8 @@ fs.readdirSync('node_modules')
 var frontendConfig = {
     devtool: 'source-map',
     entry: {
-        "app.frontend": './src/client/app.frontend.ts', 
+        //"app.frontend": './src/client/app.frontend.ts', 
+        "app.frontend": './build/client/app.frontend.js'
 	},
     output: {  
         path: 'dist/server/static',                 // output folder
@@ -30,7 +31,7 @@ var frontendConfig = {
     },
     module:  {
         rules: [
-            { test: /\.tsx?$/, loader: 'ts-loader' }
+           // { test: /\.tsx?$/, loader: 'ts-loader' }
         ]
     },
     plugins: [
@@ -46,7 +47,8 @@ var frontendConfig = {
 var backendConfig = {
     devtool: 'source-map',
     entry: {
-        "app.backend": './src/server/index.ts', 
+        //"app.backend": './src/server/index.ts', 
+        "app.backend": './build/server/index.js', 
 	},
     output: {  
         path: 'dist/server',                 // output folder
@@ -63,7 +65,7 @@ var backendConfig = {
                 test:   /\.js$/,
                 loader: 'source-map-loader'
             },
-            { test: /\.tsx?$/, loader: 'ts-loader' }
+           // { test: /\.tsx?$/, loader: 'ts-loader' }
         ]
     },
     target: 'node',
@@ -73,7 +75,8 @@ var backendConfig = {
 var electronConfig = {
     devtool: 'source-map',
     entry: {
-        "app.electron": './src/app/app.electron.ts'
+        //"app.electron": './src/app/app.electron.ts'
+        "app.electron": './build/app/app.electron.js'
 	},
     output: {  
         path: 'dist/app',                 // output folder
@@ -101,7 +104,7 @@ var electronConfig = {
                 loader: "file-loader" 
             },
 
-            { test: /\.tsx?$/, loader: 'ts-loader' }
+            //{ test: /\.tsx?$/, loader: 'ts-loader' }
         ]
     },
     plugins: [
@@ -115,7 +118,9 @@ var electronConfig = {
         )
     ],
     target: 'electron',    
-    externals: nodeModules
+    externals: Object.assign(nodeModules, {
+        electron: 'commonjs electron'
+    })
 }
 
 module.exports = [frontendConfig, electronConfig, backendConfig];

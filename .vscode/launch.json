@@ -26,7 +26,7 @@
             "name": "Launch Electron",
             "type": "node",
             "request": "launch",
-            "program": "${workspaceRoot}/build/app/index.js",
+            "program": "${workspaceRoot}/dist/app/app.electron.dist.js",
             "stopOnEntry": false,
             "args": [],
             "cwd": "${workspaceRoot}",
