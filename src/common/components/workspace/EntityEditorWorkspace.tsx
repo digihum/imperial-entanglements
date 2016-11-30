@@ -27,6 +27,9 @@ import { EditableComboDropdown } from '../fields/EditableComboDropdown';
 
 import { DataStore } from '../../DataStore';
 
+import { EntityWorkspaceCoreView } from './entity/EntityWorkspaceCoreView';
+import { EntityWorkspaceReferenceView } from './entity/EntityWorkspaceReferenceView';
+
 class StringEditableFieldComponent extends EditableFieldComponent<string> {}
 class ComboEditableFieldComponent extends EditableFieldComponent<ComboDropdownOption> {}
 
@@ -37,8 +40,7 @@ interface EntityEditorProps {
 }
 
 interface EntityEditorState {
-    comboValue: ComboDropdownOption;
-    comboSearchValue: string;
+    tab: number;
 }
 
 // What can I do?
@@ -67,7 +69,8 @@ export class EntityEditorWorkspace extends React.Component<EntityEditorProps, En
         super();
         this.state = {
             comboValue: { key: 'test', value: ''},
-            comboSearchValue: ''
+            comboSearchValue: '',
+            tab: 0
         };
     }
 
@@ -181,8 +184,8 @@ export class EntityEditorWorkspace extends React.Component<EntityEditorProps, En
                             value={entity.label}
                             component={EditableHeader}
                             onChange={(value) => this.update({ 'label': value })}  />
-
                     </div>
+
                     <div className='sub-toolbar'>
                         <i
                             className='fa fa-trash delete button'
@@ -196,50 +199,28 @@ export class EntityEditorWorkspace extends React.Component<EntityEditorProps, En
                         ></i>
                     </div>
                   </div>
+                  <div className='secondary-toolbar'>
+                      <div className='tab-bar'>
+                        <div className={'entity ' + (this.state.tab === 0 ? 'selected' : '')} onClick={() => this.setState({ tab: 0 })}>CORE</div>
+                        <div className={'entity ' + (this.state.tab === 1 ? 'selected' : '')} onClick={() => this.setState({ tab: 1 })}>REFERENCED BY</div>
+                      </div>
+                  </div>
                 </header>
 
-                <section className='editor-body'>
+                {this.state.tab === 0 ? (
+                  <EntityWorkspaceCoreView
+                  dataStore={this.props.dataStore}
+                  api={this.props.api}
+                  id={this.props.id}
+                 />
+                ) : (
+                  <EntityWorkspaceReferenceView
+                  dataStore={this.props.dataStore}
+                  api={this.props.api}
+                  id={this.props.id}
+                 />
+                )}
 
-                    <div className='flex-fill'>
-                        <div className='flex-fill'>
-                            <div><label className='small'>Type</label>{entityType.name} <AddTabButton
-                                dataStore={this.props.dataStore}
-                                uid={entityType.uid}
-                                tabType='entity_type'
-                            /></div>
-                        </div>
-
-                        <div style={{ flex: 1 }}>
-                            <label className='small'>Parent</label>
-                            <ComboEditableFieldComponent
-                                value={{key: parentName, value: entity.parent}}
-                                component={EditableComboDropdown}
-                                onChange={(value) => this.update({'parent': value.value})}
-                                additionalProps={{ comboSettings: {
-                                    options: potentialParents.map((par) => ({ key: par.label, value: par.uid})),
-                                    typeName: 'Entity'
-                                }}} />
-                            {entity.parent !== null ? (<AddTabButton dataStore={this.props.dataStore}
-                                tabType='entity'
-                                uid={entity.parent} />) : null}
-                        </div>
-                    </div>
-
-                    <div className='edit-group'>
-                        <RecordsEditor
-                            dimension='predicates'
-                            entityExists={true}
-                            id={this.props.id}
-                            api={this.props.api}
-                            records={records}
-                            onChange={() => {}}
-                            predicates={predicates}
-                            sources={sources}
-                            entityTypeId={entityType.uid}
-                            dataStore={this.props.dataStore}
-                        />
-                    </div>
-                </section>
             </div>
         );
     }

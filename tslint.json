@@ -26,7 +26,7 @@
     "max-file-line-count": false,
     "max-func-body-length": [
       true,
-      100,
+      200,
       {
         "ignore-parameters-to-function-regex": "describe"
       }

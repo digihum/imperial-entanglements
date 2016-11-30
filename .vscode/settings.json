@@ -4,7 +4,8 @@
         "**/node_modules": true,
         "**/bower_components": true,
         "build": true,
-        "public": true
+        "public": true,
+        "dist": true
     },
 
     "files.eol": "\n",

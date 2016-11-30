@@ -26372,8 +26372,8 @@ class SourceList extends React.Component {
                 ), 
                 React.createElement("div", {className: 'secondary-toolbar'}, 
                     React.createElement("div", {className: 'tab-bar'}, 
-                        React.createElement("div", {onClick: () => this.setState({ mode: 'list' })}, "LIST"), 
-                        React.createElement("div", {onClick: () => this.setState({ mode: 'tree' })}, "TREE"))
+                        React.createElement("div", {className: 'source ' + (this.state.mode === 'list' ? 'selected' : ''), onClick: () => this.setState({ mode: 'list' })}, "LIST"), 
+                        React.createElement("div", {className: 'source ' + (this.state.mode === 'tree' ? 'selected' : ''), onClick: () => this.setState({ mode: 'tree' })}, "TREE"))
                 )), 
             React.createElement("section", {className: 'editor-body'}, 
                 React.createElement(SearchBar_1.SearchBar, {getValue: (a) => a.name, setFilterFunc: (f) => this.setState({ filterFunc: f })}), 
@@ -26477,15 +26477,14 @@ exports.EmptyWorkspace = () => (React.createElement("div", {className: 'workspac
  */
 "use strict";
 const React = __webpack_require__(1);
-const RecordsEditor_1 = __webpack_require__(203);
 const ApiService_1 = __webpack_require__(3);
 const datamodel_1 = __webpack_require__(5);
 const lodash_1 = __webpack_require__(6);
 const Signaller_1 = __webpack_require__(4);
-const AddTabButton_1 = __webpack_require__(7);
 const findParentTree_1 = __webpack_require__(55);
 const EditableHeader_1 = __webpack_require__(27);
-const EditableComboDropdown_1 = __webpack_require__(39);
+const EntityWorkspaceCoreView_1 = __webpack_require__(377);
+const EntityWorkspaceReferenceView_1 = __webpack_require__(378);
 class StringEditableFieldComponent extends EditableHeader_1.EditableFieldComponent {
 }
 class ComboEditableFieldComponent extends EditableHeader_1.EditableFieldComponent {
@@ -26511,7 +26510,8 @@ class EntityEditorWorkspace extends React.Component {
         super();
         this.state = {
             comboValue: { key: 'test', value: '' },
-            comboSearchValue: ''
+            comboSearchValue: '',
+            tab: 0
         };
     }
     del() {
@@ -26601,27 +26601,13 @@ class EntityEditorWorkspace extends React.Component {
                         React.createElement(StringEditableFieldComponent, {value: entity.label, component: EditableHeader_1.EditableHeader, onChange: (value) => this.update({ 'label': value })})), 
                     React.createElement("div", {className: 'sub-toolbar'}, 
                         React.createElement("i", {className: 'fa fa-trash delete button', "aria-hidden": 'true', onClick: this.del.bind(this)}), 
-                        React.createElement("i", {className: 'fa fa-clone button', "aria-hidden": 'true', onClick: () => console.log('copy')})))
-            ), 
-            React.createElement("section", {className: 'editor-body'}, 
-                React.createElement("div", {className: 'flex-fill'}, 
-                    React.createElement("div", {className: 'flex-fill'}, 
-                        React.createElement("div", null, 
-                            React.createElement("label", {className: 'small'}, "Type"), 
-                            entityType.name, 
-                            " ", 
-                            React.createElement(AddTabButton_1.AddTabButton, {dataStore: this.props.dataStore, uid: entityType.uid, tabType: 'entity_type'}))
-                    ), 
-                    React.createElement("div", {style: { flex: 1 }}, 
-                        React.createElement("label", {className: 'small'}, "Parent"), 
-                        React.createElement(ComboEditableFieldComponent, {value: { key: parentName, value: entity.parent }, component: EditableComboDropdown_1.EditableComboDropdown, onChange: (value) => this.update({ 'parent': value.value }), additionalProps: { comboSettings: {
-                                options: potentialParents.map((par) => ({ key: par.label, value: par.uid })),
-                                typeName: 'Entity'
-                            } }}), 
-                        entity.parent !== null ? (React.createElement(AddTabButton_1.AddTabButton, {dataStore: this.props.dataStore, tabType: 'entity', uid: entity.parent})) : null)), 
-                React.createElement("div", {className: 'edit-group'}, 
-                    React.createElement(RecordsEditor_1.RecordsEditor, {dimension: 'predicates', entityExists: true, id: this.props.id, api: this.props.api, records: records, onChange: () => { }, predicates: predicates, sources: sources, entityTypeId: entityType.uid, dataStore: this.props.dataStore})
-                ))));
+                        React.createElement("i", {className: 'fa fa-clone button', "aria-hidden": 'true', onClick: () => console.log('copy')}))), 
+                React.createElement("div", {className: 'secondary-toolbar'}, 
+                    React.createElement("div", {className: 'tab-bar'}, 
+                        React.createElement("div", {className: 'entity ' + (this.state.tab === 0 ? 'selected' : ''), onClick: () => this.setState({ tab: 0 })}, "CORE"), 
+                        React.createElement("div", {className: 'entity ' + (this.state.tab === 1 ? 'selected' : ''), onClick: () => this.setState({ tab: 1 })}, "REFERENCED BY"))
+                )), 
+            this.state.tab === 0 ? (React.createElement(EntityWorkspaceCoreView_1.EntityWorkspaceCoreView, {dataStore: this.props.dataStore, api: this.props.api, id: this.props.id})) : (React.createElement(EntityWorkspaceReferenceView_1.EntityWorkspaceReferenceView, {dataStore: this.props.dataStore, api: this.props.api, id: this.props.id}))));
     }
 }
 EntityEditorWorkspace.contextTypes = {
@@ -38053,6 +38039,159 @@ document.addEventListener('DOMContentLoaded', (event) => {
     }), document.getElementById('main'));
 });
 //# sourceMappingURL=app.frontend.js.map
+
+/***/ },
+/* 377 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview Empty workspace for when nothing is open!
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.1.0
+ */
+"use strict";
+const React = __webpack_require__(1);
+const RecordsEditor_1 = __webpack_require__(203);
+const ApiService_1 = __webpack_require__(3);
+const datamodel_1 = __webpack_require__(5);
+const lodash_1 = __webpack_require__(6);
+const AddTabButton_1 = __webpack_require__(7);
+const findParentTree_1 = __webpack_require__(55);
+const EditableHeader_1 = __webpack_require__(27);
+const EditableComboDropdown_1 = __webpack_require__(39);
+class StringEditableFieldComponent extends EditableHeader_1.EditableFieldComponent {
+}
+class ComboEditableFieldComponent extends EditableHeader_1.EditableFieldComponent {
+}
+// What can I do?
+// Entity Operations
+// - Delete the entity
+// - Merge the entity
+// - Split the entity
+// - Add 'same-as-ses' to the entity
+// Records
+// - Order records by type, source and date
+// - Add new records
+// - Adding a new predicate creates a new record with the
+//   entity set, the predicate set, the score set to 3, the period set to null, source set to null
+//   it also creates a blank entry in the records sub table based on the range of the predicate.
+// - New predicates must have a name. The domain is set to the current entitytype but can be changed
+//   to one of its parents. The range MUST be set.
+// Visualisations:
+// - Network graph of entity relationships
+class EntityWorkspaceCoreView extends React.Component {
+    constructor(props, context) {
+        super();
+        this.state = {
+            comboValue: { key: 'test', value: '' },
+            comboSearchValue: ''
+        };
+    }
+    update(data) {
+        this.props.api.patchItem(datamodel_1.Entity, ApiService_1.AppUrls.entity, this.props.id, data);
+    }
+    render() {
+        const entity = this.props.dataStore.tabs.entity.get('entity-' + this.props.id).value.entity;
+        const entityType = this.props.dataStore.all.entity_type.value.find((t) => t.uid === entity.entityType);
+        const potentialParents = this.props.dataStore.all.entity.value;
+        const entityTypeParents = findParentTree_1.findParentTree(entity.entityType, this.props.dataStore.all.entity_type.value);
+        const predicates = this.props.dataStore.all.predicate
+            .value.filter((pred) => entityTypeParents.indexOf(pred.domain) !== -1);
+        const sources = this.props.dataStore.all.source.value;
+        const records = lodash_1.groupBy(this.props.dataStore.tabs.entity.get('entity-' + this.props.id).value.records, 'predicate');
+        const options = predicates.map((pred) => ({ key: pred.name, value: pred.uid, meta: pred }));
+        let parentName = '';
+        if (potentialParents !== null && entity.parent !== undefined) {
+            const found = potentialParents.find((par) => par.uid === entity.parent);
+            if (found !== undefined) {
+                parentName = found.label;
+            }
+        }
+        return (React.createElement("section", {className: 'editor-body'}, 
+            React.createElement("div", {className: 'flex-fill'}, 
+                React.createElement("div", {className: 'flex-fill'}, 
+                    React.createElement("div", null, 
+                        React.createElement("label", {className: 'small'}, "Type"), 
+                        entityType.name, 
+                        " ", 
+                        React.createElement(AddTabButton_1.AddTabButton, {dataStore: this.props.dataStore, uid: entityType.uid, tabType: 'entity_type'}))
+                ), 
+                React.createElement("div", {style: { flex: 1 }}, 
+                    React.createElement("label", {className: 'small'}, "Parent"), 
+                    React.createElement(ComboEditableFieldComponent, {value: { key: parentName, value: entity.parent }, component: EditableComboDropdown_1.EditableComboDropdown, onChange: (value) => this.update({ 'parent': value.value }), additionalProps: { comboSettings: {
+                            options: potentialParents.map((par) => ({ key: par.label, value: par.uid })),
+                            typeName: 'Entity'
+                        } }}), 
+                    entity.parent !== null ? (React.createElement(AddTabButton_1.AddTabButton, {dataStore: this.props.dataStore, tabType: 'entity', uid: entity.parent})) : null)), 
+            React.createElement("div", {className: 'edit-group'}, 
+                React.createElement(RecordsEditor_1.RecordsEditor, {dimension: 'predicates', entityExists: true, id: this.props.id, api: this.props.api, records: records, onChange: () => { }, predicates: predicates, sources: sources, entityTypeId: entityType.uid, dataStore: this.props.dataStore})
+            )));
+    }
+}
+EntityWorkspaceCoreView.contextTypes = {
+    router: React.PropTypes.object.isRequired
+};
+exports.EntityWorkspaceCoreView = EntityWorkspaceCoreView;
+//# sourceMappingURL=EntityWorkspaceCoreView.js.map
+
+/***/ },
+/* 378 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview Empty workspace for when nothing is open!
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.1.0
+ */
+"use strict";
+const React = __webpack_require__(1);
+const ApiService_1 = __webpack_require__(3);
+const datamodel_1 = __webpack_require__(5);
+const EditableHeader_1 = __webpack_require__(27);
+class StringEditableFieldComponent extends EditableHeader_1.EditableFieldComponent {
+}
+class ComboEditableFieldComponent extends EditableHeader_1.EditableFieldComponent {
+}
+// What can I do?
+// Entity Operations
+// - Delete the entity
+// - Merge the entity
+// - Split the entity
+// - Add 'same-as-ses' to the entity
+// Records
+// - Order records by type, source and date
+// - Add new records
+// - Adding a new predicate creates a new record with the
+//   entity set, the predicate set, the score set to 3, the period set to null, source set to null
+//   it also creates a blank entry in the records sub table based on the range of the predicate.
+// - New predicates must have a name. The domain is set to the current entitytype but can be changed
+//   to one of its parents. The range MUST be set.
+// Visualisations:
+// - Network graph of entity relationships
+class EntityWorkspaceReferenceView extends React.Component {
+    constructor(props, context) {
+        super();
+        this.state = {
+            comboValue: { key: 'test', value: '' },
+            comboSearchValue: ''
+        };
+    }
+    update(data) {
+        this.props.api.patchItem(datamodel_1.Entity, ApiService_1.AppUrls.entity, this.props.id, data);
+    }
+    render() {
+        return (React.createElement("section", {className: 'editor-body'}, 
+            React.createElement("h2", null, "References")
+        ));
+    }
+}
+EntityWorkspaceReferenceView.contextTypes = {
+    router: React.PropTypes.object.isRequired
+};
+exports.EntityWorkspaceReferenceView = EntityWorkspaceReferenceView;
+//# sourceMappingURL=EntityWorkspaceReferenceView.js.map
 
 /***/ }
 /******/ ]);

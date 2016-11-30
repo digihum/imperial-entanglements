@@ -61,7 +61,7 @@
 .editor-header {
     display: flex;
     flex-direction: column;
-    padding: 1em 2em;
+    padding: 1em 2em 0;
 
     i.fa.fa-pencil-square-o {
         font-size: 1em;
@@ -74,22 +74,27 @@
 
     &.records {
         background-color: rgba($records_colour, 0.2);
+        border-bottom: 2px solid $records_colour;
     }
 
     &.entity_type {
         background-color: rgba($types_colour, 0.2);
+        border-bottom: 2px solid $types_colour;
     }
 
     &.source {
         background-color: rgba($source_colour, 0.2);
+        border-bottom: 2px solid $source_colour;
     }
 
     &.entity {
         background-color: rgba($entity_colour, 0.2);
+        border-bottom: 2px solid $entity_colour;
     }
 
     &.predicate {
         background-color: rgba($predicate_colour, 0.2);
+        border-bottom: 2px solid $predicate_colour;
     }
 
     i {
@@ -116,7 +121,27 @@
       .tab-bar {
         display: flex;
         &>div {
-          padding: 0 0.5em 0.2em 0;
+          padding: 0.2em;
+          margin: 0.2em;
+          margin-bottom: 0;
+          margin-top: 0.6em;
+          font-size: smaller;
+          font-variant: small-caps;
+          font-family: 'Roboto', sans-serif;
+          cursor: pointer;
+          user-select: none;
+
+          @each $profile, $bgcolor in $item_colours {
+          #{'&.' + $profile} {
+              &.selected {
+                background-color: darken($bgcolor, 0.2);
+              }
+
+                &:hover:not(.selected) {
+                  background-color: rgba(0,0,0,0.2);
+                }
+            }
+          }
         }
       }
     }

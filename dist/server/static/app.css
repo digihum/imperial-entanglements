@@ -3394,22 +3394,27 @@ body {
 .editor-header {
   display: flex;
   flex-direction: column;
-  padding: 1em 2em; }
+  padding: 1em 2em 0; }
   .editor-header i.fa.fa-pencil-square-o {
     font-size: 1em; }
   .editor-header i.item-icon {
     padding-right: 0.5em;
     opacity: 0.5; }
   .editor-header.records {
-    background-color: rgba(179, 117, 242, 0.2); }
+    background-color: rgba(179, 117, 242, 0.2);
+    border-bottom: 2px solid #B375F2; }
   .editor-header.entity_type {
-    background-color: rgba(93, 219, 172, 0.2); }
+    background-color: rgba(93, 219, 172, 0.2);
+    border-bottom: 2px solid #5DDBAC; }
   .editor-header.source {
-    background-color: rgba(249, 114, 114, 0.2); }
+    background-color: rgba(249, 114, 114, 0.2);
+    border-bottom: 2px solid #F97272; }
   .editor-header.entity {
-    background-color: rgba(240, 186, 75, 0.2); }
+    background-color: rgba(240, 186, 75, 0.2);
+    border-bottom: 2px solid #F0BA4B; }
   .editor-header.predicate {
-    background-color: rgba(240, 136, 67, 0.2); }
+    background-color: rgba(240, 136, 67, 0.2);
+    border-bottom: 2px solid #F08843; }
   .editor-header i {
     font-size: x-large; }
   .editor-header h2 {
@@ -3424,7 +3429,35 @@ body {
   .editor-header .secondary-toolbar .tab-bar {
     display: flex; }
     .editor-header .secondary-toolbar .tab-bar > div {
-      padding: 0 0.5em 0.2em 0; }
+      padding: 0.2em;
+      margin: 0.2em;
+      margin-bottom: 0;
+      margin-top: 0.6em;
+      font-size: smaller;
+      font-variant: small-caps;
+      font-family: 'Roboto', sans-serif;
+      cursor: pointer;
+      user-select: none; }
+      .editor-header .secondary-toolbar .tab-bar > div.record.selected {
+        background-color: #b274f2; }
+      .editor-header .secondary-toolbar .tab-bar > div.record:hover:not(.selected) {
+        background-color: rgba(0, 0, 0, 0.2); }
+      .editor-header .secondary-toolbar .tab-bar > div.entity_type.selected {
+        background-color: #5cdbac; }
+      .editor-header .secondary-toolbar .tab-bar > div.entity_type:hover:not(.selected) {
+        background-color: rgba(0, 0, 0, 0.2); }
+      .editor-header .secondary-toolbar .tab-bar > div.entity.selected {
+        background-color: #f0ba4a; }
+      .editor-header .secondary-toolbar .tab-bar > div.entity:hover:not(.selected) {
+        background-color: rgba(0, 0, 0, 0.2); }
+      .editor-header .secondary-toolbar .tab-bar > div.source.selected {
+        background-color: #f97171; }
+      .editor-header .secondary-toolbar .tab-bar > div.source:hover:not(.selected) {
+        background-color: rgba(0, 0, 0, 0.2); }
+      .editor-header .secondary-toolbar .tab-bar > div.predicate.selected {
+        background-color: #f08742; }
+      .editor-header .secondary-toolbar .tab-bar > div.predicate:hover:not(.selected) {
+        background-color: rgba(0, 0, 0, 0.2); }
 
 .editor-body {
   padding: 1em 2em; }

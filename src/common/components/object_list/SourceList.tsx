@@ -73,8 +73,13 @@ export class SourceList extends React.Component<SourceListProps, SourceListState
               </div>
               <div className='secondary-toolbar'>
                 <div className='tab-bar'>
-                  <div onClick={() => this.setState({ mode: 'list' })}>LIST</div>
-                  <div onClick={() => this.setState({ mode: 'tree' })}>TREE</div>
+
+                  <div className={'source ' + (this.state.mode === 'list' ? 'selected' : '')}
+                    onClick={() => this.setState({ mode: 'list' })}>LIST</div>
+
+                  <div  className={'source ' + (this.state.mode === 'tree' ? 'selected' : '')}
+                    onClick={() => this.setState({ mode: 'tree' })}>TREE</div>
+
                 </div>
               </div>
             </header>
