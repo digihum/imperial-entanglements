@@ -61,7 +61,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 101);
+/******/ 	return __webpack_require__(__webpack_require__.s = 103);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -110,7 +110,7 @@ exports.AppUrls = {
  * @version 0.1.0
  */
 "use strict";
-const signals = __webpack_require__(100);
+const signals = __webpack_require__(102);
 exports.createTab = new signals.Signal();
 exports.closeTab = new signals.Signal();
 exports.showModal = new signals.Signal();
@@ -193,7 +193,7 @@ exports.AddTabButton.contextTypes = {
  */
 "use strict";
 const React = __webpack_require__(0);
-const lunr = __webpack_require__(98);
+const lunr = __webpack_require__(100);
 const lodash_1 = __webpack_require__(1);
 class ComboDropdown extends React.Component {
     constructor() {
@@ -2158,6 +2158,8 @@ exports.Database = Database;
 "use strict";
 const ServerApiService_1 = __webpack_require__(92);
 const QueryEngine_1 = __webpack_require__(91);
+const koaConditionalGet = __webpack_require__(97);
+const koaEtags = __webpack_require__(98);
 const controllers_1 = __webpack_require__(90);
 exports.wrapDatabase = (db, fakeCreator) => {
     const routes = new Map([
@@ -2173,6 +2175,8 @@ exports.wrapDatabase = (db, fakeCreator) => {
     return new ServerApiService_1.ServerApiService(db, routes, new QueryEngine_1.QueryEngine(db), fakeCreator);
 };
 const sourceElementSpecial = (router, serverApiContext, typeMap) => {
+    router.use(koaConditionalGet());
+    router.use(koaEtags());
     router.get(`/api/v1/${ServerApiService_1.AppUrls.source_element}/:source/:element`, function* (next) {
         yield serverApiContext
             .getItem(typeMap[ServerApiService_1.AppUrls.source_element], ServerApiService_1.AppUrls.source_element, {
@@ -2222,6 +2226,7 @@ const sourceElementSpecial = (router, serverApiContext, typeMap) => {
 //  /entity/{entity_id}/predicate/{predicate_id}
 // /source/{source_id}/element/{element_id}
 exports.api = (router, serverApiContext) => {
+    router.use();
     const typeMap = {
         [ServerApiService_1.AppUrls.element_set]: controllers_1.ElementSetPersistable,
         [ServerApiService_1.AppUrls.record]: controllers_1.RecordPersistable,
@@ -2415,7 +2420,12 @@ const ApiService_1 = __webpack_require__(2);
 const react_router_1 = __webpack_require__(9);
 const Signaller_1 = __webpack_require__(3);
 const lodash_1 = __webpack_require__(1);
-const react_sortable_hoc_1 = __webpack_require__(99);
+const react_sortable_hoc_1 = __webpack_require__(101);
+const Handle = react_sortable_hoc_1.SortableHandle((props) => (React.createElement("div", {className: 'badge-container'}, 
+    React.createElement("div", {className: 'badge ' + props.tabType}, 
+        React.createElement("span", null, props.tabType[0].toUpperCase())
+    )
+)));
 const Card = react_sortable_hoc_1.SortableElement((props) => (React.createElement("li", {key: `${props.url}`}, 
     React.createElement("div", {className: ((currentTab) => {
         const classes = ['sidebar-card'];
@@ -2427,11 +2437,7 @@ const Card = react_sortable_hoc_1.SortableElement((props) => (React.createElemen
         }
         return classes.join(' ');
     })(props.currentTab)}, 
-        React.createElement("div", {className: 'badge-container'}, 
-            React.createElement("div", {className: 'badge ' + props.tab.tabType}, 
-                React.createElement("span", null, props.tab.tabType[0].toUpperCase())
-            )
-        ), 
+        React.createElement(Handle, {tabType: props.tab.tabType, index: props.index, collection: props.collection, disabled: props.disabled}), 
         React.createElement("div", {className: 'description'}, 
             React.createElement(react_router_1.Link, {to: props.url}, 
                 React.createElement("span", {className: 'entity-name'}, props.title), 
@@ -2486,7 +2492,7 @@ class Sidebar extends React.Component {
                     React.createElement("i", {className: 'fa fa-compress'}), 
                     " Compact")), 
             React.createElement("div", {className: 'card-list-container'}, 
-                React.createElement(CardList, {dataStore: this.props.dataStore, loading: this.props.loading, tabs: this.props.tabs, list: this.props.list, workspace: this.props.workspace, id: this.props.id, compact: this.state.compactMode, onSortEnd: this.onSortEnd})
+                React.createElement(CardList, {dataStore: this.props.dataStore, loading: this.props.loading, tabs: this.props.tabs, list: this.props.list, workspace: this.props.workspace, id: this.props.id, compact: this.state.compactMode, onSortEnd: this.onSortEnd, useDragHandle: true})
             )));
     }
 }
@@ -3682,7 +3688,7 @@ exports.CreateSource = CreateSource;
  */
 "use strict";
 const React = __webpack_require__(0);
-const lev = __webpack_require__(97);
+const lev = __webpack_require__(99);
 const ApiService_1 = __webpack_require__(2);
 const datamodel_1 = __webpack_require__(4);
 const ComboDropdown_1 = __webpack_require__(6);
@@ -5981,28 +5987,40 @@ module.exports = require("knex");
 /* 97 */
 /***/ function(module, exports) {
 
-module.exports = require("levenshtein");
+module.exports = require("koa-conditional-get");
 
 /***/ },
 /* 98 */
 /***/ function(module, exports) {
 
-module.exports = require("lunr");
+module.exports = require("koa-etag");
 
 /***/ },
 /* 99 */
 /***/ function(module, exports) {
 
-module.exports = require("react-sortable-hoc");
+module.exports = require("levenshtein");
 
 /***/ },
 /* 100 */
 /***/ function(module, exports) {
 
-module.exports = require("signals");
+module.exports = require("lunr");
 
 /***/ },
 /* 101 */
+/***/ function(module, exports) {
+
+module.exports = require("react-sortable-hoc");
+
+/***/ },
+/* 102 */
+/***/ function(module, exports) {
+
+module.exports = require("signals");
+
+/***/ },
+/* 103 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";

@@ -61,7 +61,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 290);
+/******/ 	return __webpack_require__(__webpack_require__.s = 292);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -287,7 +287,7 @@ exports.AppUrls = {
  * @version 0.1.0
  */
 "use strict";
-const signals = __webpack_require__(289);
+const signals = __webpack_require__(291);
 exports.createTab = new signals.Signal();
 exports.closeTab = new signals.Signal();
 exports.showModal = new signals.Signal();
@@ -1545,7 +1545,7 @@ function getPooledWarningPropertyDefinition(propName, getVal) {
  */
 "use strict";
 const React = __webpack_require__(0);
-const lunr = __webpack_require__(286);
+const lunr = __webpack_require__(288);
 const lodash_1 = __webpack_require__(5);
 class ComboDropdown extends React.Component {
     constructor() {
@@ -10365,15 +10365,15 @@ module.exports = require("koa-router");
  */
 "use strict";
 const Koa = __webpack_require__(35);
-const koaStatic = __webpack_require__(284);
+const koaStatic = __webpack_require__(286);
 const KoaRouter = __webpack_require__(120);
-const koaJSON = __webpack_require__(279);
+const koaJSON = __webpack_require__(281);
 const koaBodyParser = __webpack_require__(278);
-const koaQs = __webpack_require__(282);
-const koaLogger = __webpack_require__(280);
-const koaSession = __webpack_require__(283);
+const koaQs = __webpack_require__(284);
+const koaLogger = __webpack_require__(282);
+const koaSession = __webpack_require__(285);
 const koaPassport = __webpack_require__(73);
-const koaMount = __webpack_require__(281);
+const koaMount = __webpack_require__(283);
 const Database_1 = __webpack_require__(173);
 const lodash_1 = __webpack_require__(5);
 const fs_1 = __webpack_require__(71);
@@ -10618,7 +10618,12 @@ const ApiService_1 = __webpack_require__(6);
 const react_router_1 = __webpack_require__(24);
 const Signaller_1 = __webpack_require__(7);
 const lodash_1 = __webpack_require__(5);
-const react_sortable_hoc_1 = __webpack_require__(288);
+const react_sortable_hoc_1 = __webpack_require__(290);
+const Handle = react_sortable_hoc_1.SortableHandle((props) => (React.createElement("div", {className: 'badge-container'}, 
+    React.createElement("div", {className: 'badge ' + props.tabType}, 
+        React.createElement("span", null, props.tabType[0].toUpperCase())
+    )
+)));
 const Card = react_sortable_hoc_1.SortableElement((props) => (React.createElement("li", {key: `${props.url}`}, 
     React.createElement("div", {className: ((currentTab) => {
         const classes = ['sidebar-card'];
@@ -10630,11 +10635,7 @@ const Card = react_sortable_hoc_1.SortableElement((props) => (React.createElemen
         }
         return classes.join(' ');
     })(props.currentTab)}, 
-        React.createElement("div", {className: 'badge-container'}, 
-            React.createElement("div", {className: 'badge ' + props.tab.tabType}, 
-                React.createElement("span", null, props.tab.tabType[0].toUpperCase())
-            )
-        ), 
+        React.createElement(Handle, {tabType: props.tab.tabType, index: props.index, collection: props.collection, disabled: props.disabled}), 
         React.createElement("div", {className: 'description'}, 
             React.createElement(react_router_1.Link, {to: props.url}, 
                 React.createElement("span", {className: 'entity-name'}, props.title), 
@@ -10689,7 +10690,7 @@ class Sidebar extends React.Component {
                     React.createElement("i", {className: 'fa fa-compress'}), 
                     " Compact")), 
             React.createElement("div", {className: 'card-list-container'}, 
-                React.createElement(CardList, {dataStore: this.props.dataStore, loading: this.props.loading, tabs: this.props.tabs, list: this.props.list, workspace: this.props.workspace, id: this.props.id, compact: this.state.compactMode, onSortEnd: this.onSortEnd})
+                React.createElement(CardList, {dataStore: this.props.dataStore, loading: this.props.loading, tabs: this.props.tabs, list: this.props.list, workspace: this.props.workspace, id: this.props.id, compact: this.state.compactMode, onSortEnd: this.onSortEnd, useDragHandle: true})
             )));
     }
 }
@@ -11885,7 +11886,7 @@ exports.CreateSource = CreateSource;
  */
 "use strict";
 const React = __webpack_require__(0);
-const lev = __webpack_require__(285);
+const lev = __webpack_require__(287);
 const ApiService_1 = __webpack_require__(6);
 const datamodel_1 = __webpack_require__(10);
 const ComboDropdown_1 = __webpack_require__(17);
@@ -14048,7 +14049,7 @@ exports.SourceElementPersistable = SourceElementController_1.SourceElementPersis
  */
 "use strict";
 const passport = __webpack_require__(73);
-const passport_local_1 = __webpack_require__(287);
+const passport_local_1 = __webpack_require__(289);
 const bcrypt_1 = __webpack_require__(277);
 exports.setupAuth = (db) => {
     passport.serializeUser((user, done) => {
@@ -14616,6 +14617,8 @@ exports.adminApp = (skeleton, serverApiContext) => {
 "use strict";
 const ServerApiService_1 = __webpack_require__(175);
 const QueryEngine_1 = __webpack_require__(174);
+const koaConditionalGet = __webpack_require__(279);
+const koaEtags = __webpack_require__(280);
 const controllers_1 = __webpack_require__(171);
 exports.wrapDatabase = (db, fakeCreator) => {
     const routes = new Map([
@@ -14631,6 +14634,8 @@ exports.wrapDatabase = (db, fakeCreator) => {
     return new ServerApiService_1.ServerApiService(db, routes, new QueryEngine_1.QueryEngine(db), fakeCreator);
 };
 const sourceElementSpecial = (router, serverApiContext, typeMap) => {
+    router.use(koaConditionalGet());
+    router.use(koaEtags());
     router.get(`/api/v1/${ServerApiService_1.AppUrls.source_element}/:source/:element`, function* (next) {
         yield serverApiContext
             .getItem(typeMap[ServerApiService_1.AppUrls.source_element], ServerApiService_1.AppUrls.source_element, {
@@ -14680,6 +14685,7 @@ const sourceElementSpecial = (router, serverApiContext, typeMap) => {
 //  /entity/{entity_id}/predicate/{predicate_id}
 // /source/{source_id}/element/{element_id}
 exports.api = (router, serverApiContext) => {
+    router.use();
     const typeMap = {
         [ServerApiService_1.AppUrls.element_set]: controllers_1.ElementSetPersistable,
         [ServerApiService_1.AppUrls.record]: controllers_1.RecordPersistable,
@@ -26639,70 +26645,82 @@ module.exports = require("koa-bodyparser");
 /* 279 */
 /***/ function(module, exports) {
 
-module.exports = require("koa-json");
+module.exports = require("koa-conditional-get");
 
 /***/ },
 /* 280 */
 /***/ function(module, exports) {
 
-module.exports = require("koa-logger");
+module.exports = require("koa-etag");
 
 /***/ },
 /* 281 */
 /***/ function(module, exports) {
 
-module.exports = require("koa-mount");
+module.exports = require("koa-json");
 
 /***/ },
 /* 282 */
 /***/ function(module, exports) {
 
-module.exports = require("koa-qs");
+module.exports = require("koa-logger");
 
 /***/ },
 /* 283 */
 /***/ function(module, exports) {
 
-module.exports = require("koa-session");
+module.exports = require("koa-mount");
 
 /***/ },
 /* 284 */
 /***/ function(module, exports) {
 
-module.exports = require("koa-static");
+module.exports = require("koa-qs");
 
 /***/ },
 /* 285 */
 /***/ function(module, exports) {
 
-module.exports = require("levenshtein");
+module.exports = require("koa-session");
 
 /***/ },
 /* 286 */
 /***/ function(module, exports) {
 
-module.exports = require("lunr");
+module.exports = require("koa-static");
 
 /***/ },
 /* 287 */
 /***/ function(module, exports) {
 
-module.exports = require("passport-local");
+module.exports = require("levenshtein");
 
 /***/ },
 /* 288 */
 /***/ function(module, exports) {
 
-module.exports = require("react-sortable-hoc");
+module.exports = require("lunr");
 
 /***/ },
 /* 289 */
 /***/ function(module, exports) {
 
-module.exports = require("signals");
+module.exports = require("passport-local");
 
 /***/ },
 /* 290 */
+/***/ function(module, exports) {
+
+module.exports = require("react-sortable-hoc");
+
+/***/ },
+/* 291 */
+/***/ function(module, exports) {
+
+module.exports = require("signals");
+
+/***/ },
+/* 292 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";

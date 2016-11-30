@@ -16,6 +16,9 @@ import { ServerApiService, AppUrls } from '../core/ServerApiService';
 import { Persistable } from '../core/Persistable';
 import { QueryEngine } from '../core/QueryEngine';
 
+import * as koaConditionalGet from 'koa-conditional-get';
+import * as koaEtags from 'koa-etag';
+
 // Controllers
 import { IController } from '../controllers/IController';
 
@@ -47,6 +50,9 @@ export const wrapDatabase : (s: Database, fakeCreator: boolean) => ServerApiServ
 };
 
 const sourceElementSpecial = (router: any, serverApiContext: ServerApiService, typeMap: any) => {
+
+  router.use(koaConditionalGet());
+  router.use(koaEtags());
 
     router.get(`/api/v1/${AppUrls.source_element}/:source/:element`, function* (next : Koa.Context) {
         yield serverApiContext
@@ -103,6 +109,8 @@ const sourceElementSpecial = (router: any, serverApiContext: ServerApiService, t
 
 export const api : (router: KoaRouter, s: ServerApiService) => KoaRouter
     = (router: KoaRouter, serverApiContext: ServerApiService) => {
+
+    router.use()
 
     const typeMap = {
         [AppUrls.element_set]: ElementSetPersistable,

@@ -13,7 +13,7 @@ import { closeTab, reorderTabs } from '../Signaller';
 
 import { capitalize } from 'lodash';
 
-import {SortableContainer, SortableElement, arrayMove} from 'react-sortable-hoc';
+import {SortableContainer, SortableElement, SortableHandle, arrayMove} from 'react-sortable-hoc';
 
 export interface Tab {
     tabType: string;
@@ -21,39 +21,44 @@ export interface Tab {
     data?: any;
 }
 
-const Card = SortableElement((props: {currentTab: boolean, url: string, tab: Tab, title: string, subtitle: string, compact: boolean}) =>  (
-    <li key={`${props.url}`}>
-        <div className={((currentTab) => {
-            const classes = ['sidebar-card'];
-            if (currentTab) {
-                classes.push('current');
-            }
-            if (props.compact) {
-                classes.push('compact');
-            }
-            return classes.join(' ');
-        })(props.currentTab)}>
-            <div className='badge-container'>
-                <div className={'badge ' + props.tab.tabType}>
-                    <span>{props.tab.tabType[0].toUpperCase()}</span>
-                </div>
-            </div>
-            <div className='description'>
-                <Link to={props.url}>
-                    <span className='entity-name'>{props.title}</span>
-                    {props.compact ? null : (
-                        <span className='entity-type'>{props.subtitle}</span>
-                    )}
-                </Link>
-            </div>
-            {!props.currentTab ? (
-                <span className='close-button'>
-                    <i className='fa fa-times' onClick={(e) => this.closeTab(e, props.tab.tabType, props.tab.uid)}></i>
-                </span>
-            ) : null}
-        </div>
-    </li>
+const Handle = SortableHandle((props: {tabType: string}) => (
+  <div className='badge-container'>
+      <div className={'badge ' + props.tabType}>
+          <span>{props.tabType[0].toUpperCase()}</span>
+      </div>
+  </div>
 ));
+
+const Card = SortableElement((props: {currentTab: boolean, url: string, tab: Tab, title: string, subtitle: string,
+            compact: boolean}) => (
+      <li key={`${props.url}`}>
+          <div className={((currentTab) => {
+              const classes = ['sidebar-card'];
+              if (currentTab) {
+                  classes.push('current');
+              }
+              if (props.compact) {
+                  classes.push('compact');
+              }
+              return classes.join(' ');
+          })(props.currentTab)}>
+              <Handle tabType={props.tab.tabType} index={props.index} collection={props.collection} disabled={props.disabled}/>
+              <div className='description'>
+                  <Link to={props.url}>
+                      <span className='entity-name'>{props.title}</span>
+                      {props.compact ? null : (
+                          <span className='entity-type'>{props.subtitle}</span>
+                      )}
+                  </Link>
+              </div>
+              {!props.currentTab ? (
+                  <span className='close-button'>
+                      <i className='fa fa-times' onClick={(e) => this.closeTab(e, props.tab.tabType, props.tab.uid)}></i>
+                  </span>
+              ) : null}
+          </div>
+      </li>
+  ));
 
 const CardList = SortableContainer((props: {
     dataStore: DataStore,
@@ -159,6 +164,7 @@ export class Sidebar extends React.Component<SidebarProps, SidebarState> {
                     id={this.props.id}
                     compact={this.state.compactMode}
                     onSortEnd={this.onSortEnd}
+                    useDragHandle={true}
                   />
                 </div>
             </section>

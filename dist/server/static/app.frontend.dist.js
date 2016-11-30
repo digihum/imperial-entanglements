@@ -24677,6 +24677,11 @@ const react_router_1 = __webpack_require__(11);
 const Signaller_1 = __webpack_require__(4);
 const lodash_1 = __webpack_require__(6);
 const react_sortable_hoc_1 = __webpack_require__(370);
+const Handle = react_sortable_hoc_1.SortableHandle((props) => (React.createElement("div", {className: 'badge-container'}, 
+    React.createElement("div", {className: 'badge ' + props.tabType}, 
+        React.createElement("span", null, props.tabType[0].toUpperCase())
+    )
+)));
 const Card = react_sortable_hoc_1.SortableElement((props) => (React.createElement("li", {key: `${props.url}`}, 
     React.createElement("div", {className: ((currentTab) => {
         const classes = ['sidebar-card'];
@@ -24688,11 +24693,7 @@ const Card = react_sortable_hoc_1.SortableElement((props) => (React.createElemen
         }
         return classes.join(' ');
     })(props.currentTab)}, 
-        React.createElement("div", {className: 'badge-container'}, 
-            React.createElement("div", {className: 'badge ' + props.tab.tabType}, 
-                React.createElement("span", null, props.tab.tabType[0].toUpperCase())
-            )
-        ), 
+        React.createElement(Handle, {tabType: props.tab.tabType, index: props.index, collection: props.collection, disabled: props.disabled}), 
         React.createElement("div", {className: 'description'}, 
             React.createElement(react_router_1.Link, {to: props.url}, 
                 React.createElement("span", {className: 'entity-name'}, props.title), 
@@ -24747,7 +24748,7 @@ class Sidebar extends React.Component {
                     React.createElement("i", {className: 'fa fa-compress'}), 
                     " Compact")), 
             React.createElement("div", {className: 'card-list-container'}, 
-                React.createElement(CardList, {dataStore: this.props.dataStore, loading: this.props.loading, tabs: this.props.tabs, list: this.props.list, workspace: this.props.workspace, id: this.props.id, compact: this.state.compactMode, onSortEnd: this.onSortEnd})
+                React.createElement(CardList, {dataStore: this.props.dataStore, loading: this.props.loading, tabs: this.props.tabs, list: this.props.list, workspace: this.props.workspace, id: this.props.id, compact: this.state.compactMode, onSortEnd: this.onSortEnd, useDragHandle: true})
             )));
     }
 }
