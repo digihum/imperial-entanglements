@@ -10,7 +10,7 @@ import { SameAsEditor } from '../fields/SameAsEditor';
 import { Loading } from '../Loading';
 import { ApiService, AppUrls } from '../../ApiService';
 
-import { Source, ElementSet, Element, SourceElement, Record } from '../../../common/datamodel/datamodel';
+import { Source, Serializer, Element, SourceElement, Record } from 'falcon-core';
 
 import { EditableHeader, EditableFieldComponent } from '../fields/EditableHeader';
 import { EditableParagraph } from '../fields/EditableParagraph';
@@ -111,7 +111,7 @@ export class SourceEditorWorkspace extends React.Component<SourceEditorProps, So
 
             this.props.api.patchItem(SourceElement, AppUrls.source_element,
             compositeKey,
-                new SourceElement().deserialize({
+                Serializer.fromJson(SourceElement, {
                     uid: compositeKey,
                     element: source.metaData[element.name].element_uid,
                     source: this.props.id,
@@ -119,7 +119,7 @@ export class SourceEditorWorkspace extends React.Component<SourceEditorProps, So
                 }));
         } else {
             this.props.api.postItem(SourceElement, AppUrls.source_element,
-                new SourceElement().deserialize({
+                Serializer.fromJson(SourceElement, {
                     uid: compositeKey,
                     value: value
                 }));
@@ -165,8 +165,8 @@ export class SourceEditorWorkspace extends React.Component<SourceEditorProps, So
 
         const source = this.props.dataStore.tabs.source.get('source-' + this.props.id).value.source;
 
-        const newSource = new Source().deserialize(
-            Object.assign({}, source.serialize(), { name: 'Child of ' + source.name, parent: this.props.id }));
+        const newSource = Serializer.fromJson(Source,
+            Object.assign({}, Serializer.toJson(source), { name: 'Child of ' + source.name, parent: this.props.id }));
 
         this.props.api.postItem(Source, AppUrls.source, newSource)
             .then(([id]) => {

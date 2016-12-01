@@ -7,7 +7,7 @@
 import * as React from 'react';
 
 import { Overlay } from '../Overlay';
-import { Source } from '../../../common/datamodel/datamodel';
+import { Source, Serializer } from 'falcon-core';
 import { ApiService, AppUrls } from '../../ApiService';
 
 import * as mousetrap from 'mousetrap';
@@ -44,7 +44,7 @@ export class CreateSource extends React.Component<CreateSourceProps, CreateSourc
 
     public createSource() {
         this.props.api.postItem(Source, AppUrls.source,
-            new Source().deserialize({
+            Serializer.fromJson(Source, {
                 name: this.state.internalValue
             }))
         .then(this.props.complete);

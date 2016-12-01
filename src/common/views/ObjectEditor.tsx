@@ -10,7 +10,7 @@ import * as moment from 'moment';
 
 import { ApiService, AppUrls } from '../ApiService';
 
-import { EntityType, Entity, Predicate, Record, Source, SourceElement, ElementSet } from '../../common/datamodel/datamodel';
+import { EntityType, Entity, Predicate, Record, Source, SourceElement, ElementSet } from 'falcon-core';
 
 import { Sidebar, Tab } from '../components/Sidebar';
 import { Workspace } from '../components/Workspace';

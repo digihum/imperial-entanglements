@@ -8,7 +8,7 @@ import * as React from 'react';
 
 import { ApiService } from '../../ApiService';
 import { DataStore } from '../../DataStore';
-import { EntityType } from '../../../common/datamodel/datamodel';
+import { EntityType } from 'falcon-core';
 
 import { AddTabButton } from '../AddTabButton';
 

@@ -7,7 +7,7 @@
 import * as React from 'react';
 import { ApiService, AppUrls } from '../../ApiService';
 import { DataStore } from '../../DataStore';
-import { Record, Predicate, Source } from '../../../common/datamodel/datamodel';
+import { Record, Predicate, Source } from 'falcon-core';
 import { EditableFieldComponent } from '../fields/EditableFieldComponent';
 
 import { SearchBar } from '../SearchBar';

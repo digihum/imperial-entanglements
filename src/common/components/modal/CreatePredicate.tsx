@@ -8,7 +8,7 @@ import * as React from 'react';
 
 import { Overlay } from '../Overlay';
 import { PredicateDescription } from '../fields/PredicateDescription';
-import { Predicate, EntityType } from '../../../common/datamodel/datamodel';
+import { Predicate, EntityType, Serializer } from 'falcon-core';
 import { literalTypes } from '../../literalTypes';
 import { ApiService, AppUrls } from '../../ApiService';
 import { DataStore } from '../../DataStore';
@@ -58,7 +58,7 @@ export class CreatePredicate extends React.Component<CreatePredicateProps, Creat
                     throw new Error('Unexpected null uid');
                 }
 
-                this.setState({ 
+                this.setState({
                 domain: { key: result.name, value: result.uid.toString()},
                 domainOptions: [
                     { key: result.name, value: result.uid.toString()}
@@ -90,7 +90,7 @@ export class CreatePredicate extends React.Component<CreatePredicateProps, Creat
 
     public create() {
 
-        const newPredicate = new Predicate().deserialize({
+        const newPredicate = Serializer.fromJson(Predicate, {
             name: this.state.name,
             domain: this.state.domain.value,
             range: this.state.range.value,

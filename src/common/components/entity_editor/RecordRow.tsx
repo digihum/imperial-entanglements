@@ -6,7 +6,7 @@
 
 import * as React from 'react';
 
-import { Record, Source, Entity } from '../../../common/datamodel/datamodel';
+import { Record, Source, Entity } from 'falcon-core';
 import { EditableSubfieldProps } from '../fields/EditableFieldComponent';
 export { EditableFieldComponent } from '../fields/EditableFieldComponent';
 import { ScorePicker } from '../fields/ScorePicker';
@@ -172,4 +172,4 @@ export const RecordRow = (props: RecordRowProps) => {
         </tr>
         );
     }
-}; 
+};

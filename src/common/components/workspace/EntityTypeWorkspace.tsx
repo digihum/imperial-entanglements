@@ -9,7 +9,7 @@ import * as React from 'react';
 import { SameAsEditor } from '../fields/SameAsEditor';
 import { ApiService, AppUrls } from '../../ApiService';
 
-import { EntityType } from '../../../common/datamodel/datamodel';
+import { EntityType, Serializer } from 'falcon-core';
 
 import { AddTabButton } from '../AddTabButton';
 
@@ -59,8 +59,8 @@ export class EntityTypeWorkspace extends React.Component<EntityTypeWorkspaceProp
 
         const entityType = this.props.dataStore.tabs.entity_type.get('entity_type-' + this.props.id).value;
 
-        const newEntityType = new EntityType().deserialize(
-            Object.assign({}, entityType.serialize(), { name: 'Copy of ' + entityType.name}));
+        const newEntityType = Serializer.fromJson(EntityType,
+            Object.assign({}, Serializer.toJson(entityType), { name: 'Copy of ' + entityType.name}));
 
         this.props.api.postItem(EntityType, AppUrls.entity_type, newEntityType)
             .then(([id]) => {

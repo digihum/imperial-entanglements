@@ -6,26 +6,23 @@
 
 import { Database } from '../core/Database';
 
-import { Source } from '../../common/datamodel/Source';
-import { Persistable } from '../core/Persistable';
+import { Source, Serializer } from 'falcon-core';
 import { GenericController } from './GenericController';
 
 import { OperationNotPermittedException } from '../core/Exceptions';
 
-import { RecordPersistable } from './RecordController';
+import { RecordController } from './RecordController';
 
 import { omit, groupBy, flatten, map as pluck } from 'lodash';
 
-export class SourcePersistable extends Source implements Persistable {
+export class SourceController extends GenericController<Source> {
 
-    public static readonly tableName: string = 'sources';
-
-    public getTableName() : string {
-        return SourcePersistable.tableName;
+    constructor(db : Database) {
+        super(db, 'sources');
     }
 
-    public toSchema() {
-        return Object.assign({}, omit(this.serialize(),
+    public toSchema(data: Source) {
+        return Object.assign({}, omit(Serializer.toJson(data),
             'metaData',
             'sameAs',
             'parents',
@@ -33,26 +30,19 @@ export class SourcePersistable extends Source implements Persistable {
             'creationTimestamp',
             'lastmodifiedTimestamp'
         ), {
-            same_as: this.sameAs,
-            creation_timestamp: this.creationTimestamp,
-            lastmodified_timeStamp: this.lastmodifiedTimestamp
+            same_as: data.sameAs,
+            creation_timestamp: data.creationTimestamp,
+            lastmodified_timeStamp: data.lastmodifiedTimestamp
         });
     }
 
-    public fromSchema(data: any) : SourcePersistable {
-        this.deserialize(Object.assign(data, {
+    public fromSchema(data: any) : Source {
+        return Object.assign(Object.create(Source.prototype), Object.assign(data, {
             'sameAs': data.same_as
         }));
-        return this;
-    }
-}
-
-export class SourceController extends GenericController<SourcePersistable> {
-    constructor(db : Database) {
-        super(db, SourcePersistable.tableName);
     }
 
-    // override the getItemJson and getCollectionJson functions to also get information about the 
+    // override the getItemJson and getCollectionJson functions to also get information about the
     // metadata associated with the retrieved source
 
     private getMetadata(fields : string[], sourceId: number) : PromiseLike<any> {
@@ -63,7 +53,7 @@ export class SourceController extends GenericController<SourcePersistable> {
                 SELECT parent FROM parent_of WHERE uid=?
                 UNION ALL
                 SELECT parent FROM parent_of JOIN ancestor USING(uid) )
-            
+
             SELECT *
                 FROM ancestor;
         `, sourceId).then((parents) => {
@@ -90,7 +80,7 @@ export class SourceController extends GenericController<SourcePersistable> {
         });
     }
 
-    public getItemJson(obj: { new(): SourcePersistable; }, uid: number) : PromiseLike<SourcePersistable> {
+    public getItemJson(obj: { new(): Source; }, uid: number) : PromiseLike<Source> {
         return super.getItemJson(obj, uid)
         .then((source) => {
 
@@ -117,7 +107,7 @@ export class SourceController extends GenericController<SourcePersistable> {
                     SELECT parent FROM parent_of WHERE uid=?
                     UNION ALL
                     SELECT parent FROM parent_of JOIN ancestor USING(uid) )
-                    
+
                     SELECT uid
                     FROM ancestor;
                 `, uid)
@@ -131,7 +121,7 @@ export class SourceController extends GenericController<SourcePersistable> {
         });
     }
 
-    public getCollectionJson(obj: { new(): SourcePersistable; }, params: any = {}) : Promise<SourcePersistable[]> {
+    public getCollectionJson(obj: { new(): Source; }, params: any = {}) : Promise<Source[]> {
         return super.getCollectionJson(obj, params)
         .then((sources) => {
             return Promise.all(sources.map((source) => {
@@ -154,7 +144,7 @@ export class SourceController extends GenericController<SourcePersistable> {
     }
 
     //TODO should find every child source, not just the direct children
-    public deleteItem(obj: { new(): SourcePersistable; }, uid: number) : Promise<string> {
+    public deleteItem(obj: { new(): Source; }, uid: number) : Promise<string> {
         // check if this entity is the parent of another entity or if it has any relationships
         // pointing towards it.
         return Promise.all([
@@ -167,8 +157,8 @@ export class SourceController extends GenericController<SourcePersistable> {
                 throw new OperationNotPermittedException({
                     message: 'The operation could not be completed as the source is used by other records',
                     data: Promise.resolve({
-                        record: records.map((record) => new RecordPersistable().fromSchema(record)),
-                        source: sources.map((source) => new SourcePersistable().fromSchema(source))
+                        record: records.map((record) => RecordController.fromSchema(record)),
+                        source: sources.map((source) => this.fromSchema(source))
                     })
                 });
             }

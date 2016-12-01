@@ -12,7 +12,7 @@ import { Loading } from '../Loading';
 import { ApiService, AppUrls } from '../../ApiService';
 import { showModal, createTab } from '../../Signaller';
 
-import { Predicate, EntityType, Record } from '../../../common/datamodel/datamodel';
+import { Predicate, Serializer, Record } from 'falcon-core';
 
 import { EditableHeader, EditableFieldComponent } from '../fields/EditableHeader';
 import { EditableParagraph } from '../fields/EditableParagraph';
@@ -96,8 +96,8 @@ export class PredicateEditorWorkspace extends React.Component<PredicateEditorPro
 
         const predicate = this.props.dataStore.tabs.predicate.get('predicate-' + this.props.id).value;
 
-        const newPredicate = new Predicate().deserialize(
-            Object.assign({}, predicate.serialize(), { name: 'Copy of ' + predicate.name}));
+        const newPredicate = Serializer.fromJson(Predicate,
+            Object.assign({}, Serializer.toJson(predicate), { name: 'Copy of ' + predicate.name}));
 
         this.props.api.postItem(Predicate, AppUrls.predicate, newPredicate)
             .then(([id]) => {

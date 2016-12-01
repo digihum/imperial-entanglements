@@ -7,7 +7,7 @@
 import * as React from 'react';
 
 import { ApiService } from '../../ApiService';
-import { Predicate } from '../../../common/datamodel/datamodel';
+import { Predicate } from 'falcon-core';
 
 import { AddTabButton } from '../AddTabButton';
 import { DataStore } from '../../DataStore';

@@ -107,16 +107,6 @@ var electronConfig = {
             //{ test: /\.tsx?$/, loader: 'ts-loader' }
         ]
     },
-    plugins: [
-
-        // swap out /common/datamodel/datamodel with app/app.datamodel to inject
-        // server side models into the frontend!
-
-        new webpack.NormalModuleReplacementPlugin(
-            /common\/datamodel\/datamodel/,
-            require.resolve('./build/app/app.datamodel')
-        )
-    ],
     target: 'electron-renderer',    
     externals: nodeModules
 }

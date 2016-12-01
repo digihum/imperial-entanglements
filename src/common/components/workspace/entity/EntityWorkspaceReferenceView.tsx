@@ -7,7 +7,7 @@
 import * as React from 'react';
 
 import { ApiService, AppUrls } from '../../../ApiService';
-import { Entity } from '../../../../common/datamodel/datamodel';
+import { Entity } from 'falcon-core';
 
 import { AddTabButton } from '../../AddTabButton';
 

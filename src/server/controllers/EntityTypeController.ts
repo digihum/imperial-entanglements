@@ -6,53 +6,43 @@
 
 import { Database } from '../core/Database';
 
-import { EntityType } from '../../common/datamodel/EntityType';
-import { Persistable } from '../core/Persistable';
+import { EntityType, Serializer } from 'falcon-core';
 import { GenericController } from './GenericController';
 
-import { PredicatePersistable } from './PredicateController';
+import { PredicateController } from './PredicateController';
 
-import { EntityPersistable } from './EntityController';
+import { EntityController } from './EntityController';
 
 import { OperationNotPermittedException } from '../core/Exceptions';
 
 import { omit } from 'lodash';
 
-export class EntityTypePersistable extends EntityType implements Persistable {
+export class EntityTypeController extends GenericController<EntityType> {
 
-    public static readonly tableName: string = 'entity_types';
-
-    public getTableName() : string {
-        return EntityTypePersistable.tableName;
+    constructor(db : Database) {
+        super(db, 'entity_types');
     }
 
-    public toSchema() {
-        return Object.assign(omit(this.serialize(),
+    public toSchema(data: EntityType) {
+        return Object.assign(omit(Serializer.toJson(data),
                 'sameAs',
                 'parents',
                 'children',
                 'creationTimestamp',
                 'lastmodifiedTimestamp'), {
-            same_as: this.sameAs,
-            creation_timestamp: this.creationTimestamp,
-            lastmodified_timeStamp: this.lastmodifiedTimestamp
+            same_as: data.sameAs,
+            creation_timestamp: data.creationTimestamp,
+            lastmodified_timeStamp: data.lastmodifiedTimestamp
         });
     }
 
-    public fromSchema(data: any) : EntityTypePersistable {
-        this.deserialize(Object.assign(data, {
+    public fromSchema(data: any) : EntityType {
+        return Object.assign(Object.create(EntityType.prototype), Object.assign(data, {
             'sameAs': data.same_as
         }));
-        return this;
-    }
-}
-
-export class EntityTypeController extends GenericController<EntityTypePersistable> {
-    constructor(db : Database) {
-        super(db, EntityTypePersistable.tableName);
     }
 
-    public getItemJson(obj: { new(): EntityTypePersistable; }, uid: number) : PromiseLike<EntityTypePersistable> {
+    public getItemJson(obj: { new(): EntityType; }, uid: number) : PromiseLike<EntityType> {
         return super.getItemJson(obj, uid)
         .then((result) => {
             return Promise.all([
@@ -60,7 +50,7 @@ export class EntityTypeController extends GenericController<EntityTypePersistabl
                 this.db.getAncestorsOf(uid, 'entity_types')
                 .then((ancestors) => {
                     return this.db.select('entity_types').whereIn('uid', ancestors)
-                    .then((results) => results.map((result) => new obj().fromSchema(result)));
+                    .then((results) => results.map((result) => this.fromSchema(result)));
                 }),
 
                 this.db.select('entity_types', ['uid']).where({ parent: uid })
@@ -73,11 +63,11 @@ export class EntityTypeController extends GenericController<EntityTypePersistabl
         });
     }
 
-    public deleteItem(obj: { new(): EntityTypePersistable; }, uid: number) : Promise<string> {
+    public deleteItem(obj: { new(): EntityType; }, uid: number) : Promise<string> {
         // check if this entity is the parent of another entity or if it has any relationships
         // pointing towards it.
         return Promise.all([
-            this.db.select(EntityTypePersistable.tableName).where('parent', '=', uid),
+            this.db.select(this.tableName).where('parent', '=', uid),
             this.db.select('entities').where('type', '=', uid),
             this.db.select('predicates').where('domain', '=', uid).orWhere('range_ref', '=', uid)
         ]).then(([entityTypes, entities, predicates]) => {
@@ -87,9 +77,9 @@ export class EntityTypeController extends GenericController<EntityTypePersistabl
                 throw new OperationNotPermittedException({
                     message: 'The operation could not be completed as the entity is referenced in other sources',
                     data: Promise.resolve({
-                        entityType: entityTypes.map((entityType) => new EntityTypePersistable().fromSchema(entityType)),
-                        entity: entities.map((entity) => new EntityPersistable().fromSchema(entity)),
-                        predicate: predicates.map((predicate) => new PredicatePersistable().fromSchema(predicate))
+                        entityType: entityTypes.map((entityType) => EntityController.fromSchema(entityType)),
+                        entity: entities.map((entity) => EntityController.fromSchema(entity)),
+                        predicate: predicates.map((predicate) => PredicateController.fromSchema(predicate))
                     })
                 });
             }

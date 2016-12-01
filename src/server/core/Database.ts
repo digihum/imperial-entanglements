@@ -8,8 +8,6 @@
 import * as Knex from 'knex';
 import { omit } from 'lodash';
 
-import { Persistable } from './Persistable';
-
 import { KeyNotFoundException, DatabaseIntegrityError } from './Exceptions';
 
 export class Database {
@@ -48,13 +46,13 @@ export class Database {
         return query.then((results) => results === undefined ? Promise.reject(new KeyNotFoundException()) : results);
     }
 
-    public createItem(a: Persistable) : PromiseLike<any> {
+    public createItem(tableName: string, data: any) : PromiseLike<any> {
         // throw warning if called with uid
         // validate that everything else has been sent
-        const withoutUid = omit(a.toSchema(), ['uid', 'tableName']);
+        const withoutUid = omit(data, ['uid']);
 
         return this.knex.transaction((trx) => {
-            return this.knex(a.getTableName()).transacting(trx).insert(withoutUid, 'uid').returning('uid')
+            return this.knex(tableName).transacting(trx).insert(withoutUid, 'uid').returning('uid')
             .then((results) => {
                 return this.checkIntegrity(trx)
                 .then((valid) => {
@@ -69,13 +67,13 @@ export class Database {
         });
     }
 
-    public updateItem(a: Persistable) : PromiseLike<any> {
+    public updateItem(tableName: string, data: any) : PromiseLike<any> {
         // assert - must have uid
         // validation?
         return this.knex.transaction((trx) => {
-            return this.knex(a.getTableName()).transacting(trx)
-            .where({ 'uid': a.uid })
-            .update(omit(a.toSchema(), ['tableName']))
+            return this.knex(tableName).transacting(trx)
+            .where({ 'uid': data.uid })
+            .update(data)
             .then((results) => {
                 return this.checkIntegrity(trx)
                 .then((valid) => {

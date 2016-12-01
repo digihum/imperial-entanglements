@@ -7,7 +7,7 @@
 import * as React from 'react';
 
 import { Overlay } from '../Overlay';
-import { Record, Predicate, Entity, Source } from '../../../common/datamodel/datamodel';
+import { Record, Serializer, Source } from 'falcon-core';
 import { ApiService, AppUrls } from '../../ApiService';
 import { DataStore } from '../../DataStore';
 import { ComboDropdown, ComboDropdownOption } from '../ComboDropdown';
@@ -53,7 +53,7 @@ export class CreatePresetRecord extends React.Component<CreatePresetRecordProps,
                 const isMentioned = this.props.dataStore.all.predicate.value.find((pred) => pred.name === 'is mentioned');
 
                 this.props.api.postItem(Record, AppUrls.record,
-                    new Record().deserialize({
+                    Serializer.fromJson(Record, {
                         predicate: isMentioned.uid,
                         entity: data[0],
                         valueType: 'source',

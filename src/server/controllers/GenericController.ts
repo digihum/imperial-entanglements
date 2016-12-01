@@ -5,12 +5,11 @@
  */
 
 import { IController } from './IController';
-import { Persistable } from '../core/Persistable';
 import { Database } from '../core/Database';
 
-import { CompositeKey } from '../../common/datamodel/Serializable';
+import { CompositeKey, FalconItem } from 'falcon-core';
 
-export abstract class GenericController<T extends Persistable> implements IController {
+export abstract class GenericController<T extends FalconItem> implements IController {
 
     protected tableName: string;
     protected db : Database;
@@ -22,6 +21,9 @@ export abstract class GenericController<T extends Persistable> implements IContr
         this.tableName = table;
     }
 
+    protected abstract fromSchema(data: any) : T;
+    protected abstract toSchema(data: T) : any;
+
 
     public getItemJson(obj: { new(): T; }, uid: number | CompositeKey) : PromiseLike<T> {
 
@@ -30,16 +32,16 @@ export abstract class GenericController<T extends Persistable> implements IContr
         }
 
         return this.db.loadItem(this.tableName, uid)
-        .then((data) => new obj().fromSchema(data));
+        .then((data) => this.fromSchema(data));
     }
 
     public getCollectionJson(obj: { new(): T; }, params: any = {}) : PromiseLike<T[]> {
         return this.db.loadCollection(this.tableName, params)
-         .then((data) => data.map((datum) =>  new obj().fromSchema(datum)));
+         .then((data) => data.map((datum) =>  this.fromSchema(datum)));
     }
 
-    public postItem(obj: { new(): T; }, data: T) : Promise<string> {
-        return this.db.createItem(new obj().deserialize(data));
+    public postItem(obj: { new(): T; }, data: T) : PromiseLike<any> {
+        return this.db.createItem(this.tableName, this.toSchema(data));
     }
 
     public putItem(obj: { new(): T; }, uid: number | CompositeKey, data: T) : PromiseLike<string> {
@@ -48,30 +50,18 @@ export abstract class GenericController<T extends Persistable> implements IContr
             throw new Error('Expected single column identifier');
         }
 
-        return this.db.updateItem(new obj().deserialize(data));
+        return this.db.updateItem(this.tableName, this.toSchema(data));
     }
 
     public patchItem(obj: { new(): T; }, uid: number | CompositeKey, data: T) : PromiseLike<boolean> {
-        const o = new obj();
-        const schemaData = o.deserialize(data).toSchema();
-
-        const keys = Object.keys(schemaData);
-
-        const updateObject = {};
 
         if (typeof(uid) !== 'number') {
             throw new Error('Expected single column identifier');
         }
 
-        for (let i = 0; i < keys.length; i += 1) {
-            if (schemaData[keys[i]] !== undefined) {
-                updateObject[keys[i]] = schemaData[keys[i]];
-            }
-        }
-
         return this.db.loadItem(this.tableName, uid)
         .then((originalData) => {
-            return this.db.updateItem(new obj().fromSchema(Object.assign({}, originalData, updateObject)));
+            return this.db.updateItem(this.tableName, this.toSchema(Object.assign(this.fromSchema(originalData), data)));
         });
     }
 

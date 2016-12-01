@@ -6,42 +6,39 @@
 
 import { Database } from '../core/Database';
 
-import { Record } from '../../common/datamodel/Record';
-import { Persistable } from '../core/Persistable';
+import { Record, Serializer } from 'falcon-core';
 import { GenericController } from './GenericController';
 
 import { OperationNotPermittedException } from '../core/Exceptions';
 
 import { omit } from 'lodash';
 
-export class RecordPersistable extends Record implements Persistable {
+export class RecordController extends GenericController<Record> {
 
-    public static readonly tableName: string = 'records';
-
-    public getTableName() : string {
-        return RecordPersistable.tableName;
+    constructor(db : Database) {
+        super(db, 'records');
     }
 
-    public toSchema() {
-        const schemaOutput = omit(this.serialize(),
+    public static toSchema(data: Record) {
+        const schemaOutput = omit(Serializer.toJson(data),
             'value',
             'valueType',
             'creationTimestamp',
             'lastmodifiedTimestamp');
 
-        schemaOutput.value_type = this.valueType;
+        schemaOutput.value_type = data.valueType;
 
-        if (this.valueType !== undefined && this.valueType !== 'source') {
-            schemaOutput['value_' + this.valueType] = this.value;
+        if (data.valueType !== undefined && data.valueType !== 'source') {
+            schemaOutput['value_' + data.valueType] = data.value;
         }
 
         return Object.assign({}, schemaOutput, {
-            creation_timestamp: this.creationTimestamp,
-            lastmodified_timeStamp: this.lastmodifiedTimestamp
+            creation_timestamp: data.creationTimestamp,
+            lastmodified_timeStamp: data.lastmodifiedTimestamp
         });
     }
 
-    public fromSchema(data: any) : RecordPersistable {
+    public static fromSchema(data: any) : Record {
 
         data.valueType = data.value_type;
 
@@ -71,17 +68,18 @@ export class RecordPersistable extends Record implements Persistable {
                 data.value = null;
         }
 
-        this.deserialize(data);
-        return this;
-    }
-}
-
-export class RecordController extends GenericController<RecordPersistable> {
-    constructor(db : Database) {
-        super(db, RecordPersistable.tableName);
+        return Object.assign(Object.create(Record.prototype), data);
     }
 
-    public postItem(obj: { new(): RecordPersistable; }, data: RecordPersistable) : PromiseLike<string> {
+    protected toSchema(data: Record) {
+      return RecordController.toSchema(data);
+    }
+
+    protected fromSchema(data: any) {
+      return RecordController.fromSchema(data);
+    }
+
+    public postItem(obj: { new(): Record; }, data: Record) : PromiseLike<string> {
 
         // predicate domain must equal value_type
         return this.db.select('predicates', ['range_type']).where({ uid: data.predicate })
@@ -97,7 +95,7 @@ export class RecordController extends GenericController<RecordPersistable> {
         });
     }
 
-    public putItem(obj: { new(): RecordPersistable; }, uid: number, data: RecordPersistable) : PromiseLike<string> {
+    public putItem(obj: { new(): Record; }, uid: number, data: Record) : PromiseLike<string> {
 
         //TODO: what happens if we only update the value - and do not send the valueType again?
 
@@ -114,7 +112,7 @@ export class RecordController extends GenericController<RecordPersistable> {
         });
     }
 
-    public patchItem(obj: { new(): RecordPersistable; }, uid: number, data: RecordPersistable) : PromiseLike<boolean> {
+    public patchItem(obj: { new(): Record; }, uid: number, data: Record) : PromiseLike<boolean> {
         return this.db.select('predicates', ['range_type']).where({ uid: data.predicate })
         .then(([predicate]) => {
             if (data.valueType === predicate.range_type) {

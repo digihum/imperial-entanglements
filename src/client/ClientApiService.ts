@@ -5,7 +5,7 @@
  */
 
 import { ApiService } from '../common/ApiService';
-import { Serializable, CompositeKey } from '../common/datamodel/Serializable';
+import { Serializer, FalconItem, CompositeKey } from 'falcon-core';
 import * as queryString from 'query-string';
 
 import { triggerReload, showToast } from '../common/Signaller';
@@ -37,7 +37,7 @@ function handleErrors(response: any) {
 }
 
 export class ClientApiService implements ApiService {
-    public getItem<T extends Serializable>(obj: { new(): T; }, baseUrl : string, uid: number | CompositeKey) : PromiseLike<T> {
+    public getItem<T extends FalconItem>(obj: { new(): T; }, baseUrl : string, uid: number | CompositeKey) : PromiseLike<T> {
 
         const endURL = isObject(uid) ?
             (<CompositeKey> uid).order.map((key) => (<CompositeKey> uid).values[key]).join('/')
@@ -46,17 +46,17 @@ export class ClientApiService implements ApiService {
         return fetch(`/api/v1/${baseUrl}/${endURL}`)
             .then(handleErrors)
             .then((response) => response.json())
-            .then((data) => new obj().deserialize(data));
+            .then((data) => Serializer.fromJson(obj, data));
     }
 
-    public getCollection<T extends Serializable>(obj: { new(): T; }, baseUrl : string, params: any) : PromiseLike<T[]> {
+    public getCollection<T extends FalconItem>(obj: { new(): T; }, baseUrl : string, params: any) : PromiseLike<T[]> {
         return fetch(`/api/v1/${baseUrl}?` + queryString.stringify(params))
             .then(handleErrors)
             .then((response) => response.json())
-            .then((data) => data.map((datum) => new obj().deserialize(datum)));
+            .then((data) => data.map((datum) => Serializer.fromJson(obj, datum)));
     }
 
-    public postItem<T extends Serializable>(obj: { new(): T; }, baseUrl : string, data: T)  : PromiseLike<boolean> {
+    public postItem<T extends FalconItem>(obj: { new(): T; }, baseUrl : string, data: T)  : PromiseLike<boolean> {
         return fetch(`/api/v1/${baseUrl}`, {
             method: 'POST',
             body: JSON.stringify(data),
@@ -75,7 +75,7 @@ export class ClientApiService implements ApiService {
         });
     }
 
-    public putItem<T extends Serializable>(obj: { new(): T; },
+    public putItem<T extends FalconItem>(obj: { new(): T; },
             baseUrl : string, uid: number | CompositeKey, data: T) : PromiseLike<boolean> {
 
         const endURL = isObject(uid) ?
@@ -98,7 +98,7 @@ export class ClientApiService implements ApiService {
         });
     }
 
-    public patchItem<T extends Serializable>(obj: { new(): T; },
+    public patchItem<T extends FalconItem>(obj: { new(): T; },
             baseUrl : string, uid: number | CompositeKey, data : T) : PromiseLike<boolean> {
 
         const endURL = isObject(uid) ?
@@ -121,7 +121,7 @@ export class ClientApiService implements ApiService {
         });
     }
 
-    public delItem<T extends Serializable>(obj: { new(): T; }, baseUrl : string, uid: number | CompositeKey) {
+    public delItem<T extends FalconItem>(obj: { new(): T; }, baseUrl : string, uid: number | CompositeKey) {
 
         const endURL = isObject(uid) ?
             (<CompositeKey> uid).order.map((key) => (<CompositeKey> uid).values[key]).join('/')

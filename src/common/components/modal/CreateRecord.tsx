@@ -7,7 +7,7 @@
 import * as React from 'react';
 
 import { Overlay } from '../Overlay';
-import { Record, Predicate } from '../../../common/datamodel/datamodel';
+import { Record, Predicate, Serializer } from 'falcon-core';
 import { ApiService, AppUrls } from '../../ApiService';
 import { ComboDropdown, ComboDropdownOption } from '../ComboDropdown';
 
@@ -63,7 +63,7 @@ export class CreateRecord extends React.Component<CreateRecordProps, CreateRecor
 
     public setComboValue(opt: { key: string, value: string, meta: Predicate }) {
         this.props.api.postItem(Record, AppUrls.record,
-            new Record().deserialize({
+            Serializer.fromJson(Record, {
                 predicate: opt.meta.uid,
                 entity: this.props.entityUid,
                 valueType: opt.meta.rangeIsReference ? 'entity' : opt.meta.range,

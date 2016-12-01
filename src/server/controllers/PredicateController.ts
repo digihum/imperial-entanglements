@@ -6,40 +6,38 @@
 
 import { Database } from '../core/Database';
 
-import { Predicate } from '../../common/datamodel/Predicate';
-import { Persistable } from '../core/Persistable';
+import { Predicate, Serializer } from 'falcon-core';
+
 import { GenericController } from './GenericController';
 
 import { OperationNotPermittedException } from '../core/Exceptions';
 
-import { RecordPersistable } from './RecordController';
+import { RecordController } from './RecordController';
 
 import { omit, isArray } from 'lodash';
 
-export class PredicatePersistable extends Predicate implements Persistable {
+export class PredicateController extends GenericController<Predicate> {
 
-    public static readonly tableName: string = 'predicates';
-
-    public getTableName() : string {
-        return PredicatePersistable.tableName;
+    constructor(db : Database) {
+        super(db, 'predicates');
     }
 
-    public toSchema() {
-        const out : { [s: string] : any } = Object.assign(omit(this.serialize(),
+    public static toSchema(data: Predicate) {
+        const out : { [s: string] : any } = Object.assign(omit(Serializer.toJson(data),
             'range',
             'rangeIsReference',
             'sameAs',
             'creationTimestamp',
             'lastmodifiedTimestamp'
         ), {
-            same_as: this.sameAs,
-            range_type: this.rangeIsReference ? 'entity' : this.range,
-            creation_timestamp: this.creationTimestamp,
-            lastmodified_timeStamp: this.lastmodifiedTimestamp
+            same_as: data.sameAs,
+            range_type: data.rangeIsReference ? 'entity' : data.range,
+            creation_timestamp: data.creationTimestamp,
+            lastmodified_timeStamp: data.lastmodifiedTimestamp
         });
 
-        if (this.rangeIsReference) {
-            out['range_ref'] = this.range;
+        if (data.rangeIsReference) {
+            out['range_ref'] = data.range;
         } else {
             out['range_ref'] = null;
         }
@@ -47,7 +45,7 @@ export class PredicatePersistable extends Predicate implements Persistable {
         return out;
     }
 
-    public fromSchema(data: any) : PredicatePersistable {
+    public static fromSchema(data: any) : Predicate {
         if (data.range_type === 'entity') {
             data.range = data.range_ref;
             data.rangeIsReference = true;
@@ -55,42 +53,44 @@ export class PredicatePersistable extends Predicate implements Persistable {
             data.range = data.range_type;
             data.rangeIsReference = false;
         }
-        this.deserialize(Object.assign(data, {
+
+        return Object.assign(Object.create(Predicate.prototype), Object.assign(data, {
             'sameAs': data.same_as
         }));
-        return this;
-    }
-}
-
-export class PredicateController extends GenericController<PredicatePersistable> {
-
-    constructor(db : Database) {
-        super(db, PredicatePersistable.tableName);
     }
 
-    public getCollectionJson(obj: { new(): PredicatePersistable; }, params: any = {}) : PromiseLike<PredicatePersistable[]>  {
+
+    protected toSchema(data: Predicate) {
+        return PredicateController.toSchema(data);
+    }
+
+    protected fromSchema(data: any) : Predicate {
+        return PredicateController.fromSchema(data);
+    }
+
+    public getCollectionJson(obj: { new(): Predicate; }, params: any = {}) : PromiseLike<Predicate[]>  {
         if (params.domain !== undefined) {
             //TODO: this check should be unecessery
             return this.db.getAncestorsOf(isArray(params.domain) ? params.domain[0] : params.domain, 'entity_types')
             .then((ancestors) => {
                 return this.db.select('predicates').whereIn('domain', ancestors.concat([params.domain[0]]))
-                .then((results) => results.map((result) => new obj().fromSchema(result)));
+                .then((results) => results.map((result) => this.fromSchema(result)));
             });
         } else {
             return super.getCollectionJson(obj, params);
         }
     }
 
-    public putItem(obj: { new(): PredicatePersistable; }, uid: number, data: PredicatePersistable) : PromiseLike<string> {
+    public putItem(obj: { new(): Predicate; }, uid: number, data: Predicate) : PromiseLike<string> {
 
         if (typeof(uid) !== 'number') {
             throw new Error('Expected single column identifier');
         }
 
-        return this.db.updateItem(new obj().deserialize(data));
+        return this.db.updateItem(this.tableName, Serializer.toJson(data));
     }
 
-    public patchItem(obj: { new(): PredicatePersistable; }, uid: number, data: PredicatePersistable) : PromiseLike<boolean> {
+    public patchItem(obj: { new(): Predicate; }, uid: number, data: Predicate) : PromiseLike<boolean> {
 
         if (data.domain !== undefined) {
             return this.db.select('records', ['entities.type as entityType'])
@@ -156,7 +156,7 @@ export class PredicateController extends GenericController<PredicatePersistable>
         return super.patchItem(obj, uid, data);
     }
 
-     public deleteItem(obj: { new(): PredicatePersistable; }, uid: number) : PromiseLike<string> {
+     public deleteItem(obj: { new(): Predicate; }, uid: number) : PromiseLike<string> {
         // check if this entity is the parent of another entity or if it has any relationships
         // pointing towards it.
         return Promise.all([
@@ -168,7 +168,7 @@ export class PredicateController extends GenericController<PredicatePersistable>
                 throw new OperationNotPermittedException({
                     message: 'The operation could not be completed as the predicate is used by other records',
                     data: Promise.resolve({
-                        record: records.map((record) => new RecordPersistable().fromSchema(record))
+                        record: records.map((record) => RecordController.fromSchema(record))
                     })
                 });
             }

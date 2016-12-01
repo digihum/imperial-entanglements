@@ -7,7 +7,7 @@
 import * as React from 'react';
 
 import { Overlay } from '../Overlay';
-import { EntityType } from '../../../common/datamodel/datamodel';
+import { EntityType, Serializer } from 'falcon-core';
 import { ApiService, AppUrls } from '../../ApiService';
 
 import * as mousetrap from 'mousetrap';
@@ -35,7 +35,7 @@ export class CreateEntityType extends React.Component<CreateEntityTypeProps, Cre
 
     public createEntityType() {
         this.props.api.postItem(EntityType, AppUrls.entity_type,
-            new EntityType().deserialize({
+            Serializer.fromJson(EntityType, {
                 name: this.state.internalValue
             }))
         .then(this.props.complete);

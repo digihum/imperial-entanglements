@@ -9,7 +9,7 @@ import * as React from 'react';
 import { ApiService } from '../../ApiService';
 import { DataStore } from '../../DataStore';
 
-import { Source } from '../../../common/datamodel/datamodel';
+import { Source } from 'falcon-core';
 
 import { AddTabButton } from '../AddTabButton';
 

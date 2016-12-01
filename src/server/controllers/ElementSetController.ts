@@ -6,37 +6,26 @@
 
 import { Database } from '../core/Database';
 
-import { ElementSet } from '../../common/datamodel/ElementSet';
-import { Persistable } from '../core/Persistable';
+import { ElementSet, Serializer } from 'falcon-core';
 import { GenericController } from './GenericController';
 
 import { omit } from 'lodash';
 
-export class ElementSetPersistable extends ElementSet implements Persistable {
-
-    public static readonly tableName: string = 'element_sets';
-
-    public getTableName() : string {
-        return ElementSetPersistable.tableName;
-    }
-
-    public toSchema() {
-        return omit(this.serialize(), 'elements');
-    }
-
-    public fromSchema(data: any) : ElementSetPersistable {
-        this.deserialize(data);
-        return this;
-    }
-}
-
-export class ElementSetController extends GenericController<ElementSetPersistable> {
+export class ElementSetController extends GenericController<ElementSet> {
 
     constructor(db : Database) {
-        super(db, ElementSetPersistable.tableName);
+        super(db, 'element_sets');
     }
 
-    public getItemJson(obj: { new(): ElementSetPersistable; }, uid: number) : PromiseLike<ElementSetPersistable> {
+    public toSchema(data: ElementSet) : any {
+        return omit(Serializer.toJson(data), 'elements');
+    }
+
+    public fromSchema(data: any) : ElementSet {
+        return Object.assign(Object.create(ElementSet.prototype), data);
+    }
+
+    public getItemJson(obj: { new(): ElementSet }, uid: number) : PromiseLike<ElementSet> {
         return super.getItemJson(obj, uid)
         .then((elementSet) => {
 

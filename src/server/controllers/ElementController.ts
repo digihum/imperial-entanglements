@@ -6,30 +6,21 @@
 
 import { Database } from '../core/Database';
 
-import { Element } from '../../common/datamodel/Element';
-import { Persistable } from '../core/Persistable';
+import { Element, Serializer } from 'falcon-core';
+
 import { GenericController } from './GenericController';
 
-export class ElementPersistable extends Element implements Persistable {
+export class ElementController extends GenericController<Element> {
 
-    public static readonly tableName: string = 'elements';
-
-    public getTableName() : string {
-        return ElementPersistable.tableName;
-    }
-
-    public toSchema() {
-        return this.serialize();
-    }
-
-    public fromSchema(data: any) : ElementPersistable {
-        this.deserialize(data);
-        return this;
-    }
-}
-
-export class ElementController extends GenericController<ElementPersistable> {
     constructor(db : Database) {
-        super(db, ElementPersistable.tableName);
+        super(db, 'elements');
+    }
+
+    public toSchema(data: Element) : any {
+        return Serializer.toJson(data);
+    }
+
+    public fromSchema(data: any) : Element {
+        return Object.assign(Object.create(Element.prototype), data);
     }
 }

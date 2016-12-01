@@ -6,67 +6,64 @@
 
 import { Database } from '../core/Database';
 
-import { Entity } from '../../common/datamodel/Entity';
-import { Persistable } from '../core/Persistable';
+import { Entity, Serializer } from 'falcon-core';
 import { GenericController } from './GenericController';
 
 import { OperationNotPermittedException } from '../core/Exceptions';
 
 import { omit, isArray } from 'lodash';
 
-export class EntityPersistable extends Entity implements Persistable {
+export class EntityController extends GenericController<Entity> {
 
-    public static readonly tableName: string = 'entities';
-
-    public getTableName() : string {
-        return EntityPersistable.tableName;
+    constructor(db : Database) {
+        super(db, 'entities');
     }
 
-    public toSchema() {
-        return Object.assign(omit(this.serialize(),
-            'entityType',
-            'creationTimestamp',
-            'lastmodifiedTimestamp'), {
-            type: this.entityType,
-            creation_timestamp: this.creationTimestamp,
-            lastmodified_timeStamp: this.lastmodifiedTimestamp
-        });
-    }
-
-    public fromSchema(data: any) : EntityPersistable {
-        this.deserialize({
+    public static fromSchema(data: any) : Entity {
+        return Object.assign(Object.create(Entity.prototype), {
             entityType: data.type,
             uid: data.uid,
             label: data.label,
             parent: data.parent
         });
-        return this;
-    }
-}
-
-export class EntityController extends GenericController<EntityPersistable> {
-
-    constructor(db : Database) {
-        super(db, EntityPersistable.tableName);
     }
 
-    public getCollectionJson(obj: { new(): EntityPersistable; }, params: any = {}) : PromiseLike<EntityPersistable[]>  {
+    public static toSchema(data: Entity) : any {
+       return Object.assign(omit(Serializer.toJson(data),
+            'entityType',
+            'creationTimestamp',
+            'lastmodifiedTimestamp'), {
+            type: data.entityType,
+            creation_timestamp: data.creationTimestamp,
+            lastmodified_timeStamp: data.lastmodifiedTimestamp
+        });
+    }
+
+    protected fromSchema(data: any) : Entity {
+        return EntityController.fromSchema(data);
+    }
+
+    protected toSchema(data: Entity) : any {
+       return EntityController.toSchema(data);
+    }
+
+    public getCollectionJson(obj: { new(): Entity; }, params: any = {}) : PromiseLike<Entity[]>  {
         if (params.type !== undefined) {
             return this.db.getChildrenOf(isArray(params.type) ? params.type[0] : params.type, 'entity_types')
             .then((ancestors) => {
                 return this.db.select('entities').whereIn('type', ancestors)
-                .then((results) => results.map((result) => new obj().fromSchema(result)));
+                .then((results) => results.map((result) => this.fromSchema(result)));
             });
         } else {
             return super.getCollectionJson(obj, params);
         }
     }
 
-    public deleteItem(obj: { new(): EntityPersistable; }, uid: number) : Promise<string> {
+    public deleteItem(obj: { new(): Entity; }, uid: number) : Promise<string> {
         // check if this entity is the parent of another entity or if it has any relationships
         // pointing towards it.
         return Promise.all([
-            this.db.select(EntityPersistable.tableName).where('parent', '=', uid),
+            this.db.select(this.tableName).where('parent', '=', uid),
             this.db.select('records').where('value_entity', '=', uid)
         ]).then(([entities, records]) => {
             if (entities.length + records.length === 0) {

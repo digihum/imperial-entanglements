@@ -13,25 +13,30 @@ import * as moment from 'moment';
 // Database
 import { Database } from '../core/Database';
 import { ServerApiService, AppUrls } from '../core/ServerApiService';
-import { Persistable } from '../core/Persistable';
 import { QueryEngine } from '../core/QueryEngine';
 
 import * as koaConditionalGet from 'koa-conditional-get';
 import * as koaEtags from 'koa-etag';
 
+import { Serializer } from 'falcon-core';
+
 // Controllers
 import { IController } from '../controllers/IController';
 
 import {
-    EntityController, EntityPersistable,
-    EntityTypeController, EntityTypePersistable,
-    ElementSetController, ElementSetPersistable,
-    PredicateController, PredicatePersistable,
-    SourceController, SourcePersistable,
-    RecordController, RecordPersistable,
-    ElementController, ElementPersistable,
-    SourceElementController, SourceElementPersistable
+    EntityController,
+    EntityTypeController,
+    ElementSetController,
+    PredicateController,
+    SourceController,
+    RecordController,
+    ElementController,
+    SourceElementController
 } from '../controllers/controllers';
+
+import {
+  Entity, EntityType, ElementSet, Predicate, Source, Record, Element, SourceElement
+} from 'falcon-core';
 
 export const wrapDatabase : (s: Database, fakeCreator: boolean) => ServerApiService =
     (db: Database, fakeCreator: boolean) => {
@@ -113,14 +118,14 @@ export const api : (router: KoaRouter, s: ServerApiService) => KoaRouter
     router.use()
 
     const typeMap = {
-        [AppUrls.element_set]: ElementSetPersistable,
-        [AppUrls.record]: RecordPersistable,
-        [AppUrls.entity_type]: EntityTypePersistable,
-        [AppUrls.entity]: EntityPersistable,
-        [AppUrls.predicate] : PredicatePersistable,
-        [AppUrls.source] : SourcePersistable,
-        [AppUrls.element] : ElementPersistable,
-        [AppUrls.source_element]: SourceElementPersistable
+        [AppUrls.element_set]: ElementSet,
+        [AppUrls.record]: Record,
+        [AppUrls.entity_type]: EntityType,
+        [AppUrls.entity]: Entity,
+        [AppUrls.predicate] : Predicate,
+        [AppUrls.source] : Source,
+        [AppUrls.element] : Element,
+        [AppUrls.source_element]: SourceElement
     };
 
     router.use(function* (next: Koa.Context) {
@@ -169,40 +174,42 @@ export const api : (router: KoaRouter, s: ServerApiService) => KoaRouter
 
     router.get('/api/v1/:route/:id', function* (next : Koa.Context) {
         yield serverApiContext
-            .getItem<Persistable>(typeMap[this.params.route], this.params.route, parseInt(this.params.id))
-            .then((data) => this.body = data.serialize());
+            .getItem<any>(typeMap[this.params.route], this.params.route, parseInt(this.params.id))
+            .then((data) => this.body = Serializer.toJson(data));
     });
 
 
     router.get('/api/v1/:route', function* (next : Koa.Context) {
         yield serverApiContext
-            .getCollection<Persistable>(typeMap[this.params.route], this.params.route, this.query)
-            .then((data) => this.body = data.map((datum) => datum.serialize()));
+            .getCollection<any>(typeMap[this.params.route], this.params.route, this.query)
+            .then((data) => this.body = data.map((datum) => Serializer.toJson(datum)));
     });
 
     router.post('/api/v1/:route', function* (next : Koa.Context) {
         yield serverApiContext
-            .postItem<Persistable>(typeMap[this.params.route],this.params.route, Object.assign(this.request.body,{
+            .postItem<any>(typeMap[this.params.route],this.params.route,
+              Serializer.fromJson(typeMap[this.params.route], Object.assign(this.request.body, {
                 creator: this.req.user.uid
-            }))
+            })))
             .then((data) => this.body = data);
     });
 
     router.put('/api/v1/:route/:id', function* (next : Koa.Context) {
         yield serverApiContext
-            .putItem<Persistable>(typeMap[this.params.route], this.params.route, parseInt(this.params.id), this.request.body)
+            .putItem<any>(typeMap[this.params.route], this.params.route, parseInt(this.params.id),
+            Serializer.fromJson(typeMap[this.params.route],this.request.body))
             .then((data) => this.body = data);
     });
 
     router.patch('/api/v1/:route/:id', function* (next : Koa.Context) {
         yield serverApiContext
-            .patchItem<Persistable>(typeMap[this.params.route], this.params.route, parseInt(this.params.id), this.request.body)
+            .patchItem<any>(typeMap[this.params.route], this.params.route, parseInt(this.params.id), this.request.body)
             .then((data) => this.body = data);
     });
 
     router.del('/api/v1/:route/:id', function* (next : Koa.Context) {
         yield serverApiContext
-            .delItem<Persistable>(typeMap[this.params.route], this.params.route, parseInt(this.params.id))
+            .delItem<any>(typeMap[this.params.route], this.params.route, parseInt(this.params.id))
             .then((data) => this.body = data);
     });
 

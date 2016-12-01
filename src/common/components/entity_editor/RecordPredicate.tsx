@@ -7,7 +7,7 @@
 import * as React from 'react';
 import { ApiService, AppUrls } from '../../ApiService';
 import { DataStore } from '../../dataStore';
-import { Record, Predicate, Source, Entity } from '../../../common/datamodel/datamodel';
+import { Record, Predicate, Source, Entity, Serializer } from 'falcon-core';
 import { EditableFieldComponent } from '../fields/EditableFieldComponent';
 
 import { RecordRow } from './RecordRow';
@@ -49,7 +49,7 @@ export class RecordPredicate extends React.Component<RecordPredicateProps, Recor
 
     public createNewRecord() {
         this.props.api.postItem(Record, AppUrls.record,
-        new Record().deserialize({
+        Serializer.fromJson(Record, {
             predicate: this.props.predicate.uid,
             entity: this.props.entity_id,
             valueType: this.props.predicate.rangeIsReference ? 'entity' : this.props.predicate.range,
@@ -70,7 +70,7 @@ export class RecordPredicate extends React.Component<RecordPredicateProps, Recor
 	}
 
 	public recordChanged(record: Record) {
-		this.props.api.putItem(Record, AppUrls.record, this.props.entity_id, record.serialize());
+		this.props.api.putItem(Record, AppUrls.record, this.props.entity_id, Serializer.toJson(record));
 	}
 
 	public render() {

@@ -5,13 +5,13 @@
  */
 
 import { ApiService } from '../../common/ApiService';
-import { Persistable } from './Persistable';
+
 import { IController } from '../controllers/IController';
 import { CollectionNotFoundException } from './Exceptions';
 
 import { QueryEngine } from './QueryEngine';
 
-import { CompositeKey } from '../../common/datamodel/Serializable';
+import { CompositeKey, FalconItem, Serializer } from 'falcon-core';
 
 import * as moment from 'moment';
 
@@ -38,7 +38,7 @@ export class ServerApiService implements ApiService {
         this.db = db;
     }
 
-    public getItem<T extends Persistable>(obj: { new(): T; }, baseUrl : string, uid: number | CompositeKey) : PromiseLike<T> {
+    public getItem<T extends FalconItem>(obj: { new(): T; }, baseUrl : string, uid: number | CompositeKey) : PromiseLike<T> {
         const controller = this.controllerMap.get(baseUrl);
         if (controller === undefined) {
             return Promise.reject(new CollectionNotFoundException('Controller not found'));
@@ -46,7 +46,7 @@ export class ServerApiService implements ApiService {
         return controller.getItemJson<T>(obj, uid);
     }
 
-    public getCollection<T extends Persistable>(obj: { new(): T; }, baseUrl : string, params: any) : PromiseLike<T[]> {
+    public getCollection<T extends FalconItem>(obj: { new(): T; }, baseUrl : string, params: any) : PromiseLike<T[]> {
         const controller = this.controllerMap.get(baseUrl);
         if (controller === undefined) {
             return Promise.reject(new CollectionNotFoundException('Controller not found'));
@@ -54,7 +54,7 @@ export class ServerApiService implements ApiService {
         return controller.getCollectionJson<T>(obj, params);
     }
 
-    public postItem<T extends Persistable>(obj: { new(): T; }, baseUrl : string, data: T)  : PromiseLike<boolean> {
+    public postItem<T extends FalconItem>(obj: { new(): T; }, baseUrl : string, data: T)  : PromiseLike<boolean> {
         const controller = this.controllerMap.get(baseUrl);
         if (controller === undefined) {
             return Promise.reject(new CollectionNotFoundException('Controller not found'));
@@ -70,7 +70,7 @@ export class ServerApiService implements ApiService {
         });
     }
 
-    public putItem<T extends Persistable>(obj: { new(): T; },
+    public putItem<T extends FalconItem>(obj: { new(): T; },
             baseUrl : string, uid: number | CompositeKey, data: T) : PromiseLike<boolean> {
 
         const controller = this.controllerMap.get(baseUrl);
@@ -86,8 +86,8 @@ export class ServerApiService implements ApiService {
         });
     }
 
-    public patchItem<T extends Persistable>(obj: { new(): T; },
-            baseUrl : string, uid: number | CompositeKey, data : T) : PromiseLike<boolean> {
+    public patchItem<T extends FalconItem>(obj: { new(): T; },
+            baseUrl : string, uid: number | CompositeKey, data : any) : PromiseLike<boolean> {
 
         const controller = this.controllerMap.get(baseUrl);
         if (controller === undefined) {
@@ -102,7 +102,7 @@ export class ServerApiService implements ApiService {
         });
     }
 
-    public delItem<T extends Persistable>(obj: { new(): T; }, baseUrl : string, uid: number | CompositeKey) {
+    public delItem<T extends FalconItem>(obj: { new(): T; }, baseUrl : string, uid: number | CompositeKey) {
         const controller = this.controllerMap.get(baseUrl);
         if (controller === undefined) {
             return Promise.reject(new CollectionNotFoundException('Controller not found'));

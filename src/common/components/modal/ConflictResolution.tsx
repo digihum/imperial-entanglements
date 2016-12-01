@@ -7,7 +7,7 @@
 import * as React from 'react';
 
 import { Overlay } from '../Overlay';
-import { Entity, EntityType, Record, Predicate } from '../../../common/datamodel/datamodel';
+import { Entity, EntityType, Record, Predicate } from 'falcon-core';
 import { ApiService, AppUrls } from '../../ApiService';
 import { DataStore } from '../../DataStore';
 import { ComboDropdown, ComboDropdownOption } from '../ComboDropdown';
@@ -68,7 +68,7 @@ export class ConflictResolution extends React.Component<ConflictResolutionProps,
 
                             const predicateName = this.props.dataStore.all.predicate.value
                                 .find((predicate) => predicate.uid == record.predicate).name;
-                                
+
 
                             return (
                             <tr key={`row-${record.uid}`}>

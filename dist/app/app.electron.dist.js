@@ -61,7 +61,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 105);
+/******/ 	return __webpack_require__(__webpack_require__.s = 97);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -72,6 +72,12 @@ module.exports = require("react");
 
 /***/ },
 /* 1 */
+/***/ function(module, exports) {
+
+module.exports = require("falcon-core");
+
+/***/ },
+/* 2 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -81,7 +87,7 @@ module.exports = require("react");
  * @version 0.1.0
  */
 "use strict";
-const itemTypes_1 = __webpack_require__(26);
+const itemTypes_1 = __webpack_require__(24);
 exports.AppUrls = {
     element_set: itemTypes_1.itemTypes.element_set.machineName,
     record: itemTypes_1.itemTypes.record.machineName,
@@ -89,44 +95,16 @@ exports.AppUrls = {
     entity_type: itemTypes_1.itemTypes.entity_type.machineName,
     predicate: itemTypes_1.itemTypes.predicate.machineName,
     source: itemTypes_1.itemTypes.source.machineName,
-    source_element: itemTypes_1.itemTypes.source_element.machineName
+    source_element: itemTypes_1.itemTypes.source_element.machineName,
+    element: 'element'
 };
 
 
 /***/ },
-/* 2 */
+/* 3 */
 /***/ function(module, exports) {
 
 module.exports = require("lodash");
-
-/***/ },
-/* 3 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview Datamodel override for electron
- * @author <a href='mailto:tim.hollies@warwick.ac.uk'>Tim Hollies</a>
- * @version 0.0.1
- */
-"use strict";
-var ElementSetController_1 = __webpack_require__(30);
-exports.ElementSet = ElementSetController_1.ElementSetPersistable;
-var EntityController_1 = __webpack_require__(22);
-exports.Entity = EntityController_1.EntityPersistable;
-var EntityTypeController_1 = __webpack_require__(31);
-exports.EntityType = EntityTypeController_1.EntityTypePersistable;
-var PredicateController_1 = __webpack_require__(23);
-exports.Predicate = PredicateController_1.PredicatePersistable;
-var RecordController_1 = __webpack_require__(14);
-exports.Record = RecordController_1.RecordPersistable;
-var SourceController_1 = __webpack_require__(32);
-exports.Source = SourceController_1.SourcePersistable;
-var ElementController_1 = __webpack_require__(29);
-exports.Element = ElementController_1.ElementPersistable;
-var SourceElementController_1 = __webpack_require__(33);
-exports.SourceElement = SourceElementController_1.SourceElementPersistable;
-
 
 /***/ },
 /* 4 */
@@ -139,7 +117,7 @@ exports.SourceElement = SourceElementController_1.SourceElementPersistable;
  * @version 0.1.0
  */
 "use strict";
-const signals = __webpack_require__(104);
+const signals = __webpack_require__(96);
 exports.createTab = new signals.Signal();
 exports.closeTab = new signals.Signal();
 exports.showModal = new signals.Signal();
@@ -193,8 +171,8 @@ exports.AddTabButton.contextTypes = {
  */
 "use strict";
 const React = __webpack_require__(0);
-const lunr = __webpack_require__(102);
-const lodash_1 = __webpack_require__(2);
+const lunr = __webpack_require__(94);
+const lodash_1 = __webpack_require__(3);
 class ComboDropdown extends React.Component {
     constructor() {
         super();
@@ -416,37 +394,28 @@ class GenericController {
             throw new Error('Expected single column identifier');
         }
         return this.db.loadItem(this.tableName, uid)
-            .then((data) => new obj().fromSchema(data));
+            .then((data) => this.fromSchema(data));
     }
     getCollectionJson(obj, params = {}) {
         return this.db.loadCollection(this.tableName, params)
-            .then((data) => data.map((datum) => new obj().fromSchema(datum)));
+            .then((data) => data.map((datum) => this.fromSchema(datum)));
     }
     postItem(obj, data) {
-        return this.db.createItem(new obj().deserialize(data));
+        return this.db.createItem(this.tableName, this.toSchema(data));
     }
     putItem(obj, uid, data) {
         if (typeof (uid) !== 'number') {
             throw new Error('Expected single column identifier');
         }
-        return this.db.updateItem(new obj().deserialize(data));
+        return this.db.updateItem(this.tableName, this.toSchema(data));
     }
     patchItem(obj, uid, data) {
-        const o = new obj();
-        const schemaData = o.deserialize(data).toSchema();
-        const keys = Object.keys(schemaData);
-        const updateObject = {};
         if (typeof (uid) !== 'number') {
             throw new Error('Expected single column identifier');
         }
-        for (let i = 0; i < keys.length; i += 1) {
-            if (schemaData[keys[i]] !== undefined) {
-                updateObject[keys[i]] = schemaData[keys[i]];
-            }
-        }
         return this.db.loadItem(this.tableName, uid)
             .then((originalData) => {
-            return this.db.updateItem(new obj().fromSchema(Object.assign({}, originalData, updateObject)));
+            return this.db.updateItem(this.tableName, this.toSchema(Object.assign(this.fromSchema(originalData), data)));
         });
     }
     deleteItem(obj, uid) {
@@ -659,130 +628,18 @@ exports.SearchBar = (props) => {
 
 /***/ },
 /* 14 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview Controller for element sets
- * @author <a href='mailto:tim.hollies@warwick.ac.uk'>Tim Hollies</a>
- * @version 0.0.1
- */
-"use strict";
-const Record_1 = __webpack_require__(82);
-const GenericController_1 = __webpack_require__(7);
-const Exceptions_1 = __webpack_require__(8);
-const lodash_1 = __webpack_require__(2);
-class RecordPersistable extends Record_1.Record {
-    getTableName() {
-        return RecordPersistable.tableName;
-    }
-    toSchema() {
-        const schemaOutput = lodash_1.omit(this.serialize(), 'value', 'valueType', 'creationTimestamp', 'lastmodifiedTimestamp');
-        schemaOutput.value_type = this.valueType;
-        if (this.valueType !== undefined && this.valueType !== 'source') {
-            schemaOutput['value_' + this.valueType] = this.value;
-        }
-        return Object.assign({}, schemaOutput, {
-            creation_timestamp: this.creationTimestamp,
-            lastmodified_timeStamp: this.lastmodifiedTimestamp
-        });
-    }
-    fromSchema(data) {
-        data.valueType = data.value_type;
-        switch (data.value_type) {
-            case 'entity':
-                data.value = data.value_entity;
-                break;
-            case 'string':
-                data.value = data.value_string;
-                break;
-            case 'date':
-                data.value = data.value_date;
-                break;
-            case 'integer':
-                data.value = data.value_integer;
-                break;
-            case 'point':
-                data.value = data.value_point;
-                break;
-            case 'region':
-                data.value = data.value_region;
-                break;
-            case 'source':
-                data.value = data.source;
-                break;
-            default:
-                data.value = null;
-        }
-        this.deserialize(data);
-        return this;
-    }
-}
-RecordPersistable.tableName = 'records';
-exports.RecordPersistable = RecordPersistable;
-class RecordController extends GenericController_1.GenericController {
-    constructor(db) {
-        super(db, RecordPersistable.tableName);
-    }
-    postItem(obj, data) {
-        // predicate domain must equal value_type
-        return this.db.select('predicates', ['range_type']).where({ uid: data.predicate })
-            .then(([predicate]) => {
-            if (data.valueType === predicate.range_type) {
-                //TODO: still need to check entity type constraints
-                return super.postItem(obj, data);
-            }
-            throw new Exceptions_1.OperationNotPermittedException({
-                message: 'Attempted to add a record with an incorrect type!',
-                data: Promise.resolve({})
-            });
-        });
-    }
-    putItem(obj, uid, data) {
-        //TODO: what happens if we only update the value - and do not send the valueType again?
-        return this.db.select('predicates', ['range_type']).where({ uid: data.predicate })
-            .then(([predicate]) => {
-            if (data.valueType === predicate.range_type) {
-                //TODO: still need to check entity type constraints
-                return super.putItem(obj, uid, data);
-            }
-            throw new Exceptions_1.OperationNotPermittedException({
-                message: 'Attempted to add a record with an incorrect type!',
-                data: Promise.resolve({})
-            });
-        });
-    }
-    patchItem(obj, uid, data) {
-        return this.db.select('predicates', ['range_type']).where({ uid: data.predicate })
-            .then(([predicate]) => {
-            if (data.valueType === predicate.range_type) {
-                //TODO: still need to check entity type constraints
-                return super.patchItem(obj, uid, data);
-            }
-            throw new Exceptions_1.OperationNotPermittedException({
-                message: 'Attempted to add a record with an incorrect type!',
-                data: Promise.resolve({})
-            });
-        });
-    }
-}
-exports.RecordController = RecordController;
-
-
-/***/ },
-/* 15 */
 /***/ function(module, exports) {
 
 module.exports = require("moment");
 
 /***/ },
-/* 16 */
+/* 15 */
 /***/ function(module, exports) {
 
 module.exports = require("mousetrap");
 
 /***/ },
-/* 17 */
+/* 16 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -827,7 +684,7 @@ exports.EditableComboDropdown = (props) => {
 
 
 /***/ },
-/* 18 */
+/* 17 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -840,7 +697,7 @@ exports.EditableComboDropdown = (props) => {
 const React = __webpack_require__(0);
 var EditableFieldComponent_1 = __webpack_require__(11);
 exports.EditableFieldComponent = EditableFieldComponent_1.EditableFieldComponent;
-const mousetrap = __webpack_require__(16);
+const mousetrap = __webpack_require__(15);
 exports.EditableParagraph = (props) => {
     let keyBoardShortcuts;
     const bindKeyboard = (val) => {
@@ -878,7 +735,7 @@ exports.EditableParagraph = (props) => {
 
 
 /***/ },
-/* 19 */
+/* 18 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -889,7 +746,7 @@ exports.EditableParagraph = (props) => {
  */
 "use strict";
 const React = __webpack_require__(0);
-const mousetrap = __webpack_require__(16);
+const mousetrap = __webpack_require__(15);
 class SameAsEditor extends React.Component {
     constructor(props) {
         super();
@@ -967,7 +824,7 @@ exports.SameAsEditor = SameAsEditor;
 
 
 /***/ },
-/* 20 */
+/* 19 */
 /***/ function(module, exports) {
 
 "use strict";
@@ -1001,7 +858,7 @@ exports.findParentTree = (uid, data, ancestors = []) => {
 
 
 /***/ },
-/* 21 */
+/* 20 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1011,7 +868,7 @@ exports.findParentTree = (uid, data, ancestors = []) => {
  * @version 0.1.0
  */
 "use strict";
-const moment = __webpack_require__(15);
+const moment = __webpack_require__(14);
 exports.formatDate = (str) => {
     if (str === null || str.length === 0) {
         return '';
@@ -1031,7 +888,7 @@ exports.formatDate = (str) => {
 
 
 /***/ },
-/* 22 */
+/* 21 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1041,234 +898,113 @@ exports.formatDate = (str) => {
  * @version 0.0.1
  */
 "use strict";
-const Entity_1 = __webpack_require__(79);
+const falcon_core_1 = __webpack_require__(1);
 const GenericController_1 = __webpack_require__(7);
 const Exceptions_1 = __webpack_require__(8);
-const lodash_1 = __webpack_require__(2);
-class EntityPersistable extends Entity_1.Entity {
-    getTableName() {
-        return EntityPersistable.tableName;
+const lodash_1 = __webpack_require__(3);
+class RecordController extends GenericController_1.GenericController {
+    constructor(db) {
+        super(db, 'records');
     }
-    toSchema() {
-        return Object.assign(lodash_1.omit(this.serialize(), 'entityType', 'creationTimestamp', 'lastmodifiedTimestamp'), {
-            type: this.entityType,
-            creation_timestamp: this.creationTimestamp,
-            lastmodified_timeStamp: this.lastmodifiedTimestamp
+    static toSchema(data) {
+        const schemaOutput = lodash_1.omit(falcon_core_1.Serializer.toJson(data), 'value', 'valueType', 'creationTimestamp', 'lastmodifiedTimestamp');
+        schemaOutput.value_type = data.valueType;
+        if (data.valueType !== undefined && data.valueType !== 'source') {
+            schemaOutput['value_' + data.valueType] = data.value;
+        }
+        return Object.assign({}, schemaOutput, {
+            creation_timestamp: data.creationTimestamp,
+            lastmodified_timeStamp: data.lastmodifiedTimestamp
         });
+    }
+    static fromSchema(data) {
+        data.valueType = data.value_type;
+        switch (data.value_type) {
+            case 'entity':
+                data.value = data.value_entity;
+                break;
+            case 'string':
+                data.value = data.value_string;
+                break;
+            case 'date':
+                data.value = data.value_date;
+                break;
+            case 'integer':
+                data.value = data.value_integer;
+                break;
+            case 'point':
+                data.value = data.value_point;
+                break;
+            case 'region':
+                data.value = data.value_region;
+                break;
+            case 'source':
+                data.value = data.source;
+                break;
+            default:
+                data.value = null;
+        }
+        return Object.assign(Object.create(falcon_core_1.Record.prototype), data);
+    }
+    toSchema(data) {
+        return RecordController.toSchema(data);
     }
     fromSchema(data) {
-        this.deserialize({
-            entityType: data.type,
-            uid: data.uid,
-            label: data.label,
-            parent: data.parent
-        });
-        return this;
+        return RecordController.fromSchema(data);
     }
-}
-EntityPersistable.tableName = 'entities';
-exports.EntityPersistable = EntityPersistable;
-class EntityController extends GenericController_1.GenericController {
-    constructor(db) {
-        super(db, EntityPersistable.tableName);
-    }
-    getCollectionJson(obj, params = {}) {
-        if (params.type !== undefined) {
-            return this.db.getChildrenOf(lodash_1.isArray(params.type) ? params.type[0] : params.type, 'entity_types')
-                .then((ancestors) => {
-                return this.db.select('entities').whereIn('type', ancestors)
-                    .then((results) => results.map((result) => new obj().fromSchema(result)));
-            });
-        }
-        else {
-            return super.getCollectionJson(obj, params);
-        }
-    }
-    deleteItem(obj, uid) {
-        // check if this entity is the parent of another entity or if it has any relationships
-        // pointing towards it.
-        return Promise.all([
-            this.db.select(EntityPersistable.tableName).where('parent', '=', uid),
-            this.db.select('records').where('value_entity', '=', uid)
-        ]).then(([entities, records]) => {
-            if (entities.length + records.length === 0) {
-                return this.db.deleteItem(this.tableName, uid);
+    postItem(obj, data) {
+        // predicate domain must equal value_type
+        return this.db.select('predicates', ['range_type']).where({ uid: data.predicate })
+            .then(([predicate]) => {
+            if (data.valueType === predicate.range_type) {
+                //TODO: still need to check entity type constraints
+                return super.postItem(obj, data);
             }
-            else {
-                throw new Exceptions_1.OperationNotPermittedException({
-                    message: 'The operation could not be completed as the entity is referenced in other sources',
-                    data: Promise.resolve({
-                        entity: entities,
-                        record: records
-                    })
-                });
-            }
-        });
-    }
-}
-exports.EntityController = EntityController;
-
-
-/***/ },
-/* 23 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview Controller for element sets
- * @author <a href='mailto:tim.hollies@warwick.ac.uk'>Tim Hollies</a>
- * @version 0.0.1
- */
-"use strict";
-const Predicate_1 = __webpack_require__(81);
-const GenericController_1 = __webpack_require__(7);
-const Exceptions_1 = __webpack_require__(8);
-const RecordController_1 = __webpack_require__(14);
-const lodash_1 = __webpack_require__(2);
-class PredicatePersistable extends Predicate_1.Predicate {
-    getTableName() {
-        return PredicatePersistable.tableName;
-    }
-    toSchema() {
-        const out = Object.assign(lodash_1.omit(this.serialize(), 'range', 'rangeIsReference', 'sameAs', 'creationTimestamp', 'lastmodifiedTimestamp'), {
-            same_as: this.sameAs,
-            range_type: this.rangeIsReference ? 'entity' : this.range,
-            creation_timestamp: this.creationTimestamp,
-            lastmodified_timeStamp: this.lastmodifiedTimestamp
-        });
-        if (this.rangeIsReference) {
-            out['range_ref'] = this.range;
-        }
-        else {
-            out['range_ref'] = null;
-        }
-        return out;
-    }
-    fromSchema(data) {
-        if (data.range_type === 'entity') {
-            data.range = data.range_ref;
-            data.rangeIsReference = true;
-        }
-        else {
-            data.range = data.range_type;
-            data.rangeIsReference = false;
-        }
-        this.deserialize(Object.assign(data, {
-            'sameAs': data.same_as
-        }));
-        return this;
-    }
-}
-PredicatePersistable.tableName = 'predicates';
-exports.PredicatePersistable = PredicatePersistable;
-class PredicateController extends GenericController_1.GenericController {
-    constructor(db) {
-        super(db, PredicatePersistable.tableName);
-    }
-    getCollectionJson(obj, params = {}) {
-        if (params.domain !== undefined) {
-            //TODO: this check should be unecessery
-            return this.db.getAncestorsOf(lodash_1.isArray(params.domain) ? params.domain[0] : params.domain, 'entity_types')
-                .then((ancestors) => {
-                return this.db.select('predicates').whereIn('domain', ancestors.concat([params.domain[0]]))
-                    .then((results) => results.map((result) => new obj().fromSchema(result)));
+            throw new Exceptions_1.OperationNotPermittedException({
+                message: 'Attempted to add a record with an incorrect type!',
+                data: Promise.resolve({})
             });
-        }
-        else {
-            return super.getCollectionJson(obj, params);
-        }
+        });
     }
     putItem(obj, uid, data) {
-        if (typeof (uid) !== 'number') {
-            throw new Error('Expected single column identifier');
-        }
-        return this.db.updateItem(new obj().deserialize(data));
+        //TODO: what happens if we only update the value - and do not send the valueType again?
+        return this.db.select('predicates', ['range_type']).where({ uid: data.predicate })
+            .then(([predicate]) => {
+            if (data.valueType === predicate.range_type) {
+                //TODO: still need to check entity type constraints
+                return super.putItem(obj, uid, data);
+            }
+            throw new Exceptions_1.OperationNotPermittedException({
+                message: 'Attempted to add a record with an incorrect type!',
+                data: Promise.resolve({})
+            });
+        });
     }
     patchItem(obj, uid, data) {
-        if (data.domain !== undefined) {
-            return this.db.select('records', ['entities.type as entityType'])
-                .distinct()
-                .where({ predicate: uid })
-                .innerJoin('entities', 'records.entity', 'entities.uid')
-                .then((records) => {
-                if (records.length > 0) {
-                    return this.db.getChildrenOf(data.domain, 'entity_types')
-                        .then((res) => {
-                        records.map((e) => e.entityType)
-                            .forEach((e) => {
-                            if (res.indexOf(e) === -1) {
-                                throw new Exceptions_1.OperationNotPermittedException({
-                                    message: 'The operation could not be completed as it would invalidate predicate relationships',
-                                    data: Promise.resolve({})
-                                });
-                            }
-                        });
-                    }).then(() => super.patchItem(obj, uid, data));
-                }
+        return this.db.select('predicates', ['range_type']).where({ uid: data.predicate })
+            .then(([predicate]) => {
+            if (data.valueType === predicate.range_type) {
+                //TODO: still need to check entity type constraints
                 return super.patchItem(obj, uid, data);
-            });
-        }
-        //TODO: fix range enforcement
-        if (data.range !== undefined) {
-            return this.db.select('records')
-                .where({ predicate: uid })
-                .then((records) => {
-                if (records.length > 0) {
-                    if (data.rangeIsReference === false) {
-                        throw new Exceptions_1.OperationNotPermittedException({
-                            message: 'The operation could not be completed as it would invalidate predicate relationships',
-                            data: Promise.resolve({})
-                        });
-                    }
-                    return this.db.getChildrenOf(data.range, 'entity_types')
-                        .then((res) => {
-                        records.map((e) => e.value_entity)
-                            .forEach((e) => {
-                            if (res.indexOf(e) === -1) {
-                                throw new Exceptions_1.OperationNotPermittedException({
-                                    message: 'The operation could not be completed as it would invalidate predicate relationships',
-                                    data: Promise.resolve({})
-                                });
-                            }
-                        });
-                    }).then(() => super.patchItem(obj, uid, data));
-                }
-                return super.patchItem(obj, uid, data);
-            });
-        }
-        return super.patchItem(obj, uid, data);
-    }
-    deleteItem(obj, uid) {
-        // check if this entity is the parent of another entity or if it has any relationships
-        // pointing towards it.
-        return Promise.all([
-            this.db.loadCollection('records', { predicate: uid })
-        ]).then(([records]) => {
-            if (records.length === 0) {
-                return this.db.deleteItem(this.tableName, uid);
             }
-            else {
-                throw new Exceptions_1.OperationNotPermittedException({
-                    message: 'The operation could not be completed as the predicate is used by other records',
-                    data: Promise.resolve({
-                        record: records.map((record) => new RecordController_1.RecordPersistable().fromSchema(record))
-                    })
-                });
-            }
+            throw new Exceptions_1.OperationNotPermittedException({
+                message: 'Attempted to add a record with an incorrect type!',
+                data: Promise.resolve({})
+            });
         });
     }
 }
-exports.PredicateController = PredicateController;
+exports.RecordController = RecordController;
 
 
 /***/ },
-/* 24 */
+/* 22 */
 /***/ function(module, exports) {
 
 module.exports = require("graphql");
 
 /***/ },
-/* 25 */
+/* 23 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1280,7 +1016,7 @@ module.exports = require("graphql");
 "use strict";
 const React = __webpack_require__(0);
 const ComboDropdown_1 = __webpack_require__(6);
-const lodash_1 = __webpack_require__(2);
+const lodash_1 = __webpack_require__(3);
 class PredicateDescription extends React.Component {
     constructor() {
         super();
@@ -1358,7 +1094,7 @@ exports.PredicateDescription = PredicateDescription;
 
 
 /***/ },
-/* 26 */
+/* 24 */
 /***/ function(module, exports) {
 
 "use strict";
@@ -1415,7 +1151,7 @@ exports.itemTypes = {
 
 
 /***/ },
-/* 27 */
+/* 25 */
 /***/ function(module, exports) {
 
 "use strict";
@@ -1436,7 +1172,7 @@ exports.literalTypes = [
 
 
 /***/ },
-/* 28 */
+/* 26 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1477,7 +1213,7 @@ exports.StatsGrid = (props) => {
 
 
 /***/ },
-/* 29 */
+/* 27 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1487,168 +1223,74 @@ exports.StatsGrid = (props) => {
  * @version 0.0.1
  */
 "use strict";
-const Element_1 = __webpack_require__(77);
+const falcon_core_1 = __webpack_require__(1);
 const GenericController_1 = __webpack_require__(7);
-class ElementPersistable extends Element_1.Element {
-    getTableName() {
-        return ElementPersistable.tableName;
-    }
-    toSchema() {
-        return this.serialize();
-    }
-    fromSchema(data) {
-        this.deserialize(data);
-        return this;
-    }
-}
-ElementPersistable.tableName = 'elements';
-exports.ElementPersistable = ElementPersistable;
-class ElementController extends GenericController_1.GenericController {
-    constructor(db) {
-        super(db, ElementPersistable.tableName);
-    }
-}
-exports.ElementController = ElementController;
-
-
-/***/ },
-/* 30 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview Controller for element sets
- * @author <a href='mailto:tim.hollies@warwick.ac.uk'>Tim Hollies</a>
- * @version 0.0.1
- */
-"use strict";
-const ElementSet_1 = __webpack_require__(78);
-const GenericController_1 = __webpack_require__(7);
-const lodash_1 = __webpack_require__(2);
-class ElementSetPersistable extends ElementSet_1.ElementSet {
-    getTableName() {
-        return ElementSetPersistable.tableName;
-    }
-    toSchema() {
-        return lodash_1.omit(this.serialize(), 'elements');
-    }
-    fromSchema(data) {
-        this.deserialize(data);
-        return this;
-    }
-}
-ElementSetPersistable.tableName = 'element_sets';
-exports.ElementSetPersistable = ElementSetPersistable;
-class ElementSetController extends GenericController_1.GenericController {
-    constructor(db) {
-        super(db, ElementSetPersistable.tableName);
-    }
-    getItemJson(obj, uid) {
-        return super.getItemJson(obj, uid)
-            .then((elementSet) => {
-            if (elementSet.uid === null) {
-                throw new Error('could not find source');
-            }
-            return this.db.select('elements')
-                .where({ 'element_set': elementSet.uid })
-                .then((elements) => {
-                elementSet.elements = elements;
-                return elementSet;
-            });
-        });
-    }
-}
-exports.ElementSetController = ElementSetController;
-
-
-/***/ },
-/* 31 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview Controller for element sets
- * @author <a href='mailto:tim.hollies@warwick.ac.uk'>Tim Hollies</a>
- * @version 0.0.1
- */
-"use strict";
-const EntityType_1 = __webpack_require__(80);
-const GenericController_1 = __webpack_require__(7);
-const PredicateController_1 = __webpack_require__(23);
-const EntityController_1 = __webpack_require__(22);
 const Exceptions_1 = __webpack_require__(8);
-const lodash_1 = __webpack_require__(2);
-class EntityTypePersistable extends EntityType_1.EntityType {
-    getTableName() {
-        return EntityTypePersistable.tableName;
+const lodash_1 = __webpack_require__(3);
+class EntityController extends GenericController_1.GenericController {
+    constructor(db) {
+        super(db, 'entities');
     }
-    toSchema() {
-        return Object.assign(lodash_1.omit(this.serialize(), 'sameAs', 'parents', 'children', 'creationTimestamp', 'lastmodifiedTimestamp'), {
-            same_as: this.sameAs,
-            creation_timestamp: this.creationTimestamp,
-            lastmodified_timeStamp: this.lastmodifiedTimestamp
+    static fromSchema(data) {
+        return Object.assign(Object.create(falcon_core_1.Entity.prototype), {
+            entityType: data.type,
+            uid: data.uid,
+            label: data.label,
+            parent: data.parent
+        });
+    }
+    static toSchema(data) {
+        return Object.assign(lodash_1.omit(falcon_core_1.Serializer.toJson(data), 'entityType', 'creationTimestamp', 'lastmodifiedTimestamp'), {
+            type: data.entityType,
+            creation_timestamp: data.creationTimestamp,
+            lastmodified_timeStamp: data.lastmodifiedTimestamp
         });
     }
     fromSchema(data) {
-        this.deserialize(Object.assign(data, {
-            'sameAs': data.same_as
-        }));
-        return this;
+        return EntityController.fromSchema(data);
     }
-}
-EntityTypePersistable.tableName = 'entity_types';
-exports.EntityTypePersistable = EntityTypePersistable;
-class EntityTypeController extends GenericController_1.GenericController {
-    constructor(db) {
-        super(db, EntityTypePersistable.tableName);
+    toSchema(data) {
+        return EntityController.toSchema(data);
     }
-    getItemJson(obj, uid) {
-        return super.getItemJson(obj, uid)
-            .then((result) => {
-            return Promise.all([
-                this.db.getAncestorsOf(uid, 'entity_types')
-                    .then((ancestors) => {
-                    return this.db.select('entity_types').whereIn('uid', ancestors)
-                        .then((results) => results.map((result) => new obj().fromSchema(result)));
-                }),
-                this.db.select('entity_types', ['uid']).where({ parent: uid })
-            ])
-                .then(([parents, children]) => {
-                result.parents = parents;
-                result.children = children.map((child) => child.uid);
-                return result;
+    getCollectionJson(obj, params = {}) {
+        if (params.type !== undefined) {
+            return this.db.getChildrenOf(lodash_1.isArray(params.type) ? params.type[0] : params.type, 'entity_types')
+                .then((ancestors) => {
+                return this.db.select('entities').whereIn('type', ancestors)
+                    .then((results) => results.map((result) => this.fromSchema(result)));
             });
-        });
+        }
+        else {
+            return super.getCollectionJson(obj, params);
+        }
     }
     deleteItem(obj, uid) {
         // check if this entity is the parent of another entity or if it has any relationships
         // pointing towards it.
         return Promise.all([
-            this.db.select(EntityTypePersistable.tableName).where('parent', '=', uid),
-            this.db.select('entities').where('type', '=', uid),
-            this.db.select('predicates').where('domain', '=', uid).orWhere('range_ref', '=', uid)
-        ]).then(([entityTypes, entities, predicates]) => {
-            if (entities.length + entityTypes.length + predicates.length === 0) {
+            this.db.select(this.tableName).where('parent', '=', uid),
+            this.db.select('records').where('value_entity', '=', uid)
+        ]).then(([entities, records]) => {
+            if (entities.length + records.length === 0) {
                 return this.db.deleteItem(this.tableName, uid);
             }
             else {
                 throw new Exceptions_1.OperationNotPermittedException({
                     message: 'The operation could not be completed as the entity is referenced in other sources',
                     data: Promise.resolve({
-                        entityType: entityTypes.map((entityType) => new EntityTypePersistable().fromSchema(entityType)),
-                        entity: entities.map((entity) => new EntityController_1.EntityPersistable().fromSchema(entity)),
-                        predicate: predicates.map((predicate) => new PredicateController_1.PredicatePersistable().fromSchema(predicate))
+                        entity: entities,
+                        record: records
                     })
                 });
             }
         });
     }
 }
-exports.EntityTypeController = EntityTypeController;
+exports.EntityController = EntityController;
 
 
 /***/ },
-/* 32 */
+/* 28 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1658,239 +1300,153 @@ exports.EntityTypeController = EntityTypeController;
  * @version 0.0.1
  */
 "use strict";
-const Source_1 = __webpack_require__(83);
+const falcon_core_1 = __webpack_require__(1);
 const GenericController_1 = __webpack_require__(7);
 const Exceptions_1 = __webpack_require__(8);
-const RecordController_1 = __webpack_require__(14);
-const lodash_1 = __webpack_require__(2);
-class SourcePersistable extends Source_1.Source {
-    getTableName() {
-        return SourcePersistable.tableName;
+const RecordController_1 = __webpack_require__(21);
+const lodash_1 = __webpack_require__(3);
+class PredicateController extends GenericController_1.GenericController {
+    constructor(db) {
+        super(db, 'predicates');
     }
-    toSchema() {
-        return Object.assign({}, lodash_1.omit(this.serialize(), 'metaData', 'sameAs', 'parents', 'children', 'creationTimestamp', 'lastmodifiedTimestamp'), {
-            same_as: this.sameAs,
-            creation_timestamp: this.creationTimestamp,
-            lastmodified_timeStamp: this.lastmodifiedTimestamp
+    static toSchema(data) {
+        const out = Object.assign(lodash_1.omit(falcon_core_1.Serializer.toJson(data), 'range', 'rangeIsReference', 'sameAs', 'creationTimestamp', 'lastmodifiedTimestamp'), {
+            same_as: data.sameAs,
+            range_type: data.rangeIsReference ? 'entity' : data.range,
+            creation_timestamp: data.creationTimestamp,
+            lastmodified_timeStamp: data.lastmodifiedTimestamp
         });
+        if (data.rangeIsReference) {
+            out['range_ref'] = data.range;
+        }
+        else {
+            out['range_ref'] = null;
+        }
+        return out;
     }
-    fromSchema(data) {
-        this.deserialize(Object.assign(data, {
+    static fromSchema(data) {
+        if (data.range_type === 'entity') {
+            data.range = data.range_ref;
+            data.rangeIsReference = true;
+        }
+        else {
+            data.range = data.range_type;
+            data.rangeIsReference = false;
+        }
+        return Object.assign(Object.create(falcon_core_1.Predicate.prototype), Object.assign(data, {
             'sameAs': data.same_as
         }));
-        return this;
     }
-}
-SourcePersistable.tableName = 'sources';
-exports.SourcePersistable = SourcePersistable;
-class SourceController extends GenericController_1.GenericController {
-    constructor(db) {
-        super(db, SourcePersistable.tableName);
+    toSchema(data) {
+        return PredicateController.toSchema(data);
     }
-    // override the getItemJson and getCollectionJson functions to also get information about the 
-    // metadata associated with the retrieved source
-    getMetadata(fields, sourceId) {
-        return this.db.query().raw(`
-            WITH RECURSIVE parent_of(uid, parent) AS  (SELECT uid, parent FROM sources),
-                ancestor(uid) AS (
-                SELECT parent FROM parent_of WHERE uid=?
-                UNION ALL
-                SELECT parent FROM parent_of JOIN ancestor USING(uid) )
-            
-            SELECT *
-                FROM ancestor;
-        `, sourceId).then((parents) => {
-            parents = lodash_1.map(parents, 'uid');
-            parents.pop();
-            parents = [sourceId].concat(parents);
-            return Promise.all(parents.map((parent) => this.db.query().select(fields)
-                .from('source_elements')
-                .innerJoin('elements', function () { this.on('source_elements.element', '=', 'elements.uid'); })
-                .innerJoin('element_sets', function () { this.on('element_sets.uid', '=', 'elements.element_set'); })
-                .where({ 'source_elements.source': parent }))).then((results) => {
-                const a = lodash_1.groupBy(lodash_1.flatten(results), 'name');
-                return Object.keys(a).reduce((prev, cur) => {
-                    const meta = lodash_1.omit(a[cur][0], 'source', 'value');
-                    meta['values'] = a[cur]
-                        .map((val) => ({ source: val.source, value: val.value, uid: val.uid }))
-                        .sort((a, b) => parents.indexOf(a.source) - parents.indexOf(b.source));
-                    return Object.assign(prev, { [cur]: meta });
-                }, {});
-            });
-        });
-    }
-    getItemJson(obj, uid) {
-        return super.getItemJson(obj, uid)
-            .then((source) => {
-            if (source.uid === null) {
-                throw new Error('could not find source');
-            }
-            return Promise.all([
-                this.getMetadata([
-                    'source_elements.source as source',
-                    'elements.name',
-                    'source_elements.value',
-                    'elements.description',
-                    'element_sets.name as element_set',
-                    'elements.comment',
-                    'elements.uri',
-                    'elements.uid as element_uid'], source.uid),
-                this.db.query().select('uid').from('sources').where({ parent: uid }),
-                this.db.query().raw(`
-                    WITH RECURSIVE parent_of(uid, parent) AS  (SELECT uid, parent FROM sources),
-                    ancestor(uid) AS (
-                    SELECT parent FROM parent_of WHERE uid=?
-                    UNION ALL
-                    SELECT parent FROM parent_of JOIN ancestor USING(uid) )
-                    
-                    SELECT uid
-                    FROM ancestor;
-                `, uid)
-            ])
-                .then(([sourceElements, children, parents]) => {
-                source.metaData = sourceElements;
-                source.children = children.map((child) => child.uid).filter((child) => child !== null);
-                source.parents = parents.map((parent) => parent.uid).filter((parent) => parent !== null);
-                return source;
-            });
-        });
+    fromSchema(data) {
+        return PredicateController.fromSchema(data);
     }
     getCollectionJson(obj, params = {}) {
-        return super.getCollectionJson(obj, params)
-            .then((sources) => {
-            return Promise.all(sources.map((source) => {
-                if (source.uid === null) {
-                    throw new Error('could not find source');
-                }
-                return this.getMetadata([
-                    'elements.name',
-                    'source_elements.value'
-                ], source.uid)
-                    .then((sourceElements) => {
-                    source.metaData = sourceElements;
-                    return source;
-                });
-            }));
-        });
+        if (params.domain !== undefined) {
+            //TODO: this check should be unecessery
+            return this.db.getAncestorsOf(lodash_1.isArray(params.domain) ? params.domain[0] : params.domain, 'entity_types')
+                .then((ancestors) => {
+                return this.db.select('predicates').whereIn('domain', ancestors.concat([params.domain[0]]))
+                    .then((results) => results.map((result) => this.fromSchema(result)));
+            });
+        }
+        else {
+            return super.getCollectionJson(obj, params);
+        }
     }
-    //TODO should find every child source, not just the direct children
+    putItem(obj, uid, data) {
+        if (typeof (uid) !== 'number') {
+            throw new Error('Expected single column identifier');
+        }
+        return this.db.updateItem(this.tableName, falcon_core_1.Serializer.toJson(data));
+    }
+    patchItem(obj, uid, data) {
+        if (data.domain !== undefined) {
+            return this.db.select('records', ['entities.type as entityType'])
+                .distinct()
+                .where({ predicate: uid })
+                .innerJoin('entities', 'records.entity', 'entities.uid')
+                .then((records) => {
+                if (records.length > 0) {
+                    return this.db.getChildrenOf(data.domain, 'entity_types')
+                        .then((res) => {
+                        records.map((e) => e.entityType)
+                            .forEach((e) => {
+                            if (res.indexOf(e) === -1) {
+                                throw new Exceptions_1.OperationNotPermittedException({
+                                    message: 'The operation could not be completed as it would invalidate predicate relationships',
+                                    data: Promise.resolve({})
+                                });
+                            }
+                        });
+                    }).then(() => super.patchItem(obj, uid, data));
+                }
+                return super.patchItem(obj, uid, data);
+            });
+        }
+        //TODO: fix range enforcement
+        if (data.range !== undefined) {
+            return this.db.select('records')
+                .where({ predicate: uid })
+                .then((records) => {
+                if (records.length > 0) {
+                    if (data.rangeIsReference === false) {
+                        throw new Exceptions_1.OperationNotPermittedException({
+                            message: 'The operation could not be completed as it would invalidate predicate relationships',
+                            data: Promise.resolve({})
+                        });
+                    }
+                    return this.db.getChildrenOf(data.range, 'entity_types')
+                        .then((res) => {
+                        records.map((e) => e.value_entity)
+                            .forEach((e) => {
+                            if (res.indexOf(e) === -1) {
+                                throw new Exceptions_1.OperationNotPermittedException({
+                                    message: 'The operation could not be completed as it would invalidate predicate relationships',
+                                    data: Promise.resolve({})
+                                });
+                            }
+                        });
+                    }).then(() => super.patchItem(obj, uid, data));
+                }
+                return super.patchItem(obj, uid, data);
+            });
+        }
+        return super.patchItem(obj, uid, data);
+    }
     deleteItem(obj, uid) {
         // check if this entity is the parent of another entity or if it has any relationships
         // pointing towards it.
         return Promise.all([
-            this.db.loadCollection('records', { source: uid }),
-            this.db.loadCollection('sources', { parent: uid })
-        ]).then(([records, sources]) => {
-            if (records.length + sources.length === 0) {
+            this.db.loadCollection('records', { predicate: uid })
+        ]).then(([records]) => {
+            if (records.length === 0) {
                 return this.db.deleteItem(this.tableName, uid);
             }
             else {
                 throw new Exceptions_1.OperationNotPermittedException({
-                    message: 'The operation could not be completed as the source is used by other records',
+                    message: 'The operation could not be completed as the predicate is used by other records',
                     data: Promise.resolve({
-                        record: records.map((record) => new RecordController_1.RecordPersistable().fromSchema(record)),
-                        source: sources.map((source) => new SourcePersistable().fromSchema(source))
+                        record: records.map((record) => RecordController_1.RecordController.fromSchema(record))
                     })
                 });
             }
         });
     }
 }
-exports.SourceController = SourceController;
+exports.PredicateController = PredicateController;
 
 
 /***/ },
-/* 33 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview Controller for element sets
- * @author <a href='mailto:tim.hollies@warwick.ac.uk'>Tim Hollies</a>
- * @version 0.0.1
- */
-"use strict";
-const SourceElement_1 = __webpack_require__(84);
-const GenericController_1 = __webpack_require__(7);
-const Exceptions_1 = __webpack_require__(8);
-const lodash_1 = __webpack_require__(2);
-class SourceElementPersistable extends SourceElement_1.SourceElement {
-    getTableName() {
-        return SourceElementPersistable.tableName;
-    }
-    toSchema() {
-        return Object.assign(lodash_1.omit(this.serialize(), 'creationTimestamp', 'lastmodifiedTimestamp', 'uid'), {
-            creation_timestamp: this.creationTimestamp,
-            lastmodified_timeStamp: this.lastmodifiedTimestamp,
-            source: this.uid.values.source,
-            element: this.uid.values.element
-        });
-    }
-    fromSchema(data) {
-        this.deserialize(Object.assign(data, {
-            uid: {
-                order: ['source', 'element'],
-                values: {
-                    source: data.source,
-                    element: data.element
-                }
-            }
-        }));
-        return this;
-    }
-}
-SourceElementPersistable.tableName = 'source_elements';
-exports.SourceElementPersistable = SourceElementPersistable;
-class SourceElementController extends GenericController_1.GenericController {
-    constructor(db) {
-        super(db, SourceElementPersistable.tableName);
-    }
-    getItemJson(obj, uid) {
-        return this.db.query().select()
-            .from(this.tableName)
-            .where(uid.values)
-            .first()
-            .then((result) => result === undefined ? Promise.reject(new Exceptions_1.KeyNotFoundException()) : result)
-            .then((data) => new obj().fromSchema(data));
-    }
-    putItem(obj, uid, data) {
-        return this.db.query()(this.tableName)
-            .where(uid.values)
-            .update(lodash_1.omit(data.toSchema(), ['tableName']));
-    }
-    patchItem(obj, uid, data) {
-        const o = new obj();
-        const schemaData = o.deserialize(data).toSchema();
-        const keys = Object.keys(schemaData);
-        const updateObject = {};
-        for (let i = 0; i < keys.length; i += 1) {
-            if (schemaData[keys[i]] !== undefined) {
-                updateObject[keys[i]] = schemaData[keys[i]];
-            }
-        }
-        return this.db.query()(this.tableName)
-            .where(uid.values)
-            .update(updateObject)
-            .then(() => true)
-            .catch((err) => { throw new Error(err); });
-    }
-    deleteItem(obj, uid) {
-        return this.db.query()(this.tableName)
-            .where(uid.values)
-            .del();
-    }
-}
-exports.SourceElementController = SourceElementController;
-
-
-/***/ },
-/* 34 */
+/* 29 */
 /***/ function(module, exports) {
 
 module.exports = require("immutable");
 
 /***/ },
-/* 35 */
+/* 30 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1911,17 +1467,17 @@ var __assign = (this && this.__assign) || Object.assign || function(t) {
 //https://react-router.now.sh/Match
 const React = __webpack_require__(0);
 const react_router_1 = __webpack_require__(9);
-const RouteNotFound_1 = __webpack_require__(89);
-const ApiService_1 = __webpack_require__(1);
-const itemTypes_1 = __webpack_require__(26);
-const Admin_1 = __webpack_require__(85);
-const AdminApp_1 = __webpack_require__(40);
-const User_1 = __webpack_require__(90);
-const UserManagement_1 = __webpack_require__(91);
-const AppDownload_1 = __webpack_require__(86);
-const DatabaseUpload_1 = __webpack_require__(87);
+const RouteNotFound_1 = __webpack_require__(76);
+const ApiService_1 = __webpack_require__(2);
+const itemTypes_1 = __webpack_require__(24);
+const Admin_1 = __webpack_require__(72);
+const AdminApp_1 = __webpack_require__(35);
+const User_1 = __webpack_require__(77);
+const UserManagement_1 = __webpack_require__(78);
+const AppDownload_1 = __webpack_require__(73);
+const DatabaseUpload_1 = __webpack_require__(74);
 const react_router_2 = __webpack_require__(9);
-const ObjectEditor_1 = __webpack_require__(88);
+const ObjectEditor_1 = __webpack_require__(75);
 class FalconApp extends React.Component {
     constructor(props) {
         super();
@@ -1978,7 +1534,7 @@ exports.FalconApp = FalconApp;
 
 
 /***/ },
-/* 36 */
+/* 31 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1988,8 +1544,8 @@ exports.FalconApp = FalconApp;
  * @version 0.0.1
  */
 "use strict";
-const Knex = __webpack_require__(98);
-const lodash_1 = __webpack_require__(2);
+const Knex = __webpack_require__(90);
+const lodash_1 = __webpack_require__(3);
 const Exceptions_1 = __webpack_require__(8);
 class Database {
     constructor(config) {
@@ -2016,12 +1572,12 @@ class Database {
         });
         return query.then((results) => results === undefined ? Promise.reject(new Exceptions_1.KeyNotFoundException()) : results);
     }
-    createItem(a) {
+    createItem(tableName, data) {
         // throw warning if called with uid
         // validate that everything else has been sent
-        const withoutUid = lodash_1.omit(a.toSchema(), ['uid', 'tableName']);
+        const withoutUid = lodash_1.omit(data, ['uid']);
         return this.knex.transaction((trx) => {
-            return this.knex(a.getTableName()).transacting(trx).insert(withoutUid, 'uid').returning('uid')
+            return this.knex(tableName).transacting(trx).insert(withoutUid, 'uid').returning('uid')
                 .then((results) => {
                 return this.checkIntegrity(trx)
                     .then((valid) => {
@@ -2035,13 +1591,13 @@ class Database {
                 .catch(trx.rollback);
         });
     }
-    updateItem(a) {
+    updateItem(tableName, data) {
         // assert - must have uid
         // validation?
         return this.knex.transaction((trx) => {
-            return this.knex(a.getTableName()).transacting(trx)
-                .where({ 'uid': a.uid })
-                .update(lodash_1.omit(a.toSchema(), ['tableName']))
+            return this.knex(tableName).transacting(trx)
+                .where({ 'uid': data.uid })
+                .update(data)
                 .then((results) => {
                 return this.checkIntegrity(trx)
                     .then((valid) => {
@@ -2146,7 +1702,7 @@ exports.Database = Database;
 
 
 /***/ },
-/* 37 */
+/* 32 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2156,11 +1712,13 @@ exports.Database = Database;
  * @version 0.0.1
  */
 "use strict";
-const ServerApiService_1 = __webpack_require__(94);
-const QueryEngine_1 = __webpack_require__(93);
-const koaConditionalGet = __webpack_require__(99);
-const koaEtags = __webpack_require__(100);
-const controllers_1 = __webpack_require__(92);
+const ServerApiService_1 = __webpack_require__(86);
+const QueryEngine_1 = __webpack_require__(85);
+const koaConditionalGet = __webpack_require__(91);
+const koaEtags = __webpack_require__(92);
+const falcon_core_1 = __webpack_require__(1);
+const controllers_1 = __webpack_require__(84);
+const falcon_core_2 = __webpack_require__(1);
 exports.wrapDatabase = (db, fakeCreator) => {
     const routes = new Map([
         [ServerApiService_1.AppUrls.element_set, new controllers_1.ElementSetController(db)],
@@ -2228,14 +1786,14 @@ const sourceElementSpecial = (router, serverApiContext, typeMap) => {
 exports.api = (router, serverApiContext) => {
     router.use();
     const typeMap = {
-        [ServerApiService_1.AppUrls.element_set]: controllers_1.ElementSetPersistable,
-        [ServerApiService_1.AppUrls.record]: controllers_1.RecordPersistable,
-        [ServerApiService_1.AppUrls.entity_type]: controllers_1.EntityTypePersistable,
-        [ServerApiService_1.AppUrls.entity]: controllers_1.EntityPersistable,
-        [ServerApiService_1.AppUrls.predicate]: controllers_1.PredicatePersistable,
-        [ServerApiService_1.AppUrls.source]: controllers_1.SourcePersistable,
-        [ServerApiService_1.AppUrls.element]: controllers_1.ElementPersistable,
-        [ServerApiService_1.AppUrls.source_element]: controllers_1.SourceElementPersistable
+        [ServerApiService_1.AppUrls.element_set]: falcon_core_2.ElementSet,
+        [ServerApiService_1.AppUrls.record]: falcon_core_2.Record,
+        [ServerApiService_1.AppUrls.entity_type]: falcon_core_2.EntityType,
+        [ServerApiService_1.AppUrls.entity]: falcon_core_2.Entity,
+        [ServerApiService_1.AppUrls.predicate]: falcon_core_2.Predicate,
+        [ServerApiService_1.AppUrls.source]: falcon_core_2.Source,
+        [ServerApiService_1.AppUrls.element]: falcon_core_2.Element,
+        [ServerApiService_1.AppUrls.source_element]: falcon_core_2.SourceElement
     };
     router.use(function* (next) {
         if (this.req.method === 'GET' || this.isAuthenticated()) {
@@ -2283,23 +1841,23 @@ exports.api = (router, serverApiContext) => {
     router.get('/api/v1/:route/:id', function* (next) {
         yield serverApiContext
             .getItem(typeMap[this.params.route], this.params.route, parseInt(this.params.id))
-            .then((data) => this.body = data.serialize());
+            .then((data) => this.body = falcon_core_1.Serializer.toJson(data));
     });
     router.get('/api/v1/:route', function* (next) {
         yield serverApiContext
             .getCollection(typeMap[this.params.route], this.params.route, this.query)
-            .then((data) => this.body = data.map((datum) => datum.serialize()));
+            .then((data) => this.body = data.map((datum) => falcon_core_1.Serializer.toJson(datum)));
     });
     router.post('/api/v1/:route', function* (next) {
         yield serverApiContext
-            .postItem(typeMap[this.params.route], this.params.route, Object.assign(this.request.body, {
+            .postItem(typeMap[this.params.route], this.params.route, falcon_core_1.Serializer.fromJson(typeMap[this.params.route], Object.assign(this.request.body, {
             creator: this.req.user.uid
-        }))
+        })))
             .then((data) => this.body = data);
     });
     router.put('/api/v1/:route/:id', function* (next) {
         yield serverApiContext
-            .putItem(typeMap[this.params.route], this.params.route, parseInt(this.params.id), this.request.body)
+            .putItem(typeMap[this.params.route], this.params.route, parseInt(this.params.id), falcon_core_1.Serializer.fromJson(typeMap[this.params.route], this.request.body))
             .then((data) => this.body = data);
     });
     router.patch('/api/v1/:route/:id', function* (next) {
@@ -2317,19 +1875,19 @@ exports.api = (router, serverApiContext) => {
 
 
 /***/ },
-/* 38 */
+/* 33 */
 /***/ function(module, exports) {
 
 module.exports = require("electron");
 
 /***/ },
-/* 39 */
+/* 34 */
 /***/ function(module, exports) {
 
 module.exports = require("react-dom");
 
 /***/ },
-/* 40 */
+/* 35 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2340,7 +1898,7 @@ module.exports = require("react-dom");
  */
 "use strict";
 const React = __webpack_require__(0);
-const StatsGrid_1 = __webpack_require__(28);
+const StatsGrid_1 = __webpack_require__(26);
 exports.AdminApp = (props) => (React.createElement("div", {className: 'page'}, 
     React.createElement("section", null, 
         React.createElement("h1", null, "VRE App"), 
@@ -2349,7 +1907,7 @@ exports.AdminApp = (props) => (React.createElement("div", {className: 'page'},
 
 
 /***/ },
-/* 41 */
+/* 36 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2359,15 +1917,15 @@ exports.AdminApp = (props) => (React.createElement("div", {className: 'page'},
  * @version 0.1.0
  */
 "use strict";
-const immutable_1 = __webpack_require__(34);
-const datamodel_1 = __webpack_require__(3);
+const immutable_1 = __webpack_require__(29);
+const falcon_core_1 = __webpack_require__(1);
 exports.emptyDataStore = {
     all: {
         entity: { value: [], lastUpdate: null },
         entity_type: { value: [], lastUpdate: null },
         predicate: { value: [], lastUpdate: null },
         source: { value: [], lastUpdate: null },
-        dublinCore: { value: new datamodel_1.ElementSet(), lastUpdate: null }
+        dublinCore: { value: new falcon_core_1.ElementSet(), lastUpdate: null }
     },
     records: immutable_1.Map(),
     tabs: {
@@ -2386,7 +1944,7 @@ exports.emptyTabs = [
 
 
 /***/ },
-/* 42 */
+/* 37 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2405,7 +1963,7 @@ exports.Loading = (props) => {
 
 
 /***/ },
-/* 43 */
+/* 38 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2416,12 +1974,12 @@ exports.Loading = (props) => {
  */
 "use strict";
 const React = __webpack_require__(0);
-const SearchBox_1 = __webpack_require__(66);
-const ApiService_1 = __webpack_require__(1);
+const SearchBox_1 = __webpack_require__(61);
+const ApiService_1 = __webpack_require__(2);
 const react_router_1 = __webpack_require__(9);
 const Signaller_1 = __webpack_require__(4);
-const lodash_1 = __webpack_require__(2);
-const react_sortable_hoc_1 = __webpack_require__(103);
+const lodash_1 = __webpack_require__(3);
+const react_sortable_hoc_1 = __webpack_require__(95);
 const Handle = react_sortable_hoc_1.SortableHandle((props) => (React.createElement("div", {className: 'badge-container'}, 
     React.createElement("div", {className: 'badge ' + props.tabType}, 
         React.createElement("span", null, props.tabType[0].toUpperCase())
@@ -2501,7 +2059,7 @@ exports.Sidebar = Sidebar;
 
 
 /***/ },
-/* 44 */
+/* 39 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2548,7 +2106,7 @@ exports.Toast = Toast;
 
 
 /***/ },
-/* 45 */
+/* 40 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2559,8 +2117,8 @@ exports.Toast = Toast;
  */
 "use strict";
 const React = __webpack_require__(0);
-const Loading_1 = __webpack_require__(42);
-const workspace_1 = __webpack_require__(76);
+const Loading_1 = __webpack_require__(37);
+const workspace_1 = __webpack_require__(71);
 class Workspace extends React.Component {
     constructor() {
         super();
@@ -2602,7 +2160,7 @@ exports.Workspace = Workspace;
 
 
 /***/ },
-/* 46 */
+/* 41 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2613,7 +2171,7 @@ exports.Workspace = Workspace;
  */
 "use strict";
 const React = __webpack_require__(0);
-const DatePickerDropdown_1 = __webpack_require__(53);
+const DatePickerDropdown_1 = __webpack_require__(48);
 exports.DateFieldEditor = (props) => {
     return (React.createElement("div", {className: 'date-selector'}, 
         React.createElement(DatePickerDropdown_1.DatePickerDropdown, {value: props.value, setValue: props.onChange})
@@ -2622,7 +2180,7 @@ exports.DateFieldEditor = (props) => {
 
 
 /***/ },
-/* 47 */
+/* 42 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2634,7 +2192,7 @@ exports.DateFieldEditor = (props) => {
 "use strict";
 const React = __webpack_require__(0);
 const ComboDropdown_1 = __webpack_require__(6);
-const lodash_1 = __webpack_require__(2);
+const lodash_1 = __webpack_require__(3);
 exports.EntityFieldEditor = (props) => {
     const options = props.entities.map((entity) => ({ key: entity.label, value: entity.uid }));
     let selectedOption = options.find((opt) => opt.value == props.value);
@@ -2646,7 +2204,7 @@ exports.EntityFieldEditor = (props) => {
 
 
 /***/ },
-/* 48 */
+/* 43 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2663,7 +2221,7 @@ exports.IntegerFieldEditor = (props) => {
 
 
 /***/ },
-/* 49 */
+/* 44 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2674,10 +2232,10 @@ exports.IntegerFieldEditor = (props) => {
  */
 "use strict";
 const React = __webpack_require__(0);
-const ApiService_1 = __webpack_require__(1);
-const datamodel_1 = __webpack_require__(3);
+const ApiService_1 = __webpack_require__(2);
+const falcon_core_1 = __webpack_require__(1);
 const EditableFieldComponent_1 = __webpack_require__(11);
-const RecordRow_1 = __webpack_require__(50);
+const RecordRow_1 = __webpack_require__(45);
 const AddTabButton_1 = __webpack_require__(5);
 class RecordEditableFieldComponent extends EditableFieldComponent_1.EditableFieldComponent {
 }
@@ -2690,12 +2248,12 @@ class RecordPredicate extends React.Component {
     }
     componentDidMount() {
         if (this.props.predicate.rangeIsReference) {
-            this.props.api.getCollection(datamodel_1.Entity, ApiService_1.AppUrls.entity, { type: this.props.predicate.range })
+            this.props.api.getCollection(falcon_core_1.Entity, ApiService_1.AppUrls.entity, { type: this.props.predicate.range })
                 .then((potentialValues) => this.setState({ potentialValues }));
         }
     }
     createNewRecord() {
-        this.props.api.postItem(datamodel_1.Record, ApiService_1.AppUrls.record, new datamodel_1.Record().deserialize({
+        this.props.api.postItem(falcon_core_1.Record, ApiService_1.AppUrls.record, falcon_core_1.Serializer.fromJson(falcon_core_1.Record, {
             predicate: this.props.predicate.uid,
             entity: this.props.entity_id,
             valueType: this.props.predicate.rangeIsReference ? 'entity' : this.props.predicate.range,
@@ -2706,13 +2264,13 @@ class RecordPredicate extends React.Component {
         if (record.uid === null) {
             throw new Error('Trying to delete a record with null id');
         }
-        this.props.api.delItem(datamodel_1.Record, ApiService_1.AppUrls.record, record.uid)
+        this.props.api.delItem(falcon_core_1.Record, ApiService_1.AppUrls.record, record.uid)
             .then(() => {
             this.props.onChange();
         });
     }
     recordChanged(record) {
-        this.props.api.putItem(datamodel_1.Record, ApiService_1.AppUrls.record, this.props.entity_id, record.serialize());
+        this.props.api.putItem(falcon_core_1.Record, ApiService_1.AppUrls.record, this.props.entity_id, falcon_core_1.Serializer.toJson(record));
     }
     render() {
         return (React.createElement("section", null, 
@@ -2743,7 +2301,7 @@ exports.RecordPredicate = RecordPredicate;
 
 
 /***/ },
-/* 50 */
+/* 45 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2756,15 +2314,15 @@ exports.RecordPredicate = RecordPredicate;
 const React = __webpack_require__(0);
 var EditableFieldComponent_1 = __webpack_require__(11);
 exports.EditableFieldComponent = EditableFieldComponent_1.EditableFieldComponent;
-const ScorePicker_1 = __webpack_require__(54);
+const ScorePicker_1 = __webpack_require__(49);
 const ComboDropdown_1 = __webpack_require__(6);
 const Signaller_1 = __webpack_require__(4);
-const StringFieldEditor_1 = __webpack_require__(52);
-const EntityFieldEditor_1 = __webpack_require__(47);
-const DateFieldEditor_1 = __webpack_require__(46);
-const IntegerFieldEditor_1 = __webpack_require__(48);
+const StringFieldEditor_1 = __webpack_require__(47);
+const EntityFieldEditor_1 = __webpack_require__(42);
+const DateFieldEditor_1 = __webpack_require__(41);
+const IntegerFieldEditor_1 = __webpack_require__(43);
 const AddTabButton_1 = __webpack_require__(5);
-const formatDate_1 = __webpack_require__(21);
+const formatDate_1 = __webpack_require__(20);
 const createNewSource = (initialValue) => {
     const a = {
         name: 'source',
@@ -2868,7 +2426,7 @@ exports.RecordRow = (props) => {
 
 
 /***/ },
-/* 51 */
+/* 46 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2879,12 +2437,12 @@ exports.RecordRow = (props) => {
  */
 "use strict";
 const React = __webpack_require__(0);
-const ApiService_1 = __webpack_require__(1);
-const datamodel_1 = __webpack_require__(3);
+const ApiService_1 = __webpack_require__(2);
+const falcon_core_1 = __webpack_require__(1);
 const EditableFieldComponent_1 = __webpack_require__(11);
 const SearchBar_1 = __webpack_require__(13);
-const RecordPredicate_1 = __webpack_require__(49);
-const findParentTree_1 = __webpack_require__(20);
+const RecordPredicate_1 = __webpack_require__(44);
+const findParentTree_1 = __webpack_require__(19);
 const Signaller_1 = __webpack_require__(4);
 class RecordEditableFieldComponent extends EditableFieldComponent_1.EditableFieldComponent {
 }
@@ -2899,13 +2457,13 @@ class RecordsEditor extends React.Component {
         if (record.uid === null) {
             throw new Error('Trying to delete a record with null id');
         }
-        this.props.api.delItem(datamodel_1.Record, ApiService_1.AppUrls.record, record.uid)
+        this.props.api.delItem(falcon_core_1.Record, ApiService_1.AppUrls.record, record.uid)
             .then(() => {
             this.props.onChange();
         });
     }
     recordChanged(record) {
-        this.props.api.putItem(datamodel_1.Record, ApiService_1.AppUrls.record, this.props.id, record.serialize());
+        this.props.api.putItem(falcon_core_1.Record, ApiService_1.AppUrls.record, this.props.id, record.serialize());
     }
     createNewRecord() {
         const entity = this.props.dataStore.tabs.entity.get('entity-' + this.props.id).value.entity;
@@ -2966,7 +2524,7 @@ exports.RecordsEditor = RecordsEditor;
 
 
 /***/ },
-/* 52 */
+/* 47 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2983,7 +2541,7 @@ exports.StringFieldEditor = (props) => {
 
 
 /***/ },
-/* 53 */
+/* 48 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2994,9 +2552,9 @@ exports.StringFieldEditor = (props) => {
  */
 "use strict";
 const React = __webpack_require__(0);
-const moment = __webpack_require__(15);
-const lodash_1 = __webpack_require__(2);
-const formatDate_1 = __webpack_require__(21);
+const moment = __webpack_require__(14);
+const lodash_1 = __webpack_require__(3);
+const formatDate_1 = __webpack_require__(20);
 class DatePickerDropdown extends React.Component {
     constructor() {
         super();
@@ -3157,7 +2715,7 @@ exports.DatePickerDropdown = DatePickerDropdown;
 
 
 /***/ },
-/* 54 */
+/* 49 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3168,7 +2726,7 @@ exports.DatePickerDropdown = DatePickerDropdown;
  */
 "use strict";
 const React = __webpack_require__(0);
-const lodash_1 = __webpack_require__(2);
+const lodash_1 = __webpack_require__(3);
 exports.ScorePicker = (props) => {
     const values = [1, 2, 3, 4, 5];
     if (props.readOnly) {
@@ -3184,7 +2742,7 @@ exports.ScorePicker = (props) => {
 
 
 /***/ },
-/* 55 */
+/* 50 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3284,7 +2842,7 @@ exports.ConflictResolution = ConflictResolution;
 
 
 /***/ },
-/* 56 */
+/* 51 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3296,10 +2854,10 @@ exports.ConflictResolution = ConflictResolution;
 "use strict";
 const React = __webpack_require__(0);
 const Overlay_1 = __webpack_require__(10);
-const datamodel_1 = __webpack_require__(3);
-const ApiService_1 = __webpack_require__(1);
+const falcon_core_1 = __webpack_require__(1);
+const ApiService_1 = __webpack_require__(2);
 const ComboDropdown_1 = __webpack_require__(6);
-const lodash_1 = __webpack_require__(2);
+const lodash_1 = __webpack_require__(3);
 class CreateEntity extends React.Component {
     constructor() {
         super();
@@ -3310,7 +2868,7 @@ class CreateEntity extends React.Component {
         };
     }
     componentWillMount() {
-        this.props.api.getCollection(datamodel_1.EntityType, ApiService_1.AppUrls.entity_type, {})
+        this.props.api.getCollection(falcon_core_1.EntityType, ApiService_1.AppUrls.entity_type, {})
             .then((allEntityTypes) => {
             if (this.props.initialType !== undefined) {
                 const initialType = allEntityTypes.find((et) => et.uid === this.props.initialType);
@@ -3322,7 +2880,7 @@ class CreateEntity extends React.Component {
         });
     }
     CreateEntity() {
-        this.props.api.postItem(datamodel_1.Entity, ApiService_1.AppUrls.entity, new datamodel_1.Entity().deserialize({
+        this.props.api.postItem(falcon_core_1.Entity, ApiService_1.AppUrls.entity, falcon_core_1.Serializer.fromJson(falcon_core_1.Entity, {
             label: this.state.label,
             entityType: this.state.entityType.value
         }))
@@ -3345,7 +2903,7 @@ exports.CreateEntity = CreateEntity;
 
 
 /***/ },
-/* 57 */
+/* 52 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3357,9 +2915,9 @@ exports.CreateEntity = CreateEntity;
 "use strict";
 const React = __webpack_require__(0);
 const Overlay_1 = __webpack_require__(10);
-const datamodel_1 = __webpack_require__(3);
-const ApiService_1 = __webpack_require__(1);
-const mousetrap = __webpack_require__(16);
+const falcon_core_1 = __webpack_require__(1);
+const ApiService_1 = __webpack_require__(2);
+const mousetrap = __webpack_require__(15);
 class CreateEntityType extends React.Component {
     constructor() {
         super();
@@ -3368,7 +2926,7 @@ class CreateEntityType extends React.Component {
         };
     }
     createEntityType() {
-        this.props.api.postItem(datamodel_1.EntityType, ApiService_1.AppUrls.entity_type, new datamodel_1.EntityType().deserialize({
+        this.props.api.postItem(falcon_core_1.EntityType, ApiService_1.AppUrls.entity_type, falcon_core_1.Serializer.fromJson(falcon_core_1.EntityType, {
             name: this.state.internalValue
         }))
             .then(this.props.complete);
@@ -3398,7 +2956,7 @@ exports.CreateEntityType = CreateEntityType;
 
 
 /***/ },
-/* 58 */
+/* 53 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3410,10 +2968,10 @@ exports.CreateEntityType = CreateEntityType;
 "use strict";
 const React = __webpack_require__(0);
 const Overlay_1 = __webpack_require__(10);
-const PredicateDescription_1 = __webpack_require__(25);
-const datamodel_1 = __webpack_require__(3);
-const literalTypes_1 = __webpack_require__(27);
-const ApiService_1 = __webpack_require__(1);
+const PredicateDescription_1 = __webpack_require__(23);
+const falcon_core_1 = __webpack_require__(1);
+const literalTypes_1 = __webpack_require__(25);
+const ApiService_1 = __webpack_require__(2);
 class CreatePredicate extends React.Component {
     constructor() {
         super();
@@ -3430,7 +2988,7 @@ class CreatePredicate extends React.Component {
     }
     componentDidMount() {
         if (this.props.initialDomain !== undefined) {
-            this.props.api.getItem(datamodel_1.EntityType, ApiService_1.AppUrls.entity_type, this.props.initialDomain)
+            this.props.api.getItem(falcon_core_1.EntityType, ApiService_1.AppUrls.entity_type, this.props.initialDomain)
                 .then((result) => {
                 if (result.uid === null) {
                     throw new Error('Unexpected null uid');
@@ -3462,13 +3020,13 @@ class CreatePredicate extends React.Component {
         });
     }
     create() {
-        const newPredicate = new datamodel_1.Predicate().deserialize({
+        const newPredicate = falcon_core_1.Serializer.fromJson(falcon_core_1.Predicate, {
             name: this.state.name,
             domain: this.state.domain.value,
             range: this.state.range.value,
             rangeIsReference: this.state.range.meta !== 'literal'
         });
-        this.props.api.postItem(datamodel_1.Predicate, ApiService_1.AppUrls.predicate, newPredicate)
+        this.props.api.postItem(falcon_core_1.Predicate, ApiService_1.AppUrls.predicate, newPredicate)
             .then((result) => {
             newPredicate.uid = result[0];
             this.props.complete(newPredicate);
@@ -3493,7 +3051,7 @@ exports.CreatePredicate = CreatePredicate;
 
 
 /***/ },
-/* 59 */
+/* 54 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3504,8 +3062,8 @@ exports.CreatePredicate = CreatePredicate;
  */
 "use strict";
 const React = __webpack_require__(0);
-const datamodel_1 = __webpack_require__(3);
-const ApiService_1 = __webpack_require__(1);
+const falcon_core_1 = __webpack_require__(1);
+const ApiService_1 = __webpack_require__(2);
 const Signaller_1 = __webpack_require__(4);
 class CreatePresetRecord extends React.Component {
     constructor() {
@@ -3526,7 +3084,7 @@ class CreatePresetRecord extends React.Component {
             name: 'entity',
             complete: (data) => {
                 const isMentioned = this.props.dataStore.all.predicate.value.find((pred) => pred.name === 'is mentioned');
-                this.props.api.postItem(datamodel_1.Record, ApiService_1.AppUrls.record, new datamodel_1.Record().deserialize({
+                this.props.api.postItem(falcon_core_1.Record, ApiService_1.AppUrls.record, falcon_core_1.Serializer.fromJson(falcon_core_1.Record, {
                     predicate: isMentioned.uid,
                     entity: data[0],
                     valueType: 'source',
@@ -3554,7 +3112,7 @@ exports.CreatePresetRecord = CreatePresetRecord;
 
 
 /***/ },
-/* 60 */
+/* 55 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3566,8 +3124,8 @@ exports.CreatePresetRecord = CreatePresetRecord;
 "use strict";
 const React = __webpack_require__(0);
 const Overlay_1 = __webpack_require__(10);
-const datamodel_1 = __webpack_require__(3);
-const ApiService_1 = __webpack_require__(1);
+const falcon_core_1 = __webpack_require__(1);
+const ApiService_1 = __webpack_require__(2);
 const ComboDropdown_1 = __webpack_require__(6);
 const Signaller_1 = __webpack_require__(4);
 class CreateRecord extends React.Component {
@@ -3599,7 +3157,7 @@ class CreateRecord extends React.Component {
         Signaller_1.showModal.dispatch(modalDef);
     }
     setComboValue(opt) {
-        this.props.api.postItem(datamodel_1.Record, ApiService_1.AppUrls.record, new datamodel_1.Record().deserialize({
+        this.props.api.postItem(falcon_core_1.Record, ApiService_1.AppUrls.record, falcon_core_1.Serializer.fromJson(falcon_core_1.Record, {
             predicate: opt.meta.uid,
             entity: this.props.entityUid,
             valueType: opt.meta.rangeIsReference ? 'entity' : opt.meta.range,
@@ -3619,7 +3177,7 @@ exports.CreateRecord = CreateRecord;
 
 
 /***/ },
-/* 61 */
+/* 56 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3631,9 +3189,9 @@ exports.CreateRecord = CreateRecord;
 "use strict";
 const React = __webpack_require__(0);
 const Overlay_1 = __webpack_require__(10);
-const datamodel_1 = __webpack_require__(3);
-const ApiService_1 = __webpack_require__(1);
-const mousetrap = __webpack_require__(16);
+const falcon_core_1 = __webpack_require__(1);
+const ApiService_1 = __webpack_require__(2);
+const mousetrap = __webpack_require__(15);
 class CreateSource extends React.Component {
     constructor() {
         super();
@@ -3645,7 +3203,7 @@ class CreateSource extends React.Component {
         this.setState({ internalValue: this.props.initialValue });
     }
     createSource() {
-        this.props.api.postItem(datamodel_1.Source, ApiService_1.AppUrls.source, new datamodel_1.Source().deserialize({
+        this.props.api.postItem(falcon_core_1.Source, ApiService_1.AppUrls.source, falcon_core_1.Serializer.fromJson(falcon_core_1.Source, {
             name: this.state.internalValue
         }))
             .then(this.props.complete);
@@ -3678,7 +3236,7 @@ exports.CreateSource = CreateSource;
 
 
 /***/ },
-/* 62 */
+/* 57 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3689,14 +3247,14 @@ exports.CreateSource = CreateSource;
  */
 "use strict";
 const React = __webpack_require__(0);
-const lev = __webpack_require__(101);
-const ApiService_1 = __webpack_require__(1);
-const datamodel_1 = __webpack_require__(3);
+const lev = __webpack_require__(93);
+const ApiService_1 = __webpack_require__(2);
+const falcon_core_1 = __webpack_require__(1);
 const ComboDropdown_1 = __webpack_require__(6);
-const lodash_1 = __webpack_require__(2);
+const lodash_1 = __webpack_require__(3);
 const AddTabButton_1 = __webpack_require__(5);
 const Signaller_1 = __webpack_require__(4);
-const formatDate_1 = __webpack_require__(21);
+const formatDate_1 = __webpack_require__(20);
 const sortIcons = {
     'none': 'fa fa-sort',
     'asc': 'fa fa-sort-asc',
@@ -3757,7 +3315,7 @@ class EntityList extends React.Component {
     }
     reload() {
         const setColumns = this.state.columns.filter((col) => col.predicate != -1);
-        this.props.api.getCollection(datamodel_1.Record, ApiService_1.AppUrls.record, {
+        this.props.api.getCollection(falcon_core_1.Record, ApiService_1.AppUrls.record, {
             predicate: setColumns.map((col) => col.predicate),
             entity: this.props.dataStore.all.entity.value.map((entity) => entity.uid)
         })
@@ -3929,7 +3487,7 @@ exports.EntityList = EntityList;
 
 
 /***/ },
-/* 63 */
+/* 58 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3997,7 +3555,7 @@ exports.EntityTypeList = EntityTypeList;
 
 
 /***/ },
-/* 64 */
+/* 59 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4071,7 +3629,7 @@ exports.PredicateList = PredicateList;
 
 
 /***/ },
-/* 65 */
+/* 60 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4142,7 +3700,7 @@ exports.SourceList = SourceList;
 
 
 /***/ },
-/* 66 */
+/* 61 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4154,7 +3712,7 @@ exports.SourceList = SourceList;
 "use strict";
 const React = __webpack_require__(0);
 const ComboDropdown_1 = __webpack_require__(6);
-const ApiService_1 = __webpack_require__(1);
+const ApiService_1 = __webpack_require__(2);
 exports.SearchBox = (props, context) => {
     const entities = props.dataStore.all.entity.value.map((entity) => ({ key: entity.label, value: entity.uid, meta: { itemType: ApiService_1.AppUrls.entity } }));
     const entityTypes = props.dataStore.all.entity_type.value.map((entityType) => ({ key: entityType.name, value: entityType.uid, meta: { itemType: ApiService_1.AppUrls.entity_type } }));
@@ -4175,7 +3733,7 @@ exports.SearchBox.contextTypes = { router: React.PropTypes.object.isRequired };
 
 
 /***/ },
-/* 67 */
+/* 62 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4192,7 +3750,7 @@ exports.AdvancedSearchWorkspace = (props) => (React.createElement("div", {classN
 
 
 /***/ },
-/* 68 */
+/* 63 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4209,7 +3767,7 @@ exports.EmptyWorkspace = () => (React.createElement("div", {className: 'workspac
 
 
 /***/ },
-/* 69 */
+/* 64 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4220,14 +3778,14 @@ exports.EmptyWorkspace = () => (React.createElement("div", {className: 'workspac
  */
 "use strict";
 const React = __webpack_require__(0);
-const ApiService_1 = __webpack_require__(1);
-const datamodel_1 = __webpack_require__(3);
-const lodash_1 = __webpack_require__(2);
+const ApiService_1 = __webpack_require__(2);
+const falcon_core_1 = __webpack_require__(1);
+const lodash_1 = __webpack_require__(3);
 const Signaller_1 = __webpack_require__(4);
-const findParentTree_1 = __webpack_require__(20);
+const findParentTree_1 = __webpack_require__(19);
 const EditableHeader_1 = __webpack_require__(12);
-const EntityWorkspaceCoreView_1 = __webpack_require__(74);
-const EntityWorkspaceReferenceView_1 = __webpack_require__(75);
+const EntityWorkspaceCoreView_1 = __webpack_require__(69);
+const EntityWorkspaceReferenceView_1 = __webpack_require__(70);
 class StringEditableFieldComponent extends EditableHeader_1.EditableFieldComponent {
 }
 class ComboEditableFieldComponent extends EditableHeader_1.EditableFieldComponent {
@@ -4258,7 +3816,7 @@ class EntityEditorWorkspace extends React.Component {
         };
     }
     del() {
-        this.props.api.delItem(datamodel_1.Entity, ApiService_1.AppUrls.entity, this.props.id)
+        this.props.api.delItem(falcon_core_1.Entity, ApiService_1.AppUrls.entity, this.props.id)
             .then(() => {
             Signaller_1.closeTab.dispatch('entity', this.props.id);
             this.context.router.transitionTo('/edit/notfound');
@@ -4278,7 +3836,7 @@ class EntityEditorWorkspace extends React.Component {
                             });
                         }
                         if (result === 'deleteAll') {
-                            Promise.all(data.record.map((datum) => this.props.api.delItem(datamodel_1.Record, ApiService_1.AppUrls.record, datum.uid)))
+                            Promise.all(data.record.map((datum) => this.props.api.delItem(falcon_core_1.Record, ApiService_1.AppUrls.record, datum.uid)))
                                 .then(() => {
                                 this.del();
                             });
@@ -4317,7 +3875,7 @@ class EntityEditorWorkspace extends React.Component {
         Signaller_1.showModal.dispatch(modalDef);
     }
     update(data) {
-        this.props.api.patchItem(datamodel_1.Entity, ApiService_1.AppUrls.entity, this.props.id, data);
+        this.props.api.patchItem(falcon_core_1.Entity, ApiService_1.AppUrls.entity, this.props.id, data);
     }
     render() {
         const entity = this.props.dataStore.tabs.entity.get('entity-' + this.props.id).value.entity;
@@ -4360,7 +3918,7 @@ exports.EntityEditorWorkspace = EntityEditorWorkspace;
 
 
 /***/ },
-/* 70 */
+/* 65 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4371,13 +3929,13 @@ exports.EntityEditorWorkspace = EntityEditorWorkspace;
  */
 "use strict";
 const React = __webpack_require__(0);
-const SameAsEditor_1 = __webpack_require__(19);
-const ApiService_1 = __webpack_require__(1);
-const datamodel_1 = __webpack_require__(3);
+const SameAsEditor_1 = __webpack_require__(18);
+const ApiService_1 = __webpack_require__(2);
+const falcon_core_1 = __webpack_require__(1);
 const AddTabButton_1 = __webpack_require__(5);
 const EditableHeader_1 = __webpack_require__(12);
-const EditableParagraph_1 = __webpack_require__(18);
-const EditableComboDropdown_1 = __webpack_require__(17);
+const EditableParagraph_1 = __webpack_require__(17);
+const EditableComboDropdown_1 = __webpack_require__(16);
 const Signaller_1 = __webpack_require__(4);
 class StringEditableFieldComponent extends EditableHeader_1.EditableFieldComponent {
 }
@@ -4390,19 +3948,19 @@ class EntityTypeWorkspace extends React.Component {
     }
     update(data) {
         const entityType = this.props.dataStore.tabs.entity_type.get('entity_type-' + this.props.id).value;
-        this.props.api.patchItem(datamodel_1.EntityType, ApiService_1.AppUrls.entity_type, this.props.id, data)
+        this.props.api.patchItem(falcon_core_1.EntityType, ApiService_1.AppUrls.entity_type, this.props.id, data)
             .then(() => this.setState({ entityType: Object.assign({}, entityType, data) }));
     }
     copy() {
         const entityType = this.props.dataStore.tabs.entity_type.get('entity_type-' + this.props.id).value;
-        const newEntityType = new datamodel_1.EntityType().deserialize(Object.assign({}, entityType.serialize(), { name: 'Copy of ' + entityType.name }));
-        this.props.api.postItem(datamodel_1.EntityType, ApiService_1.AppUrls.entity_type, newEntityType)
+        const newEntityType = falcon_core_1.Serializer.fromJson(falcon_core_1.EntityType, Object.assign({}, falcon_core_1.Serializer.toJson(entityType), { name: 'Copy of ' + entityType.name }));
+        this.props.api.postItem(falcon_core_1.EntityType, ApiService_1.AppUrls.entity_type, newEntityType)
             .then(([id]) => {
             Signaller_1.createTab.dispatch('entity_type', id);
         });
     }
     del() {
-        this.props.api.delItem(datamodel_1.EntityType, ApiService_1.AppUrls.entity_type, this.props.id)
+        this.props.api.delItem(falcon_core_1.EntityType, ApiService_1.AppUrls.entity_type, this.props.id)
             .then(() => this.context.router.transitionTo('/edit/notfound'))
             .catch((e) => {
             e.data.data.then((data) => {
@@ -4505,7 +4063,7 @@ exports.EntityTypeWorkspace = EntityTypeWorkspace;
 
 
 /***/ },
-/* 71 */
+/* 66 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4516,10 +4074,10 @@ exports.EntityTypeWorkspace = EntityTypeWorkspace;
  */
 "use strict";
 const React = __webpack_require__(0);
-const EntityList_1 = __webpack_require__(62);
-const PredicateList_1 = __webpack_require__(64);
-const SourceList_1 = __webpack_require__(65);
-const EntityTypeList_1 = __webpack_require__(63);
+const EntityList_1 = __webpack_require__(57);
+const PredicateList_1 = __webpack_require__(59);
+const SourceList_1 = __webpack_require__(60);
+const EntityTypeList_1 = __webpack_require__(58);
 exports.ObjectListWorkspace = (props) => (React.createElement("div", {className: 'workspace-editor object-list'}, (() => {
     switch (props.listType) {
         case 'entity':
@@ -4535,7 +4093,7 @@ exports.ObjectListWorkspace = (props) => (React.createElement("div", {className:
 
 
 /***/ },
-/* 72 */
+/* 67 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4547,14 +4105,14 @@ exports.ObjectListWorkspace = (props) => (React.createElement("div", {className:
 "use strict";
 const React = __webpack_require__(0);
 const react_router_1 = __webpack_require__(9);
-const SameAsEditor_1 = __webpack_require__(19);
-const ApiService_1 = __webpack_require__(1);
+const SameAsEditor_1 = __webpack_require__(18);
+const ApiService_1 = __webpack_require__(2);
 const Signaller_1 = __webpack_require__(4);
-const datamodel_1 = __webpack_require__(3);
+const falcon_core_1 = __webpack_require__(1);
 const EditableHeader_1 = __webpack_require__(12);
-const EditableParagraph_1 = __webpack_require__(18);
-const PredicateDescription_1 = __webpack_require__(25);
-const literalTypes_1 = __webpack_require__(27);
+const EditableParagraph_1 = __webpack_require__(17);
+const PredicateDescription_1 = __webpack_require__(23);
+const literalTypes_1 = __webpack_require__(25);
 class StringEditableFieldComponent extends EditableHeader_1.EditableFieldComponent {
 }
 // - Should state the number of times this predicate is used
@@ -4592,21 +4150,21 @@ class PredicateEditorWorkspace extends React.Component {
         }
         const rangeIsReferenceVal = rangeIsReferenceOverride === null
             ? predicate.rangeIsReference : rangeIsReferenceOverride;
-        this.props.api.patchItem(datamodel_1.Predicate, ApiService_1.AppUrls.predicate, predicate.uid, {
+        this.props.api.patchItem(falcon_core_1.Predicate, ApiService_1.AppUrls.predicate, predicate.uid, {
             [field]: value,
             rangeIsReference: rangeIsReferenceVal
         });
     }
     copy() {
         const predicate = this.props.dataStore.tabs.predicate.get('predicate-' + this.props.id).value;
-        const newPredicate = new datamodel_1.Predicate().deserialize(Object.assign({}, predicate.serialize(), { name: 'Copy of ' + predicate.name }));
-        this.props.api.postItem(datamodel_1.Predicate, ApiService_1.AppUrls.predicate, newPredicate)
+        const newPredicate = falcon_core_1.Serializer.fromJson(falcon_core_1.Predicate, Object.assign({}, falcon_core_1.Serializer.toJson(predicate), { name: 'Copy of ' + predicate.name }));
+        this.props.api.postItem(falcon_core_1.Predicate, ApiService_1.AppUrls.predicate, newPredicate)
             .then(([id]) => {
             Signaller_1.createTab.dispatch('predicate', id);
         });
     }
     del() {
-        this.props.api.delItem(datamodel_1.Predicate, ApiService_1.AppUrls.predicate, this.props.id)
+        this.props.api.delItem(falcon_core_1.Predicate, ApiService_1.AppUrls.predicate, this.props.id)
             .then(() => this.context.router.transitionTo('/edit/notfound'))
             .catch((e) => {
             e.data.data.then((data) => {
@@ -4620,7 +4178,7 @@ class PredicateEditorWorkspace extends React.Component {
                             });
                         }
                         if (result === 'deleteAll') {
-                            Promise.all(data.record.map((datum) => this.props.api.delItem(datamodel_1.Record, ApiService_1.AppUrls.record, datum.uid)))
+                            Promise.all(data.record.map((datum) => this.props.api.delItem(falcon_core_1.Record, ApiService_1.AppUrls.record, datum.uid)))
                                 .then(() => {
                                 this.del();
                             });
@@ -4698,7 +4256,7 @@ exports.PredicateEditorWorkspace = PredicateEditorWorkspace;
 
 
 /***/ },
-/* 73 */
+/* 68 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4709,13 +4267,13 @@ exports.PredicateEditorWorkspace = PredicateEditorWorkspace;
  */
 "use strict";
 const React = __webpack_require__(0);
-const SameAsEditor_1 = __webpack_require__(19);
-const ApiService_1 = __webpack_require__(1);
-const datamodel_1 = __webpack_require__(3);
+const SameAsEditor_1 = __webpack_require__(18);
+const ApiService_1 = __webpack_require__(2);
+const falcon_core_1 = __webpack_require__(1);
 const EditableHeader_1 = __webpack_require__(12);
-const EditableParagraph_1 = __webpack_require__(18);
-const EditableComboDropdown_1 = __webpack_require__(17);
-const lodash_1 = __webpack_require__(2);
+const EditableParagraph_1 = __webpack_require__(17);
+const EditableComboDropdown_1 = __webpack_require__(16);
+const lodash_1 = __webpack_require__(3);
 const Signaller_1 = __webpack_require__(4);
 const AddTabButton_1 = __webpack_require__(5);
 class StringEditableFieldComponent extends EditableHeader_1.EditableFieldComponent {
@@ -4750,7 +4308,7 @@ class SourceEditorWorkspace extends React.Component {
     }
     updateSource(field, value) {
         const source = this.props.dataStore.tabs.source.get('source-' + this.props.id).value.source;
-        this.props.api.patchItem(datamodel_1.Source, ApiService_1.AppUrls.source, source.uid, { [field]: value });
+        this.props.api.patchItem(falcon_core_1.Source, ApiService_1.AppUrls.source, source.uid, { [field]: value });
         //.then((success) => {
         // const updatedSource = new Source().deserialize(Object.assign({},
         //     source.serialize(), { [field]: value }));
@@ -4771,7 +4329,7 @@ class SourceEditorWorkspace extends React.Component {
         };
         if (source.metaData[element.name] !== undefined
             && source.metaData[element.name].values.find((a) => a.source === this.props.id) !== undefined) {
-            this.props.api.patchItem(datamodel_1.SourceElement, ApiService_1.AppUrls.source_element, compositeKey, new datamodel_1.SourceElement().deserialize({
+            this.props.api.patchItem(falcon_core_1.SourceElement, ApiService_1.AppUrls.source_element, compositeKey, falcon_core_1.Serializer.fromJson(falcon_core_1.SourceElement, {
                 uid: compositeKey,
                 element: source.metaData[element.name].element_uid,
                 source: this.props.id,
@@ -4779,14 +4337,14 @@ class SourceEditorWorkspace extends React.Component {
             }));
         }
         else {
-            this.props.api.postItem(datamodel_1.SourceElement, ApiService_1.AppUrls.source_element, new datamodel_1.SourceElement().deserialize({
+            this.props.api.postItem(falcon_core_1.SourceElement, ApiService_1.AppUrls.source_element, falcon_core_1.Serializer.fromJson(falcon_core_1.SourceElement, {
                 uid: compositeKey,
                 value: value
             }));
         }
     }
     del() {
-        this.props.api.delItem(datamodel_1.Source, ApiService_1.AppUrls.source, this.props.id)
+        this.props.api.delItem(falcon_core_1.Source, ApiService_1.AppUrls.source, this.props.id)
             .then(() => this.context.router.transitionTo('/edit/notfound'))
             .catch((e) => {
             e.data.data.then((data) => {
@@ -4800,7 +4358,7 @@ class SourceEditorWorkspace extends React.Component {
                             });
                         }
                         if (result === 'deleteAll') {
-                            Promise.all(data.source.map((datum) => this.props.api.delItem(datamodel_1.Source, ApiService_1.AppUrls.source, datum.uid)))
+                            Promise.all(data.source.map((datum) => this.props.api.delItem(falcon_core_1.Source, ApiService_1.AppUrls.source, datum.uid)))
                                 .then(() => {
                                 this.del();
                             });
@@ -4817,8 +4375,8 @@ class SourceEditorWorkspace extends React.Component {
     }
     createChild() {
         const source = this.props.dataStore.tabs.source.get('source-' + this.props.id).value.source;
-        const newSource = new datamodel_1.Source().deserialize(Object.assign({}, source.serialize(), { name: 'Child of ' + source.name, parent: this.props.id }));
-        this.props.api.postItem(datamodel_1.Source, ApiService_1.AppUrls.source, newSource)
+        const newSource = falcon_core_1.Serializer.fromJson(falcon_core_1.Source, Object.assign({}, falcon_core_1.Serializer.toJson(source), { name: 'Child of ' + source.name, parent: this.props.id }));
+        this.props.api.postItem(falcon_core_1.Source, ApiService_1.AppUrls.source, newSource)
             .then(([id]) => {
             Signaller_1.createTab.dispatch('source', id);
         });
@@ -4916,7 +4474,7 @@ exports.SourceEditorWorkspace = SourceEditorWorkspace;
 
 
 /***/ },
-/* 74 */
+/* 69 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4927,14 +4485,14 @@ exports.SourceEditorWorkspace = SourceEditorWorkspace;
  */
 "use strict";
 const React = __webpack_require__(0);
-const RecordsEditor_1 = __webpack_require__(51);
-const ApiService_1 = __webpack_require__(1);
-const datamodel_1 = __webpack_require__(3);
-const lodash_1 = __webpack_require__(2);
+const RecordsEditor_1 = __webpack_require__(46);
+const ApiService_1 = __webpack_require__(2);
+const falcon_core_1 = __webpack_require__(1);
+const lodash_1 = __webpack_require__(3);
 const AddTabButton_1 = __webpack_require__(5);
-const findParentTree_1 = __webpack_require__(20);
+const findParentTree_1 = __webpack_require__(19);
 const EditableHeader_1 = __webpack_require__(12);
-const EditableComboDropdown_1 = __webpack_require__(17);
+const EditableComboDropdown_1 = __webpack_require__(16);
 class StringEditableFieldComponent extends EditableHeader_1.EditableFieldComponent {
 }
 class ComboEditableFieldComponent extends EditableHeader_1.EditableFieldComponent {
@@ -4964,7 +4522,7 @@ class EntityWorkspaceCoreView extends React.Component {
         };
     }
     update(data) {
-        this.props.api.patchItem(datamodel_1.Entity, ApiService_1.AppUrls.entity, this.props.id, data);
+        this.props.api.patchItem(falcon_core_1.Entity, ApiService_1.AppUrls.entity, this.props.id, data);
     }
     render() {
         const entity = this.props.dataStore.tabs.entity.get('entity-' + this.props.id).value.entity;
@@ -5011,7 +4569,7 @@ exports.EntityWorkspaceCoreView = EntityWorkspaceCoreView;
 
 
 /***/ },
-/* 75 */
+/* 70 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5022,8 +4580,8 @@ exports.EntityWorkspaceCoreView = EntityWorkspaceCoreView;
  */
 "use strict";
 const React = __webpack_require__(0);
-const ApiService_1 = __webpack_require__(1);
-const datamodel_1 = __webpack_require__(3);
+const ApiService_1 = __webpack_require__(2);
+const falcon_core_1 = __webpack_require__(1);
 const AddTabButton_1 = __webpack_require__(5);
 // What can I do?
 // Entity Operations
@@ -5050,7 +4608,7 @@ class EntityWorkspaceReferenceView extends React.Component {
         };
     }
     update(data) {
-        this.props.api.patchItem(datamodel_1.Entity, ApiService_1.AppUrls.entity, this.props.id, data);
+        this.props.api.patchItem(falcon_core_1.Entity, ApiService_1.AppUrls.entity, this.props.id, data);
     }
     render() {
         return (React.createElement("section", {className: 'editor-body'}, 
@@ -5081,7 +4639,7 @@ exports.EntityWorkspaceReferenceView = EntityWorkspaceReferenceView;
 
 
 /***/ },
-/* 76 */
+/* 71 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5091,276 +4649,24 @@ exports.EntityWorkspaceReferenceView = EntityWorkspaceReferenceView;
  * @version 0.1.0
  */
 "use strict";
-var EmptyWorkspace_1 = __webpack_require__(68);
+var EmptyWorkspace_1 = __webpack_require__(63);
 exports.EmptyWorkspace = EmptyWorkspace_1.EmptyWorkspace;
-var EntityEditorWorkspace_1 = __webpack_require__(69);
+var EntityEditorWorkspace_1 = __webpack_require__(64);
 exports.EntityEditorWorkspace = EntityEditorWorkspace_1.EntityEditorWorkspace;
-var EntityTypeWorkspace_1 = __webpack_require__(70);
+var EntityTypeWorkspace_1 = __webpack_require__(65);
 exports.EntityTypeWorkspace = EntityTypeWorkspace_1.EntityTypeWorkspace;
-var SourceEditorWorkspace_1 = __webpack_require__(73);
+var SourceEditorWorkspace_1 = __webpack_require__(68);
 exports.SourceEditorWorkspace = SourceEditorWorkspace_1.SourceEditorWorkspace;
-var PredicateEditorWorkspace_1 = __webpack_require__(72);
+var PredicateEditorWorkspace_1 = __webpack_require__(67);
 exports.PredicateEditorWorkspace = PredicateEditorWorkspace_1.PredicateEditorWorkspace;
-var AdvancedSearchWorkspace_1 = __webpack_require__(67);
+var AdvancedSearchWorkspace_1 = __webpack_require__(62);
 exports.AdvancedSearchWorkspace = AdvancedSearchWorkspace_1.AdvancedSearchWorkspace;
-var ObjectListWorkspace_1 = __webpack_require__(71);
+var ObjectListWorkspace_1 = __webpack_require__(66);
 exports.ObjectListWorkspace = ObjectListWorkspace_1.ObjectListWorkspace;
 
 
 /***/ },
-/* 77 */
-/***/ function(module, exports) {
-
-"use strict";
-/**
- * @fileOverview Abstract interface for sources
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.0.1
- */
-"use strict";
-class Element {
-    deserialize(data) {
-        this.name = data.name;
-        this.uid = data.uid;
-        this.elementSet = data.elementSet;
-        this.description = data.description;
-        this.comment = data.comment;
-        return this;
-    }
-    serialize() {
-        return this;
-    }
-}
-exports.Element = Element;
-
-
-/***/ },
-/* 78 */
-/***/ function(module, exports) {
-
-"use strict";
-/**
- * @fileOverview Abstract interface for sources
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.0.1
- */
-"use strict";
-class ElementSet {
-    deserialize(data) {
-        this.name = data.name;
-        this.uid = data.uid;
-        this.uri = data.uri;
-        this.description = data.description;
-        this.elements = data.elements;
-        return this;
-    }
-    serialize() {
-        return this;
-    }
-}
-exports.ElementSet = ElementSet;
-
-
-/***/ },
-/* 79 */
-/***/ function(module, exports) {
-
-"use strict";
-/**
- * @fileOverview Abstract interface for entities
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.0.1
- */
-"use strict";
-class Entity {
-    deserialize(data) {
-        this.uid = data.uid;
-        this.entityType = data.entityType;
-        this.label = data.label;
-        this.parent = data.parent;
-        this.creator = data.creator;
-        this.creationTimestamp = data.creationTimestamp;
-        this.lastmodifiedTimestamp = data.lastmodifiedTimestamp;
-        return this;
-    }
-    serialize() {
-        return this;
-    }
-}
-exports.Entity = Entity;
-
-
-/***/ },
-/* 80 */
-/***/ function(module, exports) {
-
-"use strict";
-/**
- * @fileOverview Abstract interface for entity type
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.0.1
- */
-"use strict";
-class EntityType {
-    deserialize(data) {
-        this.uid = data.uid;
-        this.name = data.name;
-        this.description = data.description;
-        this.icon = data.icon;
-        this.colour = data.colour;
-        this.sameAs = data.sameAs;
-        this.parent = data.parent;
-        this.parents = data.parents;
-        this.creator = data.creator;
-        this.children = data.children;
-        this.creationTimestamp = data.creationTimestamp;
-        this.lastmodifiedTimestamp = data.lastmodifiedTimestamp;
-        return this;
-    }
-    serialize() {
-        return this;
-    }
-}
-exports.EntityType = EntityType;
-
-
-/***/ },
-/* 81 */
-/***/ function(module, exports) {
-
-"use strict";
-/**
- * @fileOverview Abstract interface for locations
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.0.1
- */
-"use strict";
-class Predicate {
-    serialize() {
-        return this;
-    }
-    deserialize(data) {
-        this.uid = data.uid;
-        this.domain = data.domain;
-        this.range = data.range;
-        this.name = data.name;
-        this.description = data.description;
-        this.sameAs = data.sameAs;
-        this.readonly = data.readonly;
-        this.rangeIsReference = data.rangeIsReference;
-        this.creator = data.creator;
-        this.creationTimestamp = data.creationTimestamp;
-        this.lastmodifiedTimestamp = data.lastmodifiedTimestamp;
-        return this;
-    }
-}
-exports.Predicate = Predicate;
-
-
-/***/ },
-/* 82 */
-/***/ function(module, exports) {
-
-"use strict";
-"use strict";
-class Record {
-    constructor() {
-        //calculated
-        this.valueType = null;
-    }
-    deserialize(data) {
-        this.uid = data.uid;
-        this.source = data.source;
-        this.predicate = data.predicate;
-        this.entity = data.entity;
-        this.score = data.score;
-        this.valueType = data.valueType;
-        this.value = data.value;
-        this.creator = data.creator;
-        this.period = data.period;
-        this.creationTimestamp = data.creationTimestamp;
-        this.lastmodifiedTimestamp = data.lastmodifiedTimestamp;
-        return this;
-    }
-    serialize() {
-        return this;
-    }
-}
-exports.Record = Record;
-// Each value type will have it's own editor control :/
-// entity = dropdown selector
-// string = text editor
-// date = date picker
-// integer = numberic picker
-// spatial point = lat/lng or point picker (opens new tab. creates new resource)
-// spatial region = choose from a list or create new (opens new tab, creates new resource)
-// score - star picker
-// source - entity picker (with slight modification)
-// value - custom (see above)
-// entity - entity picker (with slight modification) 
-
-
-/***/ },
-/* 83 */
-/***/ function(module, exports) {
-
-"use strict";
-/**
- * @fileOverview Abstract interface for sources
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.0.1
- */
-"use strict";
-class Source {
-    serialize() {
-        return this;
-    }
-    deserialize(data) {
-        this.name = data.name;
-        this.uid = data.uid;
-        this.metaData = data.metaData;
-        this.sameAs = data.sameAs;
-        this.parent = data.parent;
-        this.parents = data.parents;
-        this.children = data.children;
-        this.creator = data.creator;
-        this.creationTimestamp = data.creationTimestamp;
-        this.lastmodifiedTimestamp = data.lastmodifiedTimestamp;
-        return this;
-    }
-}
-exports.Source = Source;
-
-
-/***/ },
-/* 84 */
-/***/ function(module, exports) {
-
-"use strict";
-/**
- * @fileOverview Abstract interface for sources
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.0.1
- */
-"use strict";
-class SourceElement {
-    deserialize(data) {
-        this.uid = data.uid;
-        this.value = data.value;
-        this.creator = data.creator;
-        this.creationTimestamp = data.creationTimestamp;
-        this.lastmodifiedTimestamp = data.lastmodifiedTimestamp;
-        return this;
-    }
-    serialize() {
-        return this;
-    }
-}
-exports.SourceElement = SourceElement;
-
-
-/***/ },
-/* 85 */
+/* 72 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5372,7 +4678,7 @@ exports.SourceElement = SourceElement;
 "use strict";
 const React = __webpack_require__(0);
 const react_router_1 = __webpack_require__(9);
-const StatsGrid_1 = __webpack_require__(28);
+const StatsGrid_1 = __webpack_require__(26);
 exports.Admin = (props) => (React.createElement("div", {className: 'page'}, 
     React.createElement("section", null, 
         React.createElement("h1", null, "Welcome to the admin pages"), 
@@ -5401,7 +4707,7 @@ exports.Admin = (props) => (React.createElement("div", {className: 'page'},
 
 
 /***/ },
-/* 86 */
+/* 73 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5436,7 +4742,7 @@ exports.AppDownload = (props) => (React.createElement("div", {className: 'page'}
 
 
 /***/ },
-/* 87 */
+/* 74 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5456,7 +4762,7 @@ exports.DatabaseUpload = (props) => (React.createElement("div", {className: 'pag
 
 
 /***/ },
-/* 88 */
+/* 75 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5475,23 +4781,23 @@ var __assign = (this && this.__assign) || Object.assign || function(t) {
     return t;
 };
 const React = __webpack_require__(0);
-const immutable_1 = __webpack_require__(34);
-const moment = __webpack_require__(15);
-const ApiService_1 = __webpack_require__(1);
-const datamodel_1 = __webpack_require__(3);
-const Sidebar_1 = __webpack_require__(43);
-const Workspace_1 = __webpack_require__(45);
-const Toast_1 = __webpack_require__(44);
+const immutable_1 = __webpack_require__(29);
+const moment = __webpack_require__(14);
+const ApiService_1 = __webpack_require__(2);
+const falcon_core_1 = __webpack_require__(1);
+const Sidebar_1 = __webpack_require__(38);
+const Workspace_1 = __webpack_require__(40);
+const Toast_1 = __webpack_require__(39);
 const Signaller_1 = __webpack_require__(4);
-const lodash_1 = __webpack_require__(2);
-const CreatePredicate_1 = __webpack_require__(58);
-const CreateRecord_1 = __webpack_require__(60);
-const CreatePresetRecord_1 = __webpack_require__(59);
-const CreateSource_1 = __webpack_require__(61);
-const CreateEntity_1 = __webpack_require__(56);
-const CreateEntityType_1 = __webpack_require__(57);
-const ConflictResolution_1 = __webpack_require__(55);
-const DataStore_1 = __webpack_require__(41);
+const lodash_1 = __webpack_require__(3);
+const CreatePredicate_1 = __webpack_require__(53);
+const CreateRecord_1 = __webpack_require__(55);
+const CreatePresetRecord_1 = __webpack_require__(54);
+const CreateSource_1 = __webpack_require__(56);
+const CreateEntity_1 = __webpack_require__(51);
+const CreateEntityType_1 = __webpack_require__(52);
+const ConflictResolution_1 = __webpack_require__(50);
+const DataStore_1 = __webpack_require__(36);
 class ObjectEditor extends React.Component {
     constructor(props, context) {
         super();
@@ -5573,11 +4879,11 @@ class ObjectEditor extends React.Component {
             }
             // load lists of data commonly required by views
             const allPromise = Promise.all([
-                props.api.getCollection(datamodel_1.Predicate, ApiService_1.AppUrls.predicate, {}),
-                props.api.getCollection(datamodel_1.Source, ApiService_1.AppUrls.source, {}),
-                props.api.getCollection(datamodel_1.Entity, ApiService_1.AppUrls.entity, {}),
-                props.api.getCollection(datamodel_1.EntityType, ApiService_1.AppUrls.entity_type, {}),
-                props.api.getItem(datamodel_1.ElementSet, ApiService_1.AppUrls.element_set, 1)
+                props.api.getCollection(falcon_core_1.Predicate, ApiService_1.AppUrls.predicate, {}),
+                props.api.getCollection(falcon_core_1.Source, ApiService_1.AppUrls.source, {}),
+                props.api.getCollection(falcon_core_1.Entity, ApiService_1.AppUrls.entity, {}),
+                props.api.getCollection(falcon_core_1.EntityType, ApiService_1.AppUrls.entity_type, {}),
+                props.api.getItem(falcon_core_1.ElementSet, ApiService_1.AppUrls.element_set, 1)
             ])
                 .then(([predicates, sources, entities, entityType, dublinCore]) => {
                 return {
@@ -5603,18 +4909,18 @@ class ObjectEditor extends React.Component {
         switch (tabType) {
             case 'entity':
                 return Promise.all([
-                    this.props.api.getItem(datamodel_1.Entity, ApiService_1.AppUrls.entity, uid),
-                    this.props.api.getCollection(datamodel_1.Record, ApiService_1.AppUrls.record, { entity: uid }),
-                    this.props.api.getCollection(datamodel_1.Record, ApiService_1.AppUrls.record, { value_type: 'entity', value_entity: uid })
+                    this.props.api.getItem(falcon_core_1.Entity, ApiService_1.AppUrls.entity, uid),
+                    this.props.api.getCollection(falcon_core_1.Record, ApiService_1.AppUrls.record, { entity: uid }),
+                    this.props.api.getCollection(falcon_core_1.Record, ApiService_1.AppUrls.record, { value_type: 'entity', value_entity: uid })
                 ]).then(([entity, records, referenceRecords]) => ({ entity, records, referenceRecords }));
             case 'predicate':
-                return this.props.api.getItem(datamodel_1.Predicate, ApiService_1.AppUrls.predicate, uid);
+                return this.props.api.getItem(falcon_core_1.Predicate, ApiService_1.AppUrls.predicate, uid);
             case 'entity_type':
-                return this.props.api.getItem(datamodel_1.EntityType, ApiService_1.AppUrls.entity_type, uid);
+                return this.props.api.getItem(falcon_core_1.EntityType, ApiService_1.AppUrls.entity_type, uid);
             case 'source':
                 return Promise.all([
-                    this.props.api.getItem(datamodel_1.Source, ApiService_1.AppUrls.source, uid),
-                    this.props.api.getCollection(datamodel_1.SourceElement, ApiService_1.AppUrls.source_element, { source: uid })
+                    this.props.api.getItem(falcon_core_1.Source, ApiService_1.AppUrls.source, uid),
+                    this.props.api.getCollection(falcon_core_1.SourceElement, ApiService_1.AppUrls.source_element, { source: uid })
                 ]).then(([source, source_element]) => ({ source, source_element }));
             default:
                 throw new Error('Unexpected tab type requested');
@@ -5741,7 +5047,7 @@ exports.ObjectEditor = ObjectEditor;
 
 
 /***/ },
-/* 89 */
+/* 76 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5761,7 +5067,7 @@ exports.RouteNotFound = (props) => (React.createElement("section", null,
 
 
 /***/ },
-/* 90 */
+/* 77 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5780,7 +5086,7 @@ exports.User = (props) => (React.createElement("div", {className: 'page'},
 
 
 /***/ },
-/* 91 */
+/* 78 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5799,7 +5105,373 @@ exports.UserManagement = (props) => (React.createElement("div", {className: 'pag
 
 
 /***/ },
-/* 92 */
+/* 79 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview Controller for element sets
+ * @author <a href='mailto:tim.hollies@warwick.ac.uk'>Tim Hollies</a>
+ * @version 0.0.1
+ */
+"use strict";
+const falcon_core_1 = __webpack_require__(1);
+const GenericController_1 = __webpack_require__(7);
+class ElementController extends GenericController_1.GenericController {
+    constructor(db) {
+        super(db, 'elements');
+    }
+    toSchema(data) {
+        return falcon_core_1.Serializer.toJson(data);
+    }
+    fromSchema(data) {
+        return Object.assign(Object.create(falcon_core_1.Element.prototype), data);
+    }
+}
+exports.ElementController = ElementController;
+
+
+/***/ },
+/* 80 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview Controller for element sets
+ * @author <a href='mailto:tim.hollies@warwick.ac.uk'>Tim Hollies</a>
+ * @version 0.0.1
+ */
+"use strict";
+const falcon_core_1 = __webpack_require__(1);
+const GenericController_1 = __webpack_require__(7);
+const lodash_1 = __webpack_require__(3);
+class ElementSetController extends GenericController_1.GenericController {
+    constructor(db) {
+        super(db, 'element_sets');
+    }
+    toSchema(data) {
+        return lodash_1.omit(falcon_core_1.Serializer.toJson(data), 'elements');
+    }
+    fromSchema(data) {
+        return Object.assign(Object.create(falcon_core_1.ElementSet.prototype), data);
+    }
+    getItemJson(obj, uid) {
+        return super.getItemJson(obj, uid)
+            .then((elementSet) => {
+            if (elementSet.uid === null) {
+                throw new Error('could not find source');
+            }
+            return this.db.select('elements')
+                .where({ 'element_set': elementSet.uid })
+                .then((elements) => {
+                elementSet.elements = elements;
+                return elementSet;
+            });
+        });
+    }
+}
+exports.ElementSetController = ElementSetController;
+
+
+/***/ },
+/* 81 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview Controller for element sets
+ * @author <a href='mailto:tim.hollies@warwick.ac.uk'>Tim Hollies</a>
+ * @version 0.0.1
+ */
+"use strict";
+const falcon_core_1 = __webpack_require__(1);
+const GenericController_1 = __webpack_require__(7);
+const PredicateController_1 = __webpack_require__(28);
+const EntityController_1 = __webpack_require__(27);
+const Exceptions_1 = __webpack_require__(8);
+const lodash_1 = __webpack_require__(3);
+class EntityTypeController extends GenericController_1.GenericController {
+    constructor(db) {
+        super(db, 'entity_types');
+    }
+    toSchema(data) {
+        return Object.assign(lodash_1.omit(falcon_core_1.Serializer.toJson(data), 'sameAs', 'parents', 'children', 'creationTimestamp', 'lastmodifiedTimestamp'), {
+            same_as: data.sameAs,
+            creation_timestamp: data.creationTimestamp,
+            lastmodified_timeStamp: data.lastmodifiedTimestamp
+        });
+    }
+    fromSchema(data) {
+        return Object.assign(Object.create(falcon_core_1.EntityType.prototype), Object.assign(data, {
+            'sameAs': data.same_as
+        }));
+    }
+    getItemJson(obj, uid) {
+        return super.getItemJson(obj, uid)
+            .then((result) => {
+            return Promise.all([
+                this.db.getAncestorsOf(uid, 'entity_types')
+                    .then((ancestors) => {
+                    return this.db.select('entity_types').whereIn('uid', ancestors)
+                        .then((results) => results.map((result) => this.fromSchema(result)));
+                }),
+                this.db.select('entity_types', ['uid']).where({ parent: uid })
+            ])
+                .then(([parents, children]) => {
+                result.parents = parents;
+                result.children = children.map((child) => child.uid);
+                return result;
+            });
+        });
+    }
+    deleteItem(obj, uid) {
+        // check if this entity is the parent of another entity or if it has any relationships
+        // pointing towards it.
+        return Promise.all([
+            this.db.select(this.tableName).where('parent', '=', uid),
+            this.db.select('entities').where('type', '=', uid),
+            this.db.select('predicates').where('domain', '=', uid).orWhere('range_ref', '=', uid)
+        ]).then(([entityTypes, entities, predicates]) => {
+            if (entities.length + entityTypes.length + predicates.length === 0) {
+                return this.db.deleteItem(this.tableName, uid);
+            }
+            else {
+                throw new Exceptions_1.OperationNotPermittedException({
+                    message: 'The operation could not be completed as the entity is referenced in other sources',
+                    data: Promise.resolve({
+                        entityType: entityTypes.map((entityType) => EntityController_1.EntityController.fromSchema(entityType)),
+                        entity: entities.map((entity) => EntityController_1.EntityController.fromSchema(entity)),
+                        predicate: predicates.map((predicate) => PredicateController_1.PredicateController.fromSchema(predicate))
+                    })
+                });
+            }
+        });
+    }
+}
+exports.EntityTypeController = EntityTypeController;
+
+
+/***/ },
+/* 82 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview Controller for element sets
+ * @author <a href='mailto:tim.hollies@warwick.ac.uk'>Tim Hollies</a>
+ * @version 0.0.1
+ */
+"use strict";
+const falcon_core_1 = __webpack_require__(1);
+const GenericController_1 = __webpack_require__(7);
+const Exceptions_1 = __webpack_require__(8);
+const RecordController_1 = __webpack_require__(21);
+const lodash_1 = __webpack_require__(3);
+class SourceController extends GenericController_1.GenericController {
+    constructor(db) {
+        super(db, 'sources');
+    }
+    toSchema(data) {
+        return Object.assign({}, lodash_1.omit(falcon_core_1.Serializer.toJson(data), 'metaData', 'sameAs', 'parents', 'children', 'creationTimestamp', 'lastmodifiedTimestamp'), {
+            same_as: data.sameAs,
+            creation_timestamp: data.creationTimestamp,
+            lastmodified_timeStamp: data.lastmodifiedTimestamp
+        });
+    }
+    fromSchema(data) {
+        return Object.assign(Object.create(falcon_core_1.Source.prototype), Object.assign(data, {
+            'sameAs': data.same_as
+        }));
+    }
+    // override the getItemJson and getCollectionJson functions to also get information about the
+    // metadata associated with the retrieved source
+    getMetadata(fields, sourceId) {
+        return this.db.query().raw(`
+            WITH RECURSIVE parent_of(uid, parent) AS  (SELECT uid, parent FROM sources),
+                ancestor(uid) AS (
+                SELECT parent FROM parent_of WHERE uid=?
+                UNION ALL
+                SELECT parent FROM parent_of JOIN ancestor USING(uid) )
+
+            SELECT *
+                FROM ancestor;
+        `, sourceId).then((parents) => {
+            parents = lodash_1.map(parents, 'uid');
+            parents.pop();
+            parents = [sourceId].concat(parents);
+            return Promise.all(parents.map((parent) => this.db.query().select(fields)
+                .from('source_elements')
+                .innerJoin('elements', function () { this.on('source_elements.element', '=', 'elements.uid'); })
+                .innerJoin('element_sets', function () { this.on('element_sets.uid', '=', 'elements.element_set'); })
+                .where({ 'source_elements.source': parent }))).then((results) => {
+                const a = lodash_1.groupBy(lodash_1.flatten(results), 'name');
+                return Object.keys(a).reduce((prev, cur) => {
+                    const meta = lodash_1.omit(a[cur][0], 'source', 'value');
+                    meta['values'] = a[cur]
+                        .map((val) => ({ source: val.source, value: val.value, uid: val.uid }))
+                        .sort((a, b) => parents.indexOf(a.source) - parents.indexOf(b.source));
+                    return Object.assign(prev, { [cur]: meta });
+                }, {});
+            });
+        });
+    }
+    getItemJson(obj, uid) {
+        return super.getItemJson(obj, uid)
+            .then((source) => {
+            if (source.uid === null) {
+                throw new Error('could not find source');
+            }
+            return Promise.all([
+                this.getMetadata([
+                    'source_elements.source as source',
+                    'elements.name',
+                    'source_elements.value',
+                    'elements.description',
+                    'element_sets.name as element_set',
+                    'elements.comment',
+                    'elements.uri',
+                    'elements.uid as element_uid'], source.uid),
+                this.db.query().select('uid').from('sources').where({ parent: uid }),
+                this.db.query().raw(`
+                    WITH RECURSIVE parent_of(uid, parent) AS  (SELECT uid, parent FROM sources),
+                    ancestor(uid) AS (
+                    SELECT parent FROM parent_of WHERE uid=?
+                    UNION ALL
+                    SELECT parent FROM parent_of JOIN ancestor USING(uid) )
+
+                    SELECT uid
+                    FROM ancestor;
+                `, uid)
+            ])
+                .then(([sourceElements, children, parents]) => {
+                source.metaData = sourceElements;
+                source.children = children.map((child) => child.uid).filter((child) => child !== null);
+                source.parents = parents.map((parent) => parent.uid).filter((parent) => parent !== null);
+                return source;
+            });
+        });
+    }
+    getCollectionJson(obj, params = {}) {
+        return super.getCollectionJson(obj, params)
+            .then((sources) => {
+            return Promise.all(sources.map((source) => {
+                if (source.uid === null) {
+                    throw new Error('could not find source');
+                }
+                return this.getMetadata([
+                    'elements.name',
+                    'source_elements.value'
+                ], source.uid)
+                    .then((sourceElements) => {
+                    source.metaData = sourceElements;
+                    return source;
+                });
+            }));
+        });
+    }
+    //TODO should find every child source, not just the direct children
+    deleteItem(obj, uid) {
+        // check if this entity is the parent of another entity or if it has any relationships
+        // pointing towards it.
+        return Promise.all([
+            this.db.loadCollection('records', { source: uid }),
+            this.db.loadCollection('sources', { parent: uid })
+        ]).then(([records, sources]) => {
+            if (records.length + sources.length === 0) {
+                return this.db.deleteItem(this.tableName, uid);
+            }
+            else {
+                throw new Exceptions_1.OperationNotPermittedException({
+                    message: 'The operation could not be completed as the source is used by other records',
+                    data: Promise.resolve({
+                        record: records.map((record) => RecordController_1.RecordController.fromSchema(record)),
+                        source: sources.map((source) => this.fromSchema(source))
+                    })
+                });
+            }
+        });
+    }
+}
+exports.SourceController = SourceController;
+
+
+/***/ },
+/* 83 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview Controller for element sets
+ * @author <a href='mailto:tim.hollies@warwick.ac.uk'>Tim Hollies</a>
+ * @version 0.0.1
+ */
+"use strict";
+const falcon_core_1 = __webpack_require__(1);
+const GenericController_1 = __webpack_require__(7);
+const Exceptions_1 = __webpack_require__(8);
+const lodash_1 = __webpack_require__(3);
+class SourceElementController extends GenericController_1.GenericController {
+    constructor(db) {
+        super(db, 'source_elements');
+    }
+    toSchema(data) {
+        return Object.assign(lodash_1.omit(falcon_core_1.Serializer.toJson(data), 'creationTimestamp', 'lastmodifiedTimestamp', 'uid'), {
+            creation_timestamp: data.creationTimestamp,
+            lastmodified_timeStamp: data.lastmodifiedTimestamp,
+            source: data.uid.values.source,
+            element: data.uid.values.element
+        });
+    }
+    fromSchema(data) {
+        return Object.assign(Object.create(falcon_core_1.SourceElement.prototype), Object.assign(data, {
+            uid: {
+                order: ['source', 'element'],
+                values: {
+                    source: data.source,
+                    element: data.element
+                }
+            }
+        }));
+    }
+    getItemJson(obj, uid) {
+        return this.db.query().select()
+            .from(this.tableName)
+            .where(uid.values)
+            .first()
+            .then((result) => result === undefined ? Promise.reject(new Exceptions_1.KeyNotFoundException()) : result)
+            .then((data) => this.fromSchema(data));
+    }
+    putItem(obj, uid, data) {
+        return this.db.query()(this.tableName)
+            .where(uid.values)
+            .update(this.toSchema(data));
+    }
+    patchItem(obj, uid, data) {
+        const schemaData = this.toSchema(data);
+        const keys = Object.keys(schemaData);
+        const updateObject = {};
+        for (let i = 0; i < keys.length; i += 1) {
+            if (schemaData[keys[i]] !== undefined) {
+                updateObject[keys[i]] = schemaData[keys[i]];
+            }
+        }
+        return this.db.query()(this.tableName)
+            .where(uid.values)
+            .update(updateObject)
+            .then(() => true)
+            .catch((err) => { throw new Error(err); });
+    }
+    deleteItem(obj, uid) {
+        return this.db.query()(this.tableName)
+            .where(uid.values)
+            .del();
+    }
+}
+exports.SourceElementController = SourceElementController;
+
+
+/***/ },
+/* 84 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5809,34 +5481,34 @@ exports.UserManagement = (props) => (React.createElement("div", {className: 'pag
  * @version 0.0.1
  */
 "use strict";
-var ElementSetController_1 = __webpack_require__(30);
+var ElementSetController_1 = __webpack_require__(80);
 exports.ElementSetController = ElementSetController_1.ElementSetController;
 exports.ElementSetPersistable = ElementSetController_1.ElementSetPersistable;
-var EntityController_1 = __webpack_require__(22);
+var EntityController_1 = __webpack_require__(27);
 exports.EntityController = EntityController_1.EntityController;
 exports.EntityPersistable = EntityController_1.EntityPersistable;
-var EntityTypeController_1 = __webpack_require__(31);
+var EntityTypeController_1 = __webpack_require__(81);
 exports.EntityTypeController = EntityTypeController_1.EntityTypeController;
 exports.EntityTypePersistable = EntityTypeController_1.EntityTypePersistable;
-var PredicateController_1 = __webpack_require__(23);
+var PredicateController_1 = __webpack_require__(28);
 exports.PredicateController = PredicateController_1.PredicateController;
 exports.PredicatePersistable = PredicateController_1.PredicatePersistable;
-var RecordController_1 = __webpack_require__(14);
+var RecordController_1 = __webpack_require__(21);
 exports.RecordController = RecordController_1.RecordController;
 exports.RecordPersistable = RecordController_1.RecordPersistable;
-var SourceController_1 = __webpack_require__(32);
+var SourceController_1 = __webpack_require__(82);
 exports.SourceController = SourceController_1.SourceController;
 exports.SourcePersistable = SourceController_1.SourcePersistable;
-var ElementController_1 = __webpack_require__(29);
+var ElementController_1 = __webpack_require__(79);
 exports.ElementController = ElementController_1.ElementController;
 exports.ElementPersistable = ElementController_1.ElementPersistable;
-var SourceElementController_1 = __webpack_require__(33);
+var SourceElementController_1 = __webpack_require__(83);
 exports.SourceElementController = SourceElementController_1.SourceElementController;
 exports.SourceElementPersistable = SourceElementController_1.SourceElementPersistable;
 
 
 /***/ },
-/* 93 */
+/* 85 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5846,9 +5518,9 @@ exports.SourceElementPersistable = SourceElementController_1.SourceElementPersis
  * @version 0.0.1
  */
 "use strict";
-const graphql_1 = __webpack_require__(24);
-const entityQLType_1 = __webpack_require__(95);
-const predicateQLType_1 = __webpack_require__(96);
+const graphql_1 = __webpack_require__(22);
+const entityQLType_1 = __webpack_require__(87);
+const predicateQLType_1 = __webpack_require__(88);
 class QueryEngine {
     constructor(db) {
         const entityType = entityQLType_1.entityQLType(db, predicateQLType_1.predicateQLType(db));
@@ -5883,7 +5555,7 @@ exports.QueryEngine = QueryEngine;
 
 
 /***/ },
-/* 94 */
+/* 86 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5894,11 +5566,11 @@ exports.QueryEngine = QueryEngine;
  */
 "use strict";
 const Exceptions_1 = __webpack_require__(8);
-const moment = __webpack_require__(15);
+const moment = __webpack_require__(14);
 const Signaller_1 = __webpack_require__(4);
-var ApiService_1 = __webpack_require__(1);
+var ApiService_1 = __webpack_require__(2);
 exports.AppUrls = ApiService_1.AppUrls;
-const GeneralStatisticsController_1 = __webpack_require__(97);
+const GeneralStatisticsController_1 = __webpack_require__(89);
 class ServerApiService {
     constructor(db, routesMap, queryEngine, fakeCreator) {
         this.controllerMap = routesMap;
@@ -5983,7 +5655,7 @@ exports.ServerApiService = ServerApiService;
 
 
 /***/ },
-/* 95 */
+/* 87 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5993,7 +5665,7 @@ exports.ServerApiService = ServerApiService;
  * @version 0.0.1
  */
 "use strict";
-const graphql_1 = __webpack_require__(24);
+const graphql_1 = __webpack_require__(22);
 exports.entityQLType = (db, predicateType) => {
     return new graphql_1.GraphQLObjectType({
         name: 'Entity',
@@ -6056,7 +5728,7 @@ exports.entityQLType = (db, predicateType) => {
 
 
 /***/ },
-/* 96 */
+/* 88 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6066,7 +5738,7 @@ exports.entityQLType = (db, predicateType) => {
  * @version 0.0.1
  */
 "use strict";
-const graphql_1 = __webpack_require__(24);
+const graphql_1 = __webpack_require__(22);
 exports.predicateQLType = (db) => {
     return new graphql_1.GraphQLObjectType({
         name: 'Predicate',
@@ -6098,7 +5770,7 @@ exports.predicateQLType = (db) => {
 
 
 /***/ },
-/* 97 */
+/* 89 */
 /***/ function(module, exports) {
 
 "use strict";
@@ -6129,49 +5801,49 @@ exports.GeneralStatisticsController = (db) => {
 
 
 /***/ },
-/* 98 */
+/* 90 */
 /***/ function(module, exports) {
 
 module.exports = require("knex");
 
 /***/ },
-/* 99 */
+/* 91 */
 /***/ function(module, exports) {
 
 module.exports = require("koa-conditional-get");
 
 /***/ },
-/* 100 */
+/* 92 */
 /***/ function(module, exports) {
 
 module.exports = require("koa-etag");
 
 /***/ },
-/* 101 */
+/* 93 */
 /***/ function(module, exports) {
 
 module.exports = require("levenshtein");
 
 /***/ },
-/* 102 */
+/* 94 */
 /***/ function(module, exports) {
 
 module.exports = require("lunr");
 
 /***/ },
-/* 103 */
+/* 95 */
 /***/ function(module, exports) {
 
 module.exports = require("react-sortable-hoc");
 
 /***/ },
-/* 104 */
+/* 96 */
 /***/ function(module, exports) {
 
 module.exports = require("signals");
 
 /***/ },
-/* 105 */
+/* 97 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6181,13 +5853,13 @@ module.exports = require("signals");
  * @version 0.0.1
  */
 "use strict";
-const react_dom_1 = __webpack_require__(39);
+const react_dom_1 = __webpack_require__(34);
 const react_1 = __webpack_require__(0);
-const FalconApp_1 = __webpack_require__(35);
-const Database_1 = __webpack_require__(36);
-const api_1 = __webpack_require__(37);
+const FalconApp_1 = __webpack_require__(30);
+const Database_1 = __webpack_require__(31);
+const api_1 = __webpack_require__(32);
 const react_router_1 = __webpack_require__(9);
-const electron = __webpack_require__(38);
+const electron = __webpack_require__(33);
 const databaseFile = electron.remote.dialog.showOpenDialog({ properties: ['openFile'], filters: [
         { name: 'Database Files', extensions: ['sqlite'] }
     ] });

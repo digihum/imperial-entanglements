@@ -6,8 +6,8 @@
 
 import { Database } from '../core/Database';
 
-import { SourceElement } from '../../common/datamodel/SourceElement';
-import { Persistable } from '../core/Persistable';
+import { SourceElement, Serializer } from 'falcon-core';
+
 import { GenericController } from './GenericController';
 
 import { KeyNotFoundException } from '../core/Exceptions';
@@ -16,29 +16,27 @@ import { CompositeKey } from '../../common/datamodel/Serializable';
 
 import { omit } from 'lodash';
 
-export class SourceElementPersistable extends SourceElement implements Persistable {
+export class SourceElementController extends GenericController<SourceElement> {
 
-    public static readonly tableName: string = 'source_elements';
-
-    public getTableName() : string {
-        return SourceElementPersistable.tableName;
+    constructor(db : Database) {
+        super(db, 'source_elements');
     }
 
-    public toSchema() {
-        return Object.assign(omit(this.serialize(),
+     public toSchema(data: SourceElement) {
+        return Object.assign(omit(Serializer.toJson(data),
             'creationTimestamp',
             'lastmodifiedTimestamp',
             'uid'
         ), {
-            creation_timestamp: this.creationTimestamp,
-            lastmodified_timeStamp: this.lastmodifiedTimestamp,
-            source: this.uid.values.source,
-            element: this.uid.values.element
+            creation_timestamp: data.creationTimestamp,
+            lastmodified_timeStamp: data.lastmodifiedTimestamp,
+            source: data.uid.values.source,
+            element: data.uid.values.element
         });
     }
 
-    public fromSchema(data: any) : SourceElementPersistable {
-        this.deserialize(Object.assign(data, {
+    public fromSchema(data: any) : SourceElement {
+        return Object.assign(Object.create(SourceElement.prototype), Object.assign(data, {
                 uid: {
                 order: ['source', 'element'],
                 values: {
@@ -47,33 +45,25 @@ export class SourceElementPersistable extends SourceElement implements Persistab
                 }
             }
         }));
-        return this;
-    }
-}
-
-export class SourceElementController extends GenericController<SourceElementPersistable> {
-    constructor(db : Database) {
-        super(db, SourceElementPersistable.tableName);
     }
 
-    public getItemJson(obj: { new(): SourceElementPersistable; }, uid: CompositeKey) : PromiseLike<SourceElementPersistable> {
+    public getItemJson(obj: { new(): SourceElement; }, uid: CompositeKey) : PromiseLike<SourceElement> {
         return this.db.query().select()
         .from(this.tableName)
         .where(uid.values)
         .first()
         .then((result) => result === undefined ? Promise.reject(new KeyNotFoundException()) : result)
-        .then((data) => new obj().fromSchema(data));
+        .then((data) => this.fromSchema(data));
     }
 
-    public putItem(obj: { new(): SourceElementPersistable; }, uid: CompositeKey, data: SourceElementPersistable) : PromiseLike<string> {
+    public putItem(obj: { new(): SourceElement; }, uid: CompositeKey, data: SourceElement) : PromiseLike<string> {
         return this.db.query()(this.tableName)
             .where(uid.values)
-            .update(omit(data.toSchema(), ['tableName']));
+            .update(this.toSchema(data));
     }
 
-    public patchItem(obj: { new(): SourceElementPersistable; }, uid: CompositeKey, data: SourceElementPersistable) : PromiseLike<boolean> {
-        const o = new obj();
-        const schemaData = o.deserialize(data).toSchema();
+    public patchItem(obj: { new(): SourceElement; }, uid: CompositeKey, data: SourceElement) : PromiseLike<boolean> {
+        const schemaData = this.toSchema(data);
 
         const keys = Object.keys(schemaData);
 
@@ -92,7 +82,7 @@ export class SourceElementController extends GenericController<SourceElementPers
             .catch((err) => { throw new Error(err); });
     }
 
-    public deleteItem(obj: { new(): SourceElementPersistable; }, uid: CompositeKey) : PromiseLike<string> {
+    public deleteItem(obj: { new(): SourceElement; }, uid: CompositeKey) : PromiseLike<string> {
         return this.db.query()(this.tableName)
             .where(uid.values)
             .del();

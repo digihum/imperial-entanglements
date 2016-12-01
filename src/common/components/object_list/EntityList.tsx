@@ -10,7 +10,7 @@ import * as lev from 'levenshtein';
 
 import { ApiService, AppUrls } from '../../ApiService';
 import { DataStore } from '../../DataStore';
-import { Entity, EntityType, Predicate, Record } from '../../../common/datamodel/datamodel';
+import { Entity, EntityType, Predicate, Record } from 'falcon-core';
 import { ComboDropdown, ComboDropdownOption } from '../ComboDropdown';
 import { noop, cloneDeep, isUndefined } from 'lodash';
 

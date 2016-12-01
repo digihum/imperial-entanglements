@@ -7,7 +7,7 @@
 import * as React from 'react';
 
 import { Overlay } from '../Overlay';
-import { Entity, EntityType } from '../../../common/datamodel/datamodel';
+import { Entity, EntityType, Serializer } from 'falcon-core';
 import { ApiService, AppUrls } from '../../ApiService';
 import { ComboDropdown, ComboDropdownOption } from '../ComboDropdown';
 
@@ -43,7 +43,7 @@ export class CreateEntity extends React.Component<CreateEntityProps, CreateEntit
         .then((allEntityTypes) => {
             if (this.props.initialType !== undefined) {
                 const initialType = allEntityTypes.find((et) => et.uid === this.props.initialType);
-                this.setState({ 
+                this.setState({
                     entityType:  { key: initialType.name, value: initialType.uid.toString() }
                 })
             }
@@ -53,7 +53,7 @@ export class CreateEntity extends React.Component<CreateEntityProps, CreateEntit
 
     public CreateEntity() {
         this.props.api.postItem(Entity, AppUrls.entity,
-            new Entity().deserialize({
+            Serializer.fromJson(Entity, {
                 label: this.state.label,
                 entityType: this.state.entityType.value
             }))
