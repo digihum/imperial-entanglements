@@ -6,27 +6,12 @@
 
 import * as React from 'react';
 
-import { RecordsEditor } from '../../entity_editor/RecordsEditor';
 import { ApiService, AppUrls } from '../../../ApiService';
-
 import { Entity } from '../../../../common/datamodel/datamodel';
-
-import { ComboDropdownOption } from '../../ComboDropdown';
-
-import { groupBy } from 'lodash';
 
 import { AddTabButton } from '../../AddTabButton';
 
-import { findParentTree } from '../../../helper/findParentTree';
-
-
-import { EditableFieldComponent } from '../../fields/EditableHeader';
-import { EditableComboDropdown } from '../../fields/EditableComboDropdown';
-
 import { DataStore } from '../../../DataStore';
-
-class StringEditableFieldComponent extends EditableFieldComponent<string> {}
-class ComboEditableFieldComponent extends EditableFieldComponent<ComboDropdownOption> {}
 
 interface EntityWorkspaceReferenceViewProps {
     api: ApiService;
@@ -35,8 +20,7 @@ interface EntityWorkspaceReferenceViewProps {
 }
 
 interface EntityWorkspaceReferenceViewState {
-    comboValue: ComboDropdownOption;
-    comboSearchValue: string;
+
 }
 
 // What can I do?
@@ -78,6 +62,25 @@ export class EntityWorkspaceReferenceView extends React.Component<EntityWorkspac
         return (
           <section className='editor-body'>
             <h2>References</h2>
+            <table className='table'>
+              <thead>
+                <tr>
+                  <th>Entity</th>
+                  <th>Property</th>
+                </tr>
+              </thead>
+              <tbody>
+                {this.props.dataStore.tabs.entity.get('entity-' + this.props.id).value.referenceRecords.map((record) => {
+                  return (<tr key={`record-${record.uid}`}>
+                    <td>{record.entity} <AddTabButton tabType={'entity'} uid={record.entity} dataStore={this.props.dataStore}/></td>
+                    <td>{record.predicate} <AddTabButton
+                      tabType={'predicate'}
+                      uid={record.predicate}
+                      dataStore={this.props.dataStore}/></td>
+                  </tr>);
+                })}
+              </tbody>
+            </table>
           </section>
         );
     }

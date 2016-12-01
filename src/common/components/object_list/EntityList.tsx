@@ -12,7 +12,7 @@ import { ApiService, AppUrls } from '../../ApiService';
 import { DataStore } from '../../DataStore';
 import { Entity, EntityType, Predicate, Record } from '../../../common/datamodel/datamodel';
 import { ComboDropdown, ComboDropdownOption } from '../ComboDropdown';
-import { noop, cloneDeep } from 'lodash';
+import { noop, cloneDeep, isUndefined } from 'lodash';
 
 import { AddTabButton } from '../AddTabButton';
 
@@ -109,13 +109,19 @@ export class EntityList extends React.Component<EntityListProps, EntityListState
         const columns = cloneDeep(this.state.columns);
         if (queryStringOptions !== null) {
             for (let i = 1; i < 4; i += 1 ) {
-                if (queryStringOptions['col' + i]  !== undefined) {
-                    const args = queryStringOptions['col' + i].split(',');
-                    columns[i - 1].predicate = args[0];
-                    if (args.length === 2) {
-                        columns[i - 1].filterType = args[1];
-                    }
-                }
+              columns[i - 1].predicate = queryStringOptions[`col${i}p`];
+              columns[i - 1].sort = queryStringOptions[`col${i}s`];
+              columns[i - 1].filterType = queryStringOptions[`col${i}f`];
+              columns[i - 1].filterValue = queryStringOptions[`col${i}v`];
+              columns[i - 1].invertFilter = queryStringOptions[`col${i}i`];
+
+                // if (queryStringOptions['col' + i]  !== undefined) {
+                //     const args = queryStringOptions['col' + i].split(',');
+                //     columns[i - 1].predicate = args[0];
+                //     if (args.length === 2) {
+                //         columns[i - 1].filterType = args[1];
+                //     }
+                // }
             }
         }
          this.setState({

@@ -22,11 +22,14 @@ export interface DataStore {
     dublinCore: DataStoreEntry<ElementSet>;
   };
 
+  records: Map<string, DataStoreEntry<Record>>;
+
   tabs: {
 
     entity: Map<string, DataStoreEntry<{
       entity: Entity;
       records: Record[];
+      referenceRecords: Record[];
     }>>;
 
     entity_type: Map<string, DataStoreEntry<EntityType>>;
@@ -51,10 +54,13 @@ export const emptyDataStore : DataStore = {
     dublinCore: { value: new ElementSet(), lastUpdate: null }
   },
 
+  records: Map<string, DataStoreEntry<Record>>(),
+
   tabs: {
     entity: Map<string, DataStoreEntry<{
       entity: Entity;
       records: Record[];
+      referenceRecords: Record[];
     }>>(),
 
     entity_type: Map<string, DataStoreEntry<EntityType>>(),

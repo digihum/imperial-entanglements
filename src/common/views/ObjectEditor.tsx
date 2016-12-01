@@ -203,8 +203,9 @@ export class ObjectEditor extends React.Component<EntityEditorProps, EntityEdito
             case 'entity':
                 return Promise.all([
                     this.props.api.getItem(Entity, AppUrls.entity, uid),
-                    this.props.api.getCollection(Record, AppUrls.record, { entity: uid })
-                ]).then(([entity, records]) => ({ entity, records }));
+                    this.props.api.getCollection(Record, AppUrls.record, { entity: uid }),
+                    this.props.api.getCollection(Record, AppUrls.record, { value_type: 'entity', value_entity: uid })
+                ]).then(([entity, records, referenceRecords]) => ({ entity, records, referenceRecords }));
             case 'predicate':
                 return this.props.api.getItem(Predicate, AppUrls.predicate, uid);
             case 'entity_type':

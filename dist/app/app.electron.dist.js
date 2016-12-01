@@ -61,7 +61,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 103);
+/******/ 	return __webpack_require__(__webpack_require__.s = 105);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -72,12 +72,6 @@ module.exports = require("react");
 
 /***/ },
 /* 1 */
-/***/ function(module, exports) {
-
-module.exports = require("lodash");
-
-/***/ },
-/* 2 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -100,7 +94,42 @@ exports.AppUrls = {
 
 
 /***/ },
+/* 2 */
+/***/ function(module, exports) {
+
+module.exports = require("lodash");
+
+/***/ },
 /* 3 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview Datamodel override for electron
+ * @author <a href='mailto:tim.hollies@warwick.ac.uk'>Tim Hollies</a>
+ * @version 0.0.1
+ */
+"use strict";
+var ElementSetController_1 = __webpack_require__(30);
+exports.ElementSet = ElementSetController_1.ElementSetPersistable;
+var EntityController_1 = __webpack_require__(22);
+exports.Entity = EntityController_1.EntityPersistable;
+var EntityTypeController_1 = __webpack_require__(31);
+exports.EntityType = EntityTypeController_1.EntityTypePersistable;
+var PredicateController_1 = __webpack_require__(23);
+exports.Predicate = PredicateController_1.PredicatePersistable;
+var RecordController_1 = __webpack_require__(14);
+exports.Record = RecordController_1.RecordPersistable;
+var SourceController_1 = __webpack_require__(32);
+exports.Source = SourceController_1.SourcePersistable;
+var ElementController_1 = __webpack_require__(29);
+exports.Element = ElementController_1.ElementPersistable;
+var SourceElementController_1 = __webpack_require__(33);
+exports.SourceElement = SourceElementController_1.SourceElementPersistable;
+
+
+/***/ },
+/* 4 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -110,7 +139,7 @@ exports.AppUrls = {
  * @version 0.1.0
  */
 "use strict";
-const signals = __webpack_require__(102);
+const signals = __webpack_require__(104);
 exports.createTab = new signals.Signal();
 exports.closeTab = new signals.Signal();
 exports.showModal = new signals.Signal();
@@ -128,35 +157,6 @@ exports.Signaller = {
 
 
 /***/ },
-/* 4 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview Datamodel override for electron
- * @author <a href='mailto:tim.hollies@warwick.ac.uk'>Tim Hollies</a>
- * @version 0.0.1
- */
-"use strict";
-var ElementSetController_1 = __webpack_require__(30);
-exports.ElementSet = ElementSetController_1.ElementSetPersistable;
-var EntityController_1 = __webpack_require__(21);
-exports.Entity = EntityController_1.EntityPersistable;
-var EntityTypeController_1 = __webpack_require__(31);
-exports.EntityType = EntityTypeController_1.EntityTypePersistable;
-var PredicateController_1 = __webpack_require__(22);
-exports.Predicate = PredicateController_1.PredicatePersistable;
-var RecordController_1 = __webpack_require__(14);
-exports.Record = RecordController_1.RecordPersistable;
-var SourceController_1 = __webpack_require__(32);
-exports.Source = SourceController_1.SourcePersistable;
-var ElementController_1 = __webpack_require__(29);
-exports.Element = ElementController_1.ElementPersistable;
-var SourceElementController_1 = __webpack_require__(33);
-exports.SourceElement = SourceElementController_1.SourceElementPersistable;
-
-
-/***/ },
 /* 5 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -168,7 +168,7 @@ exports.SourceElement = SourceElementController_1.SourceElementPersistable;
  */
 "use strict";
 const React = __webpack_require__(0);
-const Signaller_1 = __webpack_require__(3);
+const Signaller_1 = __webpack_require__(4);
 exports.AddTabButton = (props, context) => {
     if (props.dataStore.tabs[props.tabType] !== undefined
         && props.dataStore.tabs[props.tabType].has(`${props.tabType}-${props.uid}`)) {
@@ -193,8 +193,8 @@ exports.AddTabButton.contextTypes = {
  */
 "use strict";
 const React = __webpack_require__(0);
-const lunr = __webpack_require__(100);
-const lodash_1 = __webpack_require__(1);
+const lunr = __webpack_require__(102);
+const lodash_1 = __webpack_require__(2);
 class ComboDropdown extends React.Component {
     constructor() {
         super();
@@ -603,37 +603,6 @@ exports.EditableFieldComponent = EditableFieldComponent;
  */
 "use strict";
 const React = __webpack_require__(0);
-exports.SearchBar = (props) => {
-    const filterFunc = (s) => {
-        return (a) => {
-            if (s.length === 0) {
-                return true;
-            }
-            return props.getValue(a).toLowerCase().indexOf(s.toLowerCase()) !== -1;
-        };
-    };
-    return (React.createElement("div", null, 
-        React.createElement("div", {className: 'input-addon-formgroup'}, 
-            React.createElement("span", {className: 'input-addon-icon'}, 
-                React.createElement("i", {className: 'fa fa-search fa-fw'})
-            ), 
-            React.createElement("input", {type: 'text', className: 'form-control with-addon', onChange: (e) => props.setFilterFunc(filterFunc(e.target.value))}))
-    ));
-};
-
-
-/***/ },
-/* 13 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview Sidebar for editor
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.1.0
- */
-"use strict";
-const React = __webpack_require__(0);
 var EditableFieldComponent_1 = __webpack_require__(11);
 exports.EditableFieldComponent = EditableFieldComponent_1.EditableFieldComponent;
 exports.EditableHeader = (props) => {
@@ -658,6 +627,37 @@ exports.EditableHeader = (props) => {
 
 
 /***/ },
+/* 13 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview Sidebar for editor
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.1.0
+ */
+"use strict";
+const React = __webpack_require__(0);
+exports.SearchBar = (props) => {
+    const filterFunc = (s) => {
+        return (a) => {
+            if (s.length === 0) {
+                return true;
+            }
+            return props.getValue(a).toLowerCase().indexOf(s.toLowerCase()) !== -1;
+        };
+    };
+    return (React.createElement("div", null, 
+        React.createElement("div", {className: 'input-addon-formgroup'}, 
+            React.createElement("span", {className: 'input-addon-icon'}, 
+                React.createElement("i", {className: 'fa fa-search fa-fw'})
+            ), 
+            React.createElement("input", {type: 'text', className: 'form-control with-addon', onChange: (e) => props.setFilterFunc(filterFunc(e.target.value))}))
+    ));
+};
+
+
+/***/ },
 /* 14 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -668,10 +668,10 @@ exports.EditableHeader = (props) => {
  * @version 0.0.1
  */
 "use strict";
-const Record_1 = __webpack_require__(80);
+const Record_1 = __webpack_require__(82);
 const GenericController_1 = __webpack_require__(7);
 const Exceptions_1 = __webpack_require__(8);
-const lodash_1 = __webpack_require__(1);
+const lodash_1 = __webpack_require__(2);
 class RecordPersistable extends Record_1.Record {
     getTableName() {
         return RecordPersistable.tableName;
@@ -968,6 +968,40 @@ exports.SameAsEditor = SameAsEditor;
 
 /***/ },
 /* 20 */
+/***/ function(module, exports) {
+
+"use strict";
+/**
+ * @fileOverview <Description Missing>
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.1.0
+ */
+"use strict";
+exports.findParentTree = (uid, data, ancestors = []) => {
+    const current = data.find((datum) => datum.uid === uid);
+    if (current === undefined) {
+        console.warn('Couldn\'t find parent');
+        return ancestors;
+    }
+    else {
+        if (current.parent === null || current.uid === null) {
+            if (current.uid === null) {
+                console.warn('Found entity will null uid');
+                return ancestors;
+            }
+            else {
+                return ancestors.concat([current.uid]);
+            }
+        }
+        else {
+            return exports.findParentTree(current.parent, data, ancestors.concat([current.uid]));
+        }
+    }
+};
+
+
+/***/ },
+/* 21 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -997,7 +1031,7 @@ exports.formatDate = (str) => {
 
 
 /***/ },
-/* 21 */
+/* 22 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1007,10 +1041,10 @@ exports.formatDate = (str) => {
  * @version 0.0.1
  */
 "use strict";
-const Entity_1 = __webpack_require__(77);
+const Entity_1 = __webpack_require__(79);
 const GenericController_1 = __webpack_require__(7);
 const Exceptions_1 = __webpack_require__(8);
-const lodash_1 = __webpack_require__(1);
+const lodash_1 = __webpack_require__(2);
 class EntityPersistable extends Entity_1.Entity {
     getTableName() {
         return EntityPersistable.tableName;
@@ -1076,7 +1110,7 @@ exports.EntityController = EntityController;
 
 
 /***/ },
-/* 22 */
+/* 23 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1086,11 +1120,11 @@ exports.EntityController = EntityController;
  * @version 0.0.1
  */
 "use strict";
-const Predicate_1 = __webpack_require__(79);
+const Predicate_1 = __webpack_require__(81);
 const GenericController_1 = __webpack_require__(7);
 const Exceptions_1 = __webpack_require__(8);
 const RecordController_1 = __webpack_require__(14);
-const lodash_1 = __webpack_require__(1);
+const lodash_1 = __webpack_require__(2);
 class PredicatePersistable extends Predicate_1.Predicate {
     getTableName() {
         return PredicatePersistable.tableName;
@@ -1228,13 +1262,13 @@ exports.PredicateController = PredicateController;
 
 
 /***/ },
-/* 23 */
+/* 24 */
 /***/ function(module, exports) {
 
 module.exports = require("graphql");
 
 /***/ },
-/* 24 */
+/* 25 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1246,7 +1280,7 @@ module.exports = require("graphql");
 "use strict";
 const React = __webpack_require__(0);
 const ComboDropdown_1 = __webpack_require__(6);
-const lodash_1 = __webpack_require__(1);
+const lodash_1 = __webpack_require__(2);
 class PredicateDescription extends React.Component {
     constructor() {
         super();
@@ -1321,40 +1355,6 @@ class PredicateDescription extends React.Component {
     }
 }
 exports.PredicateDescription = PredicateDescription;
-
-
-/***/ },
-/* 25 */
-/***/ function(module, exports) {
-
-"use strict";
-/**
- * @fileOverview <Description Missing>
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.1.0
- */
-"use strict";
-exports.findParentTree = (uid, data, ancestors = []) => {
-    const current = data.find((datum) => datum.uid === uid);
-    if (current === undefined) {
-        console.warn('Couldn\'t find parent');
-        return ancestors;
-    }
-    else {
-        if (current.parent === null || current.uid === null) {
-            if (current.uid === null) {
-                console.warn('Found entity will null uid');
-                return ancestors;
-            }
-            else {
-                return ancestors.concat([current.uid]);
-            }
-        }
-        else {
-            return exports.findParentTree(current.parent, data, ancestors.concat([current.uid]));
-        }
-    }
-};
 
 
 /***/ },
@@ -1487,7 +1487,7 @@ exports.StatsGrid = (props) => {
  * @version 0.0.1
  */
 "use strict";
-const Element_1 = __webpack_require__(75);
+const Element_1 = __webpack_require__(77);
 const GenericController_1 = __webpack_require__(7);
 class ElementPersistable extends Element_1.Element {
     getTableName() {
@@ -1522,9 +1522,9 @@ exports.ElementController = ElementController;
  * @version 0.0.1
  */
 "use strict";
-const ElementSet_1 = __webpack_require__(76);
+const ElementSet_1 = __webpack_require__(78);
 const GenericController_1 = __webpack_require__(7);
-const lodash_1 = __webpack_require__(1);
+const lodash_1 = __webpack_require__(2);
 class ElementSetPersistable extends ElementSet_1.ElementSet {
     getTableName() {
         return ElementSetPersistable.tableName;
@@ -1572,12 +1572,12 @@ exports.ElementSetController = ElementSetController;
  * @version 0.0.1
  */
 "use strict";
-const EntityType_1 = __webpack_require__(78);
+const EntityType_1 = __webpack_require__(80);
 const GenericController_1 = __webpack_require__(7);
-const PredicateController_1 = __webpack_require__(22);
-const EntityController_1 = __webpack_require__(21);
+const PredicateController_1 = __webpack_require__(23);
+const EntityController_1 = __webpack_require__(22);
 const Exceptions_1 = __webpack_require__(8);
-const lodash_1 = __webpack_require__(1);
+const lodash_1 = __webpack_require__(2);
 class EntityTypePersistable extends EntityType_1.EntityType {
     getTableName() {
         return EntityTypePersistable.tableName;
@@ -1658,11 +1658,11 @@ exports.EntityTypeController = EntityTypeController;
  * @version 0.0.1
  */
 "use strict";
-const Source_1 = __webpack_require__(81);
+const Source_1 = __webpack_require__(83);
 const GenericController_1 = __webpack_require__(7);
 const Exceptions_1 = __webpack_require__(8);
 const RecordController_1 = __webpack_require__(14);
-const lodash_1 = __webpack_require__(1);
+const lodash_1 = __webpack_require__(2);
 class SourcePersistable extends Source_1.Source {
     getTableName() {
         return SourcePersistable.tableName;
@@ -1810,10 +1810,10 @@ exports.SourceController = SourceController;
  * @version 0.0.1
  */
 "use strict";
-const SourceElement_1 = __webpack_require__(82);
+const SourceElement_1 = __webpack_require__(84);
 const GenericController_1 = __webpack_require__(7);
 const Exceptions_1 = __webpack_require__(8);
-const lodash_1 = __webpack_require__(1);
+const lodash_1 = __webpack_require__(2);
 class SourceElementPersistable extends SourceElement_1.SourceElement {
     getTableName() {
         return SourceElementPersistable.tableName;
@@ -1911,17 +1911,17 @@ var __assign = (this && this.__assign) || Object.assign || function(t) {
 //https://react-router.now.sh/Match
 const React = __webpack_require__(0);
 const react_router_1 = __webpack_require__(9);
-const RouteNotFound_1 = __webpack_require__(87);
-const ApiService_1 = __webpack_require__(2);
+const RouteNotFound_1 = __webpack_require__(89);
+const ApiService_1 = __webpack_require__(1);
 const itemTypes_1 = __webpack_require__(26);
-const Admin_1 = __webpack_require__(83);
+const Admin_1 = __webpack_require__(85);
 const AdminApp_1 = __webpack_require__(40);
-const User_1 = __webpack_require__(88);
-const UserManagement_1 = __webpack_require__(89);
-const AppDownload_1 = __webpack_require__(84);
-const DatabaseUpload_1 = __webpack_require__(85);
+const User_1 = __webpack_require__(90);
+const UserManagement_1 = __webpack_require__(91);
+const AppDownload_1 = __webpack_require__(86);
+const DatabaseUpload_1 = __webpack_require__(87);
 const react_router_2 = __webpack_require__(9);
-const ObjectEditor_1 = __webpack_require__(86);
+const ObjectEditor_1 = __webpack_require__(88);
 class FalconApp extends React.Component {
     constructor(props) {
         super();
@@ -1988,8 +1988,8 @@ exports.FalconApp = FalconApp;
  * @version 0.0.1
  */
 "use strict";
-const Knex = __webpack_require__(96);
-const lodash_1 = __webpack_require__(1);
+const Knex = __webpack_require__(98);
+const lodash_1 = __webpack_require__(2);
 const Exceptions_1 = __webpack_require__(8);
 class Database {
     constructor(config) {
@@ -2156,11 +2156,11 @@ exports.Database = Database;
  * @version 0.0.1
  */
 "use strict";
-const ServerApiService_1 = __webpack_require__(92);
-const QueryEngine_1 = __webpack_require__(91);
-const koaConditionalGet = __webpack_require__(97);
-const koaEtags = __webpack_require__(98);
-const controllers_1 = __webpack_require__(90);
+const ServerApiService_1 = __webpack_require__(94);
+const QueryEngine_1 = __webpack_require__(93);
+const koaConditionalGet = __webpack_require__(99);
+const koaEtags = __webpack_require__(100);
+const controllers_1 = __webpack_require__(92);
 exports.wrapDatabase = (db, fakeCreator) => {
     const routes = new Map([
         [ServerApiService_1.AppUrls.element_set, new controllers_1.ElementSetController(db)],
@@ -2360,7 +2360,7 @@ exports.AdminApp = (props) => (React.createElement("div", {className: 'page'},
  */
 "use strict";
 const immutable_1 = __webpack_require__(34);
-const datamodel_1 = __webpack_require__(4);
+const datamodel_1 = __webpack_require__(3);
 exports.emptyDataStore = {
     all: {
         entity: { value: [], lastUpdate: null },
@@ -2369,6 +2369,7 @@ exports.emptyDataStore = {
         source: { value: [], lastUpdate: null },
         dublinCore: { value: new datamodel_1.ElementSet(), lastUpdate: null }
     },
+    records: immutable_1.Map(),
     tabs: {
         entity: immutable_1.Map(),
         entity_type: immutable_1.Map(),
@@ -2416,11 +2417,11 @@ exports.Loading = (props) => {
 "use strict";
 const React = __webpack_require__(0);
 const SearchBox_1 = __webpack_require__(66);
-const ApiService_1 = __webpack_require__(2);
+const ApiService_1 = __webpack_require__(1);
 const react_router_1 = __webpack_require__(9);
-const Signaller_1 = __webpack_require__(3);
-const lodash_1 = __webpack_require__(1);
-const react_sortable_hoc_1 = __webpack_require__(101);
+const Signaller_1 = __webpack_require__(4);
+const lodash_1 = __webpack_require__(2);
+const react_sortable_hoc_1 = __webpack_require__(103);
 const Handle = react_sortable_hoc_1.SortableHandle((props) => (React.createElement("div", {className: 'badge-container'}, 
     React.createElement("div", {className: 'badge ' + props.tabType}, 
         React.createElement("span", null, props.tabType[0].toUpperCase())
@@ -2511,7 +2512,7 @@ exports.Sidebar = Sidebar;
  */
 "use strict";
 const React = __webpack_require__(0);
-const Signaller_1 = __webpack_require__(3);
+const Signaller_1 = __webpack_require__(4);
 class Toast extends React.Component {
     constructor() {
         super();
@@ -2559,7 +2560,7 @@ exports.Toast = Toast;
 "use strict";
 const React = __webpack_require__(0);
 const Loading_1 = __webpack_require__(42);
-const workspace_1 = __webpack_require__(74);
+const workspace_1 = __webpack_require__(76);
 class Workspace extends React.Component {
     constructor() {
         super();
@@ -2633,7 +2634,7 @@ exports.DateFieldEditor = (props) => {
 "use strict";
 const React = __webpack_require__(0);
 const ComboDropdown_1 = __webpack_require__(6);
-const lodash_1 = __webpack_require__(1);
+const lodash_1 = __webpack_require__(2);
 exports.EntityFieldEditor = (props) => {
     const options = props.entities.map((entity) => ({ key: entity.label, value: entity.uid }));
     let selectedOption = options.find((opt) => opt.value == props.value);
@@ -2673,8 +2674,8 @@ exports.IntegerFieldEditor = (props) => {
  */
 "use strict";
 const React = __webpack_require__(0);
-const ApiService_1 = __webpack_require__(2);
-const datamodel_1 = __webpack_require__(4);
+const ApiService_1 = __webpack_require__(1);
+const datamodel_1 = __webpack_require__(3);
 const EditableFieldComponent_1 = __webpack_require__(11);
 const RecordRow_1 = __webpack_require__(50);
 const AddTabButton_1 = __webpack_require__(5);
@@ -2757,13 +2758,13 @@ var EditableFieldComponent_1 = __webpack_require__(11);
 exports.EditableFieldComponent = EditableFieldComponent_1.EditableFieldComponent;
 const ScorePicker_1 = __webpack_require__(54);
 const ComboDropdown_1 = __webpack_require__(6);
-const Signaller_1 = __webpack_require__(3);
+const Signaller_1 = __webpack_require__(4);
 const StringFieldEditor_1 = __webpack_require__(52);
 const EntityFieldEditor_1 = __webpack_require__(47);
 const DateFieldEditor_1 = __webpack_require__(46);
 const IntegerFieldEditor_1 = __webpack_require__(48);
 const AddTabButton_1 = __webpack_require__(5);
-const formatDate_1 = __webpack_require__(20);
+const formatDate_1 = __webpack_require__(21);
 const createNewSource = (initialValue) => {
     const a = {
         name: 'source',
@@ -2878,13 +2879,13 @@ exports.RecordRow = (props) => {
  */
 "use strict";
 const React = __webpack_require__(0);
-const ApiService_1 = __webpack_require__(2);
-const datamodel_1 = __webpack_require__(4);
+const ApiService_1 = __webpack_require__(1);
+const datamodel_1 = __webpack_require__(3);
 const EditableFieldComponent_1 = __webpack_require__(11);
-const SearchBar_1 = __webpack_require__(12);
+const SearchBar_1 = __webpack_require__(13);
 const RecordPredicate_1 = __webpack_require__(49);
-const findParentTree_1 = __webpack_require__(25);
-const Signaller_1 = __webpack_require__(3);
+const findParentTree_1 = __webpack_require__(20);
+const Signaller_1 = __webpack_require__(4);
 class RecordEditableFieldComponent extends EditableFieldComponent_1.EditableFieldComponent {
 }
 class RecordsEditor extends React.Component {
@@ -2994,8 +2995,8 @@ exports.StringFieldEditor = (props) => {
 "use strict";
 const React = __webpack_require__(0);
 const moment = __webpack_require__(15);
-const lodash_1 = __webpack_require__(1);
-const formatDate_1 = __webpack_require__(20);
+const lodash_1 = __webpack_require__(2);
+const formatDate_1 = __webpack_require__(21);
 class DatePickerDropdown extends React.Component {
     constructor() {
         super();
@@ -3167,7 +3168,7 @@ exports.DatePickerDropdown = DatePickerDropdown;
  */
 "use strict";
 const React = __webpack_require__(0);
-const lodash_1 = __webpack_require__(1);
+const lodash_1 = __webpack_require__(2);
 exports.ScorePicker = (props) => {
     const values = [1, 2, 3, 4, 5];
     if (props.readOnly) {
@@ -3295,10 +3296,10 @@ exports.ConflictResolution = ConflictResolution;
 "use strict";
 const React = __webpack_require__(0);
 const Overlay_1 = __webpack_require__(10);
-const datamodel_1 = __webpack_require__(4);
-const ApiService_1 = __webpack_require__(2);
+const datamodel_1 = __webpack_require__(3);
+const ApiService_1 = __webpack_require__(1);
 const ComboDropdown_1 = __webpack_require__(6);
-const lodash_1 = __webpack_require__(1);
+const lodash_1 = __webpack_require__(2);
 class CreateEntity extends React.Component {
     constructor() {
         super();
@@ -3356,8 +3357,8 @@ exports.CreateEntity = CreateEntity;
 "use strict";
 const React = __webpack_require__(0);
 const Overlay_1 = __webpack_require__(10);
-const datamodel_1 = __webpack_require__(4);
-const ApiService_1 = __webpack_require__(2);
+const datamodel_1 = __webpack_require__(3);
+const ApiService_1 = __webpack_require__(1);
 const mousetrap = __webpack_require__(16);
 class CreateEntityType extends React.Component {
     constructor() {
@@ -3409,10 +3410,10 @@ exports.CreateEntityType = CreateEntityType;
 "use strict";
 const React = __webpack_require__(0);
 const Overlay_1 = __webpack_require__(10);
-const PredicateDescription_1 = __webpack_require__(24);
-const datamodel_1 = __webpack_require__(4);
+const PredicateDescription_1 = __webpack_require__(25);
+const datamodel_1 = __webpack_require__(3);
 const literalTypes_1 = __webpack_require__(27);
-const ApiService_1 = __webpack_require__(2);
+const ApiService_1 = __webpack_require__(1);
 class CreatePredicate extends React.Component {
     constructor() {
         super();
@@ -3503,9 +3504,9 @@ exports.CreatePredicate = CreatePredicate;
  */
 "use strict";
 const React = __webpack_require__(0);
-const datamodel_1 = __webpack_require__(4);
-const ApiService_1 = __webpack_require__(2);
-const Signaller_1 = __webpack_require__(3);
+const datamodel_1 = __webpack_require__(3);
+const ApiService_1 = __webpack_require__(1);
+const Signaller_1 = __webpack_require__(4);
 class CreatePresetRecord extends React.Component {
     constructor() {
         super();
@@ -3565,10 +3566,10 @@ exports.CreatePresetRecord = CreatePresetRecord;
 "use strict";
 const React = __webpack_require__(0);
 const Overlay_1 = __webpack_require__(10);
-const datamodel_1 = __webpack_require__(4);
-const ApiService_1 = __webpack_require__(2);
+const datamodel_1 = __webpack_require__(3);
+const ApiService_1 = __webpack_require__(1);
 const ComboDropdown_1 = __webpack_require__(6);
-const Signaller_1 = __webpack_require__(3);
+const Signaller_1 = __webpack_require__(4);
 class CreateRecord extends React.Component {
     constructor() {
         super();
@@ -3630,8 +3631,8 @@ exports.CreateRecord = CreateRecord;
 "use strict";
 const React = __webpack_require__(0);
 const Overlay_1 = __webpack_require__(10);
-const datamodel_1 = __webpack_require__(4);
-const ApiService_1 = __webpack_require__(2);
+const datamodel_1 = __webpack_require__(3);
+const ApiService_1 = __webpack_require__(1);
 const mousetrap = __webpack_require__(16);
 class CreateSource extends React.Component {
     constructor() {
@@ -3688,14 +3689,14 @@ exports.CreateSource = CreateSource;
  */
 "use strict";
 const React = __webpack_require__(0);
-const lev = __webpack_require__(99);
-const ApiService_1 = __webpack_require__(2);
-const datamodel_1 = __webpack_require__(4);
+const lev = __webpack_require__(101);
+const ApiService_1 = __webpack_require__(1);
+const datamodel_1 = __webpack_require__(3);
 const ComboDropdown_1 = __webpack_require__(6);
-const lodash_1 = __webpack_require__(1);
+const lodash_1 = __webpack_require__(2);
 const AddTabButton_1 = __webpack_require__(5);
-const Signaller_1 = __webpack_require__(3);
-const formatDate_1 = __webpack_require__(20);
+const Signaller_1 = __webpack_require__(4);
+const formatDate_1 = __webpack_require__(21);
 const sortIcons = {
     'none': 'fa fa-sort',
     'asc': 'fa fa-sort-asc',
@@ -3743,13 +3744,11 @@ class EntityList extends React.Component {
         const columns = lodash_1.cloneDeep(this.state.columns);
         if (queryStringOptions !== null) {
             for (let i = 1; i < 4; i += 1) {
-                if (queryStringOptions['col' + i] !== undefined) {
-                    const args = queryStringOptions['col' + i].split(',');
-                    columns[i - 1].predicate = args[0];
-                    if (args.length === 2) {
-                        columns[i - 1].filterType = args[1];
-                    }
-                }
+                columns[i - 1].predicate = queryStringOptions[`col${i}p`];
+                columns[i - 1].sort = queryStringOptions[`col${i}s`];
+                columns[i - 1].filterType = queryStringOptions[`col${i}f`];
+                columns[i - 1].filterValue = queryStringOptions[`col${i}v`];
+                columns[i - 1].invertFilter = queryStringOptions[`col${i}i`];
             }
         }
         this.setState({
@@ -3942,8 +3941,8 @@ exports.EntityList = EntityList;
 "use strict";
 const React = __webpack_require__(0);
 const AddTabButton_1 = __webpack_require__(5);
-const Signaller_1 = __webpack_require__(3);
-const SearchBar_1 = __webpack_require__(12);
+const Signaller_1 = __webpack_require__(4);
+const SearchBar_1 = __webpack_require__(13);
 class EntityTypeList extends React.Component {
     constructor() {
         super();
@@ -4010,8 +4009,8 @@ exports.EntityTypeList = EntityTypeList;
 "use strict";
 const React = __webpack_require__(0);
 const AddTabButton_1 = __webpack_require__(5);
-const Signaller_1 = __webpack_require__(3);
-const SearchBar_1 = __webpack_require__(12);
+const Signaller_1 = __webpack_require__(4);
+const SearchBar_1 = __webpack_require__(13);
 class PredicateList extends React.Component {
     constructor() {
         super();
@@ -4084,8 +4083,8 @@ exports.PredicateList = PredicateList;
 "use strict";
 const React = __webpack_require__(0);
 const AddTabButton_1 = __webpack_require__(5);
-const Signaller_1 = __webpack_require__(3);
-const SearchBar_1 = __webpack_require__(12);
+const Signaller_1 = __webpack_require__(4);
+const SearchBar_1 = __webpack_require__(13);
 class SourceList extends React.Component {
     constructor() {
         super();
@@ -4155,7 +4154,7 @@ exports.SourceList = SourceList;
 "use strict";
 const React = __webpack_require__(0);
 const ComboDropdown_1 = __webpack_require__(6);
-const ApiService_1 = __webpack_require__(2);
+const ApiService_1 = __webpack_require__(1);
 exports.SearchBox = (props, context) => {
     const entities = props.dataStore.all.entity.value.map((entity) => ({ key: entity.label, value: entity.uid, meta: { itemType: ApiService_1.AppUrls.entity } }));
     const entityTypes = props.dataStore.all.entity_type.value.map((entityType) => ({ key: entityType.name, value: entityType.uid, meta: { itemType: ApiService_1.AppUrls.entity_type } }));
@@ -4221,14 +4220,14 @@ exports.EmptyWorkspace = () => (React.createElement("div", {className: 'workspac
  */
 "use strict";
 const React = __webpack_require__(0);
-const ApiService_1 = __webpack_require__(2);
-const datamodel_1 = __webpack_require__(4);
-const lodash_1 = __webpack_require__(1);
-const Signaller_1 = __webpack_require__(3);
-const findParentTree_1 = __webpack_require__(25);
-const EditableHeader_1 = __webpack_require__(13);
-const EntityWorkspaceCoreView_1 = __webpack_require__(104);
-const EntityWorkspaceReferenceView_1 = __webpack_require__(105);
+const ApiService_1 = __webpack_require__(1);
+const datamodel_1 = __webpack_require__(3);
+const lodash_1 = __webpack_require__(2);
+const Signaller_1 = __webpack_require__(4);
+const findParentTree_1 = __webpack_require__(20);
+const EditableHeader_1 = __webpack_require__(12);
+const EntityWorkspaceCoreView_1 = __webpack_require__(74);
+const EntityWorkspaceReferenceView_1 = __webpack_require__(75);
 class StringEditableFieldComponent extends EditableHeader_1.EditableFieldComponent {
 }
 class ComboEditableFieldComponent extends EditableHeader_1.EditableFieldComponent {
@@ -4373,13 +4372,13 @@ exports.EntityEditorWorkspace = EntityEditorWorkspace;
 "use strict";
 const React = __webpack_require__(0);
 const SameAsEditor_1 = __webpack_require__(19);
-const ApiService_1 = __webpack_require__(2);
-const datamodel_1 = __webpack_require__(4);
+const ApiService_1 = __webpack_require__(1);
+const datamodel_1 = __webpack_require__(3);
 const AddTabButton_1 = __webpack_require__(5);
-const EditableHeader_1 = __webpack_require__(13);
+const EditableHeader_1 = __webpack_require__(12);
 const EditableParagraph_1 = __webpack_require__(18);
 const EditableComboDropdown_1 = __webpack_require__(17);
-const Signaller_1 = __webpack_require__(3);
+const Signaller_1 = __webpack_require__(4);
 class StringEditableFieldComponent extends EditableHeader_1.EditableFieldComponent {
 }
 class ComboEditableFieldComponent extends EditableHeader_1.EditableFieldComponent {
@@ -4549,12 +4548,12 @@ exports.ObjectListWorkspace = (props) => (React.createElement("div", {className:
 const React = __webpack_require__(0);
 const react_router_1 = __webpack_require__(9);
 const SameAsEditor_1 = __webpack_require__(19);
-const ApiService_1 = __webpack_require__(2);
-const Signaller_1 = __webpack_require__(3);
-const datamodel_1 = __webpack_require__(4);
-const EditableHeader_1 = __webpack_require__(13);
+const ApiService_1 = __webpack_require__(1);
+const Signaller_1 = __webpack_require__(4);
+const datamodel_1 = __webpack_require__(3);
+const EditableHeader_1 = __webpack_require__(12);
 const EditableParagraph_1 = __webpack_require__(18);
-const PredicateDescription_1 = __webpack_require__(24);
+const PredicateDescription_1 = __webpack_require__(25);
 const literalTypes_1 = __webpack_require__(27);
 class StringEditableFieldComponent extends EditableHeader_1.EditableFieldComponent {
 }
@@ -4677,7 +4676,7 @@ class PredicateEditorWorkspace extends React.Component {
             ), 
             React.createElement("section", {className: 'editor-body'}, 
                 React.createElement("div", null, 
-                    React.createElement(react_router_1.Link, {to: `/edit/entity?col1=${this.props.id},exists`}, 
+                    React.createElement(react_router_1.Link, {to: `/edit/entity?col1p=${this.props.id}&col1f=exists`}, 
                         "Uses: ", 
                         this.state.records.length)
                 ), 
@@ -4711,13 +4710,13 @@ exports.PredicateEditorWorkspace = PredicateEditorWorkspace;
 "use strict";
 const React = __webpack_require__(0);
 const SameAsEditor_1 = __webpack_require__(19);
-const ApiService_1 = __webpack_require__(2);
-const datamodel_1 = __webpack_require__(4);
-const EditableHeader_1 = __webpack_require__(13);
+const ApiService_1 = __webpack_require__(1);
+const datamodel_1 = __webpack_require__(3);
+const EditableHeader_1 = __webpack_require__(12);
 const EditableParagraph_1 = __webpack_require__(18);
 const EditableComboDropdown_1 = __webpack_require__(17);
-const lodash_1 = __webpack_require__(1);
-const Signaller_1 = __webpack_require__(3);
+const lodash_1 = __webpack_require__(2);
+const Signaller_1 = __webpack_require__(4);
 const AddTabButton_1 = __webpack_require__(5);
 class StringEditableFieldComponent extends EditableHeader_1.EditableFieldComponent {
 }
@@ -4922,6 +4921,171 @@ exports.SourceEditorWorkspace = SourceEditorWorkspace;
 
 "use strict";
 /**
+ * @fileOverview Empty workspace for when nothing is open!
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.1.0
+ */
+"use strict";
+const React = __webpack_require__(0);
+const RecordsEditor_1 = __webpack_require__(51);
+const ApiService_1 = __webpack_require__(1);
+const datamodel_1 = __webpack_require__(3);
+const lodash_1 = __webpack_require__(2);
+const AddTabButton_1 = __webpack_require__(5);
+const findParentTree_1 = __webpack_require__(20);
+const EditableHeader_1 = __webpack_require__(12);
+const EditableComboDropdown_1 = __webpack_require__(17);
+class StringEditableFieldComponent extends EditableHeader_1.EditableFieldComponent {
+}
+class ComboEditableFieldComponent extends EditableHeader_1.EditableFieldComponent {
+}
+// What can I do?
+// Entity Operations
+// - Delete the entity
+// - Merge the entity
+// - Split the entity
+// - Add 'same-as-ses' to the entity
+// Records
+// - Order records by type, source and date
+// - Add new records
+// - Adding a new predicate creates a new record with the
+//   entity set, the predicate set, the score set to 3, the period set to null, source set to null
+//   it also creates a blank entry in the records sub table based on the range of the predicate.
+// - New predicates must have a name. The domain is set to the current entitytype but can be changed
+//   to one of its parents. The range MUST be set.
+// Visualisations:
+// - Network graph of entity relationships
+class EntityWorkspaceCoreView extends React.Component {
+    constructor(props, context) {
+        super();
+        this.state = {
+            comboValue: { key: 'test', value: '' },
+            comboSearchValue: ''
+        };
+    }
+    update(data) {
+        this.props.api.patchItem(datamodel_1.Entity, ApiService_1.AppUrls.entity, this.props.id, data);
+    }
+    render() {
+        const entity = this.props.dataStore.tabs.entity.get('entity-' + this.props.id).value.entity;
+        const entityType = this.props.dataStore.all.entity_type.value.find((t) => t.uid === entity.entityType);
+        const potentialParents = this.props.dataStore.all.entity.value;
+        const entityTypeParents = findParentTree_1.findParentTree(entity.entityType, this.props.dataStore.all.entity_type.value);
+        const predicates = this.props.dataStore.all.predicate
+            .value.filter((pred) => entityTypeParents.indexOf(pred.domain) !== -1);
+        const sources = this.props.dataStore.all.source.value;
+        const records = lodash_1.groupBy(this.props.dataStore.tabs.entity.get('entity-' + this.props.id).value.records, 'predicate');
+        const options = predicates.map((pred) => ({ key: pred.name, value: pred.uid, meta: pred }));
+        let parentName = '';
+        if (potentialParents !== null && entity.parent !== undefined) {
+            const found = potentialParents.find((par) => par.uid === entity.parent);
+            if (found !== undefined) {
+                parentName = found.label;
+            }
+        }
+        return (React.createElement("section", {className: 'editor-body'}, 
+            React.createElement("div", {className: 'flex-fill'}, 
+                React.createElement("div", {className: 'flex-fill'}, 
+                    React.createElement("div", null, 
+                        React.createElement("label", {className: 'small'}, "Type"), 
+                        entityType.name, 
+                        " ", 
+                        React.createElement(AddTabButton_1.AddTabButton, {dataStore: this.props.dataStore, uid: entityType.uid, tabType: 'entity_type'}))
+                ), 
+                React.createElement("div", {style: { flex: 1 }}, 
+                    React.createElement("label", {className: 'small'}, "Parent"), 
+                    React.createElement(ComboEditableFieldComponent, {value: { key: parentName, value: entity.parent }, component: EditableComboDropdown_1.EditableComboDropdown, onChange: (value) => this.update({ 'parent': value.value }), additionalProps: { comboSettings: {
+                            options: potentialParents.map((par) => ({ key: par.label, value: par.uid })),
+                            typeName: 'Entity'
+                        } }}), 
+                    entity.parent !== null ? (React.createElement(AddTabButton_1.AddTabButton, {dataStore: this.props.dataStore, tabType: 'entity', uid: entity.parent})) : null)), 
+            React.createElement("div", {className: 'edit-group'}, 
+                React.createElement(RecordsEditor_1.RecordsEditor, {dimension: 'predicates', entityExists: true, id: this.props.id, api: this.props.api, records: records, onChange: () => { }, predicates: predicates, sources: sources, entityTypeId: entityType.uid, dataStore: this.props.dataStore})
+            )));
+    }
+}
+EntityWorkspaceCoreView.contextTypes = {
+    router: React.PropTypes.object.isRequired
+};
+exports.EntityWorkspaceCoreView = EntityWorkspaceCoreView;
+
+
+/***/ },
+/* 75 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview Empty workspace for when nothing is open!
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.1.0
+ */
+"use strict";
+const React = __webpack_require__(0);
+const ApiService_1 = __webpack_require__(1);
+const datamodel_1 = __webpack_require__(3);
+const AddTabButton_1 = __webpack_require__(5);
+// What can I do?
+// Entity Operations
+// - Delete the entity
+// - Merge the entity
+// - Split the entity
+// - Add 'same-as-ses' to the entity
+// Records
+// - Order records by type, source and date
+// - Add new records
+// - Adding a new predicate creates a new record with the
+//   entity set, the predicate set, the score set to 3, the period set to null, source set to null
+//   it also creates a blank entry in the records sub table based on the range of the predicate.
+// - New predicates must have a name. The domain is set to the current entitytype but can be changed
+//   to one of its parents. The range MUST be set.
+// Visualisations:
+// - Network graph of entity relationships
+class EntityWorkspaceReferenceView extends React.Component {
+    constructor(props, context) {
+        super();
+        this.state = {
+            comboValue: { key: 'test', value: '' },
+            comboSearchValue: ''
+        };
+    }
+    update(data) {
+        this.props.api.patchItem(datamodel_1.Entity, ApiService_1.AppUrls.entity, this.props.id, data);
+    }
+    render() {
+        return (React.createElement("section", {className: 'editor-body'}, 
+            React.createElement("h2", null, "References"), 
+            React.createElement("table", {className: 'table'}, 
+                React.createElement("thead", null, 
+                    React.createElement("tr", null, 
+                        React.createElement("th", null, "Entity"), 
+                        React.createElement("th", null, "Property"))
+                ), 
+                React.createElement("tbody", null, this.props.dataStore.tabs.entity.get('entity-' + this.props.id).value.referenceRecords.map((record) => {
+                    return (React.createElement("tr", {key: `record-${record.uid}`}, 
+                        React.createElement("td", null, 
+                            record.entity, 
+                            " ", 
+                            React.createElement(AddTabButton_1.AddTabButton, {tabType: 'entity', uid: record.entity, dataStore: this.props.dataStore})), 
+                        React.createElement("td", null, 
+                            record.predicate, 
+                            " ", 
+                            React.createElement(AddTabButton_1.AddTabButton, {tabType: 'predicate', uid: record.predicate, dataStore: this.props.dataStore}))));
+                })))));
+    }
+}
+EntityWorkspaceReferenceView.contextTypes = {
+    router: React.PropTypes.object.isRequired
+};
+exports.EntityWorkspaceReferenceView = EntityWorkspaceReferenceView;
+
+
+/***/ },
+/* 76 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
  * @fileOverview Unified export of workspaces
  * @author <a href="mailto:tim.hollies@warwick.ac.uk" />Tim Hollies</a>
  * @version 0.1.0
@@ -4944,7 +5108,7 @@ exports.ObjectListWorkspace = ObjectListWorkspace_1.ObjectListWorkspace;
 
 
 /***/ },
-/* 75 */
+/* 77 */
 /***/ function(module, exports) {
 
 "use strict";
@@ -4971,7 +5135,7 @@ exports.Element = Element;
 
 
 /***/ },
-/* 76 */
+/* 78 */
 /***/ function(module, exports) {
 
 "use strict";
@@ -4998,7 +5162,7 @@ exports.ElementSet = ElementSet;
 
 
 /***/ },
-/* 77 */
+/* 79 */
 /***/ function(module, exports) {
 
 "use strict";
@@ -5027,7 +5191,7 @@ exports.Entity = Entity;
 
 
 /***/ },
-/* 78 */
+/* 80 */
 /***/ function(module, exports) {
 
 "use strict";
@@ -5061,7 +5225,7 @@ exports.EntityType = EntityType;
 
 
 /***/ },
-/* 79 */
+/* 81 */
 /***/ function(module, exports) {
 
 "use strict";
@@ -5094,7 +5258,7 @@ exports.Predicate = Predicate;
 
 
 /***/ },
-/* 80 */
+/* 82 */
 /***/ function(module, exports) {
 
 "use strict";
@@ -5137,7 +5301,7 @@ exports.Record = Record;
 
 
 /***/ },
-/* 81 */
+/* 83 */
 /***/ function(module, exports) {
 
 "use strict";
@@ -5169,7 +5333,7 @@ exports.Source = Source;
 
 
 /***/ },
-/* 82 */
+/* 84 */
 /***/ function(module, exports) {
 
 "use strict";
@@ -5196,7 +5360,7 @@ exports.SourceElement = SourceElement;
 
 
 /***/ },
-/* 83 */
+/* 85 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5237,7 +5401,7 @@ exports.Admin = (props) => (React.createElement("div", {className: 'page'},
 
 
 /***/ },
-/* 84 */
+/* 86 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5272,7 +5436,7 @@ exports.AppDownload = (props) => (React.createElement("div", {className: 'page'}
 
 
 /***/ },
-/* 85 */
+/* 87 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5292,7 +5456,7 @@ exports.DatabaseUpload = (props) => (React.createElement("div", {className: 'pag
 
 
 /***/ },
-/* 86 */
+/* 88 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5313,13 +5477,13 @@ var __assign = (this && this.__assign) || Object.assign || function(t) {
 const React = __webpack_require__(0);
 const immutable_1 = __webpack_require__(34);
 const moment = __webpack_require__(15);
-const ApiService_1 = __webpack_require__(2);
-const datamodel_1 = __webpack_require__(4);
+const ApiService_1 = __webpack_require__(1);
+const datamodel_1 = __webpack_require__(3);
 const Sidebar_1 = __webpack_require__(43);
 const Workspace_1 = __webpack_require__(45);
 const Toast_1 = __webpack_require__(44);
-const Signaller_1 = __webpack_require__(3);
-const lodash_1 = __webpack_require__(1);
+const Signaller_1 = __webpack_require__(4);
+const lodash_1 = __webpack_require__(2);
 const CreatePredicate_1 = __webpack_require__(58);
 const CreateRecord_1 = __webpack_require__(60);
 const CreatePresetRecord_1 = __webpack_require__(59);
@@ -5440,8 +5604,9 @@ class ObjectEditor extends React.Component {
             case 'entity':
                 return Promise.all([
                     this.props.api.getItem(datamodel_1.Entity, ApiService_1.AppUrls.entity, uid),
-                    this.props.api.getCollection(datamodel_1.Record, ApiService_1.AppUrls.record, { entity: uid })
-                ]).then(([entity, records]) => ({ entity, records }));
+                    this.props.api.getCollection(datamodel_1.Record, ApiService_1.AppUrls.record, { entity: uid }),
+                    this.props.api.getCollection(datamodel_1.Record, ApiService_1.AppUrls.record, { value_type: 'entity', value_entity: uid })
+                ]).then(([entity, records, referenceRecords]) => ({ entity, records, referenceRecords }));
             case 'predicate':
                 return this.props.api.getItem(datamodel_1.Predicate, ApiService_1.AppUrls.predicate, uid);
             case 'entity_type':
@@ -5576,7 +5741,7 @@ exports.ObjectEditor = ObjectEditor;
 
 
 /***/ },
-/* 87 */
+/* 89 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5596,7 +5761,7 @@ exports.RouteNotFound = (props) => (React.createElement("section", null,
 
 
 /***/ },
-/* 88 */
+/* 90 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5615,7 +5780,7 @@ exports.User = (props) => (React.createElement("div", {className: 'page'},
 
 
 /***/ },
-/* 89 */
+/* 91 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5634,7 +5799,7 @@ exports.UserManagement = (props) => (React.createElement("div", {className: 'pag
 
 
 /***/ },
-/* 90 */
+/* 92 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5647,13 +5812,13 @@ exports.UserManagement = (props) => (React.createElement("div", {className: 'pag
 var ElementSetController_1 = __webpack_require__(30);
 exports.ElementSetController = ElementSetController_1.ElementSetController;
 exports.ElementSetPersistable = ElementSetController_1.ElementSetPersistable;
-var EntityController_1 = __webpack_require__(21);
+var EntityController_1 = __webpack_require__(22);
 exports.EntityController = EntityController_1.EntityController;
 exports.EntityPersistable = EntityController_1.EntityPersistable;
 var EntityTypeController_1 = __webpack_require__(31);
 exports.EntityTypeController = EntityTypeController_1.EntityTypeController;
 exports.EntityTypePersistable = EntityTypeController_1.EntityTypePersistable;
-var PredicateController_1 = __webpack_require__(22);
+var PredicateController_1 = __webpack_require__(23);
 exports.PredicateController = PredicateController_1.PredicateController;
 exports.PredicatePersistable = PredicateController_1.PredicatePersistable;
 var RecordController_1 = __webpack_require__(14);
@@ -5671,7 +5836,7 @@ exports.SourceElementPersistable = SourceElementController_1.SourceElementPersis
 
 
 /***/ },
-/* 91 */
+/* 93 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5681,9 +5846,9 @@ exports.SourceElementPersistable = SourceElementController_1.SourceElementPersis
  * @version 0.0.1
  */
 "use strict";
-const graphql_1 = __webpack_require__(23);
-const entityQLType_1 = __webpack_require__(93);
-const predicateQLType_1 = __webpack_require__(94);
+const graphql_1 = __webpack_require__(24);
+const entityQLType_1 = __webpack_require__(95);
+const predicateQLType_1 = __webpack_require__(96);
 class QueryEngine {
     constructor(db) {
         const entityType = entityQLType_1.entityQLType(db, predicateQLType_1.predicateQLType(db));
@@ -5718,7 +5883,7 @@ exports.QueryEngine = QueryEngine;
 
 
 /***/ },
-/* 92 */
+/* 94 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5730,10 +5895,10 @@ exports.QueryEngine = QueryEngine;
 "use strict";
 const Exceptions_1 = __webpack_require__(8);
 const moment = __webpack_require__(15);
-const Signaller_1 = __webpack_require__(3);
-var ApiService_1 = __webpack_require__(2);
+const Signaller_1 = __webpack_require__(4);
+var ApiService_1 = __webpack_require__(1);
 exports.AppUrls = ApiService_1.AppUrls;
-const GeneralStatisticsController_1 = __webpack_require__(95);
+const GeneralStatisticsController_1 = __webpack_require__(97);
 class ServerApiService {
     constructor(db, routesMap, queryEngine, fakeCreator) {
         this.controllerMap = routesMap;
@@ -5818,7 +5983,7 @@ exports.ServerApiService = ServerApiService;
 
 
 /***/ },
-/* 93 */
+/* 95 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5828,7 +5993,7 @@ exports.ServerApiService = ServerApiService;
  * @version 0.0.1
  */
 "use strict";
-const graphql_1 = __webpack_require__(23);
+const graphql_1 = __webpack_require__(24);
 exports.entityQLType = (db, predicateType) => {
     return new graphql_1.GraphQLObjectType({
         name: 'Entity',
@@ -5891,7 +6056,7 @@ exports.entityQLType = (db, predicateType) => {
 
 
 /***/ },
-/* 94 */
+/* 96 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5901,7 +6066,7 @@ exports.entityQLType = (db, predicateType) => {
  * @version 0.0.1
  */
 "use strict";
-const graphql_1 = __webpack_require__(23);
+const graphql_1 = __webpack_require__(24);
 exports.predicateQLType = (db) => {
     return new graphql_1.GraphQLObjectType({
         name: 'Predicate',
@@ -5933,7 +6098,7 @@ exports.predicateQLType = (db) => {
 
 
 /***/ },
-/* 95 */
+/* 97 */
 /***/ function(module, exports) {
 
 "use strict";
@@ -5964,49 +6129,49 @@ exports.GeneralStatisticsController = (db) => {
 
 
 /***/ },
-/* 96 */
+/* 98 */
 /***/ function(module, exports) {
 
 module.exports = require("knex");
 
 /***/ },
-/* 97 */
+/* 99 */
 /***/ function(module, exports) {
 
 module.exports = require("koa-conditional-get");
 
 /***/ },
-/* 98 */
+/* 100 */
 /***/ function(module, exports) {
 
 module.exports = require("koa-etag");
 
 /***/ },
-/* 99 */
+/* 101 */
 /***/ function(module, exports) {
 
 module.exports = require("levenshtein");
 
 /***/ },
-/* 100 */
+/* 102 */
 /***/ function(module, exports) {
 
 module.exports = require("lunr");
 
 /***/ },
-/* 101 */
+/* 103 */
 /***/ function(module, exports) {
 
 module.exports = require("react-sortable-hoc");
 
 /***/ },
-/* 102 */
+/* 104 */
 /***/ function(module, exports) {
 
 module.exports = require("signals");
 
 /***/ },
-/* 103 */
+/* 105 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6056,159 +6221,6 @@ if (databaseFile !== undefined) {
 else {
     electron.remote.app.quit();
 }
-
-
-/***/ },
-/* 104 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview Empty workspace for when nothing is open!
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.1.0
- */
-"use strict";
-const React = __webpack_require__(0);
-const RecordsEditor_1 = __webpack_require__(51);
-const ApiService_1 = __webpack_require__(2);
-const datamodel_1 = __webpack_require__(4);
-const lodash_1 = __webpack_require__(1);
-const AddTabButton_1 = __webpack_require__(5);
-const findParentTree_1 = __webpack_require__(25);
-const EditableHeader_1 = __webpack_require__(13);
-const EditableComboDropdown_1 = __webpack_require__(17);
-class StringEditableFieldComponent extends EditableHeader_1.EditableFieldComponent {
-}
-class ComboEditableFieldComponent extends EditableHeader_1.EditableFieldComponent {
-}
-// What can I do?
-// Entity Operations
-// - Delete the entity
-// - Merge the entity
-// - Split the entity
-// - Add 'same-as-ses' to the entity
-// Records
-// - Order records by type, source and date
-// - Add new records
-// - Adding a new predicate creates a new record with the
-//   entity set, the predicate set, the score set to 3, the period set to null, source set to null
-//   it also creates a blank entry in the records sub table based on the range of the predicate.
-// - New predicates must have a name. The domain is set to the current entitytype but can be changed
-//   to one of its parents. The range MUST be set.
-// Visualisations:
-// - Network graph of entity relationships
-class EntityWorkspaceCoreView extends React.Component {
-    constructor(props, context) {
-        super();
-        this.state = {
-            comboValue: { key: 'test', value: '' },
-            comboSearchValue: ''
-        };
-    }
-    update(data) {
-        this.props.api.patchItem(datamodel_1.Entity, ApiService_1.AppUrls.entity, this.props.id, data);
-    }
-    render() {
-        const entity = this.props.dataStore.tabs.entity.get('entity-' + this.props.id).value.entity;
-        const entityType = this.props.dataStore.all.entity_type.value.find((t) => t.uid === entity.entityType);
-        const potentialParents = this.props.dataStore.all.entity.value;
-        const entityTypeParents = findParentTree_1.findParentTree(entity.entityType, this.props.dataStore.all.entity_type.value);
-        const predicates = this.props.dataStore.all.predicate
-            .value.filter((pred) => entityTypeParents.indexOf(pred.domain) !== -1);
-        const sources = this.props.dataStore.all.source.value;
-        const records = lodash_1.groupBy(this.props.dataStore.tabs.entity.get('entity-' + this.props.id).value.records, 'predicate');
-        const options = predicates.map((pred) => ({ key: pred.name, value: pred.uid, meta: pred }));
-        let parentName = '';
-        if (potentialParents !== null && entity.parent !== undefined) {
-            const found = potentialParents.find((par) => par.uid === entity.parent);
-            if (found !== undefined) {
-                parentName = found.label;
-            }
-        }
-        return (React.createElement("section", {className: 'editor-body'}, 
-            React.createElement("div", {className: 'flex-fill'}, 
-                React.createElement("div", {className: 'flex-fill'}, 
-                    React.createElement("div", null, 
-                        React.createElement("label", {className: 'small'}, "Type"), 
-                        entityType.name, 
-                        " ", 
-                        React.createElement(AddTabButton_1.AddTabButton, {dataStore: this.props.dataStore, uid: entityType.uid, tabType: 'entity_type'}))
-                ), 
-                React.createElement("div", {style: { flex: 1 }}, 
-                    React.createElement("label", {className: 'small'}, "Parent"), 
-                    React.createElement(ComboEditableFieldComponent, {value: { key: parentName, value: entity.parent }, component: EditableComboDropdown_1.EditableComboDropdown, onChange: (value) => this.update({ 'parent': value.value }), additionalProps: { comboSettings: {
-                            options: potentialParents.map((par) => ({ key: par.label, value: par.uid })),
-                            typeName: 'Entity'
-                        } }}), 
-                    entity.parent !== null ? (React.createElement(AddTabButton_1.AddTabButton, {dataStore: this.props.dataStore, tabType: 'entity', uid: entity.parent})) : null)), 
-            React.createElement("div", {className: 'edit-group'}, 
-                React.createElement(RecordsEditor_1.RecordsEditor, {dimension: 'predicates', entityExists: true, id: this.props.id, api: this.props.api, records: records, onChange: () => { }, predicates: predicates, sources: sources, entityTypeId: entityType.uid, dataStore: this.props.dataStore})
-            )));
-    }
-}
-EntityWorkspaceCoreView.contextTypes = {
-    router: React.PropTypes.object.isRequired
-};
-exports.EntityWorkspaceCoreView = EntityWorkspaceCoreView;
-
-
-/***/ },
-/* 105 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview Empty workspace for when nothing is open!
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.1.0
- */
-"use strict";
-const React = __webpack_require__(0);
-const ApiService_1 = __webpack_require__(2);
-const datamodel_1 = __webpack_require__(4);
-const EditableHeader_1 = __webpack_require__(13);
-class StringEditableFieldComponent extends EditableHeader_1.EditableFieldComponent {
-}
-class ComboEditableFieldComponent extends EditableHeader_1.EditableFieldComponent {
-}
-// What can I do?
-// Entity Operations
-// - Delete the entity
-// - Merge the entity
-// - Split the entity
-// - Add 'same-as-ses' to the entity
-// Records
-// - Order records by type, source and date
-// - Add new records
-// - Adding a new predicate creates a new record with the
-//   entity set, the predicate set, the score set to 3, the period set to null, source set to null
-//   it also creates a blank entry in the records sub table based on the range of the predicate.
-// - New predicates must have a name. The domain is set to the current entitytype but can be changed
-//   to one of its parents. The range MUST be set.
-// Visualisations:
-// - Network graph of entity relationships
-class EntityWorkspaceReferenceView extends React.Component {
-    constructor(props, context) {
-        super();
-        this.state = {
-            comboValue: { key: 'test', value: '' },
-            comboSearchValue: ''
-        };
-    }
-    update(data) {
-        this.props.api.patchItem(datamodel_1.Entity, ApiService_1.AppUrls.entity, this.props.id, data);
-    }
-    render() {
-        return (React.createElement("section", {className: 'editor-body'}, 
-            React.createElement("h2", null, "References")
-        ));
-    }
-}
-EntityWorkspaceReferenceView.contextTypes = {
-    router: React.PropTypes.object.isRequired
-};
-exports.EntityWorkspaceReferenceView = EntityWorkspaceReferenceView;
 
 
 /***/ }

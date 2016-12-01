@@ -33,6 +33,8 @@ import { setupAuth } from './Auth';
 
 import { SqliteSnapshot } from './SqliteSnapshot';
 
+import { server as frontendApp } from 'imperial-entanglements-frontend';
+
 import * as path from 'path';
 
 export class Server {
@@ -90,12 +92,6 @@ export class Server {
         admin.use(koaMount('/stats', stats(db)));
         admin.use(koaMount('/', adminApp(this.skeleton, serverApiContext)));
         this.app.use(koaMount('/admin', admin));
-
-        const frontendApp = new Koa();
-
-        frontendApp.use(function* (next: Koa.Context) {
-            this.body = 'Frontend under construction';
-        });
 
         this.app.use(koaMount('/', frontendApp));
 
