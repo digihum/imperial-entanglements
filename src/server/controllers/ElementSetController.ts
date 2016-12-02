@@ -17,12 +17,20 @@ export class ElementSetController extends GenericController<ElementSet> {
         super(db, 'element_sets');
     }
 
-    public toSchema(data: ElementSet) : any {
+    public static toSchema(data: ElementSet) : any {
         return omit(Serializer.toJson(data), 'elements');
     }
 
-    public fromSchema(data: any) : ElementSet {
+    public static fromSchema(data: any) : ElementSet {
         return Object.assign(Object.create(ElementSet.prototype), data);
+    }
+
+    protected toSchema(data: ElementSet) : any {
+        return ElementSetController.toSchema(data);
+    }
+
+    protected fromSchema(data: any) : ElementSet {
+        return ElementSetController.fromSchema(data);
     }
 
     public getItemJson(obj: { new(): ElementSet }, uid: number) : PromiseLike<ElementSet> {

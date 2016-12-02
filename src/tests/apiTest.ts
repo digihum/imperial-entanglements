@@ -12,11 +12,6 @@ import * as chai from 'chai';
 import * as chaiHttp from 'chai-http';
 import * as Knex from 'knex';
 
-import { ServerApiService, AppUrls } from '../server/core/ServerApiService';
-import { ElementSetPersistable } from '../server/controllers/ElementSetController';
-import { wrapDatabase } from '../server/routes/api';
-import { Database } from '../server/core/Database';
-
 chai.use(chaiHttp);
 
 let knex;

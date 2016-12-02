@@ -5149,11 +5149,17 @@ class ElementSetController extends GenericController_1.GenericController {
     constructor(db) {
         super(db, 'element_sets');
     }
-    toSchema(data) {
+    static toSchema(data) {
         return lodash_1.omit(falcon_core_1.Serializer.toJson(data), 'elements');
     }
-    fromSchema(data) {
+    static fromSchema(data) {
         return Object.assign(Object.create(falcon_core_1.ElementSet.prototype), data);
+    }
+    toSchema(data) {
+        return ElementSetController.toSchema(data);
+    }
+    fromSchema(data) {
+        return ElementSetController.fromSchema(data);
     }
     getItemJson(obj, uid) {
         return super.getItemJson(obj, uid)

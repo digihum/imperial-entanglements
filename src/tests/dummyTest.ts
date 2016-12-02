@@ -7,8 +7,8 @@
 import { expect } from 'chai';
 import * as Knex from 'knex';
 
+import { ElementSet, Serializer } from 'falcon-core';
 import { ServerApiService, AppUrls } from '../server/core/ServerApiService';
-import { ElementSetPersistable } from '../server/controllers/ElementSetController';
 import { wrapDatabase } from '../server/routes/api';
 import { Database } from '../server/core/Database';
 
@@ -36,11 +36,11 @@ describe('A simple test', () => {
       .then(() => done());
     });
 
-    it('to check things work', (done) => {
+    it('to check things work #api', (done) => {
 
-      apiService.postItem(ElementSetPersistable, AppUrls.element_set, new ElementSetPersistable().fromSchema({
+      apiService.postItem(ElementSet, AppUrls.element_set, Serializer.fromJson(ElementSet, {
         uri: 'example.com',
-        name: 'example',
+        label: 'example',
         description: 'a example set'
       }))
       .then((success) => {
