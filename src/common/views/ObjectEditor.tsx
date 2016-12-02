@@ -10,8 +10,6 @@ import * as moment from 'moment';
 
 import { ApiService, AppUrls } from '../ApiService';
 
-import { EntityType, Entity, Predicate, Record, Source, SourceElement, ElementSet } from 'falcon-core';
-
 import { Sidebar, Tab } from '../components/Sidebar';
 import { Workspace } from '../components/Workspace';
 import { Toast } from '../components/Toast';
@@ -30,6 +28,8 @@ import { ConflictResolution } from '../components/modal/ConflictResolution';
 import { ModalDefinition } from '../components/modal/ModalDefinition';
 
 import { DataStore, emptyDataStore, emptyTabs } from '../DataStore';
+
+import { DataController } from '../DataController';
 
 interface ExpectedParams {
     id: string;
@@ -70,13 +70,22 @@ export class ObjectEditor extends React.Component<EntityEditorProps, EntityEdito
     constructor(props: EntityEditorProps, context: any) {
         super();
 
+        let tabs : Tab[] = [];
+
+        if (typeof window !== 'undefined') {
+          const tabString = window.localStorage.getItem('open_tabs');
+          if (tabString !== null) {
+            tabs = JSON.parse(tabString);
+          }
+        }
+
         this.state = {
-            tabs: [],
+            tabs,
             inBrowser: (typeof window !== 'undefined'),
             modalQueue: [],
             dataStore: cloneDeep(emptyDataStore),
             loadingWheel: true,
-            loading: false,
+            loading: true,
             id: NaN,
             list: false
         };
@@ -95,129 +104,68 @@ export class ObjectEditor extends React.Component<EntityEditorProps, EntityEdito
     }
 
     public componentDidMount() {
-        this.reload(this.props);
+        this.reload(this.props, false, true);
     }
 
     public callReload() {
         this.reload(this.props, true);
     }
 
-    public reload(props: EntityEditorProps, force: boolean = false) {
+    public reload(props: EntityEditorProps, force: boolean = false, initialLoad : boolean = false) {
 
-        const newId = parseInt(props.location.pathname.substr(props.pathname.length + 1));
-        const newWorkspace = props.workspace;
+      const newId = parseInt(props.location.pathname.substr(props.pathname.length + 1));
+      const newWorkspace = props.workspace;
 
-        if (['entity', 'source', 'predicate', 'entity_type', 'notfound'].indexOf(newWorkspace) === -1) {
-            this.context.router.transitionTo('/edit/notfound');
-        }
+      // if we are in the browser, load tabs!
 
-        if (this.state.loading && !force) {
-            this.setState({
-                id: newId,
-                list: props.location.pathname.substr(props.pathname.length + 1).length === 0
-            });
+      // if there is not a tab for the current URL - create it
+      // if the url is invalid, relocate to /edit/notfound
+      if (['entity', 'source', 'predicate', 'entity_type', 'notfound'].indexOf(newWorkspace) === -1) {
+        this.context.router.transitionTo('/edit/notfound');
+      }
+
+      let updatedTabs = this.state.tabs;
+
+       if (this.state.inBrowser) {
+          if (
+            !this.state.list &&
+            !isNaN(newId) &&
+            find(updatedTabs, (tab) => tab.tabType === newWorkspace && tab.uid == newId) === undefined) {
+              updatedTabs = updatedTabs.concat([{ tabType: newWorkspace, uid: newId, tabClass: 'item'}]);
+              this.saveTabs();
+          }
+      }
+
+      // this state always updates
+      this.setState({
+        id: newId,
+        list: props.location.pathname.substr(props.pathname.length + 1).length === 0,
+        tabs: updatedTabs
+      }, () => {
+         if (!initialLoad && this.state.loading && !force) {
             return;
         }
 
         this.setState({
-            loading: true,
-            loadingWheel: (this.state.id !== newId && !(isNaN(this.state.id) && isNaN(newId))) || this.props.workspace !== newWorkspace,
-            id: newId,
-            list: props.location.pathname.substr(props.pathname.length + 1).length === 0
-    }, () => {
-            // load data required by the current tabs
-            let tabPromise = Promise.resolve(cloneDeep(emptyTabs));
+          loading: true,
+          loadingWheel: initialLoad
+        }, () => {
 
-            if (this.state.inBrowser) {
-                const tabsString = window.localStorage.getItem('open_tabs');
-                if (tabsString !== null) {
-                    this.state.tabs = JSON.parse(tabsString);
-
-                    if (!this.state.list &&
-                            ['entity', 'predicate', 'entity_type', 'source'].indexOf(props.workspace) !== -1 &&
-                            find(this.state.tabs, (tab) => tab.tabType === props.workspace
-                        && tab.uid == this.state.id) === undefined) {
-                            this.state.tabs.push({ tabType: props.workspace, uid: this.state.id});
-                            this.saveTabs();
-                    }
-
-                    const groupedTabs = groupBy(this.state.tabs, 'tabType');
-
-                    tabPromise = Promise.all(
-                        Object.keys(groupedTabs).map((tabType) =>
-
-                            Promise.all(groupedTabs[tabType].map((tab) =>
-                                this.loadTabData(tab.tabType, tab.uid)
-                                .then((value) => {
-                                    return { [`${tab.tabType}-${tab.uid}`]: { value, lastUpdate: moment() }};
-                                })
-                                .catch((err) => {
-                                    console.warn(`Attempted to load missing resource ${tab.tabType}/${tab.uid}`);
-                                    this.closeTab(tab.tabType, tab.uid);
-                                    if (tab.tabType === props.workspace && tab.uid === this.state.id) {
-                                        this.context.router.transitionTo('/edit/notfound');
-                                    }
-                                })
-                            ))
-                            .then((tabData) => {
-                                return { [tabType]: Map(Object.assign({}, ...tabData)) };
-                            })
-                        )
-                    );
-                }
+          DataController.reload(props.api, this.state.tabs, force, (failWorkspace, failUid) => {
+            if (newWorkspace === failWorkspace && failUid == newId) {
+              this.context.router.transitionTo('/edit/notfound');
             }
-
-            // load lists of data commonly required by views
-            const allPromise = Promise.all([
-                props.api.getCollection(Predicate, AppUrls.predicate, {}),
-                props.api.getCollection(Source, AppUrls.source, {}),
-                props.api.getCollection(Entity, AppUrls.entity, {}),
-                props.api.getCollection(EntityType, AppUrls.entity_type, {}),
-                props.api.getItem(ElementSet, AppUrls.element_set, 1)
-            ])
-            .then(([predicates, sources, entities, entityType, dublinCore]) => {
-
-                return {
-                    predicate: { value: predicates, lastUpdate: moment() },
-                    source: { value: sources, lastUpdate: moment() },
-                    entity: { value: entities, lastUpdate: moment() },
-                    entity_type: { value: entityType, lastUpdate: moment() },
-                    dublinCore: { value: dublinCore, lastUpdate: moment() }
-                };
-            });
-
-            Promise.all([tabPromise, allPromise])
-            .then(([tabsArray, all]) => {
-                const tabs = Object.assign({}, ...tabsArray);
-                this.setState({
-                    dataStore: Object.assign({}, this.state.dataStore, { tabs, all }),
-                    loading: false,
-                    loadingWheel: false
-                });
-            });
+          })
+        .then((dataStore) => {
+          this.setState({
+            dataStore,
+            loading: false,
+            loadingWheel: false
+          });
         });
-    }
 
-    public loadTabData(tabType: string, uid: number) {
-        switch (tabType) {
-            case 'entity':
-                return Promise.all([
-                    this.props.api.getItem(Entity, AppUrls.entity, uid),
-                    this.props.api.getCollection(Record, AppUrls.record, { entity: uid }),
-                    this.props.api.getCollection(Record, AppUrls.record, { value_type: 'entity', value_entity: uid })
-                ]).then(([entity, records, referenceRecords]) => ({ entity, records, referenceRecords }));
-            case 'predicate':
-                return this.props.api.getItem(Predicate, AppUrls.predicate, uid);
-            case 'entity_type':
-                return this.props.api.getItem(EntityType, AppUrls.entity_type, uid);
-            case 'source':
-                return Promise.all([
-                    this.props.api.getItem(Source, AppUrls.source, uid),
-                    this.props.api.getCollection(SourceElement, AppUrls.source_element, { source: uid })
-                ]).then(([source, source_element]) => ({ source, source_element }));
-            default:
-                throw new Error('Unexpected tab type requested');
-        }
+        });
+      });
     }
 
     public createTab(tabType: string, uid: number, data?: any) {

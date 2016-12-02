@@ -17,6 +17,7 @@ import {SortableContainer, SortableElement, SortableHandle, arrayMove} from 'rea
 
 export interface Tab {
     tabType: string;
+    tabClass: string;
     uid: number;
     data?: any;
 }
@@ -28,6 +29,13 @@ const Handle = SortableHandle((props: {tabType: string}) => (
       </div>
   </div>
 ));
+
+const onCloseTab = (e: React.MouseEvent, tabType: string, uid: number) => {
+    closeTab.dispatch(tabType, uid);
+    e.stopPropagation();
+    e.preventDefault();
+    e.nativeEvent.stopImmediatePropagation();
+}
 
 const Card = SortableElement((props: {currentTab: boolean, url: string, tab: Tab, title: string, subtitle: string,
             compact: boolean}) => (
@@ -53,7 +61,7 @@ const Card = SortableElement((props: {currentTab: boolean, url: string, tab: Tab
               </div>
               {!props.currentTab ? (
                   <span className='close-button'>
-                      <i className='fa fa-times' onClick={(e) => this.closeTab(e, props.tab.tabType, props.tab.uid)}></i>
+                      <i className='fa fa-times' onClick={(e) => onCloseTab(e, props.tab.tabType, props.tab.uid)}></i>
                   </span>
               ) : null}
           </div>
@@ -128,13 +136,6 @@ export class Sidebar extends React.Component<SidebarProps, SidebarState> {
             searchString: '',
             compactMode: false
         };
-    }
-
-    public closeTab(e: React.MouseEvent, tabType: string, uid: number) {
-        closeTab.dispatch(tabType, uid);
-        e.stopPropagation();
-        e.preventDefault();
-        e.nativeEvent.stopImmediatePropagation();
     }
 
     public onSortEnd = ({oldIndex, newIndex}) => {

@@ -61,7 +61,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 97);
+/******/ 	return __webpack_require__(__webpack_require__.s = 98);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -78,6 +78,12 @@ module.exports = require("falcon-core");
 
 /***/ },
 /* 2 */
+/***/ function(module, exports) {
+
+module.exports = require("lodash");
+
+/***/ },
+/* 3 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -87,7 +93,7 @@ module.exports = require("falcon-core");
  * @version 0.1.0
  */
 "use strict";
-const itemTypes_1 = __webpack_require__(24);
+const itemTypes_1 = __webpack_require__(25);
 exports.AppUrls = {
     element_set: itemTypes_1.itemTypes.element_set.machineName,
     record: itemTypes_1.itemTypes.record.machineName,
@@ -101,12 +107,6 @@ exports.AppUrls = {
 
 
 /***/ },
-/* 3 */
-/***/ function(module, exports) {
-
-module.exports = require("lodash");
-
-/***/ },
 /* 4 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -117,7 +117,7 @@ module.exports = require("lodash");
  * @version 0.1.0
  */
 "use strict";
-const signals = __webpack_require__(96);
+const signals = __webpack_require__(97);
 exports.createTab = new signals.Signal();
 exports.closeTab = new signals.Signal();
 exports.showModal = new signals.Signal();
@@ -171,8 +171,8 @@ exports.AddTabButton.contextTypes = {
  */
 "use strict";
 const React = __webpack_require__(0);
-const lunr = __webpack_require__(94);
-const lodash_1 = __webpack_require__(3);
+const lunr = __webpack_require__(95);
+const lodash_1 = __webpack_require__(2);
 class ComboDropdown extends React.Component {
     constructor() {
         super();
@@ -901,7 +901,7 @@ exports.formatDate = (str) => {
 const falcon_core_1 = __webpack_require__(1);
 const GenericController_1 = __webpack_require__(7);
 const Exceptions_1 = __webpack_require__(8);
-const lodash_1 = __webpack_require__(3);
+const lodash_1 = __webpack_require__(2);
 class RecordController extends GenericController_1.GenericController {
     constructor(db) {
         super(db, 'records');
@@ -1009,6 +1009,43 @@ module.exports = require("graphql");
 
 "use strict";
 /**
+ * @fileOverview <Description Missing>
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.1.0
+ */
+"use strict";
+const immutable_1 = __webpack_require__(30);
+const falcon_core_1 = __webpack_require__(1);
+exports.emptyDataStore = {
+    all: {
+        entity: { value: [], lastUpdate: null },
+        entity_type: { value: [], lastUpdate: null },
+        predicate: { value: [], lastUpdate: null },
+        source: { value: [], lastUpdate: null },
+        dublinCore: { value: new falcon_core_1.ElementSet(), lastUpdate: null }
+    },
+    records: immutable_1.Map(),
+    tabs: {
+        entity: immutable_1.Map(),
+        entity_type: immutable_1.Map(),
+        predicate: immutable_1.Map(),
+        source: immutable_1.Map()
+    }
+};
+exports.emptyTabs = [
+    { entity: immutable_1.Map() },
+    { entity_type: immutable_1.Map() },
+    { predicate: immutable_1.Map() },
+    { source: immutable_1.Map()
+    }];
+
+
+/***/ },
+/* 24 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
  * @fileOverview Sidebar for editor
  * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
  * @version 0.1.0
@@ -1016,7 +1053,7 @@ module.exports = require("graphql");
 "use strict";
 const React = __webpack_require__(0);
 const ComboDropdown_1 = __webpack_require__(6);
-const lodash_1 = __webpack_require__(3);
+const lodash_1 = __webpack_require__(2);
 class PredicateDescription extends React.Component {
     constructor() {
         super();
@@ -1094,7 +1131,7 @@ exports.PredicateDescription = PredicateDescription;
 
 
 /***/ },
-/* 24 */
+/* 25 */
 /***/ function(module, exports) {
 
 "use strict";
@@ -1151,7 +1188,7 @@ exports.itemTypes = {
 
 
 /***/ },
-/* 25 */
+/* 26 */
 /***/ function(module, exports) {
 
 "use strict";
@@ -1172,7 +1209,7 @@ exports.literalTypes = [
 
 
 /***/ },
-/* 26 */
+/* 27 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1213,7 +1250,7 @@ exports.StatsGrid = (props) => {
 
 
 /***/ },
-/* 27 */
+/* 28 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1226,7 +1263,7 @@ exports.StatsGrid = (props) => {
 const falcon_core_1 = __webpack_require__(1);
 const GenericController_1 = __webpack_require__(7);
 const Exceptions_1 = __webpack_require__(8);
-const lodash_1 = __webpack_require__(3);
+const lodash_1 = __webpack_require__(2);
 class EntityController extends GenericController_1.GenericController {
     constructor(db) {
         super(db, 'entities');
@@ -1290,7 +1327,7 @@ exports.EntityController = EntityController;
 
 
 /***/ },
-/* 28 */
+/* 29 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1304,7 +1341,7 @@ const falcon_core_1 = __webpack_require__(1);
 const GenericController_1 = __webpack_require__(7);
 const Exceptions_1 = __webpack_require__(8);
 const RecordController_1 = __webpack_require__(21);
-const lodash_1 = __webpack_require__(3);
+const lodash_1 = __webpack_require__(2);
 class PredicateController extends GenericController_1.GenericController {
     constructor(db) {
         super(db, 'predicates');
@@ -1440,13 +1477,13 @@ exports.PredicateController = PredicateController;
 
 
 /***/ },
-/* 29 */
+/* 30 */
 /***/ function(module, exports) {
 
 module.exports = require("immutable");
 
 /***/ },
-/* 30 */
+/* 31 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1467,17 +1504,17 @@ var __assign = (this && this.__assign) || Object.assign || function(t) {
 //https://react-router.now.sh/Match
 const React = __webpack_require__(0);
 const react_router_1 = __webpack_require__(9);
-const RouteNotFound_1 = __webpack_require__(76);
-const ApiService_1 = __webpack_require__(2);
-const itemTypes_1 = __webpack_require__(24);
-const Admin_1 = __webpack_require__(72);
-const AdminApp_1 = __webpack_require__(35);
-const User_1 = __webpack_require__(77);
-const UserManagement_1 = __webpack_require__(78);
-const AppDownload_1 = __webpack_require__(73);
-const DatabaseUpload_1 = __webpack_require__(74);
+const RouteNotFound_1 = __webpack_require__(77);
+const ApiService_1 = __webpack_require__(3);
+const itemTypes_1 = __webpack_require__(25);
+const Admin_1 = __webpack_require__(73);
+const AdminApp_1 = __webpack_require__(36);
+const User_1 = __webpack_require__(78);
+const UserManagement_1 = __webpack_require__(79);
+const AppDownload_1 = __webpack_require__(74);
+const DatabaseUpload_1 = __webpack_require__(75);
 const react_router_2 = __webpack_require__(9);
-const ObjectEditor_1 = __webpack_require__(75);
+const ObjectEditor_1 = __webpack_require__(76);
 class FalconApp extends React.Component {
     constructor(props) {
         super();
@@ -1534,7 +1571,7 @@ exports.FalconApp = FalconApp;
 
 
 /***/ },
-/* 31 */
+/* 32 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1544,8 +1581,8 @@ exports.FalconApp = FalconApp;
  * @version 0.0.1
  */
 "use strict";
-const Knex = __webpack_require__(90);
-const lodash_1 = __webpack_require__(3);
+const Knex = __webpack_require__(91);
+const lodash_1 = __webpack_require__(2);
 const Exceptions_1 = __webpack_require__(8);
 class Database {
     constructor(config) {
@@ -1702,7 +1739,7 @@ exports.Database = Database;
 
 
 /***/ },
-/* 32 */
+/* 33 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1712,12 +1749,12 @@ exports.Database = Database;
  * @version 0.0.1
  */
 "use strict";
-const ServerApiService_1 = __webpack_require__(86);
-const QueryEngine_1 = __webpack_require__(85);
-const koaConditionalGet = __webpack_require__(91);
-const koaEtags = __webpack_require__(92);
+const ServerApiService_1 = __webpack_require__(87);
+const QueryEngine_1 = __webpack_require__(86);
+const koaConditionalGet = __webpack_require__(92);
+const koaEtags = __webpack_require__(93);
 const falcon_core_1 = __webpack_require__(1);
-const controllers_1 = __webpack_require__(84);
+const controllers_1 = __webpack_require__(85);
 const falcon_core_2 = __webpack_require__(1);
 exports.wrapDatabase = (db, fakeCreator) => {
     const routes = new Map([
@@ -1875,36 +1912,16 @@ exports.api = (router, serverApiContext) => {
 
 
 /***/ },
-/* 33 */
+/* 34 */
 /***/ function(module, exports) {
 
 module.exports = require("electron");
 
 /***/ },
-/* 34 */
+/* 35 */
 /***/ function(module, exports) {
 
 module.exports = require("react-dom");
-
-/***/ },
-/* 35 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview <Description Missing>
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.1.0
- */
-"use strict";
-const React = __webpack_require__(0);
-const StatsGrid_1 = __webpack_require__(26);
-exports.AdminApp = (props) => (React.createElement("div", {className: 'page'}, 
-    React.createElement("section", null, 
-        React.createElement("h1", null, "VRE App"), 
-        props.stats !== null ? (React.createElement(StatsGrid_1.StatsGrid, {stats: props.stats})) : null)
-));
-
 
 /***/ },
 /* 36 */
@@ -1917,34 +1934,95 @@ exports.AdminApp = (props) => (React.createElement("div", {className: 'page'},
  * @version 0.1.0
  */
 "use strict";
-const immutable_1 = __webpack_require__(29);
-const falcon_core_1 = __webpack_require__(1);
-exports.emptyDataStore = {
-    all: {
-        entity: { value: [], lastUpdate: null },
-        entity_type: { value: [], lastUpdate: null },
-        predicate: { value: [], lastUpdate: null },
-        source: { value: [], lastUpdate: null },
-        dublinCore: { value: new falcon_core_1.ElementSet(), lastUpdate: null }
-    },
-    records: immutable_1.Map(),
-    tabs: {
-        entity: immutable_1.Map(),
-        entity_type: immutable_1.Map(),
-        predicate: immutable_1.Map(),
-        source: immutable_1.Map()
-    }
-};
-exports.emptyTabs = [
-    { entity: immutable_1.Map() },
-    { entity_type: immutable_1.Map() },
-    { predicate: immutable_1.Map() },
-    { source: immutable_1.Map()
-    }];
+const React = __webpack_require__(0);
+const StatsGrid_1 = __webpack_require__(27);
+exports.AdminApp = (props) => (React.createElement("div", {className: 'page'}, 
+    React.createElement("section", null, 
+        React.createElement("h1", null, "VRE App"), 
+        props.stats !== null ? (React.createElement(StatsGrid_1.StatsGrid, {stats: props.stats})) : null)
+));
 
 
 /***/ },
 /* 37 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview <Description Missing>
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.1.0
+ */
+"use strict";
+const falcon_core_1 = __webpack_require__(1);
+const ApiService_1 = __webpack_require__(3);
+const immutable_1 = __webpack_require__(30);
+const lodash_1 = __webpack_require__(2);
+const moment = __webpack_require__(14);
+const loadTabData = (api, tab) => {
+    switch (tab.tabType) {
+        case 'entity':
+            return Promise.all([
+                api.getItem(falcon_core_1.Entity, ApiService_1.AppUrls.entity, tab.uid),
+                api.getCollection(falcon_core_1.Record, ApiService_1.AppUrls.record, { entity: tab.uid }),
+                api.getCollection(falcon_core_1.Record, ApiService_1.AppUrls.record, { value_type: 'entity', value_entity: tab.uid })
+            ]).then(([entity, records, referenceRecords]) => ({ entity, records, referenceRecords }));
+        case 'predicate':
+            return api.getItem(falcon_core_1.Predicate, ApiService_1.AppUrls.predicate, tab.uid);
+        case 'entity_type':
+            return api.getItem(falcon_core_1.EntityType, ApiService_1.AppUrls.entity_type, tab.uid);
+        case 'source':
+            return Promise.all([
+                api.getItem(falcon_core_1.Source, ApiService_1.AppUrls.source, tab.uid),
+                api.getCollection(falcon_core_1.SourceElement, ApiService_1.AppUrls.source_element, { source: tab.uid })
+            ]).then(([source, source_element]) => ({ source, source_element }));
+        default:
+            throw new Error('Unexpected tab type requested');
+    }
+};
+exports.reload = (api, tabs, force = false, failureCallback) => {
+    const groupedTabs = lodash_1.groupBy(tabs, 'tabType');
+    const tabPromise = Promise.all(Object.keys(groupedTabs).map((tabType) => Promise.all(groupedTabs[tabType].map((tab) => loadTabData(api, tab)
+        .then((value) => {
+        return { [`${tab.tabType}-${tab.uid}`]: { value, lastUpdate: moment() } };
+    })
+        .catch((err) => {
+        failureCallback(tab.tabType, tab.uid);
+    })))
+        .then((tabData) => {
+        return { [tabType]: immutable_1.Map(Object.assign({}, ...tabData)) };
+    })));
+    // load lists of data commonly required by views
+    const allPromise = Promise.all([
+        api.getCollection(falcon_core_1.Predicate, ApiService_1.AppUrls.predicate, {}),
+        api.getCollection(falcon_core_1.Source, ApiService_1.AppUrls.source, {}),
+        api.getCollection(falcon_core_1.Entity, ApiService_1.AppUrls.entity, {}),
+        api.getCollection(falcon_core_1.EntityType, ApiService_1.AppUrls.entity_type, {}),
+        api.getItem(falcon_core_1.ElementSet, ApiService_1.AppUrls.element_set, 1)
+    ])
+        .then(([predicates, sources, entities, entityType, dublinCore]) => {
+        return {
+            predicate: { value: predicates, lastUpdate: moment() },
+            source: { value: sources, lastUpdate: moment() },
+            entity: { value: entities, lastUpdate: moment() },
+            entity_type: { value: entityType, lastUpdate: moment() },
+            dublinCore: { value: dublinCore, lastUpdate: moment() }
+        };
+    });
+    return Promise.all([tabPromise, allPromise])
+        .then(([tabsArray, all]) => {
+        const tabs = Object.assign({}, ...tabsArray);
+        console.log("TABS", tabs);
+        return { tabs, all };
+    });
+};
+exports.DataController = {
+    reload: exports.reload
+};
+
+
+/***/ },
+/* 38 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1963,7 +2041,7 @@ exports.Loading = (props) => {
 
 
 /***/ },
-/* 38 */
+/* 39 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1974,17 +2052,23 @@ exports.Loading = (props) => {
  */
 "use strict";
 const React = __webpack_require__(0);
-const SearchBox_1 = __webpack_require__(61);
-const ApiService_1 = __webpack_require__(2);
+const SearchBox_1 = __webpack_require__(62);
+const ApiService_1 = __webpack_require__(3);
 const react_router_1 = __webpack_require__(9);
 const Signaller_1 = __webpack_require__(4);
-const lodash_1 = __webpack_require__(3);
-const react_sortable_hoc_1 = __webpack_require__(95);
+const lodash_1 = __webpack_require__(2);
+const react_sortable_hoc_1 = __webpack_require__(96);
 const Handle = react_sortable_hoc_1.SortableHandle((props) => (React.createElement("div", {className: 'badge-container'}, 
     React.createElement("div", {className: 'badge ' + props.tabType}, 
         React.createElement("span", null, props.tabType[0].toUpperCase())
     )
 )));
+const onCloseTab = (e, tabType, uid) => {
+    Signaller_1.closeTab.dispatch(tabType, uid);
+    e.stopPropagation();
+    e.preventDefault();
+    e.nativeEvent.stopImmediatePropagation();
+};
 const Card = react_sortable_hoc_1.SortableElement((props) => (React.createElement("li", {key: `${props.url}`}, 
     React.createElement("div", {className: ((currentTab) => {
         const classes = ['sidebar-card'];
@@ -2003,7 +2087,7 @@ const Card = react_sortable_hoc_1.SortableElement((props) => (React.createElemen
                 props.compact ? null : (React.createElement("span", {className: 'entity-type'}, props.subtitle)))
         ), 
         !props.currentTab ? (React.createElement("span", {className: 'close-button'}, 
-            React.createElement("i", {className: 'fa fa-times', onClick: (e) => this.closeTab(e, props.tab.tabType, props.tab.uid)})
+            React.createElement("i", {className: 'fa fa-times', onClick: (e) => onCloseTab(e, props.tab.tabType, props.tab.uid)})
         )) : null)
 )));
 const CardList = react_sortable_hoc_1.SortableContainer((props) => {
@@ -2034,12 +2118,6 @@ class Sidebar extends React.Component {
             compactMode: false
         };
     }
-    closeTab(e, tabType, uid) {
-        Signaller_1.closeTab.dispatch(tabType, uid);
-        e.stopPropagation();
-        e.preventDefault();
-        e.nativeEvent.stopImmediatePropagation();
-    }
     render() {
         return (React.createElement("section", {id: 'sidebar'}, 
             React.createElement(SearchBox_1.SearchBox, {searchString: this.state.searchString, dataStore: this.props.dataStore, onChange: (evt) => this.setState({ searchString: evt.currentTarget.value })}), 
@@ -2059,7 +2137,7 @@ exports.Sidebar = Sidebar;
 
 
 /***/ },
-/* 39 */
+/* 40 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2106,7 +2184,7 @@ exports.Toast = Toast;
 
 
 /***/ },
-/* 40 */
+/* 41 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2117,8 +2195,8 @@ exports.Toast = Toast;
  */
 "use strict";
 const React = __webpack_require__(0);
-const Loading_1 = __webpack_require__(37);
-const workspace_1 = __webpack_require__(71);
+const Loading_1 = __webpack_require__(38);
+const workspace_1 = __webpack_require__(72);
 class Workspace extends React.Component {
     constructor() {
         super();
@@ -2160,26 +2238,6 @@ exports.Workspace = Workspace;
 
 
 /***/ },
-/* 41 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview <Description Missing>
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.1.0
- */
-"use strict";
-const React = __webpack_require__(0);
-const DatePickerDropdown_1 = __webpack_require__(48);
-exports.DateFieldEditor = (props) => {
-    return (React.createElement("div", {className: 'date-selector'}, 
-        React.createElement(DatePickerDropdown_1.DatePickerDropdown, {value: props.value, setValue: props.onChange})
-    ));
-};
-
-
-/***/ },
 /* 42 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -2191,8 +2249,28 @@ exports.DateFieldEditor = (props) => {
  */
 "use strict";
 const React = __webpack_require__(0);
+const DatePickerDropdown_1 = __webpack_require__(49);
+exports.DateFieldEditor = (props) => {
+    return (React.createElement("div", {className: 'date-selector'}, 
+        React.createElement(DatePickerDropdown_1.DatePickerDropdown, {value: props.value, setValue: props.onChange})
+    ));
+};
+
+
+/***/ },
+/* 43 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview <Description Missing>
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.1.0
+ */
+"use strict";
+const React = __webpack_require__(0);
 const ComboDropdown_1 = __webpack_require__(6);
-const lodash_1 = __webpack_require__(3);
+const lodash_1 = __webpack_require__(2);
 exports.EntityFieldEditor = (props) => {
     const options = props.entities.map((entity) => ({ key: entity.label, value: entity.uid }));
     let selectedOption = options.find((opt) => opt.value == props.value);
@@ -2204,7 +2282,7 @@ exports.EntityFieldEditor = (props) => {
 
 
 /***/ },
-/* 43 */
+/* 44 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2221,7 +2299,7 @@ exports.IntegerFieldEditor = (props) => {
 
 
 /***/ },
-/* 44 */
+/* 45 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2232,10 +2310,10 @@ exports.IntegerFieldEditor = (props) => {
  */
 "use strict";
 const React = __webpack_require__(0);
-const ApiService_1 = __webpack_require__(2);
+const ApiService_1 = __webpack_require__(3);
 const falcon_core_1 = __webpack_require__(1);
 const EditableFieldComponent_1 = __webpack_require__(11);
-const RecordRow_1 = __webpack_require__(45);
+const RecordRow_1 = __webpack_require__(46);
 const AddTabButton_1 = __webpack_require__(5);
 class RecordEditableFieldComponent extends EditableFieldComponent_1.EditableFieldComponent {
 }
@@ -2301,7 +2379,7 @@ exports.RecordPredicate = RecordPredicate;
 
 
 /***/ },
-/* 45 */
+/* 46 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2314,13 +2392,13 @@ exports.RecordPredicate = RecordPredicate;
 const React = __webpack_require__(0);
 var EditableFieldComponent_1 = __webpack_require__(11);
 exports.EditableFieldComponent = EditableFieldComponent_1.EditableFieldComponent;
-const ScorePicker_1 = __webpack_require__(49);
+const ScorePicker_1 = __webpack_require__(50);
 const ComboDropdown_1 = __webpack_require__(6);
 const Signaller_1 = __webpack_require__(4);
-const StringFieldEditor_1 = __webpack_require__(47);
-const EntityFieldEditor_1 = __webpack_require__(42);
-const DateFieldEditor_1 = __webpack_require__(41);
-const IntegerFieldEditor_1 = __webpack_require__(43);
+const StringFieldEditor_1 = __webpack_require__(48);
+const EntityFieldEditor_1 = __webpack_require__(43);
+const DateFieldEditor_1 = __webpack_require__(42);
+const IntegerFieldEditor_1 = __webpack_require__(44);
 const AddTabButton_1 = __webpack_require__(5);
 const formatDate_1 = __webpack_require__(20);
 const createNewSource = (initialValue) => {
@@ -2426,7 +2504,7 @@ exports.RecordRow = (props) => {
 
 
 /***/ },
-/* 46 */
+/* 47 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2437,11 +2515,11 @@ exports.RecordRow = (props) => {
  */
 "use strict";
 const React = __webpack_require__(0);
-const ApiService_1 = __webpack_require__(2);
+const ApiService_1 = __webpack_require__(3);
 const falcon_core_1 = __webpack_require__(1);
 const EditableFieldComponent_1 = __webpack_require__(11);
 const SearchBar_1 = __webpack_require__(13);
-const RecordPredicate_1 = __webpack_require__(44);
+const RecordPredicate_1 = __webpack_require__(45);
 const findParentTree_1 = __webpack_require__(19);
 const Signaller_1 = __webpack_require__(4);
 class RecordEditableFieldComponent extends EditableFieldComponent_1.EditableFieldComponent {
@@ -2524,7 +2602,7 @@ exports.RecordsEditor = RecordsEditor;
 
 
 /***/ },
-/* 47 */
+/* 48 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2541,7 +2619,7 @@ exports.StringFieldEditor = (props) => {
 
 
 /***/ },
-/* 48 */
+/* 49 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2553,7 +2631,7 @@ exports.StringFieldEditor = (props) => {
 "use strict";
 const React = __webpack_require__(0);
 const moment = __webpack_require__(14);
-const lodash_1 = __webpack_require__(3);
+const lodash_1 = __webpack_require__(2);
 const formatDate_1 = __webpack_require__(20);
 class DatePickerDropdown extends React.Component {
     constructor() {
@@ -2715,7 +2793,7 @@ exports.DatePickerDropdown = DatePickerDropdown;
 
 
 /***/ },
-/* 49 */
+/* 50 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2726,7 +2804,7 @@ exports.DatePickerDropdown = DatePickerDropdown;
  */
 "use strict";
 const React = __webpack_require__(0);
-const lodash_1 = __webpack_require__(3);
+const lodash_1 = __webpack_require__(2);
 exports.ScorePicker = (props) => {
     const values = [1, 2, 3, 4, 5];
     if (props.readOnly) {
@@ -2742,7 +2820,7 @@ exports.ScorePicker = (props) => {
 
 
 /***/ },
-/* 50 */
+/* 51 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2842,7 +2920,7 @@ exports.ConflictResolution = ConflictResolution;
 
 
 /***/ },
-/* 51 */
+/* 52 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2855,9 +2933,9 @@ exports.ConflictResolution = ConflictResolution;
 const React = __webpack_require__(0);
 const Overlay_1 = __webpack_require__(10);
 const falcon_core_1 = __webpack_require__(1);
-const ApiService_1 = __webpack_require__(2);
+const ApiService_1 = __webpack_require__(3);
 const ComboDropdown_1 = __webpack_require__(6);
-const lodash_1 = __webpack_require__(3);
+const lodash_1 = __webpack_require__(2);
 class CreateEntity extends React.Component {
     constructor() {
         super();
@@ -2903,7 +2981,7 @@ exports.CreateEntity = CreateEntity;
 
 
 /***/ },
-/* 52 */
+/* 53 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2916,7 +2994,7 @@ exports.CreateEntity = CreateEntity;
 const React = __webpack_require__(0);
 const Overlay_1 = __webpack_require__(10);
 const falcon_core_1 = __webpack_require__(1);
-const ApiService_1 = __webpack_require__(2);
+const ApiService_1 = __webpack_require__(3);
 const mousetrap = __webpack_require__(15);
 class CreateEntityType extends React.Component {
     constructor() {
@@ -2956,7 +3034,7 @@ exports.CreateEntityType = CreateEntityType;
 
 
 /***/ },
-/* 53 */
+/* 54 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2968,10 +3046,10 @@ exports.CreateEntityType = CreateEntityType;
 "use strict";
 const React = __webpack_require__(0);
 const Overlay_1 = __webpack_require__(10);
-const PredicateDescription_1 = __webpack_require__(23);
+const PredicateDescription_1 = __webpack_require__(24);
 const falcon_core_1 = __webpack_require__(1);
-const literalTypes_1 = __webpack_require__(25);
-const ApiService_1 = __webpack_require__(2);
+const literalTypes_1 = __webpack_require__(26);
+const ApiService_1 = __webpack_require__(3);
 class CreatePredicate extends React.Component {
     constructor() {
         super();
@@ -3051,7 +3129,7 @@ exports.CreatePredicate = CreatePredicate;
 
 
 /***/ },
-/* 54 */
+/* 55 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3063,7 +3141,7 @@ exports.CreatePredicate = CreatePredicate;
 "use strict";
 const React = __webpack_require__(0);
 const falcon_core_1 = __webpack_require__(1);
-const ApiService_1 = __webpack_require__(2);
+const ApiService_1 = __webpack_require__(3);
 const Signaller_1 = __webpack_require__(4);
 class CreatePresetRecord extends React.Component {
     constructor() {
@@ -3112,7 +3190,7 @@ exports.CreatePresetRecord = CreatePresetRecord;
 
 
 /***/ },
-/* 55 */
+/* 56 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3125,7 +3203,7 @@ exports.CreatePresetRecord = CreatePresetRecord;
 const React = __webpack_require__(0);
 const Overlay_1 = __webpack_require__(10);
 const falcon_core_1 = __webpack_require__(1);
-const ApiService_1 = __webpack_require__(2);
+const ApiService_1 = __webpack_require__(3);
 const ComboDropdown_1 = __webpack_require__(6);
 const Signaller_1 = __webpack_require__(4);
 class CreateRecord extends React.Component {
@@ -3177,7 +3255,7 @@ exports.CreateRecord = CreateRecord;
 
 
 /***/ },
-/* 56 */
+/* 57 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3190,7 +3268,7 @@ exports.CreateRecord = CreateRecord;
 const React = __webpack_require__(0);
 const Overlay_1 = __webpack_require__(10);
 const falcon_core_1 = __webpack_require__(1);
-const ApiService_1 = __webpack_require__(2);
+const ApiService_1 = __webpack_require__(3);
 const mousetrap = __webpack_require__(15);
 class CreateSource extends React.Component {
     constructor() {
@@ -3236,7 +3314,7 @@ exports.CreateSource = CreateSource;
 
 
 /***/ },
-/* 57 */
+/* 58 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3247,11 +3325,11 @@ exports.CreateSource = CreateSource;
  */
 "use strict";
 const React = __webpack_require__(0);
-const lev = __webpack_require__(93);
-const ApiService_1 = __webpack_require__(2);
+const lev = __webpack_require__(94);
+const ApiService_1 = __webpack_require__(3);
 const falcon_core_1 = __webpack_require__(1);
 const ComboDropdown_1 = __webpack_require__(6);
-const lodash_1 = __webpack_require__(3);
+const lodash_1 = __webpack_require__(2);
 const AddTabButton_1 = __webpack_require__(5);
 const Signaller_1 = __webpack_require__(4);
 const formatDate_1 = __webpack_require__(20);
@@ -3487,7 +3565,7 @@ exports.EntityList = EntityList;
 
 
 /***/ },
-/* 58 */
+/* 59 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3555,7 +3633,7 @@ exports.EntityTypeList = EntityTypeList;
 
 
 /***/ },
-/* 59 */
+/* 60 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3629,7 +3707,7 @@ exports.PredicateList = PredicateList;
 
 
 /***/ },
-/* 60 */
+/* 61 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3700,7 +3778,7 @@ exports.SourceList = SourceList;
 
 
 /***/ },
-/* 61 */
+/* 62 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3712,7 +3790,7 @@ exports.SourceList = SourceList;
 "use strict";
 const React = __webpack_require__(0);
 const ComboDropdown_1 = __webpack_require__(6);
-const ApiService_1 = __webpack_require__(2);
+const ApiService_1 = __webpack_require__(3);
 exports.SearchBox = (props, context) => {
     const entities = props.dataStore.all.entity.value.map((entity) => ({ key: entity.label, value: entity.uid, meta: { itemType: ApiService_1.AppUrls.entity } }));
     const entityTypes = props.dataStore.all.entity_type.value.map((entityType) => ({ key: entityType.label, value: entityType.uid, meta: { itemType: ApiService_1.AppUrls.entity_type } }));
@@ -3733,7 +3811,7 @@ exports.SearchBox.contextTypes = { router: React.PropTypes.object.isRequired };
 
 
 /***/ },
-/* 62 */
+/* 63 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3750,7 +3828,7 @@ exports.AdvancedSearchWorkspace = (props) => (React.createElement("div", {classN
 
 
 /***/ },
-/* 63 */
+/* 64 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3767,7 +3845,7 @@ exports.EmptyWorkspace = () => (React.createElement("div", {className: 'workspac
 
 
 /***/ },
-/* 64 */
+/* 65 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3778,14 +3856,14 @@ exports.EmptyWorkspace = () => (React.createElement("div", {className: 'workspac
  */
 "use strict";
 const React = __webpack_require__(0);
-const ApiService_1 = __webpack_require__(2);
+const ApiService_1 = __webpack_require__(3);
 const falcon_core_1 = __webpack_require__(1);
-const lodash_1 = __webpack_require__(3);
+const lodash_1 = __webpack_require__(2);
 const Signaller_1 = __webpack_require__(4);
 const findParentTree_1 = __webpack_require__(19);
 const EditableHeader_1 = __webpack_require__(12);
-const EntityWorkspaceCoreView_1 = __webpack_require__(69);
-const EntityWorkspaceReferenceView_1 = __webpack_require__(70);
+const EntityWorkspaceCoreView_1 = __webpack_require__(70);
+const EntityWorkspaceReferenceView_1 = __webpack_require__(71);
 class StringEditableFieldComponent extends EditableHeader_1.EditableFieldComponent {
 }
 class ComboEditableFieldComponent extends EditableHeader_1.EditableFieldComponent {
@@ -3918,7 +3996,7 @@ exports.EntityEditorWorkspace = EntityEditorWorkspace;
 
 
 /***/ },
-/* 65 */
+/* 66 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3930,7 +4008,7 @@ exports.EntityEditorWorkspace = EntityEditorWorkspace;
 "use strict";
 const React = __webpack_require__(0);
 const SameAsEditor_1 = __webpack_require__(18);
-const ApiService_1 = __webpack_require__(2);
+const ApiService_1 = __webpack_require__(3);
 const falcon_core_1 = __webpack_require__(1);
 const AddTabButton_1 = __webpack_require__(5);
 const EditableHeader_1 = __webpack_require__(12);
@@ -4063,7 +4141,7 @@ exports.EntityTypeWorkspace = EntityTypeWorkspace;
 
 
 /***/ },
-/* 66 */
+/* 67 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4074,10 +4152,10 @@ exports.EntityTypeWorkspace = EntityTypeWorkspace;
  */
 "use strict";
 const React = __webpack_require__(0);
-const EntityList_1 = __webpack_require__(57);
-const PredicateList_1 = __webpack_require__(59);
-const SourceList_1 = __webpack_require__(60);
-const EntityTypeList_1 = __webpack_require__(58);
+const EntityList_1 = __webpack_require__(58);
+const PredicateList_1 = __webpack_require__(60);
+const SourceList_1 = __webpack_require__(61);
+const EntityTypeList_1 = __webpack_require__(59);
 exports.ObjectListWorkspace = (props) => (React.createElement("div", {className: 'workspace-editor object-list'}, (() => {
     switch (props.listType) {
         case 'entity':
@@ -4093,7 +4171,7 @@ exports.ObjectListWorkspace = (props) => (React.createElement("div", {className:
 
 
 /***/ },
-/* 67 */
+/* 68 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4106,13 +4184,13 @@ exports.ObjectListWorkspace = (props) => (React.createElement("div", {className:
 const React = __webpack_require__(0);
 const react_router_1 = __webpack_require__(9);
 const SameAsEditor_1 = __webpack_require__(18);
-const ApiService_1 = __webpack_require__(2);
+const ApiService_1 = __webpack_require__(3);
 const Signaller_1 = __webpack_require__(4);
 const falcon_core_1 = __webpack_require__(1);
 const EditableHeader_1 = __webpack_require__(12);
 const EditableParagraph_1 = __webpack_require__(17);
-const PredicateDescription_1 = __webpack_require__(23);
-const literalTypes_1 = __webpack_require__(25);
+const PredicateDescription_1 = __webpack_require__(24);
+const literalTypes_1 = __webpack_require__(26);
 class StringEditableFieldComponent extends EditableHeader_1.EditableFieldComponent {
 }
 // - Should state the number of times this predicate is used
@@ -4256,7 +4334,7 @@ exports.PredicateEditorWorkspace = PredicateEditorWorkspace;
 
 
 /***/ },
-/* 68 */
+/* 69 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4268,12 +4346,12 @@ exports.PredicateEditorWorkspace = PredicateEditorWorkspace;
 "use strict";
 const React = __webpack_require__(0);
 const SameAsEditor_1 = __webpack_require__(18);
-const ApiService_1 = __webpack_require__(2);
+const ApiService_1 = __webpack_require__(3);
 const falcon_core_1 = __webpack_require__(1);
 const EditableHeader_1 = __webpack_require__(12);
 const EditableParagraph_1 = __webpack_require__(17);
 const EditableComboDropdown_1 = __webpack_require__(16);
-const lodash_1 = __webpack_require__(3);
+const lodash_1 = __webpack_require__(2);
 const Signaller_1 = __webpack_require__(4);
 const AddTabButton_1 = __webpack_require__(5);
 class StringEditableFieldComponent extends EditableHeader_1.EditableFieldComponent {
@@ -4474,7 +4552,7 @@ exports.SourceEditorWorkspace = SourceEditorWorkspace;
 
 
 /***/ },
-/* 69 */
+/* 70 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4485,10 +4563,10 @@ exports.SourceEditorWorkspace = SourceEditorWorkspace;
  */
 "use strict";
 const React = __webpack_require__(0);
-const RecordsEditor_1 = __webpack_require__(46);
-const ApiService_1 = __webpack_require__(2);
+const RecordsEditor_1 = __webpack_require__(47);
+const ApiService_1 = __webpack_require__(3);
 const falcon_core_1 = __webpack_require__(1);
-const lodash_1 = __webpack_require__(3);
+const lodash_1 = __webpack_require__(2);
 const AddTabButton_1 = __webpack_require__(5);
 const findParentTree_1 = __webpack_require__(19);
 const EditableHeader_1 = __webpack_require__(12);
@@ -4569,7 +4647,7 @@ exports.EntityWorkspaceCoreView = EntityWorkspaceCoreView;
 
 
 /***/ },
-/* 70 */
+/* 71 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4580,7 +4658,7 @@ exports.EntityWorkspaceCoreView = EntityWorkspaceCoreView;
  */
 "use strict";
 const React = __webpack_require__(0);
-const ApiService_1 = __webpack_require__(2);
+const ApiService_1 = __webpack_require__(3);
 const falcon_core_1 = __webpack_require__(1);
 const AddTabButton_1 = __webpack_require__(5);
 // What can I do?
@@ -4639,7 +4717,7 @@ exports.EntityWorkspaceReferenceView = EntityWorkspaceReferenceView;
 
 
 /***/ },
-/* 71 */
+/* 72 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4649,24 +4727,24 @@ exports.EntityWorkspaceReferenceView = EntityWorkspaceReferenceView;
  * @version 0.1.0
  */
 "use strict";
-var EmptyWorkspace_1 = __webpack_require__(63);
+var EmptyWorkspace_1 = __webpack_require__(64);
 exports.EmptyWorkspace = EmptyWorkspace_1.EmptyWorkspace;
-var EntityEditorWorkspace_1 = __webpack_require__(64);
+var EntityEditorWorkspace_1 = __webpack_require__(65);
 exports.EntityEditorWorkspace = EntityEditorWorkspace_1.EntityEditorWorkspace;
-var EntityTypeWorkspace_1 = __webpack_require__(65);
+var EntityTypeWorkspace_1 = __webpack_require__(66);
 exports.EntityTypeWorkspace = EntityTypeWorkspace_1.EntityTypeWorkspace;
-var SourceEditorWorkspace_1 = __webpack_require__(68);
+var SourceEditorWorkspace_1 = __webpack_require__(69);
 exports.SourceEditorWorkspace = SourceEditorWorkspace_1.SourceEditorWorkspace;
-var PredicateEditorWorkspace_1 = __webpack_require__(67);
+var PredicateEditorWorkspace_1 = __webpack_require__(68);
 exports.PredicateEditorWorkspace = PredicateEditorWorkspace_1.PredicateEditorWorkspace;
-var AdvancedSearchWorkspace_1 = __webpack_require__(62);
+var AdvancedSearchWorkspace_1 = __webpack_require__(63);
 exports.AdvancedSearchWorkspace = AdvancedSearchWorkspace_1.AdvancedSearchWorkspace;
-var ObjectListWorkspace_1 = __webpack_require__(66);
+var ObjectListWorkspace_1 = __webpack_require__(67);
 exports.ObjectListWorkspace = ObjectListWorkspace_1.ObjectListWorkspace;
 
 
 /***/ },
-/* 72 */
+/* 73 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4678,7 +4756,7 @@ exports.ObjectListWorkspace = ObjectListWorkspace_1.ObjectListWorkspace;
 "use strict";
 const React = __webpack_require__(0);
 const react_router_1 = __webpack_require__(9);
-const StatsGrid_1 = __webpack_require__(26);
+const StatsGrid_1 = __webpack_require__(27);
 exports.Admin = (props) => (React.createElement("div", {className: 'page'}, 
     React.createElement("section", null, 
         React.createElement("h1", null, "Welcome to the admin pages"), 
@@ -4707,7 +4785,7 @@ exports.Admin = (props) => (React.createElement("div", {className: 'page'},
 
 
 /***/ },
-/* 73 */
+/* 74 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4742,7 +4820,7 @@ exports.AppDownload = (props) => (React.createElement("div", {className: 'page'}
 
 
 /***/ },
-/* 74 */
+/* 75 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4762,7 +4840,7 @@ exports.DatabaseUpload = (props) => (React.createElement("div", {className: 'pag
 
 
 /***/ },
-/* 75 */
+/* 76 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4781,33 +4859,37 @@ var __assign = (this && this.__assign) || Object.assign || function(t) {
     return t;
 };
 const React = __webpack_require__(0);
-const immutable_1 = __webpack_require__(29);
-const moment = __webpack_require__(14);
-const ApiService_1 = __webpack_require__(2);
-const falcon_core_1 = __webpack_require__(1);
-const Sidebar_1 = __webpack_require__(38);
-const Workspace_1 = __webpack_require__(40);
-const Toast_1 = __webpack_require__(39);
+const Sidebar_1 = __webpack_require__(39);
+const Workspace_1 = __webpack_require__(41);
+const Toast_1 = __webpack_require__(40);
 const Signaller_1 = __webpack_require__(4);
-const lodash_1 = __webpack_require__(3);
-const CreatePredicate_1 = __webpack_require__(53);
-const CreateRecord_1 = __webpack_require__(55);
-const CreatePresetRecord_1 = __webpack_require__(54);
-const CreateSource_1 = __webpack_require__(56);
-const CreateEntity_1 = __webpack_require__(51);
-const CreateEntityType_1 = __webpack_require__(52);
-const ConflictResolution_1 = __webpack_require__(50);
-const DataStore_1 = __webpack_require__(36);
+const lodash_1 = __webpack_require__(2);
+const CreatePredicate_1 = __webpack_require__(54);
+const CreateRecord_1 = __webpack_require__(56);
+const CreatePresetRecord_1 = __webpack_require__(55);
+const CreateSource_1 = __webpack_require__(57);
+const CreateEntity_1 = __webpack_require__(52);
+const CreateEntityType_1 = __webpack_require__(53);
+const ConflictResolution_1 = __webpack_require__(51);
+const DataStore_1 = __webpack_require__(23);
+const DataController_1 = __webpack_require__(37);
 class ObjectEditor extends React.Component {
     constructor(props, context) {
         super();
+        let tabs = [];
+        if (typeof window !== 'undefined') {
+            const tabString = window.localStorage.getItem('open_tabs');
+            if (tabString !== null) {
+                tabs = JSON.parse(tabString);
+            }
+        }
         this.state = {
-            tabs: [],
+            tabs,
             inBrowser: (typeof window !== 'undefined'),
             modalQueue: [],
             dataStore: lodash_1.cloneDeep(DataStore_1.emptyDataStore),
             loadingWheel: true,
-            loading: false,
+            loading: true,
             id: NaN,
             list: false
         };
@@ -4823,108 +4905,56 @@ class ObjectEditor extends React.Component {
         Signaller_1.reorderTabs.add(this.boundReorderTabs);
     }
     componentDidMount() {
-        this.reload(this.props);
+        this.reload(this.props, false, true);
     }
     callReload() {
         this.reload(this.props, true);
     }
-    reload(props, force = false) {
+    reload(props, force = false, initialLoad = false) {
         const newId = parseInt(props.location.pathname.substr(props.pathname.length + 1));
         const newWorkspace = props.workspace;
+        // if we are in the browser, load tabs!
+        // if there is not a tab for the current URL - create it
+        // if the url is invalid, relocate to /edit/notfound
         if (['entity', 'source', 'predicate', 'entity_type', 'notfound'].indexOf(newWorkspace) === -1) {
             this.context.router.transitionTo('/edit/notfound');
         }
-        if (this.state.loading && !force) {
-            this.setState({
-                id: newId,
-                list: props.location.pathname.substr(props.pathname.length + 1).length === 0
-            });
-            return;
-        }
-        this.setState({
-            loading: true,
-            loadingWheel: (this.state.id !== newId && !(isNaN(this.state.id) && isNaN(newId))) || this.props.workspace !== newWorkspace,
-            id: newId,
-            list: props.location.pathname.substr(props.pathname.length + 1).length === 0
-        }, () => {
-            // load data required by the current tabs
-            let tabPromise = Promise.resolve(lodash_1.cloneDeep(DataStore_1.emptyTabs));
-            if (this.state.inBrowser) {
-                const tabsString = window.localStorage.getItem('open_tabs');
-                if (tabsString !== null) {
-                    this.state.tabs = JSON.parse(tabsString);
-                    if (!this.state.list &&
-                        ['entity', 'predicate', 'entity_type', 'source'].indexOf(props.workspace) !== -1 &&
-                        lodash_1.find(this.state.tabs, (tab) => tab.tabType === props.workspace
-                            && tab.uid == this.state.id) === undefined) {
-                        this.state.tabs.push({ tabType: props.workspace, uid: this.state.id });
-                        this.saveTabs();
-                    }
-                    const groupedTabs = lodash_1.groupBy(this.state.tabs, 'tabType');
-                    tabPromise = Promise.all(Object.keys(groupedTabs).map((tabType) => Promise.all(groupedTabs[tabType].map((tab) => this.loadTabData(tab.tabType, tab.uid)
-                        .then((value) => {
-                        return { [`${tab.tabType}-${tab.uid}`]: { value, lastUpdate: moment() } };
-                    })
-                        .catch((err) => {
-                        console.warn(`Attempted to load missing resource ${tab.tabType}/${tab.uid}`);
-                        this.closeTab(tab.tabType, tab.uid);
-                        if (tab.tabType === props.workspace && tab.uid === this.state.id) {
-                            this.context.router.transitionTo('/edit/notfound');
-                        }
-                    })))
-                        .then((tabData) => {
-                        return { [tabType]: immutable_1.Map(Object.assign({}, ...tabData)) };
-                    })));
-                }
+        let updatedTabs = this.state.tabs;
+        if (this.state.inBrowser) {
+            if (!this.state.list &&
+                !isNaN(newId) &&
+                lodash_1.find(updatedTabs, (tab) => tab.tabType === newWorkspace && tab.uid == newId) === undefined) {
+                updatedTabs = updatedTabs.concat([{ tabType: newWorkspace, uid: newId, tabClass: 'item' }]);
+                this.saveTabs();
             }
-            // load lists of data commonly required by views
-            const allPromise = Promise.all([
-                props.api.getCollection(falcon_core_1.Predicate, ApiService_1.AppUrls.predicate, {}),
-                props.api.getCollection(falcon_core_1.Source, ApiService_1.AppUrls.source, {}),
-                props.api.getCollection(falcon_core_1.Entity, ApiService_1.AppUrls.entity, {}),
-                props.api.getCollection(falcon_core_1.EntityType, ApiService_1.AppUrls.entity_type, {}),
-                props.api.getItem(falcon_core_1.ElementSet, ApiService_1.AppUrls.element_set, 1)
-            ])
-                .then(([predicates, sources, entities, entityType, dublinCore]) => {
-                return {
-                    predicate: { value: predicates, lastUpdate: moment() },
-                    source: { value: sources, lastUpdate: moment() },
-                    entity: { value: entities, lastUpdate: moment() },
-                    entity_type: { value: entityType, lastUpdate: moment() },
-                    dublinCore: { value: dublinCore, lastUpdate: moment() }
-                };
-            });
-            Promise.all([tabPromise, allPromise])
-                .then(([tabsArray, all]) => {
-                const tabs = Object.assign({}, ...tabsArray);
-                this.setState({
-                    dataStore: Object.assign({}, this.state.dataStore, { tabs, all }),
-                    loading: false,
-                    loadingWheel: false
+        }
+        // this state always updates
+        this.setState({
+            id: newId,
+            list: props.location.pathname.substr(props.pathname.length + 1).length === 0,
+            tabs: updatedTabs
+        }, () => {
+            if (!initialLoad && this.state.loading && !force) {
+                return;
+            }
+            this.setState({
+                loading: true,
+                loadingWheel: initialLoad
+            }, () => {
+                DataController_1.DataController.reload(props.api, this.state.tabs, force, (failWorkspace, failUid) => {
+                    if (newWorkspace === failWorkspace && failUid == newId) {
+                        this.context.router.transitionTo('/edit/notfound');
+                    }
+                })
+                    .then((dataStore) => {
+                    this.setState({
+                        dataStore,
+                        loading: false,
+                        loadingWheel: false
+                    });
                 });
             });
         });
-    }
-    loadTabData(tabType, uid) {
-        switch (tabType) {
-            case 'entity':
-                return Promise.all([
-                    this.props.api.getItem(falcon_core_1.Entity, ApiService_1.AppUrls.entity, uid),
-                    this.props.api.getCollection(falcon_core_1.Record, ApiService_1.AppUrls.record, { entity: uid }),
-                    this.props.api.getCollection(falcon_core_1.Record, ApiService_1.AppUrls.record, { value_type: 'entity', value_entity: uid })
-                ]).then(([entity, records, referenceRecords]) => ({ entity, records, referenceRecords }));
-            case 'predicate':
-                return this.props.api.getItem(falcon_core_1.Predicate, ApiService_1.AppUrls.predicate, uid);
-            case 'entity_type':
-                return this.props.api.getItem(falcon_core_1.EntityType, ApiService_1.AppUrls.entity_type, uid);
-            case 'source':
-                return Promise.all([
-                    this.props.api.getItem(falcon_core_1.Source, ApiService_1.AppUrls.source, uid),
-                    this.props.api.getCollection(falcon_core_1.SourceElement, ApiService_1.AppUrls.source_element, { source: uid })
-                ]).then(([source, source_element]) => ({ source, source_element }));
-            default:
-                throw new Error('Unexpected tab type requested');
-        }
     }
     createTab(tabType, uid, data) {
         // don't add a tab if it already exists
@@ -5047,7 +5077,7 @@ exports.ObjectEditor = ObjectEditor;
 
 
 /***/ },
-/* 76 */
+/* 77 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5067,7 +5097,7 @@ exports.RouteNotFound = (props) => (React.createElement("section", null,
 
 
 /***/ },
-/* 77 */
+/* 78 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5086,7 +5116,7 @@ exports.User = (props) => (React.createElement("div", {className: 'page'},
 
 
 /***/ },
-/* 78 */
+/* 79 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5105,7 +5135,7 @@ exports.UserManagement = (props) => (React.createElement("div", {className: 'pag
 
 
 /***/ },
-/* 79 */
+/* 80 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5132,7 +5162,7 @@ exports.ElementController = ElementController;
 
 
 /***/ },
-/* 80 */
+/* 81 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5144,7 +5174,7 @@ exports.ElementController = ElementController;
 "use strict";
 const falcon_core_1 = __webpack_require__(1);
 const GenericController_1 = __webpack_require__(7);
-const lodash_1 = __webpack_require__(3);
+const lodash_1 = __webpack_require__(2);
 class ElementSetController extends GenericController_1.GenericController {
     constructor(db) {
         super(db, 'element_sets');
@@ -5180,7 +5210,7 @@ exports.ElementSetController = ElementSetController;
 
 
 /***/ },
-/* 81 */
+/* 82 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5192,10 +5222,10 @@ exports.ElementSetController = ElementSetController;
 "use strict";
 const falcon_core_1 = __webpack_require__(1);
 const GenericController_1 = __webpack_require__(7);
-const PredicateController_1 = __webpack_require__(28);
-const EntityController_1 = __webpack_require__(27);
+const PredicateController_1 = __webpack_require__(29);
+const EntityController_1 = __webpack_require__(28);
 const Exceptions_1 = __webpack_require__(8);
-const lodash_1 = __webpack_require__(3);
+const lodash_1 = __webpack_require__(2);
 class EntityTypeController extends GenericController_1.GenericController {
     constructor(db) {
         super(db, 'entity_types');
@@ -5258,7 +5288,7 @@ exports.EntityTypeController = EntityTypeController;
 
 
 /***/ },
-/* 82 */
+/* 83 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5272,7 +5302,7 @@ const falcon_core_1 = __webpack_require__(1);
 const GenericController_1 = __webpack_require__(7);
 const Exceptions_1 = __webpack_require__(8);
 const RecordController_1 = __webpack_require__(21);
-const lodash_1 = __webpack_require__(3);
+const lodash_1 = __webpack_require__(2);
 class SourceController extends GenericController_1.GenericController {
     constructor(db) {
         super(db, 'sources');
@@ -5402,7 +5432,7 @@ exports.SourceController = SourceController;
 
 
 /***/ },
-/* 83 */
+/* 84 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5415,7 +5445,7 @@ exports.SourceController = SourceController;
 const falcon_core_1 = __webpack_require__(1);
 const GenericController_1 = __webpack_require__(7);
 const Exceptions_1 = __webpack_require__(8);
-const lodash_1 = __webpack_require__(3);
+const lodash_1 = __webpack_require__(2);
 class SourceElementController extends GenericController_1.GenericController {
     constructor(db) {
         super(db, 'source_elements');
@@ -5477,7 +5507,7 @@ exports.SourceElementController = SourceElementController;
 
 
 /***/ },
-/* 84 */
+/* 85 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5487,26 +5517,26 @@ exports.SourceElementController = SourceElementController;
  * @version 0.0.1
  */
 "use strict";
-var ElementSetController_1 = __webpack_require__(80);
+var ElementSetController_1 = __webpack_require__(81);
 exports.ElementSetController = ElementSetController_1.ElementSetController;
-var EntityController_1 = __webpack_require__(27);
+var EntityController_1 = __webpack_require__(28);
 exports.EntityController = EntityController_1.EntityController;
-var EntityTypeController_1 = __webpack_require__(81);
+var EntityTypeController_1 = __webpack_require__(82);
 exports.EntityTypeController = EntityTypeController_1.EntityTypeController;
-var PredicateController_1 = __webpack_require__(28);
+var PredicateController_1 = __webpack_require__(29);
 exports.PredicateController = PredicateController_1.PredicateController;
 var RecordController_1 = __webpack_require__(21);
 exports.RecordController = RecordController_1.RecordController;
-var SourceController_1 = __webpack_require__(82);
+var SourceController_1 = __webpack_require__(83);
 exports.SourceController = SourceController_1.SourceController;
-var ElementController_1 = __webpack_require__(79);
+var ElementController_1 = __webpack_require__(80);
 exports.ElementController = ElementController_1.ElementController;
-var SourceElementController_1 = __webpack_require__(83);
+var SourceElementController_1 = __webpack_require__(84);
 exports.SourceElementController = SourceElementController_1.SourceElementController;
 
 
 /***/ },
-/* 85 */
+/* 86 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5517,8 +5547,8 @@ exports.SourceElementController = SourceElementController_1.SourceElementControl
  */
 "use strict";
 const graphql_1 = __webpack_require__(22);
-const entityQLType_1 = __webpack_require__(87);
-const predicateQLType_1 = __webpack_require__(88);
+const entityQLType_1 = __webpack_require__(88);
+const predicateQLType_1 = __webpack_require__(89);
 class QueryEngine {
     constructor(db) {
         const entityType = entityQLType_1.entityQLType(db, predicateQLType_1.predicateQLType(db));
@@ -5553,7 +5583,7 @@ exports.QueryEngine = QueryEngine;
 
 
 /***/ },
-/* 86 */
+/* 87 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5566,9 +5596,9 @@ exports.QueryEngine = QueryEngine;
 const Exceptions_1 = __webpack_require__(8);
 const moment = __webpack_require__(14);
 const Signaller_1 = __webpack_require__(4);
-var ApiService_1 = __webpack_require__(2);
+var ApiService_1 = __webpack_require__(3);
 exports.AppUrls = ApiService_1.AppUrls;
-const GeneralStatisticsController_1 = __webpack_require__(89);
+const GeneralStatisticsController_1 = __webpack_require__(90);
 class ServerApiService {
     constructor(db, routesMap, queryEngine, fakeCreator) {
         this.controllerMap = routesMap;
@@ -5653,7 +5683,7 @@ exports.ServerApiService = ServerApiService;
 
 
 /***/ },
-/* 87 */
+/* 88 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5726,7 +5756,7 @@ exports.entityQLType = (db, predicateType) => {
 
 
 /***/ },
-/* 88 */
+/* 89 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5768,7 +5798,7 @@ exports.predicateQLType = (db) => {
 
 
 /***/ },
-/* 89 */
+/* 90 */
 /***/ function(module, exports) {
 
 "use strict";
@@ -5799,49 +5829,49 @@ exports.GeneralStatisticsController = (db) => {
 
 
 /***/ },
-/* 90 */
+/* 91 */
 /***/ function(module, exports) {
 
 module.exports = require("knex");
 
 /***/ },
-/* 91 */
+/* 92 */
 /***/ function(module, exports) {
 
 module.exports = require("koa-conditional-get");
 
 /***/ },
-/* 92 */
+/* 93 */
 /***/ function(module, exports) {
 
 module.exports = require("koa-etag");
 
 /***/ },
-/* 93 */
+/* 94 */
 /***/ function(module, exports) {
 
 module.exports = require("levenshtein");
 
 /***/ },
-/* 94 */
+/* 95 */
 /***/ function(module, exports) {
 
 module.exports = require("lunr");
 
 /***/ },
-/* 95 */
+/* 96 */
 /***/ function(module, exports) {
 
 module.exports = require("react-sortable-hoc");
 
 /***/ },
-/* 96 */
+/* 97 */
 /***/ function(module, exports) {
 
 module.exports = require("signals");
 
 /***/ },
-/* 97 */
+/* 98 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5851,13 +5881,13 @@ module.exports = require("signals");
  * @version 0.0.1
  */
 "use strict";
-const react_dom_1 = __webpack_require__(34);
+const react_dom_1 = __webpack_require__(35);
 const react_1 = __webpack_require__(0);
-const FalconApp_1 = __webpack_require__(30);
-const Database_1 = __webpack_require__(31);
-const api_1 = __webpack_require__(32);
+const FalconApp_1 = __webpack_require__(31);
+const Database_1 = __webpack_require__(32);
+const api_1 = __webpack_require__(33);
 const react_router_1 = __webpack_require__(9);
-const electron = __webpack_require__(33);
+const electron = __webpack_require__(34);
 const databaseFile = electron.remote.dialog.showOpenDialog({ properties: ['openFile'], filters: [
         { name: 'Database Files', extensions: ['sqlite'] }
     ] });
