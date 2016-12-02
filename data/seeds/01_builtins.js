@@ -10,7 +10,7 @@ exports.seed = function(knex, Promise) {
        return knex(ENTITY_TYPES_TABLE_NAME).insert(
           {
             uid: 0,
-            name: 'Any',
+            label: 'Any',
             description: 'Represents a single thing',
             same_as: '',
             colour: '',
@@ -25,7 +25,7 @@ exports.seed = function(knex, Promise) {
           // Inserts seed entries       
             
             knex(ENTITY_TYPES_TABLE_NAME).insert({
-              name: 'Person',
+              label: 'Person',
               description: 'Represents a single human being',
               same_as: 'http://xmlns.com/foaf/spec/#term_Person',
               colour: 'blue',
@@ -38,7 +38,7 @@ exports.seed = function(knex, Promise) {
             }),
 
             knex(ENTITY_TYPES_TABLE_NAME).insert({
-              name: 'Location',
+              label: 'Location',
               description: 'Represents a single place',
               same_as: 'http://xmlns.com/foaf/spec/#term_SpatialThing',
               colour: 'red',
@@ -51,7 +51,7 @@ exports.seed = function(knex, Promise) {
             }),
 
             knex(ENTITY_TYPES_TABLE_NAME).insert({
-              name: 'Occupation',
+              label: 'Occupation',
               description: 'A profession',
               same_as: '',
               colour: 'green',

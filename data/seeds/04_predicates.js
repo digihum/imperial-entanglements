@@ -5,12 +5,12 @@ exports.seed = function(knex, Promise) {
   return Promise.all([
       knex('predicates').del()
     ])
-    .then(() => knex('entity_types').select('uid').where({ 'name': 'Person' }))
+    .then(() => knex('entity_types').select('uid').where({ 'label': 'Person' }))
     .then(function ([result]) {
       return Promise.all([
         // Inserts seed entries
         knex('predicates').insert({
-          name: 'has forename',
+          label: 'has forename',
           description: 'A forename',
           domain: result.uid,
           range_type: 'string',
@@ -20,7 +20,7 @@ exports.seed = function(knex, Promise) {
         }).returning('uid'),
 
         knex('predicates').insert({
-          name: 'has brother',
+          label: 'has brother',
           description: 'Has a male sibling that shares parents',
           domain: result.uid,
           range_type: 'entity',
@@ -30,11 +30,11 @@ exports.seed = function(knex, Promise) {
           lastmodified_timestamp: moment().toISOString()
         }).returning('uid')        
       ]);
-    }).then(() => knex('entity_types').select('uid').where({ 'name': 'Any' }))
+    }).then(() => knex('entity_types').select('uid').where({ 'label': 'Any' }))
     .then(function ([result]) {
       return Promise.all([
         knex('predicates').insert({
-          name: 'is mentioned',
+          label: 'is mentioned',
           description: 'The entity is referenced in some manner within the source',
           domain: result.uid,
           range_type: 'source',
@@ -44,7 +44,7 @@ exports.seed = function(knex, Promise) {
         }).returning('uid'),
 
         knex('predicates').insert({
-          name: 'is not mentioned',
+          label: 'is not mentioned',
           description: 'The researcher searched for information about this entity within the source but did not find any reference.',
           domain: result.uid,
           range_type: 'source',

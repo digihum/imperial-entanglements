@@ -34,7 +34,7 @@ export const entityQLType = (db: Database, predicateType: GraphQLObjectType) : G
             type: {
                 type: GraphQLString,
                 resolve: (parent, {}) => {
-                    return db.query()('entity_types').where({ uid: parent.type }).first().then((data) => data.name);
+                    return db.query()('entity_types').where({ uid: parent.type }).first().then((data) => data.label);
                 }
             },
 

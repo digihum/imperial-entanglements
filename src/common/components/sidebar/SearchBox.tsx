@@ -22,13 +22,13 @@ export const SearchBox = (props : SearchBoxProps, context: any) => {
         ({ key: entity.label, value: entity.uid, meta: { itemType: AppUrls.entity } }));
 
     const entityTypes = props.dataStore.all.entity_type.value.map((entityType) =>
-        ({ key: entityType.name, value: entityType.uid, meta: { itemType: AppUrls.entity_type }  }));
+        ({ key: entityType.label, value: entityType.uid, meta: { itemType: AppUrls.entity_type }  }));
 
     const predicates = props.dataStore.all.predicate.value.map((predicate) =>
-        ({ key: predicate.name, value: predicate.uid, meta: { itemType: AppUrls.predicate }  }));
+        ({ key: predicate.label, value: predicate.uid, meta: { itemType: AppUrls.predicate }  }));
 
     const sources = props.dataStore.all.source.value.map((source) =>
-        ({ key: source.name, value: source.uid, meta: { itemType: AppUrls.source }  }));
+        ({ key: source.label, value: source.uid, meta: { itemType: AppUrls.source }  }));
 
     const all = entities.concat(entityTypes, predicates, sources);
 

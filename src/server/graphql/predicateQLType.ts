@@ -27,7 +27,7 @@ export const predicateQLType = (db: Database) : GraphQLObjectType => {
             name: {
                 type: GraphQLString,
                 resolve: ({ predicate }, {}) => {
-                    return predicate.name;
+                    return predicate.label;
                 }
             },
 

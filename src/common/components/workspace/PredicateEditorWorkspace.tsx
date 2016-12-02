@@ -97,7 +97,7 @@ export class PredicateEditorWorkspace extends React.Component<PredicateEditorPro
         const predicate = this.props.dataStore.tabs.predicate.get('predicate-' + this.props.id).value;
 
         const newPredicate = Serializer.fromJson(Predicate,
-            Object.assign({}, Serializer.toJson(predicate), { name: 'Copy of ' + predicate.name}));
+            Object.assign({}, Serializer.toJson(predicate), { name: 'Copy of ' + predicate.label}));
 
         this.props.api.postItem(Predicate, AppUrls.predicate, newPredicate)
             .then(([id]) => {
@@ -149,7 +149,7 @@ export class PredicateEditorWorkspace extends React.Component<PredicateEditorPro
         let currentDomainEntityTypeName = '';
 
         if (currentDomainEntityType !== undefined) {
-            currentDomainEntityTypeName = currentDomainEntityType.name;
+            currentDomainEntityTypeName = currentDomainEntityType.label;
         }
 
         const domain : ComboDropdownOption = {key: currentDomainEntityTypeName, value: predicate.domain.toString()};
@@ -161,13 +161,13 @@ export class PredicateEditorWorkspace extends React.Component<PredicateEditorPro
                 entityTypes.find((t) => t.uid == predicate.range);
 
             if (currentRangeEntityType !== undefined) {
-                range.key = currentRangeEntityType.name;
+                range.key = currentRangeEntityType.label;
             }
 
         } else {
             const literalType = literalTypes.find((t) => t.value === predicate.range);
             if (literalType !== undefined) {
-                range.key = literalType.name;
+                range.key = literalType.label;
             }
         }
 
@@ -175,10 +175,10 @@ export class PredicateEditorWorkspace extends React.Component<PredicateEditorPro
             if (t.uid === null) {
                 throw new Error('Encountered entity type with no id!');
             }
-            return { key: t.name, value: t.uid.toString() };
+            return { key: t.label, value: t.uid.toString() };
         });
 
-        const literalTypeOptions = literalTypes.map((t) => ({ key: t.name, value: t.value, meta: 'literal'}));
+        const literalTypeOptions = literalTypes.map((t) => ({ key: t.label, value: t.value, meta: 'literal'}));
 
         return (
             <div className='workspace-editor'>
@@ -187,9 +187,9 @@ export class PredicateEditorWorkspace extends React.Component<PredicateEditorPro
                     <div className='main-toolbar'>
                         <i className='fa fa-long-arrow-right item-icon'></i>
                         <StringEditableFieldComponent
-                            value={predicate.name}
+                            value={predicate.label}
                             component={EditableHeader}
-                            onChange={(value) => this.updatePredicate('name', value)}  />
+                            onChange={(value) => this.updatePredicate('label', value)}  />
                     </div>
                     <div className='sub-toolbar'>
                         <i

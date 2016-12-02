@@ -59,14 +59,14 @@ export class CreatePredicate extends React.Component<CreatePredicateProps, Creat
                 }
 
                 this.setState({
-                domain: { key: result.name, value: result.uid.toString()},
+                domain: { key: result.label, value: result.uid.toString()},
                 domainOptions: [
-                    { key: result.name, value: result.uid.toString()}
+                    { key: result.label, value: result.uid.toString()}
                 ].concat(result.parents.map((entityType) => {
                     if (entityType.uid === null) {
                         throw new Error('Unexpected null uid');
                     }
-                    return { key: entityType.name, value: entityType.uid.toString() }
+                    return { key: entityType.label, value: entityType.uid.toString() }
                 }))});
             });
         }
@@ -76,7 +76,7 @@ export class CreatePredicate extends React.Component<CreatePredicateProps, Creat
             if (entityType.uid === null) {
                 throw new Error('Unexpected null uid');
             }
-            return { key: entityType.name, value: entityType.uid.toString() }
+            return { key: entityType.label, value: entityType.uid.toString() }
         });
 
         if (this.props.initialDomain === undefined) {
@@ -84,7 +84,7 @@ export class CreatePredicate extends React.Component<CreatePredicateProps, Creat
         }
 
         this.setState({
-            rangeOptions:  literalTypes.map((lit) => ({ key: lit.name, value: lit.value, meta: 'literal'})).concat(entityTypeMap)
+            rangeOptions:  literalTypes.map((lit) => ({ key: lit.label, value: lit.value, meta: 'literal'})).concat(entityTypeMap)
         });
     }
 

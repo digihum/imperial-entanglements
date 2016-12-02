@@ -24,6 +24,7 @@ export class RecordController extends GenericController<Record> {
             'value',
             'valueType',
             'creationTimestamp',
+            'label',
             'lastmodifiedTimestamp');
 
         schemaOutput.value_type = data.valueType;

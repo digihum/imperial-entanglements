@@ -44,7 +44,7 @@ export class CreateEntity extends React.Component<CreateEntityProps, CreateEntit
             if (this.props.initialType !== undefined) {
                 const initialType = allEntityTypes.find((et) => et.uid === this.props.initialType);
                 this.setState({
-                    entityType:  { key: initialType.name, value: initialType.uid.toString() }
+                    entityType:  { key: initialType.label, value: initialType.uid.toString() }
                 })
             }
             this.setState({ allEntityTypes });
@@ -75,7 +75,7 @@ export class CreateEntity extends React.Component<CreateEntityProps, CreateEntit
 
             <label className='small'>Type</label>
             <ComboDropdown
-                options={this.state.allEntityTypes.map((t) => ({ key: t.name, value: t.uid.toString() }))}
+                options={this.state.allEntityTypes.map((t) => ({ key: t.label, value: t.uid.toString() }))}
                 typeName='entity type'
                 value={this.state.entityType}
                 setValue={(entityType) => this.setState({entityType})}

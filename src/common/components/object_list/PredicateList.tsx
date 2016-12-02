@@ -75,7 +75,7 @@ export class PredicateList extends React.Component<PredicateListProps, Predicate
             <section className='editor-body'>
 
                 <SearchBar
-                    getValue={(a: Predicate) => a.name}
+                    getValue={(a: Predicate) => a.label}
                     setFilterFunc={(f) => this.setState({ filterFunc: f })}
                 />
 
@@ -100,9 +100,9 @@ export class PredicateList extends React.Component<PredicateListProps, Predicate
                                     dataStore={this.props.dataStore}
                                     uid={predicate.uid}
                                     tabType='predicate' /></td>
-                                <td>{predicate.name}</td>
-                                <td>{entityType ? entityType.name : ''}</td>
-                                <td>{predicate.rangeIsReference ? rangeType ? rangeType.name : '' : rangeType}</td>
+                                <td>{predicate.label}</td>
+                                <td>{entityType ? entityType.label : ''}</td>
+                                <td>{predicate.rangeIsReference ? rangeType ? rangeType.label : '' : rangeType}</td>
                             </tr>
                         );}
                     )}

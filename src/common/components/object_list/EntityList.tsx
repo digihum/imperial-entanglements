@@ -58,7 +58,7 @@ const customColumns = (predicates, columns, updateColumnParams, rotateSort) => {
         if (columns[id].predicate !== -1) {
             const thisPred = predicates.find((pred) => pred.uid == columns[id].predicate);
             if (thisPred !== undefined) {
-                comboValue.key = thisPred.name;
+                comboValue.key = thisPred.label;
             }
             comboValue.value = columns[id].predicate;
         }
@@ -72,7 +72,7 @@ const customColumns = (predicates, columns, updateColumnParams, rotateSort) => {
                             typeName='predicate'
                             allowNew={false}
                             setValue={(value) => updateColumnParams(id, { predicate: value === null ? null : value.value })}
-                            options={predicates.map((pred) => ({ key: pred.name, value: pred.uid.toString()}))}
+                            options={predicates.map((pred) => ({ key: pred.label, value: pred.uid.toString()}))}
                             createNewValue={noop}
                             compact={true}
                         />
@@ -114,14 +114,6 @@ export class EntityList extends React.Component<EntityListProps, EntityListState
               columns[i - 1].filterType = queryStringOptions[`col${i}f`];
               columns[i - 1].filterValue = queryStringOptions[`col${i}v`];
               columns[i - 1].invertFilter = queryStringOptions[`col${i}i`];
-
-                // if (queryStringOptions['col' + i]  !== undefined) {
-                //     const args = queryStringOptions['col' + i].split(',');
-                //     columns[i - 1].predicate = args[0];
-                //     if (args.length === 2) {
-                //         columns[i - 1].filterType = args[1];
-                //     }
-                // }
             }
         }
          this.setState({
@@ -193,7 +185,7 @@ export class EntityList extends React.Component<EntityListProps, EntityListState
         const predicates = this.props.dataStore.all.predicate.value;
         const entityTypes = this.props.dataStore.all.entity_type.value;
 
-        const entityTypeOptions = entityTypes.map((entityType) => ({ key: entityType.name, value: entityType.uid}));
+        const entityTypeOptions = entityTypes.map((entityType) => ({ key: entityType.label, value: entityType.uid}));
 
         const tableData = entities.map((entity) => {
             const entityType = entityTypes.find((t) => t.uid === entity.entityType);
@@ -221,7 +213,7 @@ export class EntityList extends React.Component<EntityListProps, EntityListState
                                         if (pred.value === null) {
                                             return 'Not set';
                                         }
-                                        return this.props.dataStore.all.source.value.find((source) => source.uid === pred.value).name;
+                                        return this.props.dataStore.all.source.value.find((source) => source.uid === pred.value).label;
                                     }
 
                                     if (pred.valueType === 'entity') {
@@ -345,7 +337,7 @@ export class EntityList extends React.Component<EntityListProps, EntityListState
                                     dataStore={this.props.dataStore}
                                     uid={row.uid}
                                     tabType='entity'/></td>
-                                <td>{row.entityType ? row.entityType.name : ''}</td>
+                                <td>{row.entityType ? row.entityType.label : ''}</td>
                                 {[0,1,2].map((id) => (<td key={`col-val-${id}`}>{row.columns[id]}</td>))}
                             </tr>
                         )

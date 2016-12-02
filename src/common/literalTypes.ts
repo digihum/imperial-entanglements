@@ -4,11 +4,11 @@
  * @version 0.1.0
  */
 
-export const literalTypes: { name: string, value: string, url: string, description: string }[] = [
-    { name: 'text', value: 'string', url: '', description: 'some text' },
-    { name: 'number', value: 'integer', url: '', description: 'a number' },
-    { name: 'date', value: 'date', url: '', description: 'a date'},
+export const literalTypes: { label: string, value: string, url: string, description: string }[] = [
+    { label: 'text', value: 'string', url: '', description: 'some text' },
+    { label: 'number', value: 'integer', url: '', description: 'a number' },
+    { label: 'date', value: 'date', url: '', description: 'a date'},
    // { name: 'point', value: 'point', url: '', description: 'a point on a map '},
    // { name: 'region', value: 'region', url: '', description: 'a region on a map'},
-    { name: 'source', value: 'source', url: '', description: 'a source in the database'}
+    { label: 'source', value: 'source', url: '', description: 'a source in the database'}
 ];

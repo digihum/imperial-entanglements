@@ -13,7 +13,7 @@ exports.seed = function(knex, Promise) {
       uid: i,
       uri: data["URI"],
       element_set: 1,
-      name: data["Term Name"],
+      label: data["Term Name"],
       description: data["Definition"] + (data["Comment"] !== undefined ? (" - " + data["Comment"]) : ""),
       comment: data["Note"]
     }
@@ -24,7 +24,7 @@ exports.seed = function(knex, Promise) {
     .then(() => 
         knex(elementSetsTableName).insert({
           uid: 1, 
-          name: 'Dublin Core', 
+          label: 'Dublin Core', 
           description: 'The Dublin Core metadata element set is common to all Omeka records, including items, files, and collections. For more information see, http://dublincore.org/documents/dces/.'
         })
     ).then(() => 

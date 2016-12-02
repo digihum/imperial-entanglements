@@ -91,10 +91,10 @@ export class SourceController extends GenericController<Source> {
             return Promise.all([
                 this.getMetadata([
                 'source_elements.source as source',
-                'elements.name',
+                'elements.label',
                 'source_elements.value',
                 'elements.description',
-                'element_sets.name as element_set',
+                'element_sets.label as element_set',
                 'elements.comment',
                 'elements.uri',
                 'elements.uid as element_uid'], source.uid),
@@ -131,7 +131,7 @@ export class SourceController extends GenericController<Source> {
                 }
 
                 return this.getMetadata([
-                    'elements.name',
+                    'elements.label',
                     'source_elements.value'
                 ], source.uid)
                 .then((sourceElements) => {

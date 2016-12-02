@@ -1,7 +1,7 @@
 DROP TABLE IF EXISTS entity_types;
 CREATE TABLE entity_types (
     uid <%= auto_increment %> NOT NULL,
-    name varchar(255) NOT NULL,
+    label varchar(255) NOT NULL,
     description varchar(255),
 
     parent INTEGER 

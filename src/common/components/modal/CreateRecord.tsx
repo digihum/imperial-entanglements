@@ -47,7 +47,7 @@ export class CreateRecord extends React.Component<CreateRecordProps, CreateRecor
             name: 'predicate',
             complete: (data : Predicate) => {
                 console.log('Predicate editor called complete');
-                this.setComboValue({ key: data.name, value: data.uid.toString(), meta: data});
+                this.setComboValue({ key: data.label, value: data.uid.toString(), meta: data});
             },
             cancel: () => {
                 console.log('Predicate editor called cancel');

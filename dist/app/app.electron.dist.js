@@ -907,7 +907,7 @@ class RecordController extends GenericController_1.GenericController {
         super(db, 'records');
     }
     static toSchema(data) {
-        const schemaOutput = lodash_1.omit(falcon_core_1.Serializer.toJson(data), 'value', 'valueType', 'creationTimestamp', 'lastmodifiedTimestamp');
+        const schemaOutput = lodash_1.omit(falcon_core_1.Serializer.toJson(data), 'value', 'valueType', 'creationTimestamp', 'label', 'lastmodifiedTimestamp');
         schemaOutput.value_type = data.valueType;
         if (data.valueType !== undefined && data.valueType !== 'source') {
             schemaOutput['value_' + data.valueType] = data.value;
@@ -1162,12 +1162,12 @@ exports.itemTypes = {
  */
 "use strict";
 exports.literalTypes = [
-    { name: 'text', value: 'string', url: '', description: 'some text' },
-    { name: 'number', value: 'integer', url: '', description: 'a number' },
-    { name: 'date', value: 'date', url: '', description: 'a date' },
+    { label: 'text', value: 'string', url: '', description: 'some text' },
+    { label: 'number', value: 'integer', url: '', description: 'a number' },
+    { label: 'date', value: 'date', url: '', description: 'a date' },
     // { name: 'point', value: 'point', url: '', description: 'a point on a map '},
     // { name: 'region', value: 'region', url: '', description: 'a region on a map'},
-    { name: 'source', value: 'source', url: '', description: 'a source in the database' }
+    { label: 'source', value: 'source', url: '', description: 'a source in the database' }
 ];
 
 
@@ -2015,7 +2015,7 @@ const CardList = react_sortable_hoc_1.SortableContainer((props) => {
             return null;
         }
         const url = `/edit/${ApiService_1.AppUrls[tab.tabType]}/${tab.uid}`;
-        const title = tab.tabType === 'entity' ? item.label : item.name;
+        const title = tab.tabType === 'entity' ? item.label : item.label;
         const subtitle = `${lodash_1.capitalize(ApiService_1.AppUrls[tab.tabType]).replace('_', ' ')} ${tab.uid}`;
         const currentTab = !props.list && tab.tabType === props.workspace && tab.uid == props.id;
         return (React.createElement(Card, {key: `tab-${index}`, currentTab: currentTab, url: url, tab: tab, title: title, subtitle: subtitle, index: index, compact: props.compact}));
@@ -2275,9 +2275,9 @@ class RecordPredicate extends React.Component {
     render() {
         return (React.createElement("section", null, 
             React.createElement("h5", {className: 'section-header'}, 
-                this.props.predicate.name, 
+                this.props.predicate.label, 
                 " ", 
-                React.createElement("i", {className: 'fa fa-plus-circle add button', "aria-hidden": 'true', onClick: this.createNewRecord.bind(this), title: `Add new ${this.props.predicate.name} record`}), 
+                React.createElement("i", {className: 'fa fa-plus-circle add button', "aria-hidden": 'true', onClick: this.createNewRecord.bind(this), title: `Add new ${this.props.predicate.label} record`}), 
                 React.createElement(AddTabButton_1.AddTabButton, {dataStore: this.props.dataStore, uid: this.props.predicate.uid, tabType: 'predicate'})), 
             React.createElement("table", {className: 'record-editing-table'}, 
                 React.createElement("thead", null, 
@@ -2378,14 +2378,14 @@ exports.RecordRow = (props) => {
         key: '', value: props.value.source
     };
     if (currentSource !== undefined) {
-        dropDownValue.key = currentSource.name;
+        dropDownValue.key = currentSource.label;
     }
     if (props.edit) {
         return (React.createElement("tr", {className: 'record-row'}, 
             React.createElement("td", {className: 'record-row-item uid'}, props.value.uid), 
             recordValue.valueType !== 'source' ? (React.createElement("td", {className: 'record-row-item'}, recordEditor(props))) : null, 
             React.createElement("td", {className: 'record-row-item'}, 
-                React.createElement(ComboDropdown_1.ComboDropdown, {options: props.sources.map((source) => ({ key: source.name, value: source.uid })), typeName: 'source', value: dropDownValue, setValue: (combo) => props.onChange(Object.assign(props.value, { source: combo.value })), createNewValue: createNewSource})
+                React.createElement(ComboDropdown_1.ComboDropdown, {options: props.sources.map((source) => ({ key: source.label, value: source.uid })), typeName: 'source', value: dropDownValue, setValue: (combo) => props.onChange(Object.assign(props.value, { source: combo.value })), createNewValue: createNewSource})
             ), 
             React.createElement("td", {className: 'record-row-item score'}, 
                 React.createElement(ScorePicker_1.ScorePicker, {value: props.value.score, readOnly: false, onChange: (score) => props.onChange(Object.assign(props.value, { score }))})
@@ -2481,7 +2481,7 @@ class RecordsEditor extends React.Component {
                 console.log('Records editor called cancel');
             },
             settings: {
-                options: predicates.map((pred) => ({ key: pred.name, value: pred.uid, meta: pred })),
+                options: predicates.map((pred) => ({ key: pred.label, value: pred.uid, meta: pred })),
                 entityUid: this.props.id,
                 entityType: this.props.entityTypeId
             }
@@ -2496,7 +2496,7 @@ class RecordsEditor extends React.Component {
                     React.createElement("label", {className: 'small'}, "Records"), 
                     React.createElement("div", {style: { display: 'flex' }}, 
                         React.createElement("div", {style: { flex: '1' }}, 
-                            React.createElement(SearchBar_1.SearchBar, {getValue: (p) => p.name, setFilterFunc: (filterFunc) => this.setState({ filterFunc })})
+                            React.createElement(SearchBar_1.SearchBar, {getValue: (p) => p.label, setFilterFunc: (filterFunc) => this.setState({ filterFunc })})
                         ), 
                         React.createElement("div", {style: { padding: '0.1em 0.4em', fontSize: '2em' }}, 
                             React.createElement("i", {className: 'fa fa-plus-circle add button', "aria-hidden": 'true', onClick: this.createNewRecord.bind(this), title: 'Add new record'})
@@ -2782,7 +2782,7 @@ class ConflictResolution extends React.Component {
                         const entityName = this.props.dataStore.all.entity.value
                             .find((entity) => entity.uid == record.entity).label;
                         const predicateName = this.props.dataStore.all.predicate.value
-                            .find((predicate) => predicate.uid == record.predicate).name;
+                            .find((predicate) => predicate.uid == record.predicate).label;
                         return (React.createElement("tr", {key: `row-${record.uid}`}, 
                             React.createElement("td", null, entityName), 
                             React.createElement("td", null, predicateName), 
@@ -2811,7 +2811,7 @@ class ConflictResolution extends React.Component {
                     ), 
                     React.createElement("tbody", null, this.props.conflictingItems.entityType.map((entityType) => {
                         return (React.createElement("tr", {key: `row-${entityType.uid}`}, 
-                            React.createElement("td", null, entityType.name)
+                            React.createElement("td", null, entityType.label)
                         ));
                     }))))) : null, 
             this.props.conflictingItems.source !== undefined && this.props.conflictingItems.source.length > 0 ? (React.createElement("span", null, 
@@ -2824,7 +2824,7 @@ class ConflictResolution extends React.Component {
                     ), 
                     React.createElement("tbody", null, this.props.conflictingItems.source.map((source) => {
                         return (React.createElement("tr", {key: `row-${source.uid}`}, 
-                            React.createElement("td", null, source.name)
+                            React.createElement("td", null, source.label)
                         ));
                     }))))) : null, 
             React.createElement("div", {className: 'block-buttons'}, 
@@ -2873,7 +2873,7 @@ class CreateEntity extends React.Component {
             if (this.props.initialType !== undefined) {
                 const initialType = allEntityTypes.find((et) => et.uid === this.props.initialType);
                 this.setState({
-                    entityType: { key: initialType.name, value: initialType.uid.toString() }
+                    entityType: { key: initialType.label, value: initialType.uid.toString() }
                 });
             }
             this.setState({ allEntityTypes });
@@ -2893,7 +2893,7 @@ class CreateEntity extends React.Component {
             React.createElement("input", {type: 'text', value: this.state.label, ref: (a) => { if (a !== null)
                 a.focus(); }, name: 'new-entity-name', className: 'gap', onChange: (e) => this.setState({ label: e.target.value })}), 
             React.createElement("label", {className: 'small'}, "Type"), 
-            React.createElement(ComboDropdown_1.ComboDropdown, {options: this.state.allEntityTypes.map((t) => ({ key: t.name, value: t.uid.toString() })), typeName: 'entity type', value: this.state.entityType, setValue: (entityType) => this.setState({ entityType }), createNewValue: lodash_1.noop, allowNew: false}), 
+            React.createElement(ComboDropdown_1.ComboDropdown, {options: this.state.allEntityTypes.map((t) => ({ key: t.label, value: t.uid.toString() })), typeName: 'entity type', value: this.state.entityType, setValue: (entityType) => this.setState({ entityType }), createNewValue: lodash_1.noop, allowNew: false}), 
             React.createElement("button", {name: 'cancel-modal', onClick: () => this.props.cancel(), className: 'pull-left'}, "Cancel"), 
             React.createElement("button", {name: 'create-entity', onClick: this.CreateEntity.bind(this), className: 'pull-right'}, "Create Entity")));
     }
@@ -2994,14 +2994,14 @@ class CreatePredicate extends React.Component {
                     throw new Error('Unexpected null uid');
                 }
                 this.setState({
-                    domain: { key: result.name, value: result.uid.toString() },
+                    domain: { key: result.label, value: result.uid.toString() },
                     domainOptions: [
-                        { key: result.name, value: result.uid.toString() }
+                        { key: result.label, value: result.uid.toString() }
                     ].concat(result.parents.map((entityType) => {
                         if (entityType.uid === null) {
                             throw new Error('Unexpected null uid');
                         }
-                        return { key: entityType.name, value: entityType.uid.toString() };
+                        return { key: entityType.label, value: entityType.uid.toString() };
                     })) });
             });
         }
@@ -3010,13 +3010,13 @@ class CreatePredicate extends React.Component {
             if (entityType.uid === null) {
                 throw new Error('Unexpected null uid');
             }
-            return { key: entityType.name, value: entityType.uid.toString() };
+            return { key: entityType.label, value: entityType.uid.toString() };
         });
         if (this.props.initialDomain === undefined) {
             this.setState({ domainOptions: entityTypeMap });
         }
         this.setState({
-            rangeOptions: literalTypes_1.literalTypes.map((lit) => ({ key: lit.name, value: lit.value, meta: 'literal' })).concat(entityTypeMap)
+            rangeOptions: literalTypes_1.literalTypes.map((lit) => ({ key: lit.label, value: lit.value, meta: 'literal' })).concat(entityTypeMap)
         });
     }
     create() {
@@ -3083,7 +3083,7 @@ class CreatePresetRecord extends React.Component {
         const modalDef = {
             name: 'entity',
             complete: (data) => {
-                const isMentioned = this.props.dataStore.all.predicate.value.find((pred) => pred.name === 'is mentioned');
+                const isMentioned = this.props.dataStore.all.predicate.value.find((pred) => pred.label === 'is mentioned');
                 this.props.api.postItem(falcon_core_1.Record, ApiService_1.AppUrls.record, falcon_core_1.Serializer.fromJson(falcon_core_1.Record, {
                     predicate: isMentioned.uid,
                     entity: data[0],
@@ -3144,7 +3144,7 @@ class CreateRecord extends React.Component {
             name: 'predicate',
             complete: (data) => {
                 console.log('Predicate editor called complete');
-                this.setComboValue({ key: data.name, value: data.uid.toString(), meta: data });
+                this.setComboValue({ key: data.label, value: data.uid.toString(), meta: data });
             },
             cancel: () => {
                 console.log('Predicate editor called cancel');
@@ -3266,14 +3266,14 @@ const customColumns = (predicates, columns, updateColumnParams, rotateSort) => {
         if (columns[id].predicate !== -1) {
             const thisPred = predicates.find((pred) => pred.uid == columns[id].predicate);
             if (thisPred !== undefined) {
-                comboValue.key = thisPred.name;
+                comboValue.key = thisPred.label;
             }
             comboValue.value = columns[id].predicate;
         }
         return (React.createElement("td", {key: `col-${id}`}, 
             React.createElement("div", {className: 'list-combo-header'}, 
                 React.createElement("div", {className: 'combo-wrapper'}, 
-                    React.createElement(ComboDropdown_1.ComboDropdown, {value: comboValue, typeName: 'predicate', allowNew: false, setValue: (value) => updateColumnParams(id, { predicate: value === null ? null : value.value }), options: predicates.map((pred) => ({ key: pred.name, value: pred.uid.toString() })), createNewValue: lodash_1.noop, compact: true})
+                    React.createElement(ComboDropdown_1.ComboDropdown, {value: comboValue, typeName: 'predicate', allowNew: false, setValue: (value) => updateColumnParams(id, { predicate: value === null ? null : value.value }), options: predicates.map((pred) => ({ key: pred.label, value: pred.uid.toString() })), createNewValue: lodash_1.noop, compact: true})
                 ), 
                 React.createElement("div", {className: 'order-wrapper'}, 
                     React.createElement("i", {className: sortIcons[columns[id].sort], onClick: () => rotateSort(id)})
@@ -3367,7 +3367,7 @@ class EntityList extends React.Component {
         const entities = this.props.dataStore.all.entity.value;
         const predicates = this.props.dataStore.all.predicate.value;
         const entityTypes = this.props.dataStore.all.entity_type.value;
-        const entityTypeOptions = entityTypes.map((entityType) => ({ key: entityType.name, value: entityType.uid }));
+        const entityTypeOptions = entityTypes.map((entityType) => ({ key: entityType.label, value: entityType.uid }));
         const tableData = entities.map((entity) => {
             const entityType = entityTypes.find((t) => t.uid === entity.entityType);
             const entityData = this.state.results.filter((res) => res.entity === entity.uid);
@@ -3389,7 +3389,7 @@ class EntityList extends React.Component {
                                     if (pred.value === null) {
                                         return 'Not set';
                                     }
-                                    return this.props.dataStore.all.source.value.find((source) => source.uid === pred.value).name;
+                                    return this.props.dataStore.all.source.value.find((source) => source.uid === pred.value).label;
                                 }
                                 if (pred.valueType === 'entity') {
                                     if (pred.value === null) {
@@ -3478,7 +3478,7 @@ class EntityList extends React.Component {
                             row.label, 
                             " ", 
                             React.createElement(AddTabButton_1.AddTabButton, {dataStore: this.props.dataStore, uid: row.uid, tabType: 'entity'})), 
-                        React.createElement("td", null, row.entityType ? row.entityType.name : ''), 
+                        React.createElement("td", null, row.entityType ? row.entityType.label : ''), 
                         [0, 1, 2].map((id) => (React.createElement("td", {key: `col-val-${id}`}, row.columns[id]))))))))
             )));
     }
@@ -3530,7 +3530,7 @@ class EntityTypeList extends React.Component {
                 )
             ), 
             React.createElement("section", {className: 'editor-body'}, 
-                React.createElement(SearchBar_1.SearchBar, {getValue: (a) => a.name, setFilterFunc: (f) => this.setState({ filterFunc: f })}), 
+                React.createElement(SearchBar_1.SearchBar, {getValue: (a) => a.label, setFilterFunc: (f) => this.setState({ filterFunc: f })}), 
                 React.createElement("table", {className: 'table gap'}, 
                     React.createElement("thead", null, 
                         React.createElement("tr", null, 
@@ -3545,7 +3545,7 @@ class EntityTypeList extends React.Component {
                                 entityType.uid, 
                                 " ", 
                                 React.createElement(AddTabButton_1.AddTabButton, {dataStore: this.props.dataStore, uid: entityType.uid, tabType: 'entity_type'})), 
-                            React.createElement("td", null, entityType.name), 
+                            React.createElement("td", null, entityType.label), 
                             React.createElement("td", null, entityType.parent), 
                             React.createElement("td", null, entityType.description)));
                     }))))));
@@ -3600,7 +3600,7 @@ class PredicateList extends React.Component {
                 )
             ), 
             React.createElement("section", {className: 'editor-body'}, 
-                React.createElement(SearchBar_1.SearchBar, {getValue: (a) => a.name, setFilterFunc: (f) => this.setState({ filterFunc: f })}), 
+                React.createElement(SearchBar_1.SearchBar, {getValue: (a) => a.label, setFilterFunc: (f) => this.setState({ filterFunc: f })}), 
                 React.createElement("table", {className: 'table gap'}, 
                     React.createElement("thead", null, 
                         React.createElement("tr", null, 
@@ -3619,9 +3619,9 @@ class PredicateList extends React.Component {
                                 predicate.uid, 
                                 " ", 
                                 React.createElement(AddTabButton_1.AddTabButton, {dataStore: this.props.dataStore, uid: predicate.uid, tabType: 'predicate'})), 
-                            React.createElement("td", null, predicate.name), 
-                            React.createElement("td", null, entityType ? entityType.name : ''), 
-                            React.createElement("td", null, predicate.rangeIsReference ? rangeType ? rangeType.name : '' : rangeType)));
+                            React.createElement("td", null, predicate.label), 
+                            React.createElement("td", null, entityType ? entityType.label : ''), 
+                            React.createElement("td", null, predicate.rangeIsReference ? rangeType ? rangeType.label : '' : rangeType)));
                     }))))));
     }
 }
@@ -3677,7 +3677,7 @@ class SourceList extends React.Component {
                         React.createElement("div", {className: 'source ' + (this.state.mode === 'tree' ? 'selected' : ''), onClick: () => this.setState({ mode: 'tree' })}, "TREE"))
                 )), 
             React.createElement("section", {className: 'editor-body'}, 
-                React.createElement(SearchBar_1.SearchBar, {getValue: (a) => a.name, setFilterFunc: (f) => this.setState({ filterFunc: f })}), 
+                React.createElement(SearchBar_1.SearchBar, {getValue: (a) => a.label, setFilterFunc: (f) => this.setState({ filterFunc: f })}), 
                 this.state.mode === 'list' ? (React.createElement("table", {className: 'table gap'}, 
                     React.createElement("thead", null, 
                         React.createElement("tr", null, 
@@ -3691,7 +3691,7 @@ class SourceList extends React.Component {
                                 source.uid, 
                                 " ", 
                                 React.createElement(AddTabButton_1.AddTabButton, {dataStore: this.props.dataStore, uid: source.uid, tabType: 'source'})), 
-                            React.createElement("td", null, source.name), 
+                            React.createElement("td", null, source.label), 
                             React.createElement("td", null, source.parent)));
                     })))) : null)));
     }
@@ -3715,9 +3715,9 @@ const ComboDropdown_1 = __webpack_require__(6);
 const ApiService_1 = __webpack_require__(2);
 exports.SearchBox = (props, context) => {
     const entities = props.dataStore.all.entity.value.map((entity) => ({ key: entity.label, value: entity.uid, meta: { itemType: ApiService_1.AppUrls.entity } }));
-    const entityTypes = props.dataStore.all.entity_type.value.map((entityType) => ({ key: entityType.name, value: entityType.uid, meta: { itemType: ApiService_1.AppUrls.entity_type } }));
-    const predicates = props.dataStore.all.predicate.value.map((predicate) => ({ key: predicate.name, value: predicate.uid, meta: { itemType: ApiService_1.AppUrls.predicate } }));
-    const sources = props.dataStore.all.source.value.map((source) => ({ key: source.name, value: source.uid, meta: { itemType: ApiService_1.AppUrls.source } }));
+    const entityTypes = props.dataStore.all.entity_type.value.map((entityType) => ({ key: entityType.label, value: entityType.uid, meta: { itemType: ApiService_1.AppUrls.entity_type } }));
+    const predicates = props.dataStore.all.predicate.value.map((predicate) => ({ key: predicate.label, value: predicate.uid, meta: { itemType: ApiService_1.AppUrls.predicate } }));
+    const sources = props.dataStore.all.source.value.map((source) => ({ key: source.label, value: source.uid, meta: { itemType: ApiService_1.AppUrls.source } }));
     const all = entities.concat(entityTypes, predicates, sources);
     return (React.createElement("span", null, 
         React.createElement("div", {className: 'input-addon-formgroup'}, 
@@ -3867,7 +3867,7 @@ class EntityEditorWorkspace extends React.Component {
                 console.log('Records editor called cancel');
             },
             settings: {
-                options: predicates.map((pred) => ({ key: pred.name, value: pred.uid, meta: pred })),
+                options: predicates.map((pred) => ({ key: pred.label, value: pred.uid, meta: pred })),
                 entityUid: this.props.id,
                 entityType: entityType.uid
             }
@@ -3886,7 +3886,7 @@ class EntityEditorWorkspace extends React.Component {
             .value.filter((pred) => entityTypeParents.indexOf(pred.domain) !== -1);
         const sources = this.props.dataStore.all.source.value;
         const records = lodash_1.groupBy(this.props.dataStore.tabs.entity.get('entity-' + this.props.id).value.records, 'predicate');
-        const options = predicates.map((pred) => ({ key: pred.name, value: pred.uid, meta: pred }));
+        const options = predicates.map((pred) => ({ key: pred.label, value: pred.uid, meta: pred }));
         let parentName = '';
         if (potentialParents !== null && entity.parent !== undefined) {
             const found = potentialParents.find((par) => par.uid === entity.parent);
@@ -3953,7 +3953,7 @@ class EntityTypeWorkspace extends React.Component {
     }
     copy() {
         const entityType = this.props.dataStore.tabs.entity_type.get('entity_type-' + this.props.id).value;
-        const newEntityType = falcon_core_1.Serializer.fromJson(falcon_core_1.EntityType, Object.assign({}, falcon_core_1.Serializer.toJson(entityType), { name: 'Copy of ' + entityType.name }));
+        const newEntityType = falcon_core_1.Serializer.fromJson(falcon_core_1.EntityType, Object.assign({}, falcon_core_1.Serializer.toJson(entityType), { name: 'Copy of ' + entityType.label }));
         this.props.api.postItem(falcon_core_1.EntityType, ApiService_1.AppUrls.entity_type, newEntityType)
             .then(([id]) => {
             Signaller_1.createTab.dispatch('entity_type', id);
@@ -4010,7 +4010,7 @@ class EntityTypeWorkspace extends React.Component {
         if (potentialParents !== null && entityType.parent !== undefined) {
             const found = potentialParents.find((par) => par.uid === entityType.parent);
             if (found !== undefined) {
-                parentName = found.name;
+                parentName = found.label;
             }
         }
         return (React.createElement("div", {className: 'workspace-editor'}, 
@@ -4020,13 +4020,13 @@ class EntityTypeWorkspace extends React.Component {
                         React.createElement("div", {className: 'bread-crumbs'}, entityType.parents.map((parent, i) => (React.createElement("span", {key: `breadcrumb-${parent.uid}`}, 
                             React.createElement("span", null, 
                                 "  ", 
-                                parent.name, 
+                                parent.label, 
                                 " ", 
                                 React.createElement(AddTabButton_1.AddTabButton, {dataStore: this.props.dataStore, tabType: 'entity_type', uid: parent.uid}), 
                                 " "), 
                             React.createElement("i", {className: 'fa fa-angle-right'}))))), 
                         React.createElement("i", {className: 'fa fa-tag item-icon'}), 
-                        React.createElement(StringEditableFieldComponent, {value: entityType.name, component: EditableHeader_1.EditableHeader, onChange: (value) => this.update({ 'name': value })})), 
+                        React.createElement(StringEditableFieldComponent, {value: entityType.label, component: EditableHeader_1.EditableHeader, onChange: (value) => this.update({ 'label': value })})), 
                     React.createElement("div", {className: 'sub-toolbar'}, 
                         React.createElement("i", {className: 'fa fa-plus add button', "aria-hidden": 'true', onClick: this.createEntity.bind(this)}), 
                         React.createElement("i", {className: 'fa fa-trash delete button', "aria-hidden": 'true', onClick: this.del.bind(this)}), 
@@ -4036,7 +4036,7 @@ class EntityTypeWorkspace extends React.Component {
                 React.createElement("div", {className: 'edit-group'}, 
                     React.createElement("label", {className: 'small'}, "Parent"), 
                     React.createElement(ComboEditableFieldComponent, {value: entityType.parent === null ? null : { key: parentName, value: entityType.parent }, component: EditableComboDropdown_1.EditableComboDropdown, onChange: (value) => this.update({ 'parent': value === null ? null : value.value }), additionalProps: { comboSettings: {
-                            options: potentialParents.map((par) => ({ key: par.name, value: par.uid })),
+                            options: potentialParents.map((par) => ({ key: par.label, value: par.uid })),
                             typeName: 'EntityType'
                         } }}), 
                     entityType.parent !== null ? (React.createElement(AddTabButton_1.AddTabButton, {tabType: 'entity_type', dataStore: this.props.dataStore, uid: entityType.parent})) : null), 
@@ -4050,8 +4050,8 @@ class EntityTypeWorkspace extends React.Component {
                     React.createElement("h4", null, "Direct Children"), 
                     React.createElement("ul", null, entityType.children
                         .map((child) => this.props.dataStore.all.entity_type.value.find((et) => et.uid === child))
-                        .map((childEt) => (React.createElement("li", {key: `dc-${childEt.name}`}, 
-                        childEt.name, 
+                        .map((childEt) => (React.createElement("li", {key: `dc-${childEt.label}`}, 
+                        childEt.label, 
                         " ", 
                         React.createElement(AddTabButton_1.AddTabButton, {tabType: 'entity_type', dataStore: this.props.dataStore, uid: childEt.uid})))))))));
     }
@@ -4157,7 +4157,7 @@ class PredicateEditorWorkspace extends React.Component {
     }
     copy() {
         const predicate = this.props.dataStore.tabs.predicate.get('predicate-' + this.props.id).value;
-        const newPredicate = falcon_core_1.Serializer.fromJson(falcon_core_1.Predicate, Object.assign({}, falcon_core_1.Serializer.toJson(predicate), { name: 'Copy of ' + predicate.name }));
+        const newPredicate = falcon_core_1.Serializer.fromJson(falcon_core_1.Predicate, Object.assign({}, falcon_core_1.Serializer.toJson(predicate), { name: 'Copy of ' + predicate.label }));
         this.props.api.postItem(falcon_core_1.Predicate, ApiService_1.AppUrls.predicate, newPredicate)
             .then(([id]) => {
             Signaller_1.createTab.dispatch('predicate', id);
@@ -4199,35 +4199,35 @@ class PredicateEditorWorkspace extends React.Component {
         const currentDomainEntityType = entityTypes.find((t) => t.uid == predicate.domain);
         let currentDomainEntityTypeName = '';
         if (currentDomainEntityType !== undefined) {
-            currentDomainEntityTypeName = currentDomainEntityType.name;
+            currentDomainEntityTypeName = currentDomainEntityType.label;
         }
         const domain = { key: currentDomainEntityTypeName, value: predicate.domain.toString() };
         const range = { key: '', value: predicate.range.toString() };
         if (predicate.rangeIsReference) {
             const currentRangeEntityType = entityTypes.find((t) => t.uid == predicate.range);
             if (currentRangeEntityType !== undefined) {
-                range.key = currentRangeEntityType.name;
+                range.key = currentRangeEntityType.label;
             }
         }
         else {
             const literalType = literalTypes_1.literalTypes.find((t) => t.value === predicate.range);
             if (literalType !== undefined) {
-                range.key = literalType.name;
+                range.key = literalType.label;
             }
         }
         const entityTypeOptions = entityTypes.map((t) => {
             if (t.uid === null) {
                 throw new Error('Encountered entity type with no id!');
             }
-            return { key: t.name, value: t.uid.toString() };
+            return { key: t.label, value: t.uid.toString() };
         });
-        const literalTypeOptions = literalTypes_1.literalTypes.map((t) => ({ key: t.name, value: t.value, meta: 'literal' }));
+        const literalTypeOptions = literalTypes_1.literalTypes.map((t) => ({ key: t.label, value: t.value, meta: 'literal' }));
         return (React.createElement("div", {className: 'workspace-editor'}, 
             React.createElement("header", {className: 'editor-header predicate'}, 
                 React.createElement("div", {className: 'primary-toolbar'}, 
                     React.createElement("div", {className: 'main-toolbar'}, 
                         React.createElement("i", {className: 'fa fa-long-arrow-right item-icon'}), 
-                        React.createElement(StringEditableFieldComponent, {value: predicate.name, component: EditableHeader_1.EditableHeader, onChange: (value) => this.updatePredicate('name', value)})), 
+                        React.createElement(StringEditableFieldComponent, {value: predicate.label, component: EditableHeader_1.EditableHeader, onChange: (value) => this.updatePredicate('label', value)})), 
                     React.createElement("div", {className: 'sub-toolbar'}, 
                         React.createElement("i", {className: 'fa fa-trash delete button', "aria-hidden": 'true', onClick: this.del.bind(this)}), 
                         React.createElement("i", {className: 'fa fa-clone button', "aria-hidden": 'true', onClick: this.copy.bind(this)})))
@@ -4327,11 +4327,11 @@ class SourceEditorWorkspace extends React.Component {
                 element: element.uid
             }
         };
-        if (source.metaData[element.name] !== undefined
-            && source.metaData[element.name].values.find((a) => a.source === this.props.id) !== undefined) {
+        if (source.metaData[element.label] !== undefined
+            && source.metaData[element.label].values.find((a) => a.source === this.props.id) !== undefined) {
             this.props.api.patchItem(falcon_core_1.SourceElement, ApiService_1.AppUrls.source_element, compositeKey, falcon_core_1.Serializer.fromJson(falcon_core_1.SourceElement, {
                 uid: compositeKey,
-                element: source.metaData[element.name].element_uid,
+                element: source.metaData[element.label].element_uid,
                 source: this.props.id,
                 value
             }));
@@ -4375,7 +4375,7 @@ class SourceEditorWorkspace extends React.Component {
     }
     createChild() {
         const source = this.props.dataStore.tabs.source.get('source-' + this.props.id).value.source;
-        const newSource = falcon_core_1.Serializer.fromJson(falcon_core_1.Source, Object.assign({}, falcon_core_1.Serializer.toJson(source), { name: 'Child of ' + source.name, parent: this.props.id }));
+        const newSource = falcon_core_1.Serializer.fromJson(falcon_core_1.Source, Object.assign({}, falcon_core_1.Serializer.toJson(source), { name: 'Child of ' + source.label, parent: this.props.id }));
         this.props.api.postItem(falcon_core_1.Source, ApiService_1.AppUrls.source, newSource)
             .then(([id]) => {
             Signaller_1.createTab.dispatch('source', id);
@@ -4402,7 +4402,7 @@ class SourceEditorWorkspace extends React.Component {
         if (potentialParents !== null && source.parent !== undefined) {
             const found = potentialParents.find((par) => par.uid === source.parent);
             if (found !== undefined) {
-                parentName = found.name;
+                parentName = found.label;
             }
         }
         return (React.createElement("div", {className: 'workspace-editor'}, 
@@ -4416,13 +4416,13 @@ class SourceEditorWorkspace extends React.Component {
                             .map((parent, i) => (React.createElement("span", {key: `breadcrumb-${parent.uid}`}, 
                             React.createElement("span", null, 
                                 "  ", 
-                                parent.name, 
+                                parent.label, 
                                 " ", 
                                 React.createElement(AddTabButton_1.AddTabButton, {dataStore: this.props.dataStore, tabType: 'source', uid: parent.uid}), 
                                 " "), 
                             React.createElement("i", {className: 'fa fa-angle-right'}))))), 
                         React.createElement("i", {className: 'fa fa-sun-o item-icon'}), 
-                        React.createElement(StringEditableFieldComponent, {value: source.name, component: EditableHeader_1.EditableHeader, onChange: (value) => this.updateSource('name', value)})), 
+                        React.createElement(StringEditableFieldComponent, {value: source.label, component: EditableHeader_1.EditableHeader, onChange: (value) => this.updateSource('label', value)})), 
                     React.createElement("div", {className: 'sub-toolbar'}, 
                         React.createElement("i", {className: 'fa fa-plus add button', "aria-hidden": 'true', onClick: this.createEntity.bind(this)}), 
                         React.createElement("i", {className: 'fa fa-trash delete button', "aria-hidden": 'true', onClick: () => this.del()}), 
@@ -4432,7 +4432,7 @@ class SourceEditorWorkspace extends React.Component {
                 React.createElement("div", {className: 'edit-group'}, 
                     React.createElement("label", {className: 'small'}, "Parent"), 
                     React.createElement(ComboEditableFieldComponent, {value: { key: parentName, value: source.parent }, component: EditableComboDropdown_1.EditableComboDropdown, onChange: (value) => this.updateSource('parent', value.value), additionalProps: { comboSettings: {
-                            options: potentialParents.map((par) => ({ key: par.name, value: par.uid })),
+                            options: potentialParents.map((par) => ({ key: par.label, value: par.uid })),
                             typeName: 'Source'
                         } }}), 
                     source.parent !== null ? (React.createElement(AddTabButton_1.AddTabButton, {dataStore: this.props.dataStore, tabType: 'source', uid: source.parent})) : null), 
@@ -4440,19 +4440,19 @@ class SourceEditorWorkspace extends React.Component {
                     React.createElement(StringEditableFieldComponent, {value: source.sameAs, component: SameAsEditor_1.SameAsEditor, onChange: (value) => this.updateSource('sameAs', value)})
                 ), 
                 this.props.dataStore.all.dublinCore.value.elements.map((element) => {
-                    const values = source.metaData.hasOwnProperty(element.name) ?
-                        source.metaData[element.name].values : [{ source: this.props.id, value: '' }];
+                    const values = source.metaData.hasOwnProperty(element.label) ?
+                        source.metaData[element.label].values : [{ source: this.props.id, value: '' }];
                     const editableValue = values[0].source == this.props.id ? values[0].value : '';
-                    return (React.createElement("div", {key: `${element.name}-edit`}, 
+                    return (React.createElement("div", {key: `${element.label}-edit`}, 
                         React.createElement("h5", {className: 'section-header'}, 
-                            element.name, 
+                            element.label, 
                             " ", 
                             React.createElement("small", null, 
                                 React.createElement("a", {href: element.url}, element.uri)
                             )), 
                         React.createElement("p", {className: 'element-description'}, element.description), 
                         React.createElement("ul", null, values.map((value) => value.source != this.props.id ? (React.createElement("li", {key: `${element.uid}-${value.source}`}, 
-                            this.props.dataStore.all.source.value.find((s) => s.uid === value.source).name, 
+                            this.props.dataStore.all.source.value.find((s) => s.uid === value.source).label, 
                             ": ", 
                             value.value)) : null)), 
                         React.createElement(StringEditableFieldComponent, {value: editableValue, component: EditableParagraph_1.EditableParagraph, onChange: (value) => this.updateSourceElement(element, value)})));
@@ -4462,7 +4462,7 @@ class SourceEditorWorkspace extends React.Component {
                     React.createElement("ul", null, source.children
                         .map((child) => this.props.dataStore.all.source.value.find((et) => et.uid === child))
                         .map((childEt) => (React.createElement("li", {key: `dc-${childEt.uid}`}, 
-                        childEt.name, 
+                        childEt.label, 
                         " ", 
                         React.createElement(AddTabButton_1.AddTabButton, {tabType: 'source', dataStore: this.props.dataStore, uid: childEt.uid})))))))));
     }
@@ -4533,7 +4533,7 @@ class EntityWorkspaceCoreView extends React.Component {
             .value.filter((pred) => entityTypeParents.indexOf(pred.domain) !== -1);
         const sources = this.props.dataStore.all.source.value;
         const records = lodash_1.groupBy(this.props.dataStore.tabs.entity.get('entity-' + this.props.id).value.records, 'predicate');
-        const options = predicates.map((pred) => ({ key: pred.name, value: pred.uid, meta: pred }));
+        const options = predicates.map((pred) => ({ key: pred.label, value: pred.uid, meta: pred }));
         let parentName = '';
         if (potentialParents !== null && entity.parent !== undefined) {
             const found = potentialParents.find((par) => par.uid === entity.parent);
@@ -4546,7 +4546,7 @@ class EntityWorkspaceCoreView extends React.Component {
                 React.createElement("div", {className: 'flex-fill'}, 
                     React.createElement("div", null, 
                         React.createElement("label", {className: 'small'}, "Type"), 
-                        entityType.name, 
+                        entityType.label, 
                         " ", 
                         React.createElement(AddTabButton_1.AddTabButton, {dataStore: this.props.dataStore, uid: entityType.uid, tabType: 'entity_type'}))
                 ), 
@@ -5324,10 +5324,10 @@ class SourceController extends GenericController_1.GenericController {
             return Promise.all([
                 this.getMetadata([
                     'source_elements.source as source',
-                    'elements.name',
+                    'elements.label',
                     'source_elements.value',
                     'elements.description',
-                    'element_sets.name as element_set',
+                    'element_sets.label as element_set',
                     'elements.comment',
                     'elements.uri',
                     'elements.uid as element_uid'], source.uid),
@@ -5359,7 +5359,7 @@ class SourceController extends GenericController_1.GenericController {
                     throw new Error('could not find source');
                 }
                 return this.getMetadata([
-                    'elements.name',
+                    'elements.label',
                     'source_elements.value'
                 ], source.uid)
                     .then((sourceElements) => {
@@ -5415,7 +5415,7 @@ class SourceElementController extends GenericController_1.GenericController {
         super(db, 'source_elements');
     }
     toSchema(data) {
-        return Object.assign(lodash_1.omit(falcon_core_1.Serializer.toJson(data), 'creationTimestamp', 'lastmodifiedTimestamp', 'uid'), {
+        return Object.assign(lodash_1.omit(falcon_core_1.Serializer.toJson(data), 'creationTimestamp', 'lastmodifiedTimestamp', 'uid', 'label'), {
             creation_timestamp: data.creationTimestamp,
             lastmodified_timeStamp: data.lastmodifiedTimestamp,
             source: data.uid.values.source,
@@ -5483,28 +5483,20 @@ exports.SourceElementController = SourceElementController;
 "use strict";
 var ElementSetController_1 = __webpack_require__(80);
 exports.ElementSetController = ElementSetController_1.ElementSetController;
-exports.ElementSetPersistable = ElementSetController_1.ElementSetPersistable;
 var EntityController_1 = __webpack_require__(27);
 exports.EntityController = EntityController_1.EntityController;
-exports.EntityPersistable = EntityController_1.EntityPersistable;
 var EntityTypeController_1 = __webpack_require__(81);
 exports.EntityTypeController = EntityTypeController_1.EntityTypeController;
-exports.EntityTypePersistable = EntityTypeController_1.EntityTypePersistable;
 var PredicateController_1 = __webpack_require__(28);
 exports.PredicateController = PredicateController_1.PredicateController;
-exports.PredicatePersistable = PredicateController_1.PredicatePersistable;
 var RecordController_1 = __webpack_require__(21);
 exports.RecordController = RecordController_1.RecordController;
-exports.RecordPersistable = RecordController_1.RecordPersistable;
 var SourceController_1 = __webpack_require__(82);
 exports.SourceController = SourceController_1.SourceController;
-exports.SourcePersistable = SourceController_1.SourcePersistable;
 var ElementController_1 = __webpack_require__(79);
 exports.ElementController = ElementController_1.ElementController;
-exports.ElementPersistable = ElementController_1.ElementPersistable;
 var SourceElementController_1 = __webpack_require__(83);
 exports.SourceElementController = SourceElementController_1.SourceElementController;
-exports.SourceElementPersistable = SourceElementController_1.SourceElementPersistable;
 
 
 /***/ },
@@ -5685,7 +5677,7 @@ exports.entityQLType = (db, predicateType) => {
             type: {
                 type: graphql_1.GraphQLString,
                 resolve: (parent, {  }) => {
-                    return db.query()('entity_types').where({ uid: parent.type }).first().then((data) => data.name);
+                    return db.query()('entity_types').where({ uid: parent.type }).first().then((data) => data.label);
                 }
             },
             predicate: {
@@ -5752,7 +5744,7 @@ exports.predicateQLType = (db) => {
             name: {
                 type: graphql_1.GraphQLString,
                 resolve: ({ predicate }, {  }) => {
-                    return predicate.name;
+                    return predicate.label;
                 }
             },
             values: {

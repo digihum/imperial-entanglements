@@ -1,7 +1,7 @@
 DROP TABLE IF EXISTS sources;
 CREATE TABLE sources (
     uid <%= auto_increment %> NOT NULL,
-    name varchar(255) NOT NULL,
+    label varchar(255) NOT NULL,
     same_as varchar(255),
     parent INTEGER 
         REFERENCES sources(uid)
@@ -20,7 +20,7 @@ DROP TABLE IF EXISTS element_sets;
 CREATE TABLE element_sets (
     uid <%= auto_increment %> NOT NULL,
     uri varchar(255),
-    name varchar(255),
+    label varchar(255),
     description varchar(255)
 );
 
@@ -34,7 +34,7 @@ CREATE TABLE elements (
         ON UPDATE CASCADE
         ON DELETE CASCADE,
 
-    name varchar(255) NOT NULL,
+    label varchar(255) NOT NULL,
     description varchar(255),
     comment varchar(255)
 );

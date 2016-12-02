@@ -60,7 +60,7 @@ export class EntityTypeWorkspace extends React.Component<EntityTypeWorkspaceProp
         const entityType = this.props.dataStore.tabs.entity_type.get('entity_type-' + this.props.id).value;
 
         const newEntityType = Serializer.fromJson(EntityType,
-            Object.assign({}, Serializer.toJson(entityType), { name: 'Copy of ' + entityType.name}));
+            Object.assign({}, Serializer.toJson(entityType), { name: 'Copy of ' + entityType.label}));
 
         this.props.api.postItem(EntityType, AppUrls.entity_type, newEntityType)
             .then(([id]) => {
@@ -127,7 +127,7 @@ export class EntityTypeWorkspace extends React.Component<EntityTypeWorkspaceProp
         if (potentialParents !== null && entityType.parent !== undefined) {
             const found = potentialParents.find((par) => par.uid === entityType.parent);
             if (found !== undefined) {
-                parentName = found.name;
+                parentName = found.label;
             }
         }
 
@@ -140,7 +140,7 @@ export class EntityTypeWorkspace extends React.Component<EntityTypeWorkspaceProp
                         <div className='bread-crumbs'>
                             {entityType.parents.map((parent, i) => (
                                 <span key={`breadcrumb-${parent.uid}`}>
-                                    <span>  {parent.name} <AddTabButton
+                                    <span>  {parent.label} <AddTabButton
                                         dataStore={this.props.dataStore}
                                         tabType='entity_type'
                                         uid={parent.uid} /> </span>
@@ -150,9 +150,9 @@ export class EntityTypeWorkspace extends React.Component<EntityTypeWorkspaceProp
                         </div>
                         <i className='fa fa-tag item-icon'></i>
                         <StringEditableFieldComponent
-                            value={entityType.name}
+                            value={entityType.label}
                             component={EditableHeader}
-                            onChange={(value) => this.update({'name': value})}  />
+                            onChange={(value) => this.update({'label': value})}  />
                     </div>
                     <div className='sub-toolbar'>
                         <i
@@ -184,7 +184,7 @@ export class EntityTypeWorkspace extends React.Component<EntityTypeWorkspaceProp
                             component={EditableComboDropdown}
                             onChange={(value) => this.update({'parent': value === null ? null : value.value})}
                             additionalProps={{ comboSettings: {
-                                options: potentialParents.map((par) => ({ key: par.name, value: par.uid})),
+                                options: potentialParents.map((par) => ({ key: par.label, value: par.uid})),
                                 typeName: 'EntityType'
                             }}} />
                         {entityType.parent !== null ? (<AddTabButton
@@ -214,7 +214,7 @@ export class EntityTypeWorkspace extends React.Component<EntityTypeWorkspaceProp
                         {entityType.children
                             .map((child) => this.props.dataStore.all.entity_type.value.find((et) => et.uid === child))
                             .map((childEt) =>
-                                (<li key={`dc-${childEt.name}`}>{childEt.name} <AddTabButton
+                                (<li key={`dc-${childEt.label}`}>{childEt.label} <AddTabButton
                                     tabType='entity_type'
                                     dataStore={this.props.dataStore}
                                     uid={childEt.uid} /></li>

@@ -87,7 +87,7 @@ export class SourceList extends React.Component<SourceListProps, SourceListState
             <section className='editor-body'>
 
                 <SearchBar
-                    getValue={(a: Source) => a.name}
+                    getValue={(a: Source) => a.label}
                     setFilterFunc={(f) => this.setState({ filterFunc: f })}
                 />
 
@@ -108,7 +108,7 @@ export class SourceList extends React.Component<SourceListProps, SourceListState
                                     dataStore={this.props.dataStore}
                                     uid={source.uid}
                                     tabType='source' /></td>
-                                <td>{source.name}</td>
+                                <td>{source.label}</td>
                                 <td>{source.parent}</td>
                             </tr>
                         );}

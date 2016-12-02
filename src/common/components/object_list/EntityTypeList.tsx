@@ -68,7 +68,7 @@ export class EntityTypeList extends React.Component<EntityTypeListProps, EntityT
             <section className='editor-body'>
 
                 <SearchBar
-                    getValue={(a: EntityType) => a.name}
+                    getValue={(a: EntityType) => a.label}
                     setFilterFunc={(f) => this.setState({ filterFunc: f })}
                 />
 
@@ -89,7 +89,7 @@ export class EntityTypeList extends React.Component<EntityTypeListProps, EntityT
                                     dataStore={this.props.dataStore}
                                     uid={entityType.uid}
                                     tabType='entity_type' /></td>
-                                <td>{entityType.name}</td>
+                                <td>{entityType.label}</td>
                                 <td>{entityType.parent}</td>
                                 <td>{entityType.description}</td>
                             </tr>

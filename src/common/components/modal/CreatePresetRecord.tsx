@@ -50,7 +50,7 @@ export class CreatePresetRecord extends React.Component<CreatePresetRecordProps,
             name: 'entity',
             complete: (data : number[]) => {
 
-                const isMentioned = this.props.dataStore.all.predicate.value.find((pred) => pred.name === 'is mentioned');
+                const isMentioned = this.props.dataStore.all.predicate.value.find((pred) => pred.label === 'is mentioned');
 
                 this.props.api.postItem(Record, AppUrls.record,
                     Serializer.fromJson(Record, {

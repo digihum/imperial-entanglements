@@ -67,7 +67,7 @@ export class ConflictResolution extends React.Component<ConflictResolutionProps,
                                 .find((entity) => entity.uid == record.entity).label;
 
                             const predicateName = this.props.dataStore.all.predicate.value
-                                .find((predicate) => predicate.uid == record.predicate).name;
+                                .find((predicate) => predicate.uid == record.predicate).label;
 
 
                             return (
@@ -126,7 +126,7 @@ export class ConflictResolution extends React.Component<ConflictResolutionProps,
                             return (
                             <tr key={`row-${entityType.uid}`}>
                                 <td>
-                                    {entityType.name}
+                                    {entityType.label}
                                 </td>
                             </tr>);
                         })}
@@ -149,7 +149,7 @@ export class ConflictResolution extends React.Component<ConflictResolutionProps,
                             return (
                             <tr key={`row-${source.uid}`}>
                                 <td>
-                                    {source.name}
+                                    {source.label}
                                 </td>
                             </tr>);
                         })}

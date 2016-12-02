@@ -4,11 +4,11 @@
  * @version 0.0.1
  */
 
-export { ElementSetController, ElementSetPersistable } from './ElementSetController';
-export { EntityController, EntityPersistable } from './EntityController';
-export { EntityTypeController, EntityTypePersistable } from './EntityTypeController';
-export { PredicateController, PredicatePersistable } from './PredicateController';
-export { RecordController, RecordPersistable } from './RecordController';
-export { SourceController, SourcePersistable } from './SourceController';
-export { ElementController, ElementPersistable } from './ElementController';
-export { SourceElementController, SourceElementPersistable } from './SourceElementController';
+export { ElementSetController } from './ElementSetController';
+export { EntityController } from './EntityController';
+export { EntityTypeController } from './EntityTypeController';
+export { PredicateController } from './PredicateController';
+export { RecordController } from './RecordController';
+export { SourceController } from './SourceController';
+export { ElementController } from './ElementController';
+export { SourceElementController } from './SourceElementController';

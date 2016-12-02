@@ -7,7 +7,7 @@ exports.seed = function(knex, Promise) {
       return Promise.all([
         // Inserts seed entries
         knex('sources').insert({
-          name: 'Test Source',
+          label: 'Test Source',
           creator: 1,
           creation_timestamp: moment().toISOString(),
           lastmodified_timestamp: moment().toISOString()

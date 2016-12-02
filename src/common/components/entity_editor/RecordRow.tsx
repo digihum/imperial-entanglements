@@ -107,7 +107,7 @@ export const RecordRow = (props: RecordRowProps) => {
     };
 
     if (currentSource !== undefined) {
-        dropDownValue.key = currentSource.name;
+        dropDownValue.key = currentSource.label;
     }
 
     if (props.edit) {
@@ -121,7 +121,7 @@ export const RecordRow = (props: RecordRowProps) => {
             ) : null}
             <td className='record-row-item'>
                 <ComboDropdown
-                    options={props.sources.map((source) => ({ key: source.name , value: source.uid}))}
+                    options={props.sources.map((source) => ({ key: source.label , value: source.uid}))}
                     typeName='source'
                     value={dropDownValue}
                     setValue={(combo) => props.onChange(Object.assign(props.value, { source: combo.value }))}

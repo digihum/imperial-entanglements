@@ -76,11 +76,11 @@ export class RecordPredicate extends React.Component<RecordPredicateProps, Recor
 	public render() {
 
         return (<section>
-            <h5 className='section-header'>{this.props.predicate.name} <i
+            <h5 className='section-header'>{this.props.predicate.label} <i
                     className='fa fa-plus-circle add button'
                      aria-hidden='true'
                      onClick={this.createNewRecord.bind(this)}
-                     title={`Add new ${this.props.predicate.name} record`}
+                     title={`Add new ${this.props.predicate.label} record`}
                 ></i>
             <AddTabButton
                 dataStore={this.props.dataStore}

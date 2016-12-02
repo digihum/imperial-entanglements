@@ -88,7 +88,7 @@ export class EntityWorkspaceCoreView extends React.Component<EntityWorkspaceCore
         const records = groupBy(this.props.dataStore.tabs.entity.get('entity-' + this.props.id).value.records, 'predicate');
 
 
-        const options = predicates.map((pred) => ({ key: pred.name, value: pred.uid, meta: pred}));
+        const options = predicates.map((pred) => ({ key: pred.label, value: pred.uid, meta: pred}));
 
         let parentName = '';
         if (potentialParents !== null && entity.parent !== undefined) {
@@ -103,7 +103,7 @@ export class EntityWorkspaceCoreView extends React.Component<EntityWorkspaceCore
 
             <div className='flex-fill'>
                 <div className='flex-fill'>
-                    <div><label className='small'>Type</label>{entityType.name} <AddTabButton
+                    <div><label className='small'>Type</label>{entityType.label} <AddTabButton
                         dataStore={this.props.dataStore}
                         uid={entityType.uid}
                         tabType='entity_type'

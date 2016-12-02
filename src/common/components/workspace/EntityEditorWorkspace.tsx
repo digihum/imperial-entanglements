@@ -136,7 +136,7 @@ export class EntityEditorWorkspace extends React.Component<EntityEditorProps, En
                 console.log('Records editor called cancel');
             },
             settings: {
-                options: predicates.map((pred) => ({ key: pred.name, value: pred.uid, meta: pred})),
+                options: predicates.map((pred) => ({ key: pred.label, value: pred.uid, meta: pred})),
                 entityUid: this.props.id,
                 entityType: entityType.uid
             }
@@ -164,7 +164,7 @@ export class EntityEditorWorkspace extends React.Component<EntityEditorProps, En
         const records = groupBy(this.props.dataStore.tabs.entity.get('entity-' + this.props.id).value.records, 'predicate');
 
 
-        const options = predicates.map((pred) => ({ key: pred.name, value: pred.uid, meta: pred}));
+        const options = predicates.map((pred) => ({ key: pred.label, value: pred.uid, meta: pred}));
 
         let parentName = '';
         if (potentialParents !== null && entity.parent !== undefined) {

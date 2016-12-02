@@ -12,8 +12,6 @@ import { GenericController } from './GenericController';
 
 import { KeyNotFoundException } from '../core/Exceptions';
 
-import { CompositeKey } from '../../common/datamodel/Serializable';
-
 import { omit } from 'lodash';
 
 export class SourceElementController extends GenericController<SourceElement> {
@@ -26,7 +24,8 @@ export class SourceElementController extends GenericController<SourceElement> {
         return Object.assign(omit(Serializer.toJson(data),
             'creationTimestamp',
             'lastmodifiedTimestamp',
-            'uid'
+            'uid',
+            'label'
         ), {
             creation_timestamp: data.creationTimestamp,
             lastmodified_timeStamp: data.lastmodifiedTimestamp,

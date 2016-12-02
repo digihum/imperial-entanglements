@@ -5,7 +5,7 @@
                 name: {
                     type: GraphQLString,
                     resolve: ({ entity, predicate }, {}) => {
-                        return predicate.name;
+                        return predicate.label;
                     }
                 },
                 values: {

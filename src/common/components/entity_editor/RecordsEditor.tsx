@@ -85,7 +85,7 @@ export class RecordsEditor extends React.Component<RecordsEditorProps, RecordsEd
                 console.log('Records editor called cancel');
             },
             settings: {
-                options: predicates.map((pred) => ({ key: pred.name, value: pred.uid, meta: pred})),
+                options: predicates.map((pred) => ({ key: pred.label, value: pred.uid, meta: pred})),
                 entityUid: this.props.id,
                 entityType: this.props.entityTypeId
             }
@@ -106,7 +106,7 @@ export class RecordsEditor extends React.Component<RecordsEditorProps, RecordsEd
 					<div style={{ display: 'flex' }}>
 						<div style={{ flex: '1' }}>
 							<SearchBar
-								getValue={(p: Predicate) => p.name}
+								getValue={(p: Predicate) => p.label}
 								setFilterFunc={(filterFunc) => this.setState({ filterFunc })}
 							/>
 						</div>

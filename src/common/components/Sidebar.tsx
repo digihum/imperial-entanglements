@@ -82,7 +82,7 @@ const CardList = SortableContainer((props: {
                 }
 
                 const url = `/edit/${AppUrls[tab.tabType]}/${tab.uid}`;
-                const title = tab.tabType === 'entity' ? item.label : item.name;
+                const title = tab.tabType === 'entity' ? item.label : item.label;
                 const subtitle = `${capitalize(AppUrls[tab.tabType]).replace('_', ' ')} ${tab.uid}`;
 
                 const currentTab = !props.list && tab.tabType === props.workspace && tab.uid == props.id;
