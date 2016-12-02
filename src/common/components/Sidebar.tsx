@@ -19,6 +19,7 @@ export interface Tab {
     tabType: string;
     tabClass: string;
     uid: number;
+    query?: { [s: string]: string };
     data?: any;
 }
 
@@ -85,13 +86,13 @@ const CardList = SortableContainer((props: {
                 const item = props.dataStore.all[tab.tabType].value
                     .find((item) => item.uid == tab.uid);
 
-                if (item === undefined) {
-                    return null;
-                }
+                // if (item === undefined) {
+                //     return null;
+                // }
 
-                const url = `/edit/${AppUrls[tab.tabType]}/${tab.uid}`;
-                const title = tab.tabType === 'entity' ? item.label : item.label;
-                const subtitle = `${capitalize(AppUrls[tab.tabType]).replace('_', ' ')} ${tab.uid}`;
+                const url = `/edit/${AppUrls[tab.tabType]}` + (tab.uid >= 0 ? `/${tab.uid}` : '');
+                const title = item === undefined ? `${tab.tabType} list` : item.label;
+                const subtitle = (tab.uid >= 0 ? `${capitalize(AppUrls[tab.tabType]).replace('_', ' ')} ${tab.uid}` : '');
 
                 const currentTab = !props.list && tab.tabType === props.workspace && tab.uid == props.id;
 

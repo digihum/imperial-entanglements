@@ -5,17 +5,15 @@
  */
 
 import * as React from 'react';
-import { Map } from 'immutable';
-import * as moment from 'moment';
 
-import { ApiService, AppUrls } from '../ApiService';
+import { ApiService } from '../ApiService';
 
 import { Sidebar, Tab } from '../components/Sidebar';
 import { Workspace } from '../components/Workspace';
 import { Toast } from '../components/Toast';
 
 import { createTab, closeTab, showModal, triggerReload, reorderTabs } from '../Signaller';
-import { find, tail, cloneDeep, groupBy, findIndex } from 'lodash';
+import { find, tail, cloneDeep, findIndex } from 'lodash';
 
 import { CreatePredicate } from '../components/modal/CreatePredicate';
 import { CreateRecord } from '../components/modal/CreateRecord';
@@ -27,7 +25,7 @@ import { ConflictResolution } from '../components/modal/ConflictResolution';
 
 import { ModalDefinition } from '../components/modal/ModalDefinition';
 
-import { DataStore, emptyDataStore, emptyTabs } from '../DataStore';
+import { DataStore, emptyDataStore } from '../DataStore';
 
 import { DataController } from '../DataController';
 
@@ -128,10 +126,8 @@ export class ObjectEditor extends React.Component<EntityEditorProps, EntityEdito
 
        if (this.state.inBrowser) {
           if (
-            !this.state.list &&
-            !isNaN(newId) &&
-            find(updatedTabs, (tab) => tab.tabType === newWorkspace && tab.uid == newId) === undefined) {
-              updatedTabs = updatedTabs.concat([{ tabType: newWorkspace, uid: newId, tabClass: 'item'}]);
+            find(updatedTabs, (tab) => tab.tabType === newWorkspace && tab.uid == (isNaN(newId) ? -1 : newId)) === undefined) {
+              updatedTabs = updatedTabs.concat([{ tabType: newWorkspace, uid: isNaN(newId) ? -1 : newId, tabClass: 'item'}]);
               this.saveTabs();
           }
       }

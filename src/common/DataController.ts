@@ -15,6 +15,9 @@ import { cloneDeep, find, groupBy } from 'lodash';
 import * as moment from 'moment';
 
 const loadTabData = (api: ApiService, tab: Tab) : Promise<FalconItem> => {
+    if (tab.uid < 0) {
+      return Promise.resolve(new Entity());
+    }
     switch (tab.tabType) {
         case 'entity':
             return Promise.all([
@@ -34,7 +37,7 @@ const loadTabData = (api: ApiService, tab: Tab) : Promise<FalconItem> => {
         default:
             throw new Error('Unexpected tab type requested');
     }
-}
+};
 
 export const reload = (api: ApiService, tabs: Tab[],
   force: boolean = false, failureCallback: (workspace: string, uid: number) => void) : Promise<DataStore> => {

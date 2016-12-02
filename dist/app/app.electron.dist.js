@@ -1960,6 +1960,9 @@ const immutable_1 = __webpack_require__(30);
 const lodash_1 = __webpack_require__(2);
 const moment = __webpack_require__(14);
 const loadTabData = (api, tab) => {
+    if (tab.uid < 0) {
+        return Promise.resolve(new falcon_core_1.Entity());
+    }
     switch (tab.tabType) {
         case 'entity':
             return Promise.all([
@@ -2095,12 +2098,12 @@ const CardList = react_sortable_hoc_1.SortableContainer((props) => {
         // TODO: shouldn't be ==
         const item = props.dataStore.all[tab.tabType].value
             .find((item) => item.uid == tab.uid);
-        if (item === undefined) {
-            return null;
-        }
-        const url = `/edit/${ApiService_1.AppUrls[tab.tabType]}/${tab.uid}`;
-        const title = tab.tabType === 'entity' ? item.label : item.label;
-        const subtitle = `${lodash_1.capitalize(ApiService_1.AppUrls[tab.tabType]).replace('_', ' ')} ${tab.uid}`;
+        // if (item === undefined) {
+        //     return null;
+        // }
+        const url = `/edit/${ApiService_1.AppUrls[tab.tabType]}` + (tab.uid >= 0 ? `/${tab.uid}` : '');
+        const title = item === undefined ? `${tab.tabType} list` : item.label;
+        const subtitle = (tab.uid >= 0 ? `${lodash_1.capitalize(ApiService_1.AppUrls[tab.tabType]).replace('_', ' ')} ${tab.uid}` : '');
         const currentTab = !props.list && tab.tabType === props.workspace && tab.uid == props.id;
         return (React.createElement(Card, {key: `tab-${index}`, currentTab: currentTab, url: url, tab: tab, title: title, subtitle: subtitle, index: index, compact: props.compact}));
     }) : null));
@@ -4921,10 +4924,8 @@ class ObjectEditor extends React.Component {
         }
         let updatedTabs = this.state.tabs;
         if (this.state.inBrowser) {
-            if (!this.state.list &&
-                !isNaN(newId) &&
-                lodash_1.find(updatedTabs, (tab) => tab.tabType === newWorkspace && tab.uid == newId) === undefined) {
-                updatedTabs = updatedTabs.concat([{ tabType: newWorkspace, uid: newId, tabClass: 'item' }]);
+            if (lodash_1.find(updatedTabs, (tab) => tab.tabType === newWorkspace && tab.uid == (isNaN(newId) ? -1 : newId)) === undefined) {
+                updatedTabs = updatedTabs.concat([{ tabType: newWorkspace, uid: isNaN(newId) ? -1 : newId, tabClass: 'item' }]);
                 this.saveTabs();
             }
         }
