@@ -68,7 +68,7 @@ export class SourceController extends GenericController<Source> {
                 .where({ 'source_elements.source': parent })
 
             )).then((results) => {
-                const a = groupBy(flatten(results), 'name');
+                const a = groupBy(flatten(results), 'label');
                 return Object.keys(a).reduce((prev, cur) => {
                     const meta = omit(a[cur][0], 'source', 'value');
                     meta['values'] = a[cur]

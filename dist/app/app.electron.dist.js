@@ -5304,7 +5304,7 @@ class SourceController extends GenericController_1.GenericController {
                 .innerJoin('elements', function () { this.on('source_elements.element', '=', 'elements.uid'); })
                 .innerJoin('element_sets', function () { this.on('element_sets.uid', '=', 'elements.element_set'); })
                 .where({ 'source_elements.source': parent }))).then((results) => {
-                const a = lodash_1.groupBy(lodash_1.flatten(results), 'name');
+                const a = lodash_1.groupBy(lodash_1.flatten(results), 'label');
                 return Object.keys(a).reduce((prev, cur) => {
                     const meta = lodash_1.omit(a[cur][0], 'source', 'value');
                     meta['values'] = a[cur]
