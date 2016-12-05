@@ -4,6 +4,7 @@
   "description": "VRE for Imperial Entanglements project",
   "main": "./build/app/index.js",
   "scripts": {
+    "start": "node dist/server/app.backend.dist.js",
     "postinstall": "install-app-deps ./dist/app",
     "dist": "build --x64",
     "electron": "electron dist/app",
@@ -18,7 +19,7 @@
     "gulp": "gulp",
     "clean": "rimraf build",
     "precompile": "npm run clean",
-    "compile": "npm-run-all -c tsc webpack gulp",
+    "compile": "npm-run-all -c webpack gulp",
     "rebuild": "electron-rebuild -f -w sqlite3"
   },
   "repository": {
@@ -107,7 +108,6 @@
     "tslint-microsoft-contrib": "^2.0.10",
     "typescript": "^2.0.2",
     "typings": "^2.0.0",
-    "webpack": "^2.1.0-beta.25",
-    "webpack-closure-compiler": "^2.1.2"
+    "webpack": "^1.13.3"
   }
 }

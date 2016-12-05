@@ -2,7 +2,37 @@ var webpack = require('webpack');
 var path = require('path');
 var fs = require('fs');
 
-var ClosureCompilerPlugin = require('webpack-closure-compiler');
+const typescriptLoaderConfig = {
+    silent: true, // don't show errors on build
+    visualStudioErrorFormat: true,
+    ignoreDiagnostics: [
+        2307,
+        2345]
+};
+
+const resolve = {
+    extensions: ['', '.webpack.js', '.web.js', '.js', '.ts', '.tsx'],
+    modulesDirectories: ["build", "node_modules", "src"],
+};
+
+const loaderConfig = [
+    { 
+        test: /\.tsx?$/,
+        loader: 'ts-loader',
+        include: path.join(__dirname, 'src')
+    },
+    { 
+        test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/, 
+        loader: "url-loader?limit=10000&mimetype=application/font-woff",
+        include: path.join(__dirname, 'src')
+    },
+
+    { 
+        test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/, 
+        loader: "file-loader",
+        include: path.join(__dirname, 'src')
+    },
+];
 
 
 var nodeModules = {};
@@ -14,149 +44,78 @@ fs.readdirSync('node_modules')
     nodeModules[mod] = 'commonjs ' + mod;
   });
 
-
 var frontendConfig = {
-    devtool: 'source-map',
-    entry: {
-        //"app.frontend": './src/client/app.frontend.ts', 
-        "app.frontend": './build/client/app.frontend.js'
-	},
+    devtool: 'eval-source-map',
+    entry: './src/client/app.frontend',
     output: {  
-        path: 'dist/server/static',                 // output folder
-        filename: '[name].dist.js'     // file name
+        path: path.join(__dirname, 'dist', 'server', 'static'),                 // output folder
+        filename: './app.frontend.dist.js',    // file name
     },
-    resolve: {
-        extensions: ['.js', '.ts', '.tsx'],
-        modules: [path.resolve(__dirname, 'build'), 'node_modules']
+    resolve: resolve,
+    module: {
+       loaders: loaderConfig
     },
-    module:  {
-        rules: [
-           // { test: /\.tsx?$/, loader: 'ts-loader' }
-        ]
-    },
-    plugins: [
-       // new webpack.optimize.UglifyJsPlugin()
-    ],
+    target: 'web',
     externals: {
         "react": "React",
         "react-dom": "ReactDOM",
         "lodash": "_"
-    }
+    },
+    ts: typescriptLoaderConfig
 }
 
 var backendConfig = {
-    devtool: 'source-map',
-    entry: {
-        //"app.backend": './src/server/index.ts', 
-        "app.backend": './build/server/index.js', 
-	},
+    devtool: 'eval-source-map',
+    entry: './src/server/index',
     output: {  
         path: 'dist/server',                 // output folder
-        filename: '[name].dist.js'     // file name
+        filename: 'app.backend.dist.js',    // file name
+        devtoolModuleFilenameTemplate: "file://[absolute-resource-path]",
+        devtoolFallbackModuleFilenameTemplate: "file://[absolute-resource-path]?[hash]"
     },
-    resolve: {
-        extensions: ['.js', '.ts', '.tsx'],
-        modules: [path.resolve(__dirname, 'build'), 'node_modules']
-    },
-    module:  {
-        rules: [
-            {
-                enforce: 'pre',
-                test:   /\.js$/,
-                loader: 'source-map-loader'
-            },
-           // { test: /\.tsx?$/, loader: 'ts-loader' }
-        ]
+    resolve: resolve,
+    module: {
+        loaders: loaderConfig
     },
     target: 'node',
-    externals: nodeModules
+    externals: nodeModules,
+    ts: typescriptLoaderConfig
 }
 
 var electronConfig = {
-    devtool: 'source-map',
-    entry: {
-        //"app.electron": './src/app/app.electron.ts'
-        "app.electron": './build/app/app.electron.js'
-	},
+    devtool: 'eval-source-map',
+    entry: './src/app/app.electron',
     output: {  
         path: 'dist/app',                 // output folder
-        filename: '[name].dist.js'     // file name
+        filename: 'app.electron.dist.js'     // file name
     },
-    resolve: {
-        extensions: ['.js', '.json', '.ts', '.tsx'],
-        modules: [path.resolve(__dirname, 'build'), 'node_modules']
-    },
+    resolve: resolve,
     module:  {
-        rules: [
-            {
-                enforce: 'pre',
-                test:   /\.js$/,
-                loader: 'source-map-loader'
-            },
-            
-            { 
-                test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/, 
-                loader: "url-loader?limit=10000&mimetype=application/font-woff" 
-            },
-
-            { 
-                test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/, 
-                loader: "file-loader" 
-            },
-
-            //{ test: /\.tsx?$/, loader: 'ts-loader' }
-        ]
+        loaders: loaderConfig
     },
     target: 'electron-renderer',    
-    externals: nodeModules
+    externals: nodeModules,
+    ts: typescriptLoaderConfig
 }
 
 var electronAppConfig = {
-    devtool: 'source-map',
-    entry: {
-        //"app.electron": './src/app/app.electron.ts'
-        "app.electron.index": './build/app/index.js'
-	},
+    devtool: 'eval-source-map',
+    entry: './src/app/index',
     output: {  
         path: 'dist/app',                 // output folder
-        filename: '[name].dist.js'     // file name
+        filename: 'app.electron.index.dist.js'     // file name
     },
-    resolve: {
-        extensions: ['.js', '.json', '.ts', '.tsx'],
-        modules: [path.resolve(__dirname, 'build'), 'node_modules']
-    },
+    resolve: resolve,
     node: {
         __dirname: false,
         __filename: false
     },
     module:  {
-        rules: [
-            {
-                enforce: 'pre',
-                test:   /\.js$/,
-                loader: 'source-map-loader'
-            },
-            
-            { 
-                test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/, 
-                loader: "url-loader?limit=10000&mimetype=application/font-woff" 
-            },
-
-            { 
-                test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/, 
-                loader: "file-loader" 
-            },
-
-            //{ test: /\.tsx?$/, loader: 'ts-loader' }
-        ]
+        loaders: loaderConfig
     },
-    plugins: [
-
-        // swap out /common/datamodel/datamodel with app/app.datamodel to inject
-        // server side models into the frontend!
-    ],
     target: 'electron',    
-    externals: nodeModules
+    externals: nodeModules,
+    ts: typescriptLoaderConfig
 }
 
 module.exports = [frontendConfig, electronConfig, electronAppConfig, backendConfig];
