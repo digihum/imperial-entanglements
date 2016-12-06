@@ -138,7 +138,7 @@ export class SourceEditorWorkspace extends React.Component<SourceEditorProps, So
                     complete: (result) => {
                         if (result === 'addToWorkspace') {
                             data.source.forEach((datum) => {
-                                 createTab.dispatch('source', datum.uid);
+                                 createTab.dispatch('source', datum.uid, 'item');
                             });
                         }
 
@@ -170,7 +170,7 @@ export class SourceEditorWorkspace extends React.Component<SourceEditorProps, So
 
         this.props.api.postItem(Source, AppUrls.source, newSource)
             .then(([id]) => {
-                createTab.dispatch('source', id);
+                createTab.dispatch('source', id, 'item');
         });
     }
 
@@ -179,7 +179,7 @@ export class SourceEditorWorkspace extends React.Component<SourceEditorProps, So
         const a : ModalDefinition = {
             name: 'preset_record',
             complete: ([id]) => {
-                 createTab.dispatch('entity', id);
+                 createTab.dispatch('entity', id, 'item');
             },
             cancel: () => { },
             settings: {

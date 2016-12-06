@@ -3353,6 +3353,19 @@ body {
       font-size: 0.8em;
       color: #575757; }
 
+.sidebar-card.view .badge-container .badge {
+  background-size: 0.5em 0.5em; }
+  .sidebar-card.view .badge-container .badge.records {
+    background-image: linear-gradient(45deg, #9946ee 25%, transparent 25%, transparent 50%, #9946ee 50%, #9946ee 75%, transparent 75%, #B375F2); }
+  .sidebar-card.view .badge-container .badge.entity_type {
+    background-image: linear-gradient(45deg, #33d297 25%, transparent 25%, transparent 50%, #33d297 50%, #33d297 75%, transparent 75%, #5DDBAC); }
+  .sidebar-card.view .badge-container .badge.source {
+    background-image: linear-gradient(45deg, #f74141 25%, transparent 25%, transparent 50%, #f74141 50%, #f74141 75%, transparent 75%, #F97272); }
+  .sidebar-card.view .badge-container .badge.entity {
+    background-image: linear-gradient(45deg, #eca81c 25%, transparent 25%, transparent 50%, #eca81c 50%, #eca81c 75%, transparent 75%, #F0BA4B); }
+  .sidebar-card.view .badge-container .badge.predicate {
+    background-image: linear-gradient(45deg, #ec6a14 25%, transparent 25%, transparent 50%, #ec6a14 50%, #ec6a14 75%, transparent 75%, #F08843); }
+
 .workspace-outer-wrapper {
   flex-direction: column; }
 

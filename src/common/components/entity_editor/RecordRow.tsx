@@ -13,7 +13,6 @@ import { ScorePicker } from '../fields/ScorePicker';
 import { ComboDropdown } from '../ComboDropdown';
 import { showModal } from '../../Signaller';
 import { ModalDefinition } from '../modal/ModalDefinition';
-import { AppUrls } from '../../ApiService';
 import { DataStore } from '../../DataStore';
 
 import { StringFieldEditor } from './StringFieldEditor';
@@ -47,34 +46,37 @@ const createNewSource = (initialValue: string) => {
         showModal.dispatch(a);
     };
 
-const recordEditor = (props: RecordRowProps) => {
-    switch (props.value.valueType) {
+const recordEditor = (props: RecordRowProps, record: Record) => {
+    switch (record.valueType) {
         case 'string':
             return (<StringFieldEditor
-                value={props.value.value || ''}
-                onChange={(value) => props.onChange(Object.assign(props.value, { value }))} />);
+                value={record.value || ''}
+                onChange={(value) => props.onChange(Object.assign(record, { value }))} />);
         case 'date':
             return (<DateFieldEditor
-                value={props.value.value || ''}
-                onChange={(value) => props.onChange(Object.assign(props.value, { value }))} />);
+                value={record.value || ''}
+                onChange={(value) => props.onChange(Object.assign(record, { value }))} />);
         case 'integer':
             return (<IntegerFieldEditor
-                value={props.value.value || ''}
-                onChange={(value) => props.onChange(Object.assign(props.value, { value }))} />);
+                value={record.value || ''}
+                onChange={(value) => props.onChange(Object.assign(record, { value }))} />);
         case 'entity':
             return (<EntityFieldEditor
-                value={props.value.value || ''}
-                onChange={(value) => props.onChange(Object.assign(props.value, { value }))}
+                value={record.value === null ? 0 : parseInt(record.value)}
+                onChange={(value) => props.onChange(Object.assign(record, { value }))}
                 entities={props.entities} />);
         default:
             return (<div>Missing editor</div>);
     }
 };
 
-const formatValue = (props: RecordRowProps) => {
-    if (props.value.valueType === 'entity') {
-        const entity = props.entities.find((entity) => entity.uid == props.value.value);
+const formatValue = (props: RecordRowProps, record: Record) => {
+    if (record.valueType === 'entity') {
+        const entity = props.entities.find((entity) => entity.uid == record.value);
         if (entity !== undefined) {
+            if (entity.uid === null) {
+              throw Error('Unexpected null ID on entity');
+            }
             return (<span>
                 {entity.label} <AddTabButton
                     dataStore={props.dataStore}
@@ -86,11 +88,11 @@ const formatValue = (props: RecordRowProps) => {
         }
     }
 
-    if (props.value.valueType === 'date') {
-       return formatDate(props.value.value);
+    if (record.valueType === 'date') {
+       return (<span>{formatDate(record.value)}</span>);
     }
 
-    return props.value.value;
+    return (<span>{record.value}</span>);
 };
 
 export const RecordRow = (props: RecordRowProps) => {
@@ -103,7 +105,7 @@ export const RecordRow = (props: RecordRowProps) => {
 
     const currentSource = props.sources.find((source) => source.uid === recordValue.source);
     const dropDownValue = {
-        key: '', value: props.value.source
+        key: '', value: recordValue.source
     };
 
     if (currentSource !== undefined) {
@@ -113,10 +115,10 @@ export const RecordRow = (props: RecordRowProps) => {
     if (props.edit) {
         return (
         <tr className='record-row'>
-            <td className='record-row-item uid'>{props.value.uid}</td>
+            <td className='record-row-item uid'>{recordValue.uid}</td>
             {recordValue.valueType !== 'source' ? (
                 <td className='record-row-item'>
-                    {recordEditor(props)}
+                    {recordEditor(props, recordValue)}
                 </td>
             ) : null}
             <td className='record-row-item'>
@@ -124,17 +126,17 @@ export const RecordRow = (props: RecordRowProps) => {
                     options={props.sources.map((source) => ({ key: source.label , value: source.uid}))}
                     typeName='source'
                     value={dropDownValue}
-                    setValue={(combo) => props.onChange(Object.assign(props.value, { source: combo.value }))}
+                    setValue={(combo) => props.onChange(Object.assign(recordValue, { source: combo === null ? combo : combo.value }))}
                     createNewValue={createNewSource}
                 />
             </td>
             <td className='record-row-item score'>
-                <ScorePicker value={props.value.score} readOnly={false}
-                    onChange={(score) => props.onChange(Object.assign(props.value, { score }))} />
+                <ScorePicker value={recordValue.score} readOnly={false}
+                    onChange={(score) => props.onChange(Object.assign(recordValue, { score }))} />
             </td>
             <td className='record-row-item period'>
                 <DateFieldEditor
-                    value={props.value.period || ''}
+                    value={recordValue.period || ''}
                     onChange={(period) => props.onChange(Object.assign(props.value, { period }))} />
             </td>
             <td className='record-row-item buttons'>
@@ -145,10 +147,10 @@ export const RecordRow = (props: RecordRowProps) => {
     } else {
         return (
         <tr className='record-row'>
-            <td className='record-row-item uid'>#{props.value.uid}</td>
+            <td className='record-row-item uid'>#{recordValue.uid}</td>
             {recordValue.valueType !== 'source' ? (
                 <td className='record-row-item'>
-                   {formatValue(props)}
+                   {formatValue(props, recordValue)}
                 </td>
             ) : null }
             <td className='record-row-item'>{dropDownValue.key}
@@ -160,10 +162,10 @@ export const RecordRow = (props: RecordRowProps) => {
                 ) : null}
 			</td>
             <td className='record-row-item score'>
-                 <ScorePicker value={props.value.score} readOnly={true} />
+                 <ScorePicker value={recordValue.score} readOnly={true} />
             </td>
             <td className='record-row-item period'>
-                 {formatDate(props.value.period)}
+                 {formatDate(recordValue.period)}
             </td>
             <td className='record-row-item buttons'>
                 <button><i className='fa fa-pencil-square-o' title='Edit' onClick={props.setEdit} aria-hidden='true'></i></button>

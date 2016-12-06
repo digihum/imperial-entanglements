@@ -32,7 +32,6 @@ interface ComboDropdownState {
     searchString: string;
     showingDropDown: boolean;
     filteredOptions: ComboDropdownOption[];
-    boundHideFunc: any;
     highlightedIndex: null | number;
     dropDownHeight: number;
 }
@@ -118,6 +117,12 @@ export class ComboDropdown<T> extends React.Component<ComboDropdownProps, ComboD
         });
     }
 
+    public updateSearchString(s: string) {
+        if (this.props.updateSearchString !== undefined) {
+          this.props.updateSearchString(s);
+        }
+    }
+
     public updateFilter(filter: string, props: ComboDropdownProps) {
 
         let filtered : any[] = [];
@@ -157,7 +162,7 @@ export class ComboDropdown<T> extends React.Component<ComboDropdownProps, ComboD
         this.ignoreBlur = false;
         this.recalculateHeight = true;
         this.setState({ showingDropDown: false, searchString: option.key });
-        this.props.updateSearchString(option.key);
+        this.updateSearchString(option.key);
     }
 
     public handleInputBlur() {
@@ -208,7 +213,7 @@ export class ComboDropdown<T> extends React.Component<ComboDropdownProps, ComboD
   public selectItemFromMouse (item) {
        this.recalculateHeight = true;
     this.setState({
-      showingDropDown: false,      
+      showingDropDown: false,
       highlightedIndex: null
     }, () => {
       this.props.setValue(item);
@@ -273,7 +278,7 @@ export class ComboDropdown<T> extends React.Component<ComboDropdownProps, ComboD
                                     Add new {this.props.typeName}</li>
                             ) : null }
                             {this.state.filteredOptions.map((opt, i) => (
-                                <li key={`opt-${opt.key}-${i}`} 
+                                <li key={`opt-${opt.key}-${i}`}
                                 onMouseDown={() => this.ignoreBlur = true}
                                 onClick={() => this.selectOption(opt)}>{opt.key}</li>
                             ))}

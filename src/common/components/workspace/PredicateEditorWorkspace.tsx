@@ -101,7 +101,7 @@ export class PredicateEditorWorkspace extends React.Component<PredicateEditorPro
 
         this.props.api.postItem(Predicate, AppUrls.predicate, newPredicate)
             .then(([id]) => {
-                createTab.dispatch('predicate', id);
+                createTab.dispatch('predicate', id, 'item');
         });
     }
 
@@ -117,7 +117,7 @@ export class PredicateEditorWorkspace extends React.Component<PredicateEditorPro
                     complete: (result) => {
                         if (result === 'addToWorkspace') {
                             data.forEach((datum) => {
-                                 createTab.dispatch('entity', datum.entity);
+                                 createTab.dispatch('entity', datum.entity, 'item');
                             });
                         }
 

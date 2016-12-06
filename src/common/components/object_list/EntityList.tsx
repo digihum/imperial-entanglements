@@ -16,7 +16,7 @@ import { noop, cloneDeep, isUndefined } from 'lodash';
 
 import { AddTabButton } from '../AddTabButton';
 
-import { showModal } from '../../Signaller';
+import { showModal, createTab } from '../../Signaller';
 import { ModalDefinition } from '../modal/ModalDefinition';
 
 import { formatDate } from '../../helper/formatDate';
@@ -42,6 +42,7 @@ interface EntityListState {
     columns: ColumnSettings[];
     results: Record[];
     entityType: ComboDropdownOption;
+    queryData: any;
 }
 
 const sortIcons = {
@@ -71,7 +72,7 @@ const customColumns = (predicates, columns, updateColumnParams, rotateSort) => {
                             value={comboValue}
                             typeName='predicate'
                             allowNew={false}
-                            setValue={(value) => updateColumnParams(id, { predicate: value === null ? null : value.value })}
+                            setValue={(value) => updateColumnParams(id, 'p' , value === null ? null : value.value)}
                             options={predicates.map((pred) => ({ key: pred.label, value: pred.uid.toString()}))}
                             createNewValue={noop}
                             compact={true}
@@ -87,6 +88,10 @@ const customColumns = (predicates, columns, updateColumnParams, rotateSort) => {
 };
 
 export class EntityList extends React.Component<EntityListProps, EntityListState> {
+
+    public static contextTypes = {
+        router: React.PropTypes.object.isRequired
+    };
 
     constructor(props: EntityListProps) {
         super();
@@ -105,19 +110,28 @@ export class EntityList extends React.Component<EntityListProps, EntityListState
     }
 
     public componentDidMount() {
-        const queryStringOptions = this.props.query;
+      this.update(this.props);
+    }
+
+    public componentWillReceiveProps(newProps: EntityListProps) {
+      this.update(newProps);
+    }
+
+    public update(props: EntityListProps) {
+        const queryStringOptions = props.query;
         const columns = cloneDeep(this.state.columns);
         if (queryStringOptions !== null) {
             for (let i = 1; i < 4; i += 1 ) {
-              columns[i - 1].predicate = queryStringOptions[`col${i}p`];
-              columns[i - 1].sort = queryStringOptions[`col${i}s`];
-              columns[i - 1].filterType = queryStringOptions[`col${i}f`];
-              columns[i - 1].filterValue = queryStringOptions[`col${i}v`];
-              columns[i - 1].invertFilter = queryStringOptions[`col${i}i`];
+              columns[i - 1].predicate = queryStringOptions[`col${i}p`] || null;
+              columns[i - 1].sort = queryStringOptions[`col${i}s`] || null;
+              columns[i - 1].filterType = queryStringOptions[`col${i}f`] || '';
+              columns[i - 1].filterValue = queryStringOptions[`col${i}v`] || '';
+              columns[i - 1].invertFilter = queryStringOptions[`col${i}i`] || null;
             }
         }
          this.setState({
-            columns
+            columns,
+            queryData: queryStringOptions === null ? {} : queryStringOptions,
         }, this.reload.bind(this));
     }
 
@@ -146,20 +160,11 @@ export class EntityList extends React.Component<EntityListProps, EntityListState
         showModal.dispatch(a);
     }
 
-    public setColumnPredicate(colId: number, predicateId: number) {
-        const columns = cloneDeep(this.state.columns);
-        columns[colId].predicate = predicateId;
-        this.setState({
-            columns
-        }, this.reload.bind(this));
-    }
-
-    public updateColumnParams(colId: number, updateData: { [s: string]: any }) {
-        const columns = cloneDeep(this.state.columns);
-        columns[colId] = Object.assign(columns[colId], updateData);
-        this.setState({
-            columns
-        }, this.reload.bind(this));
+    public updateColumnParams(colId: number, key: string, value: any) {
+        this.context.router.transitionTo({
+          pathname: '/edit/entity',
+          query: Object.assign(this.state.queryData, { [`col${colId + 1}${key}`]: value })
+        });
     }
 
     public rotateSort(colId: number) {
@@ -177,6 +182,10 @@ export class EntityList extends React.Component<EntityListProps, EntityListState
         this.setState({
             columns
         }, this.reload.bind(this));
+    }
+
+    public addViewTab() {
+      createTab.dispatch('entity', Date.now(), 'view', this.state.queryData);
     }
 
     public render() {
@@ -278,6 +287,13 @@ export class EntityList extends React.Component<EntityListProps, EntityListState
                             onClick={this.addNew.bind(this)}
                     ></i></h2>
                 </div>
+                 <div className='sub-toolbar'>
+                        <i
+                            className='fa fa-folder-open-o'
+                            aria-hidden='true'
+                            onClick={this.addViewTab.bind(this)}
+                        ></i>
+                    </div>
               </div>
             </header>
 
@@ -311,7 +327,7 @@ export class EntityList extends React.Component<EntityListProps, EntityListState
                                         <div>
                                             <select value={col.filterType}
                                                     className='padded'
-                                                    onChange={(e) => this.updateColumnParams(id, { filterType: e.target.value})}>
+                                                    onChange={(e) => this.updateColumnParams(id, 'f', e.target.value)}>
                                                 <option value='any'>Any</option>
                                                 <option value='exists'>Exists</option>
                                                 <option value='contains'>Contains</option>
@@ -321,7 +337,7 @@ export class EntityList extends React.Component<EntityListProps, EntityListState
                                         <div>
                                             <input type='text'
                                                 disabled={col.filterType === 'any' || col.filterType === 'exists'}
-                                                onChange={(e) => this.updateColumnParams(id, { filterValue: e.target.value})}
+                                                onChange={(e) => this.updateColumnParams(id, 'v', e.target.value)}
                                                 value={col.filterValue} />
                                         </div>
                                     </div>

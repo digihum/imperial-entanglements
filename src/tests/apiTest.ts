@@ -18,7 +18,7 @@ let knex;
 const knexConfig = {
   client: 'sqlite3',
   connection: {
-    filename: './mydb.sqlite'
+    filename: './data/mydb.sqlite'
   }
 };
 

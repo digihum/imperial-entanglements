@@ -89,10 +89,10 @@ export class EntityEditorWorkspace extends React.Component<EntityEditorProps, En
                     complete: (result) => {
                         if (result === 'addToWorkspace') {
                             data.record.forEach((datum) => {
-                                 createTab.dispatch('entity', datum.entity);
+                                 createTab.dispatch('entity', datum.entity, 'item');
                             });
                             data.entity.forEach((datum) => {
-                                 createTab.dispatch('entity', datum.uid);
+                                 createTab.dispatch('entity', datum.uid, 'item');
                             });
                         }
 

@@ -37,7 +37,7 @@ interface EntityEditorProps {
     api: ApiService;
     params: ExpectedParams;
     workspace: string;
-    location: { pathname: string };
+    location: { pathname: string, search: string };
     pathname: string;
 }
 
@@ -111,7 +111,13 @@ export class ObjectEditor extends React.Component<EntityEditorProps, EntityEdito
 
     public reload(props: EntityEditorProps, force: boolean = false, initialLoad : boolean = false) {
 
+      const oldId = parseInt(this.props.location.pathname.substr(this.props.pathname.length + 1));
       const newId = parseInt(props.location.pathname.substr(props.pathname.length + 1));
+
+      const workspaceChanged = props.workspace !== this.props.workspace;
+      const idChanged = isNaN(oldId) ? !isNaN(newId) : isNaN(newId) ? true : oldId !== newId;
+      const queryChanged = props.location.search !== this.props.location.search;
+
       const newWorkspace = props.workspace;
 
       // if we are in the browser, load tabs!
@@ -123,13 +129,22 @@ export class ObjectEditor extends React.Component<EntityEditorProps, EntityEdito
       }
 
       let updatedTabs = this.state.tabs;
+      const isList = isNaN(newId);
 
        if (this.state.inBrowser) {
-          if (
-            find(updatedTabs, (tab) => tab.tabType === newWorkspace && tab.uid == (isNaN(newId) ? -1 : newId)) === undefined) {
-              updatedTabs = updatedTabs.concat([{ tabType: newWorkspace, uid: isNaN(newId) ? -1 : newId, tabClass: 'item'}]);
-              this.saveTabs();
+         if (isList) {
+          //  if (
+          //    find(updatedTabs, (tab) => tab.tabType === newWorkspace && tab.tabClass == 'list') === undefined || // if no list exists, definitely add one
+          //     (workspaceChanged && idChanged && !queryChanged)) {
+          //      updatedTabs = updatedTabs.concat([{ tabType: newWorkspace, uid: Date.now(), tabClass: 'list'}]);
+          //  }
+         } else {
+            if (
+              find(updatedTabs, (tab) => tab.tabType === newWorkspace && tab.uid == newId) === undefined) {
+                updatedTabs = updatedTabs.concat([{ tabType: newWorkspace, uid: newId, tabClass: 'item'}]);
           }
+         }
+
       }
 
       // this state always updates
@@ -164,11 +179,11 @@ export class ObjectEditor extends React.Component<EntityEditorProps, EntityEdito
       });
     }
 
-    public createTab(tabType: string, uid: number, data?: any) {
+    public createTab(tabType: string, uid: number, tabClass: string, data?: any) {
         // don't add a tab if it already exists
         if (find(this.state.tabs, (tab) => tab.tabType === tabType && tab.uid == uid) === undefined) {
             this.setState({
-                tabs: this.state.tabs.concat([{ tabType, uid, data }])
+                tabs: [{ tabType, uid, data, tabClass }].concat(this.state.tabs)
             }, () => {
                 this.saveTabs();
                 this.reload(this.props);

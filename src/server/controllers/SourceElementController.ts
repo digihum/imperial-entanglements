@@ -6,7 +6,7 @@
 
 import { Database } from '../core/Database';
 
-import { SourceElement, Serializer } from 'falcon-core';
+import { SourceElement, Serializer, CompositeKey } from 'falcon-core';
 
 import { GenericController } from './GenericController';
 

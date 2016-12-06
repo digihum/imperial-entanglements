@@ -7,7 +7,9 @@ const typescriptLoaderConfig = {
     visualStudioErrorFormat: true,
     ignoreDiagnostics: [
         2307,
-        2345]
+        2345, 
+        2339 // Property does not exist on type (thrown incorrectly by setState)
+    ]
 };
 
 const resolve = {

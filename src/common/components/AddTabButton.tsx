@@ -28,7 +28,7 @@ export const AddTabButton : React.StatelessComponent<AddTabButtonProps> =
         return (
         <i className='icon-list-add add button'
             title='Add to list'
-            onClick={() => createTab.dispatch(props.tabType, props.uid, props.data)}></i>
+            onClick={() => createTab.dispatch(props.tabType, props.uid, 'item', props.data)}></i>
 )};
 
 AddTabButton.contextTypes = {

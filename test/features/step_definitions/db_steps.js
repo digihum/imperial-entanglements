@@ -5,7 +5,7 @@ const db = Knex({
     client: 'sqlite3',
     useNullAsDefault: true,
     connection: {
-      filename: 'mydb.sqlite'
+      filename: 'data/mydb.sqlite'
     },
     pool: {
       afterCreate: (conn, cb) => {

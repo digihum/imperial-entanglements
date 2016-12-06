@@ -11,7 +11,7 @@ import { Link } from 'react-router';
 import { DataStore } from '../DataStore';
 import { closeTab, reorderTabs } from '../Signaller';
 
-import { capitalize } from 'lodash';
+import { capitalize, isArray } from 'lodash';
 
 import {SortableContainer, SortableElement, SortableHandle, arrayMove} from 'react-sortable-hoc';
 
@@ -38,11 +38,11 @@ const onCloseTab = (e: React.MouseEvent, tabType: string, uid: number) => {
     e.nativeEvent.stopImmediatePropagation();
 }
 
-const Card = SortableElement((props: {currentTab: boolean, url: string, tab: Tab, title: string, subtitle: string,
+const Card = SortableElement((props: {currentTab: boolean, url: any, index: number, tab: Tab, title: string, subtitle: string | string[],
             compact: boolean}) => (
       <li key={`${props.url}`}>
           <div className={((currentTab) => {
-              const classes = ['sidebar-card'];
+              const classes = ['sidebar-card', props.tab.tabClass];
               if (currentTab) {
                   classes.push('current');
               }
@@ -55,7 +55,9 @@ const Card = SortableElement((props: {currentTab: boolean, url: string, tab: Tab
               <div className='description'>
                   <Link to={props.url}>
                       <span className='entity-name'>{props.title}</span>
-                      {props.compact ? null : (
+                      {props.compact ? null : isArray(props.subtitle) ? (
+                        <ul>{props.subtitle.map((sub, i) => (<li key={`tab-${props.index}-${i}`}>{sub}</li>))}</ul>
+                      ) : (
                           <span className='entity-type'>{props.subtitle}</span>
                       )}
                   </Link>
@@ -86,13 +88,23 @@ const CardList = SortableContainer((props: {
                 const item = props.dataStore.all[tab.tabType].value
                     .find((item) => item.uid == tab.uid);
 
-                // if (item === undefined) {
-                //     return null;
-                // }
+                let url : string | Object | null = null;
+                if (tab.tabClass === 'item') {
+                  url = `/edit/${AppUrls[tab.tabType]}/${tab.uid}`;
+                } else {
+                  if (tab.tabClass === 'view') {
+                    url = {
+                      pathname: `/edit/${AppUrls[tab.tabType]}`,
+                      query: tab.data
+                    };
+                  }
+                }
 
-                const url = `/edit/${AppUrls[tab.tabType]}` + (tab.uid >= 0 ? `/${tab.uid}` : '');
+                const subtitle = tab.tabClass === 'item' ?
+                  capitalize(AppUrls[tab.tabType]).replace('_', ' ') + ' ' + tab.uid
+                  : Object.keys(tab.data).map((title) => `${title}: ${tab.data[title]}`);
+
                 const title = item === undefined ? `${tab.tabType} list` : item.label;
-                const subtitle = (tab.uid >= 0 ? `${capitalize(AppUrls[tab.tabType]).replace('_', ' ')} ${tab.uid}` : '');
 
                 const currentTab = !props.list && tab.tabType === props.workspace && tab.uid == props.id;
 

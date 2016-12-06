@@ -8,7 +8,7 @@ const client = redis.createClient();
 const knex = Knex({
   client: 'sqlite3',
   connection: {
-    filename: './mydb.sqlite'
+    filename: './data/mydb.sqlite'
   }
 });
 

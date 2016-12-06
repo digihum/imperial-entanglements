@@ -64,7 +64,7 @@ export class EntityTypeWorkspace extends React.Component<EntityTypeWorkspaceProp
 
         this.props.api.postItem(EntityType, AppUrls.entity_type, newEntityType)
             .then(([id]) => {
-                createTab.dispatch('entity_type', id);
+                createTab.dispatch('entity_type', id, 'item');
         });
     }
 
@@ -80,13 +80,13 @@ export class EntityTypeWorkspace extends React.Component<EntityTypeWorkspaceProp
                     complete: (result) => {
                         if (result === 'addToWorkspace') {
                             data.entityType.forEach((datum) => {
-                                 createTab.dispatch('entity_type', datum.uid);
+                                 createTab.dispatch('entity_type', datum.uid, 'item');
                             });
                             data.predicate.forEach((datum) => {
-                                 createTab.dispatch('predicate', datum.uid);
+                                 createTab.dispatch('predicate', datum.uid, 'item');
                             });
                             data.entity.forEach((datum) => {
-                                 createTab.dispatch('entity', datum.uid);
+                                 createTab.dispatch('entity', datum.uid, 'item');
                             });
                         }
                     },
@@ -105,7 +105,7 @@ export class EntityTypeWorkspace extends React.Component<EntityTypeWorkspaceProp
         const a : ModalDefinition = {
             name: 'entity',
             complete: ([id]) => {
-                 createTab.dispatch('entity', id);
+                 createTab.dispatch('entity', id, 'item');
             },
             cancel: () => { console.log('cancel'); },
             settings: {

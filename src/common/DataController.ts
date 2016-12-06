@@ -15,7 +15,7 @@ import { cloneDeep, find, groupBy } from 'lodash';
 import * as moment from 'moment';
 
 const loadTabData = (api: ApiService, tab: Tab) : Promise<FalconItem> => {
-    if (tab.uid < 0) {
+    if (tab.tabClass !== 'item') {
       return Promise.resolve(new Entity());
     }
     switch (tab.tabType) {
