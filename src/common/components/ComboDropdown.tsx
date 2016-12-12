@@ -9,11 +9,9 @@ import * as lunr from 'lunr';
 
 import { findIndex, noop } from 'lodash';
 
-import * as ReactAutoComplete from 'react-autocomplete';
-
 export interface ComboDropdownOption {
     key: string;
-    value: string;
+    value: string | null;
     meta?: any;
 }
 
@@ -38,17 +36,19 @@ interface ComboDropdownState {
 
 export class ComboDropdown<T> extends React.Component<ComboDropdownProps, ComboDropdownState> {
 
-    public static defaultProps : ComboDropdownProps = {
+    public static defaultProps : Partial<ComboDropdownProps> = {
        allowNew: true,
        compact: false,
        updateSearchString: noop
-    }
+    };
 
     private ignoreBlur;
     private ignoreClick;
     private recalculateHeight;
 
     private dropDownBoxElement;
+
+    private static readonly comboDropdownInputBoxRef : string = 'comboDropDownInputBox';
 
     constructor() {
         super();
@@ -105,15 +105,19 @@ export class ComboDropdown<T> extends React.Component<ComboDropdownProps, ComboD
 
         this.updateFilter(filterString, newProps);
         this.setState({
-            searchString: filterString,
-            options: newProps.options
+            searchString: filterString
         });
     }
 
-    public changeSearchString(event : React.EventHandler<React.FormEvent>) {
-        this.setState({searchString: event.target.value, showingDropDown: true}, () => {
+    public changeSearchString(event : React.FormEvent) {
+        this.setState({
+            searchString: (event.target as HTMLInputElement).value,
+            showingDropDown: true},
+        () => {
             this.updateFilter(this.state.searchString, this.props);
-            this.props.updateSearchString(this.state.searchString);
+            if (this.props.updateSearchString !== undefined) {
+              this.props.updateSearchString(this.state.searchString);
+            }
         });
     }
 
@@ -179,7 +183,7 @@ export class ComboDropdown<T> extends React.Component<ComboDropdownProps, ComboD
             }
             this.recalculateHeight = true;
             this.setState({
-                showingDropDown: false,
+                showingDropDown: false
             });
         }
     }
@@ -217,19 +221,19 @@ export class ComboDropdown<T> extends React.Component<ComboDropdownProps, ComboD
       highlightedIndex: null
     }, () => {
       this.props.setValue(item);
-      this.refs.comboDropDownInputBox.focus();
-    })
+      (this.refs[ComboDropdown.comboDropdownInputBoxRef] as HTMLElement).focus();
+    });
   }
 
    public isInputFocused () {
-    const el = this.refs.comboDropDownInputBox;
+    const el = this.refs[ComboDropdown.comboDropdownInputBoxRef] as HTMLElement;
     return el.ownerDocument && (el === el.ownerDocument.activeElement);
   }
 
   public clearSearchBox() {
       this.props.setValue(null);
       this.setState({ searchString: '' });
-      this.refs.comboDropDownInputBox.focus();
+      (this.refs[ComboDropdown.comboDropdownInputBoxRef] as HTMLElement).focus();
   }
 
   public calculateDropdownHeight(val: null | HTMLElement) {

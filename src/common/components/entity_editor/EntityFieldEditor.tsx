@@ -6,12 +6,12 @@
 
 import * as React from 'react';
 import { ComboDropdown, ComboDropdownOption } from '../ComboDropdown';
-import { Entity } from '../../../common/datamodel/entity';
+import { Entity } from 'falcon-core';
 import { noop } from 'lodash';
 
 
 interface EntityFieldEditorProps {
-    onChange: (val: number) => void;
+    onChange: (val: number | null) => void;
     value: number;
     entities: Entity[];
 }
@@ -21,7 +21,7 @@ export const EntityFieldEditor : React.StatelessComponent<EntityFieldEditorProps
 
         const options : ComboDropdownOption[] = props.entities.map((entity) => ({ key: entity.label, value: entity.uid}));
 
-        let selectedOption : ComboDropdownOption | undefined = options.find((opt) => opt.value == props.value);
+        let selectedOption : ComboDropdownOption | undefined = options.find((opt) => parseInt(opt.value) === props.value);
 
         if (selectedOption === undefined) {
             selectedOption = { key: '', value: ''};
@@ -33,7 +33,7 @@ export const EntityFieldEditor : React.StatelessComponent<EntityFieldEditorProps
                 typeName='entity type'
                 allowNew={false}
                 value={selectedOption}
-                setValue={(val) => props.onChange(val.value)}
+                setValue={(val) => val !== null ? props.onChange(parseInt(val.value)) : props.onChange(null)}
                 createNewValue={noop} />
         );
     };

@@ -47,7 +47,7 @@ fs.readdirSync('node_modules')
   });
 
 var frontendConfig = {
-    devtool: 'eval-source-map',
+    devtool: 'source-map',
     entry: './src/client/app.frontend',
     output: {  
         path: path.join(__dirname, 'dist', 'server', 'static'),                 // output folder
@@ -67,7 +67,7 @@ var frontendConfig = {
 }
 
 var backendConfig = {
-    devtool: 'eval-source-map',
+    devtool: 'source-map',
     entry: './src/server/index',
     output: {  
         path: 'dist/server',                 // output folder
@@ -85,7 +85,7 @@ var backendConfig = {
 }
 
 var electronConfig = {
-    devtool: 'eval-source-map',
+    devtool: 'source-map',
     entry: './src/app/app.electron',
     output: {  
         path: 'dist/app',                 // output folder
@@ -101,7 +101,7 @@ var electronConfig = {
 }
 
 var electronAppConfig = {
-    devtool: 'eval-source-map',
+    devtool: 'source-map',
     entry: './src/app/index',
     output: {  
         path: 'dist/app',                 // output folder
