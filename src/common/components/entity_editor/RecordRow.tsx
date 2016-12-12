@@ -10,7 +10,7 @@ import { Record, Source, Entity } from 'falcon-core';
 import { EditableSubfieldProps } from '../fields/EditableFieldComponent';
 export { EditableFieldComponent } from '../fields/EditableFieldComponent';
 import { ScorePicker } from '../fields/ScorePicker';
-import { ComboDropdown } from '../ComboDropdown';
+import { ComboDropdown, ComboDropdownOption } from '../ComboDropdown';
 import { showModal } from '../../Signaller';
 import { ModalDefinition } from '../modal/ModalDefinition';
 import { DataStore } from '../../DataStore';
@@ -23,6 +23,8 @@ import { IntegerFieldEditor } from './IntegerFieldEditor';
 import { AddTabButton } from '../AddTabButton';
 
 import { formatDate } from '../../helper/formatDate';
+
+import { toString } from 'lodash';
 
 interface RecordRowProps extends EditableSubfieldProps<Record> {
     dimension: string;
@@ -104,8 +106,8 @@ export const RecordRow = (props: RecordRowProps) => {
     }
 
     const currentSource = props.sources.find((source) => source.uid === recordValue.source);
-    const dropDownValue = {
-        key: '', value: recordValue.source
+    const dropDownValue : ComboDropdownOption = {
+        key: '', value: recordValue.source === null ? null : toString(recordValue.source)
     };
 
     if (currentSource !== undefined) {
@@ -123,7 +125,8 @@ export const RecordRow = (props: RecordRowProps) => {
             ) : null}
             <td className='record-row-item'>
                 <ComboDropdown
-                    options={props.sources.map((source) => ({ key: source.label , value: source.uid}))}
+                    options={props.sources.map((source) =>
+                      ({ key: source.label, value: source.uid !== null ? toString(source.uid) : null}))}
                     typeName='source'
                     value={dropDownValue}
                     setValue={(combo) => props.onChange(Object.assign(recordValue, { source: combo === null ? combo : combo.value }))}
@@ -137,7 +140,7 @@ export const RecordRow = (props: RecordRowProps) => {
             <td className='record-row-item period'>
                 <DateFieldEditor
                     value={recordValue.period || ''}
-                    onChange={(period) => props.onChange(Object.assign(props.value, { period }))} />
+                    onChange={(period) => props.onChange(Object.assign(recordValue, { period }))} />
             </td>
             <td className='record-row-item buttons'>
                 <button><i className='fa fa-check' onClick={props.acceptChanges} aria-hidden='true'></i></button>
@@ -154,10 +157,10 @@ export const RecordRow = (props: RecordRowProps) => {
                 </td>
             ) : null }
             <td className='record-row-item'>{dropDownValue.key}
-                {dropDownValue.key.length > 0 ? (
+                {dropDownValue.key.length > 0 && dropDownValue.value !== null ? (
                     <AddTabButton
                         dataStore={props.dataStore}
-                        uid={dropDownValue.value}
+                        uid={parseInt(dropDownValue.value)}
                         tabType='source' />
                 ) : null}
 			</td>

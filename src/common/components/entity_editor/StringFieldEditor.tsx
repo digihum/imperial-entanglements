@@ -12,6 +12,8 @@ interface StringFieldEditorProps {
 }
 
 export const StringFieldEditor : React.StatelessComponent<StringFieldEditorProps> =
-    (props: StringFieldEditorProps)  => {
-        return (<input type='text' value={props.value} onChange={(e) => props.onChange(e.target.value)} />);
-    };
+  (props: StringFieldEditorProps)  => {
+    return (
+      <input type='text' value={props.value} onChange={(e) => props.onChange((e.target as HTMLInputElement).value)} />
+    );
+};

@@ -12,6 +12,11 @@ interface IntegerFieldEditorProps {
 }
 
 export const IntegerFieldEditor : React.StatelessComponent<IntegerFieldEditorProps> =
-    (props: IntegerFieldEditorProps)  => {
-        return (<input type='number' value={props.value} onChange={(e) => props.onChange(e.target.value)} />);
-    };
+  (props: IntegerFieldEditorProps)  => {
+
+    const integerFieldChangeHandler = (e) => props.onChange((e.target as HTMLInputElement).value);
+
+    return (
+      <input type='number' value={props.value} onChange={integerFieldChangeHandler} />
+    );
+};

@@ -61,10 +61,6 @@ export class RecordsEditor extends React.Component<RecordsEditorProps, RecordsEd
 		});
 	}
 
-	public recordChanged(record: Record) {
-		this.props.api.putItem(Record, AppUrls.record, this.props.id, record.serialize());
-	}
-
 	public createNewRecord() {
 
         const entity = this.props.dataStore.tabs.entity.get('entity-' + this.props.id).value.entity;

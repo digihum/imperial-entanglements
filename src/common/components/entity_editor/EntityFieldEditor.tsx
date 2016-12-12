@@ -1,5 +1,5 @@
 /**
- * @fileOverview <Description Missing>
+ * @fileOverview Entity Field Editor - select box for entities
  * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
  * @version 0.1.0
  */
@@ -7,7 +7,7 @@
 import * as React from 'react';
 import { ComboDropdown, ComboDropdownOption } from '../ComboDropdown';
 import { Entity } from 'falcon-core';
-import { noop } from 'lodash';
+import { noop, toString } from 'lodash';
 
 
 interface EntityFieldEditorProps {
@@ -17,23 +17,27 @@ interface EntityFieldEditorProps {
 }
 
 export const EntityFieldEditor : React.StatelessComponent<EntityFieldEditorProps> =
-    (props: EntityFieldEditorProps)  => {
+  (props: EntityFieldEditorProps)  => {
 
-        const options : ComboDropdownOption[] = props.entities.map((entity) => ({ key: entity.label, value: entity.uid}));
+  // build the options list
+  const options : ComboDropdownOption[] = props.entities.map((entity) =>
+    ({ key: entity.label, value: entity.uid !== null ? toString(entity.uid) : null }));
 
-        let selectedOption : ComboDropdownOption | undefined = options.find((opt) => parseInt(opt.value) === props.value);
+  // find the default option to display
+  let selectedOption : ComboDropdownOption | undefined = options.find((opt) =>
+    opt.value !== null && parseInt(opt.value) === props.value);
 
-        if (selectedOption === undefined) {
-            selectedOption = { key: '', value: ''};
-        }
+  if (selectedOption === undefined) {
+    selectedOption = { key: '', value: ''};
+  }
 
-        return (
-             <ComboDropdown
-                options={options}
-                typeName='entity type'
-                allowNew={false}
-                value={selectedOption}
-                setValue={(val) => val !== null ? props.onChange(parseInt(val.value)) : props.onChange(null)}
-                createNewValue={noop} />
-        );
-    };
+  return (
+    <ComboDropdown
+      options={options}
+      typeName='entity type'
+      allowNew={false}
+      value={selectedOption}
+      setValue={(val) => val !== null && val.value !== null ? props.onChange(parseInt(val.value)) : props.onChange(null)}
+      createNewValue={noop} />
+  );
+};

@@ -4,8 +4,7 @@
  * @version 0.0.1
  */
 
-import {app, BrowserWindow, protocol} from 'electron';
-import * as path from 'path';
+import {app, BrowserWindow } from 'electron';
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -30,7 +29,7 @@ function createWindow () {
   //
 
   // Open the DevTools.
-  win.webContents.openDevTools()
+  win.webContents.openDevTools();
 
   // Emitted when the window is closed.
   win.on('closed', () => {

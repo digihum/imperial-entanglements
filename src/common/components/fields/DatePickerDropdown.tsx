@@ -27,6 +27,8 @@ export class DatePickerDropdown<T> extends React.Component<DatePickerDropdownPro
     private ignoreGlobalClick;
     private boundWindowClick;
 
+    private static readonly datePickerDropDownInputBoxRef : string = 'datePickerDropDownInputBox';
+
     constructor() {
         super();
 
@@ -115,7 +117,7 @@ export class DatePickerDropdown<T> extends React.Component<DatePickerDropdownPro
   }
 
    public isInputFocused () {
-    const el = this.refs.datePickerDropDownInputBox;
+    const el = this.refs[DatePickerDropdown.datePickerDropDownInputBoxRef] as HTMLElement;
     return el.ownerDocument && (el === el.ownerDocument.activeElement);
   }
 
@@ -131,7 +133,7 @@ export class DatePickerDropdown<T> extends React.Component<DatePickerDropdownPro
 
   public yearChanged(e: React.FormEvent) {
       const base = this.props.value.length === 9 ? this.props.value : '=XXXX0000';
-      let yearVal : string = e.target.value.substr(0, 4).replace(/[^0-9]/g, '');
+      let yearVal : string = (e.target as HTMLInputElement).value.substr(0, 4).replace(/[^0-9]/g, '');
       for (let i = yearVal.length; i < 4; i += 1) {
           yearVal += 'X';
       }
@@ -141,13 +143,13 @@ export class DatePickerDropdown<T> extends React.Component<DatePickerDropdownPro
   public monthChanged(e: React.FormEvent) {
       this.ignoreGlobalClick = true;
       const base = this.props.value.length === 9 ? this.props.value : '=XXXX0000';
-      let monthVal : string = e.target.value.substr(0, 2);
+      let monthVal : string = (e.target as HTMLInputElement).value.substr(0, 2);
       this.props.setValue(base.substr(0, 5) + monthVal + base.substr(7));
   }
 
   public dayChanged(e: React.FormEvent) {
       const base = this.props.value.length === 9 ? this.props.value : '=XXXX0000';
-      let dayVal : string = e.target.value.substr(0, 2).replace(/[^0-9]/g, '');
+      let dayVal : string = (e.target as HTMLInputElement).value.substr(0, 2).replace(/[^0-9]/g, '');
       dayVal = padStart(dayVal, 2, '0');
       this.props.setValue( base.substr(0, 7) + dayVal);
   }
@@ -182,7 +184,7 @@ export class DatePickerDropdown<T> extends React.Component<DatePickerDropdownPro
                 <div>
                     <input type='text'
                         readOnly={true}
-                        ref='datePickerDropDownInputBox'
+                        ref={DatePickerDropdown.datePickerDropDownInputBoxRef}
                         className='search-input'
                         value={displayValue}
                         onBlur={this.handleInputBlur.bind(this)}

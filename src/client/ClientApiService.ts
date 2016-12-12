@@ -20,7 +20,7 @@ function handleErrors(response: any) {
     if (!response.ok) {
 
         if (response.status === 422) {
-            throw new UnprocessableEntity(response.statusText, { data: response.json().then((result) => result.data) });
+            throw new UnprocessableEntity(response.statusText, response.json().then((result) => result.data));
         }
 
         showToast.dispatch('Something went wrong ;(', response.statusText);
