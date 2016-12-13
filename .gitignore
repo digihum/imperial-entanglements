@@ -4,6 +4,7 @@ public/js
 
 # Generated
 .sass-cache
+.vscode/chrome
 build
 bin
 

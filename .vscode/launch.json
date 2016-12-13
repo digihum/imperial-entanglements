@@ -54,9 +54,14 @@
             "name": "Launch localhost with sourcemaps",
             "type": "chrome",
             "request": "launch",
-            "url": "http://localhost:8080/admin",
+            "url": "http://localhost:8080",
             "webRoot": "${workspaceRoot}/build/static",
-            "sourceMaps": true
+            "sourceMaps": true,
+            "userDataDir": "${workspaceRoot}/.vscode/chrome",
+            "sourceMapPathOverrides": {
+                "webpack:///./*":   "${webRoot}/*", 
+                "webpack:///*":     "*"
+            }
         },
         {
             "name": "Migrate",

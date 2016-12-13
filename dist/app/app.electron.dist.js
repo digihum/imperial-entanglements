@@ -4994,6 +4994,14 @@
 	 * @version 0.0.1
 	 */
 	"use strict";
+	var __assign = (this && this.__assign) || Object.assign || function(t) {
+	    for (var s, i = 1, n = arguments.length; i < n; i++) {
+	        s = arguments[i];
+	        for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+	            t[p] = s[p];
+	    }
+	    return t;
+	};
 	const falcon_core_1 = __webpack_require__(29);
 	const GenericController_1 = __webpack_require__(90);
 	const lodash_1 = __webpack_require__(20);
@@ -5005,7 +5013,8 @@
 	        return lodash_1.omit(falcon_core_1.Serializer.toJson(data), 'elements');
 	    }
 	    static fromSchema(data) {
-	        return Object.assign(Object.create(falcon_core_1.ElementSet.prototype), data);
+	        return __assign({}, Object.create(falcon_core_1.ElementSet.prototype), data);
+	        // return Object.assign(Object.create(ElementSet.prototype), data);
 	    }
 	    toSchema(data) {
 	        return ElementSetController.toSchema(data);
