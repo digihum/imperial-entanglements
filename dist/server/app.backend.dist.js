@@ -2445,6 +2445,7 @@
 	                React.createElement("span", { className: 'entity-name' }, props.title),
 	                props.compact ? null : lodash_1.isArray(props.subtitle) ? (React.createElement("ul", null, props.subtitle.map((sub, i) => (React.createElement("li", { key: `tab-${props.index}-${i}` }, sub))))) : (React.createElement("span", { className: 'entity-type' }, props.subtitle)))),
 	        !props.currentTab ? (React.createElement("span", { className: 'close-button' },
+	            props.tab.tabType === 'source' ? (React.createElement("i", { className: 'fa fa-unlock' })) : null,
 	            React.createElement("i", { className: 'fa fa-times', onClick: (e) => onCloseTab(e, props.tab.tabType, props.tab.uid) }))) : null))));
 	const CardList = react_sortable_hoc_1.SortableContainer((props) => {
 	    return (React.createElement("ul", { className: 'card-list' }, !props.loading ? props.tabs.map((tab, index) => {

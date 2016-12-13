@@ -64,6 +64,9 @@ const Card = SortableElement((props: {currentTab: boolean, url: any, index: numb
               </div>
               {!props.currentTab ? (
                   <span className='close-button'>
+                      {props.tab.tabType === 'source' ? (
+                        <i className='fa fa-unlock'></i>
+                      ) : null}
                       <i className='fa fa-times' onClick={(e) => onCloseTab(e, props.tab.tabType, props.tab.uid)}></i>
                   </span>
               ) : null}
