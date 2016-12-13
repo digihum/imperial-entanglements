@@ -33,7 +33,7 @@ export class ElementSetController extends GenericController<ElementSet> {
         return ElementSetController.fromSchema(data);
     }
 
-    public getItemJson(obj: { new(): ElementSet }, uid: number) : PromiseLike<ElementSet> {
+    public getItemJson(obj: { new(): ElementSet }, uid: number) : Promise<ElementSet> {
         return super.getItemJson(obj, uid)
         .then((elementSet) => {
 

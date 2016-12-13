@@ -37,7 +37,7 @@ function handleErrors(response: any) {
 }
 
 export class ClientApiService implements ApiService {
-    public getItem<T extends FalconItem>(obj: { new(): T; }, baseUrl : string, uid: number | CompositeKey) : PromiseLike<T> {
+    public getItem<T extends FalconItem>(obj: { new(): T; }, baseUrl : string, uid: number | CompositeKey) : Promise<T> {
 
         const endURL = isObject(uid) ?
             (<CompositeKey> uid).order.map((key) => (<CompositeKey> uid).values[key]).join('/')
@@ -49,14 +49,14 @@ export class ClientApiService implements ApiService {
             .then((data) => Serializer.fromJson(obj, data));
     }
 
-    public getCollection<T extends FalconItem>(obj: { new(): T; }, baseUrl : string, params: any) : PromiseLike<T[]> {
+    public getCollection<T extends FalconItem>(obj: { new(): T; }, baseUrl : string, params: any) : Promise<T[]> {
         return fetch(`/api/v1/${baseUrl}?` + queryString.stringify(params))
             .then(handleErrors)
             .then((response) => response.json())
             .then((data) => data.map((datum) => Serializer.fromJson(obj, datum)));
     }
 
-    public postItem<T extends FalconItem>(obj: { new(): T; }, baseUrl : string, data: T)  : PromiseLike<boolean> {
+    public postItem<T extends FalconItem>(obj: { new(): T; }, baseUrl : string, data: T)  : Promise<boolean> {
         return fetch(`/api/v1/${baseUrl}`, {
             method: 'POST',
             body: JSON.stringify(data),
@@ -76,7 +76,7 @@ export class ClientApiService implements ApiService {
     }
 
     public putItem<T extends FalconItem>(obj: { new(): T; },
-            baseUrl : string, uid: number | CompositeKey, data: T) : PromiseLike<boolean> {
+            baseUrl : string, uid: number | CompositeKey, data: T) : Promise<boolean> {
 
         const endURL = isObject(uid) ?
             (<CompositeKey> uid).order.map((key) => (<CompositeKey> uid).values[key]).join('/')
@@ -99,7 +99,7 @@ export class ClientApiService implements ApiService {
     }
 
     public patchItem<T extends FalconItem>(obj: { new(): T; },
-            baseUrl : string, uid: number | CompositeKey, data : T) : PromiseLike<boolean> {
+            baseUrl : string, uid: number | CompositeKey, data : T) : Promise<boolean> {
 
         const endURL = isObject(uid) ?
             (<CompositeKey> uid).order.map((key) => (<CompositeKey> uid).values[key]).join('/')
@@ -138,13 +138,13 @@ export class ClientApiService implements ApiService {
         });
     }
 
-    public query(graphQLQueryString: string) : PromiseLike<any> {
+    public query(graphQLQueryString: string) : Promise<any> {
         return fetch('/api/v1/query?query=' + graphQLQueryString)
             .then(handleErrors)
             .then((response) => response.json());
     }
 
-    public getStats() : PromiseLike<any> {
+    public getStats() : Promise<any> {
       return fetch('/admin/stats', { credentials: 'same-origin' })
         .then(handleErrors)
         .then((response) => response.json());

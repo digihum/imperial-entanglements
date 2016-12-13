@@ -46,7 +46,7 @@ export class Database {
         return query.then((results) => results === undefined ? Promise.reject(new KeyNotFoundException()) : results);
     }
 
-    public createItem(tableName: string, data: any) : PromiseLike<any> {
+    public createItem(tableName: string, data: any) : Promise<any> {
         // throw warning if called with uid
         // validate that everything else has been sent
         const withoutUid = omit(data, ['uid']);
@@ -67,7 +67,7 @@ export class Database {
         });
     }
 
-    public updateItem(tableName: string, data: any) : PromiseLike<any> {
+    public updateItem(tableName: string, data: any) : Promise<any> {
         // assert - must have uid
         // validation?
         return this.knex.transaction((trx) => {
@@ -88,7 +88,7 @@ export class Database {
         });
     }
 
-    public deleteItem(tableName: string, uid: number) : PromiseLike<any> {
+    public deleteItem(tableName: string, uid: number) : Promise<any> {
 
         return this.knex.transaction((trx) => {
             return this.knex(tableName).transacting(trx)
@@ -108,7 +108,7 @@ export class Database {
         });
     }
 
-    public getAncestorsOf(uid: number, tableName: string) : PromiseLike<number[]> {
+    public getAncestorsOf(uid: number, tableName: string) : Promise<number[]> {
         return this.knex.raw(`
             WITH RECURSIVE parent_of(uid, parent) AS  (SELECT uid, parent FROM ${tableName}),
                 ancestor(uid) AS (
@@ -121,7 +121,7 @@ export class Database {
             });
     }
 
-    public getChildrenOf(uid: number, tableName: string) : PromiseLike<number[]> {
+    public getChildrenOf(uid: number, tableName: string) : Promise<number[]> {
         return this.knex.raw(`
             WITH RECURSIVE parent_of(uid, parent) AS  (SELECT uid, parent FROM ${tableName}),
                 ancestor(parent) AS (
@@ -134,7 +134,7 @@ export class Database {
             });
     }
 
-    public checkIntegrity(trx: Knex.Transaction) : PromiseLike<boolean> {
+    public checkIntegrity(trx: Knex.Transaction) : Promise<boolean> {
         return Promise.all([
             this.knex.transacting(trx).select(this.knex.raw('SUM((records.value_type != predicates.range_type)) AS valid'))
             .from('records')

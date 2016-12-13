@@ -68,7 +68,7 @@ export class PredicateController extends GenericController<Predicate> {
         return PredicateController.fromSchema(data);
     }
 
-    public getCollectionJson(obj: { new(): Predicate; }, params: any = {}) : PromiseLike<Predicate[]>  {
+    public getCollectionJson(obj: { new(): Predicate; }, params: any = {}) : Promise<Predicate[]>  {
         if (params.domain !== undefined) {
             //TODO: this check should be unecessery
             return this.db.getAncestorsOf(isArray(params.domain) ? params.domain[0] : params.domain, 'entity_types')
@@ -81,7 +81,7 @@ export class PredicateController extends GenericController<Predicate> {
         }
     }
 
-    public putItem(obj: { new(): Predicate; }, uid: number, data: Predicate) : PromiseLike<string> {
+    public putItem(obj: { new(): Predicate; }, uid: number, data: Predicate) : Promise<string> {
 
         if (typeof(uid) !== 'number') {
             throw new Error('Expected single column identifier');
@@ -90,7 +90,7 @@ export class PredicateController extends GenericController<Predicate> {
         return this.db.updateItem(this.tableName, Serializer.toJson(data));
     }
 
-    public patchItem(obj: { new(): Predicate; }, uid: number, data: Predicate) : PromiseLike<boolean> {
+    public patchItem(obj: { new(): Predicate; }, uid: number, data: Predicate) : Promise<boolean> {
 
         if (data.domain !== undefined) {
             return this.db.select('records', ['entities.type as entityType'])
@@ -156,7 +156,7 @@ export class PredicateController extends GenericController<Predicate> {
         return super.patchItem(obj, uid, data);
     }
 
-     public deleteItem(obj: { new(): Predicate; }, uid: number) : PromiseLike<string> {
+     public deleteItem(obj: { new(): Predicate; }, uid: number) : Promise<string> {
         // check if this entity is the parent of another entity or if it has any relationships
         // pointing towards it.
         return Promise.all([

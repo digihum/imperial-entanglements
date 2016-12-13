@@ -25,7 +25,7 @@ export abstract class GenericController<T extends FalconItem> implements IContro
     protected abstract toSchema(data: T) : any;
 
 
-    public getItemJson(obj: { new(): T; }, uid: number | CompositeKey) : PromiseLike<T> {
+    public getItemJson(obj: { new(): T; }, uid: number | CompositeKey) : Promise<T> {
 
         if (typeof(uid) !== 'number') {
             throw new Error('Expected single column identifier');
@@ -35,16 +35,16 @@ export abstract class GenericController<T extends FalconItem> implements IContro
         .then((data) => this.fromSchema(data));
     }
 
-    public getCollectionJson(obj: { new(): T; }, params: any = {}) : PromiseLike<T[]> {
+    public getCollectionJson(obj: { new(): T; }, params: any = {}) : Promise<T[]> {
         return this.db.loadCollection(this.tableName, params)
          .then((data) => data.map((datum) =>  this.fromSchema(datum)));
     }
 
-    public postItem(obj: { new(): T; }, data: T) : PromiseLike<any> {
+    public postItem(obj: { new(): T; }, data: T) : Promise<any> {
         return this.db.createItem(this.tableName, this.toSchema(data));
     }
 
-    public putItem(obj: { new(): T; }, uid: number | CompositeKey, data: T) : PromiseLike<string> {
+    public putItem(obj: { new(): T; }, uid: number | CompositeKey, data: T) : Promise<string> {
 
         if (typeof(uid) !== 'number') {
             throw new Error('Expected single column identifier');
@@ -53,7 +53,7 @@ export abstract class GenericController<T extends FalconItem> implements IContro
         return this.db.updateItem(this.tableName, this.toSchema(data));
     }
 
-    public patchItem(obj: { new(): T; }, uid: number | CompositeKey, data: T) : PromiseLike<boolean> {
+    public patchItem(obj: { new(): T; }, uid: number | CompositeKey, data: T) : Promise<boolean> {
 
         if (typeof(uid) !== 'number') {
             throw new Error('Expected single column identifier');
@@ -65,7 +65,7 @@ export abstract class GenericController<T extends FalconItem> implements IContro
         });
     }
 
-    public deleteItem(obj: { new(): T; }, uid: number | CompositeKey) : PromiseLike<string> {
+    public deleteItem(obj: { new(): T; }, uid: number | CompositeKey) : Promise<string> {
 
         if (typeof(uid) !== 'number') {
             throw new Error('Expected single column identifier');

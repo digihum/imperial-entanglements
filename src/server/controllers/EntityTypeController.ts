@@ -42,7 +42,7 @@ export class EntityTypeController extends GenericController<EntityType> {
         }));
     }
 
-    public getItemJson(obj: { new(): EntityType; }, uid: number) : PromiseLike<EntityType> {
+    public getItemJson(obj: { new(): EntityType; }, uid: number) : Promise<EntityType> {
         return super.getItemJson(obj, uid)
         .then((result) => {
             return Promise.all([

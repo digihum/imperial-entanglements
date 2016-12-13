@@ -8,7 +8,7 @@ import * as Knex from 'knex';
 
 import { GeneralStatistics } from '../../common/stats/GeneralStatistics';
 
-export const GeneralStatisticsController = (db : Knex) : PromiseLike<GeneralStatistics> => {
+export const GeneralStatisticsController = (db : Knex) : Promise<GeneralStatistics> => {
 
     return Promise.all([
       db('entities').count(),

@@ -46,7 +46,7 @@ export class SourceElementController extends GenericController<SourceElement> {
         }));
     }
 
-    public getItemJson(obj: { new(): SourceElement; }, uid: CompositeKey) : PromiseLike<SourceElement> {
+    public getItemJson(obj: { new(): SourceElement; }, uid: CompositeKey) : Promise<SourceElement> {
         return this.db.query().select()
         .from(this.tableName)
         .where(uid.values)
@@ -55,13 +55,13 @@ export class SourceElementController extends GenericController<SourceElement> {
         .then((data) => this.fromSchema(data));
     }
 
-    public putItem(obj: { new(): SourceElement; }, uid: CompositeKey, data: SourceElement) : PromiseLike<string> {
+    public putItem(obj: { new(): SourceElement; }, uid: CompositeKey, data: SourceElement) : Promise<string> {
         return this.db.query()(this.tableName)
             .where(uid.values)
             .update(this.toSchema(data));
     }
 
-    public patchItem(obj: { new(): SourceElement; }, uid: CompositeKey, data: SourceElement) : PromiseLike<boolean> {
+    public patchItem(obj: { new(): SourceElement; }, uid: CompositeKey, data: SourceElement) : Promise<boolean> {
         const schemaData = this.toSchema(data);
 
         const keys = Object.keys(schemaData);
@@ -81,7 +81,7 @@ export class SourceElementController extends GenericController<SourceElement> {
             .catch((err) => { throw new Error(err); });
     }
 
-    public deleteItem(obj: { new(): SourceElement; }, uid: CompositeKey) : PromiseLike<string> {
+    public deleteItem(obj: { new(): SourceElement; }, uid: CompositeKey) : Promise<string> {
         return this.db.query()(this.tableName)
             .where(uid.values)
             .del();

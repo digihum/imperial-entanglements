@@ -45,7 +45,7 @@ export class SourceController extends GenericController<Source> {
     // override the getItemJson and getCollectionJson functions to also get information about the
     // metadata associated with the retrieved source
 
-    private getMetadata(fields : string[], sourceId: number) : PromiseLike<any> {
+    private getMetadata(fields : string[], sourceId: number) : Promise<any> {
 
         return this.db.query().raw(`
             WITH RECURSIVE parent_of(uid, parent) AS  (SELECT uid, parent FROM sources),
@@ -80,7 +80,7 @@ export class SourceController extends GenericController<Source> {
         });
     }
 
-    public getItemJson(obj: { new(): Source; }, uid: number) : PromiseLike<Source> {
+    public getItemJson(obj: { new(): Source; }, uid: number) : Promise<Source> {
         return super.getItemJson(obj, uid)
         .then((source) => {
 

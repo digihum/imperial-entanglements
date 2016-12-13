@@ -80,7 +80,7 @@ export class RecordController extends GenericController<Record> {
       return RecordController.fromSchema(data);
     }
 
-    public postItem(obj: { new(): Record; }, data: Record) : PromiseLike<string> {
+    public postItem(obj: { new(): Record; }, data: Record) : Promise<string> {
 
         // predicate domain must equal value_type
         return this.db.select('predicates', ['range_type']).where({ uid: data.predicate })
@@ -96,7 +96,7 @@ export class RecordController extends GenericController<Record> {
         });
     }
 
-    public putItem(obj: { new(): Record; }, uid: number, data: Record) : PromiseLike<string> {
+    public putItem(obj: { new(): Record; }, uid: number, data: Record) : Promise<string> {
 
         //TODO: what happens if we only update the value - and do not send the valueType again?
 
@@ -113,7 +113,7 @@ export class RecordController extends GenericController<Record> {
         });
     }
 
-    public patchItem(obj: { new(): Record; }, uid: number, data: Record) : PromiseLike<boolean> {
+    public patchItem(obj: { new(): Record; }, uid: number, data: Record) : Promise<boolean> {
         return this.db.select('predicates', ['range_type']).where({ uid: data.predicate })
         .then(([predicate]) => {
             if (data.valueType === predicate.range_type) {

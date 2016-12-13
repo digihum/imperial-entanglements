@@ -7,19 +7,19 @@
 import { FalconItem, CompositeKey } from 'falcon-core';
 export interface IController {
 
-    getItemJson<T extends FalconItem>(obj: { new(): T; }, uid: number | CompositeKey) : PromiseLike<T>;
+    getItemJson<T extends FalconItem>(obj: { new(): T; }, uid: number | CompositeKey) : Promise<T>;
 
-    getCollectionJson<T extends FalconItem>(obj: { new(): T; }, params: any) : PromiseLike<T[]>;
+    getCollectionJson<T extends FalconItem>(obj: { new(): T; }, params: any) : Promise<T[]>;
 
     // create
-    postItem<T extends FalconItem>(obj: { new(): T; }, data: T) : PromiseLike<any>;
+    postItem<T extends FalconItem>(obj: { new(): T; }, data: T) : Promise<any>;
 
     // replace
-    putItem<T extends FalconItem>(obj: { new(): T; }, uid: number | CompositeKey, data: T) : PromiseLike<any>;
+    putItem<T extends FalconItem>(obj: { new(): T; }, uid: number | CompositeKey, data: T) : Promise<any>;
 
     // delete
-    deleteItem<T extends FalconItem>(obj: { new(): T; }, uid: number | CompositeKey) : PromiseLike<any>;
+    deleteItem<T extends FalconItem>(obj: { new(): T; }, uid: number | CompositeKey) : Promise<any>;
 
     // update
-    patchItem<T extends FalconItem>(obj: { new(): T; }, uid: number | CompositeKey, data: any) : PromiseLike<any>;
+    patchItem<T extends FalconItem>(obj: { new(): T; }, uid: number | CompositeKey, data: any) : Promise<any>;
 }

@@ -47,7 +47,7 @@ export class EntityController extends GenericController<Entity> {
        return EntityController.toSchema(data);
     }
 
-    public getCollectionJson(obj: { new(): Entity; }, params: any = {}) : PromiseLike<Entity[]>  {
+    public getCollectionJson(obj: { new(): Entity; }, params: any = {}) : Promise<Entity[]>  {
         if (params.type !== undefined) {
             return this.db.getChildrenOf(isArray(params.type) ? params.type[0] : params.type, 'entity_types')
             .then((ancestors) => {

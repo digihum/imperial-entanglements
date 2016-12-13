@@ -38,7 +38,7 @@ export class ServerApiService implements ApiService {
         this.db = db;
     }
 
-    public getItem<T extends FalconItem>(obj: { new(): T; }, baseUrl : string, uid: number | CompositeKey) : PromiseLike<T> {
+    public getItem<T extends FalconItem>(obj: { new(): T; }, baseUrl : string, uid: number | CompositeKey) : Promise<T> {
         const controller = this.controllerMap.get(baseUrl);
         if (controller === undefined) {
             return Promise.reject(new CollectionNotFoundException('Controller not found'));
@@ -46,7 +46,7 @@ export class ServerApiService implements ApiService {
         return controller.getItemJson<T>(obj, uid);
     }
 
-    public getCollection<T extends FalconItem>(obj: { new(): T; }, baseUrl : string, params: any) : PromiseLike<T[]> {
+    public getCollection<T extends FalconItem>(obj: { new(): T; }, baseUrl : string, params: any) : Promise<T[]> {
         const controller = this.controllerMap.get(baseUrl);
         if (controller === undefined) {
             return Promise.reject(new CollectionNotFoundException('Controller not found'));
@@ -54,7 +54,7 @@ export class ServerApiService implements ApiService {
         return controller.getCollectionJson<T>(obj, params);
     }
 
-    public postItem<T extends FalconItem>(obj: { new(): T; }, baseUrl : string, data: T)  : PromiseLike<boolean> {
+    public postItem<T extends FalconItem>(obj: { new(): T; }, baseUrl : string, data: T)  : Promise<boolean> {
         const controller = this.controllerMap.get(baseUrl);
         if (controller === undefined) {
             return Promise.reject(new CollectionNotFoundException('Controller not found'));
@@ -71,7 +71,7 @@ export class ServerApiService implements ApiService {
     }
 
     public putItem<T extends FalconItem>(obj: { new(): T; },
-            baseUrl : string, uid: number | CompositeKey, data: T) : PromiseLike<boolean> {
+            baseUrl : string, uid: number | CompositeKey, data: T) : Promise<boolean> {
 
         const controller = this.controllerMap.get(baseUrl);
         if (controller === undefined) {
@@ -87,7 +87,7 @@ export class ServerApiService implements ApiService {
     }
 
     public patchItem<T extends FalconItem>(obj: { new(): T; },
-            baseUrl : string, uid: number | CompositeKey, data : any) : PromiseLike<boolean> {
+            baseUrl : string, uid: number | CompositeKey, data : any) : Promise<boolean> {
 
         const controller = this.controllerMap.get(baseUrl);
         if (controller === undefined) {
@@ -115,11 +115,11 @@ export class ServerApiService implements ApiService {
     }
 
 
-    public query(graphQLQuery: string) : PromiseLike<any> {
+    public query(graphQLQuery: string) : Promise<any> {
         return Promise.resolve({});
     }
 
-    public getStats() : PromiseLike<any> {
+    public getStats() : Promise<any> {
       return GeneralStatisticsController(this.db.query());
     }
 }
