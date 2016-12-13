@@ -2722,7 +2722,7 @@
 	    render() {
 	        return (React.createElement("div", { className: this.props.compact ? 'compact combo-dropdown' : 'combo-dropdown' },
 	            React.createElement("div", null,
-	                React.createElement("input", { type: 'text', ref: 'comboDropDownInputBox', className: 'search-input', value: this.state.searchString, placeholder: 'Click here and start typing..', onBlur: this.handleInputBlur.bind(this), onFocus: this.handleInputFocus.bind(this), onChange: this.changeSearchString.bind(this), onClick: this.handleInputClick.bind(this) }),
+	                React.createElement("input", { type: 'text', ref: ComboDropdown.comboDropdownInputBoxRef, className: 'search-input', value: this.state.searchString, placeholder: 'Click here and start typing..', onBlur: this.handleInputBlur.bind(this), onFocus: this.handleInputFocus.bind(this), onChange: this.changeSearchString.bind(this), onClick: this.handleInputClick.bind(this) }),
 	                this.state.searchString.length > 0 ? (React.createElement("i", { className: 'fa fa-times clear-button', onClick: this.clearSearchBox.bind(this) })) : null),
 	            this.state.showingDropDown ? (React.createElement("div", { className: 'dropdown', style: { maxHeight: this.state.dropDownHeight, overflowY: 'auto' }, ref: this.calculateDropdownHeight.bind(this) },
 	                React.createElement("ul", null,
@@ -3265,9 +3265,6 @@
 	            this.props.onChange();
 	        });
 	    }
-	    recordChanged(record) {
-	        this.props.api.putItem(falcon_core_1.Record, ApiService_1.AppUrls.record, this.props.id, record.serialize());
-	    }
 	    createNewRecord() {
 	        const entity = this.props.dataStore.tabs.entity.get('entity-' + this.props.id).value.entity;
 	        const entityType = this.props.dataStore.all.entity_type.value.find((t) => t.uid === entity.entityType);
@@ -3402,6 +3399,9 @@
 	        this.props.api.putItem(falcon_core_1.Record, ApiService_1.AppUrls.record, this.props.entity_id, falcon_core_1.Serializer.toJson(record));
 	    }
 	    render() {
+	        if (this.props.predicate.uid === null) {
+	            throw new Error('Expected uid to be a number, it was null');
+	        }
 	        return (React.createElement("section", null,
 	            React.createElement("h5", { className: 'section-header' },
 	                this.props.predicate.label,
@@ -3450,6 +3450,7 @@
 	const IntegerFieldEditor_1 = __webpack_require__(79);
 	const AddTabButton_1 = __webpack_require__(80);
 	const formatDate_1 = __webpack_require__(78);
+	const lodash_1 = __webpack_require__(14);
 	const createNewSource = (initialValue) => {
 	    const a = {
 	        name: 'source',
@@ -3505,7 +3506,7 @@
 	    }
 	    const currentSource = props.sources.find((source) => source.uid === recordValue.source);
 	    const dropDownValue = {
-	        key: '', value: recordValue.source
+	        key: '', value: recordValue.source === null ? null : lodash_1.toString(recordValue.source)
 	    };
 	    if (currentSource !== undefined) {
 	        dropDownValue.key = currentSource.label;
@@ -3515,11 +3516,11 @@
 	            React.createElement("td", { className: 'record-row-item uid' }, recordValue.uid),
 	            recordValue.valueType !== 'source' ? (React.createElement("td", { className: 'record-row-item' }, recordEditor(props, recordValue))) : null,
 	            React.createElement("td", { className: 'record-row-item' },
-	                React.createElement(ComboDropdown_1.ComboDropdown, { options: props.sources.map((source) => ({ key: source.label, value: source.uid })), typeName: 'source', value: dropDownValue, setValue: (combo) => props.onChange(Object.assign(recordValue, { source: combo === null ? combo : combo.value })), createNewValue: createNewSource })),
+	                React.createElement(ComboDropdown_1.ComboDropdown, { options: props.sources.map((source) => ({ key: source.label, value: source.uid !== null ? lodash_1.toString(source.uid) : null })), typeName: 'source', value: dropDownValue, setValue: (combo) => props.onChange(Object.assign(recordValue, { source: combo === null ? combo : combo.value })), createNewValue: createNewSource })),
 	            React.createElement("td", { className: 'record-row-item score' },
 	                React.createElement(ScorePicker_1.ScorePicker, { value: recordValue.score, readOnly: false, onChange: (score) => props.onChange(Object.assign(recordValue, { score })) })),
 	            React.createElement("td", { className: 'record-row-item period' },
-	                React.createElement(DateFieldEditor_1.DateFieldEditor, { value: recordValue.period || '', onChange: (period) => props.onChange(Object.assign(props.value, { period })) })),
+	                React.createElement(DateFieldEditor_1.DateFieldEditor, { value: recordValue.period || '', onChange: (period) => props.onChange(Object.assign(recordValue, { period })) })),
 	            React.createElement("td", { className: 'record-row-item buttons' },
 	                React.createElement("button", null,
 	                    React.createElement("i", { className: 'fa fa-check', onClick: props.acceptChanges, "aria-hidden": 'true' })),
@@ -3534,7 +3535,7 @@
 	            recordValue.valueType !== 'source' ? (React.createElement("td", { className: 'record-row-item' }, formatValue(props, recordValue))) : null,
 	            React.createElement("td", { className: 'record-row-item' },
 	                dropDownValue.key,
-	                dropDownValue.key.length > 0 ? (React.createElement(AddTabButton_1.AddTabButton, { dataStore: props.dataStore, uid: dropDownValue.value, tabType: 'source' })) : null),
+	                dropDownValue.key.length > 0 && dropDownValue.value !== null ? (React.createElement(AddTabButton_1.AddTabButton, { dataStore: props.dataStore, uid: parseInt(dropDownValue.value), tabType: 'source' })) : null),
 	            React.createElement("td", { className: 'record-row-item score' },
 	                React.createElement(ScorePicker_1.ScorePicker, { value: recordValue.score, readOnly: true })),
 	            React.createElement("td", { className: 'record-row-item period' }, formatDate_1.formatDate(recordValue.period)),
@@ -3565,10 +3566,12 @@
 	        return (React.createElement("span", { className: 'score-picker' }, values.map((val) => (React.createElement("i", { key: val, className: 'fa fa-star' + (val > props.value ? '-o' : ''), "aria-hidden": 'true' })))));
 	    }
 	    else {
-	        if (props.onChange === undefined) {
-	            throw new Error('An onChange handler is required');
-	        }
-	        return (React.createElement("span", { className: 'score-picker editing' }, lodash_1.reverse(values).map((val) => (React.createElement("i", { key: val, className: 'fa fa-star' + (val > props.value ? '-o' : ''), onClick: () => props.onChange(val), "aria-hidden": 'true' })))));
+	        return (React.createElement("span", { className: 'score-picker editing' }, lodash_1.reverse(values).map((val) => (React.createElement("i", { key: val, className: 'fa fa-star' + (val > props.value ? '-o' : ''), onClick: () => {
+	                if (props.onChange === undefined) {
+	                    throw new Error('An onChange handler is required');
+	                }
+	                props.onChange(val);
+	            }, "aria-hidden": 'true' })))));
 	    }
 	};
 
@@ -3726,7 +3729,7 @@
 	        });
 	    }
 	    isInputFocused() {
-	        const el = this.refs.datePickerDropDownInputBox;
+	        const el = this.refs[DatePickerDropdown.datePickerDropDownInputBoxRef];
 	        return el.ownerDocument && (el === el.ownerDocument.activeElement);
 	    }
 	    onDropdownClick() {
@@ -3779,7 +3782,7 @@
 	        const displayValue = formatDate_1.formatDate(this.props.value);
 	        return (React.createElement("div", { className: 'combo-dropdown' },
 	            React.createElement("div", null,
-	                React.createElement("input", { type: 'text', readOnly: true, ref: 'datePickerDropDownInputBox', className: 'search-input', value: displayValue, onBlur: this.handleInputBlur.bind(this), onFocus: this.handleInputFocus.bind(this), onClick: this.handleInputClick.bind(this) })),
+	                React.createElement("input", { type: 'text', readOnly: true, ref: DatePickerDropdown.datePickerDropDownInputBoxRef, className: 'search-input', value: displayValue, onBlur: this.handleInputBlur.bind(this), onFocus: this.handleInputFocus.bind(this), onClick: this.handleInputClick.bind(this) })),
 	            this.state.showingDropDown ? (React.createElement("div", { className: 'dropdown' },
 	                React.createElement("div", { className: 'date-picker-dropdown', onMouseDown: this.onDropdownClick.bind(this) },
 	                    React.createElement("section", { className: 'range-type' },
@@ -3800,6 +3803,7 @@
 	                            React.createElement("input", { type: 'text', maxLength: 4, value: year, onChange: this.yearChanged.bind(this) })))))) : null));
 	    }
 	}
+	DatePickerDropdown.datePickerDropDownInputBoxRef = 'datePickerDropDownInputBox';
 	exports.DatePickerDropdown = DatePickerDropdown;
 
 
@@ -3844,7 +3848,8 @@
 	"use strict";
 	const React = __webpack_require__(44);
 	exports.IntegerFieldEditor = (props) => {
-	    return (React.createElement("input", { type: 'number', value: props.value, onChange: (e) => props.onChange(e.target.value) }));
+	    const integerFieldChangeHandler = (e) => props.onChange(e.target.value);
+	    return (React.createElement("input", { type: 'number', value: props.value, onChange: integerFieldChangeHandler }));
 	};
 
 
@@ -5424,7 +5429,7 @@
 	            name: 'predicate',
 	            complete: (data) => {
 	                console.log('Predicate editor called complete');
-	                this.setComboValue({ key: data.label, value: data.uid.toString(), meta: data });
+	                this.setComboValue({ key: data.label, value: data.uid === null ? null : data.uid.toString(), meta: data });
 	            },
 	            cancel: () => {
 	                console.log('Predicate editor called cancel');

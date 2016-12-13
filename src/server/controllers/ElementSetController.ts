@@ -22,7 +22,8 @@ export class ElementSetController extends GenericController<ElementSet> {
     }
 
     public static fromSchema(data: any) : ElementSet {
-        return Object.assign(Object.create(ElementSet.prototype), data);
+        return { ... Object.create(ElementSet.prototype), ... data};
+        // return Object.assign(Object.create(ElementSet.prototype), data);
     }
 
     protected toSchema(data: ElementSet) : any {
