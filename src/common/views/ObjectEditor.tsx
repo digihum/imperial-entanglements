@@ -63,7 +63,6 @@ export class ObjectEditor extends React.Component<EntityEditorProps, EntityEdito
     private boundCloseTab: any;
     private boundAddModal: any;
     private boundReload: any;
-    private boundReorderTabs: any;
 
     constructor(props: EntityEditorProps, context: any) {
         super();
@@ -92,13 +91,11 @@ export class ObjectEditor extends React.Component<EntityEditorProps, EntityEdito
         this.boundCloseTab = this.closeTab.bind(this);
         this.boundAddModal = this.addModal.bind(this);
         this.boundReload = this.callReload.bind(this);
-        this.boundReorderTabs = this.reorderTabs.bind(this);
 
         createTab.add(this.boundCreateTab);
         closeTab.add(this.boundCloseTab);
         showModal.add(this.boundAddModal);
         triggerReload.add(this.boundReload);
-        reorderTabs.add(this.boundReorderTabs);
     }
 
     public componentDidMount() {
@@ -225,9 +222,8 @@ export class ObjectEditor extends React.Component<EntityEditorProps, EntityEdito
 
     public reorderTabs(reorderFunc: (tabs: Tab[]) => Tab[]) {
       this.setState({tabs: reorderFunc(this.state.tabs)}, () => {
-            this.saveTabs();
-            this.reload(this.props);
-        });
+        this.saveTabs();
+      });
     }
 
     public addModal(def: ModalDefinition) {
@@ -260,7 +256,6 @@ export class ObjectEditor extends React.Component<EntityEditorProps, EntityEdito
         closeTab.remove(this.boundCloseTab);
         showModal.remove(this.boundAddModal);
         triggerReload.remove(this.boundReload);
-        reorderTabs.remove(this.boundReorderTabs);
     }
 
     public componentWillReceiveProps(props: EntityEditorProps) {
@@ -278,6 +273,7 @@ export class ObjectEditor extends React.Component<EntityEditorProps, EntityEdito
                         loading={false}
                         clearTabs={this.clearAllTabs.bind(this)}
                         list={this.state.list}
+                        reorderTabs={this.reorderTabs.bind(this)}
                         id={this.state.id}
                         workspace={this.props.workspace}
                     />

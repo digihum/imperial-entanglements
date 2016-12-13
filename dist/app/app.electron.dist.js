@@ -516,12 +516,10 @@
 	        this.boundCloseTab = this.closeTab.bind(this);
 	        this.boundAddModal = this.addModal.bind(this);
 	        this.boundReload = this.callReload.bind(this);
-	        this.boundReorderTabs = this.reorderTabs.bind(this);
 	        Signaller_1.createTab.add(this.boundCreateTab);
 	        Signaller_1.closeTab.add(this.boundCloseTab);
 	        Signaller_1.showModal.add(this.boundAddModal);
 	        Signaller_1.triggerReload.add(this.boundReload);
-	        Signaller_1.reorderTabs.add(this.boundReorderTabs);
 	    }
 	    componentDidMount() {
 	        this.reload(this.props, false, true);
@@ -623,7 +621,6 @@
 	    reorderTabs(reorderFunc) {
 	        this.setState({ tabs: reorderFunc(this.state.tabs) }, () => {
 	            this.saveTabs();
-	            this.reload(this.props);
 	        });
 	    }
 	    addModal(def) {
@@ -653,7 +650,6 @@
 	        Signaller_1.closeTab.remove(this.boundCloseTab);
 	        Signaller_1.showModal.remove(this.boundAddModal);
 	        Signaller_1.triggerReload.remove(this.boundReload);
-	        Signaller_1.reorderTabs.remove(this.boundReorderTabs);
 	    }
 	    componentWillReceiveProps(props) {
 	        this.reload(props);
@@ -662,7 +658,7 @@
 	        return (React.createElement("section", { id: 'entity-editor', className: 'flex-fill' },
 	            React.createElement("span", { className: 'header-colour ' + this.props.workspace }),
 	            React.createElement("span", { className: 'flex-fill' },
-	                React.createElement(Sidebar_1.Sidebar, { tabs: this.state.tabs, dataStore: this.state.dataStore, loading: false, clearTabs: this.clearAllTabs.bind(this), list: this.state.list, id: this.state.id, workspace: this.props.workspace }),
+	                React.createElement(Sidebar_1.Sidebar, { tabs: this.state.tabs, dataStore: this.state.dataStore, loading: false, clearTabs: this.clearAllTabs.bind(this), list: this.state.list, reorderTabs: this.reorderTabs.bind(this), id: this.state.id, workspace: this.props.workspace }),
 	                React.createElement(Workspace_1.Workspace, __assign({}, this.props, { id: this.state.id, dataStore: this.state.dataStore, loading: this.state.loadingWheel, list: this.state.list })),
 	                React.createElement(Toast_1.Toast, null),
 	                (() => {
@@ -767,16 +763,14 @@
 	            : Object.keys(tab.data).map((title) => `${title}: ${tab.data[title]}`);
 	        const title = item === undefined ? `${tab.tabType} list` : item.label;
 	        const currentTab = !props.list && tab.tabType === props.workspace && tab.uid == props.id;
-	        return (React.createElement(Card, { key: `tab-${index}`, currentTab: currentTab, url: url, tab: tab, title: title, subtitle: subtitle, index: index, compact: props.compact }));
+	        return (React.createElement(Card, { key: `tab-${tab.tabType}-${tab.tabClass}-${tab.uid}-${tab.query}`, currentTab: currentTab, url: url, tab: tab, title: title, subtitle: subtitle, index: index, compact: props.compact }));
 	    }) : null));
 	});
 	class Sidebar extends React.Component {
 	    constructor() {
 	        super();
 	        this.onSortEnd = ({ oldIndex, newIndex }) => {
-	            Signaller_1.reorderTabs.dispatch((tabs) => {
-	                return react_sortable_hoc_1.arrayMove(tabs, oldIndex, newIndex);
-	            });
+	            this.props.reorderTabs((tabs) => react_sortable_hoc_1.arrayMove(tabs, oldIndex, newIndex));
 	        };
 	        this.state = {
 	            searchString: '',
@@ -794,7 +788,7 @@
 	                    React.createElement("i", { className: 'fa fa-compress' }),
 	                    " Compact")),
 	            React.createElement("div", { className: 'card-list-container' },
-	                React.createElement(CardList, { dataStore: this.props.dataStore, loading: this.props.loading, tabs: this.props.tabs, list: this.props.list, workspace: this.props.workspace, id: this.props.id, compact: this.state.compactMode, onSortEnd: this.onSortEnd, useDragHandle: true }))));
+	                React.createElement(CardList, { dataStore: this.props.dataStore, loading: this.props.loading, tabs: this.props.tabs, list: this.props.list, workspace: this.props.workspace, id: this.props.id, compact: this.state.compactMode, onSortEnd: this.onSortEnd, useDragHandle: true, helperClass: 'card-being-dragged' }))));
 	    }
 	}
 	exports.Sidebar = Sidebar;
@@ -813,18 +807,21 @@
 	const React = __webpack_require__(2);
 	const ComboDropdown_1 = __webpack_require__(18);
 	const ApiService_1 = __webpack_require__(6);
+	const lodash_1 = __webpack_require__(20);
 	exports.SearchBox = (props, context) => {
-	    const entities = props.dataStore.all.entity.value.map((entity) => ({ key: entity.label, value: entity.uid, meta: { itemType: ApiService_1.AppUrls.entity } }));
-	    const entityTypes = props.dataStore.all.entity_type.value.map((entityType) => ({ key: entityType.label, value: entityType.uid, meta: { itemType: ApiService_1.AppUrls.entity_type } }));
-	    const predicates = props.dataStore.all.predicate.value.map((predicate) => ({ key: predicate.label, value: predicate.uid, meta: { itemType: ApiService_1.AppUrls.predicate } }));
-	    const sources = props.dataStore.all.source.value.map((source) => ({ key: source.label, value: source.uid, meta: { itemType: ApiService_1.AppUrls.source } }));
+	    const entities = props.dataStore.all.entity.value.map((entity) => ({ key: entity.label, value: lodash_1.toString(entity.uid), meta: { itemType: ApiService_1.AppUrls.entity } }));
+	    const entityTypes = props.dataStore.all.entity_type.value.map((entityType) => ({ key: entityType.label, value: lodash_1.toString(entityType.uid), meta: { itemType: ApiService_1.AppUrls.entity_type } }));
+	    const predicates = props.dataStore.all.predicate.value.map((predicate) => ({ key: predicate.label, value: lodash_1.toString(predicate.uid), meta: { itemType: ApiService_1.AppUrls.predicate } }));
+	    const sources = props.dataStore.all.source.value.map((source) => ({ key: source.label, value: lodash_1.toString(source.uid), meta: { itemType: ApiService_1.AppUrls.source } }));
 	    const all = entities.concat(entityTypes, predicates, sources);
 	    return (React.createElement("span", null,
 	        React.createElement("div", { className: 'input-addon-formgroup' },
 	            React.createElement("span", { className: 'input-addon-icon' },
 	                React.createElement("i", { className: 'fa fa-search fa-fw' })),
 	            React.createElement(ComboDropdown_1.ComboDropdown, { value: { key: '', value: '' }, setValue: (val) => {
-	                    context.router.transitionTo(`/edit/${val.meta.itemType}/${val.value}`);
+	                    if (val !== null) {
+	                        context.router.transitionTo(`/edit/${val.meta.itemType}/${val.value}`);
+	                    }
 	                }, typeName: 'all', options: all, allowNew: false, createNewValue: () => { } }))));
 	};
 	exports.SearchBox.contextTypes = { router: React.PropTypes.object.isRequired };
@@ -1080,14 +1077,12 @@
 	exports.showModal = new signals.Signal();
 	exports.triggerReload = new signals.Signal();
 	exports.showToast = new signals.Signal();
-	exports.reorderTabs = new signals.Signal();
 	exports.Signaller = {
 	    createTab: exports.createTab,
 	    closeTab: exports.closeTab,
 	    showModal: exports.showModal,
 	    triggerReload: exports.triggerReload,
-	    showToast: exports.showToast,
-	    reorderTabs: exports.reorderTabs
+	    showToast: exports.showToast
 	};
 
 
@@ -4520,7 +4515,7 @@
 	                element: this.params.element
 	            }
 	        })
-	            .then((data) => this.body = data.serialize());
+	            .then((data) => this.body = falcon_core_1.Serializer.toJson(data));
 	    });
 	    router.put(`/api/v1/${ServerApiService_1.AppUrls.source_element}/:source/:element`, function* (next) {
 	        yield serverApiContext
@@ -5697,8 +5692,9 @@
 	        return Object.assign(lodash_1.omit(falcon_core_1.Serializer.toJson(data), 'creationTimestamp', 'lastmodifiedTimestamp', 'uid', 'label'), {
 	            creation_timestamp: data.creationTimestamp,
 	            lastmodified_timeStamp: data.lastmodifiedTimestamp,
-	            source: data.uid.values.source,
-	            element: data.uid.values.element
+	            // TODO: check these exist
+	            source: data.uid.values['source'],
+	            element: data.uid.values['element']
 	        });
 	    }
 	    fromSchema(data) {

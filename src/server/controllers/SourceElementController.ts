@@ -29,8 +29,9 @@ export class SourceElementController extends GenericController<SourceElement> {
         ), {
             creation_timestamp: data.creationTimestamp,
             lastmodified_timeStamp: data.lastmodifiedTimestamp,
-            source: data.uid.values.source,
-            element: data.uid.values.element
+            // TODO: check these exist
+            source: data.uid.values['source'],
+            element: data.uid.values['element']
         });
     }
 

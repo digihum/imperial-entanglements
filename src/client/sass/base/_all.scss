@@ -1,4 +1,4 @@
-@import 'helpers'; 
+@import 'helpers';
 @import 'fontello';
 @import 'roboto';
 @import 'table';
@@ -36,4 +36,8 @@ button {
 
 select.padded {
     padding: 0.22em;
+}
+
+li {
+    list-style: none;
 }

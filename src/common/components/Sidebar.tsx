@@ -9,7 +9,7 @@ import { SearchBox } from './sidebar/SearchBox';
 import { AppUrls } from '../ApiService';
 import { Link } from 'react-router';
 import { DataStore } from '../DataStore';
-import { closeTab, reorderTabs } from '../Signaller';
+import { closeTab } from '../Signaller';
 
 import { capitalize, isArray } from 'lodash';
 
@@ -110,7 +110,7 @@ const CardList = SortableContainer((props: {
 
               return (
                  <Card
-                  key={`tab-${index}`}
+                  key={`tab-${tab.tabType}-${tab.tabClass}-${tab.uid}-${tab.query}`}
                   currentTab={currentTab}
                   url={url}
                   tab={tab}
@@ -134,6 +134,7 @@ interface SidebarProps {
     workspace: string;
     list: boolean;
     id: number;
+    reorderTabs: (tabCallback: (tabs: Tab[]) => Tab[]) => void;
 }
 
 interface SidebarState {
@@ -152,9 +153,7 @@ export class Sidebar extends React.Component<SidebarProps, SidebarState> {
     }
 
     public onSortEnd = ({oldIndex, newIndex}) => {
-      reorderTabs.dispatch((tabs) => {
-        return arrayMove(tabs, oldIndex, newIndex);
-      });
+      this.props.reorderTabs((tabs : Tab[]) => arrayMove(tabs, oldIndex, newIndex));
     }
 
     public render() {
@@ -179,6 +178,7 @@ export class Sidebar extends React.Component<SidebarProps, SidebarState> {
                     compact={this.state.compactMode}
                     onSortEnd={this.onSortEnd}
                     useDragHandle={true}
+                    helperClass={'card-being-dragged'}
                   />
                 </div>
             </section>

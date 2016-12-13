@@ -10,25 +10,27 @@ import { DataStore } from '../../DataStore';
 
 import { AppUrls } from '../../ApiService';
 
+import { toString } from 'lodash';
+
 interface SearchBoxProps {
     onChange : React.EventHandler<React.FormEvent>;
     searchString: string;
     dataStore: DataStore;
 }
 
-export const SearchBox = (props : SearchBoxProps, context: any) => {
+export const SearchBox : React.StatelessComponent<SearchBoxProps> = (props : SearchBoxProps, context: any) => {
 
     const entities = props.dataStore.all.entity.value.map((entity) =>
-        ({ key: entity.label, value: entity.uid, meta: { itemType: AppUrls.entity } }));
+        ({ key: entity.label, value: toString(entity.uid), meta: { itemType: AppUrls.entity } }));
 
     const entityTypes = props.dataStore.all.entity_type.value.map((entityType) =>
-        ({ key: entityType.label, value: entityType.uid, meta: { itemType: AppUrls.entity_type }  }));
+        ({ key: entityType.label, value: toString(entityType.uid), meta: { itemType: AppUrls.entity_type }  }));
 
     const predicates = props.dataStore.all.predicate.value.map((predicate) =>
-        ({ key: predicate.label, value: predicate.uid, meta: { itemType: AppUrls.predicate }  }));
+        ({ key: predicate.label, value: toString(predicate.uid), meta: { itemType: AppUrls.predicate }  }));
 
     const sources = props.dataStore.all.source.value.map((source) =>
-        ({ key: source.label, value: source.uid, meta: { itemType: AppUrls.source }  }));
+        ({ key: source.label, value: toString(source.uid), meta: { itemType: AppUrls.source }  }));
 
     const all = entities.concat(entityTypes, predicates, sources);
 
@@ -40,7 +42,9 @@ export const SearchBox = (props : SearchBoxProps, context: any) => {
                 <ComboDropdown
                     value={{ key: '', value: ''}}
                     setValue={(val) => {
+                      if (val !== null) {
                         context.router.transitionTo(`/edit/${val.meta.itemType}/${val.value}`)
+                      }
                     }}
                     typeName='all'
                     options={all}

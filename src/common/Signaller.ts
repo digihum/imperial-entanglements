@@ -11,13 +11,11 @@ export const closeTab = new signals.Signal();
 export const showModal = new signals.Signal();
 export const triggerReload = new signals.Signal();
 export const showToast  = new signals.Signal();
-export const reorderTabs  = new signals.Signal();
 
 export const Signaller = {
     createTab,
     closeTab,
     showModal,
     triggerReload,
-    showToast,
-    reorderTabs
+    showToast
 };

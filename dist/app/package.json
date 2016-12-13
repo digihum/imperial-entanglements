@@ -13,6 +13,7 @@
     "bcrypt": "^0.8.7",
     "dotenv": "^2.0.0",
     "etag": "^1.7.0",
+    "falcon-core": "git+ssh://git@actechlab.warwick.ac.uk:u1572229/falcon-core.git",
     "font-awesome": "^4.7.0",
     "graphql": "^0.7.2",
     "immutable": "^3.8.1",
@@ -29,7 +30,7 @@
     "react-dom": "^15.3.2",
     "react-router": "^4.0.0-alpha.4",
     "react-select": "^1.0.0-rc.2",
-    "react-sortable-hoc": "^0.2.0",
+    "react-sortable-hoc": "^0.4.4",
     "reflect-metadata": "^0.1.8",
     "signals": "^1.0.0",
     "sqlite3": "^3.1.8"

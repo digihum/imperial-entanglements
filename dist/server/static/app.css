@@ -3203,6 +3203,9 @@ button {
 select.padded {
   padding: 0.22em; }
 
+li {
+  list-style: none; }
+
 div.header {
   box-shadow: 0px 4px 5px 0px rgba(0, 0, 0, 0.2);
   z-index: 10;
@@ -3278,11 +3281,14 @@ body {
       #sidebar .sidebar-toolbar button:hover {
         background-color: #444141; }
   #sidebar .card-list-container {
-    overflow-y: auto; }
+    overflow-y: auto;
+    flex: 1;
+    display: flex; }
   #sidebar ul.card-list {
     list-style: none;
     padding: 0;
-    margin: 0; }
+    margin: 0;
+    flex: 1; }
   #sidebar .input-addon-formgroup .combo-dropdown {
     width: 100%; }
     #sidebar .input-addon-formgroup .combo-dropdown input[type='text'] {
@@ -3365,6 +3371,9 @@ body {
     background-image: linear-gradient(45deg, #eca81c 25%, transparent 25%, transparent 50%, #eca81c 50%, #eca81c 75%, transparent 75%, #F0BA4B); }
   .sidebar-card.view .badge-container .badge.predicate {
     background-image: linear-gradient(45deg, #ec6a14 25%, transparent 25%, transparent 50%, #ec6a14 50%, #ec6a14 75%, transparent 75%, #F08843); }
+
+.card-being-dragged {
+  z-index: 100; }
 
 .workspace-outer-wrapper {
   flex-direction: column; }
