@@ -14,6 +14,8 @@ import { ComboDropdown, ComboDropdownOption } from '../ComboDropdown';
 import { showModal } from '../../Signaller';
 import { ModalDefinition } from './ModalDefinition';
 
+import { toString } from 'lodash';
+
 interface CreateRecordProps {
     api: ApiService;
     options: { key: string, value: string, meta: Predicate}[];
@@ -39,7 +41,7 @@ export class CreateRecord extends React.Component<CreateRecordProps, CreateRecor
     }
 
     public componentDidMount() {
-        this.refs['comboDropDown'].refs['comboDropDownInputBox'].focus();
+        ((this.refs['comboDropDown'] as React.Component<any, any>).refs['comboDropDownInputBox'] as HTMLElement).focus();
     }
 
     public createNewPredicate() {
@@ -47,7 +49,7 @@ export class CreateRecord extends React.Component<CreateRecordProps, CreateRecor
             name: 'predicate',
             complete: (data : Predicate) => {
                 console.log('Predicate editor called complete');
-                this.setComboValue({ key: data.label, value: data.uid.toString(), meta: data});
+                this.setComboValue({ key: data.label, value: data.uid === null ? null : data.uid.toString(), meta: data});
             },
             cancel: () => {
                 console.log('Predicate editor called cancel');
@@ -61,7 +63,7 @@ export class CreateRecord extends React.Component<CreateRecordProps, CreateRecor
         showModal.dispatch(modalDef);
     }
 
-    public setComboValue(opt: { key: string, value: string, meta: Predicate }) {
+    public setComboValue(opt: { key: string, value: string | null, meta: Predicate }) {
         this.props.api.postItem(Record, AppUrls.record,
             Serializer.fromJson(Record, {
                 predicate: opt.meta.uid,

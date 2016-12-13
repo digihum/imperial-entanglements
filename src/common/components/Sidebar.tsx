@@ -163,7 +163,7 @@ export class Sidebar extends React.Component<SidebarProps, SidebarState> {
             <section id='sidebar'>
                 <SearchBox searchString={this.state.searchString}
                 dataStore={this.props.dataStore}
-                onChange={(evt) => this.setState({searchString: evt.currentTarget.value})} />
+                onChange={(evt) => this.setState({searchString: (evt.currentTarget as HTMLInputElement).value})} />
                 <div className='sidebar-toolbar'>
                     <button onClick={this.props.clearTabs}><i className='fa fa-trash'></i> Clear All</button>
                     <button onClick={() => this.setState({compactMode: !this.state.compactMode})}><i className='fa fa-compress'></i> Compact</button>

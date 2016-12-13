@@ -27,15 +27,20 @@ export const ScorePicker : React.StatelessComponent<ScorePickerProps> =
             </span>
             );
         } else {
-            if (props.onChange === undefined) {
-                throw new Error('An onChange handler is required');
-            }
-            return (
+
+          return (
             <span className='score-picker editing'>
-                {reverse(values).map((val) => (<i key={val}
+                {reverse(values).map((val) => (
+                  <i key={val}
                     className={'fa fa-star' + (val > props.value ? '-o' : '')}
-                    onClick={() => props.onChange(val)}
-                    aria-hidden='true'></i>))}
+                    onClick={() => {
+                      if(props.onChange === undefined) {
+                        throw new Error('An onChange handler is required');
+                      }
+                      props.onChange(val);
+                    }}
+                    aria-hidden='true'></i>
+                ))}
             </span>
             );
         }

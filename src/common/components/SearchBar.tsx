@@ -29,7 +29,7 @@ export const SearchBar : React.StatelessComponent<SearchBarProps>
                 <span className='input-addon-icon'><i className='fa fa-search fa-fw'></i></span>
                 <input type='text'
                     className='form-control with-addon'
-                    onChange={(e) => props.setFilterFunc(filterFunc(e.target.value))}/>
+                    onChange={(e) => props.setFilterFunc(filterFunc((e.target as HTMLInputElement).value))}/>
             </div>
 
         </div>

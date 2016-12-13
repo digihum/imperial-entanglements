@@ -114,7 +114,7 @@ export class CreatePredicate extends React.Component<CreatePredicateProps, Creat
                 className='gap'
                 ref={(a) =>  { if(a !== null) a.focus(); }}
                 value={this.state.name}
-                onChange={(e) => this.setState({ name: e.target.value })} />
+                onChange={(e) => this.setState({ name: (e.target as HTMLInputElement).value })} />
 
             <PredicateDescription
                 domain={this.state.domain}

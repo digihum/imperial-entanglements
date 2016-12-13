@@ -9,7 +9,7 @@ import * as React from 'react';
 export interface EditableSubfieldProps<T> {
     edit: boolean;
     value: T | null;
-    onChange: (updated: T) => void;
+    onChange: (updated: T | null) => void;
     setEdit: () => void;
     acceptChanges: () => void;
     cancelChanges: () => void;
