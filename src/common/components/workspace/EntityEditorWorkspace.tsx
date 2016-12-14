@@ -62,7 +62,8 @@ interface EntityEditorState {
 export class EntityEditorWorkspace extends React.Component<EntityEditorProps, EntityEditorState> {
 
     public static contextTypes = {
-        router: React.PropTypes.object.isRequired
+        router: React.PropTypes.object.isRequired,
+        manager: React.PropTypes.object.isRequired
     };
 
     constructor(props : EntityEditorProps, context: any) {
@@ -176,6 +177,7 @@ export class EntityEditorWorkspace extends React.Component<EntityEditorProps, En
 
         return (
             <div className='workspace-editor'>
+
                 <header className='editor-header entity'>
                   <div className='primary-toolbar'>
                     <div className='main-toolbar'>

@@ -74,9 +74,8 @@ const Card = SortableElement((props: {currentTab: boolean, url: any, index: numb
       </li>
   ));
 
-const CardList = SortableContainer((props: {
+const CardList = (props: {
     dataStore: DataStore,
-    loading: boolean,
     tabs: Tab[],
     list: boolean,
     workspace: string,
@@ -85,7 +84,7 @@ const CardList = SortableContainer((props: {
 
     return (
       <ul className='card-list'>
-            {!props.loading ? props.tabs.map((tab, index) => {
+            {props.tabs.map((tab, index) => {
 
                 // TODO: shouldn't be ==
                 const item = props.dataStore.all[tab.tabType].value
@@ -123,21 +122,19 @@ const CardList = SortableContainer((props: {
                   compact={props.compact}
                 />
               );
-        }) : null}
+        })}
         </ul>
     );
-});
+};
 
 
 interface SidebarProps {
     tabs: Tab[];
     dataStore: DataStore;
-    loading: boolean;
     clearTabs: any;
     workspace: string;
     list: boolean;
     id: number;
-    reorderTabs: (tabCallback: (tabs: Tab[]) => Tab[]) => void;
 }
 
 interface SidebarState {
@@ -155,10 +152,6 @@ export class Sidebar extends React.Component<SidebarProps, SidebarState> {
         };
     }
 
-    public onSortEnd = ({oldIndex, newIndex}) => {
-      this.props.reorderTabs((tabs : Tab[]) => arrayMove(tabs, oldIndex, newIndex));
-    }
-
     public render() {
 
         return (
@@ -173,18 +166,16 @@ export class Sidebar extends React.Component<SidebarProps, SidebarState> {
                 <div className='card-list-container'>
                  <CardList
                     dataStore={this.props.dataStore}
-                    loading={this.props.loading}
                     tabs={this.props.tabs}
                     list={this.props.list}
                     workspace={this.props.workspace}
                     id={this.props.id}
                     compact={this.state.compactMode}
-                    onSortEnd={this.onSortEnd}
-                    useDragHandle={true}
-                    helperClass={'card-being-dragged'}
+
                   />
                 </div>
             </section>
         );
     }
 }
+

@@ -4625,6 +4625,14 @@
 	const ConflictResolution_1 = __webpack_require__(415);
 	const DataStore_1 = __webpack_require__(416);
 	const DataController_1 = __webpack_require__(418);
+	const react_sortable_hoc_1 = __webpack_require__(62);
+	const ObjectEditorCore = react_sortable_hoc_1.SortableContainer((props) => {
+	    return (React.createElement("span", { className: 'flex-fill' },
+	        React.createElement(Sidebar_1.Sidebar, { tabs: props.tabs, dataStore: props.dataStore, clearTabs: props.clearTabs, list: props.list, id: props.id, workspace: props.workspace }),
+	        React.createElement(Workspace_1.Workspace, { api: props.api, workspace: props.workspace, id: props.id, dataStore: props.dataStore, loading: props.loadingWheel, list: props.list }),
+	        props.splitWorkspace ? (React.createElement(Workspace_1.Workspace, { api: props.api, workspace: props.workspace, id: props.id, dataStore: props.dataStore, loading: props.loadingWheel, list: props.list })) : null,
+	        React.createElement("div", { className: 'split-workspace-button-container', onClick: props.toggleSplitWorkspace }, props.splitWorkspace ? (React.createElement("i", { className: 'fa fa-times', title: 'split' })) : (React.createElement("i", { className: 'fa fa-columns', title: 'split' })))));
+	});
 	class ObjectEditor extends React.Component {
 	    constructor(props, context) {
 	        super();
@@ -4752,8 +4760,8 @@
 	            this.reload(this.props);
 	        });
 	    }
-	    reorderTabs(reorderFunc) {
-	        this.setState({ tabs: reorderFunc(this.state.tabs) }, () => {
+	    reorderTabs(data) {
+	        this.setState({ tabs: react_sortable_hoc_1.arrayMove(this.state.tabs, data.oldIndex, data.newIndex) }, () => {
 	            this.saveTabs();
 	        });
 	    }
@@ -4792,10 +4800,7 @@
 	        return (React.createElement("section", { id: 'entity-editor', className: 'flex-fill' },
 	            React.createElement("span", { className: 'header-colour ' + this.props.workspace }),
 	            React.createElement("span", { className: 'flex-fill' },
-	                React.createElement(Sidebar_1.Sidebar, { tabs: this.state.tabs, dataStore: this.state.dataStore, loading: false, clearTabs: this.clearAllTabs.bind(this), list: this.state.list, reorderTabs: this.reorderTabs.bind(this), id: this.state.id, workspace: this.props.workspace }),
-	                React.createElement(Workspace_1.Workspace, __assign({}, this.props, { id: this.state.id, dataStore: this.state.dataStore, loading: this.state.loadingWheel, list: this.state.list })),
-	                this.state.splitWorkspace ? (React.createElement(Workspace_1.Workspace, __assign({}, this.props, { id: this.state.id, dataStore: this.state.dataStore, loading: this.state.loadingWheel, list: this.state.list }))) : null,
-	                React.createElement("div", { className: 'split-workspace-button-container', onClick: () => this.setState({ splitWorkspace: !this.state.splitWorkspace }) }, this.state.splitWorkspace ? (React.createElement("i", { className: 'fa fa-times', title: 'split' })) : (React.createElement("i", { className: 'fa fa-columns', title: 'split' }))),
+	                React.createElement(ObjectEditorCore, { tabs: this.state.tabs, api: this.props.api, dataStore: this.state.dataStore, id: this.state.id, workspace: this.props.workspace, onSortEnd: this.reorderTabs.bind(this), useDragHandle: true, loadingWheel: this.state.loading, splitWorkspace: this.state.splitWorkspace, helperClass: 'card-being-dragged', clearTabs: this.clearAllTabs.bind(this), toggleSplitWorkspace: () => this.setState({ splitWorkspace: !this.state.splitWorkspace }) }),
 	                React.createElement(Toast_1.Toast, null),
 	                (() => {
 	                    if (this.state.modalQueue.length === 0) {
@@ -4878,8 +4883,8 @@
 	        !props.currentTab ? (React.createElement("span", { className: 'close-button' },
 	            props.tab.tabType === 'source' ? (React.createElement("i", { className: 'fa fa-unlock' })) : null,
 	            React.createElement("i", { className: 'fa fa-times', onClick: (e) => onCloseTab(e, props.tab.tabType, props.tab.uid) }))) : null))));
-	const CardList = react_sortable_hoc_1.SortableContainer((props) => {
-	    return (React.createElement("ul", { className: 'card-list' }, !props.loading ? props.tabs.map((tab, index) => {
+	const CardList = (props) => {
+	    return (React.createElement("ul", { className: 'card-list' }, props.tabs.map((tab, index) => {
 	        // TODO: shouldn't be ==
 	        const item = props.dataStore.all[tab.tabType].value
 	            .find((item) => item.uid == tab.uid);
@@ -4901,14 +4906,11 @@
 	        const title = item === undefined ? `${tab.tabType} list` : item.label;
 	        const currentTab = !props.list && tab.tabType === props.workspace && tab.uid == props.id;
 	        return (React.createElement(Card, { key: `tab-${tab.tabType}-${tab.tabClass}-${tab.uid}-${tab.query}`, currentTab: currentTab, url: url, tab: tab, title: title, subtitle: subtitle, index: index, compact: props.compact }));
-	    }) : null));
-	});
+	    })));
+	};
 	class Sidebar extends React.Component {
 	    constructor() {
 	        super();
-	        this.onSortEnd = ({ oldIndex, newIndex }) => {
-	            this.props.reorderTabs((tabs) => react_sortable_hoc_1.arrayMove(tabs, oldIndex, newIndex));
-	        };
 	        this.state = {
 	            searchString: '',
 	            compactMode: false
@@ -4925,7 +4927,7 @@
 	                    React.createElement("i", { className: 'fa fa-compress' }),
 	                    " Compact")),
 	            React.createElement("div", { className: 'card-list-container' },
-	                React.createElement(CardList, { dataStore: this.props.dataStore, loading: this.props.loading, tabs: this.props.tabs, list: this.props.list, workspace: this.props.workspace, id: this.props.id, compact: this.state.compactMode, onSortEnd: this.onSortEnd, useDragHandle: true, helperClass: 'card-being-dragged' }))));
+	                React.createElement(CardList, { dataStore: this.props.dataStore, tabs: this.props.tabs, list: this.props.list, workspace: this.props.workspace, id: this.props.id, compact: this.state.compactMode }))));
 	    }
 	}
 	exports.Sidebar = Sidebar;
@@ -15144,7 +15146,8 @@
 	    }
 	}
 	EntityEditorWorkspace.contextTypes = {
-	    router: React.PropTypes.object.isRequired
+	    router: React.PropTypes.object.isRequired,
+	    manager: React.PropTypes.object.isRequired
 	};
 	exports.EntityEditorWorkspace = EntityEditorWorkspace;
 

@@ -12,7 +12,7 @@ import { Sidebar, Tab } from '../components/Sidebar';
 import { Workspace } from '../components/Workspace';
 import { Toast } from '../components/Toast';
 
-import { createTab, closeTab, showModal, triggerReload, reorderTabs } from '../Signaller';
+import { createTab, closeTab, showModal, triggerReload } from '../Signaller';
 import { find, tail, cloneDeep, findIndex } from 'lodash';
 
 import { CreatePredicate } from '../components/modal/CreatePredicate';
@@ -28,6 +28,8 @@ import { ModalDefinition } from '../components/modal/ModalDefinition';
 import { DataStore, emptyDataStore } from '../DataStore';
 
 import { DataController } from '../DataController';
+
+import { SortableContainer, arrayMove } from 'react-sortable-hoc';
 
 interface ExpectedParams {
     id: string;
@@ -54,6 +56,59 @@ interface EntityEditorState {
 
     splitWorkspace: boolean;
 }
+
+const ObjectEditorCore = SortableContainer((props: {
+  tabs: Tab[],
+  api: ApiService,
+  dataStore: DataStore,
+  id: number,
+  workspace: string,
+  list: boolean,
+  loadingWheel: boolean,
+  splitWorkspace: boolean,
+  clearTabs: () => void,
+  toggleSplitWorkspace: () => void
+}) => {
+  return (
+    <span className='flex-fill'>
+      <Sidebar
+        tabs={props.tabs}
+        dataStore={props.dataStore}
+        clearTabs={props.clearTabs}
+        list={props.list}
+        id={props.id}
+        workspace={props.workspace}
+    />
+
+    <Workspace
+      api={props.api}
+      workspace={props.workspace}
+      id={props.id}
+      dataStore={props.dataStore}
+      loading={props.loadingWheel}
+      list={props.list} />
+
+    {props.splitWorkspace ? (
+       <Workspace
+        api={props.api}
+        workspace={props.workspace}
+        id={props.id}
+        dataStore={props.dataStore}
+        loading={props.loadingWheel}
+        list={props.list} />
+    ) : null}
+
+    <div className='split-workspace-button-container'
+        onClick={props.toggleSplitWorkspace}>
+      {props.splitWorkspace ? (
+        <i className='fa fa-times' title='split'></i>
+      ) : (
+        <i className='fa fa-columns' title='split'></i>
+      )}
+    </div>
+  </span>
+  );
+});
 
 export class ObjectEditor extends React.Component<EntityEditorProps, EntityEditorState> {
 
@@ -223,8 +278,8 @@ export class ObjectEditor extends React.Component<EntityEditorProps, EntityEdito
         });
     }
 
-    public reorderTabs(reorderFunc: (tabs: Tab[]) => Tab[]) {
-      this.setState({tabs: reorderFunc(this.state.tabs)}, () => {
+    public reorderTabs(data: {newIndex: number, oldIndex: number}) {
+      this.setState({tabs: arrayMove(this.state.tabs, data.oldIndex, data.newIndex)}, () => {
         this.saveTabs();
       });
     }
@@ -270,39 +325,20 @@ export class ObjectEditor extends React.Component<EntityEditorProps, EntityEdito
             <section id='entity-editor' className='flex-fill'>
                 <span className={'header-colour ' + this.props.workspace}></span>
                     <span className='flex-fill'>
-                    <Sidebar
+                      <ObjectEditorCore
                         tabs={this.state.tabs}
+                        api={this.props.api}
                         dataStore={this.state.dataStore}
-                        loading={false}
-                        clearTabs={this.clearAllTabs.bind(this)}
-                        list={this.state.list}
-                        reorderTabs={this.reorderTabs.bind(this)}
                         id={this.state.id}
                         workspace={this.props.workspace}
-                    />
-
-                    <Workspace {...this.props}
-                        id={this.state.id}
-                        dataStore={this.state.dataStore}
-                        loading={this.state.loadingWheel}
-                        list={this.state.list}/>
-
-                    {this.state.splitWorkspace ? (
-                      <Workspace {...this.props}
-                        id={this.state.id}
-                        dataStore={this.state.dataStore}
-                        loading={this.state.loadingWheel}
-                        list={this.state.list}/>
-                    ) : null}
-
-                    <div className='split-workspace-button-container'
-                        onClick={() => this.setState({ splitWorkspace: !this.state.splitWorkspace })}>
-                      {this.state.splitWorkspace ? (
-                        <i className='fa fa-times' title='split'></i>
-                      ) : (
-                        <i className='fa fa-columns' title='split'></i>
-                      )}
-                    </div>
+                        onSortEnd={this.reorderTabs.bind(this)} //TODO
+                        useDragHandle={true}
+                        loadingWheel={this.state.loading}
+                        splitWorkspace={this.state.splitWorkspace}
+                        helperClass={'card-being-dragged'}
+                        clearTabs={this.clearAllTabs.bind(this)}
+                        toggleSplitWorkspace={() => this.setState({ splitWorkspace: !this.state.splitWorkspace})}
+                       />
 
                     <Toast />
 
