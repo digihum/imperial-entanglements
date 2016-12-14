@@ -37,6 +37,8 @@ import { server as frontendApp } from 'imperial-entanglements-frontend';
 
 import * as path from 'path';
 
+import * as _ from 'lodash';
+
 export class Server {
 
     private app: Koa;

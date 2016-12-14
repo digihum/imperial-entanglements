@@ -20,7 +20,7 @@ const resolve = {
 const loaderConfig = [
     { 
         test: /\.tsx?$/,
-        loader: 'ts-loader',
+        loader: 'awesome-typescript-loader',
         include: path.join(__dirname, 'src')
     },
     { 

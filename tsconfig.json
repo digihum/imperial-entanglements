@@ -10,11 +10,10 @@
   "rootDir": "src",
   "jsx": "react",
   "sourceMap": true,
-  "strictNullChecks": true
+  "strictNullChecks": true,
+  "typeRoots" : ["./node_modules/@types/", "./types"]
   },
-  "exclude": [
-    "node_modules",
-    "dist",
-    "build"
+  "include": [
+    "src/**/*"
   ]
 }

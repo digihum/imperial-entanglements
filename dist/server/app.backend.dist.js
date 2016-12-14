@@ -5900,7 +5900,6 @@
 	    return Promise.all([tabPromise, allPromise])
 	        .then(([tabsArray, all]) => {
 	        const tabs = Object.assign({}, ...tabsArray);
-	        console.log("TABS", tabs);
 	        return { tabs, all };
 	    });
 	};
