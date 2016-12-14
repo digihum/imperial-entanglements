@@ -3752,7 +3752,7 @@
 	    }
 	    yearChanged(e) {
 	        const base = this.props.value.length === 9 ? this.props.value : '=XXXX0000';
-	        let yearVal = e.target.value.substr(0, 4).replace(/[^0-9]/g, '');
+	        let yearVal = e.currentTarget.value.substr(0, 4).replace(/[^0-9]/g, '');
 	        for (let i = yearVal.length; i < 4; i += 1) {
 	            yearVal += 'X';
 	        }
@@ -3761,12 +3761,12 @@
 	    monthChanged(e) {
 	        this.ignoreGlobalClick = true;
 	        const base = this.props.value.length === 9 ? this.props.value : '=XXXX0000';
-	        let monthVal = e.target.value.substr(0, 2);
+	        const monthVal = e.currentTarget.value.substr(0, 2);
 	        this.props.setValue(base.substr(0, 5) + monthVal + base.substr(7));
 	    }
 	    dayChanged(e) {
 	        const base = this.props.value.length === 9 ? this.props.value : '=XXXX0000';
-	        let dayVal = e.target.value.substr(0, 2).replace(/[^0-9]/g, '');
+	        let dayVal = e.currentTarget.value.substr(0, 2).replace(/[^0-9]/g, '');
 	        dayVal = lodash_1.padStart(dayVal, 2, '0');
 	        this.props.setValue(base.substr(0, 7) + dayVal);
 	    }

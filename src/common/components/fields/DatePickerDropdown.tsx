@@ -131,25 +131,25 @@ export class DatePickerDropdown<T> extends React.Component<DatePickerDropdownPro
        this.props.setValue(rangeType + this.props.value.substr(1));
   }
 
-  public yearChanged(e: React.FormEvent) {
+  public yearChanged(e: React.FormEvent<HTMLSelectElement>) {
       const base = this.props.value.length === 9 ? this.props.value : '=XXXX0000';
-      let yearVal : string = (e.target as HTMLInputElement).value.substr(0, 4).replace(/[^0-9]/g, '');
+      let yearVal : string = e.currentTarget.value.substr(0, 4).replace(/[^0-9]/g, '');
       for (let i = yearVal.length; i < 4; i += 1) {
           yearVal += 'X';
       }
       this.props.setValue(base.substr(0, 1) + yearVal + base.substr(5));
   }
 
-  public monthChanged(e: React.FormEvent) {
+  public monthChanged(e: React.FormEvent<HTMLInputElement>) {
       this.ignoreGlobalClick = true;
       const base = this.props.value.length === 9 ? this.props.value : '=XXXX0000';
-      let monthVal : string = (e.target as HTMLInputElement).value.substr(0, 2);
+      const monthVal : string = e.currentTarget.value.substr(0, 2);
       this.props.setValue(base.substr(0, 5) + monthVal + base.substr(7));
   }
 
-  public dayChanged(e: React.FormEvent) {
+  public dayChanged(e: React.FormEvent<HTMLInputElement>) {
       const base = this.props.value.length === 9 ? this.props.value : '=XXXX0000';
-      let dayVal : string = (e.target as HTMLInputElement).value.substr(0, 2).replace(/[^0-9]/g, '');
+      let dayVal : string = e.currentTarget.value.substr(0, 2).replace(/[^0-9]/g, '');
       dayVal = padStart(dayVal, 2, '0');
       this.props.setValue( base.substr(0, 7) + dayVal);
   }

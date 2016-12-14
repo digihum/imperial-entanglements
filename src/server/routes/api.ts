@@ -16,7 +16,7 @@ import { QueryEngine } from '../core/QueryEngine';
 import * as koaConditionalGet from 'koa-conditional-get';
 import * as koaEtags from 'koa-etag';
 
-import { Serializer, FalconItem } from 'falcon-core';
+import { Serializer, TrackedFalconItem } from 'falcon-core';
 
 // Controllers
 import { IController } from '../controllers/IController';
@@ -59,7 +59,7 @@ const sourceElementSpecial = (router: any, serverApiContext: ServerApiService, t
 
     router.get(`/api/v1/${AppUrls.source_element}/:source/:element`, function* (next : Koa.Context) {
         yield serverApiContext
-            .getItem<FalconItem>(typeMap[AppUrls.source_element], AppUrls.source_element, {
+            .getItem<TrackedFalconItem>(typeMap[AppUrls.source_element], AppUrls.source_element, {
                 order: ['source', 'element'],
                 values: {
                     source: this.params.source,
@@ -71,7 +71,7 @@ const sourceElementSpecial = (router: any, serverApiContext: ServerApiService, t
 
     router.put(`/api/v1/${AppUrls.source_element}/:source/:element`, function* (next : Koa.Context) {
         yield serverApiContext
-            .putItem<FalconItem>(typeMap[AppUrls.source_element], AppUrls.source_element, {
+            .putItem<TrackedFalconItem>(typeMap[AppUrls.source_element], AppUrls.source_element, {
                 order: ['source', 'element'],
                 values: {
                     source: this.params.source,
@@ -83,7 +83,7 @@ const sourceElementSpecial = (router: any, serverApiContext: ServerApiService, t
 
     router.patch(`/api/v1/${AppUrls.source_element}/:source/:element`, function* (next : Koa.Context) {
         yield serverApiContext
-            .patchItem<FalconItem>(typeMap[AppUrls.source_element], AppUrls.source_element, {
+            .patchItem<TrackedFalconItem>(typeMap[AppUrls.source_element], AppUrls.source_element, {
                 order: ['source', 'element'],
                 values: {
                     source: this.params.source,
@@ -95,7 +95,7 @@ const sourceElementSpecial = (router: any, serverApiContext: ServerApiService, t
 
     router.del(`/api/v1/${AppUrls.source_element}/:source/:element`, function* (next : Koa.Context) {
         yield serverApiContext
-            .delItem<FalconItem>(typeMap[AppUrls.source_element], AppUrls.source_element, {
+            .delItem<TrackedFalconItem>(typeMap[AppUrls.source_element], AppUrls.source_element, {
                 order: ['source', 'element'],
                 values: {
                     source: this.params.source,

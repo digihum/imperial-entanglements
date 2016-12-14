@@ -13,6 +13,7 @@ export interface EditableSubfieldProps<T> {
     setEdit: () => void;
     acceptChanges: () => void;
     cancelChanges: () => void;
+    // TODO: check this
     onDelete: React.EventHandler<React.FormEvent>;
 }
 
