@@ -49,3 +49,14 @@ input.text-edit-header {
       margin :0
     }
 }
+
+.split-workspace-button-container {
+    position: absolute;
+    right: 0;
+    padding: 0.2em;
+    background-color: rgb(255, 255, 255);
+    border-bottom-left-radius: 0.5em;
+    border-left: 1px solid #6d6d6d;
+    border-bottom: 1px solid #6d6d6d;
+    cursor: pointer;
+}

@@ -50,7 +50,7 @@ var frontendConfig = {
     devtool: 'source-map',
     entry: './src/client/app.frontend',
     output: {  
-        path: path.join(__dirname, 'dist', 'server', 'static'),                 // output folder
+        path: path.join(__dirname, '..', 'dist', 'server', 'static'),                 // output folder
         filename: './app.frontend.dist.js',    // file name
     },
     resolve: resolve,

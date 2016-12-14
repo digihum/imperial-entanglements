@@ -510,7 +510,8 @@
 	            loadingWheel: true,
 	            loading: true,
 	            id: NaN,
-	            list: false
+	            list: false,
+	            splitWorkspace: false
 	        };
 	        this.boundCreateTab = this.createTab.bind(this);
 	        this.boundCloseTab = this.closeTab.bind(this);
@@ -660,6 +661,8 @@
 	            React.createElement("span", { className: 'flex-fill' },
 	                React.createElement(Sidebar_1.Sidebar, { tabs: this.state.tabs, dataStore: this.state.dataStore, loading: false, clearTabs: this.clearAllTabs.bind(this), list: this.state.list, reorderTabs: this.reorderTabs.bind(this), id: this.state.id, workspace: this.props.workspace }),
 	                React.createElement(Workspace_1.Workspace, __assign({}, this.props, { id: this.state.id, dataStore: this.state.dataStore, loading: this.state.loadingWheel, list: this.state.list })),
+	                this.state.splitWorkspace ? (React.createElement(Workspace_1.Workspace, __assign({}, this.props, { id: this.state.id, dataStore: this.state.dataStore, loading: this.state.loadingWheel, list: this.state.list }))) : null,
+	                React.createElement("div", { className: 'split-workspace-button-container', onClick: () => this.setState({ splitWorkspace: !this.state.splitWorkspace }) }, this.state.splitWorkspace ? (React.createElement("i", { className: 'fa fa-times', title: 'split' })) : (React.createElement("i", { className: 'fa fa-columns', title: 'split' }))),
 	                React.createElement(Toast_1.Toast, null),
 	                (() => {
 	                    if (this.state.modalQueue.length === 0) {

@@ -51,6 +51,8 @@ interface EntityEditorState {
 
     id: number;
     list: boolean;
+
+    splitWorkspace: boolean;
 }
 
 export class ObjectEditor extends React.Component<EntityEditorProps, EntityEditorState> {
@@ -84,7 +86,8 @@ export class ObjectEditor extends React.Component<EntityEditorProps, EntityEdito
             loadingWheel: true,
             loading: true,
             id: NaN,
-            list: false
+            list: false,
+            splitWorkspace: false
         };
 
         this.boundCreateTab = this.createTab.bind(this);
@@ -283,6 +286,23 @@ export class ObjectEditor extends React.Component<EntityEditorProps, EntityEdito
                         dataStore={this.state.dataStore}
                         loading={this.state.loadingWheel}
                         list={this.state.list}/>
+
+                    {this.state.splitWorkspace ? (
+                      <Workspace {...this.props}
+                        id={this.state.id}
+                        dataStore={this.state.dataStore}
+                        loading={this.state.loadingWheel}
+                        list={this.state.list}/>
+                    ) : null}
+
+                    <div className='split-workspace-button-container'
+                        onClick={() => this.setState({ splitWorkspace: !this.state.splitWorkspace })}>
+                      {this.state.splitWorkspace ? (
+                        <i className='fa fa-times' title='split'></i>
+                      ) : (
+                        <i className='fa fa-columns' title='split'></i>
+                      )}
+                    </div>
 
                     <Toast />
 

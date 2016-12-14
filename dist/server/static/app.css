@@ -3393,6 +3393,7 @@ body {
     background-color: #F08843; }
 
 .workspace-editor {
+  border: 1px solid #bcbcbc;
   max-width: 1060px;
   margin: 0 auto;
   background-color: white;
@@ -3740,6 +3741,16 @@ input.text-edit-header {
   background-color: #f2f2f2; }
   .editable-paragraph-box p {
     margin: 0; }
+
+.split-workspace-button-container {
+  position: absolute;
+  right: 0;
+  padding: 0.2em;
+  background-color: white;
+  border-bottom-left-radius: 0.5em;
+  border-left: 1px solid #6d6d6d;
+  border-bottom: 1px solid #6d6d6d;
+  cursor: pointer; }
 
 #entity-editor {
   flex-direction: column;
