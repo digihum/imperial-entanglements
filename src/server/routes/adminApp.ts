@@ -18,6 +18,8 @@ import { ServerApiService } from '../core/ServerApiService';
 
 import * as path from 'path';
 
+import * as _ from 'lodash';
+
 export const adminApp = (skeleton: _.TemplateExecutor, serverApiContext: ServerApiService ) : Koa => {
 
     const server = new Koa();
@@ -38,7 +40,9 @@ export const adminApp = (skeleton: _.TemplateExecutor, serverApiContext: ServerA
             routerSettings: {
                 context: serverRenderContext,
                 location: this.request.url
-            }
+            },
+            environment: 'website',
+            connected: true
         }))});
     });
 

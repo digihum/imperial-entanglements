@@ -24,7 +24,7 @@ export class SqliteSnapshot {
        // fs.unlinkSync(filename);
        // const db = new sqlite.Database(filename);
 
-        let tempKnex = Knex({
+        const tempKnex = Knex({
             client: 'sqlite3',
             connection: { filename },
             migrations: {

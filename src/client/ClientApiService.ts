@@ -5,7 +5,7 @@
  */
 
 import { ApiService } from '../common/ApiService';
-import { Serializer, FalconItem, CompositeKey } from 'falcon-core';
+import { Serializer, TrackedFalconItem, CompositeKey } from 'falcon-core';
 import * as queryString from 'query-string';
 
 import { triggerReload, showToast } from '../common/Signaller';
@@ -37,7 +37,7 @@ function handleErrors(response: any) {
 }
 
 export class ClientApiService implements ApiService {
-    public getItem<T extends FalconItem>(obj: { new(): T; }, baseUrl : string, uid: number | CompositeKey) : Promise<T> {
+    public getItem<T extends TrackedFalconItem>(obj: { new(): T; }, baseUrl : string, uid: number | CompositeKey) : Promise<T> {
 
         const endURL = isObject(uid) ?
             (<CompositeKey> uid).order.map((key) => (<CompositeKey> uid).values[key]).join('/')
@@ -49,14 +49,14 @@ export class ClientApiService implements ApiService {
             .then((data) => Serializer.fromJson(obj, data));
     }
 
-    public getCollection<T extends FalconItem>(obj: { new(): T; }, baseUrl : string, params: any) : Promise<T[]> {
+    public getCollection<T extends TrackedFalconItem>(obj: { new(): T; }, baseUrl : string, params: any) : Promise<T[]> {
         return fetch(`/api/v1/${baseUrl}?` + queryString.stringify(params))
             .then(handleErrors)
             .then((response) => response.json())
             .then((data) => data.map((datum) => Serializer.fromJson(obj, datum)));
     }
 
-    public postItem<T extends FalconItem>(obj: { new(): T; }, baseUrl : string, data: T)  : Promise<boolean> {
+    public postItem<T extends TrackedFalconItem>(obj: { new(): T; }, baseUrl : string, data: T)  : Promise<boolean> {
         return fetch(`/api/v1/${baseUrl}`, {
             method: 'POST',
             body: JSON.stringify(data),
@@ -75,7 +75,7 @@ export class ClientApiService implements ApiService {
         });
     }
 
-    public putItem<T extends FalconItem>(obj: { new(): T; },
+    public putItem<T extends TrackedFalconItem>(obj: { new(): T; },
             baseUrl : string, uid: number | CompositeKey, data: T) : Promise<boolean> {
 
         const endURL = isObject(uid) ?
@@ -98,7 +98,7 @@ export class ClientApiService implements ApiService {
         });
     }
 
-    public patchItem<T extends FalconItem>(obj: { new(): T; },
+    public patchItem<T extends TrackedFalconItem>(obj: { new(): T; },
             baseUrl : string, uid: number | CompositeKey, data : T) : Promise<boolean> {
 
         const endURL = isObject(uid) ?
@@ -121,7 +121,7 @@ export class ClientApiService implements ApiService {
         });
     }
 
-    public delItem<T extends FalconItem>(obj: { new(): T; }, baseUrl : string, uid: number | CompositeKey) {
+    public delItem<T extends TrackedFalconItem>(obj: { new(): T; }, baseUrl : string, uid: number | CompositeKey) {
 
         const endURL = isObject(uid) ?
             (<CompositeKey> uid).order.map((key) => (<CompositeKey> uid).values[key]).join('/')

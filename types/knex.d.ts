@@ -449,6 +449,7 @@ declare module "knex" {
         Sqlite3ConnectionConfig|SocketConnectionConfig;
       pool?: PoolConfig;
       migrations?: MigratorConfig;
+      seeds?: SeederConfig;
       acquireConnectionTimeout?: number;
       useNullAsDefault?: boolean;
       searchPath?: string;
@@ -538,6 +539,13 @@ declare module "knex" {
       rollback(config?: MigratorConfig):Promise<any>;
       status(config?: MigratorConfig):Promise<number>;
       currentVersion(config?: MigratorConfig):Promise<string>;
+    }
+
+    interface SeederConfig {
+      directory?: string;
+      extension?: string;
+      tableName?: string;
+      disableTransactions?: boolean;
     }
 
     interface FunctionHelper {

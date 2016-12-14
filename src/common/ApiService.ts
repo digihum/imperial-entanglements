@@ -4,7 +4,7 @@
  * @version 0.1.0
  */
 
-import { FalconItem, CompositeKey } from 'falcon-core';
+import { TrackedFalconItem, CompositeKey } from 'falcon-core';
 
 import { itemTypes } from './itemTypes';
 
@@ -29,16 +29,16 @@ export const AppUrls : {
 };
 
 export interface ApiService {
-    getItem<T extends FalconItem>(obj: { new(): T; }, baseUrl : string, uid: number | CompositeKey) : Promise<T>;
-    getCollection<T extends FalconItem>(obj: { new(): T; }, baseUrl : string, params: any) : Promise<T[]>;
+    getItem<T extends TrackedFalconItem>(obj: { new(): T; }, baseUrl : string, uid: number | CompositeKey) : Promise<T>;
+    getCollection<T extends TrackedFalconItem>(obj: { new(): T; }, baseUrl : string, params: any) : Promise<T[]>;
 
-    postItem<T extends FalconItem>(obj: { new(): T; }, baseUrl : string, data: T) : Promise<any>;
-    putItem<T extends FalconItem>(obj: { new(): T; }, baseUrl : string, uid: number | CompositeKey, data: T) : Promise<any>;
+    postItem<T extends TrackedFalconItem>(obj: { new(): T; }, baseUrl : string, data: T) : Promise<any>;
+    putItem<T extends TrackedFalconItem>(obj: { new(): T; }, baseUrl : string, uid: number | CompositeKey, data: T) : Promise<any>;
 
     //TODO: patch item takes a subset of an objects properties. This is currently being looked at in TS in the
     //context of the 'setState' function in react
-    patchItem<T extends FalconItem>(obj: { new(): T; }, baseUrl : string, uid: number | CompositeKey, data : any) : Promise<any>;
-    delItem<T extends FalconItem>(obj: { new(): T; }, baseUrl : string, uid: number | CompositeKey) : Promise<any>;
+    patchItem<T extends TrackedFalconItem>(obj: { new(): T; }, baseUrl : string, uid: number | CompositeKey, data : any) : Promise<any>;
+    delItem<T extends TrackedFalconItem>(obj: { new(): T; }, baseUrl : string, uid: number | CompositeKey) : Promise<any>;
 
     query(graphQLQuery: string) : Promise<any>;
     getStats() : Promise<any>;

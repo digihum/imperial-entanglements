@@ -60,7 +60,9 @@
 	};
 	if (process.env.DB_TYPE === 'sqlite') {
 	    databaseConnection.client = 'sqlite3';
-	    databaseConnection.connection.filename = './data/mydb.sqlite';
+	    if (databaseConnection.connection !== undefined) {
+	        databaseConnection.connection.filename = './data/mydb.sqlite';
+	    }
 	    databaseConnection.pool = {
 	        afterCreate: (conn, cb) => {
 	            conn.run('PRAGMA foreign_keys = ON', cb);
@@ -1875,7 +1877,9 @@
 	                routerSettings: {
 	                    context: serverRenderContext,
 	                    location: this.request.url
-	                }
+	                },
+	                environment: 'website',
+	                connected: true
 	            })) });
 	    });
 	    return server;
@@ -26224,7 +26228,7 @@
 	        const filename = path.join(process.cwd(), 'data', 'test.sqlite');
 	        // fs.unlinkSync(filename);
 	        // const db = new sqlite.Database(filename);
-	        let tempKnex = Knex({
+	        const tempKnex = Knex({
 	            client: 'sqlite3',
 	            connection: { filename },
 	            migrations: {
