@@ -21,7 +21,7 @@ const loaderConfig = [
     { 
         test: /\.tsx?$/,
         loader: 'awesome-typescript-loader',
-        include: path.join(__dirname, 'src')
+        include: path.join(__dirname, '..', 'src')
     },
     { 
         test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/, 
