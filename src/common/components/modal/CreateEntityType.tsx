@@ -36,7 +36,7 @@ export class CreateEntityType extends React.Component<CreateEntityTypeProps, Cre
     public createEntityType() {
         this.props.api.postItem(EntityType, AppUrls.entity_type,
             Serializer.fromJson(EntityType, {
-                name: this.state.internalValue
+                label: this.state.internalValue
             }))
         .then(this.props.complete);
     }

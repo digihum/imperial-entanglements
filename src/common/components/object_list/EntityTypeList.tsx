@@ -17,6 +17,8 @@ import { ModalDefinition } from '../modal/ModalDefinition';
 
 import { SearchBar } from '../SearchBar';
 
+import { RecursiveTree } from '../RecursiveTree';
+
 interface EntityTypeListProps {
     api: ApiService;
     dataStore: DataStore;
@@ -24,6 +26,7 @@ interface EntityTypeListProps {
 
 interface EntityTypeListState {
     filterFunc: (t: EntityType) => boolean;
+    mode: 'list' | 'tree';
 }
 
 export class EntityTypeList extends React.Component<EntityTypeListProps, EntityTypeListState> {
@@ -31,7 +34,8 @@ export class EntityTypeList extends React.Component<EntityTypeListProps, EntityT
     constructor() {
         super();
         this.state = {
-            filterFunc: () => true
+            filterFunc: () => true,
+            mode: 'list'
         };
     }
 
@@ -65,7 +69,11 @@ export class EntityTypeList extends React.Component<EntityTypeListProps, EntityT
               </div>
                <div className='secondary-toolbar'>
                   <div className='tab-bar'>
-                    <div className={'entity_type selected'}>LIST</div>
+                    <div className={'entity_type ' + (this.state.mode === 'list' ? 'selected' : '')}
+                      onClick={() => this.setState({ mode: 'list' })}>LIST</div>
+
+                    <div  className={'entity_type ' + (this.state.mode === 'tree' ? 'selected' : '')}
+                      onClick={() => this.setState({ mode: 'tree' })}>TREE</div>
                   </div>
               </div>
             </header>
@@ -77,31 +85,41 @@ export class EntityTypeList extends React.Component<EntityTypeListProps, EntityT
                     setFilterFunc={(f) => this.setState({ filterFunc: f })}
                 />
 
-                <table className='table gap'>
+                {this.state.mode === 'list' ? (
+                  <table className='table gap'>
                     <thead>
-                        <tr>
-                            <td>#</td>
-                            <td>Name</td>
-                            <td>Parent</td>
-                            <td>Description</td>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    {this.props.dataStore.all.entity_type.value.filter(this.state.filterFunc).map((entityType) => {
-                        return (
-                            <tr key={`entityType-${entityType.uid}`}>
-                                <td>{entityType.uid} <AddTabButton
-                                    dataStore={this.props.dataStore}
-                                    uid={entityType.uid}
-                                    tabType='entity_type' /></td>
-                                <td>{entityType.label}</td>
-                                <td>{entityType.parent}</td>
-                                <td>{entityType.description}</td>
-                            </tr>
-                        );}
-                    )}
+                          <tr>
+                              <td>#</td>
+                              <td>Name</td>
+                              <td>Parent</td>
+                              <td>Description</td>
+                          </tr>
+                      </thead>
+                      <tbody>
+                      {this.props.dataStore.all.entity_type.value.filter(this.state.filterFunc).map((entityType) => {
+                          return (
+                              <tr key={`entityType-${entityType.uid}`}>
+                                  <td>{entityType.uid} <AddTabButton
+                                      dataStore={this.props.dataStore}
+                                      uid={entityType.uid}
+                                      tabType='entity_type' /></td>
+                                  <td>{entityType.label}</td>
+                                  <td>{entityType.parent}</td>
+                                  <td>{entityType.description}</td>
+                              </tr>
+                          );}
+                      )}
                     </tbody>
-                </table>
+                  </table>
+
+                ) : (<div className='tree-root'>
+                   <RecursiveTree
+                    data={this.props.dataStore.all.entity_type.value}
+                    tabType={'entity_type'}
+                    parentId={null}
+                    dataStore={this.props.dataStore} />
+                  </div>)}
+
             </section>
         </div>
         );
