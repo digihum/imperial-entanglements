@@ -4013,11 +4013,11 @@
 	                React.createElement("tbody", null, this.props.dataStore.tabs.entity.get('entity-' + this.props.id).value.referenceRecords.map((record) => {
 	                    return (React.createElement("tr", { key: `record-${record.uid}` },
 	                        React.createElement("td", null,
-	                            record.entity,
+	                            this.props.dataStore.all.entity.value.find((entity) => entity.uid === record.entity).label,
 	                            " ",
 	                            React.createElement(AddTabButton_1.AddTabButton, { tabType: 'entity', uid: record.entity, dataStore: this.props.dataStore })),
 	                        React.createElement("td", null,
-	                            record.predicate,
+	                            this.props.dataStore.all.predicate.value.find((predicate) => predicate.uid === record.predicate).label,
 	                            " ",
 	                            React.createElement(AddTabButton_1.AddTabButton, { tabType: 'predicate', uid: record.predicate, dataStore: this.props.dataStore }))));
 	                })))));

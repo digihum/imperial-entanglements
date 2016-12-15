@@ -72,8 +72,8 @@ export class EntityWorkspaceReferenceView extends React.Component<EntityWorkspac
               <tbody>
                 {this.props.dataStore.tabs.entity.get('entity-' + this.props.id).value.referenceRecords.map((record) => {
                   return (<tr key={`record-${record.uid}`}>
-                    <td>{record.entity} <AddTabButton tabType={'entity'} uid={record.entity} dataStore={this.props.dataStore}/></td>
-                    <td>{record.predicate} <AddTabButton
+                    <td>{this.props.dataStore.all.entity.value.find((entity) => entity.uid === record.entity).label} <AddTabButton tabType={'entity'} uid={record.entity} dataStore={this.props.dataStore}/></td>
+                    <td>{this.props.dataStore.all.predicate.value.find((predicate) => predicate.uid === record.predicate).label} <AddTabButton
                       tabType={'predicate'}
                       uid={record.predicate}
                       dataStore={this.props.dataStore}/></td>
