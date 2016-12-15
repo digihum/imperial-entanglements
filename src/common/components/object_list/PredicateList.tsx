@@ -70,6 +70,11 @@ export class PredicateList extends React.Component<PredicateListProps, Predicate
                     ></i></h2>
                 </div>
               </div>
+               <div className='secondary-toolbar'>
+                  <div className='tab-bar'>
+                    <div className={'predicate selected'}>LIST</div>
+                  </div>
+              </div>
             </header>
 
             <section className='editor-body'>

@@ -172,6 +172,11 @@ export class EntityTypeWorkspace extends React.Component<EntityTypeWorkspaceProp
                         ></i>
                     </div>
                   </div>
+                  <div className='secondary-toolbar'>
+                      <div className='tab-bar'>
+                        <div className={'entity_type selected'}>CORE</div>
+                      </div>
+                  </div>
                 </header>
 
                 <section className='editor-body'>

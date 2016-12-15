@@ -316,6 +316,11 @@ export class EntityList extends React.Component<EntityListProps, EntityListState
                         ></i>
                     </div>
               </div>
+              <div className='secondary-toolbar'>
+                  <div className='tab-bar'>
+                    <div className={'entity selected'}>LIST</div>
+                  </div>
+              </div>
             </header>
 
             <section className='editor-body'>

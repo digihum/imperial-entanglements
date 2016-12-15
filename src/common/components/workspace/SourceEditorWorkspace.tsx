@@ -166,7 +166,7 @@ export class SourceEditorWorkspace extends React.Component<SourceEditorProps, So
         const source = this.props.dataStore.tabs.source.get('source-' + this.props.id).value.source;
 
         const newSource = Serializer.fromJson(Source,
-            Object.assign({}, Serializer.toJson(source), { name: 'Child of ' + source.label, parent: this.props.id }));
+            Object.assign({}, Serializer.toJson(source), { label: 'Child of ' + source.label, parent: this.props.id }));
 
         this.props.api.postItem(Source, AppUrls.source, newSource)
             .then(([id]) => {
@@ -246,6 +246,13 @@ export class SourceEditorWorkspace extends React.Component<SourceEditorProps, So
                             onClick={this.createChild.bind(this)}
                         ></i>
                     </div>
+                  </div>
+                  <div className='secondary-toolbar'>
+                      <div className='tab-bar'>
+                        <div className={'source selected'}>DUBLIN CORE</div>
+                        <div className={'source'}>DETAILS</div>
+                        <div className={'source'}>MEDIA</div>
+                      </div>
                   </div>
                 </header>
 
