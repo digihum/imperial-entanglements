@@ -120,4 +120,4 @@ var electronAppConfig = {
     ts: typescriptLoaderConfig
 }
 
-module.exports = [frontendConfig, electronConfig, electronAppConfig, backendConfig];
+module.exports = [frontendConfig, backendConfig]; //electronConfig, electronAppConfig, 

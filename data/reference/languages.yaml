@@ -1,0 +1,16 @@
+languages:
+    
+    english:
+        name: English
+        short: Eng
+        locale: EN-GB
+    
+    spanish:
+        name: Spanish
+        short: Esp
+        locale: ES-ES
+
+    basque:
+        name: Basque
+        short: EU
+        locale: EU

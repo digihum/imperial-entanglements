@@ -5,9 +5,6 @@
 
 // Imported from: https://github.com/soywiz/typescript-node-definitions/redis.d.ts
 
-/// <reference path="../globals/node/index.d.ts" />
-/// <reference path="../globals/koa/index.d.ts" />
-
 declare module "koa-qs" {
    export default function(app: any, mode: 'first'|'strict'|'extended');
 }

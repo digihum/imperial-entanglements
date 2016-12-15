@@ -47,36 +47,39 @@ export class EntityController extends GenericController<Entity> {
        return EntityController.toSchema(data);
     }
 
-    public getCollectionJson(obj: { new(): Entity; }, params: any = {}) : Promise<Entity[]>  {
+    public async getCollectionJson(obj: { new(): Entity; }, params: any = {}) : Promise<Entity[]>  {
         if (params.type !== undefined) {
-            return this.db.getChildrenOf(isArray(params.type) ? params.type[0] : params.type, 'entity_types')
-            .then((ancestors) => {
-                return this.db.select('entities').whereIn('type', ancestors)
-                .then((results) => results.map((result) => this.fromSchema(result)));
-            });
+
+          const ancestorTypes = await this.db.getChildrenOf(isArray(params.type) ? params.type[0] : params.type, 'entity_types');
+
+          return this.db.select('entities')
+            .whereIn('type', ancestorTypes)
+            .then((rawEntities) => rawEntities.map((entity) => this.fromSchema(entity)));
+
         } else {
             return super.getCollectionJson(obj, params);
         }
     }
 
-    public deleteItem(obj: { new(): Entity; }, uid: number) : Promise<string> {
+    public async deleteItem(obj: { new(): Entity; }, uid: number) : Promise<string> {
         // check if this entity is the parent of another entity or if it has any relationships
         // pointing towards it.
-        return Promise.all([
-            this.db.select(this.tableName).where('parent', '=', uid),
-            this.db.select('records').where('value_entity', '=', uid)
-        ]).then(([entities, records]) => {
-            if (entities.length + records.length === 0) {
-                return this.db.deleteItem(this.tableName, uid);
-            } else {
-                throw new OperationNotPermittedException({
-                    message: 'The operation could not be completed as the entity is referenced in other sources',
-                    data: Promise.resolve({
-                        entity: entities,
-                        record: records
-                    })
-                });
-            }
-        });
+
+        const [entities, records] = await Promise.all([
+          this.db.select(this.tableName).where('parent', '=', uid),
+          this.db.select('records').where('value_entity', '=', uid)
+        ]);
+
+        if (entities.length + records.length === 0) {
+            return this.db.deleteItem(this.tableName, uid);
+        } else {
+            throw new OperationNotPermittedException({
+                message: 'The operation could not be completed as the entity is referenced in other sources',
+                data: Promise.resolve({
+                    entity: entities,
+                    record: records
+                })
+            });
+        }
     }
 }

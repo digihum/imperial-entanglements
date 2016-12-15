@@ -2396,6 +2396,10 @@
 	
 	  // Public interface
 	
+	  var createHref = function createHref(location) {
+	    return basename + (0, _PathUtils.createPath)(location);
+	  };
+	
 	  var push = function push(path, state) {
 	    process.env.NODE_ENV !== 'production' ? (0, _warning2.default)(!((typeof path === 'undefined' ? 'undefined' : _typeof(path)) === 'object' && path.state !== undefined && state !== undefined), 'You should avoid providing a 2nd state argument to push when the 1st ' + 'argument is a location-like object that already has state; it is ignored') : void 0;
 	
@@ -2405,16 +2409,16 @@
 	    transitionManager.confirmTransitionTo(location, action, getUserConfirmation, function (ok) {
 	      if (!ok) return;
 	
-	      var url = basename + (0, _PathUtils.createPath)(location);
+	      var href = createHref(location);
 	      var key = location.key;
 	      var state = location.state;
 	
 	
 	      if (canUseHistory) {
-	        globalHistory.pushState({ key: key, state: state }, null, url);
+	        globalHistory.pushState({ key: key, state: state }, null, href);
 	
 	        if (forceRefresh) {
-	          window.location.href = url;
+	          window.location.href = href;
 	        } else {
 	          var prevIndex = allKeys.indexOf(history.location.key);
 	          var nextKeys = allKeys.slice(0, prevIndex === -1 ? 0 : prevIndex + 1);
@@ -2427,7 +2431,7 @@
 	      } else {
 	        process.env.NODE_ENV !== 'production' ? (0, _warning2.default)(state === undefined, 'Browser history cannot push state in browsers that do not support HTML5 history') : void 0;
 	
-	        window.location.href = url;
+	        window.location.href = href;
 	      }
 	    });
 	  };
@@ -2441,16 +2445,16 @@
 	    transitionManager.confirmTransitionTo(location, action, getUserConfirmation, function (ok) {
 	      if (!ok) return;
 	
-	      var url = basename + (0, _PathUtils.createPath)(location);
+	      var href = createHref(location);
 	      var key = location.key;
 	      var state = location.state;
 	
 	
 	      if (canUseHistory) {
-	        globalHistory.replaceState({ key: key, state: state }, null, url);
+	        globalHistory.replaceState({ key: key, state: state }, null, href);
 	
 	        if (forceRefresh) {
-	          window.location.replace(url);
+	          window.location.replace(href);
 	        } else {
 	          var prevIndex = allKeys.indexOf(history.location.key);
 	
@@ -2461,7 +2465,7 @@
 	      } else {
 	        process.env.NODE_ENV !== 'production' ? (0, _warning2.default)(state === undefined, 'Browser history cannot replace state in browsers that do not support HTML5 history') : void 0;
 	
-	        window.location.replace(url);
+	        window.location.replace(href);
 	      }
 	    });
 	  };
@@ -2530,6 +2534,7 @@
 	    length: globalHistory.length,
 	    action: 'POP',
 	    location: initialLocation,
+	    createHref: createHref,
 	    push: push,
 	    replace: replace,
 	    go: go,
@@ -3794,6 +3799,10 @@
 	
 	  // Public interface
 	
+	  var createHref = function createHref(location) {
+	    return '#' + encodePath(basename + (0, _PathUtils.createPath)(location));
+	  };
+	
 	  var push = function push(path, state) {
 	    process.env.NODE_ENV !== 'production' ? (0, _warning2.default)(state === undefined, 'Hash history cannot push state; it is ignored') : void 0;
 	
@@ -3920,6 +3929,7 @@
 	    length: globalHistory.length,
 	    action: 'POP',
 	    location: initialLocation,
+	    createHref: createHref,
 	    push: push,
 	    replace: replace,
 	    go: go,
@@ -4027,6 +4037,8 @@
 	
 	var _warning2 = _interopRequireDefault(_warning);
 	
+	var _PathUtils = __webpack_require__(28);
+	
 	var _LocationUtils = __webpack_require__(25);
 	
 	var _createTransitionManager = __webpack_require__(29);
@@ -4073,6 +4085,8 @@
 	  });
 	
 	  // Public interface
+	
+	  var createHref = _PathUtils.createPath;
 	
 	  var push = function push(path, state) {
 	    process.env.NODE_ENV !== 'production' ? (0, _warning2.default)(!((typeof path === 'undefined' ? 'undefined' : _typeof(path)) === 'object' && path.state !== undefined && state !== undefined), 'You should avoid providing a 2nd state argument to push when the 1st ' + 'argument is a location-like object that already has state; it is ignored') : void 0;
@@ -4166,6 +4180,7 @@
 	    location: entries[index],
 	    index: index,
 	    entries: entries,
+	    createHref: createHref,
 	    push: push,
 	    replace: replace,
 	    go: go,

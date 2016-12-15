@@ -63,26 +63,29 @@ export class EntityTypeController extends GenericController<EntityType> {
         });
     }
 
-    public deleteItem(obj: { new(): EntityType; }, uid: number) : Promise<string> {
+    public async deleteItem(obj: { new(): EntityType; }, uid: number) : Promise<string> {
         // check if this entity is the parent of another entity or if it has any relationships
         // pointing towards it.
-        return Promise.all([
+
+        const [entityTypes, entities, predicates] = await Promise.all([
             this.db.select(this.tableName).where('parent', '=', uid),
             this.db.select('entities').where('type', '=', uid),
             this.db.select('predicates').where('domain', '=', uid).orWhere('range_ref', '=', uid)
-        ]).then(([entityTypes, entities, predicates]) => {
-            if (entities.length + entityTypes.length + predicates.length === 0) {
-                return this.db.deleteItem(this.tableName, uid);
-            } else {
-                throw new OperationNotPermittedException({
-                    message: 'The operation could not be completed as the entity is referenced in other sources',
-                    data: Promise.resolve({
-                        entityType: entityTypes.map((entityType) => EntityController.fromSchema(entityType)),
-                        entity: entities.map((entity) => EntityController.fromSchema(entity)),
-                        predicate: predicates.map((predicate) => PredicateController.fromSchema(predicate))
-                    })
-                });
-            }
-        });
+        ]);
+
+
+        if (entities.length + entityTypes.length + predicates.length === 0) {
+            return this.db.deleteItem(this.tableName, uid);
+        } else {
+            throw new OperationNotPermittedException({
+                message: 'The operation could not be completed as the entity is referenced in other sources',
+                data: Promise.resolve({
+                    entityType: entityTypes.map((entityType) => EntityController.fromSchema(entityType)),
+                    entity: entities.map((entity) => EntityController.fromSchema(entity)),
+                    predicate: predicates.map((predicate) => PredicateController.fromSchema(predicate))
+                })
+            });
+        }
+
     }
 }

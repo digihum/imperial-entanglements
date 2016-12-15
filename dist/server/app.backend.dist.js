@@ -1196,6 +1196,14 @@
 	 * @version 0.0.1
 	 */
 	"use strict";
+	var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+	    return new (P || (P = Promise))(function (resolve, reject) {
+	        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+	        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+	        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+	        step((generator = generator.apply(thisArg, _arguments)).next());
+	    });
+	};
 	const falcon_core_1 = __webpack_require__(31);
 	const GenericController_1 = __webpack_require__(34);
 	const Exceptions_1 = __webpack_require__(15);
@@ -1226,24 +1234,27 @@
 	        return EntityController.toSchema(data);
 	    }
 	    getCollectionJson(obj, params = {}) {
-	        if (params.type !== undefined) {
-	            return this.db.getChildrenOf(lodash_1.isArray(params.type) ? params.type[0] : params.type, 'entity_types')
-	                .then((ancestors) => {
-	                return this.db.select('entities').whereIn('type', ancestors)
-	                    .then((results) => results.map((result) => this.fromSchema(result)));
-	            });
-	        }
-	        else {
-	            return super.getCollectionJson(obj, params);
-	        }
+	        const _super = name => super[name];
+	        return __awaiter(this, void 0, void 0, function* () {
+	            if (params.type !== undefined) {
+	                const ancestorTypes = yield this.db.getChildrenOf(lodash_1.isArray(params.type) ? params.type[0] : params.type, 'entity_types');
+	                return this.db.select('entities')
+	                    .whereIn('type', ancestorTypes)
+	                    .then((rawEntities) => rawEntities.map((entity) => this.fromSchema(entity)));
+	            }
+	            else {
+	                return _super("getCollectionJson").call(this, obj, params);
+	            }
+	        });
 	    }
 	    deleteItem(obj, uid) {
-	        // check if this entity is the parent of another entity or if it has any relationships
-	        // pointing towards it.
-	        return Promise.all([
-	            this.db.select(this.tableName).where('parent', '=', uid),
-	            this.db.select('records').where('value_entity', '=', uid)
-	        ]).then(([entities, records]) => {
+	        return __awaiter(this, void 0, void 0, function* () {
+	            // check if this entity is the parent of another entity or if it has any relationships
+	            // pointing towards it.
+	            const [entities, records] = yield Promise.all([
+	                this.db.select(this.tableName).where('parent', '=', uid),
+	                this.db.select('records').where('value_entity', '=', uid)
+	            ]);
 	            if (entities.length + records.length === 0) {
 	                return this.db.deleteItem(this.tableName, uid);
 	            }
@@ -1272,6 +1283,14 @@
 	 * @version 0.0.1
 	 */
 	"use strict";
+	var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+	    return new (P || (P = Promise))(function (resolve, reject) {
+	        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+	        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+	        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+	        step((generator = generator.apply(thisArg, _arguments)).next());
+	    });
+	};
 	const falcon_core_1 = __webpack_require__(31);
 	const GenericController_1 = __webpack_require__(34);
 	const PredicateController_1 = __webpack_require__(37);
@@ -1313,13 +1332,14 @@
 	        });
 	    }
 	    deleteItem(obj, uid) {
-	        // check if this entity is the parent of another entity or if it has any relationships
-	        // pointing towards it.
-	        return Promise.all([
-	            this.db.select(this.tableName).where('parent', '=', uid),
-	            this.db.select('entities').where('type', '=', uid),
-	            this.db.select('predicates').where('domain', '=', uid).orWhere('range_ref', '=', uid)
-	        ]).then(([entityTypes, entities, predicates]) => {
+	        return __awaiter(this, void 0, void 0, function* () {
+	            // check if this entity is the parent of another entity or if it has any relationships
+	            // pointing towards it.
+	            const [entityTypes, entities, predicates] = yield Promise.all([
+	                this.db.select(this.tableName).where('parent', '=', uid),
+	                this.db.select('entities').where('type', '=', uid),
+	                this.db.select('predicates').where('domain', '=', uid).orWhere('range_ref', '=', uid)
+	            ]);
 	            if (entities.length + entityTypes.length + predicates.length === 0) {
 	                return this.db.deleteItem(this.tableName, uid);
 	            }
