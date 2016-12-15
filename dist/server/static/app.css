@@ -3712,6 +3712,13 @@ ul.links-list {
         font-size: 2em;
         margin-right: 0.2em; }
 
+.tree-children {
+  margin-left: 1em;
+  margin-bottom: 0.2em; }
+
+.tree-label {
+  padding: 0.1em; }
+
 .score-picker.editing {
   unicode-bidi: bidi-override;
   direction: rtl; }

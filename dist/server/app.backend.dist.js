@@ -5198,6 +5198,26 @@
 	const AddTabButton_1 = __webpack_require__(80);
 	const Signaller_1 = __webpack_require__(20);
 	const SearchBar_1 = __webpack_require__(70);
+	class RecursiveTree extends React.Component {
+	    constructor() {
+	        super();
+	        this.state = { collapsed: false };
+	    }
+	    render() {
+	        const filtered = this.props.sources.filter((source) => source.parent === this.props.parentId);
+	        if (filtered.length === 0) {
+	            return null;
+	        }
+	        return (React.createElement("div", null, filtered.map((source) => (React.createElement("div", { key: source.label },
+	            React.createElement("div", { className: 'tree-label', onClick: () => this.setState({ collapsed: !this.state.collapsed }) },
+	                "- ",
+	                source.label,
+	                " ",
+	                React.createElement(AddTabButton_1.AddTabButton, { dataStore: this.props.dataStore, uid: source.uid, tabType: 'source' })),
+	            !this.state.collapsed ? (React.createElement("div", { className: 'tree-children' },
+	                React.createElement(RecursiveTree, { dataStore: this.props.dataStore, sources: this.props.sources, parentId: source.uid }))) : null)))));
+	    }
+	}
 	class SourceList extends React.Component {
 	    constructor() {
 	        super();
@@ -5244,7 +5264,8 @@
 	                                React.createElement(AddTabButton_1.AddTabButton, { dataStore: this.props.dataStore, uid: source.uid, tabType: 'source' })),
 	                            React.createElement("td", null, source.label),
 	                            React.createElement("td", null, source.parent)));
-	                    })))) : null)));
+	                    })))) : (React.createElement("div", { className: 'tree-root' },
+	                    React.createElement(RecursiveTree, { sources: this.props.dataStore.all.source.value, parentId: null, dataStore: this.props.dataStore }))))));
 	    }
 	}
 	exports.SourceList = SourceList;

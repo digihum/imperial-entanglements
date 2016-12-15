@@ -34,6 +34,50 @@ interface ColumnSettings {
 
 }
 
+interface RecursiveTreeProps {
+  sources: Source[];
+  parentId: null | number;
+  dataStore: DataStore;
+}
+
+interface RecursiveTreeState {
+  collapsed: boolean;
+}
+
+class RecursiveTree extends React.Component<RecursiveTreeProps, RecursiveTreeState> {
+
+  constructor() {
+    super();
+    this.state = { collapsed: false };
+  }
+
+  render() {
+    const filtered = this.props.sources.filter((source) => source.parent === this.props.parentId);
+    if (filtered.length === 0) {
+      return null;
+    }
+
+    return (
+      <div>
+        {
+          filtered.map((source) => (
+            <div key={source.label}>
+              <div className='tree-label' onClick={() => this.setState({ collapsed: !this.state.collapsed})}>
+                - {source.label} <AddTabButton dataStore={this.props.dataStore} uid={source.uid} tabType='source' />
+              </div>
+              {!this.state.collapsed ? (
+                <div className='tree-children'>
+                  <RecursiveTree dataStore={this.props.dataStore} sources={this.props.sources} parentId={source.uid} />
+                </div>
+              ) : null}
+            </div>
+          ))
+        }
+      </div>
+    );
+  }
+}
+
 export class SourceList extends React.Component<SourceListProps, SourceListState> {
 
     constructor() {
@@ -115,7 +159,11 @@ export class SourceList extends React.Component<SourceListProps, SourceListState
                     )}
                     </tbody>
                   </table>
-                ) : null}
+                ) : (
+                  <div className='tree-root'>
+                   <RecursiveTree sources={this.props.dataStore.all.source.value} parentId={null} dataStore={this.props.dataStore} />
+                  </div>
+                )}
 
 
             </section>
