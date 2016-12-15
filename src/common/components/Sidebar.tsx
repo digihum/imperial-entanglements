@@ -11,7 +11,7 @@ import { Link } from 'react-router';
 import { DataStore } from '../DataStore';
 import { closeTab } from '../Signaller';
 
-import { capitalize, isArray } from 'lodash';
+import { capitalize, isArray, isObject } from 'lodash';
 
 import {SortableContainer, SortableElement, SortableHandle, arrayMove} from 'react-sortable-hoc';
 
@@ -55,8 +55,22 @@ const Card = SortableElement((props: {currentTab: boolean, url: any, index: numb
               <div className='description'>
                   <Link to={props.url}>
                       <span className='entity-name'>{props.title}</span>
-                      {props.compact ? null : isArray(props.subtitle) ? (
-                        <ul>{props.subtitle.map((sub, i) => (<li key={`tab-${props.index}-${i}`}>{sub}</li>))}</ul>
+                      {props.compact ? null : isObject(props.subtitle) ? (
+                        <ul>{Object.keys(props.subtitle).map((sub, i) => (
+                          <li key={`tab-${props.index}-${i}`}>
+                            { sub }:
+                            {
+                              isObject(props.subtitle[sub]) ? (
+                                <span>
+                                  <ul>
+                                    {Object.keys(props.subtitle[sub]).map((subSub, j) =>
+                                      (<li key={`tab-${props.index}-${i}-${j}`}>{subSub}: {props.subtitle[sub][subSub]}</li>))}
+                                  </ul>
+                                </span>
+                              ) : null
+                            }
+                          </li>))}
+                        </ul>
                       ) : (
                           <span className='entity-type'>{props.subtitle}</span>
                       )}
@@ -97,14 +111,14 @@ const CardList = (props: {
                   if (tab.tabClass === 'view') {
                     url = {
                       pathname: `/edit/${AppUrls[tab.tabType]}`,
-                      query: tab.data
+                      query: tab.query
                     };
                   }
                 }
 
                 const subtitle = tab.tabClass === 'item' ?
                   capitalize(AppUrls[tab.tabType]).replace('_', ' ') + ' ' + tab.uid
-                  : Object.keys(tab.data).map((title) => `${title}: ${tab.data[title]}`);
+                  : tab.data;
 
                 const title = item === undefined ? `${tab.tabType} list` : item.label;
 

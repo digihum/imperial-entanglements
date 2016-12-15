@@ -2317,11 +2317,11 @@
 	            });
 	        });
 	    }
-	    createTab(tabType, uid, tabClass, data) {
+	    createTab(tabType, uid, tabClass, data, query) {
 	        // don't add a tab if it already exists
 	        if (lodash_1.find(this.state.tabs, (tab) => tab.tabType === tabType && tab.uid == uid) === undefined) {
 	            this.setState({
-	                tabs: [{ tabType, uid, data, tabClass }].concat(this.state.tabs)
+	                tabs: [{ tabType, uid, data, tabClass, query }].concat(this.state.tabs)
 	            }, () => {
 	                this.saveTabs();
 	                this.reload(this.props);
@@ -2475,7 +2475,14 @@
 	        React.createElement("div", { className: 'description' },
 	            React.createElement(react_router_1.Link, { to: props.url },
 	                React.createElement("span", { className: 'entity-name' }, props.title),
-	                props.compact ? null : lodash_1.isArray(props.subtitle) ? (React.createElement("ul", null, props.subtitle.map((sub, i) => (React.createElement("li", { key: `tab-${props.index}-${i}` }, sub))))) : (React.createElement("span", { className: 'entity-type' }, props.subtitle)))),
+	                props.compact ? null : lodash_1.isObject(props.subtitle) ? (React.createElement("ul", null, Object.keys(props.subtitle).map((sub, i) => (React.createElement("li", { key: `tab-${props.index}-${i}` },
+	                    sub,
+	                    ":",
+	                    lodash_1.isObject(props.subtitle[sub]) ? (React.createElement("span", null,
+	                        React.createElement("ul", null, Object.keys(props.subtitle[sub]).map((subSub, j) => (React.createElement("li", { key: `tab-${props.index}-${i}-${j}` },
+	                            subSub,
+	                            ": ",
+	                            props.subtitle[sub][subSub])))))) : null))))) : (React.createElement("span", { className: 'entity-type' }, props.subtitle)))),
 	        !props.currentTab ? (React.createElement("span", { className: 'close-button' },
 	            props.tab.tabType === 'source' ? (React.createElement("i", { className: 'fa fa-unlock' })) : null,
 	            React.createElement("i", { className: 'fa fa-times', onClick: (e) => onCloseTab(e, props.tab.tabType, props.tab.uid) }))) : null))));
@@ -2492,13 +2499,13 @@
 	            if (tab.tabClass === 'view') {
 	                url = {
 	                    pathname: `/edit/${ApiService_1.AppUrls[tab.tabType]}`,
-	                    query: tab.data
+	                    query: tab.query
 	                };
 	            }
 	        }
 	        const subtitle = tab.tabClass === 'item' ?
 	            lodash_1.capitalize(ApiService_1.AppUrls[tab.tabType]).replace('_', ' ') + ' ' + tab.uid
-	            : Object.keys(tab.data).map((title) => `${title}: ${tab.data[title]}`);
+	            : tab.data;
 	        const title = item === undefined ? `${tab.tabType} list` : item.label;
 	        const currentTab = !props.list && tab.tabType === props.workspace && tab.uid == props.id;
 	        return (React.createElement(Card, { key: `tab-${tab.tabType}-${tab.tabClass}-${tab.uid}-${tab.query}`, currentTab: currentTab, url: url, tab: tab, title: title, subtitle: subtitle, index: index, compact: props.compact }));
@@ -4945,7 +4952,25 @@
 	        }, this.reload.bind(this));
 	    }
 	    addViewTab() {
-	        Signaller_1.createTab.dispatch('entity', Date.now(), 'view', this.state.queryData);
+	        const tabData = {};
+	        const mapping = [
+	            { key: 'p', display: 'Predicate', mod: (data) => this.props.dataStore.all.predicate.value.find((pred) => pred.uid == data).label },
+	            { key: 's', display: 'Sort', mod: (data) => data },
+	            { key: 'f', display: 'filterType', mod: (data) => data },
+	            { key: 'v', display: 'filterValue', mod: (data) => data },
+	            { key: 'i', display: 'invertFilter', mod: (data) => data }
+	        ];
+	        for (let i = 1; i < 4; i += 1) {
+	            for (let j = 0; j < mapping.length; j += 1) {
+	                if (this.state.queryData[`col${i}${mapping[j].key}`] !== undefined) {
+	                    if (tabData[`Column ${i}`] === undefined) {
+	                        tabData[`Column ${i}`] = {};
+	                    }
+	                    tabData[`Column ${i}`][mapping[j].display] = mapping[j].mod(this.state.queryData[`col${i}${mapping[j].key}`]);
+	                }
+	            }
+	        }
+	        Signaller_1.createTab.dispatch('entity', Date.now(), 'view', tabData, this.props.query);
 	    }
 	    render() {
 	        const entities = this.props.dataStore.all.entity.value;

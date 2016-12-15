@@ -185,7 +185,28 @@ export class EntityList extends React.Component<EntityListProps, EntityListState
     }
 
     public addViewTab() {
-      createTab.dispatch('entity', Date.now(), 'view', this.state.queryData);
+      const tabData = {};
+
+      const mapping = [
+        { key: 'p', display: 'Predicate', mod: (data) => this.props.dataStore.all.predicate.value.find((pred) => pred.uid == data).label },
+        { key: 's', display: 'Sort', mod: (data) => data },
+        { key: 'f', display: 'filterType', mod: (data) => data },
+        { key: 'v', display: 'filterValue', mod: (data) => data },
+        { key: 'i', display: 'invertFilter', mod: (data) => data }
+      ];
+
+      for (let i = 1; i < 4; i += 1) {
+        for (let j = 0; j < mapping.length; j += 1) {
+          if (this.state.queryData[`col${i}${mapping[j].key}`] !== undefined) {
+            if (tabData[`Column ${i}`] === undefined) {
+              tabData[`Column ${i}`] = {};
+            }
+            tabData[`Column ${i}`][mapping[j].display] = mapping[j].mod(this.state.queryData[`col${i}${mapping[j].key}`]);
+          }
+        }
+      }
+
+      createTab.dispatch('entity', Date.now(), 'view', tabData, this.props.query);
     }
 
     public render() {

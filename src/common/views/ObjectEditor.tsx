@@ -237,11 +237,11 @@ export class ObjectEditor extends React.Component<EntityEditorProps, EntityEdito
       });
     }
 
-    public createTab(tabType: string, uid: number, tabClass: string, data?: any) {
+public createTab(tabType: string, uid: number, tabClass: string, data?: any, query?: { [s: string]: string }) {
         // don't add a tab if it already exists
         if (find(this.state.tabs, (tab) => tab.tabType === tabType && tab.uid == uid) === undefined) {
             this.setState({
-                tabs: [{ tabType, uid, data, tabClass }].concat(this.state.tabs)
+                tabs: [{ tabType, uid, data, tabClass, query }].concat(this.state.tabs)
             }, () => {
                 this.saveTabs();
                 this.reload(this.props);

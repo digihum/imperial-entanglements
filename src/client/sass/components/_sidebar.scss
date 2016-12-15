@@ -59,6 +59,11 @@
 
 .sidebar-card {
 
+  ul {
+    padding-left: 0.5em;
+    font-size: 8pt;
+  }
+
   &.compact {
       height: 1.5em;
       .badge-container {
