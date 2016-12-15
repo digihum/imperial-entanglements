@@ -11,7 +11,7 @@
     "tasks": [
         { 
             "taskName": "Compile",
-            "args": ["run", "compile"],
+            "args": ["run", "webpack:watch"],
             "isBuildCommand": true
         }
     ]

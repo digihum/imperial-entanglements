@@ -2205,8 +2205,8 @@
 	const ObjectEditorCore = react_sortable_hoc_1.SortableContainer((props) => {
 	    return (React.createElement("span", { className: 'flex-fill' },
 	        React.createElement(Sidebar_1.Sidebar, { tabs: props.tabs, dataStore: props.dataStore, clearTabs: props.clearTabs, list: props.list, id: props.id, workspace: props.workspace }),
-	        React.createElement(Workspace_1.Workspace, { api: props.api, workspace: props.workspace, id: props.id, dataStore: props.dataStore, loading: props.loadingWheel, list: props.list }),
-	        props.splitWorkspace ? (React.createElement(Workspace_1.Workspace, { api: props.api, workspace: props.workspace, id: props.id, dataStore: props.dataStore, loading: props.loadingWheel, list: props.list })) : null,
+	        React.createElement(Workspace_1.Workspace, { api: props.api, workspace: props.workspace, id: props.id, dataStore: props.dataStore, loading: props.loadingWheel, location: props.location, list: props.list }),
+	        props.splitWorkspace ? (React.createElement(Workspace_1.Workspace, { api: props.api, workspace: props.workspace, id: props.id, dataStore: props.dataStore, loading: props.loadingWheel, location: props.location, list: props.list })) : null,
 	        React.createElement("div", { className: 'split-workspace-button-container', onClick: props.toggleSplitWorkspace }, props.splitWorkspace ? (React.createElement("i", { className: 'fa fa-times', title: 'split' })) : (React.createElement("i", { className: 'fa fa-columns', title: 'split' })))));
 	});
 	class ObjectEditor extends React.Component {
@@ -2376,7 +2376,7 @@
 	        return (React.createElement("section", { id: 'entity-editor', className: 'flex-fill' },
 	            React.createElement("span", { className: 'header-colour ' + this.props.workspace }),
 	            React.createElement("span", { className: 'flex-fill' },
-	                React.createElement(ObjectEditorCore, { tabs: this.state.tabs, api: this.props.api, dataStore: this.state.dataStore, id: this.state.id, workspace: this.props.workspace, onSortEnd: this.reorderTabs.bind(this), useDragHandle: true, loadingWheel: this.state.loading, splitWorkspace: this.state.splitWorkspace, helperClass: 'card-being-dragged', clearTabs: this.clearAllTabs.bind(this), toggleSplitWorkspace: () => this.setState({ splitWorkspace: !this.state.splitWorkspace }) }),
+	                React.createElement(ObjectEditorCore, { tabs: this.state.tabs, api: this.props.api, dataStore: this.state.dataStore, id: this.state.id, workspace: this.props.workspace, onSortEnd: this.reorderTabs.bind(this), useDragHandle: true, loadingWheel: this.state.loadingWheel, splitWorkspace: this.state.splitWorkspace, helperClass: 'card-being-dragged', clearTabs: this.clearAllTabs.bind(this), toggleSplitWorkspace: () => this.setState({ splitWorkspace: !this.state.splitWorkspace }), list: this.state.list, location: this.props.location }),
 	                React.createElement(Toast_1.Toast, null),
 	                (() => {
 	                    if (this.state.modalQueue.length === 0) {

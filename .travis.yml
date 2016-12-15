@@ -33,7 +33,7 @@ script:
   - npm install
 
   # build typescript
-  - npm run tsc || true
+  - npm run compile || true
 
   # copy test db
   - cp /data/blank.sqlite /data/mydb.sqlite

@@ -67,7 +67,8 @@ const ObjectEditorCore = SortableContainer((props: {
   loadingWheel: boolean,
   splitWorkspace: boolean,
   clearTabs: () => void,
-  toggleSplitWorkspace: () => void
+  toggleSplitWorkspace: () => void,
+  location: { pathname: string, search: string }
 }) => {
   return (
     <span className='flex-fill'>
@@ -86,6 +87,7 @@ const ObjectEditorCore = SortableContainer((props: {
       id={props.id}
       dataStore={props.dataStore}
       loading={props.loadingWheel}
+      location={props.location}
       list={props.list} />
 
     {props.splitWorkspace ? (
@@ -95,6 +97,7 @@ const ObjectEditorCore = SortableContainer((props: {
         id={props.id}
         dataStore={props.dataStore}
         loading={props.loadingWheel}
+        location={props.location}
         list={props.list} />
     ) : null}
 
@@ -333,11 +336,13 @@ export class ObjectEditor extends React.Component<EntityEditorProps, EntityEdito
                         workspace={this.props.workspace}
                         onSortEnd={this.reorderTabs.bind(this)} //TODO
                         useDragHandle={true}
-                        loadingWheel={this.state.loading}
+                        loadingWheel={this.state.loadingWheel}
                         splitWorkspace={this.state.splitWorkspace}
                         helperClass={'card-being-dragged'}
                         clearTabs={this.clearAllTabs.bind(this)}
                         toggleSplitWorkspace={() => this.setState({ splitWorkspace: !this.state.splitWorkspace})}
+                        list={this.state.list}
+                        location={this.props.location}
                        />
 
                     <Toast />

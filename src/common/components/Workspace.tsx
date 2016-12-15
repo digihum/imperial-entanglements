@@ -26,6 +26,7 @@ interface WorkspaceProps {
     list: boolean;
     dataStore: DataStore;
     loading: boolean;
+    location: { pathname: string, search: string };
 }
 
 interface WorkspaceState {
