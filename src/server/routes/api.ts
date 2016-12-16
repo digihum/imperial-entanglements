@@ -7,6 +7,8 @@
 // Vendor
 import * as Koa from 'koa';
 import * as KoaRouter from 'koa-router';
+import * as koaJSON from 'koa-json';
+import * as koaBodyParser from 'koa-bodyparser';
 
 // Database
 import { Database } from '../core/Database';
@@ -57,52 +59,52 @@ const sourceElementSpecial = (router: any, serverApiContext: ServerApiService, t
   router.use(koaConditionalGet());
   router.use(koaEtags());
 
-    router.get(`/api/v1/${AppUrls.source_element}/:source/:element`, function* (next : Koa.Context) {
+    router.get(`/${AppUrls.source_element}/:source/:element`, function* (ctx : Koa.Context) {
         yield serverApiContext
             .getItem<TrackedFalconItem>(typeMap[AppUrls.source_element], AppUrls.source_element, {
                 order: ['source', 'element'],
                 values: {
-                    source: this.params.source,
-                    element: this.params.element
+                    source: ctx.params.source,
+                    element: ctx.params.element
                 }
             })
-            .then((data) => this.body = Serializer.toJson(data));
+            .then((data) => ctx.body = Serializer.toJson(data));
     });
 
-    router.put(`/api/v1/${AppUrls.source_element}/:source/:element`, function* (next : Koa.Context) {
+    router.put(`/${AppUrls.source_element}/:source/:element`, function* (ctx : Koa.Context) {
         yield serverApiContext
             .putItem<TrackedFalconItem>(typeMap[AppUrls.source_element], AppUrls.source_element, {
                 order: ['source', 'element'],
                 values: {
-                    source: this.params.source,
-                    element: this.params.element
+                    source: ctx.params.source,
+                    element: ctx.params.element
                 }
-            }, this.request.body)
-            .then((data) => this.body = data);
+            }, ctx.request.body)
+            .then((data) => ctx.body = data);
     });
 
-    router.patch(`/api/v1/${AppUrls.source_element}/:source/:element`, function* (next : Koa.Context) {
+    router.patch(`/${AppUrls.source_element}/:source/:element`, function* (ctx : Koa.Context) {
         yield serverApiContext
             .patchItem<TrackedFalconItem>(typeMap[AppUrls.source_element], AppUrls.source_element, {
                 order: ['source', 'element'],
                 values: {
-                    source: this.params.source,
-                    element: this.params.element
+                    source: ctx.params.source,
+                    element: ctx.params.element
                 }
-            }, this.request.body)
-            .then((data) => this.body = data);
+            }, ctx.request.body)
+            .then((data) => ctx.body = data);
     });
 
-    router.del(`/api/v1/${AppUrls.source_element}/:source/:element`, function* (next : Koa.Context) {
+    router.del(`/${AppUrls.source_element}/:source/:element`, function* (ctx : Koa.Context) {
         yield serverApiContext
             .delItem<TrackedFalconItem>(typeMap[AppUrls.source_element], AppUrls.source_element, {
                 order: ['source', 'element'],
                 values: {
-                    source: this.params.source,
-                    element: this.params.element
+                    source: ctx.params.source,
+                    element: ctx.params.element
                 }
             })
-            .then((data) => this.body = data);
+            .then((data) => ctx.body = data);
     });
 };
 
@@ -110,107 +112,122 @@ const sourceElementSpecial = (router: any, serverApiContext: ServerApiService, t
 //  /entity/{entity_id}/predicate/{predicate_id}
 // /source/{source_id}/element/{element_id}
 
-export const api : (router: KoaRouter, s: ServerApiService) => KoaRouter
-    = (router: KoaRouter, serverApiContext: ServerApiService) => {
+const typeMap = {
+    [AppUrls.element_set]: ElementSet,
+    [AppUrls.record]: Record,
+    [AppUrls.entity_type]: EntityType,
+    [AppUrls.entity]: Entity,
+    [AppUrls.predicate] : Predicate,
+    [AppUrls.source] : Source,
+    [AppUrls.element] : Element,
+    [AppUrls.source_element]: SourceElement
+};
 
-    router.use()
+export const api = (db: Database) : Koa => {
 
-    const typeMap = {
-        [AppUrls.element_set]: ElementSet,
-        [AppUrls.record]: Record,
-        [AppUrls.entity_type]: EntityType,
-        [AppUrls.entity]: Entity,
-        [AppUrls.predicate] : Predicate,
-        [AppUrls.source] : Source,
-        [AppUrls.element] : Element,
-        [AppUrls.source_element]: SourceElement
-    };
+    const server = new Koa();
+    const router = new KoaRouter();
 
-    router.use(function* (next: Koa.Context) {
-        if (this.req.method === 'GET' || this.isAuthenticated()) {
-            yield next;
+    // router.use(koaJSON());
+    // router.use(koaBodyParser({
+    //     enableTypes: ['json', 'form', 'text']
+    // }));
+
+    const serverApiContext = wrapDatabase(db, false);
+
+    router.use(async (ctx: Koa.Context, next: any) => {
+        if (ctx.req.method === 'GET' || ctx.isAuthenticated()) {
+            return await next();
         } else {
-            this.status = 403;
-            this.body = 'You must be authorised to modify this resource';
+            ctx.status = 403;
+            ctx.body = 'You must be authorised to modify this resource';
         }
     });
 
-    router.use(function* (next: Koa.Context){
+    router.use(async (ctx: Koa.Context, next: any) => {
         try {
-            yield next;
+            return await next();
         } catch (err) {
             switch (err.constructor.name) {
                 case 'KeyNotFoundException':
-                    this.status = 404;
+                    ctx.status = 404;
                     break;
                 case 'CollectionNotFoundException':
-                    this.status = 404;
+                    ctx.status = 404;
                     break;
                 case 'OperationNotPermittedException':
-                    this.status = 422;
+                    ctx.status = 422;
                     break;
                 default:
-                    this.status = 500;
+                    ctx.status = 500;
             }
-            this.type = 'application/json';
+            ctx.type = 'application/json';
             if ( err.data !== undefined) {
-                yield err.data.data.then((data) => {
-                    this.body = JSON.stringify(Object.assign({}, err.data, { data: data }));
+                return await err.data.data.then((data) => {
+                    ctx.body = JSON.stringify(Object.assign({}, err.data, { data: data }));
                 });
             } else {
-                this.body = err.message;
+                ctx.body = err.message;
             }
         }
     });
 
-    router.get('/api/v1/query', function* (next : Koa.Context) {
-        yield serverApiContext.queryEngine.runQuery(this.query.query)
-            .then((result) => this.body = result);
+    router.get('/query', async (ctx : Koa.Context) => {
+      ctx.body = await serverApiContext.queryEngine.runQuery(ctx.query.query);
     });
 
     sourceElementSpecial(router, serverApiContext, typeMap);
 
-    router.get('/api/v1/:route/:id', function* (next : Koa.Context) {
-        yield serverApiContext
-            .getItem<any>(typeMap[this.params.route], this.params.route, parseInt(this.params.id))
-            .then((data) => this.body = Serializer.toJson(data));
+    router.get('/:route/:id', async (ctx : Koa.Context) => {
+
+        const data = await serverApiContext
+            .getItem<any>(typeMap[ctx.params.route], ctx.params.route, parseInt(ctx.params.id));
+
+        ctx.body = Serializer.toJson(data);
     });
 
 
-    router.get('/api/v1/:route', function* (next : Koa.Context) {
-        yield serverApiContext
-            .getCollection<any>(typeMap[this.params.route], this.params.route, this.query)
-            .then((data) => this.body = data.map((datum) => Serializer.toJson(datum)));
+    router.get('/:route', async (ctx : Koa.Context) => {
+        const data = await serverApiContext
+            .getCollection<any>(typeMap[ctx.params.route], ctx.params.route, ctx.query);
+
+        ctx.body = data.map((datum) => Serializer.toJson(datum));
     });
 
-    router.post('/api/v1/:route', function* (next : Koa.Context) {
-        yield serverApiContext
-            .postItem<any>(typeMap[this.params.route],this.params.route,
-              Serializer.fromJson(typeMap[this.params.route], Object.assign(this.request.body, {
-                creator: this.req.user.uid
-            })))
-            .then((data) => this.body = data);
+    router.post('/:route', async (ctx : Koa.Context) => {
+        const data = await serverApiContext
+            .postItem<any>(typeMap[ctx.params.route], ctx.params.route,
+              Serializer.fromJson(typeMap[ctx.params.route], Object.assign(ctx.request.body, {
+                creator: ctx.req.user.uid
+            })));
+
+        ctx.body = data;
     });
 
-    router.put('/api/v1/:route/:id', function* (next : Koa.Context) {
-        yield serverApiContext
-            .putItem<any>(typeMap[this.params.route], this.params.route, parseInt(this.params.id),
-            Serializer.fromJson(typeMap[this.params.route],this.request.body))
-            .then((data) => this.body = data);
+    router.put('/:route/:id', async (ctx : Koa.Context) => {
+        const data = await serverApiContext
+            .putItem<any>(typeMap[ctx.params.route], ctx.params.route, parseInt(ctx.params.id),
+            Serializer.fromJson(typeMap[ctx.params.route],ctx.request.body));
+
+        ctx.body = data;
     });
 
-    router.patch('/api/v1/:route/:id', function* (next : Koa.Context) {
-        yield serverApiContext
-            .patchItem<any>(typeMap[this.params.route], this.params.route, parseInt(this.params.id), this.request.body)
-            .then((data) => this.body = data);
+    router.patch('/:route/:id', async (ctx : Koa.Context) => {
+        const data = await serverApiContext
+            .patchItem<any>(typeMap[ctx.params.route], ctx.params.route, parseInt(ctx.params.id), ctx.request.body);
+
+        ctx.body = data;
     });
 
-    router.del('/api/v1/:route/:id', function* (next : Koa.Context) {
-        yield serverApiContext
-            .delItem<any>(typeMap[this.params.route], this.params.route, parseInt(this.params.id))
-            .then((data) => this.body = data);
+    router.del('/:route/:id', async (ctx : Koa.Context) => {
+        const data = await serverApiContext
+            .delItem<any>(typeMap[ctx.params.route], ctx.params.route, parseInt(ctx.params.id));
+
+        ctx.body = data;
     });
 
-    return router;
+    server.use(router.routes());
+    server.use(router.allowedMethods());
+
+    return server;
 };
-

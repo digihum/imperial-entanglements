@@ -53,7 +53,7 @@
 	const react_dom_1 = __webpack_require__(1);
 	const react_1 = __webpack_require__(2);
 	const FalconApp_1 = __webpack_require__(3);
-	const ClientApiService_1 = __webpack_require__(419);
+	const ClientApiService_1 = __webpack_require__(420);
 	const react_router_1 = __webpack_require__(4);
 	document.addEventListener('DOMContentLoaded', (event) => {
 	    react_dom_1.render(react_1.createElement(FalconApp_1.FalconApp, {
@@ -4628,18 +4628,18 @@
 	const React = __webpack_require__(2);
 	const Sidebar_1 = __webpack_require__(55);
 	const Workspace_1 = __webpack_require__(249);
-	const Toast_1 = __webpack_require__(407);
+	const Toast_1 = __webpack_require__(408);
 	const Signaller_1 = __webpack_require__(60);
 	const lodash_1 = __webpack_require__(59);
-	const CreatePredicate_1 = __webpack_require__(408);
-	const CreateRecord_1 = __webpack_require__(410);
-	const CreatePresetRecord_1 = __webpack_require__(411);
-	const CreateSource_1 = __webpack_require__(412);
-	const CreateEntity_1 = __webpack_require__(413);
-	const CreateEntityType_1 = __webpack_require__(414);
-	const ConflictResolution_1 = __webpack_require__(415);
-	const DataStore_1 = __webpack_require__(416);
-	const DataController_1 = __webpack_require__(418);
+	const CreatePredicate_1 = __webpack_require__(409);
+	const CreateRecord_1 = __webpack_require__(411);
+	const CreatePresetRecord_1 = __webpack_require__(412);
+	const CreateSource_1 = __webpack_require__(413);
+	const CreateEntity_1 = __webpack_require__(414);
+	const CreateEntityType_1 = __webpack_require__(415);
+	const ConflictResolution_1 = __webpack_require__(416);
+	const DataStore_1 = __webpack_require__(417);
+	const DataController_1 = __webpack_require__(419);
 	const react_sortable_hoc_1 = __webpack_require__(62);
 	const ObjectEditorCore = react_sortable_hoc_1.SortableContainer((props) => {
 	    return (React.createElement("span", { className: 'flex-fill' },
@@ -33067,7 +33067,7 @@
 	const EntityList_1 = __webpack_require__(402);
 	const PredicateList_1 = __webpack_require__(404);
 	const SourceList_1 = __webpack_require__(405);
-	const EntityTypeList_1 = __webpack_require__(406);
+	const EntityTypeList_1 = __webpack_require__(407);
 	exports.ObjectListWorkspace = (props) => (React.createElement("div", { className: 'workspace-editor object-list' }, (() => {
 	    switch (props.listType) {
 	        case 'entity':
@@ -33547,7 +33547,7 @@
 	const AddTabButton_1 = __webpack_require__(389);
 	const Signaller_1 = __webpack_require__(60);
 	const SearchBar_1 = __webpack_require__(269);
-	const RecursiveTree_1 = __webpack_require__(421);
+	const RecursiveTree_1 = __webpack_require__(406);
 	class SourceList extends React.Component {
 	    constructor() {
 	        super();
@@ -33613,9 +33613,44 @@
 	"use strict";
 	const React = __webpack_require__(2);
 	const AddTabButton_1 = __webpack_require__(389);
+	class RecursiveTree extends React.Component {
+	    constructor() {
+	        super();
+	        this.state = { collapsed: false };
+	    }
+	    render() {
+	        const filtered = this.props.data.filter((datum) => datum.parent === this.props.parentId);
+	        if (filtered.length === 0) {
+	            return null;
+	        }
+	        return (React.createElement("div", null, filtered.map((item) => (React.createElement("div", { key: item.label },
+	            React.createElement("div", { className: 'tree-label', onClick: () => this.setState({ collapsed: !this.state.collapsed }) },
+	                "- ",
+	                item.label,
+	                " ",
+	                React.createElement(AddTabButton_1.AddTabButton, { dataStore: this.props.dataStore, uid: item.uid, tabType: this.props.tabType })),
+	            !this.state.collapsed ? (React.createElement("div", { className: 'tree-children' },
+	                React.createElement(RecursiveTree, { dataStore: this.props.dataStore, data: this.props.data, tabType: this.props.tabType, parentId: item.uid }))) : null)))));
+	    }
+	}
+	exports.RecursiveTree = RecursiveTree;
+
+
+/***/ },
+/* 407 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * @fileOverview Sidebar for editor
+	 * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+	 * @version 0.1.0
+	 */
+	"use strict";
+	const React = __webpack_require__(2);
+	const AddTabButton_1 = __webpack_require__(389);
 	const Signaller_1 = __webpack_require__(60);
 	const SearchBar_1 = __webpack_require__(269);
-	const RecursiveTree_1 = __webpack_require__(421);
+	const RecursiveTree_1 = __webpack_require__(406);
 	class EntityTypeList extends React.Component {
 	    constructor() {
 	        super();
@@ -33672,7 +33707,7 @@
 
 
 /***/ },
-/* 407 */
+/* 408 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -33718,7 +33753,7 @@
 
 
 /***/ },
-/* 408 */
+/* 409 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -33728,7 +33763,7 @@
 	 */
 	"use strict";
 	const React = __webpack_require__(2);
-	const Overlay_1 = __webpack_require__(409);
+	const Overlay_1 = __webpack_require__(410);
 	const PredicateDescription_1 = __webpack_require__(398);
 	const falcon_core_1 = __webpack_require__(254);
 	const literalTypes_1 = __webpack_require__(399);
@@ -33813,7 +33848,7 @@
 
 
 /***/ },
-/* 409 */
+/* 410 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -33834,7 +33869,7 @@
 
 
 /***/ },
-/* 410 */
+/* 411 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -33844,7 +33879,7 @@
 	 */
 	"use strict";
 	const React = __webpack_require__(2);
-	const Overlay_1 = __webpack_require__(409);
+	const Overlay_1 = __webpack_require__(410);
 	const falcon_core_1 = __webpack_require__(254);
 	const ApiService_1 = __webpack_require__(45);
 	const ComboDropdown_1 = __webpack_require__(57);
@@ -33898,7 +33933,7 @@
 
 
 /***/ },
-/* 411 */
+/* 412 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -33958,7 +33993,7 @@
 
 
 /***/ },
-/* 412 */
+/* 413 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -33968,7 +34003,7 @@
 	 */
 	"use strict";
 	const React = __webpack_require__(2);
-	const Overlay_1 = __webpack_require__(409);
+	const Overlay_1 = __webpack_require__(410);
 	const falcon_core_1 = __webpack_require__(254);
 	const ApiService_1 = __webpack_require__(45);
 	const mousetrap = __webpack_require__(394);
@@ -34016,7 +34051,7 @@
 
 
 /***/ },
-/* 413 */
+/* 414 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -34026,7 +34061,7 @@
 	 */
 	"use strict";
 	const React = __webpack_require__(2);
-	const Overlay_1 = __webpack_require__(409);
+	const Overlay_1 = __webpack_require__(410);
 	const falcon_core_1 = __webpack_require__(254);
 	const ApiService_1 = __webpack_require__(45);
 	const ComboDropdown_1 = __webpack_require__(57);
@@ -34076,7 +34111,7 @@
 
 
 /***/ },
-/* 414 */
+/* 415 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -34086,7 +34121,7 @@
 	 */
 	"use strict";
 	const React = __webpack_require__(2);
-	const Overlay_1 = __webpack_require__(409);
+	const Overlay_1 = __webpack_require__(410);
 	const falcon_core_1 = __webpack_require__(254);
 	const ApiService_1 = __webpack_require__(45);
 	const mousetrap = __webpack_require__(394);
@@ -34128,7 +34163,7 @@
 
 
 /***/ },
-/* 415 */
+/* 416 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -34138,7 +34173,7 @@
 	 */
 	"use strict";
 	const React = __webpack_require__(2);
-	const Overlay_1 = __webpack_require__(409);
+	const Overlay_1 = __webpack_require__(410);
 	class ConflictResolution extends React.Component {
 	    constructor() {
 	        super();
@@ -34217,7 +34252,7 @@
 
 
 /***/ },
-/* 416 */
+/* 417 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -34226,7 +34261,7 @@
 	 * @version 0.1.0
 	 */
 	"use strict";
-	const immutable_1 = __webpack_require__(417);
+	const immutable_1 = __webpack_require__(418);
 	const falcon_core_1 = __webpack_require__(254);
 	exports.emptyDataStore = {
 	    all: {
@@ -34254,7 +34289,7 @@
 
 
 /***/ },
-/* 417 */
+/* 418 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -39238,7 +39273,7 @@
 	}));
 
 /***/ },
-/* 418 */
+/* 419 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -39249,7 +39284,7 @@
 	"use strict";
 	const falcon_core_1 = __webpack_require__(254);
 	const ApiService_1 = __webpack_require__(45);
-	const immutable_1 = __webpack_require__(417);
+	const immutable_1 = __webpack_require__(418);
 	const lodash_1 = __webpack_require__(59);
 	const moment = __webpack_require__(277);
 	const loadTabData = (api, tab) => {
@@ -39317,7 +39352,7 @@
 
 
 /***/ },
-/* 419 */
+/* 420 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -39330,7 +39365,7 @@
 	const queryString = __webpack_require__(33);
 	const Signaller_1 = __webpack_require__(60);
 	const lodash_1 = __webpack_require__(59);
-	const Exceptions_1 = __webpack_require__(420);
+	const Exceptions_1 = __webpack_require__(421);
 	var ApiService_1 = __webpack_require__(45);
 	exports.AppUrls = ApiService_1.AppUrls;
 	function handleErrors(response) {
@@ -39450,7 +39485,7 @@
 
 
 /***/ },
-/* 420 */
+/* 421 */
 /***/ function(module, exports) {
 
 	/**
@@ -39469,41 +39504,6 @@
 	exports.Exceptions = {
 	    UnprocessableEntity
 	};
-
-
-/***/ },
-/* 421 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * @fileOverview Sidebar for editor
-	 * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
-	 * @version 0.1.0
-	 */
-	"use strict";
-	const React = __webpack_require__(2);
-	const AddTabButton_1 = __webpack_require__(389);
-	class RecursiveTree extends React.Component {
-	    constructor() {
-	        super();
-	        this.state = { collapsed: false };
-	    }
-	    render() {
-	        const filtered = this.props.data.filter((datum) => datum.parent === this.props.parentId);
-	        if (filtered.length === 0) {
-	            return null;
-	        }
-	        return (React.createElement("div", null, filtered.map((item) => (React.createElement("div", { key: item.label },
-	            React.createElement("div", { className: 'tree-label', onClick: () => this.setState({ collapsed: !this.state.collapsed }) },
-	                "- ",
-	                item.label,
-	                " ",
-	                React.createElement(AddTabButton_1.AddTabButton, { dataStore: this.props.dataStore, uid: item.uid, tabType: this.props.tabType })),
-	            !this.state.collapsed ? (React.createElement("div", { className: 'tree-children' },
-	                React.createElement(RecursiveTree, { dataStore: this.props.dataStore, data: this.props.data, tabType: this.props.tabType, parentId: item.uid }))) : null)))));
-	    }
-	}
-	exports.RecursiveTree = RecursiveTree;
 
 
 /***/ }

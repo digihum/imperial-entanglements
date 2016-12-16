@@ -5,6 +5,7 @@
  */
 
 import * as Koa from 'koa';
+import * as KoaRouter from 'koa-router';
 
 import { Database } from '../core/Database';
 
@@ -13,13 +14,13 @@ import { GeneralStatisticsController } from '../stats/GeneralStatisticsControlle
 export const stats = (db: Database) : Koa => {
 
     const server = new Koa();
+    const router = new KoaRouter();
 
-    server.use( function* (next : Koa.Context) {
-      yield GeneralStatisticsController(db.query())
-      .then((result) => {
-        this.body = result;
-      });
+    router.get('/', async (context) => {
+      context.body = await GeneralStatisticsController(db.query());
     });
+
+    server.use(router.middleware());
 
     return server;
 };

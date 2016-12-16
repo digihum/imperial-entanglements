@@ -16,6 +16,7 @@ import * as koaConditionalGet from 'koa-conditional-get';
 import * as koaEtags from 'koa-etag';
 import * as koaPassport from 'koa-passport';
 import * as koaMount from 'koa-mount';
+import * as koaConvert from 'koa-convert';
 
 import { Config as KnexConfig } from 'knex';
 import { Database } from './Database';
@@ -52,14 +53,15 @@ export class Server {
     public init(databaseConfig: KnexConfig) : void {
 
         this.app = new Koa();
-        this.app.use(koaLogger());
+
+        this.app.use(koaConvert(koaLogger()));
         koaQs(this.app, 'strict');
 
-        this.app.use(koaBodyParser());
+        this.app.use(koaConvert(koaBodyParser()));
 
         // Sessions
         this.app.keys = ['secret'];
-        this.app.use(koaSession(this.app));
+        this.app.use(koaConvert(koaSession(this.app)));
 
         this.app.use(koaPassport.initialize());
         this.app.use(koaPassport.session());
@@ -77,16 +79,24 @@ export class Server {
 
         setupAuth(db);
 
-        let router = new KoaRouter();
-        router.use(koaJSON());
-        router.use(koaBodyParser({
-            enableTypes: ['json', 'form', 'text']
-        }));
+        //let router = new KoaRouter();
+        // router.use(koaJSON());
+        // router.use(koaBodyParser({
+        //     enableTypes: ['json', 'form', 'text']
+        // }));
 
-        const serverApiContext = wrapDatabase(db, false);
-        router = api(router, serverApiContext);
+        // const serverApiContext = wrapDatabase(db, false);
+        // router = api(router, serverApiContext);
 
-        this.app.use(router.middleware());
+        // router.get('/cat', async (ctx: Koa.Context) => {
+        //   ctx.body = 'meow';
+        // });
+
+        // this.app.use(router.middleware());
+
+        this.app.use(koaMount('/api/v1', api(db)));
+
+        /*
 
         const admin = new Koa();
         admin.use(koaMount('/', auth()));
@@ -97,7 +107,10 @@ export class Server {
 
         this.app.use(koaMount('/', frontendApp));
 
-        this.app.use(function* (next: Koa.Context) { this.body = '404'; });
+        */
+        this.app.use(async (ctx: Koa.Context) => {
+          ctx.body = '404';
+        });
     }
 
     public listen() : void {
