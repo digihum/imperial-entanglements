@@ -101,7 +101,6 @@
 	const Koa = __webpack_require__(2);
 	const koaStatic = __webpack_require__(3);
 	const koaBodyParser = __webpack_require__(4);
-	const koaQs = __webpack_require__(5);
 	const koaLogger = __webpack_require__(6);
 	const koaSession = __webpack_require__(7);
 	const koaPassport = __webpack_require__(8);
@@ -123,7 +122,7 @@
 	    init(databaseConfig) {
 	        this.app = new Koa();
 	        this.app.use(koaConvert(koaLogger()));
-	        koaQs(this.app, 'strict');
+	        //koaQs(this.app, 'strict');
 	        this.app.use(koaConvert(koaBodyParser()));
 	        // Sessions
 	        this.app.keys = ['secret'];
@@ -141,9 +140,9 @@
 	        this.app.use(koaMount('/api/v1', api_1.api(db)));
 	        const admin = new Koa();
 	        admin.use(koaMount('/', auth_1.auth()));
+	        admin.use(koaMount('/', adminApp_1.adminApp(this.skeleton, db)));
 	        admin.use(koaMount('/snapshot', snapshot_1.snapshot(this.snapshot)));
 	        admin.use(koaMount('/stats', stats_1.stats(db)));
-	        admin.use(koaMount('/', adminApp_1.adminApp(this.skeleton, db)));
 	        this.app.use(koaMount('/admin', admin));
 	        this.app.use(koaMount('/', imperial_entanglements_frontend_1.server));
 	        this.app.use((ctx) => __awaiter(this, void 0, void 0, function* () {
@@ -176,12 +175,7 @@
 	module.exports = require("koa-bodyparser");
 
 /***/ },
-/* 5 */
-/***/ function(module, exports) {
-
-	module.exports = require("koa-qs");
-
-/***/ },
+/* 5 */,
 /* 6 */
 /***/ function(module, exports) {
 
@@ -1992,7 +1986,7 @@
 	    const serverApiContext = api_1.wrapDatabase(db, false);
 	    server.use((ctx, next) => __awaiter(this, void 0, void 0, function* () {
 	        if (ctx.isAuthenticated()) {
-	            return yield next;
+	            return yield next();
 	        }
 	        else {
 	            ctx.body = fs_1.readFileSync(path.join(process.cwd(), 'dist', 'server', 'login.html'), 'utf8');

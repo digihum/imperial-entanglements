@@ -53,7 +53,7 @@ export class Server {
         this.app = new Koa();
 
         this.app.use(koaConvert(koaLogger()));
-        koaQs(this.app, 'strict');
+        //koaQs(this.app, 'strict');
 
         this.app.use(koaConvert(koaBodyParser()));
 
@@ -80,10 +80,13 @@ export class Server {
         this.app.use(koaMount('/api/v1', api(db)));
 
         const admin = new Koa();
+
         admin.use(koaMount('/', auth()));
+        admin.use(koaMount('/', adminApp(this.skeleton, db)));
+
         admin.use(koaMount('/snapshot', snapshot(this.snapshot)));
         admin.use(koaMount('/stats', stats(db)));
-        admin.use(koaMount('/', adminApp(this.skeleton, db)));
+
         this.app.use(koaMount('/admin', admin));
 
         this.app.use(koaMount('/', frontendApp));

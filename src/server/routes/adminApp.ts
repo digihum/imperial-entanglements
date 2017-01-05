@@ -28,9 +28,9 @@ export const adminApp = (skeleton: _.TemplateExecutor, db: Database ) : Koa => {
     const serverRenderContext = createServerRenderContext();
     const serverApiContext = wrapDatabase(db, false);
 
-    server.use(async (ctx: Koa.Context, next: any) => {
+    server.use(async (ctx: Koa.Context, next: () => Promise<any>) => {
         if (ctx.isAuthenticated()) {
-            return await next;
+            return await next();
         } else {
             ctx.body = readFileSync(path.join(process.cwd(), 'dist', 'server', 'login.html'), 'utf8');
         }
