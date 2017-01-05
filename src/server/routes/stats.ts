@@ -5,7 +5,7 @@
  */
 
 import * as Koa from 'koa';
-import * as KoaRouter from 'koa-router';
+import * as __ from 'koa-route';
 
 import { Database } from '../core/Database';
 
@@ -14,13 +14,10 @@ import { GeneralStatisticsController } from '../stats/GeneralStatisticsControlle
 export const stats = (db: Database) : Koa => {
 
     const server = new Koa();
-    const router = new KoaRouter();
 
-    router.get('/', async (context) => {
-      context.body = await GeneralStatisticsController(db.query());
-    });
-
-    server.use(router.middleware());
+    server.use(__.get('/', async (ctx: Koa.Context) => {
+      ctx.body = await GeneralStatisticsController(db.query());
+    }));
 
     return server;
 };

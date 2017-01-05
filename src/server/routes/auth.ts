@@ -6,40 +6,35 @@
 
 // Vendor
 import * as Koa from 'koa';
-import * as KoaRouter from 'koa-router';
+import * as __ from 'koa-route';
 import * as koaPassport from 'koa-passport';
 
 export const auth = () : Koa => {
 
     const server = new Koa();
 
-    const authRouter = new KoaRouter();
-    authRouter.post(`/login`, koaPassport.authenticate('local', {
+    server.use(__.post('/login', koaPassport.authenticate('local', {
         successRedirect: '/admin',
         failureRedirect: '/login'
-    }));
+    })));
 
     const self = this;
 
-    authRouter.get(`/logout`, function*() {
-        this.logout();
-        this.redirect('/admin');
-    });
+    server.use(__.get('/logout', async (ctx: Koa.Context) => {
+        ctx.logout();
+        ctx.redirect('/admin');
+    }));
 
-    authRouter.get(`/currentuser`, function*() {
-        this.body = {
-            username: this.req.user.name
+   server.use(__.get('/currentuser', async (ctx: Koa.Context) => {
+        ctx.body = {
+            username: ctx.req.user.name
         };
-    });
+   }));
 
     // create user
     // delete user
     // reset user password
     // change user permission
-
-
-    server.use(authRouter.middleware());
-
 
     return server;
 };

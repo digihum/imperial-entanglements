@@ -6,8 +6,6 @@
 
 import * as Koa from 'koa';
 import * as koaStatic from 'koa-static';
-import * as KoaRouter from 'koa-router';
-import * as koaJSON from 'koa-json';
 import * as koaBodyParser from 'koa-bodyparser';
 import * as koaQs from 'koa-qs';
 import * as koaLogger from 'koa-logger';
@@ -24,7 +22,7 @@ import { Database } from './Database';
 import { template } from 'lodash';
 import { readFileSync } from 'fs';
 
-import { api, wrapDatabase } from '../routes/api';
+import { api } from '../routes/api';
 import { adminApp } from '../routes/adminApp';
 import { auth  } from '../routes/auth';
 import { snapshot  } from '../routes/snapshot';
@@ -79,35 +77,17 @@ export class Server {
 
         setupAuth(db);
 
-        //let router = new KoaRouter();
-        // router.use(koaJSON());
-        // router.use(koaBodyParser({
-        //     enableTypes: ['json', 'form', 'text']
-        // }));
-
-        // const serverApiContext = wrapDatabase(db, false);
-        // router = api(router, serverApiContext);
-
-        // router.get('/cat', async (ctx: Koa.Context) => {
-        //   ctx.body = 'meow';
-        // });
-
-        // this.app.use(router.middleware());
-
         this.app.use(koaMount('/api/v1', api(db)));
-
-        /*
 
         const admin = new Koa();
         admin.use(koaMount('/', auth()));
         admin.use(koaMount('/snapshot', snapshot(this.snapshot)));
         admin.use(koaMount('/stats', stats(db)));
-        admin.use(koaMount('/', adminApp(this.skeleton, serverApiContext)));
+        admin.use(koaMount('/', adminApp(this.skeleton, db)));
         this.app.use(koaMount('/admin', admin));
 
         this.app.use(koaMount('/', frontendApp));
 
-        */
         this.app.use(async (ctx: Koa.Context) => {
           ctx.body = '404';
         });

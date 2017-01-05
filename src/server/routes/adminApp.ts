@@ -14,32 +14,35 @@ import { renderToStaticMarkup } from 'react-dom/server';
 import { createElement } from 'react';
 import { ServerRouter, createServerRenderContext } from 'react-router';
 
-import { ServerApiService } from '../core/ServerApiService';
+import { Database } from '../core/Database';
+
+import { wrapDatabase } from './api';
 
 import * as path from 'path';
 
 import * as _ from 'lodash';
 
-export const adminApp = (skeleton: _.TemplateExecutor, serverApiContext: ServerApiService ) : Koa => {
+export const adminApp = (skeleton: _.TemplateExecutor, db: Database ) : Koa => {
 
     const server = new Koa();
     const serverRenderContext = createServerRenderContext();
+    const serverApiContext = wrapDatabase(db, false);
 
-    server.use(function* (next: Koa.Context) {
-        if (this.isAuthenticated()) {
-            yield next;
+    server.use(async (ctx: Koa.Context, next: any) => {
+        if (ctx.isAuthenticated()) {
+            return await next;
         } else {
-            this.body = readFileSync(path.join(process.cwd(), 'dist', 'server', 'login.html'), 'utf8');
+            ctx.body = readFileSync(path.join(process.cwd(), 'dist', 'server', 'login.html'), 'utf8');
         }
     });
 
-    server.use(function* (next: Koa.Context) {
-        this.body = skeleton({ body: renderToStaticMarkup(createElement(FalconApp, {
+    server.use(async (ctx: Koa.Context) => {
+        ctx.body = skeleton({ body: renderToStaticMarkup(createElement(FalconApp, {
             router: ServerRouter,
             api: serverApiContext,
             routerSettings: {
                 context: serverRenderContext,
-                location: this.request.url
+                location: ctx.request.url
             },
             environment: 'website',
             connected: true

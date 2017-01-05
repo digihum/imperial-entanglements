@@ -4383,7 +4383,7 @@
 
 /***/ },
 /* 46 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
 	/**
 	 * @fileOverview <Description Missing>
@@ -4391,48 +4391,80 @@
 	 * @version 0.1.0
 	 */
 	"use strict";
+	const falcon_core_1 = __webpack_require__(254);
+	const simpleKey = (raw) => {
+	    return parseInt(raw[0]);
+	};
 	exports.itemTypes = {
 	    element_set: {
 	        machineName: 'element_set',
 	        name: 'Element Set',
 	        plural: 'Element Sets',
-	        workspace: ''
+	        workspace: '',
+	        buildKey: simpleKey,
+	        item: falcon_core_1.ElementSet
+	    },
+	    element: {
+	        machineName: 'element',
+	        name: 'Element',
+	        plural: 'Elements',
+	        workspace: '',
+	        buildKey: simpleKey,
+	        item: falcon_core_1.Element
 	    },
 	    record: {
 	        machineName: 'record',
 	        name: 'Record',
 	        plural: 'Records',
-	        workspace: ''
+	        workspace: '',
+	        buildKey: simpleKey,
+	        item: falcon_core_1.Record
 	    },
 	    entity: {
 	        machineName: 'entity',
 	        name: 'Entity',
 	        plural: 'Entities',
-	        workspace: 'entity'
+	        workspace: 'entity',
+	        buildKey: simpleKey,
+	        item: falcon_core_1.Entity
 	    },
 	    entity_type: {
 	        machineName: 'entity_type',
 	        name: 'Entity Type',
 	        plural: 'Entity Types',
-	        workspace: 'entity_type'
+	        workspace: 'entity_type',
+	        buildKey: simpleKey,
+	        item: falcon_core_1.EntityType
 	    },
 	    predicate: {
-	        machineName: 'property',
+	        machineName: 'predicate',
 	        name: 'Property',
 	        plural: 'Properties',
-	        workspace: 'predicate'
+	        workspace: 'predicate',
+	        buildKey: simpleKey,
+	        item: falcon_core_1.Predicate
 	    },
 	    source: {
 	        machineName: 'source',
 	        name: 'Source',
 	        plural: 'Sources',
-	        workspace: 'source'
+	        workspace: 'source',
+	        buildKey: simpleKey,
+	        item: falcon_core_1.Source
 	    },
 	    source_element: {
 	        machineName: 'source_element',
 	        name: 'Source Element',
 	        plural: 'Source Elements',
-	        workspace: ''
+	        workspace: '',
+	        buildKey: (raw) => ({
+	            order: ['source', 'element'],
+	            values: {
+	                source: parseInt(raw[0]),
+	                element: parseInt(raw[1])
+	            }
+	        }),
+	        item: falcon_core_1.SourceElement
 	    }
 	};
 
