@@ -14,9 +14,9 @@ import { renderToStaticMarkup } from 'react-dom/server';
 import { createElement } from 'react';
 import { ServerRouter, createServerRenderContext } from 'react-router';
 
-import { Database } from '../core/Database';
+import { Database } from '../../backend/data/Database';
 
-import { wrapDatabase } from './api';
+import { wrapDatabase } from '../../backend/data/wrapDatabase';
 
 import * as path from 'path';
 

@@ -8,9 +8,9 @@ import { expect } from 'chai';
 import * as Knex from 'knex';
 
 import { ElementSet, Serializer } from 'falcon-core';
-import { ServerApiService, AppUrls } from '../core/ServerApiService';
-import { wrapDatabase } from '../routes/api';
-import { Database } from '../core/Database';
+import { ServerApiService, AppUrls } from '../../backend/ServerApiService';
+import { wrapDatabase } from '../../backend/data/wrapDatabase';
+import { Database } from '../../backend/data/Database';
 
 let knex;
 let apiService : ServerApiService;

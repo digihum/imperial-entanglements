@@ -4,24 +4,24 @@
  * @version 0.0.1
  */
 
-import { ApiService } from '../../common/ApiService';
+import { ApiService } from '../common/ApiService';
 
-import { IController } from '../controllers/IController';
-import { CollectionNotFoundException } from './Exceptions';
+import { IController } from './controllers/IController';
+import { CollectionNotFoundException } from '../common/Exceptions';
 
 import { QueryEngine } from './QueryEngine';
 
-import { CompositeKey, TrackedFalconItem, Serializer } from 'falcon-core';
+import { CompositeKey, TrackedFalconItem } from 'falcon-core';
 
 import * as moment from 'moment';
 
-import { triggerReload } from '../../common/Signaller';
+import { triggerReload } from '../common/Signaller';
 
-export { AppUrls } from '../../common/ApiService';
+export { AppUrls } from '../common/ApiService';
 
-import { Database } from './Database';
+import { Database } from './data/Database';
 
-import { GeneralStatisticsController } from '../stats/GeneralStatisticsController';
+import { GeneralStatisticsController } from './stats/GeneralStatisticsController';
 
 export class ServerApiService implements ApiService {
 

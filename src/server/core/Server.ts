@@ -16,7 +16,7 @@ import * as koaMount from 'koa-mount';
 import * as koaConvert from 'koa-convert';
 
 import { Config as KnexConfig } from 'knex';
-import { Database } from './Database';
+import { Database } from '../../backend/data/Database';
 
 import { template } from 'lodash';
 import { readFileSync } from 'fs';

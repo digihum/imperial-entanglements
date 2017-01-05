@@ -4,13 +4,13 @@
  * @version 0.0.1
  */
 
-import { Database } from '../core/Database';
+import { Database } from '../../common/data/Database';
 
 import { SourceElement, Serializer, CompositeKey } from 'falcon-core';
 
 import { GenericController } from './GenericController';
 
-import { KeyNotFoundException } from '../core/Exceptions';
+import { KeyNotFoundException } from '../../common/Exceptions';
 
 import { omit } from 'lodash';
 

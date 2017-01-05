@@ -8,7 +8,7 @@
 import * as Knex from 'knex';
 import { omit } from 'lodash';
 
-import { KeyNotFoundException, DatabaseIntegrityError } from './Exceptions';
+import { KeyNotFoundException, DatabaseIntegrityError } from '../../common/Exceptions';
 
 export class Database {
 

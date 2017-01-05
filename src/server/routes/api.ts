@@ -11,9 +11,8 @@ import * as koaJSON from 'koa-json';
 import * as koaBodyParser from 'koa-bodyparser';
 
 // Database
-import { Database } from '../core/Database';
-import { ServerApiService } from '../core/ServerApiService';
-import { QueryEngine } from '../core/QueryEngine';
+import { Database } from '../../backend/data/Database';
+import { wrapDatabase } from '../../backend/data/wrapDatabase';
 
 import * as koaConditionalGet from 'koa-conditional-get';
 import * as koaEtags from 'koa-etag';
@@ -21,36 +20,6 @@ import * as koaEtags from 'koa-etag';
 import { Serializer } from 'falcon-core';
 
 import { itemTypes } from '../../common/itemTypes';
-
-// Controllers
-import { IController } from '../controllers/IController';
-
-import {
-    EntityController,
-    EntityTypeController,
-    ElementSetController,
-    PredicateController,
-    SourceController,
-    RecordController,
-    ElementController,
-    SourceElementController
-} from '../controllers/controllers';
-
-export const wrapDatabase : (s: Database, fakeCreator: boolean) => ServerApiService =
-    (db: Database, fakeCreator: boolean) => {
-    const routes = new Map<string, IController>([
-        [itemTypes.element_set.machineName, new ElementSetController(db)],
-        [itemTypes.record.machineName, new RecordController(db)],
-        [itemTypes.entity_type.machineName, new EntityTypeController(db)],
-        [itemTypes.entity.machineName, new EntityController(db)],
-        [itemTypes.predicate.machineName, new PredicateController(db)],
-        [itemTypes.source.machineName, new SourceController(db)],
-        [itemTypes.element.machineName, new ElementController(db)],
-        [itemTypes.source_element.machineName, new SourceElementController(db)]
-    ]);
-
-    return new ServerApiService(db, routes, new QueryEngine(db), fakeCreator);
-};
 
 export const api = (db: Database) : Koa => {
 

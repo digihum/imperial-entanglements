@@ -9,7 +9,7 @@ import { Strategy as LocalStrategy } from 'passport-local';
 
 import { hash, compare } from 'bcrypt';
 
-import { Database } from './Database';
+import { Database } from '../../backend/data/Database';
 
 export const setupAuth = (db: Database) => {
     passport.serializeUser((user, done) => {

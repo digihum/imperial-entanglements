@@ -10,7 +10,7 @@ import {
   GraphQLList
 } from 'graphql';
 
-import { Database } from '../core/Database';
+import { Database } from '../data/Database';
 
 export const entityQLType = (db: Database, predicateType: GraphQLObjectType) : GraphQLObjectType => {
     return new GraphQLObjectType({

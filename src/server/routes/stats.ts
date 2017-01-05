@@ -7,9 +7,9 @@
 import * as Koa from 'koa';
 import * as __ from 'koa-route';
 
-import { Database } from '../core/Database';
+import { Database } from '../../backend/data/Database';
 
-import { GeneralStatisticsController } from '../stats/GeneralStatisticsController';
+import { GeneralStatisticsController } from '../../backend/stats/GeneralStatisticsController';
 
 export const stats = (db: Database) : Koa => {
 

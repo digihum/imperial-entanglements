@@ -7,8 +7,8 @@
 import { render } from 'react-dom';
 import { createElement } from 'react';
 import { FalconApp } from '../common/FalconApp';
-import { Database } from '../server/core/Database';
-import { wrapDatabase } from '../server/routes/api';
+import { Database } from '../backend/data/Database';
+import { wrapDatabase } from '../backend/data/wrapDatabase';
 import { MemoryRouter } from 'react-router';
 
 import * as electron from 'electron';

@@ -4,7 +4,7 @@
  * @version 0.0.1
  */
 
-import { Database } from '../core/Database';
+import { Database } from '../../common/data/Database';
 
 import { Element, Serializer } from 'falcon-core';
 

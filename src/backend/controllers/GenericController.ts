@@ -5,7 +5,7 @@
  */
 
 import { IController } from './IController';
-import { Database } from '../core/Database';
+import { Database } from '../../common/data/Database';
 
 import { CompositeKey, FalconItem } from 'falcon-core';
 

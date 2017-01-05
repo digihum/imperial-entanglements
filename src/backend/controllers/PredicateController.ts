@@ -4,13 +4,13 @@
  * @version 0.0.1
  */
 
-import { Database } from '../core/Database';
+import { Database } from '../../common/data/Database';
 
 import { Predicate, Serializer } from 'falcon-core';
 
 import { GenericController } from './GenericController';
 
-import { OperationNotPermittedException } from '../core/Exceptions';
+import { OperationNotPermittedException } from '../../common/Exceptions';
 
 import { RecordController } from './RecordController';
 

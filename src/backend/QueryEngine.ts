@@ -12,10 +12,10 @@ import {
   GraphQLList
 } from 'graphql';
 
-import { Database } from './Database';
+import { Database } from './data/Database';
 
-import { entityQLType } from '../graphql/entityQLType';
-import { predicateQLType } from '../graphql/predicateQLType';
+import { entityQLType } from './graphql/entityQLType';
+import { predicateQLType } from './graphql/predicateQLType';
 
 export class QueryEngine {
 
