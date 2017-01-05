@@ -1,5 +1,5 @@
 /**
- * @fileOverview Controller for element sets
+ * @fileOverview Controller for entities
  * @author <a href='mailto:tim.hollies@warwick.ac.uk'>Tim Hollies</a>
  * @version 0.0.1
  */

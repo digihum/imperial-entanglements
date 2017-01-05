@@ -9,10 +9,8 @@
 process.env.NODE_ENV = 'test';
 
 import * as chai from 'chai';
-import * as chaiHttp from 'chai-http';
+import 'chai-http';
 import * as Knex from 'knex';
-
-chai.use(chaiHttp);
 
 let knex;
 const knexConfig = {

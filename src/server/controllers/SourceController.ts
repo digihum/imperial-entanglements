@@ -1,5 +1,5 @@
 /**
- * @fileOverview Controller for element sets
+ * @fileOverview Controller for sources
  * @author <a href='mailto:tim.hollies@warwick.ac.uk'>Tim Hollies</a>
  * @version 0.0.1
  */
@@ -144,24 +144,25 @@ export class SourceController extends GenericController<Source> {
     }
 
     //TODO should find every child source, not just the direct children
-    public deleteItem(obj: { new(): Source; }, uid: number) : Promise<string> {
+    public async deleteItem(obj: { new(): Source; }, uid: number) : Promise<string> {
         // check if this entity is the parent of another entity or if it has any relationships
         // pointing towards it.
-        return Promise.all([
+
+        const [ records, sources ] = await Promise.all([
             this.db.loadCollection('records', { source: uid}),
             this.db.loadCollection('sources', { parent: uid})
-        ]).then(([records, sources]) => {
-            if (records.length + sources.length === 0) {
-                return this.db.deleteItem(this.tableName, uid);
-            } else {
-                throw new OperationNotPermittedException({
-                    message: 'The operation could not be completed as the source is used by other records',
-                    data: Promise.resolve({
-                        record: records.map((record) => RecordController.fromSchema(record)),
-                        source: sources.map((source) => this.fromSchema(source))
-                    })
-                });
-            }
-        });
+        ]);
+
+        if (records.length + sources.length === 0) {
+            return this.db.deleteItem(this.tableName, uid);
+        } else {
+            throw new OperationNotPermittedException({
+                message: 'The operation could not be completed as the source is used by other records',
+                data: Promise.resolve({
+                    record: records.map((record) => RecordController.fromSchema(record)),
+                    source: sources.map((source) => this.fromSchema(source))
+                })
+            });
+        }
     }
 }

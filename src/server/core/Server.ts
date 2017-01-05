@@ -7,11 +7,10 @@
 import * as Koa from 'koa';
 import * as koaStatic from 'koa-static';
 import * as koaBodyParser from 'koa-bodyparser';
-import * as koaQs from 'koa-qs';
 import * as koaLogger from 'koa-logger';
 import * as koaSession from 'koa-session';
-import * as koaConditionalGet from 'koa-conditional-get';
-import * as koaEtags from 'koa-etag';
+// import * as koaConditionalGet from 'koa-conditional-get';
+// import * as koaEtags from 'koa-etag';
 import * as koaPassport from 'koa-passport';
 import * as koaMount from 'koa-mount';
 import * as koaConvert from 'koa-convert';

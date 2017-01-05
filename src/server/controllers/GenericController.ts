@@ -1,5 +1,5 @@
 /**
- * @fileOverview Controller for element sets
+ * @fileOverview Generic controller containing logic common to most controller classes
  * @author <a href='mailto:tim.hollies@warwick.ac.uk'>Tim Hollies</a>
  * @version 0.0.1
  */

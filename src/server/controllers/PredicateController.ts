@@ -1,5 +1,5 @@
 /**
- * @fileOverview Controller for element sets
+ * @fileOverview Controller for predicates
  * @author <a href='mailto:tim.hollies@warwick.ac.uk'>Tim Hollies</a>
  * @version 0.0.1
  */
@@ -68,14 +68,14 @@ export class PredicateController extends GenericController<Predicate> {
         return PredicateController.fromSchema(data);
     }
 
-    public getCollectionJson(obj: { new(): Predicate; }, params: any = {}) : Promise<Predicate[]>  {
+    public async getCollectionJson(obj: { new(): Predicate; }, params: any = {}) : Promise<Predicate[]>  {
         if (params.domain !== undefined) {
             //TODO: this check should be unecessery
-            return this.db.getAncestorsOf(isArray(params.domain) ? params.domain[0] : params.domain, 'entity_types')
-            .then((ancestors) => {
-                return this.db.select('predicates').whereIn('domain', ancestors.concat([params.domain[0]]))
-                .then((results) => results.map((result) => this.fromSchema(result)));
-            });
+            const ancestorIds = await this.db.getAncestorsOf(isArray(params.domain) ? params.domain[0] : params.domain, 'entity_types');
+
+            return this.db.select('predicates').whereIn('domain', ancestorIds.concat([params.domain[0]]))
+              .then((results) => results.map((result) => this.fromSchema(result)));
+
         } else {
             return super.getCollectionJson(obj, params);
         }
@@ -135,7 +135,7 @@ export class PredicateController extends GenericController<Predicate> {
                         });
                     }
 
-                    return this.db.getChildrenOf(data.range, 'entity_types')
+                    return this.db.getChildrenOf(parseInt(data.range as string), 'entity_types')
                     .then((res) => {
                         records.map((e) => e.value_entity)
                         .forEach((e) => {
@@ -156,22 +156,21 @@ export class PredicateController extends GenericController<Predicate> {
         return super.patchItem(obj, uid, data);
     }
 
-     public deleteItem(obj: { new(): Predicate; }, uid: number) : Promise<string> {
+     public async deleteItem(obj: { new(): Predicate; }, uid: number) : Promise<string> {
         // check if this entity is the parent of another entity or if it has any relationships
         // pointing towards it.
-        return Promise.all([
-            this.db.loadCollection('records', { predicate: uid})
-        ]).then(([records]) => {
-            if (records.length === 0) {
-                return this.db.deleteItem(this.tableName, uid);
-            } else {
-                throw new OperationNotPermittedException({
-                    message: 'The operation could not be completed as the predicate is used by other records',
-                    data: Promise.resolve({
-                        record: records.map((record) => RecordController.fromSchema(record))
-                    })
-                });
-            }
-        });
+
+        const records = await this.db.loadCollection('records', { predicate: uid });
+
+        if (records.length === 0) {
+            return this.db.deleteItem(this.tableName, uid);
+        } else {
+            throw new OperationNotPermittedException({
+                message: 'The operation could not be completed as the predicate is used by other records',
+                data: Promise.resolve({
+                    record: records.map((record) => RecordController.fromSchema(record))
+                })
+            });
+        }
     }
 }

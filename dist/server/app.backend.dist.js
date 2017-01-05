@@ -103,6 +103,8 @@
 	const koaBodyParser = __webpack_require__(4);
 	const koaLogger = __webpack_require__(6);
 	const koaSession = __webpack_require__(7);
+	// import * as koaConditionalGet from 'koa-conditional-get';
+	// import * as koaEtags from 'koa-etag';
 	const koaPassport = __webpack_require__(8);
 	const koaMount = __webpack_require__(9);
 	const koaConvert = __webpack_require__(10);
