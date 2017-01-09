@@ -51,7 +51,7 @@
 	 */
 	"use strict";
 	const Server_1 = __webpack_require__(1);
-	const dotenv_1 = __webpack_require__(288);
+	const dotenv_1 = __webpack_require__(292);
 	dotenv_1.config();
 	const server = new Server_1.Server();
 	const databaseConnection = {
@@ -118,7 +118,7 @@
 	const stats_1 = __webpack_require__(282);
 	const Auth_1 = __webpack_require__(283);
 	const SqliteSnapshot_1 = __webpack_require__(286);
-	const imperial_entanglements_frontend_1 = __webpack_require__(287);
+	const server_1 = __webpack_require__(287);
 	const path = __webpack_require__(279);
 	class Server {
 	    init(databaseConfig) {
@@ -146,7 +146,7 @@
 	        admin.use(koaMount('/snapshot', snapshot_1.snapshot(this.snapshot)));
 	        admin.use(koaMount('/stats', stats_1.stats(db)));
 	        this.app.use(koaMount('/admin', admin));
-	        this.app.use(koaMount('/', imperial_entanglements_frontend_1.server));
+	        this.app.use(koaMount('/', server_1.server));
 	        this.app.use((ctx) => __awaiter(this, void 0, void 0, function* () {
 	            ctx.body = '404';
 	        }));
@@ -7394,12 +7394,18 @@
 	 * will remain to ensure logic does not differ in production.
 	 */
 	
-	function invariant(condition, format, a, b, c, d, e, f) {
-	  if (process.env.NODE_ENV !== 'production') {
+	var validateFormat = function validateFormat(format) {};
+	
+	if (process.env.NODE_ENV !== 'production') {
+	  validateFormat = function validateFormat(format) {
 	    if (format === undefined) {
 	      throw new Error('invariant requires an error message argument');
 	    }
-	  }
+	  };
+	}
+	
+	function invariant(condition, format, a, b, c, d, e, f) {
+	  validateFormat(format);
 	
 	  if (!condition) {
 	    var error;
@@ -26408,12 +26414,99 @@
 
 /***/ },
 /* 287 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
-	module.exports = require("imperial-entanglements-frontend");
+	/**
+	 * @fileOverview Entry point for server application
+	 * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+	 * @version 0.0.1
+	 */
+	"use strict";
+	var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+	    return new (P || (P = Promise))(function (resolve, reject) {
+	        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+	        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+	        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+	        step((generator = generator.apply(thisArg, _arguments)).next());
+	    });
+	};
+	const Koa = __webpack_require__(2);
+	const koaStatic = __webpack_require__(3);
+	const path = __webpack_require__(279);
+	const createElement = __webpack_require__(288);
+	const inferno_server_1 = __webpack_require__(289);
+	const home_1 = __webpack_require__(290);
+	exports.server = new Koa();
+	const Layout = (props) => {
+	    return (createElement("html", null,
+	        createElement("head", null,
+	            createElement("title", null, "Imperial Entanglements"),
+	            createElement("link", { rel: "stylesheet", href: "https://unpkg.com/leaflet@1.0.2/dist/leaflet.css" }),
+	            createElement("link", { rel: "stylesheet", href: "app.css" }),
+	            createElement("script", { src: "https://unpkg.com/leaflet@1.0.2/dist/leaflet.js" })),
+	        createElement("body", null,
+	            createElement("div", { id: 'main-container' }, props.Content),
+	            createElement("script", { src: 'app.js' }))));
+	};
+	exports.server.use(koaStatic(path.join(process.cwd(), 'public')));
+	exports.server.use((ctx) => __awaiter(this, void 0, void 0, function* () {
+	    console.log(home_1.home);
+	    ctx.body = inferno_server_1.renderToString(createElement(Layout, { Content: home_1.home }));
+	    ;
+	}));
+	//# sourceMappingURL=server.js.map
 
 /***/ },
 /* 288 */
+/***/ function(module, exports) {
+
+	module.exports = require("inferno-create-element");
+
+/***/ },
+/* 289 */
+/***/ function(module, exports) {
+
+	module.exports = require("inferno-server");
+
+/***/ },
+/* 290 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	const createElement = __webpack_require__(288);
+	const map_1 = __webpack_require__(291);
+	exports.home = (createElement("section", { className: 'imperial-entanglements' },
+	    createElement("div", { className: 'timeline' }),
+	    createElement("div", { className: 'workspace' },
+	        createElement(map_1.map, null))));
+	//# sourceMappingURL=home.js.map
+
+/***/ },
+/* 291 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	const createElement = __webpack_require__(288);
+	;
+	const setupLeafletMap = (mapNode) => {
+	    if (typeof window !== undefined) {
+	        const L = window.L;
+	        const map = L.map(mapNode).setView([51.505, -0.09], 13);
+	        L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+	            attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+	        }).addTo(map);
+	        L.marker([51.5, -0.09]).addTo(map)
+	            .bindPopup('A pretty CSS3 popup.<br> Easily customizable.')
+	            .openPopup();
+	    }
+	};
+	exports.map = (props) => (createElement("div", { className: 'panel map' },
+	    createElement("h3", null, "Map Panel"),
+	    createElement("div", { className: 'map-box', ref: setupLeafletMap })));
+	//# sourceMappingURL=map.js.map
+
+/***/ },
+/* 292 */
 /***/ function(module, exports) {
 
 	module.exports = require("dotenv");

@@ -31,7 +31,7 @@ import { setupAuth } from './Auth';
 
 import { SqliteSnapshot } from './SqliteSnapshot';
 
-import { server as frontendApp } from 'imperial-entanglements-frontend';
+import { server as frontendApp } from 'imperial-entanglements-frontend/dist/server';
 
 import * as path from 'path';
 
