@@ -42,6 +42,8 @@ export interface DataStore {
     }>>;
 
   };
+
+  lockedSource: number | null;
 }
 
 export const emptyDataStore : DataStore = {
@@ -70,7 +72,9 @@ export const emptyDataStore : DataStore = {
       source: Source;
       elements: SourceElement;
     }>>()
-  }
+  },
+
+  lockedSource: null
 };
 
 export const emptyTabs = [

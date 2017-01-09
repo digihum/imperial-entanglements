@@ -5950,7 +5950,8 @@
 	        entity_type: immutable_1.Map(),
 	        predicate: immutable_1.Map(),
 	        source: immutable_1.Map()
-	    }
+	    },
+	    lockedSource: null
 	};
 	exports.emptyTabs = [
 	    { entity: immutable_1.Map() },
