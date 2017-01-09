@@ -91,6 +91,7 @@ export class PredicateList extends React.Component<PredicateListProps, Predicate
                             <td>Label</td>
                             <td>Domain</td>
                             <td>Range</td>
+                            <td>Uses</td>
                         </tr>
                     </thead>
                     <tbody>
@@ -108,6 +109,7 @@ export class PredicateList extends React.Component<PredicateListProps, Predicate
                                 <td>{predicate.label}</td>
                                 <td>{entityType ? entityType.label : ''}</td>
                                 <td>{predicate.rangeIsReference ? rangeType ? rangeType.label : '' : rangeType}</td>
+                                <td>{predicate.uses}</td>
                             </tr>
                         );}
                     )}

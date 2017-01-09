@@ -130,18 +130,15 @@
 	    app.use(koaPassport.initialize());
 	    app.use(koaPassport.session());
 	    app.use(koaStatic(path.join(process.cwd(), 'dist', 'server', 'static')));
-	    this.skeleton = lodash_1.template(fs_1.readFileSync(path.join(process.cwd(), 'dist', 'server', 'index.html'), 'utf8'));
-	    this.apiRoute = 'api/v1';
-	    this.adminRoute = 'admin';
-	    this.adminEditRoute = 'edit';
+	    const skeleton = lodash_1.template(fs_1.readFileSync(path.join(process.cwd(), 'dist', 'server', 'index.html'), 'utf8'));
 	    const db = new Database_1.Database(databaseConfig);
-	    this.snapshot = new SqliteSnapshot_1.SqliteSnapshot(databaseConfig);
+	    const snapshotter = new SqliteSnapshot_1.SqliteSnapshot(databaseConfig);
 	    Auth_1.setupAuth(db);
 	    app.use(koaMount('/api/v1', api_1.api(db)));
 	    const admin = new Koa();
 	    admin.use(koaMount('/', auth_1.auth()));
-	    admin.use(koaMount('/', adminApp_1.adminApp(this.skeleton, db)));
-	    admin.use(koaMount('/snapshot', snapshot_1.snapshot(this.snapshot)));
+	    admin.use(koaMount('/', adminApp_1.adminApp(skeleton, db)));
+	    admin.use(koaMount('/snapshot', snapshot_1.snapshot(snapshotter)));
 	    admin.use(koaMount('/stats', stats_1.stats(db)));
 	    app.use(koaMount('/admin', admin));
 	    app.use(koaMount('/', server_1.server));
@@ -1135,19 +1132,20 @@
 	 */
 	"use strict";
 	class GenericController {
-	    constructor(db, table) {
+	    constructor(db, table, readTable) {
 	        this.db = db;
 	        this.tableName = table;
+	        this.readTableName = readTable === undefined ? table : readTable;
 	    }
 	    getItemJson(obj, uid) {
 	        if (typeof (uid) !== 'number') {
 	            throw new Error('Expected single column identifier');
 	        }
-	        return this.db.loadItem(this.tableName, uid)
+	        return this.db.loadItem(this.readTableName, uid)
 	            .then((data) => this.fromSchema(data));
 	    }
 	    getCollectionJson(obj, params = {}) {
-	        return this.db.loadCollection(this.tableName, params)
+	        return this.db.loadCollection(this.readTableName, params)
 	            .then((data) => data.map((datum) => this.fromSchema(datum)));
 	    }
 	    postItem(obj, data) {
@@ -1376,7 +1374,7 @@
 	const lodash_1 = __webpack_require__(12);
 	class PredicateController extends GenericController_1.GenericController {
 	    constructor(db) {
-	        super(db, 'predicates');
+	        super(db, 'predicates', 'predicate_complete');
 	    }
 	    static toSchema(data) {
 	        const out = Object.assign(lodash_1.omit(falcon_core_1.Serializer.toJson(data), 'range', 'rangeIsReference', 'sameAs', 'creationTimestamp', 'lastmodifiedTimestamp'), {
@@ -1402,6 +1400,9 @@
 	            data.range = data.range_type;
 	            data.rangeIsReference = false;
 	        }
+	        if (data.uses === null) {
+	            data.uses = 0;
+	        }
 	        return Object.assign(Object.create(falcon_core_1.Predicate.prototype), Object.assign(data, {
 	            'sameAs': data.same_as
 	        }));
@@ -1418,7 +1419,7 @@
 	            if (params.domain !== undefined) {
 	                //TODO: this check should be unecessery
 	                const ancestorIds = yield this.db.getAncestorsOf(lodash_1.isArray(params.domain) ? params.domain[0] : params.domain, 'entity_types');
-	                return this.db.select('predicates').whereIn('domain', ancestorIds.concat([params.domain[0]]))
+	                return this.db.select(this.readTableName).whereIn('domain', ancestorIds.concat([params.domain[0]]))
 	                    .then((results) => results.map((result) => this.fromSchema(result)));
 	            }
 	            else {
@@ -4693,7 +4694,7 @@
 	                React.createElement("div", null,
 	                    React.createElement(react_router_1.Link, { to: `/edit/entity?col1p=${this.props.id}&col1f=exists` },
 	                        "Uses: ",
-	                        this.state.records.length)),
+	                        predicate.uses)),
 	                React.createElement("div", { className: 'edit-group' },
 	                    React.createElement("label", { className: 'small' }, "Description"),
 	                    React.createElement(StringEditableFieldComponent, { value: predicate.description, component: EditableParagraph_1.EditableParagraph, onChange: (value) => this.updatePredicate('description', value) })),
@@ -5183,7 +5184,8 @@
 	                            React.createElement("td", null, "#"),
 	                            React.createElement("td", null, "Label"),
 	                            React.createElement("td", null, "Domain"),
-	                            React.createElement("td", null, "Range"))),
+	                            React.createElement("td", null, "Range"),
+	                            React.createElement("td", null, "Uses"))),
 	                    React.createElement("tbody", null, this.props.dataStore.all.predicate.value.filter(this.state.filterFunc).map((predicate) => {
 	                        const entityType = this.props.dataStore.all.entity_type.value.find((t) => t.uid === predicate.domain);
 	                        const rangeType = predicate.rangeIsReference ?
@@ -5196,7 +5198,8 @@
 	                                React.createElement(AddTabButton_1.AddTabButton, { dataStore: this.props.dataStore, uid: predicate.uid, tabType: 'predicate' })),
 	                            React.createElement("td", null, predicate.label),
 	                            React.createElement("td", null, entityType ? entityType.label : ''),
-	                            React.createElement("td", null, predicate.rangeIsReference ? rangeType ? rangeType.label : '' : rangeType)));
+	                            React.createElement("td", null, predicate.rangeIsReference ? rangeType ? rangeType.label : '' : rangeType),
+	                            React.createElement("td", null, predicate.uses)));
 	                    }))))));
 	    }
 	}

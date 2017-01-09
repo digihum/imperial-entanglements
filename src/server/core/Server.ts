@@ -55,14 +55,10 @@ export const Server = (databaseConfig: KnexConfig) : Koa => {
 
     app.use(koaStatic(path.join(process.cwd(), 'dist', 'server', 'static')));
 
-    this.skeleton = template(readFileSync(path.join(process.cwd(), 'dist', 'server', 'index.html'), 'utf8'));
-
-    this.apiRoute = 'api/v1';
-    this.adminRoute = 'admin';
-    this.adminEditRoute = 'edit';
+    const skeleton = template(readFileSync(path.join(process.cwd(), 'dist', 'server', 'index.html'), 'utf8'));
 
     const db = new Database(databaseConfig);
-    this.snapshot = new SqliteSnapshot(databaseConfig);
+    const snapshotter = new SqliteSnapshot(databaseConfig);
 
     setupAuth(db);
 
@@ -71,9 +67,9 @@ export const Server = (databaseConfig: KnexConfig) : Koa => {
     const admin = new Koa();
 
     admin.use(koaMount('/', auth()));
-    admin.use(koaMount('/', adminApp(this.skeleton, db)));
+    admin.use(koaMount('/', adminApp(skeleton, db)));
 
-    admin.use(koaMount('/snapshot', snapshot(this.snapshot)));
+    admin.use(koaMount('/snapshot', snapshot(snapshotter)));
     admin.use(koaMount('/stats', stats(db)));
 
     app.use(koaMount('/admin', admin));

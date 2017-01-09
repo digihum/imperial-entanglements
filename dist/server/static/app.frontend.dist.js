@@ -33078,7 +33078,7 @@
 	                React.createElement("div", null,
 	                    React.createElement(react_router_1.Link, { to: `/edit/entity?col1p=${this.props.id}&col1f=exists` },
 	                        "Uses: ",
-	                        this.state.records.length)),
+	                        predicate.uses)),
 	                React.createElement("div", { className: 'edit-group' },
 	                    React.createElement("label", { className: 'small' }, "Description"),
 	                    React.createElement(StringEditableFieldComponent, { value: predicate.description, component: EditableParagraph_1.EditableParagraph, onChange: (value) => this.updatePredicate('description', value) })),
@@ -33674,7 +33674,8 @@
 	                            React.createElement("td", null, "#"),
 	                            React.createElement("td", null, "Label"),
 	                            React.createElement("td", null, "Domain"),
-	                            React.createElement("td", null, "Range"))),
+	                            React.createElement("td", null, "Range"),
+	                            React.createElement("td", null, "Uses"))),
 	                    React.createElement("tbody", null, this.props.dataStore.all.predicate.value.filter(this.state.filterFunc).map((predicate) => {
 	                        const entityType = this.props.dataStore.all.entity_type.value.find((t) => t.uid === predicate.domain);
 	                        const rangeType = predicate.rangeIsReference ?
@@ -33687,7 +33688,8 @@
 	                                React.createElement(AddTabButton_1.AddTabButton, { dataStore: this.props.dataStore, uid: predicate.uid, tabType: 'predicate' })),
 	                            React.createElement("td", null, predicate.label),
 	                            React.createElement("td", null, entityType ? entityType.label : ''),
-	                            React.createElement("td", null, predicate.rangeIsReference ? rangeType ? rangeType.label : '' : rangeType)));
+	                            React.createElement("td", null, predicate.rangeIsReference ? rangeType ? rangeType.label : '' : rangeType),
+	                            React.createElement("td", null, predicate.uses)));
 	                    }))))));
 	    }
 	}

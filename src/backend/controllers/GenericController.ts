@@ -5,20 +5,24 @@
  */
 
 import { IController } from './IController';
-import { Database } from '../../common/data/Database';
+import { Database } from '../data/Database';
 
 import { CompositeKey, FalconItem } from 'falcon-core';
 
 export abstract class GenericController<T extends FalconItem> implements IController {
 
     protected tableName: string;
+    protected readTableName: string;
+
     protected db : Database;
 
     constructor(
         db: Database,
-        table: string) {
+        table: string,
+        readTable?: string) {
         this.db = db;
         this.tableName = table;
+        this.readTableName = readTable === undefined ? table : readTable;
     }
 
     protected abstract fromSchema(data: any) : T;
@@ -31,12 +35,12 @@ export abstract class GenericController<T extends FalconItem> implements IContro
             throw new Error('Expected single column identifier');
         }
 
-        return this.db.loadItem(this.tableName, uid)
+        return this.db.loadItem(this.readTableName, uid)
         .then((data) => this.fromSchema(data));
     }
 
     public getCollectionJson(obj: { new(): T; }, params: any = {}) : Promise<T[]> {
-        return this.db.loadCollection(this.tableName, params)
+        return this.db.loadCollection(this.readTableName, params)
          .then((data) => data.map((datum) =>  this.fromSchema(datum)));
     }
 

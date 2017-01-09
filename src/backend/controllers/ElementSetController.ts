@@ -4,7 +4,7 @@
  * @version 0.0.1
  */
 
-import { Database } from '../../common/data/Database';
+import { Database } from '../data/Database';
 
 import { ElementSet, Serializer } from 'falcon-core';
 import { GenericController } from './GenericController';

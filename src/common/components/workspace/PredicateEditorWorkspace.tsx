@@ -213,7 +213,7 @@ export class PredicateEditorWorkspace extends React.Component<PredicateEditorPro
 
                 <section className='editor-body'>
 
-                    <div><Link to={`/edit/entity?col1p=${this.props.id}&col1f=exists`}>Uses: {this.state.records.length}</Link></div>
+                    <div><Link to={`/edit/entity?col1p=${this.props.id}&col1f=exists`}>Uses: {predicate.uses}</Link></div>
 
                     <div className='edit-group'>
                         <label className='small'>Description</label>

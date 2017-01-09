@@ -4,7 +4,7 @@
  * @version 0.0.1
  */
 
-import { Database } from '../../common/data/Database';
+import { Database } from '../data/Database';
 
 import { Predicate, Serializer } from 'falcon-core';
 
@@ -19,7 +19,7 @@ import { omit, isArray } from 'lodash';
 export class PredicateController extends GenericController<Predicate> {
 
     constructor(db : Database) {
-        super(db, 'predicates');
+        super(db, 'predicates', 'predicate_complete');
     }
 
     public static toSchema(data: Predicate) {
@@ -54,6 +54,10 @@ export class PredicateController extends GenericController<Predicate> {
             data.rangeIsReference = false;
         }
 
+        if (data.uses === null) {
+          data.uses = 0;
+        }
+
         return Object.assign(Object.create(Predicate.prototype), Object.assign(data, {
             'sameAs': data.same_as
         }));
@@ -73,7 +77,7 @@ export class PredicateController extends GenericController<Predicate> {
             //TODO: this check should be unecessery
             const ancestorIds = await this.db.getAncestorsOf(isArray(params.domain) ? params.domain[0] : params.domain, 'entity_types');
 
-            return this.db.select('predicates').whereIn('domain', ancestorIds.concat([params.domain[0]]))
+            return this.db.select(this.readTableName).whereIn('domain', ancestorIds.concat([params.domain[0]]))
               .then((results) => results.map((result) => this.fromSchema(result)));
 
         } else {
