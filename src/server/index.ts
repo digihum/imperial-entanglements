@@ -10,8 +10,6 @@ import { Config as KnexConfig, ConnectionConfig, Sqlite3ConnectionConfig } from 
 
 loadEnvironmentConfig();
 
-const server = new Server();
-
 const databaseConnection : KnexConfig = {
   useNullAsDefault: true,
   connection: {}
@@ -37,6 +35,6 @@ if (process.env.DB_TYPE === 'postgres') {
   (databaseConnection.connection as ConnectionConfig).database = process.env.DB_DATABASE;
 }
 
-server.init(databaseConnection);
+const server = Server(databaseConnection);
 
-server.listen();
+server.listen(8080);

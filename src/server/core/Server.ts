@@ -37,65 +37,52 @@ import * as path from 'path';
 
 import * as _ from 'lodash';
 
-export class Server {
+export const Server = (databaseConfig: KnexConfig) : Koa => {
 
-    private app: Koa;
-    private skeleton: _.TemplateExecutor;
-    private apiRoute: string;
-    private adminRoute: string;
-    private adminEditRoute: string;
+    const app = new Koa();
 
-    private snapshot: SqliteSnapshot;
+    app.use(koaConvert(koaLogger()));
+    //koaQs(app, 'strict');
 
-    public init(databaseConfig: KnexConfig) : void {
+    app.use(koaConvert(koaBodyParser()));
 
-        this.app = new Koa();
+    // Sessions
+    app.keys = ['secret'];
+    app.use(koaConvert(koaSession(app)));
 
-        this.app.use(koaConvert(koaLogger()));
-        //koaQs(this.app, 'strict');
+    app.use(koaPassport.initialize());
+    app.use(koaPassport.session());
 
-        this.app.use(koaConvert(koaBodyParser()));
+    app.use(koaStatic(path.join(process.cwd(), 'dist', 'server', 'static')));
 
-        // Sessions
-        this.app.keys = ['secret'];
-        this.app.use(koaConvert(koaSession(this.app)));
+    this.skeleton = template(readFileSync(path.join(process.cwd(), 'dist', 'server', 'index.html'), 'utf8'));
 
-        this.app.use(koaPassport.initialize());
-        this.app.use(koaPassport.session());
+    this.apiRoute = 'api/v1';
+    this.adminRoute = 'admin';
+    this.adminEditRoute = 'edit';
 
-        this.app.use(koaStatic(path.join(process.cwd(), 'dist', 'server', 'static')));
+    const db = new Database(databaseConfig);
+    this.snapshot = new SqliteSnapshot(databaseConfig);
 
-        this.skeleton = template(readFileSync(path.join(process.cwd(), 'dist', 'server', 'index.html'), 'utf8'));
+    setupAuth(db);
 
-        this.apiRoute = 'api/v1';
-        this.adminRoute = 'admin';
-        this.adminEditRoute = 'edit';
+    app.use(koaMount('/api/v1', api(db)));
 
-        const db = new Database(databaseConfig);
-        this.snapshot = new SqliteSnapshot(databaseConfig);
+    const admin = new Koa();
 
-        setupAuth(db);
+    admin.use(koaMount('/', auth()));
+    admin.use(koaMount('/', adminApp(this.skeleton, db)));
 
-        this.app.use(koaMount('/api/v1', api(db)));
+    admin.use(koaMount('/snapshot', snapshot(this.snapshot)));
+    admin.use(koaMount('/stats', stats(db)));
 
-        const admin = new Koa();
+    app.use(koaMount('/admin', admin));
 
-        admin.use(koaMount('/', auth()));
-        admin.use(koaMount('/', adminApp(this.skeleton, db)));
+    app.use(koaMount('/', frontendApp));
 
-        admin.use(koaMount('/snapshot', snapshot(this.snapshot)));
-        admin.use(koaMount('/stats', stats(db)));
+    app.use(async (ctx: Koa.Context) => {
+      ctx.body = '404';
+    });
 
-        this.app.use(koaMount('/admin', admin));
-
-        this.app.use(koaMount('/', frontendApp));
-
-        this.app.use(async (ctx: Koa.Context) => {
-          ctx.body = '404';
-        });
-    }
-
-    public listen() : void {
-        this.app.listen(8080);
-    }
+    return app;
 }

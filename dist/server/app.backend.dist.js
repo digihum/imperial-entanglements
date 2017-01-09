@@ -53,7 +53,6 @@
 	const Server_1 = __webpack_require__(1);
 	const dotenv_1 = __webpack_require__(292);
 	dotenv_1.config();
-	const server = new Server_1.Server();
 	const databaseConnection = {
 	    useNullAsDefault: true,
 	    connection: {}
@@ -76,8 +75,8 @@
 	    databaseConnection.connection.password = process.env.DB_PASSWORD;
 	    databaseConnection.connection.database = process.env.DB_DATABASE;
 	}
-	server.init(databaseConnection);
-	server.listen();
+	const server = Server_1.Server(databaseConnection);
+	server.listen(8080);
 
 
 /***/ },
@@ -120,42 +119,37 @@
 	const SqliteSnapshot_1 = __webpack_require__(286);
 	const server_1 = __webpack_require__(287);
 	const path = __webpack_require__(279);
-	class Server {
-	    init(databaseConfig) {
-	        this.app = new Koa();
-	        this.app.use(koaConvert(koaLogger()));
-	        //koaQs(this.app, 'strict');
-	        this.app.use(koaConvert(koaBodyParser()));
-	        // Sessions
-	        this.app.keys = ['secret'];
-	        this.app.use(koaConvert(koaSession(this.app)));
-	        this.app.use(koaPassport.initialize());
-	        this.app.use(koaPassport.session());
-	        this.app.use(koaStatic(path.join(process.cwd(), 'dist', 'server', 'static')));
-	        this.skeleton = lodash_1.template(fs_1.readFileSync(path.join(process.cwd(), 'dist', 'server', 'index.html'), 'utf8'));
-	        this.apiRoute = 'api/v1';
-	        this.adminRoute = 'admin';
-	        this.adminEditRoute = 'edit';
-	        const db = new Database_1.Database(databaseConfig);
-	        this.snapshot = new SqliteSnapshot_1.SqliteSnapshot(databaseConfig);
-	        Auth_1.setupAuth(db);
-	        this.app.use(koaMount('/api/v1', api_1.api(db)));
-	        const admin = new Koa();
-	        admin.use(koaMount('/', auth_1.auth()));
-	        admin.use(koaMount('/', adminApp_1.adminApp(this.skeleton, db)));
-	        admin.use(koaMount('/snapshot', snapshot_1.snapshot(this.snapshot)));
-	        admin.use(koaMount('/stats', stats_1.stats(db)));
-	        this.app.use(koaMount('/admin', admin));
-	        this.app.use(koaMount('/', server_1.server));
-	        this.app.use((ctx) => __awaiter(this, void 0, void 0, function* () {
-	            ctx.body = '404';
-	        }));
-	    }
-	    listen() {
-	        this.app.listen(8080);
-	    }
-	}
-	exports.Server = Server;
+	exports.Server = (databaseConfig) => {
+	    const app = new Koa();
+	    app.use(koaConvert(koaLogger()));
+	    //koaQs(app, 'strict');
+	    app.use(koaConvert(koaBodyParser()));
+	    // Sessions
+	    app.keys = ['secret'];
+	    app.use(koaConvert(koaSession(app)));
+	    app.use(koaPassport.initialize());
+	    app.use(koaPassport.session());
+	    app.use(koaStatic(path.join(process.cwd(), 'dist', 'server', 'static')));
+	    this.skeleton = lodash_1.template(fs_1.readFileSync(path.join(process.cwd(), 'dist', 'server', 'index.html'), 'utf8'));
+	    this.apiRoute = 'api/v1';
+	    this.adminRoute = 'admin';
+	    this.adminEditRoute = 'edit';
+	    const db = new Database_1.Database(databaseConfig);
+	    this.snapshot = new SqliteSnapshot_1.SqliteSnapshot(databaseConfig);
+	    Auth_1.setupAuth(db);
+	    app.use(koaMount('/api/v1', api_1.api(db)));
+	    const admin = new Koa();
+	    admin.use(koaMount('/', auth_1.auth()));
+	    admin.use(koaMount('/', adminApp_1.adminApp(this.skeleton, db)));
+	    admin.use(koaMount('/snapshot', snapshot_1.snapshot(this.snapshot)));
+	    admin.use(koaMount('/stats', stats_1.stats(db)));
+	    app.use(koaMount('/admin', admin));
+	    app.use(koaMount('/', server_1.server));
+	    app.use((ctx) => __awaiter(this, void 0, void 0, function* () {
+	        ctx.body = '404';
+	    }));
+	    return app;
+	};
 
 
 /***/ },
