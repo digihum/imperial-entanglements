@@ -7,21 +7,25 @@
 import * as React from 'react';
 
 import { ApiService } from '../../ApiService';
-import { DataStore } from '../../DataStore';
 import { EntityType } from 'falcon-core';
 
 import { AddTabButton } from '../AddTabButton';
 
-import { showModal } from '../../Signaller';
 import { ModalDefinition } from '../modal/ModalDefinition';
 
 import { SearchBar } from '../SearchBar';
 
 import { RecursiveTree } from '../RecursiveTree';
 
+import { inject, observer } from 'mobx-react';
+
+import { DataController } from '../../stores/DataController';
+import { ModalStore } from '../../stores/ModalStore';
+
 interface EntityTypeListProps {
     api: ApiService;
-    dataStore: DataStore;
+    dataStore?: DataController;
+    modalStore?: ModalStore;
 }
 
 interface EntityTypeListState {
@@ -29,6 +33,8 @@ interface EntityTypeListState {
     mode: 'list' | 'tree';
 }
 
+@inject('dataStore', 'modalStore')
+@observer
 export class EntityTypeList extends React.Component<EntityTypeListProps, EntityTypeListState> {
 
     constructor() {
@@ -48,7 +54,7 @@ export class EntityTypeList extends React.Component<EntityTypeListProps, EntityT
             settings: {}
         };
 
-        showModal.dispatch(a);
+        this.props.modalStore!.addModal(a);
     }
 
 

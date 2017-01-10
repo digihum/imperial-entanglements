@@ -9,7 +9,7 @@ import * as React from 'react';
 import * as lev from 'levenshtein';
 
 import { ApiService, AppUrls } from '../../ApiService';
-import { DataStore } from '../../DataStore';
+
 import { Entity, EntityType, Predicate, Record } from 'falcon-core';
 import { ComboDropdown, ComboDropdownOption } from '../ComboDropdown';
 import { noop, cloneDeep, isUndefined } from 'lodash';
@@ -22,9 +22,13 @@ import { formatDate } from '../../helper/formatDate';
 
 import { inject, observer } from 'mobx-react';
 
+import { DataController } from '../../stores/DataController';
+import { ModalStore } from '../../stores/ModalStore';
+
 interface EntityListProps {
     api: ApiService;
-    dataStore?: DataStore;
+    dataStore?: DataController;
+    modalStore?: ModalStore;
     query: any;
 }
 
@@ -88,7 +92,7 @@ const customColumns = (predicates, columns, updateColumnParams, rotateSort) => {
     });
 };
 
-@inject('dataStore')
+@inject('dataStore', 'modalStore')
 @observer
 export class EntityList extends React.Component<EntityListProps, EntityListState> {
 
@@ -160,7 +164,7 @@ export class EntityList extends React.Component<EntityListProps, EntityListState
             }
         };
 
-        showModal.dispatch(a);
+        this.props.modalStore!.addModal(a);
     }
 
     public updateColumnParams(colId: number, key: string, value: any) {
@@ -191,7 +195,7 @@ export class EntityList extends React.Component<EntityListProps, EntityListState
       const tabData = {};
 
       const mapping = [
-        { key: 'p', display: 'Predicate', mod: (data) => this.props.dataStore.all.predicate.value.find((pred) => pred.uid == data).label },
+        { key: 'p', display: 'Predicate', mod: (data) => this.props.dataStore!.dataStore.all.predicate.value.find((pred) => pred.uid == data).label },
         { key: 's', display: 'Sort', mod: (data) => data },
         { key: 'f', display: 'filterType', mod: (data) => data },
         { key: 'v', display: 'filterValue', mod: (data) => data },
@@ -209,14 +213,14 @@ export class EntityList extends React.Component<EntityListProps, EntityListState
         }
       }
 
-      createTab.dispatch('entity', Date.now(), 'view', tabData, this.props.query);
+       this.props.dataStore!.createTab('entity', Date.now(), 'view', tabData, this.props.query);
     }
 
     public render() {
 
-        const entities = this.props.dataStore.all.entity.value;
-        const predicates = this.props.dataStore.all.predicate.value;
-        const entityTypes = this.props.dataStore.all.entity_type.value;
+        const entities = this.props.dataStore!.dataStore.all.entity.value;
+        const predicates = this.props.dataStore!.dataStore.all.predicate.value;
+        const entityTypes = this.props.dataStore!.dataStore.all.entity_type.value;
 
         const entityTypeOptions = entityTypes.map((entityType) => ({ key: entityType.label, value: entityType.uid}));
 
@@ -246,14 +250,14 @@ export class EntityList extends React.Component<EntityListProps, EntityListState
                                         if (pred.value === null) {
                                             return 'Not set';
                                         }
-                                        return this.props.dataStore.all.source.value.find((source) => source.uid === pred.value).label;
+                                        return this.props.dataStore!.dataStore.all.source.value.find((source) => source.uid === pred.value).label;
                                     }
 
                                     if (pred.valueType === 'entity') {
                                         if (pred.value === null) {
                                             return 'Not set';
                                         }
-                                        return this.props.dataStore.all.entity.value.find((entity) => entity.uid === pred.value).label;
+                                        return this.props.dataStore!.dataStore.all.entity.value.find((entity) => entity.uid === pred.value).label;
                                     }
 
                                     return pred.value;

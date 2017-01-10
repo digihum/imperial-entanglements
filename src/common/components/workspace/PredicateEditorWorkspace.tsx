@@ -80,7 +80,7 @@ export class PredicateEditorWorkspace extends React.Component<PredicateEditorPro
 
     public updatePredicate(field: string, value: string, rangeIsReferenceOverride: boolean | null = null) {
 
-        const predicate = this.props.dataStore.tabs.predicate.get('predicate-' + this.props.id).value;
+        const predicate = this.props.dataStore!.dataStore.tabs.predicate.get('predicate-' + this.props.id).value;
 
         if (predicate === null) {
             console.warn('Tried to edit unready predicate');
@@ -99,14 +99,14 @@ export class PredicateEditorWorkspace extends React.Component<PredicateEditorPro
 
     public copy() {
 
-        const predicate = this.props.dataStore.tabs.predicate.get('predicate-' + this.props.id).value;
+        const predicate = this.props.dataStore!.dataStore.tabs.predicate.get('predicate-' + this.props.id).value;
 
         const newPredicate = Serializer.fromJson(Predicate,
             Object.assign({}, Serializer.toJson(predicate), { name: 'Copy of ' + predicate.label}));
 
         this.props.api.postItem(Predicate, AppUrls.predicate, newPredicate)
             .then(([id]) => {
-                createTab.dispatch('predicate', id, 'item');
+                this.props.dataStore!.createTab('predicate', id, 'item');
         });
     }
 
@@ -122,7 +122,7 @@ export class PredicateEditorWorkspace extends React.Component<PredicateEditorPro
                     complete: (result) => {
                         if (result === 'addToWorkspace') {
                             data.forEach((datum) => {
-                                 createTab.dispatch('entity', datum.entity, 'item');
+                                 this.props.dataStore!.createTab('entity', datum.entity, 'item');
                             });
                         }
 
@@ -139,15 +139,15 @@ export class PredicateEditorWorkspace extends React.Component<PredicateEditorPro
                     }
                 };
 
-                showModal.dispatch(conflictResolutionModal);
+                this.props.modalStore!.addModal(conflictResolutionModal);
             });
         });
     }
 
     public render() {
 
-        const predicate = this.props.dataStore.tabs.predicate.get('predicate-' + this.props.id).value;
-        const entityTypes = this.props.dataStore.all.entity_type.value;
+        const predicate = this.props.dataStore!.dataStore.tabs.predicate.get('predicate-' + this.props.id).value;
+        const entityTypes = this.props.dataStore!.dataStore.all.entity_type.value;
 
         const currentDomainEntityType = entityTypes.find((t) => t.uid == predicate.domain);
 

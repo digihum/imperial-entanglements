@@ -5,7 +5,8 @@
         "**/bower_components": true,
         "build": true,
         "public": true,
-        "dist": true
+        "dist": true,
+        ".vscode/chrome": true
     },
 
     "files.eol": "\n",

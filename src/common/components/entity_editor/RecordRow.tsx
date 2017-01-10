@@ -49,7 +49,7 @@ const createNewSource = (initialValue: string) => {
             }
         };
 
-        showModal.dispatch(a);
+        this.props.modalStore!.addModal(a);
     };
 
 const recordEditor = (props: RecordRowProps, record: Record) => {

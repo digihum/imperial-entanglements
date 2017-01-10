@@ -10,9 +10,12 @@ import { ApiService } from '../../ApiService';
 import { Predicate } from 'falcon-core';
 
 import { AddTabButton } from '../AddTabButton';
-import { DataStore } from '../../DataStore';
 
-import { showModal } from '../../Signaller';
+import { inject, observer } from 'mobx-react';
+
+import { DataController } from '../../stores/DataController';
+import { ModalStore } from '../../stores/ModalStore';
+
 import { ModalDefinition } from '../modal/ModalDefinition';
 
 import { SearchBar } from '../SearchBar';
@@ -20,7 +23,8 @@ import { SearchBar } from '../SearchBar';
 
 interface PredicateListProps {
     api: ApiService;
-    dataStore: DataStore;
+    dataStore?: DataController;
+    modalController?: ModalStore;
 }
 
 interface PredicateListState {
@@ -33,6 +37,8 @@ interface ColumnSettings {
 
 }
 
+@inject('dataStore', 'modalStore')
+@observer
 export class PredicateList extends React.Component<PredicateListProps, PredicateListState> {
 
     constructor() {
@@ -53,7 +59,7 @@ export class PredicateList extends React.Component<PredicateListProps, Predicate
             }
         };
 
-        showModal.dispatch(a);
+        this.props.modalController!.addModal(a);
     }
 
     public render() {
@@ -95,10 +101,10 @@ export class PredicateList extends React.Component<PredicateListProps, Predicate
                         </tr>
                     </thead>
                     <tbody>
-                    {this.props.dataStore.all.predicate.value.filter(this.state.filterFunc).map((predicate) => {
-                        const entityType = this.props.dataStore.all.entity_type.value.find((t) => t.uid === predicate.domain);
+                    {this.props.dataStore!.dataStore.all.predicate.value.filter(this.state.filterFunc).map((predicate) => {
+                        const entityType = this.props.dataStore!.dataStore.all.entity_type.value.find((t) => t.uid === predicate.domain);
                         const rangeType = predicate.rangeIsReference ?
-                            this.props.dataStore.all.entity_type.value.find((t) => t.uid === predicate.range) :
+                            this.props.dataStore!.dataStore.all.entity_type.value.find((t) => t.uid === predicate.range) :
                             predicate.range;
                         return (
                             <tr key={`predicate-${predicate.uid}`}>

@@ -6,7 +6,7 @@
 
 export class UnprocessableEntity extends Error {
 
-    public data: Promise<any>;
+    public data: Promise<any> | undefined;
 
     constructor(message: string, data?: Promise<any>) {
         super(message);

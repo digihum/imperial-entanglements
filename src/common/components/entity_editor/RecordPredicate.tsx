@@ -6,7 +6,7 @@
 
 import * as React from 'react';
 import { ApiService, AppUrls } from '../../ApiService';
-import { DataStore } from '../../dataStore';
+
 import { Record, Predicate, Source, Entity, Serializer } from 'falcon-core';
 import { EditableFieldComponent } from '../fields/EditableFieldComponent';
 
@@ -17,14 +17,13 @@ import { AddTabButton } from '../AddTabButton';
 class RecordEditableFieldComponent extends EditableFieldComponent<Record> {}
 
 interface RecordPredicateProps {
-    entity_id: number;
+  entity_id: number;
 	api: ApiService;
 	dimension: string;
 	records: Record[];
 	predicate : Predicate;
 	sources: Source[];
-    onChange: () => void;
-    dataStore: DataStore;
+  onChange: () => void;
 }
 
 interface RecordPredicateState {
@@ -88,7 +87,6 @@ export class RecordPredicate extends React.Component<RecordPredicateProps, Recor
                       title={`Add new ${this.props.predicate.label} record`}
                 ></i>
             <AddTabButton
-                dataStore={this.props.dataStore}
                 uid={this.props.predicate.uid}
                 tabType='predicate' />
             </h5>
@@ -115,7 +113,6 @@ export class RecordPredicate extends React.Component<RecordPredicateProps, Recor
                                 dimension: 'predicates',
                                 sources: this.props.sources,
                                 entities: this.state.potentialValues,
-                                dataStore: this.props.dataStore
                             }}
                         />
                     ))}

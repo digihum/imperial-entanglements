@@ -6,7 +6,10 @@
 
 import * as React from 'react';
 import { ApiService, AppUrls } from '../../ApiService';
-import { DataStore } from '../../DataStore';
+
+import { DataController } from '../../stores/DataController';
+import { ModalStore } from '../../stores/ModalStore';
+
 import { Record, Predicate, Source } from 'falcon-core';
 import { EditableFieldComponent } from '../fields/EditableFieldComponent';
 
@@ -15,7 +18,6 @@ import { SearchBar } from '../SearchBar';
 import { RecordPredicate } from './RecordPredicate';
 
 import { findParentTree } from '../../helper/findParentTree';
-import { showModal } from '../../Signaller';
 
 import { ModalDefinition } from '../modal/ModalDefinition';
 
@@ -33,7 +35,8 @@ interface RecordsEditorProps {
 	onChange: () => void;
 	predicates : Predicate[];
 	sources: Source[];
-	dataStore: DataStore;
+	dataStore?: DataController;
+  modalStore?: ModalStore;
 }
 
 interface RecordsEditorState {
@@ -87,7 +90,7 @@ export class RecordsEditor extends React.Component<RecordsEditorProps, RecordsEd
             }
         };
 
-        showModal.dispatch(modalDef);
+        this.props.modalStore!.addModal(modalDef);
     }
 
 	public render() {

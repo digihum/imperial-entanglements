@@ -7,13 +7,16 @@
 import * as React from 'react';
 
 import { ApiService } from '../../ApiService';
-import { DataStore } from '../../DataStore';
 
 import { Source } from 'falcon-core';
 
 import { AddTabButton } from '../AddTabButton';
 
-import { showModal } from '../../Signaller';
+import { inject, observer } from 'mobx-react';
+
+import { DataController } from '../../stores/DataController';
+import { ModalStore } from '../../stores/ModalStore';
+
 import { ModalDefinition } from '../modal/ModalDefinition';
 
 import { SearchBar } from '../SearchBar';
@@ -22,7 +25,8 @@ import { RecursiveTree } from '../RecursiveTree';
 
 interface SourceListProps {
     api: ApiService;
-    dataStore: DataStore;
+    dataStore?: DataController;
+    modalStore?: ModalStore;
 }
 
 interface SourceListState {
@@ -35,6 +39,8 @@ interface ColumnSettings {
     nullable: boolean;
 }
 
+@inject('dataStore', 'modalStore')
+@observer
 export class SourceList extends React.Component<SourceListProps, SourceListState> {
 
     constructor() {
@@ -54,7 +60,7 @@ export class SourceList extends React.Component<SourceListProps, SourceListState
             settings: {}
         };
 
-        showModal.dispatch(a);
+        this.props.modalStore!.addModal(a);
     }
 
 
@@ -102,7 +108,7 @@ export class SourceList extends React.Component<SourceListProps, SourceListState
                         </tr>
                     </thead>
                     <tbody>
-                    {this.props.dataStore.all.source.value.filter(this.state.filterFunc).map((source) => {
+                    {this.props.dataStore!.dataStore.all.source.value.filter(this.state.filterFunc).map((source) => {
                         return (
                             <tr key={`source-${source.uid}`}>
                                 <td>{source.uid} <AddTabButton
@@ -119,7 +125,7 @@ export class SourceList extends React.Component<SourceListProps, SourceListState
                 ) : (
                   <div className='tree-root'>
                    <RecursiveTree
-                    data={this.props.dataStore.all.source.value}
+                    data={this.props.dataStore!.dataStore.all.source.value}
                     tabType={'source'}
                     parentId={null}
                     dataStore={this.props.dataStore} />

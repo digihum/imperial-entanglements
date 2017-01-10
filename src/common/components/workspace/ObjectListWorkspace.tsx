@@ -12,13 +12,10 @@ import { PredicateList } from '../object_list/PredicateList';
 import { SourceList } from '../object_list/SourceList';
 import { EntityTypeList } from '../object_list/EntityTypeList';
 
-import { DataStore } from '../../DataStore';
-
 interface ObjectListWorkspaceProps {
     api: ApiService;
     name: string;
     listType: string;
-    dataStore: DataStore;
     query: any;
 }
 
@@ -30,11 +27,11 @@ export const ObjectListWorkspace : React.StatelessComponent<ObjectListWorkspaceP
                 case 'entity':
                     return (<EntityList api={props.api} query={props.query} />);
                 case 'source':
-                    return (<SourceList api={props.api} dataStore={props.dataStore} />);
+                    return (<SourceList api={props.api} />);
                 case 'predicate':
-                    return (<PredicateList api={props.api} dataStore={props.dataStore} />);
+                    return (<PredicateList api={props.api} />);
                 case 'entity_type':
-                    return (<EntityTypeList api={props.api} dataStore={props.dataStore} />);
+                    return (<EntityTypeList api={props.api} />);
             }
         })()}
     </div>

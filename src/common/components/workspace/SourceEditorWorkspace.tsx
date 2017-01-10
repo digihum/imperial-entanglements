@@ -75,7 +75,7 @@ export class SourceEditorWorkspace extends React.Component<SourceEditorProps, So
 
     public loadData(props: SourceEditorProps) {
 
-        const source = props.dataStore.tabs.source.get('source-' + this.props.id).value.source;
+        const source = props.dataStore!.dataStore.tabs.source.get('source-' + this.props.id).value.source;
 
         this.setState({
             metaData: keyBy(source.metaData, 'name')
@@ -84,24 +84,15 @@ export class SourceEditorWorkspace extends React.Component<SourceEditorProps, So
 
     public updateSource(field: string, value: string) {
 
-        const source = this.props.dataStore.tabs.source.get('source-' + this.props.id).value.source;
+        const source = this.props.dataStore!.dataStore.tabs.source.get('source-' + this.props.id).value.source;
 
         this.props.api.patchItem(Source, AppUrls.source, source.uid, { [field]: value })
-        //.then((success) => {
 
-            // const updatedSource = new Source().deserialize(Object.assign({},
-            //     source.serialize(), { [field]: value }));
-
-            // this.setState({
-            //     source: updatedSource,
-            //     metaData: keyBy(updatedSource.metaData, 'name')
-            // });
-        //});
     }
 
     public updateSourceElement(element: Element, value: string) {
 
-        const source = this.props.dataStore.tabs.source.get('source-' + this.props.id).value.source;
+        const source = this.props.dataStore!.dataStore.tabs.source.get('source-' + this.props.id).value.source;
 
         const compositeKey = {
             order: ['source', 'element'],
@@ -143,7 +134,7 @@ export class SourceEditorWorkspace extends React.Component<SourceEditorProps, So
                     complete: (result) => {
                         if (result === 'addToWorkspace') {
                             data.source.forEach((datum) => {
-                                 createTab.dispatch('source', datum.uid, 'item');
+                                 this.props.dataStore!.createTab('source', datum.uid, 'item');
                             });
                         }
 
@@ -160,7 +151,7 @@ export class SourceEditorWorkspace extends React.Component<SourceEditorProps, So
                     }
                 };
 
-                showModal.dispatch(conflictResolutionModal);
+                this.props.modalStore!.addModal(conflictResolutionModal);
             });
         });
     }
@@ -168,14 +159,14 @@ export class SourceEditorWorkspace extends React.Component<SourceEditorProps, So
 
     public createChild() {
 
-        const source = this.props.dataStore.tabs.source.get('source-' + this.props.id).value.source;
+        const source = this.props.dataStore!.dataStore.tabs.source.get('source-' + this.props.id).value.source;
 
         const newSource = Serializer.fromJson(Source,
             Object.assign({}, Serializer.toJson(source), { label: 'Child of ' + source.label, parent: this.props.id }));
 
         this.props.api.postItem(Source, AppUrls.source, newSource)
             .then(([id]) => {
-                createTab.dispatch('source', id, 'item');
+                this.props.dataStore!.createTab('source', id, 'item');
         });
     }
 
@@ -184,21 +175,21 @@ export class SourceEditorWorkspace extends React.Component<SourceEditorProps, So
         const a : ModalDefinition = {
             name: 'preset_record',
             complete: ([id]) => {
-                 createTab.dispatch('entity', id, 'item');
+                 this.props.dataStore!.createTab('entity', id, 'item');
             },
             cancel: () => { },
             settings: {
-                source: this.props.dataStore.tabs.source.get('source-' + this.props.id).value.source
+                source: this.props.dataStore!.dataStore.tabs.source.get('source-' + this.props.id).value.source
             }
         };
 
-        showModal.dispatch(a);
+        this.props.modalStore!.addModal(a);
     }
 
     public render() {
 
-        const source = this.props.dataStore.tabs.source.get('source-' + this.props.id).value.source;
-        const potentialParents = this.props.dataStore.all.source.value;
+        const source = this.props.dataStore!.dataStore.tabs.source.get('source-' + this.props.id).value.source;
+        const potentialParents = this.props.dataStore!.dataStore.all.source.value;
 
         let parentName = '';
         if (potentialParents !== null && source.parent !== undefined) {
@@ -217,7 +208,7 @@ export class SourceEditorWorkspace extends React.Component<SourceEditorProps, So
                             {source.parents
                                 .slice()
                                 .reverse()
-                                .map((child) => this.props.dataStore.all.source.value.find((et) => et.uid === child))
+                                .map((child) => this.props.dataStore!.dataStore.all.source.value.find((et) => et.uid === child))
                                 .map((parent, i) => (
                                 <span key={`breadcrumb-${parent.uid}`}>
                                     <span>  {parent.label} <AddTabButton
@@ -286,7 +277,7 @@ export class SourceEditorWorkspace extends React.Component<SourceEditorProps, So
                             onChange={(value) => this.updateSource('sameAs', value)} />
                     </div>
 
-                    {this.props.dataStore.all.dublinCore.value.elements.map((element) => {
+                    {this.props.dataStore!.dataStore.all.dublinCore.value.elements.map((element) => {
 
                         const values = source.metaData.hasOwnProperty(element.label) ?
                             source.metaData[element.label].values : [{ source: this.props.id, value: ''}];
@@ -299,7 +290,7 @@ export class SourceEditorWorkspace extends React.Component<SourceEditorProps, So
                                 <ul>
                                     {values.map((value) => value.source != this.props.id ? (
                                         <li key={`${element.uid}-${value.source}`}>{
-                                            this.props.dataStore.all.source.value.find((s) => s.uid === value.source).label
+                                            this.props.dataStore!.dataStore.all.source.value.find((s) => s.uid === value.source).label
                                         }: {value.value}</li>
                                     ) : null)}
                                 </ul>
@@ -315,7 +306,7 @@ export class SourceEditorWorkspace extends React.Component<SourceEditorProps, So
                         <h4>Direct Children</h4>
                         <ul>
                         {source.children
-                            .map((child) => this.props.dataStore.all.source.value.find((et) => et.uid === child))
+                            .map((child) => this.props.dataStore!.dataStore.all.source.value.find((et) => et.uid === child))
                             .map((childEt) =>
                                 (<li key={`dc-${childEt.uid}`}>{childEt.label} <AddTabButton
                                     tabType='source'

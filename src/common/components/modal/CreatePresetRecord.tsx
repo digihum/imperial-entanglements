@@ -9,10 +9,12 @@ import * as React from 'react';
 import { Overlay } from '../Overlay';
 import { Record, Serializer, Source } from 'falcon-core';
 import { ApiService, AppUrls } from '../../ApiService';
-import { DataStore } from '../../DataStore';
+
+import { DataController } from '../../stores/DataController';
+import { ModalStore } from '../../stores/ModalStore';
+
 import { ComboDropdown, ComboDropdownOption } from '../ComboDropdown';
 
-import { showModal } from '../../Signaller';
 import { ModalDefinition } from './ModalDefinition';
 
 interface CreatePresetRecordProps {
@@ -20,7 +22,8 @@ interface CreatePresetRecordProps {
     complete: (s: any) => void;
     cancel: () => void;
     source: Source;
-    dataStore: DataStore;
+    dataStore?: DataController;
+    modalStore?: ModalStore;
 }
 
 interface CreatePresetRecordState {
@@ -70,7 +73,7 @@ export class CreatePresetRecord extends React.Component<CreatePresetRecordProps,
             settings: {}
         };
 
-        showModal.dispatch(modalDef);
+        this.props.modalStore!.addModal(modalDef);
     }
 
     public render() {

@@ -11,10 +11,11 @@ import { Record, Predicate, Serializer } from 'falcon-core';
 import { ApiService, AppUrls } from '../../ApiService';
 import { ComboDropdown, ComboDropdownOption } from '../ComboDropdown';
 
-import { showModal } from '../../Signaller';
 import { ModalDefinition } from './ModalDefinition';
 
-import { toString } from 'lodash';
+import { inject, observer } from 'mobx-react';
+
+import { ModalStore } from '../../stores/ModalStore';
 
 interface CreateRecordProps {
     api: ApiService;
@@ -23,6 +24,7 @@ interface CreateRecordProps {
     cancel: () => void;
     entityUid: number;
     entityType: number;
+    modalStore?: ModalStore;
 }
 
 interface CreateRecordState {
@@ -30,6 +32,8 @@ interface CreateRecordState {
     searchValue: string;
 }
 
+@inject('modalStore')
+@observer
 export class CreateRecord extends React.Component<CreateRecordProps, CreateRecordState> {
 
     constructor() {
@@ -60,7 +64,7 @@ export class CreateRecord extends React.Component<CreateRecordProps, CreateRecor
             }
         };
 
-        showModal.dispatch(modalDef);
+        this.props.modalStore!.addModal(modalDef);
     }
 
     public setComboValue(opt: { key: string, value: string | null, meta: Predicate }) {
