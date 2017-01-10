@@ -2176,8 +2176,8 @@
 	const Toast_1 = __webpack_require__(97);
 	const DataController_1 = __webpack_require__(98);
 	const ModalStore_1 = __webpack_require__(102);
-	const react_sortable_hoc_1 = __webpack_require__(57);
-	const mobx_react_1 = __webpack_require__(56);
+	const react_sortable_hoc_1 = __webpack_require__(56);
+	const mobx_react_1 = __webpack_require__(57);
 	const ObjectEditorCore = react_sortable_hoc_1.SortableContainer((props) => {
 	    return (React.createElement("span", { className: 'flex-fill' },
 	        React.createElement(Sidebar_1.Sidebar, { list: props.list, id: props.id, workspace: props.workspace }),
@@ -2283,8 +2283,8 @@
 	const ApiService_1 = __webpack_require__(23);
 	const react_router_1 = __webpack_require__(42);
 	const lodash_1 = __webpack_require__(12);
-	const react_sortable_hoc_1 = __webpack_require__(57);
-	const mobx_react_1 = __webpack_require__(56);
+	const react_sortable_hoc_1 = __webpack_require__(56);
+	const mobx_react_1 = __webpack_require__(57);
 	const Handle = react_sortable_hoc_1.SortableHandle((props) => (React.createElement("div", { className: 'badge-container' },
 	    React.createElement("div", { className: 'badge ' + props.tabType },
 	        React.createElement("span", null, props.tabType[0].toUpperCase())))));
@@ -2640,13 +2640,13 @@
 /* 56 */
 /***/ function(module, exports) {
 
-	module.exports = require("mobx-react");
+	module.exports = require("react-sortable-hoc");
 
 /***/ },
 /* 57 */
 /***/ function(module, exports) {
 
-	module.exports = require("react-sortable-hoc");
+	module.exports = require("mobx-react");
 
 /***/ },
 /* 58 */
@@ -2669,7 +2669,7 @@
 	};
 	const React = __webpack_require__(41);
 	const Loading_1 = __webpack_require__(59);
-	const mobx_react_1 = __webpack_require__(56);
+	const mobx_react_1 = __webpack_require__(57);
 	const workspace_1 = __webpack_require__(60);
 	let Workspace = class Workspace extends React.Component {
 	    constructor() {
@@ -2800,7 +2800,7 @@
 	const EditableHeader_1 = __webpack_require__(64);
 	const EntityWorkspaceCoreView_1 = __webpack_require__(66);
 	const EntityWorkspaceReferenceView_1 = __webpack_require__(80);
-	const mobx_react_1 = __webpack_require__(56);
+	const mobx_react_1 = __webpack_require__(57);
 	class StringEditableFieldComponent extends EditableHeader_1.EditableFieldComponent {
 	}
 	class ComboEditableFieldComponent extends EditableHeader_1.EditableFieldComponent {
@@ -3778,7 +3778,7 @@
 	 */
 	"use strict";
 	const React = __webpack_require__(41);
-	const mobx_react_1 = __webpack_require__(56);
+	const mobx_react_1 = __webpack_require__(57);
 	exports.AddTabButton = mobx_react_1.inject('dataStore')(mobx_react_1.observer((props, context) => {
 	    if (props.dataStore.dataStore.tabs[props.tabType] !== undefined
 	        && props.dataStore.dataStore.tabs[props.tabType].has(`${props.tabType}-${props.uid}`)) {
@@ -3927,7 +3927,7 @@
 	const EditableHeader_1 = __webpack_require__(64);
 	const EditableParagraph_1 = __webpack_require__(84);
 	const EditableComboDropdown_1 = __webpack_require__(79);
-	const mobx_react_1 = __webpack_require__(56);
+	const mobx_react_1 = __webpack_require__(57);
 	class StringEditableFieldComponent extends EditableHeader_1.EditableFieldComponent {
 	}
 	class ComboEditableFieldComponent extends EditableHeader_1.EditableFieldComponent {
@@ -4222,7 +4222,7 @@
 	const EditableParagraph_1 = __webpack_require__(84);
 	const EditableComboDropdown_1 = __webpack_require__(79);
 	const lodash_1 = __webpack_require__(12);
-	const mobx_react_1 = __webpack_require__(56);
+	const mobx_react_1 = __webpack_require__(57);
 	const AddTabButton_1 = __webpack_require__(78);
 	class StringEditableFieldComponent extends EditableHeader_1.EditableFieldComponent {
 	}
@@ -4448,7 +4448,7 @@
 	const EditableParagraph_1 = __webpack_require__(84);
 	const PredicateDescription_1 = __webpack_require__(87);
 	const literalTypes_1 = __webpack_require__(88);
-	const mobx_react_1 = __webpack_require__(56);
+	const mobx_react_1 = __webpack_require__(57);
 	class StringEditableFieldComponent extends EditableHeader_1.EditableFieldComponent {
 	}
 	// - Should state the number of times this predicate is used
@@ -4771,7 +4771,7 @@
 	const lodash_1 = __webpack_require__(12);
 	const AddTabButton_1 = __webpack_require__(78);
 	const formatDate_1 = __webpack_require__(76);
-	const mobx_react_1 = __webpack_require__(56);
+	const mobx_react_1 = __webpack_require__(57);
 	const sortIcons = {
 	    'none': 'fa fa-sort',
 	    'asc': 'fa fa-sort-asc',
@@ -5052,7 +5052,7 @@
 	};
 	const React = __webpack_require__(41);
 	const AddTabButton_1 = __webpack_require__(78);
-	const mobx_react_1 = __webpack_require__(56);
+	const mobx_react_1 = __webpack_require__(57);
 	const SearchBar_1 = __webpack_require__(68);
 	let PredicateList = class PredicateList extends React.Component {
 	    constructor() {
@@ -5140,7 +5140,7 @@
 	};
 	const React = __webpack_require__(41);
 	const AddTabButton_1 = __webpack_require__(78);
-	const mobx_react_1 = __webpack_require__(56);
+	const mobx_react_1 = __webpack_require__(57);
 	const SearchBar_1 = __webpack_require__(68);
 	const RecursiveTree_1 = __webpack_require__(95);
 	let SourceList = class SourceList extends React.Component {
@@ -5259,7 +5259,7 @@
 	const AddTabButton_1 = __webpack_require__(78);
 	const SearchBar_1 = __webpack_require__(68);
 	const RecursiveTree_1 = __webpack_require__(95);
-	const mobx_react_1 = __webpack_require__(56);
+	const mobx_react_1 = __webpack_require__(57);
 	let EntityTypeList = class EntityTypeList extends React.Component {
 	    constructor() {
 	        super();
@@ -5391,7 +5391,7 @@
 	const ApiService_1 = __webpack_require__(23);
 	const DataStore_1 = __webpack_require__(99);
 	const immutable_1 = __webpack_require__(100);
-	const react_sortable_hoc_1 = __webpack_require__(57);
+	const react_sortable_hoc_1 = __webpack_require__(56);
 	const mobx_1 = __webpack_require__(101);
 	const lodash_1 = __webpack_require__(12);
 	const moment = __webpack_require__(22);
@@ -5409,8 +5409,10 @@
 	    }
 	    // checks that the page exists and adds it to tabs if necessery
 	    enterPage(workspace, uid, other) {
-	        if (lodash_1.find(this.tabs, (tab) => tab.tabType === workspace && tab.uid == uid) === undefined) {
-	            this.tabs = this.tabs.concat([{ tabType: workspace, uid: uid, tabClass: 'item' }]);
+	        if (!lodash_1.isNaN(uid)) {
+	            if (lodash_1.find(this.tabs, (tab) => tab.tabType === workspace && tab.uid == uid) === undefined) {
+	                this.tabs = this.tabs.concat([{ tabType: workspace, uid: uid, tabClass: 'item' }]);
+	            }
 	        }
 	    }
 	    loadTabData(tab) {
@@ -5465,12 +5467,12 @@
 	                    dublinCore: { value: dublinCore, lastUpdate: moment() }
 	                };
 	            });
-	            Promise.all([tabPromise, allPromise])
+	            return Promise.all([tabPromise, allPromise])
 	                .then(([tabsArray, all]) => {
 	                const tabs = Object.assign({}, ...tabsArray);
-	                return { tabs, all };
-	            });
-	            return Promise.resolve(true);
+	                this.dataStore.tabs = tabs;
+	                this.dataStore.all = all;
+	            }).then(() => true);
 	        });
 	    }
 	    /*
@@ -5870,7 +5872,7 @@
 	const falcon_core_1 = __webpack_require__(20);
 	const ApiService_1 = __webpack_require__(23);
 	const ComboDropdown_1 = __webpack_require__(54);
-	const mobx_react_1 = __webpack_require__(56);
+	const mobx_react_1 = __webpack_require__(57);
 	let CreateRecord = class CreateRecord extends React.Component {
 	    constructor() {
 	        super();

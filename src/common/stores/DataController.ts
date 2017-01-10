@@ -14,7 +14,7 @@ import { arrayMove } from 'react-sortable-hoc';
 import { observable, action } from 'mobx';
 
 
-import { cloneDeep, find, groupBy, findIndex } from 'lodash';
+import { cloneDeep, find, groupBy, findIndex, isNaN } from 'lodash';
 
 import * as moment from 'moment';
 
@@ -41,9 +41,11 @@ export class DataController {
 
   // checks that the page exists and adds it to tabs if necessery
   public enterPage(workspace: string, uid: number, other: any) {
+    if (!isNaN(uid)) {
       if (find(this.tabs, (tab) => tab.tabType === workspace && tab.uid == uid) === undefined) {
         this.tabs = this.tabs.concat([{ tabType: workspace, uid: uid, tabClass: 'item'}]);
       }
+    }
   }
 
   private loadTabData(tab: Tab) : Promise<any> {
@@ -109,13 +111,12 @@ export class DataController {
         };
     });
 
-    Promise.all([tabPromise, allPromise])
+    return Promise.all([tabPromise, allPromise])
     .then(([tabsArray, all]) => {
         const tabs = Object.assign({}, ...tabsArray);
-        return { tabs, all };
-    });
-
-    return Promise.resolve(true);
+        this.dataStore.tabs = tabs;
+        this.dataStore.all = all;
+    }).then(() => true);
   }
 
   /*
