@@ -10,7 +10,6 @@ import { Link } from 'react-router';
 import { SameAsEditor } from '../fields/SameAsEditor';
 import { Loading } from '../Loading';
 import { ApiService, AppUrls } from '../../ApiService';
-import { showModal, createTab } from '../../Signaller';
 
 import { Predicate, Serializer, Record } from 'falcon-core';
 
@@ -23,14 +22,18 @@ import { literalTypes } from '../../literalTypes';
 
 import { ModalDefinition } from '../modal/ModalDefinition';
 
-import { DataStore } from '../../DataStore';
+import { inject, observer } from 'mobx-react';
+
+import { DataController } from '../../stores/DataController';
+import { ModalStore } from '../../stores/ModalStore';
 
 class StringEditableFieldComponent extends EditableFieldComponent<string> {}
 
 interface PredicateEditorProps {
     api: ApiService;
     id: number;
-    dataStore: DataStore;
+    dataStore?: DataController;
+    modalStore?: ModalStore;
 }
 
 interface PredicateEditorState {
@@ -44,6 +47,8 @@ interface PredicateEditorState {
 // - Strong check (double button press or type) to confirm
 // - Changing name/description/sameAs - absolutly fine
 // - Cannot change 'readonly'
+@inject('dataStore', 'modalStore')
+@observer
 export class PredicateEditorWorkspace extends React.Component<PredicateEditorProps, PredicateEditorState> {
 
     public static contextTypes = {

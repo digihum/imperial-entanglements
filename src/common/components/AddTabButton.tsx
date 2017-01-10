@@ -5,21 +5,22 @@
  */
 
 import * as React from 'react';
-import { createTab } from '../Signaller';
-import { DataStore } from '../DataStore';
+import { DataController } from '../stores/DataController';
+
+import { inject, observer } from 'mobx-react';
 
 interface AddTabButtonProps {
     tabType: string;
     uid: number;
-    dataStore: DataStore;
+    dataStore?: DataController;
     data?: any;
 }
 
-export const AddTabButton : React.StatelessComponent<AddTabButtonProps> =
+export const AddTabButton : React.ClassicComponentClass<AddTabButtonProps> = inject('dataStore')(observer(
     (props: AddTabButtonProps, context: any) => {
 
-        if (props.dataStore.tabs[props.tabType] !== undefined
-                && props.dataStore.tabs[props.tabType].has(`${props.tabType}-${props.uid}`)) {
+        if (props.dataStore!.dataStore.tabs[props.tabType] !== undefined
+                && props.dataStore!.dataStore.tabs[props.tabType].has(`${props.tabType}-${props.uid}`)) {
             return (<i className='fa fa-folder-open-o add button'
                 title='Open item'
                 onClick={() => context.router.transitionTo(`/edit/${props.tabType}/${props.uid}`)}> </i>);
@@ -28,8 +29,8 @@ export const AddTabButton : React.StatelessComponent<AddTabButtonProps> =
         return (
         <i className='icon-list-add add button'
             title='Add to list'
-            onClick={() => createTab.dispatch(props.tabType, props.uid, 'item', props.data)}></i>
-)};
+            onClick={() => props.dataStore!.createTab(props.tabType, props.uid, 'item', props.data)}></i>
+)}));
 
 AddTabButton.contextTypes = {
     router: React.PropTypes.object.isRequired

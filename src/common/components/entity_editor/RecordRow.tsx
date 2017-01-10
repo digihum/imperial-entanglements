@@ -11,9 +11,7 @@ import { EditableSubfieldProps } from '../fields/EditableFieldComponent';
 export { EditableFieldComponent } from '../fields/EditableFieldComponent';
 import { ScorePicker } from '../fields/ScorePicker';
 import { ComboDropdown, ComboDropdownOption } from '../ComboDropdown';
-import { showModal } from '../../Signaller';
 import { ModalDefinition } from '../modal/ModalDefinition';
-import { DataStore } from '../../DataStore';
 
 import { StringFieldEditor } from './StringFieldEditor';
 import { EntityFieldEditor } from './EntityFieldEditor';
@@ -26,11 +24,17 @@ import { formatDate } from '../../helper/formatDate';
 
 import { toString } from 'lodash';
 
+import { inject } from 'mobx-react';
+
+import { DataController } from '../../stores/DataController';
+import { ModalStore } from '../../stores/ModalStore';
+
 interface RecordRowProps extends EditableSubfieldProps<Record> {
     dimension: string;
     sources: Source[];
     entities: Entity[];
-    dataStore: DataStore;
+    dataStore?: DataController;
+    modelStore?: ModalStore;
 }
 
 const createNewSource = (initialValue: string) => {

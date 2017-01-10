@@ -16,7 +16,6 @@ import { ModalDefinition } from '../modal/ModalDefinition';
 
 import { Dictionary, groupBy } from 'lodash';
 
-import { showModal, createTab, closeTab } from '../../Signaller';
 import { AddTabButton } from '../AddTabButton';
 
 import { findParentTree } from '../../helper/findParentTree';
@@ -25,10 +24,13 @@ import { findParentTree } from '../../helper/findParentTree';
 import { EditableHeader, EditableFieldComponent } from '../fields/EditableHeader';
 import { EditableComboDropdown } from '../fields/EditableComboDropdown';
 
-import { DataStore } from '../../DataStore';
+import { DataController } from '../../stores/DataController';
+import { ModalStore } from '../../stores/ModalStore';
 
 import { EntityWorkspaceCoreView } from './entity/EntityWorkspaceCoreView';
 import { EntityWorkspaceReferenceView } from './entity/EntityWorkspaceReferenceView';
+
+import { inject, observer } from 'mobx-react';
 
 class StringEditableFieldComponent extends EditableFieldComponent<string> {}
 class ComboEditableFieldComponent extends EditableFieldComponent<ComboDropdownOption> {}
@@ -36,7 +38,8 @@ class ComboEditableFieldComponent extends EditableFieldComponent<ComboDropdownOp
 interface EntityEditorProps {
     api: ApiService;
     id: number;
-    dataStore: DataStore;
+    dataStore?: DataController;
+    modalStore?: ModalStore;
 }
 
 interface EntityEditorState {
@@ -59,6 +62,8 @@ interface EntityEditorState {
 //   to one of its parents. The range MUST be set.
 // Visualisations:
 // - Network graph of entity relationships
+@inject('dataStore', 'modalStore')
+@observer
 export class EntityEditorWorkspace extends React.Component<EntityEditorProps, EntityEditorState> {
 
     public static contextTypes = {
@@ -78,8 +83,8 @@ export class EntityEditorWorkspace extends React.Component<EntityEditorProps, En
     public del() {
         this.props.api.delItem(Entity, AppUrls.entity, this.props.id)
         .then(() => {
-            closeTab.dispatch('entity', this.props.id);
-            this.context.router.transitionTo('/edit/notfound');
+          this.props.dataStore!.closeTab('entity', this.props.id);
+          this.context.router.transitionTo('/edit/notfound');
         })
          .catch((e) => {
             e.data.data.then((data) => {
@@ -90,10 +95,10 @@ export class EntityEditorWorkspace extends React.Component<EntityEditorProps, En
                     complete: (result) => {
                         if (result === 'addToWorkspace') {
                             data.record.forEach((datum) => {
-                                 createTab.dispatch('entity', datum.entity, 'item');
+                                 this.props.dataStore!.createTab('entity', datum.entity, 'item');
                             });
                             data.entity.forEach((datum) => {
-                                 createTab.dispatch('entity', datum.uid, 'item');
+                                 this.props.dataStore!.createTab('entity', datum.uid, 'item');
                             });
                         }
 
@@ -112,19 +117,19 @@ export class EntityEditorWorkspace extends React.Component<EntityEditorProps, En
                     }
                 };
 
-                showModal.dispatch(conflictResolutionModal);
+                this.props.modalStore!.addModal(conflictResolutionModal);
             });
         });
     }
 
     public createNewRecord() {
 
-        const entity = this.props.dataStore.tabs.entity.get('entity-' + this.props.id).value.entity;
+        const entity = this.props.dataStore!.dataStore.tabs.entity.get('entity-' + this.props.id).value.entity;
 
-        const entityType = this.props.dataStore.all.entity_type.value.find((t) => t.uid === entity.entityType);
+        const entityType = this.props.dataStore!.dataStore.all.entity_type.value.find((t) => t.uid === entity.entityType);
 
-        const entityTypeParents = findParentTree(entity.entityType, this.props.dataStore.all.entity_type.value);
-        const predicates = this.props.dataStore.all.predicate
+        const entityTypeParents = findParentTree(entity.entityType, this.props.dataStore!.dataStore.all.entity_type.value);
+        const predicates = this.props.dataStore!.dataStore.all.predicate
             .value.filter((pred) => entityTypeParents.indexOf(pred.domain) !== -1);
 
         const modalDef: ModalDefinition = {
@@ -143,7 +148,7 @@ export class EntityEditorWorkspace extends React.Component<EntityEditorProps, En
             }
         };
 
-        showModal.dispatch(modalDef);
+        this.props.modalStore!.addModal(modalDef);
     }
 
     public update(data: any) {
@@ -152,17 +157,17 @@ export class EntityEditorWorkspace extends React.Component<EntityEditorProps, En
 
     public render() {
 
-        const entity = this.props.dataStore.tabs.entity.get('entity-' + this.props.id).value.entity;
+        const entity = this.props.dataStore!.dataStore.tabs.entity.get('entity-' + this.props.id).value.entity;
 
-        const entityType = this.props.dataStore.all.entity_type.value.find((t) => t.uid === entity.entityType);
-        const potentialParents = this.props.dataStore.all.entity.value;
+        const entityType = this.props.dataStore!.dataStore.all.entity_type.value.find((t) => t.uid === entity.entityType);
+        const potentialParents = this.props.dataStore!.dataStore.all.entity.value;
 
-        const entityTypeParents = findParentTree(entity.entityType, this.props.dataStore.all.entity_type.value);
-        const predicates = this.props.dataStore.all.predicate
+        const entityTypeParents = findParentTree(entity.entityType, this.props.dataStore!.dataStore.all.entity_type.value);
+        const predicates = this.props.dataStore!.dataStore.all.predicate
             .value.filter((pred) => entityTypeParents.indexOf(pred.domain) !== -1);
 
-        const sources = this.props.dataStore.all.source.value;
-        const records = groupBy(this.props.dataStore.tabs.entity.get('entity-' + this.props.id).value.records, 'predicate');
+        const sources = this.props.dataStore!.dataStore.all.source.value;
+        const records = groupBy(this.props.dataStore!.dataStore.tabs.entity.get('entity-' + this.props.id).value.records, 'predicate');
 
 
         const options = predicates.map((pred) => ({ key: pred.label, value: pred.uid, meta: pred}));

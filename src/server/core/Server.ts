@@ -67,10 +67,10 @@ export const Server = (databaseConfig: KnexConfig) : Koa => {
     const admin = new Koa();
 
     admin.use(koaMount('/', auth()));
-    admin.use(koaMount('/', adminApp(skeleton, db)));
 
     admin.use(koaMount('/snapshot', snapshot(snapshotter)));
     admin.use(koaMount('/stats', stats(db)));
+    admin.use(koaMount('/', adminApp(skeleton, db)));
 
     app.use(koaMount('/admin', admin));
 

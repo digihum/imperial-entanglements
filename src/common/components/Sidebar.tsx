@@ -8,8 +8,7 @@ import * as React from 'react';
 import { SearchBox } from './sidebar/SearchBox';
 import { AppUrls } from '../ApiService';
 import { Link } from 'react-router';
-import { DataStore } from '../DataStore';
-import { closeTab } from '../Signaller';
+import { DataController } from '../stores/DataController';
 
 import { capitalize, isArray, isObject } from 'lodash';
 
@@ -89,7 +88,7 @@ const Card = SortableElement((props: {currentTab: boolean, url: any, index: numb
   ));
 
 const CardList = (props: {
-    dataStore: DataStore,
+    dataStore?: DataStore,
     tabs: Tab[],
     list: boolean,
     workspace: string,
@@ -143,12 +142,10 @@ const CardList = (props: {
 
 
 interface SidebarProps {
-    tabs: Tab[];
-    dataStore: DataStore;
-    clearTabs: any;
-    workspace: string;
-    list: boolean;
-    id: number;
+  dataStore?: DataController;
+  workspace: string;
+  list: boolean;
+  id: number;
 }
 
 interface SidebarState {

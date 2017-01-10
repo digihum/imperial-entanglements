@@ -19,9 +19,11 @@ import { ComboDropdownOption } from '../ComboDropdown';
 
 import { keyBy, Dictionary } from 'lodash';
 
-import { showModal, createTab } from '../../Signaller';
+import { inject, observer } from 'mobx-react';
 
-import { DataStore } from '../../DataStore';
+import { DataController } from '../../stores/DataController';
+import { ModalStore } from '../../stores/ModalStore';
+
 import { AddTabButton } from '../AddTabButton';
 
 import { ModalDefinition } from '../modal/ModalDefinition';
@@ -32,11 +34,12 @@ class ComboEditableFieldComponent extends EditableFieldComponent<ComboDropdownOp
 interface SourceEditorProps {
     api: ApiService;
     id: number;
-    dataStore: DataStore;
+    dataStore?: DataController;
+    modalStore?: ModalStore;
 }
 
 interface SourceEditorState {
-    metaData: _.Dictionary<SourceElement>;
+    metaData: Dictionary<SourceElement>;
 }
 
 // - Should state the number of times this predicate is used
@@ -46,6 +49,8 @@ interface SourceEditorState {
 // - Strong check (double button press or type) to confirm
 // - Changing name/description/sameAs - absolutly fine
 // - Cannot change 'readonly'
+@inject('dataStore', 'modalStore')
+@observer
 export class SourceEditorWorkspace extends React.Component<SourceEditorProps, SourceEditorState> {
 
     public static contextTypes = {

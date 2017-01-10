@@ -7,12 +7,12 @@
 import * as React from 'react';
 import { FalconItem, HierarchicalItem } from 'falcon-core';
 import { AddTabButton } from './AddTabButton';
-import { DataStore } from '../DataStore';
+import { DataController } from '../stores/DataController';
 
 interface RecursiveTreeProps<T extends FalconItem & HierarchicalItem> {
   data: T[];
   parentId: null | number;
-  dataStore: DataStore;
+  dataStore: DataController;
   tabType: string;
 }
 

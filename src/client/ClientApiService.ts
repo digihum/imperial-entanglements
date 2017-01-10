@@ -8,8 +8,6 @@ import { ApiService } from '../common/ApiService';
 import { Serializer, TrackedFalconItem, CompositeKey } from 'falcon-core';
 import * as queryString from 'query-string';
 
-import { triggerReload, showToast } from '../common/Signaller';
-
 import { isObject } from 'lodash';
 
 import { UnprocessableEntity } from '../common/Exceptions';
@@ -23,8 +21,7 @@ function handleErrors(response: any) {
             throw new UnprocessableEntity(response.statusText, response.json().then((result) => result.data));
         }
 
-        showToast.dispatch('Something went wrong ;(', response.statusText);
-        triggerReload.dispatch();
+        // showToast.dispatch('Something went wrong ;(', response.statusText);
 
         if (response.status === 404) {
              throw Error(JSON.stringify({
@@ -68,7 +65,6 @@ export class ClientApiService implements ApiService {
         })
         .then(handleErrors)
         .then((response) => {
-            triggerReload.dispatch();
             return response.json();
         }).then((data) => {
             return Promise.resolve(data);
@@ -93,7 +89,6 @@ export class ClientApiService implements ApiService {
         })
         .then(handleErrors)
         .then((response) => {
-            triggerReload.dispatch();
             return response.json();
         });
     }
@@ -116,7 +111,6 @@ export class ClientApiService implements ApiService {
         })
         .then(handleErrors)
         .then((response) => {
-            triggerReload.dispatch();
             return response.json();
         });
     }
@@ -133,7 +127,6 @@ export class ClientApiService implements ApiService {
         })
         .then(handleErrors)
         .then((response) => {
-            triggerReload.dispatch();
             return response.json();
         });
     }

@@ -6,8 +6,11 @@
 
 import * as React from 'react';
 import { ApiService } from '../ApiService';
-import { DataStore } from '../DataStore';
+import { DataController } from '../stores/DataController';
 import { Loading } from './Loading';
+
+import { } from 'mobx';
+import { inject, observer } from 'mobx-react';
 
 import {
     EmptyWorkspace,
@@ -24,7 +27,7 @@ interface WorkspaceProps {
     id: number;
     name?: string;
     list: boolean;
-    dataStore: DataStore;
+    dataStore?: DataController;
     loading: boolean;
     location: { pathname: string, search: string };
 }
@@ -33,6 +36,8 @@ interface WorkspaceState {
     searchString: string;
 }
 
+@inject('dataStore')
+@observer
 export class Workspace extends React.Component<WorkspaceProps, WorkspaceState> {
 
     constructor() {

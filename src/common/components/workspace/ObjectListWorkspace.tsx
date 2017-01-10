@@ -28,7 +28,7 @@ export const ObjectListWorkspace : React.StatelessComponent<ObjectListWorkspaceP
         {(() => {
             switch(props.listType) {
                 case 'entity':
-                    return (<EntityList api={props.api} query={props.query} dataStore={props.dataStore} />);
+                    return (<EntityList api={props.api} query={props.query} />);
                 case 'source':
                     return (<SourceList api={props.api} dataStore={props.dataStore} />);
                 case 'predicate':

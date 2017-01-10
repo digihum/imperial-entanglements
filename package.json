@@ -81,6 +81,8 @@
     "levenshtein": "^1.0.5",
     "lodash": "^4.16.1",
     "lunr": "^0.7.1",
+    "mobx": "^3.0.0",
+    "mobx-react": "^4.1.0",
     "moment": "^2.15.2",
     "mousetrap": "^1.6.0",
     "normalize.css": "^5.0.0",

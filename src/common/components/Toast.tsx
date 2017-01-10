@@ -5,7 +5,6 @@
  */
 
 import * as React from 'react';
-import { showToast } from '../Signaller';
 
 interface SingleToast {
     id: number;
@@ -25,21 +24,12 @@ interface ToastState {
 
 export class Toast extends React.Component<ToastProps, ToastState> {
 
-    private boundShowToast;
-
     constructor() {
         super();
         this.state = {
             toasts: [],
             nextId: 0
        };
-
-       this.boundShowToast = this.addToast.bind(this);
-       showToast.add(this.boundShowToast);
-    }
-
-    public componentWillUnmount() {
-        showToast.remove(this.boundShowToast);
     }
 
     public addToast(title: string, message: string, level: string = 'warning', lifeTime: number = 3000) {

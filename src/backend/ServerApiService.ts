@@ -15,8 +15,6 @@ import { CompositeKey, TrackedFalconItem } from 'falcon-core';
 
 import * as moment from 'moment';
 
-import { triggerReload } from '../common/Signaller';
-
 export { AppUrls } from '../common/ApiService';
 
 import { Database } from './data/Database';
@@ -63,11 +61,7 @@ export class ServerApiService implements ApiService {
             creationTimestamp: moment().toISOString(),
             lastmodifiedTimestamp: moment().toISOString(),
             creator: this.fakeCreator ? 0 : data.creator
-        }))
-        .then((result) => {
-            triggerReload.dispatch();
-            return Promise.resolve(result);
-        });
+        }));
     }
 
     public putItem<T extends TrackedFalconItem>(obj: { new(): T; },
@@ -79,11 +73,7 @@ export class ServerApiService implements ApiService {
         }
         return controller.putItem<T>(obj, uid, Object.assign(data, {
             lastmodifiedTimestamp: moment().toISOString()
-        }))
-        .then((result) => {
-            triggerReload.dispatch();
-            return Promise.resolve(result);
-        });
+        }));
     }
 
     public patchItem<T extends TrackedFalconItem>(obj: { new(): T; },
@@ -95,11 +85,7 @@ export class ServerApiService implements ApiService {
         }
         return controller.patchItem<T>(obj, uid, Object.assign(data, {
             lastmodifiedTimestamp: moment().toISOString()
-        }))
-        .then((result) => {
-            triggerReload.dispatch();
-            return Promise.resolve(result);
-        });
+        }));
     }
 
     public delItem<T extends TrackedFalconItem>(obj: { new(): T; }, baseUrl : string, uid: number | CompositeKey) {
@@ -107,11 +93,7 @@ export class ServerApiService implements ApiService {
         if (controller === undefined) {
             return Promise.reject(new CollectionNotFoundException('Controller not found'));
         }
-        return controller.deleteItem<T>(obj, uid)
-        .then((result) => {
-            triggerReload.dispatch();
-            return Promise.resolve(result);
-        });
+        return controller.deleteItem<T>(obj, uid);
     }
 
 

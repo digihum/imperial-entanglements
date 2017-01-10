@@ -18,10 +18,12 @@ import { EditableParagraph } from '../fields/EditableParagraph';
 import { EditableComboDropdown } from '../fields/EditableComboDropdown';
 import { ComboDropdownOption } from '../ComboDropdown';
 
-import { showModal, createTab } from '../../Signaller';
 import { ModalDefinition } from '../modal/ModalDefinition';
 
-import { DataStore } from '../../DataStore';
+import { inject, observer } from 'mobx-react';
+
+import { DataController } from '../../stores/DataController';
+import { ModalStore } from '../../stores/ModalStore';
 
 
 class StringEditableFieldComponent extends EditableFieldComponent<string> {}
@@ -30,12 +32,15 @@ class ComboEditableFieldComponent extends EditableFieldComponent<ComboDropdownOp
 interface EntityTypeWorkspaceProps {
     api: ApiService;
     id: number;
-    dataStore: DataStore;
+    dataStore?: DataController;
+    modalStore?: ModalStore;
 }
 
 interface EntityTypeWorkspaceState {
 }
 
+@inject('dataStore', 'modalStore')
+@observer
 export class EntityTypeWorkspace extends React.Component<EntityTypeWorkspaceProps, EntityTypeWorkspaceState> {
 
     public static contextTypes = {
@@ -49,7 +54,7 @@ export class EntityTypeWorkspace extends React.Component<EntityTypeWorkspaceProp
     }
 
     public update(data: any) {
-        const entityType = this.props.dataStore.tabs.entity_type.get('entity_type-' + this.props.id).value;
+        const entityType = this.props.dataStore!.dataStore.tabs.entity_type.get('entity_type-' + this.props.id).value;
         this.props.api.patchItem(EntityType, AppUrls.entity_type, this.props.id, data)
         .then(() => this.setState({ entityType: Object.assign({}, entityType, data)}));
     }
@@ -57,14 +62,14 @@ export class EntityTypeWorkspace extends React.Component<EntityTypeWorkspaceProp
 
     public copy() {
 
-        const entityType = this.props.dataStore.tabs.entity_type.get('entity_type-' + this.props.id).value;
+        const entityType = this.props.dataStore!.dataStore.tabs.entity_type.get('entity_type-' + this.props.id).value;
 
         const newEntityType = Serializer.fromJson(EntityType,
             Object.assign({}, Serializer.toJson(entityType), { name: 'Copy of ' + entityType.label}));
 
         this.props.api.postItem(EntityType, AppUrls.entity_type, newEntityType)
             .then(([id]) => {
-                createTab.dispatch('entity_type', id, 'item');
+                this.props.dataStore!.createTab('entity_type', id, 'item');
         });
     }
 
@@ -80,13 +85,13 @@ export class EntityTypeWorkspace extends React.Component<EntityTypeWorkspaceProp
                     complete: (result) => {
                         if (result === 'addToWorkspace') {
                             data.entityType.forEach((datum) => {
-                                 createTab.dispatch('entity_type', datum.uid, 'item');
+                                 this.props.dataStore!.createTab('entity_type', datum.uid, 'item');
                             });
                             data.predicate.forEach((datum) => {
-                                 createTab.dispatch('predicate', datum.uid, 'item');
+                                 this.props.dataStore!.createTab('predicate', datum.uid, 'item');
                             });
                             data.entity.forEach((datum) => {
-                                 createTab.dispatch('entity', datum.uid, 'item');
+                                 this.props.dataStore!.createTab('entity', datum.uid, 'item');
                             });
                         }
                     },
@@ -96,7 +101,7 @@ export class EntityTypeWorkspace extends React.Component<EntityTypeWorkspaceProp
                     }
                 };
 
-                showModal.dispatch(conflictResolutionModal);
+                this.props.modalStore!.addModal(conflictResolutionModal);
             });
         });
     }
@@ -105,7 +110,7 @@ export class EntityTypeWorkspace extends React.Component<EntityTypeWorkspaceProp
         const a : ModalDefinition = {
             name: 'entity',
             complete: ([id]) => {
-                 createTab.dispatch('entity', id, 'item');
+                 this.props.dataStore!.createTab('entity', id, 'item');
             },
             cancel: () => { console.log('cancel'); },
             settings: {
@@ -114,13 +119,13 @@ export class EntityTypeWorkspace extends React.Component<EntityTypeWorkspaceProp
             }
         };
 
-        showModal.dispatch(a);
+        this.props.modalStore!.addModal(a);
     }
 
     public render() {
 
-        const entityType = this.props.dataStore.tabs.entity_type.get('entity_type-' + this.props.id).value;
-        const potentialParents = this.props.dataStore.all.entity_type.value;
+        const entityType = this.props.dataStore!.dataStore.tabs.entity_type.get('entity_type-' + this.props.id).value;
+        const potentialParents = this.props.dataStore!.dataStore.all.entity_type.value;
 
 
         let parentName = '';

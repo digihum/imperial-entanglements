@@ -16,14 +16,15 @@ import { noop, cloneDeep, isUndefined } from 'lodash';
 
 import { AddTabButton } from '../AddTabButton';
 
-import { showModal, createTab } from '../../Signaller';
 import { ModalDefinition } from '../modal/ModalDefinition';
 
 import { formatDate } from '../../helper/formatDate';
 
+import { inject, observer } from 'mobx-react';
+
 interface EntityListProps {
     api: ApiService;
-    dataStore: DataStore;
+    dataStore?: DataStore;
     query: any;
 }
 
@@ -87,6 +88,8 @@ const customColumns = (predicates, columns, updateColumnParams, rotateSort) => {
     });
 };
 
+@inject('dataStore')
+@observer
 export class EntityList extends React.Component<EntityListProps, EntityListState> {
 
     public static contextTypes = {
@@ -141,7 +144,7 @@ export class EntityList extends React.Component<EntityListProps, EntityListState
 
         this.props.api.getCollection(Record, AppUrls.record, {
             predicate: setColumns.map((col) => col.predicate),
-            entity: this.props.dataStore.all.entity.value.map((entity) => entity.uid)
+            entity: this.props.dataStore!.all.entity.value.map((entity) => entity.uid)
         })
         .then((results) => this.setState({ results }));
     }
