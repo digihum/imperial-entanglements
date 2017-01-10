@@ -6,7 +6,6 @@
 
 import * as React from 'react';
 
-import { ApiService } from '../../ApiService';
 import { EntityType } from 'falcon-core';
 
 import { AddTabButton } from '../AddTabButton';
@@ -23,7 +22,6 @@ import { DataController } from '../../stores/DataController';
 import { ModalStore } from '../../stores/ModalStore';
 
 interface EntityTypeListProps {
-    api: ApiService;
     dataStore?: DataController;
     modalStore?: ModalStore;
 }
@@ -102,7 +100,7 @@ export class EntityTypeList extends React.Component<EntityTypeListProps, EntityT
                           </tr>
                       </thead>
                       <tbody>
-                      {this.props.dataStore.all.entity_type.value.filter(this.state.filterFunc).map((entityType) => {
+                      {this.props.dataStore!.dataStore.all.entity_type.value.filter(this.state.filterFunc).map((entityType) => {
                           return (
                               <tr key={`entityType-${entityType.uid}`}>
                                   <td>{entityType.uid} <AddTabButton
@@ -120,10 +118,10 @@ export class EntityTypeList extends React.Component<EntityTypeListProps, EntityT
 
                 ) : (<div className='tree-root'>
                    <RecursiveTree
-                    data={this.props.dataStore.all.entity_type.value}
+                    data={this.props.dataStore!.dataStore.all.entity_type.value}
                     tabType={'entity_type'}
                     parentId={null}
-                    dataStore={this.props.dataStore} />
+                    dataStore={this.props.dataStore!} />
                   </div>)}
 
             </section>

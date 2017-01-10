@@ -26,7 +26,6 @@ import { DataController } from '../../stores/DataController';
 import { ModalStore } from '../../stores/ModalStore';
 
 interface EntityListProps {
-    api: ApiService;
     dataStore?: DataController;
     modalStore?: ModalStore;
     query: any;
@@ -146,9 +145,9 @@ export class EntityList extends React.Component<EntityListProps, EntityListState
 
         const setColumns = this.state.columns.filter((col) => col.predicate != -1);
 
-        this.props.api.getCollection(Record, AppUrls.record, {
+        this.props.dataStore!.api.getCollection(Record, AppUrls.record, {
             predicate: setColumns.map((col) => col.predicate),
-            entity: this.props.dataStore!.all.entity.value.map((entity) => entity.uid)
+            entity: this.props.dataStore!.dataStore.all.entity.value.map((entity) => entity.uid)
         })
         .then((results) => this.setState({ results }));
     }

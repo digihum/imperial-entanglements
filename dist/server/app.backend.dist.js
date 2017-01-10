@@ -4836,9 +4836,9 @@
 	    }
 	    reload() {
 	        const setColumns = this.state.columns.filter((col) => col.predicate != -1);
-	        this.props.api.getCollection(falcon_core_1.Record, ApiService_1.AppUrls.record, {
+	        this.props.dataStore.api.getCollection(falcon_core_1.Record, ApiService_1.AppUrls.record, {
 	            predicate: setColumns.map((col) => col.predicate),
-	            entity: this.props.dataStore.all.entity.value.map((entity) => entity.uid)
+	            entity: this.props.dataStore.dataStore.all.entity.value.map((entity) => entity.uid)
 	        })
 	            .then((results) => this.setState({ results }));
 	    }
@@ -5299,7 +5299,7 @@
 	                            React.createElement("td", null, "Name"),
 	                            React.createElement("td", null, "Parent"),
 	                            React.createElement("td", null, "Description"))),
-	                    React.createElement("tbody", null, this.props.dataStore.all.entity_type.value.filter(this.state.filterFunc).map((entityType) => {
+	                    React.createElement("tbody", null, this.props.dataStore.dataStore.all.entity_type.value.filter(this.state.filterFunc).map((entityType) => {
 	                        return (React.createElement("tr", { key: `entityType-${entityType.uid}` },
 	                            React.createElement("td", null,
 	                                entityType.uid,
@@ -5309,7 +5309,7 @@
 	                            React.createElement("td", null, entityType.parent),
 	                            React.createElement("td", null, entityType.description)));
 	                    })))) : (React.createElement("div", { className: 'tree-root' },
-	                    React.createElement(RecursiveTree_1.RecursiveTree, { data: this.props.dataStore.all.entity_type.value, tabType: 'entity_type', parentId: null, dataStore: this.props.dataStore }))))));
+	                    React.createElement(RecursiveTree_1.RecursiveTree, { data: this.props.dataStore.dataStore.all.entity_type.value, tabType: 'entity_type', parentId: null, dataStore: this.props.dataStore }))))));
 	    }
 	};
 	EntityTypeList = __decorate([
