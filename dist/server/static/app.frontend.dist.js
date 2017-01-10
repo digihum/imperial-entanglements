@@ -53,7 +53,7 @@
 	const react_dom_1 = __webpack_require__(1);
 	const react_1 = __webpack_require__(2);
 	const FalconApp_1 = __webpack_require__(3);
-	const ClientApiService_1 = __webpack_require__(425);
+	const ClientApiService_1 = __webpack_require__(424);
 	const react_router_1 = __webpack_require__(4);
 	document.addEventListener('DOMContentLoaded', (event) => {
 	    react_dom_1.render(react_1.createElement(FalconApp_1.FalconApp, {
@@ -4866,74 +4866,42 @@
 	 * @version 0.1.0
 	 */
 	"use strict";
-	var __assign = (this && this.__assign) || Object.assign || function(t) {
-	    for (var s, i = 1, n = arguments.length; i < n; i++) {
-	        s = arguments[i];
-	        for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
-	            t[p] = s[p];
-	    }
-	    return t;
-	};
 	const React = __webpack_require__(2);
 	const Sidebar_1 = __webpack_require__(65);
 	const Workspace_1 = __webpack_require__(262);
-	const Toast_1 = __webpack_require__(413);
-	const Signaller_1 = __webpack_require__(70);
-	const lodash_1 = __webpack_require__(69);
-	const CreatePredicate_1 = __webpack_require__(414);
-	const CreateRecord_1 = __webpack_require__(416);
-	const CreatePresetRecord_1 = __webpack_require__(417);
-	const CreateSource_1 = __webpack_require__(418);
-	const CreateEntity_1 = __webpack_require__(419);
-	const CreateEntityType_1 = __webpack_require__(420);
-	const ConflictResolution_1 = __webpack_require__(421);
-	const DataStore_1 = __webpack_require__(422);
-	const DataController_1 = __webpack_require__(424);
+	const Toast_1 = __webpack_require__(411);
+	const DataController_1 = __webpack_require__(412);
+	const ModalStore_1 = __webpack_require__(415);
 	const react_sortable_hoc_1 = __webpack_require__(72);
-	const mobx_1 = __webpack_require__(408);
-	const mobx_react_1 = __webpack_require__(407);
+	const mobx_react_1 = __webpack_require__(70);
 	const ObjectEditorCore = react_sortable_hoc_1.SortableContainer((props) => {
 	    return (React.createElement("span", { className: 'flex-fill' },
-	        React.createElement(Sidebar_1.Sidebar, { tabs: props.tabs, dataStore: props.dataStore, clearTabs: props.clearTabs, list: props.list, id: props.id, workspace: props.workspace }),
-	        React.createElement(Workspace_1.Workspace, { api: props.api, workspace: props.workspace, id: props.id, dataStore: props.dataStore, loading: props.loadingWheel, location: props.location, list: props.list }),
-	        props.splitWorkspace ? (React.createElement(Workspace_1.Workspace, { api: props.api, workspace: props.workspace, id: props.id, dataStore: props.dataStore, loading: props.loadingWheel, location: props.location, list: props.list })) : null,
+	        React.createElement(Sidebar_1.Sidebar, { list: props.list, id: props.id, workspace: props.workspace }),
+	        React.createElement(Workspace_1.Workspace, { api: props.api, workspace: props.workspace, id: props.id, loading: props.loadingWheel, location: props.location, list: props.list }),
+	        props.splitWorkspace ? (React.createElement(Workspace_1.Workspace, { api: props.api, workspace: props.workspace, id: props.id, loading: props.loadingWheel, location: props.location, list: props.list })) : null,
 	        React.createElement("div", { className: 'split-workspace-button-container', onClick: props.toggleSplitWorkspace }, props.splitWorkspace ? (React.createElement("i", { className: 'fa fa-times', title: 'split' })) : (React.createElement("i", { className: 'fa fa-columns', title: 'split' })))));
 	});
 	class ObjectEditor extends React.Component {
 	    constructor(props, context) {
 	        super();
-	        let tabs = [];
-	        if (typeof window !== 'undefined') {
-	            const tabString = window.localStorage.getItem('open_tabs');
-	            if (tabString !== null) {
-	                tabs = JSON.parse(tabString);
-	            }
-	        }
 	        this.state = {
-	            tabs,
-	            inBrowser: (typeof window !== 'undefined'),
-	            modalQueue: [],
-	            dataStore: mobx_1.observable(lodash_1.cloneDeep(DataStore_1.emptyDataStore)),
+	            dataController: new DataController_1.DataController(props.api),
+	            modalStore: new ModalStore_1.ModalStore(),
 	            loadingWheel: true,
 	            loading: true,
 	            id: NaN,
 	            list: false,
 	            splitWorkspace: false
 	        };
-	        this.boundCreateTab = this.createTab.bind(this);
-	        this.boundCloseTab = this.closeTab.bind(this);
-	        this.boundAddModal = this.addModal.bind(this);
-	        this.boundReload = this.callReload.bind(this);
-	        Signaller_1.createTab.add(this.boundCreateTab);
-	        Signaller_1.closeTab.add(this.boundCloseTab);
-	        Signaller_1.showModal.add(this.boundAddModal);
-	        Signaller_1.triggerReload.add(this.boundReload);
 	    }
 	    componentDidMount() {
 	        this.reload(this.props, false, true);
 	    }
-	    callReload() {
-	        this.reload(this.props, true);
+	    componentWillUnmount() {
+	        this.state.dataController.saveTabs();
+	    }
+	    componentWillReceiveProps(props) {
+	        this.reload(props);
 	    }
 	    reload(props, force = false, initialLoad = false) {
 	        const oldId = parseInt(this.props.location.pathname.substr(this.props.pathname.length + 1));
@@ -4942,28 +4910,16 @@
 	        const idChanged = isNaN(oldId) ? !isNaN(newId) : isNaN(newId) ? true : oldId !== newId;
 	        const queryChanged = props.location.search !== this.props.location.search;
 	        const newWorkspace = props.workspace;
-	        // if we are in the browser, load tabs!
 	        // if there is not a tab for the current URL - create it
 	        // if the url is invalid, relocate to /edit/notfound
 	        if (['entity', 'source', 'predicate', 'entity_type', 'notfound'].indexOf(newWorkspace) === -1) {
 	            this.context.router.transitionTo('/edit/notfound');
 	        }
-	        let updatedTabs = this.state.tabs;
-	        const isList = isNaN(newId);
-	        if (this.state.inBrowser) {
-	            if (isList) {
-	            }
-	            else {
-	                if (lodash_1.find(updatedTabs, (tab) => tab.tabType === newWorkspace && tab.uid == newId) === undefined) {
-	                    updatedTabs = updatedTabs.concat([{ tabType: newWorkspace, uid: newId, tabClass: 'item' }]);
-	                }
-	            }
-	        }
+	        this.state.dataController.enterPage(newWorkspace, newId, {});
 	        // this state always updates
 	        this.setState({
 	            id: newId,
-	            list: props.location.pathname.substr(props.pathname.length + 1).length === 0,
-	            tabs: updatedTabs
+	            list: props.location.pathname.substr(props.pathname.length + 1).length === 0
 	        }, () => {
 	            if (!initialLoad && this.state.loading && !force) {
 	                return;
@@ -4972,14 +4928,9 @@
 	                loading: true,
 	                loadingWheel: initialLoad
 	            }, () => {
-	                DataController_1.DataController.reload(props.api, this.state.tabs, force, (failWorkspace, failUid) => {
-	                    if (newWorkspace === failWorkspace && failUid == newId) {
-	                        this.context.router.transitionTo('/edit/notfound');
-	                    }
-	                })
+	                this.state.dataController.update()
 	                    .then((dataStore) => {
 	                    this.setState({
-	                        dataStore,
 	                        loading: false,
 	                        loadingWheel: false
 	                    });
@@ -4987,115 +4938,14 @@
 	            });
 	        });
 	    }
-	    createTab(tabType, uid, tabClass, data, query) {
-	        // don't add a tab if it already exists
-	        if (lodash_1.find(this.state.tabs, (tab) => tab.tabType === tabType && tab.uid == uid) === undefined) {
-	            this.setState({
-	                tabs: [{ tabType, uid, data, tabClass, query }].concat(this.state.tabs)
-	            }, () => {
-	                this.saveTabs();
-	                this.reload(this.props);
-	            });
-	        }
-	    }
-	    updateTab(tabType, uid, data) {
-	        const tabs = lodash_1.cloneDeep(this.state.tabs);
-	        const tabId = lodash_1.findIndex(tabs, (tab) => tab.tabType === tabType && tab.uid === uid);
-	        if (tabId !== -1) {
-	            tabs[tabId].data = data;
-	            this.setState({ tabs });
-	        }
-	    }
-	    closeTab(tabType, uid) {
-	        this.setState({
-	            tabs: this.state.tabs.filter((a) => a.tabType !== tabType || a.uid !== uid)
-	        }, () => {
-	            this.saveTabs();
-	            this.reload(this.props);
-	        });
-	    }
-	    saveTabs() {
-	        const tabsString = JSON.stringify(this.state.tabs);
-	        if (this.state.inBrowser) {
-	            window.localStorage.setItem('open_tabs', tabsString);
-	        }
-	    }
-	    clearAllTabs() {
-	        this.setState({ tabs: [] }, () => {
-	            this.saveTabs();
-	            this.reload(this.props);
-	        });
-	    }
-	    reorderTabs(data) {
-	        this.setState({ tabs: react_sortable_hoc_1.arrayMove(this.state.tabs, data.oldIndex, data.newIndex) }, () => {
-	            this.saveTabs();
-	        });
-	    }
-	    addModal(def) {
-	        this.setState({ modalQueue: [def].concat(this.state.modalQueue) });
-	    }
-	    modalComplete(data) {
-	        if (this.state.modalQueue.length === 0) {
-	            throw new Error('Attempted to complete non-existent modal');
-	        }
-	        this.state.modalQueue[0].complete(data);
-	        if (this.state.modalQueue.length > 0) {
-	            this.setState({ modalQueue: lodash_1.tail(this.state.modalQueue) });
-	        }
-	    }
-	    modalCancel() {
-	        if (this.state.modalQueue.length === 0) {
-	            throw new Error('Attempted to cancel non-existent modal');
-	        }
-	        this.state.modalQueue[0].cancel();
-	        this.setState({
-	            modalQueue: []
-	        });
-	    }
-	    componentWillUnmount() {
-	        this.saveTabs();
-	        Signaller_1.createTab.remove(this.boundCreateTab);
-	        Signaller_1.closeTab.remove(this.boundCloseTab);
-	        Signaller_1.showModal.remove(this.boundAddModal);
-	        Signaller_1.triggerReload.remove(this.boundReload);
-	    }
-	    componentWillReceiveProps(props) {
-	        this.reload(props);
-	    }
 	    render() {
-	        return (React.createElement(mobx_react_1.Provider, { dataStore: this.state.dataStore },
+	        return (React.createElement(mobx_react_1.Provider, { dataStore: this.state.dataController, modalStore: this.state.modalStore },
 	            React.createElement("section", { id: 'entity-editor', className: 'flex-fill' },
 	                React.createElement("span", { className: 'header-colour ' + this.props.workspace }),
 	                React.createElement("span", { className: 'flex-fill' },
-	                    React.createElement(ObjectEditorCore, { tabs: this.state.tabs, api: this.props.api, dataStore: this.state.dataStore, id: this.state.id, workspace: this.props.workspace, onSortEnd: this.reorderTabs.bind(this), useDragHandle: true, loadingWheel: this.state.loadingWheel, splitWorkspace: this.state.splitWorkspace, helperClass: 'card-being-dragged', clearTabs: this.clearAllTabs.bind(this), toggleSplitWorkspace: () => this.setState({ splitWorkspace: !this.state.splitWorkspace }), list: this.state.list, location: this.props.location }),
+	                    React.createElement(ObjectEditorCore, { id: this.state.id, workspace: this.props.workspace, useDragHandle: true, loadingWheel: this.state.loadingWheel, splitWorkspace: this.state.splitWorkspace, helperClass: 'card-being-dragged', toggleSplitWorkspace: () => this.setState({ splitWorkspace: !this.state.splitWorkspace }), list: this.state.list, location: this.props.location }),
 	                    React.createElement(Toast_1.Toast, null),
-	                    (() => {
-	                        if (this.state.modalQueue.length === 0) {
-	                            return null;
-	                        }
-	                        const sharedProps = {
-	                            api: this.props.api,
-	                            dataStore: this.state.dataStore,
-	                            complete: this.modalComplete.bind(this),
-	                            cancel: this.modalCancel.bind(this)
-	                        };
-	                        switch (this.state.modalQueue[0].name) {
-	                            case 'predicate':
-	                                return (React.createElement(CreatePredicate_1.CreatePredicate, __assign({}, sharedProps, this.state.modalQueue[0].settings)));
-	                            case 'record':
-	                                return (React.createElement(CreateRecord_1.CreateRecord, __assign({}, sharedProps, this.state.modalQueue[0].settings)));
-	                            case 'preset_record':
-	                                return (React.createElement(CreatePresetRecord_1.CreatePresetRecord, __assign({}, sharedProps, this.state.modalQueue[0].settings)));
-	                            case 'source':
-	                                return (React.createElement(CreateSource_1.CreateSource, __assign({}, sharedProps, this.state.modalQueue[0].settings)));
-	                            case 'entity':
-	                                return (React.createElement(CreateEntity_1.CreateEntity, __assign({}, sharedProps, this.state.modalQueue[0].settings)));
-	                            case 'entity_type':
-	                                return (React.createElement(CreateEntityType_1.CreateEntityType, __assign({}, sharedProps, this.state.modalQueue[0].settings)));
-	                            case 'conflict_resolution':
-	                                return (React.createElement(ConflictResolution_1.ConflictResolution, __assign({}, sharedProps, this.state.modalQueue[0].settings)));
-	                        }
-	                    })()),
+	                    this.state.modalStore.currentModal()),
 	                React.createElement("span", { className: 'header-colour ' + this.props.workspace }))));
 	    }
 	}
@@ -5115,18 +4965,27 @@
 	 * @version 0.1.0
 	 */
 	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
 	const React = __webpack_require__(2);
 	const SearchBox_1 = __webpack_require__(66);
 	const ApiService_1 = __webpack_require__(45);
 	const react_router_1 = __webpack_require__(4);
-	const Signaller_1 = __webpack_require__(70);
 	const lodash_1 = __webpack_require__(69);
 	const react_sortable_hoc_1 = __webpack_require__(72);
+	const mobx_react_1 = __webpack_require__(70);
 	const Handle = react_sortable_hoc_1.SortableHandle((props) => (React.createElement("div", { className: 'badge-container' },
 	    React.createElement("div", { className: 'badge ' + props.tabType },
 	        React.createElement("span", null, props.tabType[0].toUpperCase())))));
-	const onCloseTab = (e, tabType, uid) => {
-	    Signaller_1.closeTab.dispatch(tabType, uid);
+	const onCloseTab = (e, tabType, uid, dataStore) => {
+	    dataStore.closeTab(tabType, uid);
 	    e.stopPropagation();
 	    e.preventDefault();
 	    e.nativeEvent.stopImmediatePropagation();
@@ -5156,11 +5015,11 @@
 	                            props.subtitle[sub][subSub])))))) : null))))) : (React.createElement("span", { className: 'entity-type' }, props.subtitle)))),
 	        !props.currentTab ? (React.createElement("span", { className: 'close-button' },
 	            props.tab.tabType === 'source' ? (React.createElement("i", { className: 'fa fa-unlock' })) : null,
-	            React.createElement("i", { className: 'fa fa-times', onClick: (e) => onCloseTab(e, props.tab.tabType, props.tab.uid) }))) : null))));
+	            React.createElement("i", { className: 'fa fa-times', onClick: (e) => onCloseTab(e, props.tab.tabType, props.tab.uid, props.dataStore) }))) : null))));
 	const CardList = (props) => {
-	    return (React.createElement("ul", { className: 'card-list' }, props.tabs.map((tab, index) => {
+	    return (React.createElement("ul", { className: 'card-list' }, props.dataStore.tabs.map((tab, index) => {
 	        // TODO: shouldn't be ==
-	        const item = props.dataStore.all[tab.tabType].value
+	        const item = props.dataStore.dataStore.all[tab.tabType].value
 	            .find((item) => item.uid == tab.uid);
 	        let url = null;
 	        if (tab.tabClass === 'item') {
@@ -5179,10 +5038,10 @@
 	            : tab.data;
 	        const title = item === undefined ? `${tab.tabType} list` : item.label;
 	        const currentTab = !props.list && tab.tabType === props.workspace && tab.uid == props.id;
-	        return (React.createElement(Card, { key: `tab-${tab.tabType}-${tab.tabClass}-${tab.uid}-${tab.query}`, currentTab: currentTab, url: url, tab: tab, title: title, subtitle: subtitle, index: index, compact: props.compact }));
+	        return (React.createElement(Card, { key: `tab-${tab.tabType}-${tab.tabClass}-${tab.uid}-${tab.query}`, currentTab: currentTab, url: url, tab: tab, title: title, subtitle: subtitle, index: index, dataStore: props.dataStore, compact: props.compact }));
 	    })));
 	};
-	class Sidebar extends React.Component {
+	let Sidebar = class Sidebar extends React.Component {
 	    constructor() {
 	        super();
 	        this.state = {
@@ -5194,16 +5053,21 @@
 	        return (React.createElement("section", { id: 'sidebar' },
 	            React.createElement(SearchBox_1.SearchBox, { searchString: this.state.searchString, dataStore: this.props.dataStore, onChange: (evt) => this.setState({ searchString: evt.currentTarget.value }) }),
 	            React.createElement("div", { className: 'sidebar-toolbar' },
-	                React.createElement("button", { onClick: this.props.clearTabs },
+	                React.createElement("button", { onClick: this.props.dataStore.clearAllTabs },
 	                    React.createElement("i", { className: 'fa fa-trash' }),
 	                    " Clear All"),
 	                React.createElement("button", { onClick: () => this.setState({ compactMode: !this.state.compactMode }) },
 	                    React.createElement("i", { className: 'fa fa-compress' }),
 	                    " Compact")),
 	            React.createElement("div", { className: 'card-list-container' },
-	                React.createElement(CardList, { dataStore: this.props.dataStore, tabs: this.props.tabs, list: this.props.list, workspace: this.props.workspace, id: this.props.id, compact: this.state.compactMode }))));
+	                React.createElement(CardList, { dataStore: this.props.dataStore, list: this.props.list, workspace: this.props.workspace, id: this.props.id, compact: this.state.compactMode }))));
 	    }
-	}
+	};
+	Sidebar = __decorate([
+	    mobx_react_1.inject('dataStore'),
+	    mobx_react_1.observer,
+	    __metadata("design:paramtypes", [])
+	], Sidebar);
 	exports.Sidebar = Sidebar;
 
 
@@ -5222,10 +5086,10 @@
 	const ApiService_1 = __webpack_require__(45);
 	const lodash_1 = __webpack_require__(69);
 	exports.SearchBox = (props, context) => {
-	    const entities = props.dataStore.all.entity.value.map((entity) => ({ key: entity.label, value: lodash_1.toString(entity.uid), meta: { itemType: ApiService_1.AppUrls.entity } }));
-	    const entityTypes = props.dataStore.all.entity_type.value.map((entityType) => ({ key: entityType.label, value: lodash_1.toString(entityType.uid), meta: { itemType: ApiService_1.AppUrls.entity_type } }));
-	    const predicates = props.dataStore.all.predicate.value.map((predicate) => ({ key: predicate.label, value: lodash_1.toString(predicate.uid), meta: { itemType: ApiService_1.AppUrls.predicate } }));
-	    const sources = props.dataStore.all.source.value.map((source) => ({ key: source.label, value: lodash_1.toString(source.uid), meta: { itemType: ApiService_1.AppUrls.source } }));
+	    const entities = props.dataStore.dataStore.all.entity.value.map((entity) => ({ key: entity.label, value: lodash_1.toString(entity.uid), meta: { itemType: ApiService_1.AppUrls.entity } }));
+	    const entityTypes = props.dataStore.dataStore.all.entity_type.value.map((entityType) => ({ key: entityType.label, value: lodash_1.toString(entityType.uid), meta: { itemType: ApiService_1.AppUrls.entity_type } }));
+	    const predicates = props.dataStore.dataStore.all.predicate.value.map((predicate) => ({ key: predicate.label, value: lodash_1.toString(predicate.uid), meta: { itemType: ApiService_1.AppUrls.predicate } }));
+	    const sources = props.dataStore.dataStore.all.source.value.map((source) => ({ key: source.label, value: lodash_1.toString(source.uid), meta: { itemType: ApiService_1.AppUrls.source } }));
 	    const all = entities.concat(entityTypes, predicates, sources);
 	    return (React.createElement("span", null,
 	        React.createElement("div", { className: 'input-addon-formgroup' },
@@ -7551,477 +7415,3761 @@
 /* 70 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/**
-	 * @fileOverview <Description Missing>
-	 * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
-	 * @version 0.1.0
-	 */
-	"use strict";
-	const signals = __webpack_require__(71);
-	exports.createTab = new signals.Signal();
-	exports.closeTab = new signals.Signal();
-	exports.showModal = new signals.Signal();
-	exports.triggerReload = new signals.Signal();
-	exports.showToast = new signals.Signal();
-	exports.Signaller = {
-	    createTab: exports.createTab,
-	    closeTab: exports.closeTab,
-	    showModal: exports.showModal,
-	    triggerReload: exports.triggerReload,
-	    showToast: exports.showToast
-	};
-
+	(function webpackUniversalModuleDefinition(root, factory) {
+		if(true)
+			module.exports = factory(__webpack_require__(71), __webpack_require__(2), __webpack_require__(1));
+		else if(typeof define === 'function' && define.amd)
+			define(["mobx", "react", "react-dom"], factory);
+		else if(typeof exports === 'object')
+			exports["mobxReact"] = factory(require("mobx"), require("react"), require("react-dom"));
+		else
+			root["mobxReact"] = factory(root["mobx"], root["React"], root["ReactDOM"]);
+	})(this, function(__WEBPACK_EXTERNAL_MODULE_2__, __WEBPACK_EXTERNAL_MODULE_3__, __WEBPACK_EXTERNAL_MODULE_4__) {
+	return /******/ (function(modules) { // webpackBootstrap
+	/******/ 	// The module cache
+	/******/ 	var installedModules = {};
+	
+	/******/ 	// The require function
+	/******/ 	function __webpack_require__(moduleId) {
+	
+	/******/ 		// Check if module is in cache
+	/******/ 		if(installedModules[moduleId])
+	/******/ 			return installedModules[moduleId].exports;
+	
+	/******/ 		// Create a new module (and put it into the cache)
+	/******/ 		var module = installedModules[moduleId] = {
+	/******/ 			exports: {},
+	/******/ 			id: moduleId,
+	/******/ 			loaded: false
+	/******/ 		};
+	
+	/******/ 		// Execute the module function
+	/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+	
+	/******/ 		// Flag the module as loaded
+	/******/ 		module.loaded = true;
+	
+	/******/ 		// Return the exports of the module
+	/******/ 		return module.exports;
+	/******/ 	}
+	
+	
+	/******/ 	// expose the modules object (__webpack_modules__)
+	/******/ 	__webpack_require__.m = modules;
+	
+	/******/ 	// expose the module cache
+	/******/ 	__webpack_require__.c = installedModules;
+	
+	/******/ 	// __webpack_public_path__
+	/******/ 	__webpack_require__.p = "";
+	
+	/******/ 	// Load entry module and return exports
+	/******/ 	return __webpack_require__(0);
+	/******/ })
+	/************************************************************************/
+	/******/ ([
+	/* 0 */
+	/***/ function(module, exports, __webpack_require__) {
+	
+		'use strict';
+	
+		Object.defineProperty(exports, "__esModule", {
+		  value: true
+		});
+		exports.PropTypes = exports.propTypes = exports.inject = exports.Provider = exports.useStaticRendering = exports.trackComponents = exports.componentByNodeRegistery = exports.renderReporter = exports.Observer = exports.observer = undefined;
+	
+		var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+	
+		var _observer = __webpack_require__(1);
+	
+		Object.defineProperty(exports, 'observer', {
+		  enumerable: true,
+		  get: function get() {
+		    return _observer.observer;
+		  }
+		});
+		Object.defineProperty(exports, 'Observer', {
+		  enumerable: true,
+		  get: function get() {
+		    return _observer.Observer;
+		  }
+		});
+		Object.defineProperty(exports, 'renderReporter', {
+		  enumerable: true,
+		  get: function get() {
+		    return _observer.renderReporter;
+		  }
+		});
+		Object.defineProperty(exports, 'componentByNodeRegistery', {
+		  enumerable: true,
+		  get: function get() {
+		    return _observer.componentByNodeRegistery;
+		  }
+		});
+		Object.defineProperty(exports, 'trackComponents', {
+		  enumerable: true,
+		  get: function get() {
+		    return _observer.trackComponents;
+		  }
+		});
+		Object.defineProperty(exports, 'useStaticRendering', {
+		  enumerable: true,
+		  get: function get() {
+		    return _observer.useStaticRendering;
+		  }
+		});
+	
+		var _Provider = __webpack_require__(8);
+	
+		Object.defineProperty(exports, 'Provider', {
+		  enumerable: true,
+		  get: function get() {
+		    return _interopRequireDefault(_Provider).default;
+		  }
+		});
+	
+		var _inject = __webpack_require__(6);
+	
+		Object.defineProperty(exports, 'inject', {
+		  enumerable: true,
+		  get: function get() {
+		    return _interopRequireDefault(_inject).default;
+		  }
+		});
+	
+		var _mobx = __webpack_require__(2);
+	
+		var mobx = _interopRequireWildcard(_mobx);
+	
+		var _react = __webpack_require__(3);
+	
+		var _react2 = _interopRequireDefault(_react);
+	
+		var _reactDom = __webpack_require__(4);
+	
+		var _reactNative = __webpack_require__(9);
+	
+		var _propTypes = __webpack_require__(10);
+	
+		var propTypes = _interopRequireWildcard(_propTypes);
+	
+		function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+	
+		function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+		var TARGET_LIB_NAME = void 0;
+		if (true) TARGET_LIB_NAME = 'mobx-react';
+		if (false) TARGET_LIB_NAME = 'mobx-react/native';
+		if (false) TARGET_LIB_NAME = 'mobx-react/custom';
+	
+		if (!mobx) throw new Error(TARGET_LIB_NAME + ' requires the MobX package');
+		if (!_react2.default) throw new Error(TARGET_LIB_NAME + ' requires React to be available');
+	
+		if (("browser") === 'browser' && typeof _reactDom.unstable_batchedUpdates === "function") mobx.extras.setReactionScheduler(_reactDom.unstable_batchedUpdates);
+		if (false) mobx.extras.setReactionScheduler(_reactNative.unstable_batchedUpdates);
+	
+		exports.propTypes = propTypes;
+		exports.PropTypes = propTypes;
+		exports.default = module.exports;
+	
+		/* DevTool support */
+	
+		if ((typeof __MOBX_DEVTOOLS_GLOBAL_HOOK__ === 'undefined' ? 'undefined' : _typeof(__MOBX_DEVTOOLS_GLOBAL_HOOK__)) === 'object') {
+		  __MOBX_DEVTOOLS_GLOBAL_HOOK__.injectMobxReact(module.exports, mobx);
+		}
+	
+	/***/ },
+	/* 1 */
+	/***/ function(module, exports, __webpack_require__) {
+	
+		'use strict';
+	
+		Object.defineProperty(exports, "__esModule", {
+		  value: true
+		});
+		exports.Observer = exports.renderReporter = exports.componentByNodeRegistery = undefined;
+	
+		var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+	
+		exports.trackComponents = trackComponents;
+		exports.useStaticRendering = useStaticRendering;
+		exports.observer = observer;
+	
+		var _mobx = __webpack_require__(2);
+	
+		var _mobx2 = _interopRequireDefault(_mobx);
+	
+		var _react = __webpack_require__(3);
+	
+		var _react2 = _interopRequireDefault(_react);
+	
+		var _reactDom = __webpack_require__(4);
+	
+		var _reactDom2 = _interopRequireDefault(_reactDom);
+	
+		var _EventEmitter = __webpack_require__(5);
+	
+		var _EventEmitter2 = _interopRequireDefault(_EventEmitter);
+	
+		var _inject = __webpack_require__(6);
+	
+		var _inject2 = _interopRequireDefault(_inject);
+	
+		function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+		/**
+		 * dev tool support
+		 */
+		var isDevtoolsEnabled = false;
+	
+		var isUsingStaticRendering = false;
+	
+		var warnedAboutObserverInjectDeprecation = false;
+	
+		// WeakMap<Node, Object>;
+		var componentByNodeRegistery = exports.componentByNodeRegistery = typeof WeakMap !== "undefined" ? new WeakMap() : undefined;
+		var renderReporter = exports.renderReporter = new _EventEmitter2.default();
+	
+		function findDOMNode(component) {
+		  if (_reactDom2.default) return _reactDom2.default.findDOMNode(component);
+		  return null;
+		}
+	
+		function reportRendering(component) {
+		  var node = findDOMNode(component);
+		  if (node && componentByNodeRegistery) componentByNodeRegistery.set(node, component);
+	
+		  renderReporter.emit({
+		    event: 'render',
+		    renderTime: component.__$mobRenderEnd - component.__$mobRenderStart,
+		    totalTime: Date.now() - component.__$mobRenderStart,
+		    component: component,
+		    node: node
+		  });
+		}
+	
+		function trackComponents() {
+		  if (typeof WeakMap === "undefined") throw new Error("[mobx-react] tracking components is not supported in this browser.");
+		  if (!isDevtoolsEnabled) isDevtoolsEnabled = true;
+		}
+	
+		function useStaticRendering(useStaticRendering) {
+		  isUsingStaticRendering = useStaticRendering;
+		}
+	
+		/**
+		 * Utilities
+		 */
+	
+		function patch(target, funcName) {
+		  var runMixinFirst = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
+	
+		  var base = target[funcName];
+		  var mixinFunc = reactiveMixin[funcName];
+		  if (!base) {
+		    target[funcName] = mixinFunc;
+		  } else {
+		    target[funcName] = runMixinFirst === true ? function () {
+		      mixinFunc.apply(this, arguments);
+		      base.apply(this, arguments);
+		    } : function () {
+		      base.apply(this, arguments);
+		      mixinFunc.apply(this, arguments);
+		    };
+		  }
+		}
+	
+		function isObjectShallowModified(prev, next) {
+		  if (null == prev || null == next || (typeof prev === 'undefined' ? 'undefined' : _typeof(prev)) !== "object" || (typeof next === 'undefined' ? 'undefined' : _typeof(next)) !== "object") {
+		    return prev !== next;
+		  }
+		  var keys = Object.keys(prev);
+		  if (keys.length !== Object.keys(next).length) {
+		    return true;
+		  }
+		  var key = void 0;
+		  for (var i = keys.length - 1; i >= 0, key = keys[i]; i--) {
+		    if (next[key] !== prev[key]) {
+		      return true;
+		    }
+		  }
+		  return false;
+		}
+	
+		/**
+		 * ReactiveMixin
+		 */
+		var reactiveMixin = {
+		  componentWillMount: function componentWillMount() {
+		    var _this = this;
+	
+		    if (isUsingStaticRendering === true) return;
+		    // Generate friendly name for debugging
+		    var initialName = this.displayName || this.name || this.constructor && (this.constructor.displayName || this.constructor.name) || "<component>";
+		    var rootNodeID = this._reactInternalInstance && this._reactInternalInstance._rootNodeID;
+	
+		    /**
+		     * If props are shallowly modified, react will render anyway,
+		     * so atom.reportChanged() should not result in yet another re-render
+		     */
+		    var skipRender = false;
+		    /**
+		     * forceUpdate will re-assign this.props. We don't want that to cause a loop,
+		     * so detect these changes
+		     */
+		    var isForcingUpdate = false;
+	
+		    function makePropertyObservableReference(propName) {
+		      var valueHolder = this[propName];
+		      var atom = new _mobx2.default.Atom("reactive " + propName);
+		      Object.defineProperty(this, propName, {
+		        configurable: true, enumerable: true,
+		        get: function get() {
+		          atom.reportObserved();
+		          return valueHolder;
+		        },
+		        set: function set(v) {
+		          if (!isForcingUpdate && isObjectShallowModified(valueHolder, v)) {
+		            valueHolder = v;
+		            skipRender = true;
+		            atom.reportChanged();
+		            skipRender = false;
+		          } else {
+		            valueHolder = v;
+		          }
+		        }
+		      });
+		    }
+	
+		    // make this.props an observable reference, see #124
+		    makePropertyObservableReference.call(this, "props");
+		    // make state an observable reference
+		    makePropertyObservableReference.call(this, "state");
+	
+		    // wire up reactive render
+		    var baseRender = this.render.bind(this);
+		    var reaction = null;
+		    var isRenderingPending = false;
+	
+		    var initialRender = function initialRender() {
+		      reaction = new _mobx2.default.Reaction(initialName + '#' + rootNodeID + '.render()', function () {
+		        if (!isRenderingPending) {
+		          // N.B. Getting here *before mounting* means that a component constructor has side effects (see the relevant test in misc.js)
+		          // This unidiomatic React usage but React will correctly warn about this so we continue as usual
+		          // See #85 / Pull #44
+		          isRenderingPending = true;
+		          if (typeof _this.componentWillReact === "function") _this.componentWillReact(); // TODO: wrap in action?
+		          if (_this.__$mobxIsUnmounted !== true) {
+		            // If we are unmounted at this point, componentWillReact() had a side effect causing the component to unmounted
+		            // TODO: remove this check? Then react will properly warn about the fact that this should not happen? See #73
+		            // However, people also claim this migth happen during unit tests..
+		            var hasError = true;
+		            try {
+		              isForcingUpdate = true;
+		              if (!skipRender) _react2.default.Component.prototype.forceUpdate.call(_this);
+		              hasError = false;
+		            } finally {
+		              isForcingUpdate = false;
+		              if (hasError) reaction.dispose();
+		            }
+		          }
+		        }
+		      });
+		      reactiveRender.$mobx = reaction;
+		      _this.render = reactiveRender;
+		      return reactiveRender();
+		    };
+	
+		    var reactiveRender = function reactiveRender() {
+		      isRenderingPending = false;
+		      var rendering = undefined;
+		      reaction.track(function () {
+		        if (isDevtoolsEnabled) {
+		          _this.__$mobRenderStart = Date.now();
+		        }
+		        rendering = _mobx2.default.extras.allowStateChanges(false, baseRender);
+		        if (isDevtoolsEnabled) {
+		          _this.__$mobRenderEnd = Date.now();
+		        }
+		      });
+		      return rendering;
+		    };
+	
+		    this.render = initialRender;
+		  },
+	
+		  componentWillUnmount: function componentWillUnmount() {
+		    if (isUsingStaticRendering === true) return;
+		    this.render.$mobx && this.render.$mobx.dispose();
+		    this.__$mobxIsUnmounted = true;
+		    if (isDevtoolsEnabled) {
+		      var node = findDOMNode(this);
+		      if (node && componentByNodeRegistery) {
+		        componentByNodeRegistery.delete(node);
+		      }
+		      renderReporter.emit({
+		        event: 'destroy',
+		        component: this,
+		        node: node
+		      });
+		    }
+		  },
+	
+		  componentDidMount: function componentDidMount() {
+		    if (isDevtoolsEnabled) {
+		      reportRendering(this);
+		    }
+		  },
+	
+		  componentDidUpdate: function componentDidUpdate() {
+		    if (isDevtoolsEnabled) {
+		      reportRendering(this);
+		    }
+		  },
+	
+		  shouldComponentUpdate: function shouldComponentUpdate(nextProps, nextState) {
+		    if (isUsingStaticRendering) {
+		      console.warn("[mobx-react] It seems that a re-rendering of a React component is triggered while in static (server-side) mode. Please make sure components are rendered only once server-side.");
+		    }
+		    // update on any state changes (as is the default)
+		    if (this.state !== nextState) {
+		      return true;
+		    }
+		    // update if props are shallowly not equal, inspired by PureRenderMixin
+		    // we could return just 'false' here, and avoid the `skipRender` checks etc
+		    // however, it is nicer if lifecycle events are triggered like usually,
+		    // so we return true here if props are shallowly modified.
+		    return isObjectShallowModified(this.props, nextProps);
+		  }
+		};
+	
+		/**
+		 * Observer function / decorator
+		 */
+		function observer(arg1, arg2) {
+		  if (typeof arg1 === "string") {
+		    throw new Error("Store names should be provided as array");
+		  }
+		  if (Array.isArray(arg1)) {
+		    // component needs stores
+		    if (!warnedAboutObserverInjectDeprecation) {
+		      warnedAboutObserverInjectDeprecation = true;
+		      console.warn('Mobx observer: Using observer to inject stores is deprecated since 4.0. Use `@inject("store1", "store2") @observer ComponentClass` or `inject("store1", "store2")(observer(componentClass))` instead of `@observer(["store1", "store2"]) ComponentClass`');
+		    }
+		    if (!arg2) {
+		      // invoked as decorator
+		      return function (componentClass) {
+		        return observer(arg1, componentClass);
+		      };
+		    } else {
+		      return _inject2.default.apply(null, arg1)(observer(arg2));
+		    }
+		  }
+		  var componentClass = arg1;
+	
+		  if (componentClass.isMobxInjector === true) {
+		    console.warn('Mobx observer: You are trying to use \'observer\' on a component that already has \'inject\'. Please apply \'observer\' before applying \'inject\'');
+		  }
+	
+		  // Stateless function component:
+		  // If it is function but doesn't seem to be a react class constructor,
+		  // wrap it to a react class automatically
+		  if (typeof componentClass === "function" && (!componentClass.prototype || !componentClass.prototype.render) && !componentClass.isReactClass && !_react2.default.Component.isPrototypeOf(componentClass)) {
+	
+		    return observer(_react2.default.createClass({
+		      displayName: componentClass.displayName || componentClass.name,
+		      propTypes: componentClass.propTypes,
+		      contextTypes: componentClass.contextTypes,
+		      getDefaultProps: function getDefaultProps() {
+		        return componentClass.defaultProps;
+		      },
+		      render: function render() {
+		        return componentClass.call(this, this.props, this.context);
+		      }
+		    }));
+		  }
+	
+		  if (!componentClass) {
+		    throw new Error("Please pass a valid component to 'observer'");
+		  }
+	
+		  var target = componentClass.prototype || componentClass;
+		  mixinLifecycleEvents(target);
+		  componentClass.isMobXReactObserver = true;
+		  return componentClass;
+		}
+	
+		function mixinLifecycleEvents(target) {
+		  patch(target, "componentWillMount", true);
+		  ["componentDidMount", "componentWillUnmount", "componentDidUpdate"].forEach(function (funcName) {
+		    patch(target, funcName);
+		  });
+		  if (!target.shouldComponentUpdate) {
+		    target.shouldComponentUpdate = reactiveMixin.shouldComponentUpdate;
+		  }
+		}
+	
+		// TODO: support injection somehow as well?
+		var Observer = exports.Observer = observer(function (_ref) {
+		  var children = _ref.children;
+		  return children();
+		});
+	
+		Observer.propTypes = {
+		  children: _react2.default.PropTypes.func.isRequired
+		};
+	
+	/***/ },
+	/* 2 */
+	/***/ function(module, exports) {
+	
+		module.exports = __WEBPACK_EXTERNAL_MODULE_2__;
+	
+	/***/ },
+	/* 3 */
+	/***/ function(module, exports) {
+	
+		module.exports = __WEBPACK_EXTERNAL_MODULE_3__;
+	
+	/***/ },
+	/* 4 */
+	/***/ function(module, exports) {
+	
+		module.exports = __WEBPACK_EXTERNAL_MODULE_4__;
+	
+	/***/ },
+	/* 5 */
+	/***/ function(module, exports) {
+	
+		"use strict";
+	
+		Object.defineProperty(exports, "__esModule", {
+		  value: true
+		});
+	
+		var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+		function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+		var EventEmitter = function () {
+		  function EventEmitter() {
+		    _classCallCheck(this, EventEmitter);
+	
+		    this.listeners = [];
+		  }
+	
+		  _createClass(EventEmitter, [{
+		    key: "on",
+		    value: function on(cb) {
+		      var _this = this;
+	
+		      this.listeners.push(cb);
+		      return function () {
+		        var index = _this.listeners.indexOf(cb);
+		        if (index !== -1) _this.listeners.splice(index, 1);
+		      };
+		    }
+		  }, {
+		    key: "emit",
+		    value: function emit(data) {
+		      this.listeners.forEach(function (fn) {
+		        return fn(data);
+		      });
+		    }
+		  }]);
+	
+		  return EventEmitter;
+		}();
+	
+		exports.default = EventEmitter;
+	
+	/***/ },
+	/* 6 */
+	/***/ function(module, exports, __webpack_require__) {
+	
+		'use strict';
+	
+		Object.defineProperty(exports, "__esModule", {
+		  value: true
+		});
+	
+		var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+	
+		exports.default = inject;
+	
+		var _react = __webpack_require__(3);
+	
+		var _react2 = _interopRequireDefault(_react);
+	
+		var _hoistNonReactStatics = __webpack_require__(7);
+	
+		var _hoistNonReactStatics2 = _interopRequireDefault(_hoistNonReactStatics);
+	
+		var _observer = __webpack_require__(1);
+	
+		function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+		var injectorContextTypes = {
+		  mobxStores: _react.PropTypes.object
+		};
+		Object.seal(injectorContextTypes);
+	
+		var proxiedInjectorProps = {
+		  contextTypes: {
+		    get: function get() {
+		      return injectorContextTypes;
+		    },
+		    set: function set(_) {
+		      console.warn("Mobx Injector: you are trying to attach `contextTypes` on an component decorated with `inject` (or `observer`) HOC. Please specify the contextTypes on the wrapped component instead. It is accessible through the `wrappedComponent`");
+		    },
+		    configurable: true,
+		    enumerable: false
+		  },
+		  isMobxInjector: {
+		    value: true,
+		    writable: true,
+		    configurable: true,
+		    enumerable: true
+		  }
+		};
+	
+		/**
+		 * Store Injection
+		 */
+		function createStoreInjector(grabStoresFn, component, injectNames) {
+		  var displayName = "inject-" + (component.displayName || component.name || component.constructor && component.constructor.name || "Unknown");
+		  if (injectNames) displayName += "-with-" + injectNames;
+	
+		  var Injector = _react2.default.createClass({
+		    displayName: displayName,
+		    storeRef: function storeRef(instance) {
+		      this.wrappedInstance = instance;
+		    },
+		    render: function render() {
+		      // Optimization: it might be more efficient to apply the mapper function *outside* the render method
+		      // (if the mapper is a function), that could avoid expensive(?) re-rendering of the injector component
+		      // See this test: 'using a custom injector is not too reactive' in inject.js
+		      var newProps = {};
+		      for (var key in this.props) {
+		        if (this.props.hasOwnProperty(key)) {
+		          newProps[key] = this.props[key];
+		        }
+		      }var additionalProps = grabStoresFn(this.context.mobxStores || {}, newProps, this.context) || {};
+		      for (var _key in additionalProps) {
+		        newProps[_key] = additionalProps[_key];
+		      }
+		      newProps.ref = this.storeRef;
+	
+		      return _react2.default.createElement(component, newProps);
+		    }
+		  });
+	
+		  // Static fields from component should be visible on the generated Injector
+		  (0, _hoistNonReactStatics2.default)(Injector, component);
+	
+		  Injector.wrappedComponent = component;
+		  Object.defineProperties(Injector, proxiedInjectorProps);
+	
+		  return Injector;
+		}
+	
+		function grabStoresByName(storeNames) {
+		  return function (baseStores, nextProps) {
+		    storeNames.forEach(function (storeName) {
+		      if (storeName in nextProps) // prefer props over stores
+		        return;
+		      if (!(storeName in baseStores)) throw new Error("MobX observer: Store '" + storeName + "' is not available! Make sure it is provided by some Provider");
+		      nextProps[storeName] = baseStores[storeName];
+		    });
+		    return nextProps;
+		  };
+		}
+	
+		/**
+		 * higher order component that injects stores to a child.
+		 * takes either a varargs list of strings, which are stores read from the context,
+		 * or a function that manually maps the available stores from the context to props:
+		 * storesToProps(mobxStores, props, context) => newProps
+		 */
+		function inject() /* fn(stores, nextProps) or ...storeNames */{
+		  var _arguments = arguments;
+	
+		  var grabStoresFn = void 0;
+		  if (typeof arguments[0] === "function") {
+		    grabStoresFn = arguments[0];
+		    return function (componentClass) {
+		      var injected = createStoreInjector(grabStoresFn, componentClass);
+		      injected.isMobxInjector = false; // supress warning
+		      // mark the Injector as observer, to make it react to expressions in `grabStoresFn`,
+		      // see #111
+		      injected = (0, _observer.observer)(injected);
+		      injected.isMobxInjector = true; // restore warning
+		      return injected;
+		    };
+		  } else {
+		    var _ret = function () {
+		      var storeNames = [];
+		      for (var i = 0; i < _arguments.length; i++) {
+		        storeNames[i] = _arguments[i];
+		      }grabStoresFn = grabStoresByName(storeNames);
+		      return {
+		        v: function v(componentClass) {
+		          return createStoreInjector(grabStoresFn, componentClass, storeNames.join("-"));
+		        }
+		      };
+		    }();
+	
+		    if ((typeof _ret === 'undefined' ? 'undefined' : _typeof(_ret)) === "object") return _ret.v;
+		  }
+		}
+	
+	/***/ },
+	/* 7 */
+	/***/ function(module, exports) {
+	
+		/**
+		 * Copyright 2015, Yahoo! Inc.
+		 * Copyrights licensed under the New BSD License. See the accompanying LICENSE file for terms.
+		 */
+		'use strict';
+	
+		var REACT_STATICS = {
+		    childContextTypes: true,
+		    contextTypes: true,
+		    defaultProps: true,
+		    displayName: true,
+		    getDefaultProps: true,
+		    mixins: true,
+		    propTypes: true,
+		    type: true
+		};
+	
+		var KNOWN_STATICS = {
+		    name: true,
+		    length: true,
+		    prototype: true,
+		    caller: true,
+		    arguments: true,
+		    arity: true
+		};
+	
+		var isGetOwnPropertySymbolsAvailable = typeof Object.getOwnPropertySymbols === 'function';
+	
+		module.exports = function hoistNonReactStatics(targetComponent, sourceComponent, customStatics) {
+		    if (typeof sourceComponent !== 'string') { // don't hoist over string (html) components
+		        var keys = Object.getOwnPropertyNames(sourceComponent);
+	
+		        /* istanbul ignore else */
+		        if (isGetOwnPropertySymbolsAvailable) {
+		            keys = keys.concat(Object.getOwnPropertySymbols(sourceComponent));
+		        }
+	
+		        for (var i = 0; i < keys.length; ++i) {
+		            if (!REACT_STATICS[keys[i]] && !KNOWN_STATICS[keys[i]] && (!customStatics || !customStatics[keys[i]])) {
+		                try {
+		                    targetComponent[keys[i]] = sourceComponent[keys[i]];
+		                } catch (error) {
+	
+		                }
+		            }
+		        }
+		    }
+	
+		    return targetComponent;
+		};
+	
+	
+	/***/ },
+	/* 8 */
+	/***/ function(module, exports, __webpack_require__) {
+	
+		"use strict";
+	
+		Object.defineProperty(exports, "__esModule", {
+		  value: true
+		});
+		exports.default = undefined;
+	
+		var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+		var _class, _temp;
+	
+		var _react = __webpack_require__(3);
+	
+		var _react2 = _interopRequireDefault(_react);
+	
+		function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+		function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+		function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+		function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+		var specialReactKeys = { children: true, key: true, ref: true };
+	
+		var Provider = (_temp = _class = function (_Component) {
+		  _inherits(Provider, _Component);
+	
+		  function Provider() {
+		    _classCallCheck(this, Provider);
+	
+		    return _possibleConstructorReturn(this, (Provider.__proto__ || Object.getPrototypeOf(Provider)).apply(this, arguments));
+		  }
+	
+		  _createClass(Provider, [{
+		    key: "render",
+		    value: function render() {
+		      return _react2.default.Children.only(this.props.children);
+		    }
+		  }, {
+		    key: "getChildContext",
+		    value: function getChildContext() {
+		      var stores = {};
+		      // inherit stores
+		      var baseStores = this.context.mobxStores;
+		      if (baseStores) for (var key in baseStores) {
+		        stores[key] = baseStores[key];
+		      }
+		      // add own stores
+		      for (var _key in this.props) {
+		        if (!specialReactKeys[_key] && _key !== "suppressChangedStoreWarning") stores[_key] = this.props[_key];
+		      }return {
+		        mobxStores: stores
+		      };
+		    }
+		  }, {
+		    key: "componentWillReceiveProps",
+		    value: function componentWillReceiveProps(nextProps) {
+		      // Maybe this warning is too aggressive?
+		      if (Object.keys(nextProps).length !== Object.keys(this.props).length) console.warn("MobX Provider: The set of provided stores has changed. Please avoid changing stores as the change might not propagate to all children");
+		      if (!nextProps.suppressChangedStoreWarning) for (var key in nextProps) {
+		        if (!specialReactKeys[key] && this.props[key] !== nextProps[key]) console.warn("MobX Provider: Provided store '" + key + "' has changed. Please avoid replacing stores as the change might not propagate to all children");
+		      }
+		    }
+		  }]);
+	
+		  return Provider;
+		}(_react.Component), _class.contextTypes = {
+		  mobxStores: _react.PropTypes.object
+		}, _class.childContextTypes = {
+		  mobxStores: _react.PropTypes.object.isRequired
+		}, _temp);
+		exports.default = Provider;
+	
+	/***/ },
+	/* 9 */
+	/***/ function(module, exports) {
+	
+		module.exports = null
+	
+	
+	/***/ },
+	/* 10 */
+	/***/ function(module, exports, __webpack_require__) {
+	
+		'use strict';
+	
+		Object.defineProperty(exports, "__esModule", {
+		  value: true
+		});
+		exports.objectOrObservableObject = exports.arrayOrObservableArrayOf = exports.arrayOrObservableArray = exports.observableObject = exports.observableMap = exports.observableArrayOf = exports.observableArray = undefined;
+	
+		var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+	
+		var _mobx = __webpack_require__(2);
+	
+		// Copied from React.PropTypes
+		function createChainableTypeChecker(validate) {
+		  function checkType(isRequired, props, propName, componentName, location, propFullName) {
+		    for (var _len = arguments.length, rest = Array(_len > 6 ? _len - 6 : 0), _key = 6; _key < _len; _key++) {
+		      rest[_key - 6] = arguments[_key];
+		    }
+	
+		    return (0, _mobx.untracked)(function () {
+		      componentName = componentName || '<<anonymous>>';
+		      propFullName = propFullName || propName;
+		      if (props[propName] == null) {
+		        if (isRequired) {
+		          var actual = props[propName] === null ? 'null' : 'undefined';
+		          return new Error('The ' + location + ' `' + propFullName + '` is marked as required ' + 'in `' + componentName + '`, but its value is `' + actual + '`.');
+		        }
+		        return null;
+		      } else {
+		        return validate.apply(undefined, [props, propName, componentName, location, propFullName].concat(rest));
+		      }
+		    });
+		  }
+	
+		  var chainedCheckType = checkType.bind(null, false);
+		  chainedCheckType.isRequired = checkType.bind(null, true);
+		  return chainedCheckType;
+		}
+	
+		// Copied from React.PropTypes
+		function isSymbol(propType, propValue) {
+		  // Native Symbol.
+		  if (propType === 'symbol') {
+		    return true;
+		  }
+	
+		  // 19.4.3.5 Symbol.prototype[@@toStringTag] === 'Symbol'
+		  if (propValue['@@toStringTag'] === 'Symbol') {
+		    return true;
+		  }
+	
+		  // Fallback for non-spec compliant Symbols which are polyfilled.
+		  if (typeof Symbol === 'function' && propValue instanceof Symbol) {
+		    return true;
+		  }
+	
+		  return false;
+		}
+	
+		// Copied from React.PropTypes
+		function getPropType(propValue) {
+		  var propType = typeof propValue === 'undefined' ? 'undefined' : _typeof(propValue);
+		  if (Array.isArray(propValue)) {
+		    return 'array';
+		  }
+		  if (propValue instanceof RegExp) {
+		    // Old webkits (at least until Android 4.0) return 'function' rather than
+		    // 'object' for typeof a RegExp. We'll normalize this here so that /bla/
+		    // passes PropTypes.object.
+		    return 'object';
+		  }
+		  if (isSymbol(propType, propValue)) {
+		    return 'symbol';
+		  }
+		  return propType;
+		}
+	
+		// This handles more types than `getPropType`. Only used for error messages.
+		// Copied from React.PropTypes
+		function getPreciseType(propValue) {
+		  var propType = getPropType(propValue);
+		  if (propType === 'object') {
+		    if (propValue instanceof Date) {
+		      return 'date';
+		    } else if (propValue instanceof RegExp) {
+		      return 'regexp';
+		    }
+		  }
+		  return propType;
+		}
+	
+		function createObservableTypeCheckerCreator(allowNativeType, mobxType) {
+		  return createChainableTypeChecker(function (props, propName, componentName, location, propFullName) {
+		    return (0, _mobx.untracked)(function () {
+		      if (allowNativeType) {
+		        if (getPropType(props[propName]) === mobxType.toLowerCase()) return null;
+		      }
+		      var mobxChecker = void 0;
+		      switch (mobxType) {
+		        case 'Array':
+		          mobxChecker = _mobx.isObservableArray;break;
+		        case 'Object':
+		          mobxChecker = _mobx.isObservableObject;break;
+		        case 'Map':
+		          mobxChecker = _mobx.isObservableMap;break;
+		        default:
+		          throw new Error('Unexpected mobxType: ' + mobxType);
+		      }
+		      var propValue = props[propName];
+		      if (!mobxChecker(propValue)) {
+		        var preciseType = getPreciseType(propValue);
+		        var nativeTypeExpectationMessage = allowNativeType ? ' or javascript `' + mobxType.toLowerCase() + '`' : '';
+		        return new Error('Invalid prop `' + propFullName + '` of type `' + preciseType + '` supplied to' + ' `' + componentName + '`, expected `mobx.Observable' + mobxType + '`' + nativeTypeExpectationMessage + '.');
+		      }
+		      return null;
+		    });
+		  });
+		}
+	
+		function createObservableArrayOfTypeChecker(allowNativeType, typeChecker) {
+		  return createChainableTypeChecker(function (props, propName, componentName, location, propFullName) {
+		    for (var _len2 = arguments.length, rest = Array(_len2 > 5 ? _len2 - 5 : 0), _key2 = 5; _key2 < _len2; _key2++) {
+		      rest[_key2 - 5] = arguments[_key2];
+		    }
+	
+		    return (0, _mobx.untracked)(function () {
+		      if (typeof typeChecker !== 'function') {
+		        return new Error('Property `' + propFullName + '` of component `' + componentName + '` has ' + 'invalid PropType notation.');
+		      }
+		      var error = createObservableTypeCheckerCreator(allowNativeType, 'Array')(props, propName, componentName);
+		      if (error instanceof Error) return error;
+		      var propValue = props[propName];
+		      for (var i = 0; i < propValue.length; i++) {
+		        error = typeChecker.apply(undefined, [propValue, i, componentName, location, propFullName + '[' + i + ']'].concat(rest));
+		        if (error instanceof Error) return error;
+		      }
+		      return null;
+		    });
+		  });
+		}
+	
+		var observableArray = exports.observableArray = createObservableTypeCheckerCreator(false, 'Array');
+		var observableArrayOf = exports.observableArrayOf = createObservableArrayOfTypeChecker.bind(null, false);
+		var observableMap = exports.observableMap = createObservableTypeCheckerCreator(false, 'Map');
+		var observableObject = exports.observableObject = createObservableTypeCheckerCreator(false, 'Object');
+		var arrayOrObservableArray = exports.arrayOrObservableArray = createObservableTypeCheckerCreator(true, 'Array');
+		var arrayOrObservableArrayOf = exports.arrayOrObservableArrayOf = createObservableArrayOfTypeChecker.bind(null, true);
+		var objectOrObservableObject = exports.objectOrObservableObject = createObservableTypeCheckerCreator(true, 'Object');
+	
+	/***/ }
+	/******/ ])
+	});
+	;
 
 /***/ },
 /* 71 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ function(module, exports) {
 
-	var __WEBPACK_AMD_DEFINE_RESULT__;/*jslint onevar:true, undef:true, newcap:true, regexp:true, bitwise:true, maxerr:50, indent:4, white:false, nomen:false, plusplus:false */
-	/*global define:false, require:false, exports:false, module:false, signals:false */
-	
-	/** @license
-	 * JS Signals <http://millermedeiros.github.com/js-signals/>
-	 * Released under the MIT license
-	 * Author: Miller Medeiros
-	 * Version: 1.0.0 - Build: 268 (2012/11/29 05:48 PM)
-	 */
-	
-	(function(global){
-	
-	    // SignalBinding -------------------------------------------------
-	    //================================================================
-	
-	    /**
-	     * Object that represents a binding between a Signal and a listener function.
-	     * <br />- <strong>This is an internal constructor and shouldn't be called by regular users.</strong>
-	     * <br />- inspired by Joa Ebert AS3 SignalBinding and Robert Penner's Slot classes.
-	     * @author Miller Medeiros
-	     * @constructor
-	     * @internal
-	     * @name SignalBinding
-	     * @param {Signal} signal Reference to Signal object that listener is currently bound to.
-	     * @param {Function} listener Handler function bound to the signal.
-	     * @param {boolean} isOnce If binding should be executed just once.
-	     * @param {Object} [listenerContext] Context on which listener will be executed (object that should represent the `this` variable inside listener function).
-	     * @param {Number} [priority] The priority level of the event listener. (default = 0).
-	     */
-	    function SignalBinding(signal, listener, isOnce, listenerContext, priority) {
-	
-	        /**
-	         * Handler function bound to the signal.
-	         * @type Function
-	         * @private
-	         */
-	        this._listener = listener;
-	
-	        /**
-	         * If binding should be executed just once.
-	         * @type boolean
-	         * @private
-	         */
-	        this._isOnce = isOnce;
-	
-	        /**
-	         * Context on which listener will be executed (object that should represent the `this` variable inside listener function).
-	         * @memberOf SignalBinding.prototype
-	         * @name context
-	         * @type Object|undefined|null
-	         */
-	        this.context = listenerContext;
-	
-	        /**
-	         * Reference to Signal object that listener is currently bound to.
-	         * @type Signal
-	         * @private
-	         */
-	        this._signal = signal;
-	
-	        /**
-	         * Listener priority
-	         * @type Number
-	         * @private
-	         */
-	        this._priority = priority || 0;
+	/* WEBPACK VAR INJECTION */(function(global) {"use strict";
+	var __extends = (this && this.__extends) || function (d, b) {
+	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+	    function __() { this.constructor = d; }
+	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	};
+	registerGlobals();
+	exports.extras = {
+	    allowStateChanges: allowStateChanges,
+	    getAtom: getAtom,
+	    getDebugName: getDebugName,
+	    getDependencyTree: getDependencyTree,
+	    getAdministration: getAdministration,
+	    getGlobalState: getGlobalState,
+	    getObserverTree: getObserverTree,
+	    isComputingDerivation: isComputingDerivation,
+	    isSpyEnabled: isSpyEnabled,
+	    onReactionError: onReactionError,
+	    resetGlobalState: resetGlobalState,
+	    shareGlobalState: shareGlobalState,
+	    spyReport: spyReport,
+	    spyReportEnd: spyReportEnd,
+	    spyReportStart: spyReportStart,
+	    setReactionScheduler: setReactionScheduler
+	};
+	if (typeof __MOBX_DEVTOOLS_GLOBAL_HOOK__ === "object") {
+	    __MOBX_DEVTOOLS_GLOBAL_HOOK__.injectMobx(module.exports);
+	}
+	var actionFieldDecorator = createClassPropertyDecorator(function (target, key, value, args, originalDescriptor) {
+	    var actionName = (args && args.length === 1) ? args[0] : (value.name || key || "<unnamed action>");
+	    var wrappedAction = action(actionName, value);
+	    addHiddenProp(target, key, wrappedAction);
+	}, function (key) {
+	    return this[key];
+	}, function () {
+	    invariant(false, "It is not allowed to assign new values to @action fields");
+	}, false, true);
+	var boundActionDecorator = createClassPropertyDecorator(function (target, key, value) {
+	    defineBoundAction(target, key, value);
+	}, function (key) {
+	    return this[key];
+	}, function () {
+	    invariant(false, "It is not allowed to assign new values to @action fields");
+	}, false, false);
+	var action = function action(arg1, arg2, arg3, arg4) {
+	    if (arguments.length === 1 && typeof arg1 === "function")
+	        return createAction(arg1.name || "<unnamed action>", arg1);
+	    if (arguments.length === 2 && typeof arg2 === "function")
+	        return createAction(arg1, arg2);
+	    if (arguments.length === 1 && typeof arg1 === "string")
+	        return namedActionDecorator(arg1);
+	    return namedActionDecorator(arg2).apply(null, arguments);
+	};
+	exports.action = action;
+	action.bound = function boundAction(arg1, arg2, arg3) {
+	    if (typeof arg1 === "function") {
+	        var action_1 = createAction("<not yet bound action>", arg1);
+	        action_1.autoBind = true;
+	        return action_1;
 	    }
-	
-	    SignalBinding.prototype = {
-	
-	        /**
-	         * If binding is active and should be executed.
-	         * @type boolean
-	         */
-	        active : true,
-	
-	        /**
-	         * Default parameters passed to listener during `Signal.dispatch` and `SignalBinding.execute`. (curried parameters)
-	         * @type Array|null
-	         */
-	        params : null,
-	
-	        /**
-	         * Call listener passing arbitrary parameters.
-	         * <p>If binding was added using `Signal.addOnce()` it will be automatically removed from signal dispatch queue, this method is used internally for the signal dispatch.</p>
-	         * @param {Array} [paramsArr] Array of parameters that should be passed to the listener
-	         * @return {*} Value returned by the listener.
-	         */
-	        execute : function (paramsArr) {
-	            var handlerReturn, params;
-	            if (this.active && !!this._listener) {
-	                params = this.params? this.params.concat(paramsArr) : paramsArr;
-	                handlerReturn = this._listener.apply(this.context, params);
-	                if (this._isOnce) {
-	                    this.detach();
+	    return boundActionDecorator.apply(null, arguments);
+	};
+	function namedActionDecorator(name) {
+	    return function (target, prop, descriptor) {
+	        if (descriptor && typeof descriptor.value === "function") {
+	            descriptor.value = createAction(name, descriptor.value);
+	            descriptor.enumerable = false;
+	            descriptor.configurable = true;
+	            return descriptor;
+	        }
+	        return actionFieldDecorator(name).apply(this, arguments);
+	    };
+	}
+	function runInAction(arg1, arg2, arg3) {
+	    var actionName = typeof arg1 === "string" ? arg1 : arg1.name || "<unnamed action>";
+	    var fn = typeof arg1 === "function" ? arg1 : arg2;
+	    var scope = typeof arg1 === "function" ? arg2 : arg3;
+	    invariant(typeof fn === "function", "`runInAction` expects a function");
+	    invariant(fn.length === 0, "`runInAction` expects a function without arguments");
+	    invariant(typeof actionName === "string" && actionName.length > 0, "actions should have valid names, got: '" + actionName + "'");
+	    return executeAction(actionName, fn, scope, undefined);
+	}
+	exports.runInAction = runInAction;
+	function isAction(thing) {
+	    return typeof thing === "function" && thing.isMobxAction === true;
+	}
+	exports.isAction = isAction;
+	function defineBoundAction(target, propertyName, fn) {
+	    var res = function () {
+	        return executeAction(propertyName, fn, target, arguments);
+	    };
+	    res.isMobxAction = true;
+	    addHiddenProp(target, propertyName, res);
+	}
+	function autorun(arg1, arg2, arg3) {
+	    var name, view, scope;
+	    if (typeof arg1 === "string") {
+	        name = arg1;
+	        view = arg2;
+	        scope = arg3;
+	    }
+	    else {
+	        name = arg1.name || ("Autorun@" + getNextId());
+	        view = arg1;
+	        scope = arg2;
+	    }
+	    invariant(typeof view === "function", "autorun expects a function");
+	    invariant(isAction(view) === false, "Warning: attempted to pass an action to autorun. Actions are untracked and will not trigger on state changes. Use `reaction` or wrap only your state modification code in an action.");
+	    if (scope)
+	        view = view.bind(scope);
+	    var reaction = new Reaction(name, function () {
+	        this.track(reactionRunner);
+	    });
+	    function reactionRunner() {
+	        view(reaction);
+	    }
+	    reaction.schedule();
+	    return reaction.getDisposer();
+	}
+	exports.autorun = autorun;
+	function when(arg1, arg2, arg3, arg4) {
+	    var name, predicate, effect, scope;
+	    if (typeof arg1 === "string") {
+	        name = arg1;
+	        predicate = arg2;
+	        effect = arg3;
+	        scope = arg4;
+	    }
+	    else {
+	        name = ("When@" + getNextId());
+	        predicate = arg1;
+	        effect = arg2;
+	        scope = arg3;
+	    }
+	    var disposer = autorun(name, function (r) {
+	        if (predicate.call(scope)) {
+	            r.dispose();
+	            var prevUntracked = untrackedStart();
+	            effect.call(scope);
+	            untrackedEnd(prevUntracked);
+	        }
+	    });
+	    return disposer;
+	}
+	exports.when = when;
+	function autorunAsync(arg1, arg2, arg3, arg4) {
+	    var name, func, delay, scope;
+	    if (typeof arg1 === "string") {
+	        name = arg1;
+	        func = arg2;
+	        delay = arg3;
+	        scope = arg4;
+	    }
+	    else {
+	        name = arg1.name || ("AutorunAsync@" + getNextId());
+	        func = arg1;
+	        delay = arg2;
+	        scope = arg3;
+	    }
+	    invariant(isAction(func) === false, "Warning: attempted to pass an action to autorunAsync. Actions are untracked and will not trigger on state changes. Use `reaction` or wrap only your state modification code in an action.");
+	    if (delay === void 0)
+	        delay = 1;
+	    if (scope)
+	        func = func.bind(scope);
+	    var isScheduled = false;
+	    var r = new Reaction(name, function () {
+	        if (!isScheduled) {
+	            isScheduled = true;
+	            setTimeout(function () {
+	                isScheduled = false;
+	                if (!r.isDisposed)
+	                    r.track(reactionRunner);
+	            }, delay);
+	        }
+	    });
+	    function reactionRunner() { func(r); }
+	    r.schedule();
+	    return r.getDisposer();
+	}
+	exports.autorunAsync = autorunAsync;
+	function reaction(expression, effect, arg3) {
+	    if (arguments.length > 3) {
+	        fail("reaction only accepts 2 or 3 arguments. If migrating from MobX 2, please provide an options object");
+	    }
+	    if (isModifierDescriptor(expression)) {
+	        fail("wrapping reaction expression in `asReference` is no longer supported, use options object instead");
+	    }
+	    var opts;
+	    if (typeof arg3 === "object") {
+	        opts = arg3;
+	    }
+	    else {
+	        opts = {};
+	    }
+	    opts.name = opts.name || expression.name || effect.name || ("Reaction@" + getNextId());
+	    opts.fireImmediately = arg3 === true || opts.fireImmediately === true;
+	    opts.delay = opts.delay || 0;
+	    opts.compareStructural = opts.compareStructural || false;
+	    effect = action(opts.name, opts.context ? effect.bind(opts.context) : effect);
+	    if (opts.context) {
+	        expression = expression.bind(opts.context);
+	    }
+	    var firstTime = true;
+	    var isScheduled = false;
+	    var nextValue;
+	    var r = new Reaction(opts.name, function () {
+	        if (opts.delay < 1) {
+	            reactionRunner();
+	        }
+	        else if (!isScheduled) {
+	            isScheduled = true;
+	            setTimeout(function () {
+	                isScheduled = false;
+	                reactionRunner();
+	            }, opts.delay);
+	        }
+	    });
+	    function reactionRunner() {
+	        if (r.isDisposed)
+	            return;
+	        var changed = false;
+	        r.track(function () {
+	            var v = expression(r);
+	            changed = valueDidChange(opts.compareStructural, nextValue, v);
+	            nextValue = v;
+	        });
+	        if (firstTime && opts.fireImmediately)
+	            effect(nextValue, r);
+	        if (!firstTime && changed === true)
+	            effect(nextValue, r);
+	        if (firstTime)
+	            firstTime = false;
+	    }
+	    r.schedule();
+	    return r.getDisposer();
+	}
+	exports.reaction = reaction;
+	function createComputedDecorator(compareStructural) {
+	    return createClassPropertyDecorator(function (target, name, _, __, originalDescriptor) {
+	        invariant(typeof originalDescriptor !== "undefined", "@computed can only be used on getter functions, like: '@computed get myProps() { return ...; }'. It looks like it was used on a property.");
+	        invariant(typeof originalDescriptor.get === "function", "@computed can only be used on getter functions, like: '@computed get myProps() { return ...; }'");
+	        var adm = asObservableObject(target, "");
+	        defineComputedProperty(adm, name, originalDescriptor.get, originalDescriptor.set, compareStructural, false);
+	    }, function (name) {
+	        var observable = this.$mobx.values[name];
+	        if (observable === undefined)
+	            return undefined;
+	        return observable.get();
+	    }, function (name, value) {
+	        this.$mobx.values[name].set(value);
+	    }, false, false);
+	}
+	var computedDecorator = createComputedDecorator(false);
+	var computedStructDecorator = createComputedDecorator(true);
+	var computed = (function computed(arg1, arg2, arg3) {
+	    if (typeof arg2 === "string") {
+	        return computedDecorator.apply(null, arguments);
+	    }
+	    invariant(typeof arg1 === "function", "First argument to `computed` should be an expression. If using computed as decorator, don't pass it arguments");
+	    invariant(arguments.length < 3, "computed takes one or two arguments if used as function");
+	    var opts = typeof arg2 === "object" ? arg2 : {};
+	    opts.setter = typeof arg2 === "function" ? arg2 : opts.setter;
+	    return new ComputedValue(arg1, opts.context, opts.compareStructural || false, opts.name || arg1.name || "", opts.setter);
+	});
+	exports.computed = computed;
+	computed.struct = computedStructDecorator;
+	function createTransformer(transformer, onCleanup) {
+	    invariant(typeof transformer === "function" && transformer.length < 2, "createTransformer expects a function that accepts one argument");
+	    var objectCache = {};
+	    var resetId = globalState.resetId;
+	    var Transformer = (function (_super) {
+	        __extends(Transformer, _super);
+	        function Transformer(sourceIdentifier, sourceObject) {
+	            var _this = _super.call(this, function () { return transformer(sourceObject); }, undefined, false, "Transformer-" + transformer.name + "-" + sourceIdentifier, undefined) || this;
+	            _this.sourceIdentifier = sourceIdentifier;
+	            _this.sourceObject = sourceObject;
+	            return _this;
+	        }
+	        Transformer.prototype.onBecomeUnobserved = function () {
+	            var lastValue = this.value;
+	            _super.prototype.onBecomeUnobserved.call(this);
+	            delete objectCache[this.sourceIdentifier];
+	            if (onCleanup)
+	                onCleanup(lastValue, this.sourceObject);
+	        };
+	        return Transformer;
+	    }(ComputedValue));
+	    return function (object) {
+	        if (resetId !== globalState.resetId) {
+	            objectCache = {};
+	            resetId = globalState.resetId;
+	        }
+	        var identifier = getMemoizationId(object);
+	        var reactiveTransformer = objectCache[identifier];
+	        if (reactiveTransformer)
+	            return reactiveTransformer.get();
+	        reactiveTransformer = objectCache[identifier] = new Transformer(identifier, object);
+	        return reactiveTransformer.get();
+	    };
+	}
+	exports.createTransformer = createTransformer;
+	function getMemoizationId(object) {
+	    if (object === null || typeof object !== "object")
+	        throw new Error("[mobx] transform expected some kind of object, got: " + object);
+	    var tid = object.$transformId;
+	    if (tid === undefined) {
+	        tid = getNextId();
+	        addHiddenProp(object, "$transformId", tid);
+	    }
+	    return tid;
+	}
+	function expr(expr, scope) {
+	    if (!isComputingDerivation())
+	        console.warn("[mobx.expr] 'expr' should only be used inside other reactive functions.");
+	    return computed(expr, { context: scope }).get();
+	}
+	exports.expr = expr;
+	function extendObservable(target) {
+	    var properties = [];
+	    for (var _i = 1; _i < arguments.length; _i++) {
+	        properties[_i - 1] = arguments[_i];
+	    }
+	    return extendObservableHelper(target, deepEnhancer, properties);
+	}
+	exports.extendObservable = extendObservable;
+	function extendShallowObservable(target) {
+	    var properties = [];
+	    for (var _i = 1; _i < arguments.length; _i++) {
+	        properties[_i - 1] = arguments[_i];
+	    }
+	    return extendObservableHelper(target, referenceEnhancer, properties);
+	}
+	exports.extendShallowObservable = extendShallowObservable;
+	function extendObservableHelper(target, defaultEnhancer, properties) {
+	    invariant(arguments.length >= 2, "extendObservable expected 2 or more arguments");
+	    invariant(typeof target === "object", "extendObservable expects an object as first argument");
+	    invariant(!(isObservableMap(target)), "extendObservable should not be used on maps, use map.merge instead");
+	    properties.forEach(function (propSet) {
+	        invariant(typeof propSet === "object", "all arguments of extendObservable should be objects");
+	        invariant(!isObservable(propSet), "extending an object with another observable (object) is not supported. Please construct an explicit propertymap, using `toJS` if need. See issue #540");
+	    });
+	    var adm = asObservableObject(target);
+	    var definedProps = {};
+	    for (var i = properties.length - 1; i >= 0; i--) {
+	        var propSet = properties[i];
+	        for (var key in propSet)
+	            if (definedProps[key] !== true && hasOwnProperty(propSet, key)) {
+	                definedProps[key] = true;
+	                if (target === propSet && !isPropertyConfigurable(target, key))
+	                    continue;
+	                var descriptor = Object.getOwnPropertyDescriptor(propSet, key);
+	                defineObservablePropertyFromDescriptor(adm, key, descriptor, defaultEnhancer);
+	            }
+	    }
+	    return target;
+	}
+	function getDependencyTree(thing, property) {
+	    return nodeToDependencyTree(getAtom(thing, property));
+	}
+	function nodeToDependencyTree(node) {
+	    var result = {
+	        name: node.name
+	    };
+	    if (node.observing && node.observing.length > 0)
+	        result.dependencies = unique(node.observing).map(nodeToDependencyTree);
+	    return result;
+	}
+	function getObserverTree(thing, property) {
+	    return nodeToObserverTree(getAtom(thing, property));
+	}
+	function nodeToObserverTree(node) {
+	    var result = {
+	        name: node.name
+	    };
+	    if (hasObservers(node))
+	        result.observers = getObservers(node).map(nodeToObserverTree);
+	    return result;
+	}
+	function intercept(thing, propOrHandler, handler) {
+	    if (typeof handler === "function")
+	        return interceptProperty(thing, propOrHandler, handler);
+	    else
+	        return interceptInterceptable(thing, propOrHandler);
+	}
+	exports.intercept = intercept;
+	function interceptInterceptable(thing, handler) {
+	    return getAdministration(thing).intercept(handler);
+	}
+	function interceptProperty(thing, property, handler) {
+	    return getAdministration(thing, property).intercept(handler);
+	}
+	function isComputed(value, property) {
+	    if (value === null || value === undefined)
+	        return false;
+	    if (property !== undefined) {
+	        if (isObservableObject(value) === false)
+	            return false;
+	        var atom = getAtom(value, property);
+	        return isComputedValue(atom);
+	    }
+	    return isComputedValue(value);
+	}
+	exports.isComputed = isComputed;
+	function isObservable(value, property) {
+	    if (value === null || value === undefined)
+	        return false;
+	    if (property !== undefined) {
+	        if (isObservableArray(value) || isObservableMap(value))
+	            throw new Error("[mobx.isObservable] isObservable(object, propertyName) is not supported for arrays and maps. Use map.has or array.length instead.");
+	        else if (isObservableObject(value)) {
+	            var o = value.$mobx;
+	            return o.values && !!o.values[property];
+	        }
+	        return false;
+	    }
+	    return isObservableObject(value) || !!value.$mobx || isAtom(value) || isReaction(value) || isComputedValue(value);
+	}
+	exports.isObservable = isObservable;
+	function createDecoratorForEnhancer(enhancer) {
+	    invariant(!!enhancer, ":(");
+	    return createClassPropertyDecorator(function (target, name, baseValue, _, baseDescriptor) {
+	        assertPropertyConfigurable(target, name);
+	        invariant(!baseDescriptor || !baseDescriptor.get, "@observable can not be used on getters, use @computed instead");
+	        var prevA = allowStateChangesStart(true);
+	        var adm = asObservableObject(target, undefined);
+	        defineObservableProperty(adm, name, baseValue, enhancer);
+	        allowStateChangesEnd(prevA);
+	    }, function (name) {
+	        var observable = this.$mobx.values[name];
+	        if (observable === undefined)
+	            return undefined;
+	        return observable.get();
+	    }, function (name, value) {
+	        setPropertyValue(this, name, value);
+	    }, true, false);
+	}
+	var deepObservableDecorator = createDecoratorForEnhancer(deepEnhancer);
+	var shallowObservableDecorator = createDecoratorForEnhancer(shallowEnhancer);
+	var refObservableDecorator = createDecoratorForEnhancer(referenceEnhancer);
+	function createObservable(v) {
+	    if (v === void 0) { v = undefined; }
+	    if (typeof arguments[1] === "string")
+	        return deepObservableDecorator.apply(null, arguments);
+	    invariant(arguments.length <= 1, "observable expects zero or one arguments");
+	    invariant(!isModifierDescriptor(v), "modifiers can only be used for induvidual object properties");
+	    if (isObservable(v))
+	        return v;
+	    var res = deepEnhancer(v, undefined, undefined);
+	    if (res !== v)
+	        return res;
+	    return observable.box(v);
+	}
+	var IObservableFactories = (function () {
+	    function IObservableFactories() {
+	    }
+	    IObservableFactories.prototype.box = function (value, name) {
+	        return new ObservableValue(value, deepEnhancer, name);
+	    };
+	    IObservableFactories.prototype.shallowBox = function (value, name) {
+	        return new ObservableValue(value, referenceEnhancer, name);
+	    };
+	    IObservableFactories.prototype.array = function (initialValues, name) {
+	        return new ObservableArray(initialValues, deepEnhancer, name);
+	    };
+	    IObservableFactories.prototype.shallowArray = function (initialValues, name) {
+	        return new ObservableArray(initialValues, referenceEnhancer, name);
+	    };
+	    IObservableFactories.prototype.map = function (initialValues, name) {
+	        return new ObservableMap(initialValues, deepEnhancer, name);
+	    };
+	    IObservableFactories.prototype.shallowMap = function (initialValues, name) {
+	        return new ObservableMap(initialValues, referenceEnhancer, name);
+	    };
+	    IObservableFactories.prototype.object = function (props, name) {
+	        var res = {};
+	        asObservableObject(res, name);
+	        extendObservable(res, props);
+	        return res;
+	    };
+	    IObservableFactories.prototype.shallowObject = function (props, name) {
+	        var res = {};
+	        asObservableObject(res, name);
+	        extendShallowObservable(res, props);
+	        return res;
+	    };
+	    IObservableFactories.prototype.ref = function () {
+	        if (arguments.length < 2) {
+	            return createModifierDescriptor(referenceEnhancer, arguments[0]);
+	        }
+	        else {
+	            return refObservableDecorator.apply(null, arguments);
+	        }
+	    };
+	    IObservableFactories.prototype.shallow = function () {
+	        if (arguments.length < 2) {
+	            return createModifierDescriptor(shallowEnhancer, arguments[0]);
+	        }
+	        else {
+	            return shallowObservableDecorator.apply(null, arguments);
+	        }
+	    };
+	    IObservableFactories.prototype.deep = function () {
+	        if (arguments.length < 2) {
+	            return createModifierDescriptor(deepEnhancer, arguments[0]);
+	        }
+	        else {
+	            return deepObservableDecorator.apply(null, arguments);
+	        }
+	    };
+	    return IObservableFactories;
+	}());
+	exports.IObservableFactories = IObservableFactories;
+	var observable = createObservable;
+	exports.observable = observable;
+	Object.keys(IObservableFactories.prototype).forEach(function (key) { return observable[key] = IObservableFactories.prototype[key]; });
+	function observe(thing, propOrCb, cbOrFire, fireImmediately) {
+	    if (typeof cbOrFire === "function")
+	        return observeObservableProperty(thing, propOrCb, cbOrFire, fireImmediately);
+	    else
+	        return observeObservable(thing, propOrCb, cbOrFire);
+	}
+	exports.observe = observe;
+	function observeObservable(thing, listener, fireImmediately) {
+	    return getAdministration(thing).observe(listener, fireImmediately);
+	}
+	function observeObservableProperty(thing, property, listener, fireImmediately) {
+	    return getAdministration(thing, property).observe(listener, fireImmediately);
+	}
+	function toJS(source, detectCycles, __alreadySeen) {
+	    if (detectCycles === void 0) { detectCycles = true; }
+	    if (__alreadySeen === void 0) { __alreadySeen = []; }
+	    function cache(value) {
+	        if (detectCycles)
+	            __alreadySeen.push([source, value]);
+	        return value;
+	    }
+	    if (isObservable(source)) {
+	        if (detectCycles && __alreadySeen === null)
+	            __alreadySeen = [];
+	        if (detectCycles && source !== null && typeof source === "object") {
+	            for (var i = 0, l = __alreadySeen.length; i < l; i++)
+	                if (__alreadySeen[i][0] === source)
+	                    return __alreadySeen[i][1];
+	        }
+	        if (isObservableArray(source)) {
+	            var res = cache([]);
+	            var toAdd = source.map(function (value) { return toJS(value, detectCycles, __alreadySeen); });
+	            res.length = toAdd.length;
+	            for (var i = 0, l = toAdd.length; i < l; i++)
+	                res[i] = toAdd[i];
+	            return res;
+	        }
+	        if (isObservableObject(source)) {
+	            var res = cache({});
+	            for (var key in source)
+	                res[key] = toJS(source[key], detectCycles, __alreadySeen);
+	            return res;
+	        }
+	        if (isObservableMap(source)) {
+	            var res_1 = cache({});
+	            source.forEach(function (value, key) { return res_1[key] = toJS(value, detectCycles, __alreadySeen); });
+	            return res_1;
+	        }
+	        if (isObservableValue(source))
+	            return toJS(source.get(), detectCycles, __alreadySeen);
+	    }
+	    return source;
+	}
+	exports.toJS = toJS;
+	function transaction(action, thisArg) {
+	    if (thisArg === void 0) { thisArg = undefined; }
+	    deprecated("Using `transaction` is deprecated, use `runInAction` or `(@)action` instead.");
+	    return runInTransaction.apply(undefined, arguments);
+	}
+	exports.transaction = transaction;
+	function runInTransaction(action, thisArg) {
+	    if (thisArg === void 0) { thisArg = undefined; }
+	    return executeAction("", action);
+	}
+	function log(msg) {
+	    console.log(msg);
+	    return msg;
+	}
+	function whyRun(thing, prop) {
+	    switch (arguments.length) {
+	        case 0:
+	            thing = globalState.trackingDerivation;
+	            if (!thing)
+	                return log("whyRun() can only be used if a derivation is active, or by passing an computed value / reaction explicitly. If you invoked whyRun from inside a computation; the computation is currently suspended but re-evaluating because somebody requested it's value.");
+	            break;
+	        case 2:
+	            thing = getAtom(thing, prop);
+	            break;
+	    }
+	    thing = getAtom(thing);
+	    if (isComputedValue(thing))
+	        return log(thing.whyRun());
+	    else if (isReaction(thing))
+	        return log(thing.whyRun());
+	    return fail("whyRun can only be used on reactions and computed values");
+	}
+	exports.whyRun = whyRun;
+	function createAction(actionName, fn) {
+	    invariant(typeof fn === "function", "`action` can only be invoked on functions");
+	    invariant(typeof actionName === "string" && actionName.length > 0, "actions should have valid names, got: '" + actionName + "'");
+	    var res = function () {
+	        return executeAction(actionName, fn, this, arguments);
+	    };
+	    res.originalFn = fn;
+	    res.isMobxAction = true;
+	    return res;
+	}
+	function executeAction(actionName, fn, scope, args) {
+	    var runInfo = startAction(actionName, fn, scope, args);
+	    try {
+	        return fn.apply(scope, args);
+	    }
+	    finally {
+	        endAction(runInfo);
+	    }
+	}
+	function startAction(actionName, fn, scope, args) {
+	    invariant(!isComputedValue(globalState.trackingDerivation), "Computed values or transformers should not invoke actions or trigger other side effects");
+	    var notifySpy = isSpyEnabled() && !!actionName;
+	    var startTime = 0;
+	    if (notifySpy) {
+	        startTime = Date.now();
+	        var l = (args && args.length) || 0;
+	        var flattendArgs = new Array(l);
+	        if (l > 0)
+	            for (var i = 0; i < l; i++)
+	                flattendArgs[i] = args[i];
+	        spyReportStart({
+	            type: "action",
+	            name: actionName,
+	            fn: fn,
+	            object: scope,
+	            arguments: flattendArgs
+	        });
+	    }
+	    var prevDerivation = untrackedStart();
+	    startBatch();
+	    var prevAllowStateChanges = allowStateChangesStart(true);
+	    return {
+	        prevDerivation: prevDerivation,
+	        prevAllowStateChanges: prevAllowStateChanges,
+	        notifySpy: notifySpy,
+	        startTime: startTime
+	    };
+	}
+	function endAction(runInfo) {
+	    allowStateChangesEnd(runInfo.prevAllowStateChanges);
+	    endBatch();
+	    untrackedEnd(runInfo.prevDerivation);
+	    if (runInfo.notifySpy)
+	        spyReportEnd({ time: Date.now() - runInfo.startTime });
+	}
+	function useStrict(strict) {
+	    invariant(globalState.trackingDerivation === null, "It is not allowed to set `useStrict` when a derivation is running");
+	    globalState.strictMode = strict;
+	    globalState.allowStateChanges = !strict;
+	}
+	exports.useStrict = useStrict;
+	function isStrictModeEnabled() {
+	    return globalState.strictMode;
+	}
+	exports.isStrictModeEnabled = isStrictModeEnabled;
+	function allowStateChanges(allowStateChanges, func) {
+	    var prev = allowStateChangesStart(allowStateChanges);
+	    var res = func();
+	    allowStateChangesEnd(prev);
+	    return res;
+	}
+	function allowStateChangesStart(allowStateChanges) {
+	    var prev = globalState.allowStateChanges;
+	    globalState.allowStateChanges = allowStateChanges;
+	    return prev;
+	}
+	function allowStateChangesEnd(prev) {
+	    globalState.allowStateChanges = prev;
+	}
+	var BaseAtom = (function () {
+	    function BaseAtom(name) {
+	        if (name === void 0) { name = "Atom@" + getNextId(); }
+	        this.name = name;
+	        this.isPendingUnobservation = true;
+	        this.observers = [];
+	        this.observersIndexes = {};
+	        this.diffValue = 0;
+	        this.lastAccessedBy = 0;
+	        this.lowestObserverState = IDerivationState.NOT_TRACKING;
+	    }
+	    BaseAtom.prototype.onBecomeUnobserved = function () {
+	    };
+	    BaseAtom.prototype.reportObserved = function () {
+	        reportObserved(this);
+	    };
+	    BaseAtom.prototype.reportChanged = function () {
+	        startBatch();
+	        propagateChanged(this);
+	        endBatch();
+	    };
+	    BaseAtom.prototype.toString = function () {
+	        return this.name;
+	    };
+	    return BaseAtom;
+	}());
+	exports.BaseAtom = BaseAtom;
+	var Atom = (function (_super) {
+	    __extends(Atom, _super);
+	    function Atom(name, onBecomeObservedHandler, onBecomeUnobservedHandler) {
+	        if (name === void 0) { name = "Atom@" + getNextId(); }
+	        if (onBecomeObservedHandler === void 0) { onBecomeObservedHandler = noop; }
+	        if (onBecomeUnobservedHandler === void 0) { onBecomeUnobservedHandler = noop; }
+	        var _this = _super.call(this, name) || this;
+	        _this.name = name;
+	        _this.onBecomeObservedHandler = onBecomeObservedHandler;
+	        _this.onBecomeUnobservedHandler = onBecomeUnobservedHandler;
+	        _this.isPendingUnobservation = false;
+	        _this.isBeingTracked = false;
+	        return _this;
+	    }
+	    Atom.prototype.reportObserved = function () {
+	        startBatch();
+	        _super.prototype.reportObserved.call(this);
+	        if (!this.isBeingTracked) {
+	            this.isBeingTracked = true;
+	            this.onBecomeObservedHandler();
+	        }
+	        endBatch();
+	        return !!globalState.trackingDerivation;
+	    };
+	    Atom.prototype.onBecomeUnobserved = function () {
+	        this.isBeingTracked = false;
+	        this.onBecomeUnobservedHandler();
+	    };
+	    return Atom;
+	}(BaseAtom));
+	exports.Atom = Atom;
+	var isAtom = createInstanceofPredicate("Atom", BaseAtom);
+	var ComputedValue = (function () {
+	    function ComputedValue(derivation, scope, compareStructural, name, setter) {
+	        this.derivation = derivation;
+	        this.scope = scope;
+	        this.compareStructural = compareStructural;
+	        this.dependenciesState = IDerivationState.NOT_TRACKING;
+	        this.observing = [];
+	        this.newObserving = null;
+	        this.isPendingUnobservation = false;
+	        this.observers = [];
+	        this.observersIndexes = {};
+	        this.diffValue = 0;
+	        this.runId = 0;
+	        this.lastAccessedBy = 0;
+	        this.lowestObserverState = IDerivationState.UP_TO_DATE;
+	        this.unboundDepsCount = 0;
+	        this.__mapid = "#" + getNextId();
+	        this.value = undefined;
+	        this.isComputing = false;
+	        this.isRunningSetter = false;
+	        this.name = name || "ComputedValue@" + getNextId();
+	        if (setter)
+	            this.setter = createAction(name + "-setter", setter);
+	    }
+	    ComputedValue.prototype.onBecomeStale = function () {
+	        propagateMaybeChanged(this);
+	    };
+	    ComputedValue.prototype.onBecomeUnobserved = function () {
+	        invariant(this.dependenciesState !== IDerivationState.NOT_TRACKING, "INTERNAL ERROR only onBecomeUnobserved shouldn't be called twice in a row");
+	        clearObserving(this);
+	        this.value = undefined;
+	    };
+	    ComputedValue.prototype.get = function () {
+	        invariant(!this.isComputing, "Cycle detected in computation " + this.name, this.derivation);
+	        if (globalState.inBatch === 0) {
+	            startBatch();
+	            if (shouldCompute(this))
+	                this.value = this.computeValue(false);
+	            endBatch();
+	        }
+	        else {
+	            reportObserved(this);
+	            if (shouldCompute(this))
+	                if (this.trackAndCompute())
+	                    propagateChangeConfirmed(this);
+	        }
+	        var result = this.value;
+	        if (isCaughtException(result))
+	            throw result.cause;
+	        return result;
+	    };
+	    ComputedValue.prototype.peek = function () {
+	        var res = this.computeValue(false);
+	        if (isCaughtException(res))
+	            throw res.cause;
+	        return res;
+	    };
+	    ComputedValue.prototype.set = function (value) {
+	        if (this.setter) {
+	            invariant(!this.isRunningSetter, "The setter of computed value '" + this.name + "' is trying to update itself. Did you intend to update an _observable_ value, instead of the computed property?");
+	            this.isRunningSetter = true;
+	            try {
+	                this.setter.call(this.scope, value);
+	            }
+	            finally {
+	                this.isRunningSetter = false;
+	            }
+	        }
+	        else
+	            invariant(false, "[ComputedValue '" + this.name + "'] It is not possible to assign a new value to a computed value.");
+	    };
+	    ComputedValue.prototype.trackAndCompute = function () {
+	        if (isSpyEnabled()) {
+	            spyReport({
+	                object: this.scope,
+	                type: "compute",
+	                fn: this.derivation
+	            });
+	        }
+	        var oldValue = this.value;
+	        var newValue = this.value = this.computeValue(true);
+	        return isCaughtException(newValue) || valueDidChange(this.compareStructural, newValue, oldValue);
+	    };
+	    ComputedValue.prototype.computeValue = function (track) {
+	        this.isComputing = true;
+	        var prevAllowStateChanges = allowStateChangesStart(false);
+	        var res;
+	        if (track) {
+	            res = trackDerivedFunction(this, this.derivation, this.scope);
+	        }
+	        else {
+	            try {
+	                res = this.derivation.call(this.scope);
+	            }
+	            catch (e) {
+	                res = new CaughtException(e);
+	            }
+	        }
+	        allowStateChangesEnd(prevAllowStateChanges);
+	        this.isComputing = false;
+	        return res;
+	    };
+	    ;
+	    ComputedValue.prototype.observe = function (listener, fireImmediately) {
+	        var _this = this;
+	        var firstTime = true;
+	        var prevValue = undefined;
+	        return autorun(function () {
+	            var newValue = _this.get();
+	            if (!firstTime || fireImmediately) {
+	                var prevU = untrackedStart();
+	                listener({
+	                    type: "update",
+	                    object: _this,
+	                    newValue: newValue,
+	                    oldValue: prevValue
+	                });
+	                untrackedEnd(prevU);
+	            }
+	            firstTime = false;
+	            prevValue = newValue;
+	        });
+	    };
+	    ComputedValue.prototype.toJSON = function () {
+	        return this.get();
+	    };
+	    ComputedValue.prototype.toString = function () {
+	        return this.name + "[" + this.derivation.toString() + "]";
+	    };
+	    ComputedValue.prototype.whyRun = function () {
+	        var isTracking = Boolean(globalState.trackingDerivation);
+	        var observing = unique(this.isComputing ? this.newObserving : this.observing).map(function (dep) { return dep.name; });
+	        var observers = unique(getObservers(this).map(function (dep) { return dep.name; }));
+	        return ("\nWhyRun? computation '" + this.name + "':\n * Running because: " + (isTracking ? "[active] the value of this computation is needed by a reaction" : this.isComputing ? "[get] The value of this computed was requested outside a reaction" : "[idle] not running at the moment") + "\n" +
+	            (this.dependenciesState === IDerivationState.NOT_TRACKING
+	                ?
+	                    " * This computation is suspended (not in use by any reaction) and won't run automatically.\n\tDidn't expect this computation to be suspended at this point?\n\t  1. Make sure this computation is used by a reaction (reaction, autorun, observer).\n\t  2. Check whether you are using this computation synchronously (in the same stack as they reaction that needs it).\n"
+	                :
+	                    " * This computation will re-run if any of the following observables changes:\n    " + joinStrings(observing) + "\n    " + ((this.isComputing && isTracking) ? " (... or any observable accessed during the remainder of the current run)" : "") + "\n\tMissing items in this list?\n\t  1. Check whether all used values are properly marked as observable (use isObservable to verify)\n\t  2. Make sure you didn't dereference values too early. MobX observes props, not primitives. E.g: use 'person.name' instead of 'name' in your computation.\n  * If the outcome of this computation changes, the following observers will be re-run:\n    " + joinStrings(observers) + "\n"));
+	    };
+	    return ComputedValue;
+	}());
+	var isComputedValue = createInstanceofPredicate("ComputedValue", ComputedValue);
+	var IDerivationState;
+	(function (IDerivationState) {
+	    IDerivationState[IDerivationState["NOT_TRACKING"] = -1] = "NOT_TRACKING";
+	    IDerivationState[IDerivationState["UP_TO_DATE"] = 0] = "UP_TO_DATE";
+	    IDerivationState[IDerivationState["POSSIBLY_STALE"] = 1] = "POSSIBLY_STALE";
+	    IDerivationState[IDerivationState["STALE"] = 2] = "STALE";
+	})(IDerivationState || (IDerivationState = {}));
+	exports.IDerivationState = IDerivationState;
+	var CaughtException = (function () {
+	    function CaughtException(cause) {
+	        this.cause = cause;
+	    }
+	    return CaughtException;
+	}());
+	function isCaughtException(e) {
+	    return e instanceof CaughtException;
+	}
+	function shouldCompute(derivation) {
+	    switch (derivation.dependenciesState) {
+	        case IDerivationState.UP_TO_DATE: return false;
+	        case IDerivationState.NOT_TRACKING:
+	        case IDerivationState.STALE: return true;
+	        case IDerivationState.POSSIBLY_STALE: {
+	            var prevUntracked = untrackedStart();
+	            var obs = derivation.observing, l = obs.length;
+	            for (var i = 0; i < l; i++) {
+	                var obj = obs[i];
+	                if (isComputedValue(obj)) {
+	                    try {
+	                        obj.get();
+	                    }
+	                    catch (e) {
+	                        untrackedEnd(prevUntracked);
+	                        return true;
+	                    }
+	                    if (derivation.dependenciesState === IDerivationState.STALE) {
+	                        untrackedEnd(prevUntracked);
+	                        return true;
+	                    }
 	                }
 	            }
-	            return handlerReturn;
-	        },
-	
-	        /**
-	         * Detach binding from signal.
-	         * - alias to: mySignal.remove(myBinding.getListener());
-	         * @return {Function|null} Handler function bound to the signal or `null` if binding was previously detached.
-	         */
-	        detach : function () {
-	            return this.isBound()? this._signal.remove(this._listener, this.context) : null;
-	        },
-	
-	        /**
-	         * @return {Boolean} `true` if binding is still bound to the signal and have a listener.
-	         */
-	        isBound : function () {
-	            return (!!this._signal && !!this._listener);
-	        },
-	
-	        /**
-	         * @return {boolean} If SignalBinding will only be executed once.
-	         */
-	        isOnce : function () {
-	            return this._isOnce;
-	        },
-	
-	        /**
-	         * @return {Function} Handler function bound to the signal.
-	         */
-	        getListener : function () {
-	            return this._listener;
-	        },
-	
-	        /**
-	         * @return {Signal} Signal that listener is currently bound to.
-	         */
-	        getSignal : function () {
-	            return this._signal;
-	        },
-	
-	        /**
-	         * Delete instance properties
-	         * @private
-	         */
-	        _destroy : function () {
-	            delete this._signal;
-	            delete this._listener;
-	            delete this.context;
-	        },
-	
-	        /**
-	         * @return {string} String representation of the object.
-	         */
-	        toString : function () {
-	            return '[SignalBinding isOnce:' + this._isOnce +', isBound:'+ this.isBound() +', active:' + this.active + ']';
-	        }
-	
-	    };
-	
-	
-	/*global SignalBinding:false*/
-	
-	    // Signal --------------------------------------------------------
-	    //================================================================
-	
-	    function validateListener(listener, fnName) {
-	        if (typeof listener !== 'function') {
-	            throw new Error( 'listener is a required param of {fn}() and should be a Function.'.replace('{fn}', fnName) );
+	            changeDependenciesStateTo0(derivation);
+	            untrackedEnd(prevUntracked);
+	            return false;
 	        }
 	    }
-	
-	    /**
-	     * Custom event broadcaster
-	     * <br />- inspired by Robert Penner's AS3 Signals.
-	     * @name Signal
-	     * @author Miller Medeiros
-	     * @constructor
-	     */
-	    function Signal() {
-	        /**
-	         * @type Array.<SignalBinding>
-	         * @private
-	         */
-	        this._bindings = [];
-	        this._prevParams = null;
-	
-	        // enforce dispatch to aways work on same context (#47)
-	        var self = this;
-	        this.dispatch = function(){
-	            Signal.prototype.dispatch.apply(self, arguments);
+	}
+	function isComputingDerivation() {
+	    return globalState.trackingDerivation !== null;
+	}
+	function checkIfStateModificationsAreAllowed() {
+	    if (!globalState.allowStateChanges) {
+	        invariant(false, globalState.strictMode
+	            ? "It is not allowed to create or change state outside an `action` when MobX is in strict mode. Wrap the current method in `action` if this state change is intended"
+	            : "It is not allowed to change the state when a computed value or transformer is being evaluated. Use 'autorun' to create reactive functions with side-effects.");
+	    }
+	}
+	function trackDerivedFunction(derivation, f, context) {
+	    changeDependenciesStateTo0(derivation);
+	    derivation.newObserving = new Array(derivation.observing.length + 100);
+	    derivation.unboundDepsCount = 0;
+	    derivation.runId = ++globalState.runId;
+	    var prevTracking = globalState.trackingDerivation;
+	    globalState.trackingDerivation = derivation;
+	    var result;
+	    try {
+	        result = f.call(context);
+	    }
+	    catch (e) {
+	        result = new CaughtException(e);
+	    }
+	    globalState.trackingDerivation = prevTracking;
+	    bindDependencies(derivation);
+	    return result;
+	}
+	function bindDependencies(derivation) {
+	    var prevObserving = derivation.observing;
+	    var observing = derivation.observing = derivation.newObserving;
+	    derivation.newObserving = null;
+	    var i0 = 0, l = derivation.unboundDepsCount;
+	    for (var i = 0; i < l; i++) {
+	        var dep = observing[i];
+	        if (dep.diffValue === 0) {
+	            dep.diffValue = 1;
+	            if (i0 !== i)
+	                observing[i0] = dep;
+	            i0++;
+	        }
+	    }
+	    observing.length = i0;
+	    l = prevObserving.length;
+	    while (l--) {
+	        var dep = prevObserving[l];
+	        if (dep.diffValue === 0) {
+	            removeObserver(dep, derivation);
+	        }
+	        dep.diffValue = 0;
+	    }
+	    while (i0--) {
+	        var dep = observing[i0];
+	        if (dep.diffValue === 1) {
+	            dep.diffValue = 0;
+	            addObserver(dep, derivation);
+	        }
+	    }
+	}
+	function clearObserving(derivation) {
+	    var obs = derivation.observing;
+	    var i = obs.length;
+	    while (i--)
+	        removeObserver(obs[i], derivation);
+	    derivation.dependenciesState = IDerivationState.NOT_TRACKING;
+	    obs.length = 0;
+	}
+	function untracked(action) {
+	    var prev = untrackedStart();
+	    var res = action();
+	    untrackedEnd(prev);
+	    return res;
+	}
+	exports.untracked = untracked;
+	function untrackedStart() {
+	    var prev = globalState.trackingDerivation;
+	    globalState.trackingDerivation = null;
+	    return prev;
+	}
+	function untrackedEnd(prev) {
+	    globalState.trackingDerivation = prev;
+	}
+	function changeDependenciesStateTo0(derivation) {
+	    if (derivation.dependenciesState === IDerivationState.UP_TO_DATE)
+	        return;
+	    derivation.dependenciesState = IDerivationState.UP_TO_DATE;
+	    var obs = derivation.observing;
+	    var i = obs.length;
+	    while (i--)
+	        obs[i].lowestObserverState = IDerivationState.UP_TO_DATE;
+	}
+	var persistentKeys = ["mobxGuid", "resetId", "spyListeners", "strictMode", "runId"];
+	var MobXGlobals = (function () {
+	    function MobXGlobals() {
+	        this.version = 5;
+	        this.trackingDerivation = null;
+	        this.runId = 0;
+	        this.mobxGuid = 0;
+	        this.inBatch = 0;
+	        this.pendingUnobservations = [];
+	        this.pendingReactions = [];
+	        this.isRunningReactions = false;
+	        this.allowStateChanges = true;
+	        this.strictMode = false;
+	        this.resetId = 0;
+	        this.spyListeners = [];
+	        this.globalReactionErrorHandlers = [];
+	    }
+	    return MobXGlobals;
+	}());
+	var globalState = new MobXGlobals();
+	function shareGlobalState() {
+	    var global = getGlobal();
+	    var ownState = globalState;
+	    if (global.__mobservableTrackingStack || global.__mobservableViewStack)
+	        throw new Error("[mobx] An incompatible version of mobservable is already loaded.");
+	    if (global.__mobxGlobal && global.__mobxGlobal.version !== ownState.version)
+	        throw new Error("[mobx] An incompatible version of mobx is already loaded.");
+	    if (global.__mobxGlobal)
+	        globalState = global.__mobxGlobal;
+	    else
+	        global.__mobxGlobal = ownState;
+	}
+	function getGlobalState() {
+	    return globalState;
+	}
+	function registerGlobals() {
+	}
+	function resetGlobalState() {
+	    globalState.resetId++;
+	    var defaultGlobals = new MobXGlobals();
+	    for (var key in defaultGlobals)
+	        if (persistentKeys.indexOf(key) === -1)
+	            globalState[key] = defaultGlobals[key];
+	    globalState.allowStateChanges = !globalState.strictMode;
+	}
+	function hasObservers(observable) {
+	    return observable.observers && observable.observers.length > 0;
+	}
+	function getObservers(observable) {
+	    return observable.observers;
+	}
+	function invariantObservers(observable) {
+	    var list = observable.observers;
+	    var map = observable.observersIndexes;
+	    var l = list.length;
+	    for (var i = 0; i < l; i++) {
+	        var id = list[i].__mapid;
+	        if (i) {
+	            invariant(map[id] === i, "INTERNAL ERROR maps derivation.__mapid to index in list");
+	        }
+	        else {
+	            invariant(!(id in map), "INTERNAL ERROR observer on index 0 shouldnt be held in map.");
+	        }
+	    }
+	    invariant(list.length === 0 || Object.keys(map).length === list.length - 1, "INTERNAL ERROR there is no junk in map");
+	}
+	function addObserver(observable, node) {
+	    var l = observable.observers.length;
+	    if (l) {
+	        observable.observersIndexes[node.__mapid] = l;
+	    }
+	    observable.observers[l] = node;
+	    if (observable.lowestObserverState > node.dependenciesState)
+	        observable.lowestObserverState = node.dependenciesState;
+	}
+	function removeObserver(observable, node) {
+	    if (observable.observers.length === 1) {
+	        observable.observers.length = 0;
+	        queueForUnobservation(observable);
+	    }
+	    else {
+	        var list = observable.observers;
+	        var map_1 = observable.observersIndexes;
+	        var filler = list.pop();
+	        if (filler !== node) {
+	            var index = map_1[node.__mapid] || 0;
+	            if (index) {
+	                map_1[filler.__mapid] = index;
+	            }
+	            else {
+	                delete map_1[filler.__mapid];
+	            }
+	            list[index] = filler;
+	        }
+	        delete map_1[node.__mapid];
+	    }
+	}
+	function queueForUnobservation(observable) {
+	    if (!observable.isPendingUnobservation) {
+	        observable.isPendingUnobservation = true;
+	        globalState.pendingUnobservations.push(observable);
+	    }
+	}
+	function startBatch() {
+	    globalState.inBatch++;
+	}
+	function endBatch() {
+	    if (--globalState.inBatch === 0) {
+	        runReactions();
+	        var list = globalState.pendingUnobservations;
+	        for (var i = 0; i < list.length; i++) {
+	            var observable_1 = list[i];
+	            observable_1.isPendingUnobservation = false;
+	            if (observable_1.observers.length === 0) {
+	                observable_1.onBecomeUnobserved();
+	            }
+	        }
+	        globalState.pendingUnobservations = [];
+	    }
+	}
+	function reportObserved(observable) {
+	    var derivation = globalState.trackingDerivation;
+	    if (derivation !== null) {
+	        if (derivation.runId !== observable.lastAccessedBy) {
+	            observable.lastAccessedBy = derivation.runId;
+	            derivation.newObserving[derivation.unboundDepsCount++] = observable;
+	        }
+	    }
+	    else if (observable.observers.length === 0) {
+	        queueForUnobservation(observable);
+	    }
+	}
+	function invariantLOS(observable, msg) {
+	    var min = getObservers(observable).reduce(function (a, b) { return Math.min(a, b.dependenciesState); }, 2);
+	    if (min >= observable.lowestObserverState)
+	        return;
+	    throw new Error("lowestObserverState is wrong for " + msg + " because " + min + " < " + observable.lowestObserverState);
+	}
+	function propagateChanged(observable) {
+	    if (observable.lowestObserverState === IDerivationState.STALE)
+	        return;
+	    observable.lowestObserverState = IDerivationState.STALE;
+	    var observers = observable.observers;
+	    var i = observers.length;
+	    while (i--) {
+	        var d = observers[i];
+	        if (d.dependenciesState === IDerivationState.UP_TO_DATE)
+	            d.onBecomeStale();
+	        d.dependenciesState = IDerivationState.STALE;
+	    }
+	}
+	function propagateChangeConfirmed(observable) {
+	    if (observable.lowestObserverState === IDerivationState.STALE)
+	        return;
+	    observable.lowestObserverState = IDerivationState.STALE;
+	    var observers = observable.observers;
+	    var i = observers.length;
+	    while (i--) {
+	        var d = observers[i];
+	        if (d.dependenciesState === IDerivationState.POSSIBLY_STALE)
+	            d.dependenciesState = IDerivationState.STALE;
+	        else if (d.dependenciesState === IDerivationState.UP_TO_DATE)
+	            observable.lowestObserverState = IDerivationState.UP_TO_DATE;
+	    }
+	}
+	function propagateMaybeChanged(observable) {
+	    if (observable.lowestObserverState !== IDerivationState.UP_TO_DATE)
+	        return;
+	    observable.lowestObserverState = IDerivationState.POSSIBLY_STALE;
+	    var observers = observable.observers;
+	    var i = observers.length;
+	    while (i--) {
+	        var d = observers[i];
+	        if (d.dependenciesState === IDerivationState.UP_TO_DATE) {
+	            d.dependenciesState = IDerivationState.POSSIBLY_STALE;
+	            d.onBecomeStale();
+	        }
+	    }
+	}
+	var Reaction = (function () {
+	    function Reaction(name, onInvalidate) {
+	        if (name === void 0) { name = "Reaction@" + getNextId(); }
+	        this.name = name;
+	        this.onInvalidate = onInvalidate;
+	        this.observing = [];
+	        this.newObserving = [];
+	        this.dependenciesState = IDerivationState.NOT_TRACKING;
+	        this.diffValue = 0;
+	        this.runId = 0;
+	        this.unboundDepsCount = 0;
+	        this.__mapid = "#" + getNextId();
+	        this.isDisposed = false;
+	        this._isScheduled = false;
+	        this._isTrackPending = false;
+	        this._isRunning = false;
+	    }
+	    Reaction.prototype.onBecomeStale = function () {
+	        this.schedule();
+	    };
+	    Reaction.prototype.schedule = function () {
+	        if (!this._isScheduled) {
+	            this._isScheduled = true;
+	            globalState.pendingReactions.push(this);
+	            runReactions();
+	        }
+	    };
+	    Reaction.prototype.isScheduled = function () {
+	        return this._isScheduled;
+	    };
+	    Reaction.prototype.runReaction = function () {
+	        if (!this.isDisposed) {
+	            startBatch();
+	            this._isScheduled = false;
+	            if (shouldCompute(this)) {
+	                this._isTrackPending = true;
+	                this.onInvalidate();
+	                if (this._isTrackPending && isSpyEnabled()) {
+	                    spyReport({
+	                        object: this,
+	                        type: "scheduled-reaction"
+	                    });
+	                }
+	            }
+	            endBatch();
+	        }
+	    };
+	    Reaction.prototype.track = function (fn) {
+	        startBatch();
+	        var notify = isSpyEnabled();
+	        var startTime;
+	        if (notify) {
+	            startTime = Date.now();
+	            spyReportStart({
+	                object: this,
+	                type: "reaction",
+	                fn: fn
+	            });
+	        }
+	        this._isRunning = true;
+	        var result = trackDerivedFunction(this, fn, undefined);
+	        this._isRunning = false;
+	        this._isTrackPending = false;
+	        if (this.isDisposed) {
+	            clearObserving(this);
+	        }
+	        if (isCaughtException(result))
+	            this.reportExceptionInDerivation(result.cause);
+	        if (notify) {
+	            spyReportEnd({
+	                time: Date.now() - startTime
+	            });
+	        }
+	        endBatch();
+	    };
+	    Reaction.prototype.reportExceptionInDerivation = function (error) {
+	        var _this = this;
+	        if (this.errorHandler) {
+	            this.errorHandler(error, this);
+	            return;
+	        }
+	        var message = "[mobx] Catched uncaught exception that was thrown by a reaction or observer component, in: '" + this;
+	        var messageToUser = "\n\t\tHi there! I'm sorry you have just run into an exception.\n\n\t\tIf your debugger ends up here, know that some reaction (like the render() of an observer component, autorun or reaction)\n\t\tthrew an exception and that mobx catched it, too avoid that it brings the rest of your application down.\n\n\t\tThe original cause of the exception (the code that caused this reaction to run (again)), is still in the stack.\n\n\t\tHowever, more interesting is the actual stack trace of the error itself.\n\t\tHopefully the error is an instanceof Error, because in that case you can inspect the original stack of the error from where it was thrown.\n\t\tSee `error.stack` property, or press the very subtle \"(...)\" link you see near the console.error message that probably brought you here.\n\t\tThat stack is more interesting than the stack of this console.error itself.\n\n\t\tIf the exception you see is an exception you created yourself, make sure to use `throw new Error(\"Oops\")` instead of `throw \"Oops\"`,\n\t\tbecause the javascript environment will only preserve the original stack trace in the first form.\n\n\t\tYou can also make sure the debugger pauses the next time this very same exception is thrown by enabling \"Pause on caught exception\".\n\t\t(Note that it might pause on many other, unrelated exception as well).\n\n\t\tIf that all doesn't help you out, feel free to open an issue https://github.com/mobxjs/mobx/issues!\n\t\t";
+	        console.error(message || messageToUser, error);
+	        if (isSpyEnabled()) {
+	            spyReport({
+	                type: "error",
+	                message: message,
+	                error: error,
+	                object: this
+	            });
+	        }
+	        globalState.globalReactionErrorHandlers.forEach(function (f) { return f(error, _this); });
+	    };
+	    Reaction.prototype.dispose = function () {
+	        if (!this.isDisposed) {
+	            this.isDisposed = true;
+	            if (!this._isRunning) {
+	                startBatch();
+	                clearObserving(this);
+	                endBatch();
+	            }
+	        }
+	    };
+	    Reaction.prototype.getDisposer = function () {
+	        var r = this.dispose.bind(this);
+	        r.$mobx = this;
+	        r.onError = registerErrorHandler;
+	        return r;
+	    };
+	    Reaction.prototype.toString = function () {
+	        return "Reaction[" + this.name + "]";
+	    };
+	    Reaction.prototype.whyRun = function () {
+	        var observing = unique(this._isRunning ? this.newObserving : this.observing).map(function (dep) { return dep.name; });
+	        return ("\nWhyRun? reaction '" + this.name + "':\n * Status: [" + (this.isDisposed ? "stopped" : this._isRunning ? "running" : this.isScheduled() ? "scheduled" : "idle") + "]\n * This reaction will re-run if any of the following observables changes:\n    " + joinStrings(observing) + "\n    " + ((this._isRunning) ? " (... or any observable accessed during the remainder of the current run)" : "") + "\n\tMissing items in this list?\n\t  1. Check whether all used values are properly marked as observable (use isObservable to verify)\n\t  2. Make sure you didn't dereference values too early. MobX observes props, not primitives. E.g: use 'person.name' instead of 'name' in your computation.\n");
+	    };
+	    return Reaction;
+	}());
+	exports.Reaction = Reaction;
+	function registerErrorHandler(handler) {
+	    invariant(this && this.$mobx && isReaction(this.$mobx), "Invalid `this`");
+	    invariant(!this.$mobx.errorHandler, "Only one onErrorHandler can be registered");
+	    this.$mobx.errorHandler = handler;
+	}
+	function onReactionError(handler) {
+	    globalState.globalReactionErrorHandlers.push(handler);
+	    return function () {
+	        var idx = globalState.globalReactionErrorHandlers.indexOf(handler);
+	        if (idx >= 0)
+	            globalState.globalReactionErrorHandlers.splice(idx, 1);
+	    };
+	}
+	var MAX_REACTION_ITERATIONS = 100;
+	var reactionScheduler = function (f) { return f(); };
+	function runReactions() {
+	    if (globalState.inBatch > 0 || globalState.isRunningReactions)
+	        return;
+	    reactionScheduler(runReactionsHelper);
+	}
+	function runReactionsHelper() {
+	    globalState.isRunningReactions = true;
+	    var allReactions = globalState.pendingReactions;
+	    var iterations = 0;
+	    while (allReactions.length > 0) {
+	        if (++iterations === MAX_REACTION_ITERATIONS) {
+	            allReactions.splice(0);
+	            console.error("Reaction doesn't converge to a stable state after " + MAX_REACTION_ITERATIONS + " iterations."
+	                + (" Probably there is a cycle in the reactive function: " + allReactions[0]));
+	        }
+	        var remainingReactions = allReactions.splice(0);
+	        for (var i = 0, l = remainingReactions.length; i < l; i++)
+	            remainingReactions[i].runReaction();
+	    }
+	    globalState.isRunningReactions = false;
+	}
+	var isReaction = createInstanceofPredicate("Reaction", Reaction);
+	function setReactionScheduler(fn) {
+	    var baseScheduler = reactionScheduler;
+	    reactionScheduler = function (f) { return fn(function () { return baseScheduler(f); }); };
+	}
+	function isSpyEnabled() {
+	    return !!globalState.spyListeners.length;
+	}
+	function spyReport(event) {
+	    if (!globalState.spyListeners.length)
+	        return;
+	    var listeners = globalState.spyListeners;
+	    for (var i = 0, l = listeners.length; i < l; i++)
+	        listeners[i](event);
+	}
+	function spyReportStart(event) {
+	    var change = objectAssign({}, event, { spyReportStart: true });
+	    spyReport(change);
+	}
+	var END_EVENT = { spyReportEnd: true };
+	function spyReportEnd(change) {
+	    if (change)
+	        spyReport(objectAssign({}, change, END_EVENT));
+	    else
+	        spyReport(END_EVENT);
+	}
+	function spy(listener) {
+	    globalState.spyListeners.push(listener);
+	    return once(function () {
+	        var idx = globalState.spyListeners.indexOf(listener);
+	        if (idx !== -1)
+	            globalState.spyListeners.splice(idx, 1);
+	    });
+	}
+	exports.spy = spy;
+	function hasInterceptors(interceptable) {
+	    return (interceptable.interceptors && interceptable.interceptors.length > 0);
+	}
+	function registerInterceptor(interceptable, handler) {
+	    var interceptors = interceptable.interceptors || (interceptable.interceptors = []);
+	    interceptors.push(handler);
+	    return once(function () {
+	        var idx = interceptors.indexOf(handler);
+	        if (idx !== -1)
+	            interceptors.splice(idx, 1);
+	    });
+	}
+	function interceptChange(interceptable, change) {
+	    var prevU = untrackedStart();
+	    try {
+	        var interceptors = interceptable.interceptors;
+	        if (interceptors)
+	            for (var i = 0, l = interceptors.length; i < l; i++) {
+	                change = interceptors[i](change);
+	                invariant(!change || change.type, "Intercept handlers should return nothing or a change object");
+	                if (!change)
+	                    break;
+	            }
+	        return change;
+	    }
+	    finally {
+	        untrackedEnd(prevU);
+	    }
+	}
+	function hasListeners(listenable) {
+	    return listenable.changeListeners && listenable.changeListeners.length > 0;
+	}
+	function registerListener(listenable, handler) {
+	    var listeners = listenable.changeListeners || (listenable.changeListeners = []);
+	    listeners.push(handler);
+	    return once(function () {
+	        var idx = listeners.indexOf(handler);
+	        if (idx !== -1)
+	            listeners.splice(idx, 1);
+	    });
+	}
+	function notifyListeners(listenable, change) {
+	    var prevU = untrackedStart();
+	    var listeners = listenable.changeListeners;
+	    if (!listeners)
+	        return;
+	    listeners = listeners.slice();
+	    for (var i = 0, l = listeners.length; i < l; i++) {
+	        listeners[i](change);
+	    }
+	    untrackedEnd(prevU);
+	}
+	function asReference(value) {
+	    deprecated("asReference is deprecated, use modifiers.ref instead");
+	    return observable.ref(value);
+	}
+	exports.asReference = asReference;
+	function asStructure(value) {
+	    return fail("asStructure is deprecated. Use computed.struct or reaction options instead.");
+	}
+	exports.asStructure = asStructure;
+	function asFlat(value) {
+	    deprecated("asFlat is deprecated, use modifiers.shallow instead");
+	    return observable.shallow(value);
+	}
+	exports.asFlat = asFlat;
+	function asMap(data) {
+	    deprecated("asMap is deprecated, use observable.map or observable.shallowMap instead");
+	    return observable.map(data || {});
+	}
+	exports.asMap = asMap;
+	function isModifierDescriptor(thing) {
+	    return typeof thing === "object" && thing !== null && thing.isMobxModifierDescriptor === true;
+	}
+	exports.isModifierDescriptor = isModifierDescriptor;
+	function createModifierDescriptor(enhancer, initialValue) {
+	    invariant(!isModifierDescriptor(initialValue), "Modifiers cannot be nested");
+	    return {
+	        isMobxModifierDescriptor: true,
+	        initialValue: initialValue,
+	        enhancer: enhancer
+	    };
+	}
+	function deepEnhancer(v, _, name) {
+	    if (isModifierDescriptor(v))
+	        fail("You tried to assign a modifier wrapped value to a collection, please define modifiers when creating the collection, not when modifying it");
+	    if (isObservable(v))
+	        return v;
+	    if (Array.isArray(v))
+	        return observable.array(v, name);
+	    if (isPlainObject(v))
+	        return observable.object(v, name);
+	    if (isES6Map(v))
+	        return observable.shallowMap(v, name);
+	    return v;
+	}
+	function shallowEnhancer(v, _, name) {
+	    if (isModifierDescriptor(v))
+	        fail("You tried to assign a modifier wrapped value to a collection, please define modifiers when creating the collection, not when modifying it");
+	    if (v === undefined || v === null)
+	        return v;
+	    if (isObservableObject(v) || isObservableArray(v) || isObservableMap(v))
+	        return v;
+	    if (Array.isArray(v))
+	        return observable.shallowArray(v, name);
+	    if (isPlainObject(v))
+	        return observable.shallowObject(v, name);
+	    if (isES6Map(v))
+	        return observable.shallowMap(v, name);
+	    return fail("The shallow modifier / decorator can only used in combination with arrays, objects and maps");
+	}
+	function referenceEnhancer(newValue) {
+	    return newValue;
+	}
+	var safariPrototypeSetterInheritanceBug = (function () {
+	    var v = false;
+	    var p = {};
+	    Object.defineProperty(p, "0", { set: function () { v = true; } });
+	    Object.create(p)["0"] = 1;
+	    return v === false;
+	})();
+	var OBSERVABLE_ARRAY_BUFFER_SIZE = 0;
+	var StubArray = (function () {
+	    function StubArray() {
+	    }
+	    return StubArray;
+	}());
+	StubArray.prototype = [];
+	var ObservableArrayAdministration = (function () {
+	    function ObservableArrayAdministration(name, enhancer, array, owned) {
+	        this.array = array;
+	        this.owned = owned;
+	        this.lastKnownLength = 0;
+	        this.interceptors = null;
+	        this.changeListeners = null;
+	        this.atom = new BaseAtom(name || ("ObservableArray@" + getNextId()));
+	        this.enhancer = function (newV, oldV) { return enhancer(newV, oldV, name + "[..]"); };
+	    }
+	    ObservableArrayAdministration.prototype.intercept = function (handler) {
+	        return registerInterceptor(this, handler);
+	    };
+	    ObservableArrayAdministration.prototype.observe = function (listener, fireImmediately) {
+	        if (fireImmediately === void 0) { fireImmediately = false; }
+	        if (fireImmediately) {
+	            listener({
+	                object: this.array,
+	                type: "splice",
+	                index: 0,
+	                added: this.values.slice(),
+	                addedCount: this.values.length,
+	                removed: [],
+	                removedCount: 0
+	            });
+	        }
+	        return registerListener(this, listener);
+	    };
+	    ObservableArrayAdministration.prototype.getArrayLength = function () {
+	        this.atom.reportObserved();
+	        return this.values.length;
+	    };
+	    ObservableArrayAdministration.prototype.setArrayLength = function (newLength) {
+	        if (typeof newLength !== "number" || newLength < 0)
+	            throw new Error("[mobx.array] Out of range: " + newLength);
+	        var currentLength = this.values.length;
+	        if (newLength === currentLength)
+	            return;
+	        else if (newLength > currentLength)
+	            this.spliceWithArray(currentLength, 0, new Array(newLength - currentLength));
+	        else
+	            this.spliceWithArray(newLength, currentLength - newLength);
+	    };
+	    ObservableArrayAdministration.prototype.updateArrayLength = function (oldLength, delta) {
+	        if (oldLength !== this.lastKnownLength)
+	            throw new Error("[mobx] Modification exception: the internal structure of an observable array was changed. Did you use peek() to change it?");
+	        this.lastKnownLength += delta;
+	        if (delta > 0 && oldLength + delta + 1 > OBSERVABLE_ARRAY_BUFFER_SIZE)
+	            reserveArrayBuffer(oldLength + delta + 1);
+	    };
+	    ObservableArrayAdministration.prototype.spliceWithArray = function (index, deleteCount, newItems) {
+	        var _this = this;
+	        checkIfStateModificationsAreAllowed();
+	        var length = this.values.length;
+	        if (index === undefined)
+	            index = 0;
+	        else if (index > length)
+	            index = length;
+	        else if (index < 0)
+	            index = Math.max(0, length + index);
+	        if (arguments.length === 1)
+	            deleteCount = length - index;
+	        else if (deleteCount === undefined || deleteCount === null)
+	            deleteCount = 0;
+	        else
+	            deleteCount = Math.max(0, Math.min(deleteCount, length - index));
+	        if (newItems === undefined)
+	            newItems = [];
+	        if (hasInterceptors(this)) {
+	            var change = interceptChange(this, {
+	                object: this.array,
+	                type: "splice",
+	                index: index,
+	                removedCount: deleteCount,
+	                added: newItems
+	            });
+	            if (!change)
+	                return EMPTY_ARRAY;
+	            deleteCount = change.removedCount;
+	            newItems = change.added;
+	        }
+	        newItems = newItems.map(function (v) { return _this.enhancer(v, undefined); });
+	        var lengthDelta = newItems.length - deleteCount;
+	        this.updateArrayLength(length, lengthDelta);
+	        var res = (_a = this.values).splice.apply(_a, [index, deleteCount].concat(newItems));
+	        if (deleteCount !== 0 || newItems.length !== 0)
+	            this.notifyArraySplice(index, newItems, res);
+	        return res;
+	        var _a;
+	    };
+	    ObservableArrayAdministration.prototype.notifyArrayChildUpdate = function (index, newValue, oldValue) {
+	        var notifySpy = !this.owned && isSpyEnabled();
+	        var notify = hasListeners(this);
+	        var change = notify || notifySpy ? {
+	            object: this.array,
+	            type: "update",
+	            index: index, newValue: newValue, oldValue: oldValue
+	        } : null;
+	        if (notifySpy)
+	            spyReportStart(change);
+	        this.atom.reportChanged();
+	        if (notify)
+	            notifyListeners(this, change);
+	        if (notifySpy)
+	            spyReportEnd();
+	    };
+	    ObservableArrayAdministration.prototype.notifyArraySplice = function (index, added, removed) {
+	        var notifySpy = !this.owned && isSpyEnabled();
+	        var notify = hasListeners(this);
+	        var change = notify || notifySpy ? {
+	            object: this.array,
+	            type: "splice",
+	            index: index, removed: removed, added: added,
+	            removedCount: removed.length,
+	            addedCount: added.length
+	        } : null;
+	        if (notifySpy)
+	            spyReportStart(change);
+	        this.atom.reportChanged();
+	        if (notify)
+	            notifyListeners(this, change);
+	        if (notifySpy)
+	            spyReportEnd();
+	    };
+	    return ObservableArrayAdministration;
+	}());
+	var ObservableArray = (function (_super) {
+	    __extends(ObservableArray, _super);
+	    function ObservableArray(initialValues, enhancer, name, owned) {
+	        if (name === void 0) { name = "ObservableArray@" + getNextId(); }
+	        if (owned === void 0) { owned = false; }
+	        var _this = _super.call(this) || this;
+	        var adm = new ObservableArrayAdministration(name, enhancer, _this, owned);
+	        addHiddenFinalProp(_this, "$mobx", adm);
+	        if (initialValues && initialValues.length) {
+	            adm.updateArrayLength(0, initialValues.length);
+	            adm.values = initialValues.map(function (v) { return enhancer(v, undefined, name + "[..]"); });
+	            adm.notifyArraySplice(0, adm.values.slice(), EMPTY_ARRAY);
+	        }
+	        else {
+	            adm.values = [];
+	        }
+	        if (safariPrototypeSetterInheritanceBug) {
+	            Object.defineProperty(adm.array, "0", ENTRY_0);
+	        }
+	        return _this;
+	    }
+	    ObservableArray.prototype.intercept = function (handler) {
+	        return this.$mobx.intercept(handler);
+	    };
+	    ObservableArray.prototype.observe = function (listener, fireImmediately) {
+	        if (fireImmediately === void 0) { fireImmediately = false; }
+	        return this.$mobx.observe(listener, fireImmediately);
+	    };
+	    ObservableArray.prototype.clear = function () {
+	        return this.splice(0);
+	    };
+	    ObservableArray.prototype.concat = function () {
+	        var arrays = [];
+	        for (var _i = 0; _i < arguments.length; _i++) {
+	            arrays[_i] = arguments[_i];
+	        }
+	        this.$mobx.atom.reportObserved();
+	        return Array.prototype.concat.apply(this.peek(), arrays.map(function (a) { return isObservableArray(a) ? a.peek() : a; }));
+	    };
+	    ObservableArray.prototype.replace = function (newItems) {
+	        return this.$mobx.spliceWithArray(0, this.$mobx.values.length, newItems);
+	    };
+	    ObservableArray.prototype.toJS = function () {
+	        return this.slice();
+	    };
+	    ObservableArray.prototype.toJSON = function () {
+	        return this.toJS();
+	    };
+	    ObservableArray.prototype.peek = function () {
+	        return this.$mobx.values;
+	    };
+	    ObservableArray.prototype.find = function (predicate, thisArg, fromIndex) {
+	        if (fromIndex === void 0) { fromIndex = 0; }
+	        this.$mobx.atom.reportObserved();
+	        var items = this.$mobx.values, l = items.length;
+	        for (var i = fromIndex; i < l; i++)
+	            if (predicate.call(thisArg, items[i], i, this))
+	                return items[i];
+	        return undefined;
+	    };
+	    ObservableArray.prototype.splice = function (index, deleteCount) {
+	        var newItems = [];
+	        for (var _i = 2; _i < arguments.length; _i++) {
+	            newItems[_i - 2] = arguments[_i];
+	        }
+	        switch (arguments.length) {
+	            case 0:
+	                return [];
+	            case 1:
+	                return this.$mobx.spliceWithArray(index);
+	            case 2:
+	                return this.$mobx.spliceWithArray(index, deleteCount);
+	        }
+	        return this.$mobx.spliceWithArray(index, deleteCount, newItems);
+	    };
+	    ObservableArray.prototype.push = function () {
+	        var items = [];
+	        for (var _i = 0; _i < arguments.length; _i++) {
+	            items[_i] = arguments[_i];
+	        }
+	        var adm = this.$mobx;
+	        adm.spliceWithArray(adm.values.length, 0, items);
+	        return adm.values.length;
+	    };
+	    ObservableArray.prototype.pop = function () {
+	        return this.splice(Math.max(this.$mobx.values.length - 1, 0), 1)[0];
+	    };
+	    ObservableArray.prototype.shift = function () {
+	        return this.splice(0, 1)[0];
+	    };
+	    ObservableArray.prototype.unshift = function () {
+	        var items = [];
+	        for (var _i = 0; _i < arguments.length; _i++) {
+	            items[_i] = arguments[_i];
+	        }
+	        var adm = this.$mobx;
+	        adm.spliceWithArray(0, 0, items);
+	        return adm.values.length;
+	    };
+	    ObservableArray.prototype.reverse = function () {
+	        this.$mobx.atom.reportObserved();
+	        var clone = this.slice();
+	        return clone.reverse.apply(clone, arguments);
+	    };
+	    ObservableArray.prototype.sort = function (compareFn) {
+	        this.$mobx.atom.reportObserved();
+	        var clone = this.slice();
+	        return clone.sort.apply(clone, arguments);
+	    };
+	    ObservableArray.prototype.remove = function (value) {
+	        var idx = this.$mobx.values.indexOf(value);
+	        if (idx > -1) {
+	            this.splice(idx, 1);
+	            return true;
+	        }
+	        return false;
+	    };
+	    ObservableArray.prototype.move = function (fromIndex, toIndex) {
+	        function checkIndex(index) {
+	            if (index < 0) {
+	                throw new Error("[mobx.array] Index out of bounds: " + index + " is negative");
+	            }
+	            var length = this.$mobx.values.length;
+	            if (index >= length) {
+	                throw new Error("[mobx.array] Index out of bounds: " + index + " is not smaller than " + length);
+	            }
+	        }
+	        checkIndex.call(this, fromIndex);
+	        checkIndex.call(this, toIndex);
+	        if (fromIndex === toIndex) {
+	            return;
+	        }
+	        var oldItems = this.$mobx.values;
+	        var newItems;
+	        if (fromIndex < toIndex) {
+	            newItems = oldItems.slice(0, fromIndex).concat(oldItems.slice(fromIndex + 1, toIndex + 1), [oldItems[fromIndex]], oldItems.slice(toIndex + 1));
+	        }
+	        else {
+	            newItems = oldItems.slice(0, toIndex).concat([oldItems[fromIndex]], oldItems.slice(toIndex, fromIndex), oldItems.slice(fromIndex + 1));
+	        }
+	        this.replace(newItems);
+	    };
+	    ObservableArray.prototype.toString = function () {
+	        return "[mobx.array] " + Array.prototype.toString.apply(this.$mobx.values, arguments);
+	    };
+	    ObservableArray.prototype.toLocaleString = function () {
+	        return "[mobx.array] " + Array.prototype.toLocaleString.apply(this.$mobx.values, arguments);
+	    };
+	    return ObservableArray;
+	}(StubArray));
+	declareIterator(ObservableArray.prototype, function () {
+	    return arrayAsIterator(this.slice());
+	});
+	makeNonEnumerable(ObservableArray.prototype, [
+	    "constructor",
+	    "intercept",
+	    "observe",
+	    "clear",
+	    "concat",
+	    "replace",
+	    "toJS",
+	    "toJSON",
+	    "peek",
+	    "find",
+	    "splice",
+	    "push",
+	    "pop",
+	    "shift",
+	    "unshift",
+	    "reverse",
+	    "sort",
+	    "remove",
+	    "move",
+	    "toString",
+	    "toLocaleString"
+	]);
+	Object.defineProperty(ObservableArray.prototype, "length", {
+	    enumerable: false,
+	    configurable: true,
+	    get: function () {
+	        return this.$mobx.getArrayLength();
+	    },
+	    set: function (newLength) {
+	        this.$mobx.setArrayLength(newLength);
+	    }
+	});
+	[
+	    "every",
+	    "filter",
+	    "forEach",
+	    "indexOf",
+	    "join",
+	    "lastIndexOf",
+	    "map",
+	    "reduce",
+	    "reduceRight",
+	    "slice",
+	    "some"
+	].forEach(function (funcName) {
+	    var baseFunc = Array.prototype[funcName];
+	    invariant(typeof baseFunc === "function", "Base function not defined on Array prototype: '" + funcName + "'");
+	    addHiddenProp(ObservableArray.prototype, funcName, function () {
+	        this.$mobx.atom.reportObserved();
+	        return baseFunc.apply(this.$mobx.values, arguments);
+	    });
+	});
+	var ENTRY_0 = {
+	    configurable: true,
+	    enumerable: false,
+	    set: createArraySetter(0),
+	    get: createArrayGetter(0)
+	};
+	function createArrayBufferItem(index) {
+	    var set = createArraySetter(index);
+	    var get = createArrayGetter(index);
+	    Object.defineProperty(ObservableArray.prototype, "" + index, {
+	        enumerable: false,
+	        configurable: true,
+	        set: set, get: get
+	    });
+	}
+	function createArraySetter(index) {
+	    return function (newValue) {
+	        var adm = this.$mobx;
+	        var values = adm.values;
+	        if (index < values.length) {
+	            checkIfStateModificationsAreAllowed();
+	            var oldValue = values[index];
+	            if (hasInterceptors(adm)) {
+	                var change = interceptChange(adm, {
+	                    type: "update",
+	                    object: adm.array,
+	                    index: index, newValue: newValue
+	                });
+	                if (!change)
+	                    return;
+	                newValue = change.newValue;
+	            }
+	            newValue = adm.enhancer(newValue, oldValue);
+	            var changed = newValue !== oldValue;
+	            if (changed) {
+	                values[index] = newValue;
+	                adm.notifyArrayChildUpdate(index, newValue, oldValue);
+	            }
+	        }
+	        else if (index === values.length) {
+	            adm.spliceWithArray(index, 0, [newValue]);
+	        }
+	        else
+	            throw new Error("[mobx.array] Index out of bounds, " + index + " is larger than " + values.length);
+	    };
+	}
+	function createArrayGetter(index) {
+	    return function () {
+	        var impl = this.$mobx;
+	        if (impl && index < impl.values.length) {
+	            impl.atom.reportObserved();
+	            return impl.values[index];
+	        }
+	        console.warn("[mobx.array] Attempt to read an array index (" + index + ") that is out of bounds (" + impl.values.length + "). Please check length first. Out of bound indices will not be tracked by MobX");
+	        return undefined;
+	    };
+	}
+	function reserveArrayBuffer(max) {
+	    for (var index = OBSERVABLE_ARRAY_BUFFER_SIZE; index < max; index++)
+	        createArrayBufferItem(index);
+	    OBSERVABLE_ARRAY_BUFFER_SIZE = max;
+	}
+	reserveArrayBuffer(1000);
+	var isObservableArrayAdministration = createInstanceofPredicate("ObservableArrayAdministration", ObservableArrayAdministration);
+	function isObservableArray(thing) {
+	    return isObject(thing) && isObservableArrayAdministration(thing.$mobx);
+	}
+	exports.isObservableArray = isObservableArray;
+	var ObservableMapMarker = {};
+	var ObservableMap = (function () {
+	    function ObservableMap(initialData, enhancer, name) {
+	        if (enhancer === void 0) { enhancer = deepEnhancer; }
+	        if (name === void 0) { name = "ObservableMap@" + getNextId(); }
+	        var _this = this;
+	        this.enhancer = enhancer;
+	        this.name = name;
+	        this.$mobx = ObservableMapMarker;
+	        this._data = {};
+	        this._hasMap = {};
+	        this._keys = new ObservableArray(undefined, referenceEnhancer, this.name + ".keys()", true);
+	        this.interceptors = null;
+	        this.changeListeners = null;
+	        allowStateChanges(true, function () {
+	            _this.merge(initialData);
+	        });
+	    }
+	    ObservableMap.prototype._has = function (key) {
+	        return typeof this._data[key] !== "undefined";
+	    };
+	    ObservableMap.prototype.has = function (key) {
+	        if (!this.isValidKey(key))
+	            return false;
+	        key = "" + key;
+	        if (this._hasMap[key])
+	            return this._hasMap[key].get();
+	        return this._updateHasMapEntry(key, false).get();
+	    };
+	    ObservableMap.prototype.set = function (key, value) {
+	        this.assertValidKey(key);
+	        key = "" + key;
+	        var hasKey = this._has(key);
+	        if (hasInterceptors(this)) {
+	            var change = interceptChange(this, {
+	                type: hasKey ? "update" : "add",
+	                object: this,
+	                newValue: value,
+	                name: key
+	            });
+	            if (!change)
+	                return this;
+	            value = change.newValue;
+	        }
+	        if (hasKey) {
+	            this._updateValue(key, value);
+	        }
+	        else {
+	            this._addValue(key, value);
+	        }
+	        return this;
+	    };
+	    ObservableMap.prototype.delete = function (key) {
+	        var _this = this;
+	        this.assertValidKey(key);
+	        key = "" + key;
+	        if (hasInterceptors(this)) {
+	            var change = interceptChange(this, {
+	                type: "delete",
+	                object: this,
+	                name: key
+	            });
+	            if (!change)
+	                return false;
+	        }
+	        if (this._has(key)) {
+	            var notifySpy = isSpyEnabled();
+	            var notify = hasListeners(this);
+	            var change = notify || notifySpy ? {
+	                type: "delete",
+	                object: this,
+	                oldValue: this._data[key].value,
+	                name: key
+	            } : null;
+	            if (notifySpy)
+	                spyReportStart(change);
+	            runInTransaction(function () {
+	                _this._keys.remove(key);
+	                _this._updateHasMapEntry(key, false);
+	                var observable = _this._data[key];
+	                observable.setNewValue(undefined);
+	                _this._data[key] = undefined;
+	            });
+	            if (notify)
+	                notifyListeners(this, change);
+	            if (notifySpy)
+	                spyReportEnd();
+	            return true;
+	        }
+	        return false;
+	    };
+	    ObservableMap.prototype._updateHasMapEntry = function (key, value) {
+	        var entry = this._hasMap[key];
+	        if (entry) {
+	            entry.setNewValue(value);
+	        }
+	        else {
+	            entry = this._hasMap[key] = new ObservableValue(value, referenceEnhancer, this.name + "." + key + "?", false);
+	        }
+	        return entry;
+	    };
+	    ObservableMap.prototype._updateValue = function (name, newValue) {
+	        var observable = this._data[name];
+	        newValue = observable.prepareNewValue(newValue);
+	        if (newValue !== UNCHANGED) {
+	            var notifySpy = isSpyEnabled();
+	            var notify = hasListeners(this);
+	            var change = notify || notifySpy ? {
+	                type: "update",
+	                object: this,
+	                oldValue: observable.value,
+	                name: name, newValue: newValue
+	            } : null;
+	            if (notifySpy)
+	                spyReportStart(change);
+	            observable.setNewValue(newValue);
+	            if (notify)
+	                notifyListeners(this, change);
+	            if (notifySpy)
+	                spyReportEnd();
+	        }
+	    };
+	    ObservableMap.prototype._addValue = function (name, newValue) {
+	        var _this = this;
+	        runInTransaction(function () {
+	            var observable = _this._data[name] = new ObservableValue(newValue, _this.enhancer, _this.name + "." + name, false);
+	            newValue = observable.value;
+	            _this._updateHasMapEntry(name, true);
+	            _this._keys.push(name);
+	        });
+	        var notifySpy = isSpyEnabled();
+	        var notify = hasListeners(this);
+	        var change = notify || notifySpy ? {
+	            type: "add",
+	            object: this,
+	            name: name, newValue: newValue
+	        } : null;
+	        if (notifySpy)
+	            spyReportStart(change);
+	        if (notify)
+	            notifyListeners(this, change);
+	        if (notifySpy)
+	            spyReportEnd();
+	    };
+	    ObservableMap.prototype.get = function (key) {
+	        key = "" + key;
+	        if (this.has(key))
+	            return this._data[key].get();
+	        return undefined;
+	    };
+	    ObservableMap.prototype.keys = function () {
+	        return arrayAsIterator(this._keys.slice());
+	    };
+	    ObservableMap.prototype.values = function () {
+	        return arrayAsIterator(this._keys.map(this.get, this));
+	    };
+	    ObservableMap.prototype.entries = function () {
+	        var _this = this;
+	        return arrayAsIterator(this._keys.map(function (key) { return [key, _this.get(key)]; }));
+	    };
+	    ObservableMap.prototype.forEach = function (callback, thisArg) {
+	        var _this = this;
+	        this.keys().forEach(function (key) { return callback.call(thisArg, _this.get(key), key, _this); });
+	    };
+	    ObservableMap.prototype.merge = function (other) {
+	        var _this = this;
+	        if (isObservableMap(other)) {
+	            other = other.toJS();
+	        }
+	        runInTransaction(function () {
+	            if (isPlainObject(other))
+	                Object.keys(other).forEach(function (key) { return _this.set(key, other[key]); });
+	            else if (Array.isArray(other))
+	                other.forEach(function (_a) {
+	                    var key = _a[0], value = _a[1];
+	                    return _this.set(key, value);
+	                });
+	            else if (isES6Map(other))
+	                other.forEach(function (value, key) { return _this.set(key, value); });
+	            else if (other !== null && other !== undefined)
+	                fail("Cannot initialize map from " + other);
+	        });
+	        return this;
+	    };
+	    ObservableMap.prototype.clear = function () {
+	        var _this = this;
+	        runInTransaction(function () {
+	            untracked(function () {
+	                _this.keys().forEach(_this.delete, _this);
+	            });
+	        });
+	    };
+	    ObservableMap.prototype.replace = function (values) {
+	        var _this = this;
+	        runInTransaction(function () {
+	            _this.clear();
+	            _this.merge(values);
+	        });
+	        return this;
+	    };
+	    Object.defineProperty(ObservableMap.prototype, "size", {
+	        get: function () {
+	            return this._keys.length;
+	        },
+	        enumerable: true,
+	        configurable: true
+	    });
+	    ObservableMap.prototype.toJS = function () {
+	        var _this = this;
+	        var res = {};
+	        this.keys().forEach(function (key) { return res[key] = _this.get(key); });
+	        return res;
+	    };
+	    ObservableMap.prototype.toJSON = function () {
+	        return this.toJS();
+	    };
+	    ObservableMap.prototype.isValidKey = function (key) {
+	        if (key === null || key === undefined)
+	            return false;
+	        if (typeof key === "string" || typeof key === "number" || typeof key === "boolean")
+	            return true;
+	        return false;
+	    };
+	    ObservableMap.prototype.assertValidKey = function (key) {
+	        if (!this.isValidKey(key))
+	            throw new Error("[mobx.map] Invalid key: '" + key + "', only strings, numbers and booleans are accepted as key in observable maps.");
+	    };
+	    ObservableMap.prototype.toString = function () {
+	        var _this = this;
+	        return this.name + "[{ " + this.keys().map(function (key) { return key + ": " + ("" + _this.get(key)); }).join(", ") + " }]";
+	    };
+	    ObservableMap.prototype.observe = function (listener, fireImmediately) {
+	        invariant(fireImmediately !== true, "`observe` doesn't support the fire immediately property for observable maps.");
+	        return registerListener(this, listener);
+	    };
+	    ObservableMap.prototype.intercept = function (handler) {
+	        return registerInterceptor(this, handler);
+	    };
+	    return ObservableMap;
+	}());
+	exports.ObservableMap = ObservableMap;
+	declareIterator(ObservableMap.prototype, function () {
+	    return this.entries();
+	});
+	function map(initialValues) {
+	    deprecated("`mobx.map` is deprecated, use `new ObservableMap` or `mobx.observable.map` instead");
+	    return observable.map(initialValues);
+	}
+	exports.map = map;
+	var isObservableMap = createInstanceofPredicate("ObservableMap", ObservableMap);
+	exports.isObservableMap = isObservableMap;
+	var ObservableObjectAdministration = (function () {
+	    function ObservableObjectAdministration(target, name) {
+	        this.target = target;
+	        this.name = name;
+	        this.values = {};
+	        this.changeListeners = null;
+	        this.interceptors = null;
+	    }
+	    ObservableObjectAdministration.prototype.observe = function (callback, fireImmediately) {
+	        invariant(fireImmediately !== true, "`observe` doesn't support the fire immediately property for observable objects.");
+	        return registerListener(this, callback);
+	    };
+	    ObservableObjectAdministration.prototype.intercept = function (handler) {
+	        return registerInterceptor(this, handler);
+	    };
+	    return ObservableObjectAdministration;
+	}());
+	function asObservableObject(target, name) {
+	    if (isObservableObject(target))
+	        return target.$mobx;
+	    invariant(Object.isExtensible(target), "Cannot make the designated object observable; it is not extensible");
+	    if (!isPlainObject(target))
+	        name = (target.constructor.name || "ObservableObject") + "@" + getNextId();
+	    if (!name)
+	        name = "ObservableObject@" + getNextId();
+	    var adm = new ObservableObjectAdministration(target, name);
+	    addHiddenFinalProp(target, "$mobx", adm);
+	    return adm;
+	}
+	function defineObservablePropertyFromDescriptor(adm, propName, descriptor, defaultEnhancer) {
+	    if (adm.values[propName]) {
+	        invariant("value" in descriptor, "The property " + propName + " in " + adm.name + " is already observable, cannot redefine it as computed property");
+	        adm.target[propName] = descriptor.value;
+	        return;
+	    }
+	    if ("value" in descriptor) {
+	        if (isModifierDescriptor(descriptor.value)) {
+	            var modifierDescriptor = descriptor.value;
+	            defineObservableProperty(adm, propName, modifierDescriptor.initialValue, modifierDescriptor.enhancer);
+	        }
+	        else if (isAction(descriptor.value) && descriptor.value.autoBind === true) {
+	            defineBoundAction(adm.target, propName, descriptor.value.originalFn);
+	        }
+	        else if (isComputedValue(descriptor.value)) {
+	            defineComputedPropertyFromComputedValue(adm, propName, descriptor.value);
+	        }
+	        else {
+	            defineObservableProperty(adm, propName, descriptor.value, defaultEnhancer);
+	        }
+	    }
+	    else {
+	        defineComputedProperty(adm, propName, descriptor.get, descriptor.set, false, true);
+	    }
+	}
+	function defineObservableProperty(adm, propName, newValue, enhancer) {
+	    assertPropertyConfigurable(adm.target, propName);
+	    if (hasInterceptors(adm)) {
+	        var change = interceptChange(adm, {
+	            object: adm.target,
+	            name: propName,
+	            type: "add",
+	            newValue: newValue
+	        });
+	        if (!change)
+	            return;
+	        newValue = change.newValue;
+	    }
+	    var observable = adm.values[propName] = new ObservableValue(newValue, enhancer, adm.name + "." + propName, false);
+	    newValue = observable.value;
+	    Object.defineProperty(adm.target, propName, generateObservablePropConfig(propName));
+	    notifyPropertyAddition(adm, adm.target, propName, newValue);
+	}
+	function defineComputedProperty(adm, propName, getter, setter, compareStructural, asInstanceProperty) {
+	    if (asInstanceProperty)
+	        assertPropertyConfigurable(adm.target, propName);
+	    adm.values[propName] = new ComputedValue(getter, adm.target, compareStructural, adm.name + "." + propName, setter);
+	    if (asInstanceProperty) {
+	        Object.defineProperty(adm.target, propName, generateComputedPropConfig(propName));
+	    }
+	}
+	function defineComputedPropertyFromComputedValue(adm, propName, computedValue) {
+	    var name = adm.name + "." + propName;
+	    computedValue.name = name;
+	    if (!computedValue.scope)
+	        computedValue.scope = adm.target;
+	    adm.values[propName] = computedValue;
+	    Object.defineProperty(adm.target, propName, generateComputedPropConfig(propName));
+	}
+	var observablePropertyConfigs = {};
+	var computedPropertyConfigs = {};
+	function generateObservablePropConfig(propName) {
+	    var config = observablePropertyConfigs[propName];
+	    if (config)
+	        return config;
+	    return observablePropertyConfigs[propName] = {
+	        configurable: true,
+	        enumerable: true,
+	        get: function () {
+	            return this.$mobx.values[propName].get();
+	        },
+	        set: function (v) {
+	            setPropertyValue(this, propName, v);
+	        }
+	    };
+	}
+	function generateComputedPropConfig(propName) {
+	    var config = computedPropertyConfigs[propName];
+	    if (config)
+	        return config;
+	    return computedPropertyConfigs[propName] = {
+	        configurable: true,
+	        enumerable: false,
+	        get: function () {
+	            return this.$mobx.values[propName].get();
+	        },
+	        set: function (v) {
+	            return this.$mobx.values[propName].set(v);
+	        }
+	    };
+	}
+	function setPropertyValue(instance, name, newValue) {
+	    var adm = instance.$mobx;
+	    var observable = adm.values[name];
+	    if (hasInterceptors(adm)) {
+	        var change = interceptChange(adm, {
+	            type: "update",
+	            object: instance,
+	            name: name, newValue: newValue
+	        });
+	        if (!change)
+	            return;
+	        newValue = change.newValue;
+	    }
+	    newValue = observable.prepareNewValue(newValue);
+	    if (newValue !== UNCHANGED) {
+	        var notify = hasListeners(adm);
+	        var notifySpy = isSpyEnabled();
+	        var change = notify || notifySpy ? {
+	            type: "update",
+	            object: instance,
+	            oldValue: observable.value,
+	            name: name, newValue: newValue
+	        } : null;
+	        if (notifySpy)
+	            spyReportStart(change);
+	        observable.setNewValue(newValue);
+	        if (notify)
+	            notifyListeners(adm, change);
+	        if (notifySpy)
+	            spyReportEnd();
+	    }
+	}
+	function notifyPropertyAddition(adm, object, name, newValue) {
+	    var notify = hasListeners(adm);
+	    var notifySpy = isSpyEnabled();
+	    var change = notify || notifySpy ? {
+	        type: "add",
+	        object: object, name: name, newValue: newValue
+	    } : null;
+	    if (notifySpy)
+	        spyReportStart(change);
+	    if (notify)
+	        notifyListeners(adm, change);
+	    if (notifySpy)
+	        spyReportEnd();
+	}
+	var isObservableObjectAdministration = createInstanceofPredicate("ObservableObjectAdministration", ObservableObjectAdministration);
+	function isObservableObject(thing) {
+	    if (isObject(thing)) {
+	        runLazyInitializers(thing);
+	        return isObservableObjectAdministration(thing.$mobx);
+	    }
+	    return false;
+	}
+	exports.isObservableObject = isObservableObject;
+	var UNCHANGED = {};
+	var ObservableValue = (function (_super) {
+	    __extends(ObservableValue, _super);
+	    function ObservableValue(value, enhancer, name, notifySpy) {
+	        if (name === void 0) { name = "ObservableValue@" + getNextId(); }
+	        if (notifySpy === void 0) { notifySpy = true; }
+	        var _this = _super.call(this, name) || this;
+	        _this.enhancer = enhancer;
+	        _this.hasUnreportedChange = false;
+	        _this.value = enhancer(value, undefined, name);
+	        if (notifySpy && isSpyEnabled()) {
+	            spyReport({ type: "create", object: _this, newValue: _this.value });
+	        }
+	        return _this;
+	    }
+	    ObservableValue.prototype.set = function (newValue) {
+	        var oldValue = this.value;
+	        newValue = this.prepareNewValue(newValue);
+	        if (newValue !== UNCHANGED) {
+	            var notifySpy = isSpyEnabled();
+	            if (notifySpy) {
+	                spyReportStart({
+	                    type: "update",
+	                    object: this,
+	                    newValue: newValue, oldValue: oldValue
+	                });
+	            }
+	            this.setNewValue(newValue);
+	            if (notifySpy)
+	                spyReportEnd();
+	        }
+	    };
+	    ObservableValue.prototype.prepareNewValue = function (newValue) {
+	        checkIfStateModificationsAreAllowed();
+	        if (hasInterceptors(this)) {
+	            var change = interceptChange(this, { object: this, type: "update", newValue: newValue });
+	            if (!change)
+	                return UNCHANGED;
+	            newValue = change.newValue;
+	        }
+	        newValue = this.enhancer(newValue, this.value, this.name);
+	        return this.value !== newValue
+	            ? newValue
+	            : UNCHANGED;
+	    };
+	    ObservableValue.prototype.setNewValue = function (newValue) {
+	        var oldValue = this.value;
+	        this.value = newValue;
+	        this.reportChanged();
+	        if (hasListeners(this)) {
+	            notifyListeners(this, {
+	                type: "update",
+	                object: this,
+	                newValue: newValue,
+	                oldValue: oldValue
+	            });
+	        }
+	    };
+	    ObservableValue.prototype.get = function () {
+	        this.reportObserved();
+	        return this.value;
+	    };
+	    ObservableValue.prototype.intercept = function (handler) {
+	        return registerInterceptor(this, handler);
+	    };
+	    ObservableValue.prototype.observe = function (listener, fireImmediately) {
+	        if (fireImmediately)
+	            listener({
+	                object: this,
+	                type: "update",
+	                newValue: this.value,
+	                oldValue: undefined
+	            });
+	        return registerListener(this, listener);
+	    };
+	    ObservableValue.prototype.toJSON = function () {
+	        return this.get();
+	    };
+	    ObservableValue.prototype.toString = function () {
+	        return this.name + "[" + this.value + "]";
+	    };
+	    return ObservableValue;
+	}(BaseAtom));
+	var isObservableValue = createInstanceofPredicate("ObservableValue", ObservableValue);
+	function getAtom(thing, property) {
+	    if (typeof thing === "object" && thing !== null) {
+	        if (isObservableArray(thing)) {
+	            invariant(property === undefined, "It is not possible to get index atoms from arrays");
+	            return thing.$mobx.atom;
+	        }
+	        if (isObservableMap(thing)) {
+	            var anyThing = thing;
+	            if (property === undefined)
+	                return getAtom(anyThing._keys);
+	            var observable_2 = anyThing._data[property] || anyThing._hasMap[property];
+	            invariant(!!observable_2, "the entry '" + property + "' does not exist in the observable map '" + getDebugName(thing) + "'");
+	            return observable_2;
+	        }
+	        runLazyInitializers(thing);
+	        if (isObservableObject(thing)) {
+	            if (!property)
+	                return fail("please specify a property");
+	            var observable_3 = thing.$mobx.values[property];
+	            invariant(!!observable_3, "no observable property '" + property + "' found on the observable object '" + getDebugName(thing) + "'");
+	            return observable_3;
+	        }
+	        if (isAtom(thing) || isComputedValue(thing) || isReaction(thing)) {
+	            return thing;
+	        }
+	    }
+	    else if (typeof thing === "function") {
+	        if (isReaction(thing.$mobx)) {
+	            return thing.$mobx;
+	        }
+	    }
+	    return fail("Cannot obtain atom from " + thing);
+	}
+	function getAdministration(thing, property) {
+	    invariant(thing, "Expecting some object");
+	    if (property !== undefined)
+	        return getAdministration(getAtom(thing, property));
+	    if (isAtom(thing) || isComputedValue(thing) || isReaction(thing))
+	        return thing;
+	    if (isObservableMap(thing))
+	        return thing;
+	    runLazyInitializers(thing);
+	    if (thing.$mobx)
+	        return thing.$mobx;
+	    invariant(false, "Cannot obtain administration from " + thing);
+	}
+	function getDebugName(thing, property) {
+	    var named;
+	    if (property !== undefined)
+	        named = getAtom(thing, property);
+	    else if (isObservableObject(thing) || isObservableMap(thing))
+	        named = getAdministration(thing);
+	    else
+	        named = getAtom(thing);
+	    return named.name;
+	}
+	function createClassPropertyDecorator(onInitialize, get, set, enumerable, allowCustomArguments) {
+	    function classPropertyDecorator(target, key, descriptor, customArgs, argLen) {
+	        invariant(allowCustomArguments || quacksLikeADecorator(arguments), "This function is a decorator, but it wasn't invoked like a decorator");
+	        if (!descriptor) {
+	            var newDescriptor = {
+	                enumerable: enumerable,
+	                configurable: true,
+	                get: function () {
+	                    if (!this.__mobxInitializedProps || this.__mobxInitializedProps[key] !== true)
+	                        typescriptInitializeProperty(this, key, undefined, onInitialize, customArgs, descriptor);
+	                    return get.call(this, key);
+	                },
+	                set: function (v) {
+	                    if (!this.__mobxInitializedProps || this.__mobxInitializedProps[key] !== true) {
+	                        typescriptInitializeProperty(this, key, v, onInitialize, customArgs, descriptor);
+	                    }
+	                    else {
+	                        set.call(this, key, v);
+	                    }
+	                }
+	            };
+	            if (arguments.length < 3 || arguments.length === 5 && argLen < 3) {
+	                Object.defineProperty(target, key, newDescriptor);
+	            }
+	            return newDescriptor;
+	        }
+	        else {
+	            if (!hasOwnProperty(target, "__mobxLazyInitializers")) {
+	                addHiddenProp(target, "__mobxLazyInitializers", (target.__mobxLazyInitializers && target.__mobxLazyInitializers.slice()) || []);
+	            }
+	            var value_1 = descriptor.value, initializer_1 = descriptor.initializer;
+	            target.__mobxLazyInitializers.push(function (instance) {
+	                onInitialize(instance, key, (initializer_1 ? initializer_1.call(instance) : value_1), customArgs, descriptor);
+	            });
+	            return {
+	                enumerable: enumerable, configurable: true,
+	                get: function () {
+	                    if (this.__mobxDidRunLazyInitializers !== true)
+	                        runLazyInitializers(this);
+	                    return get.call(this, key);
+	                },
+	                set: function (v) {
+	                    if (this.__mobxDidRunLazyInitializers !== true)
+	                        runLazyInitializers(this);
+	                    set.call(this, key, v);
+	                }
+	            };
+	        }
+	    }
+	    if (allowCustomArguments) {
+	        return function () {
+	            if (quacksLikeADecorator(arguments))
+	                return classPropertyDecorator.apply(null, arguments);
+	            var outerArgs = arguments;
+	            var argLen = arguments.length;
+	            return function (target, key, descriptor) { return classPropertyDecorator(target, key, descriptor, outerArgs, argLen); };
 	        };
 	    }
-	
-	    Signal.prototype = {
-	
-	        /**
-	         * Signals Version Number
-	         * @type String
-	         * @const
-	         */
-	        VERSION : '1.0.0',
-	
-	        /**
-	         * If Signal should keep record of previously dispatched parameters and
-	         * automatically execute listener during `add()`/`addOnce()` if Signal was
-	         * already dispatched before.
-	         * @type boolean
-	         */
-	        memorize : false,
-	
-	        /**
-	         * @type boolean
-	         * @private
-	         */
-	        _shouldPropagate : true,
-	
-	        /**
-	         * If Signal is active and should broadcast events.
-	         * <p><strong>IMPORTANT:</strong> Setting this property during a dispatch will only affect the next dispatch, if you want to stop the propagation of a signal use `halt()` instead.</p>
-	         * @type boolean
-	         */
-	        active : true,
-	
-	        /**
-	         * @param {Function} listener
-	         * @param {boolean} isOnce
-	         * @param {Object} [listenerContext]
-	         * @param {Number} [priority]
-	         * @return {SignalBinding}
-	         * @private
-	         */
-	        _registerListener : function (listener, isOnce, listenerContext, priority) {
-	
-	            var prevIndex = this._indexOfListener(listener, listenerContext),
-	                binding;
-	
-	            if (prevIndex !== -1) {
-	                binding = this._bindings[prevIndex];
-	                if (binding.isOnce() !== isOnce) {
-	                    throw new Error('You cannot add'+ (isOnce? '' : 'Once') +'() then add'+ (!isOnce? '' : 'Once') +'() the same listener without removing the relationship first.');
-	                }
-	            } else {
-	                binding = new SignalBinding(this, listener, isOnce, listenerContext, priority);
-	                this._addBinding(binding);
-	            }
-	
-	            if(this.memorize && this._prevParams){
-	                binding.execute(this._prevParams);
-	            }
-	
-	            return binding;
-	        },
-	
-	        /**
-	         * @param {SignalBinding} binding
-	         * @private
-	         */
-	        _addBinding : function (binding) {
-	            //simplified insertion sort
-	            var n = this._bindings.length;
-	            do { --n; } while (this._bindings[n] && binding._priority <= this._bindings[n]._priority);
-	            this._bindings.splice(n + 1, 0, binding);
-	        },
-	
-	        /**
-	         * @param {Function} listener
-	         * @return {number}
-	         * @private
-	         */
-	        _indexOfListener : function (listener, context) {
-	            var n = this._bindings.length,
-	                cur;
-	            while (n--) {
-	                cur = this._bindings[n];
-	                if (cur._listener === listener && cur.context === context) {
-	                    return n;
-	                }
-	            }
-	            return -1;
-	        },
-	
-	        /**
-	         * Check if listener was attached to Signal.
-	         * @param {Function} listener
-	         * @param {Object} [context]
-	         * @return {boolean} if Signal has the specified listener.
-	         */
-	        has : function (listener, context) {
-	            return this._indexOfListener(listener, context) !== -1;
-	        },
-	
-	        /**
-	         * Add a listener to the signal.
-	         * @param {Function} listener Signal handler function.
-	         * @param {Object} [listenerContext] Context on which listener will be executed (object that should represent the `this` variable inside listener function).
-	         * @param {Number} [priority] The priority level of the event listener. Listeners with higher priority will be executed before listeners with lower priority. Listeners with same priority level will be executed at the same order as they were added. (default = 0)
-	         * @return {SignalBinding} An Object representing the binding between the Signal and listener.
-	         */
-	        add : function (listener, listenerContext, priority) {
-	            validateListener(listener, 'add');
-	            return this._registerListener(listener, false, listenerContext, priority);
-	        },
-	
-	        /**
-	         * Add listener to the signal that should be removed after first execution (will be executed only once).
-	         * @param {Function} listener Signal handler function.
-	         * @param {Object} [listenerContext] Context on which listener will be executed (object that should represent the `this` variable inside listener function).
-	         * @param {Number} [priority] The priority level of the event listener. Listeners with higher priority will be executed before listeners with lower priority. Listeners with same priority level will be executed at the same order as they were added. (default = 0)
-	         * @return {SignalBinding} An Object representing the binding between the Signal and listener.
-	         */
-	        addOnce : function (listener, listenerContext, priority) {
-	            validateListener(listener, 'addOnce');
-	            return this._registerListener(listener, true, listenerContext, priority);
-	        },
-	
-	        /**
-	         * Remove a single listener from the dispatch queue.
-	         * @param {Function} listener Handler function that should be removed.
-	         * @param {Object} [context] Execution context (since you can add the same handler multiple times if executing in a different context).
-	         * @return {Function} Listener handler function.
-	         */
-	        remove : function (listener, context) {
-	            validateListener(listener, 'remove');
-	
-	            var i = this._indexOfListener(listener, context);
-	            if (i !== -1) {
-	                this._bindings[i]._destroy(); //no reason to a SignalBinding exist if it isn't attached to a signal
-	                this._bindings.splice(i, 1);
-	            }
-	            return listener;
-	        },
-	
-	        /**
-	         * Remove all listeners from the Signal.
-	         */
-	        removeAll : function () {
-	            var n = this._bindings.length;
-	            while (n--) {
-	                this._bindings[n]._destroy();
-	            }
-	            this._bindings.length = 0;
-	        },
-	
-	        /**
-	         * @return {number} Number of listeners attached to the Signal.
-	         */
-	        getNumListeners : function () {
-	            return this._bindings.length;
-	        },
-	
-	        /**
-	         * Stop propagation of the event, blocking the dispatch to next listeners on the queue.
-	         * <p><strong>IMPORTANT:</strong> should be called only during signal dispatch, calling it before/after dispatch won't affect signal broadcast.</p>
-	         * @see Signal.prototype.disable
-	         */
-	        halt : function () {
-	            this._shouldPropagate = false;
-	        },
-	
-	        /**
-	         * Dispatch/Broadcast Signal to all listeners added to the queue.
-	         * @param {...*} [params] Parameters that should be passed to each handler.
-	         */
-	        dispatch : function (params) {
-	            if (! this.active) {
-	                return;
-	            }
-	
-	            var paramsArr = Array.prototype.slice.call(arguments),
-	                n = this._bindings.length,
-	                bindings;
-	
-	            if (this.memorize) {
-	                this._prevParams = paramsArr;
-	            }
-	
-	            if (! n) {
-	                //should come after memorize
-	                return;
-	            }
-	
-	            bindings = this._bindings.slice(); //clone array in case add/remove items during dispatch
-	            this._shouldPropagate = true; //in case `halt` was called before dispatch or during the previous dispatch.
-	
-	            //execute all callbacks until end of the list or until a callback returns `false` or stops propagation
-	            //reverse loop since listeners with higher priority will be added at the end of the list
-	            do { n--; } while (bindings[n] && this._shouldPropagate && bindings[n].execute(paramsArr) !== false);
-	        },
-	
-	        /**
-	         * Forget memorized arguments.
-	         * @see Signal.memorize
-	         */
-	        forget : function(){
-	            this._prevParams = null;
-	        },
-	
-	        /**
-	         * Remove all bindings from signal and destroy any reference to external objects (destroy Signal object).
-	         * <p><strong>IMPORTANT:</strong> calling any method on the signal instance after calling dispose will throw errors.</p>
-	         */
-	        dispose : function () {
-	            this.removeAll();
-	            delete this._bindings;
-	            delete this._prevParams;
-	        },
-	
-	        /**
-	         * @return {string} String representation of the object.
-	         */
-	        toString : function () {
-	            return '[Signal active:'+ this.active +' numListeners:'+ this.getNumListeners() +']';
-	        }
-	
-	    };
-	
-	
-	    // Namespace -----------------------------------------------------
-	    //================================================================
-	
-	    /**
-	     * Signals namespace
-	     * @namespace
-	     * @name signals
-	     */
-	    var signals = Signal;
-	
-	    /**
-	     * Custom event broadcaster
-	     * @see Signal
-	     */
-	    // alias for backwards compatibility (see #gh-44)
-	    signals.Signal = Signal;
-	
-	
-	
-	    //exports to multiple environments
-	    if(true){ //AMD
-	        !(__WEBPACK_AMD_DEFINE_RESULT__ = function () { return signals; }.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-	    } else if (typeof module !== 'undefined' && module.exports){ //node
-	        module.exports = signals;
-	    } else { //browser
-	        //use string because of Google closure compiler ADVANCED_MODE
-	        /*jslint sub:true */
-	        global['signals'] = signals;
+	    return classPropertyDecorator;
+	}
+	function typescriptInitializeProperty(instance, key, v, onInitialize, customArgs, baseDescriptor) {
+	    if (!hasOwnProperty(instance, "__mobxInitializedProps"))
+	        addHiddenProp(instance, "__mobxInitializedProps", {});
+	    instance.__mobxInitializedProps[key] = true;
+	    onInitialize(instance, key, v, customArgs, baseDescriptor);
+	}
+	function runLazyInitializers(instance) {
+	    if (instance.__mobxDidRunLazyInitializers === true)
+	        return;
+	    if (instance.__mobxLazyInitializers) {
+	        addHiddenProp(instance, "__mobxDidRunLazyInitializers", true);
+	        instance.__mobxDidRunLazyInitializers && instance.__mobxLazyInitializers.forEach(function (initializer) { return initializer(instance); });
 	    }
+	}
+	function quacksLikeADecorator(args) {
+	    return (args.length === 2 || args.length === 3) && typeof args[1] === "string";
+	}
+	function iteratorSymbol() {
+	    return (typeof Symbol === "function" && Symbol.iterator) || "@@iterator";
+	}
+	var IS_ITERATING_MARKER = "__$$iterating";
+	function arrayAsIterator(array) {
+	    invariant(array[IS_ITERATING_MARKER] !== true, "Illegal state: cannot recycle array as iterator");
+	    addHiddenFinalProp(array, IS_ITERATING_MARKER, true);
+	    var idx = -1;
+	    addHiddenFinalProp(array, "next", function next() {
+	        idx++;
+	        return {
+	            done: idx >= this.length,
+	            value: idx < this.length ? this[idx] : undefined
+	        };
+	    });
+	    return array;
+	}
+	function declareIterator(prototType, iteratorFactory) {
+	    addHiddenFinalProp(prototType, iteratorSymbol(), iteratorFactory);
+	}
+	var EMPTY_ARRAY = [];
+	Object.freeze(EMPTY_ARRAY);
+	function getGlobal() {
+	    return global;
+	}
+	function getNextId() {
+	    return ++globalState.mobxGuid;
+	}
+	function fail(message, thing) {
+	    invariant(false, message, thing);
+	    throw "X";
+	}
+	function invariant(check, message, thing) {
+	    if (!check)
+	        throw new Error("[mobx] Invariant failed: " + message + (thing ? " in '" + thing + "'" : ""));
+	}
+	var deprecatedMessages = [];
+	function deprecated(msg) {
+	    if (deprecatedMessages.indexOf(msg) !== -1)
+	        return false;
+	    deprecatedMessages.push(msg);
+	    console.error("[mobx] Deprecated: " + msg);
+	    return true;
+	}
+	function once(func) {
+	    var invoked = false;
+	    return function () {
+	        if (invoked)
+	            return;
+	        invoked = true;
+	        return func.apply(this, arguments);
+	    };
+	}
+	var noop = function () { };
+	function unique(list) {
+	    var res = [];
+	    list.forEach(function (item) {
+	        if (res.indexOf(item) === -1)
+	            res.push(item);
+	    });
+	    return res;
+	}
+	function joinStrings(things, limit, separator) {
+	    if (limit === void 0) { limit = 100; }
+	    if (separator === void 0) { separator = " - "; }
+	    if (!things)
+	        return "";
+	    var sliced = things.slice(0, limit);
+	    return "" + sliced.join(separator) + (things.length > limit ? " (... and " + (things.length - limit) + "more)" : "");
+	}
+	function isObject(value) {
+	    return value !== null && typeof value === "object";
+	}
+	function isPlainObject(value) {
+	    if (value === null || typeof value !== "object")
+	        return false;
+	    var proto = Object.getPrototypeOf(value);
+	    return proto === Object.prototype || proto === null;
+	}
+	function objectAssign() {
+	    var res = arguments[0];
+	    for (var i = 1, l = arguments.length; i < l; i++) {
+	        var source = arguments[i];
+	        for (var key in source)
+	            if (hasOwnProperty(source, key)) {
+	                res[key] = source[key];
+	            }
+	    }
+	    return res;
+	}
+	function valueDidChange(compareStructural, oldValue, newValue) {
+	    return compareStructural
+	        ? !deepEquals(oldValue, newValue)
+	        : oldValue !== newValue;
+	}
+	var prototypeHasOwnProperty = Object.prototype.hasOwnProperty;
+	function hasOwnProperty(object, propName) {
+	    return prototypeHasOwnProperty.call(object, propName);
+	}
+	function makeNonEnumerable(object, propNames) {
+	    for (var i = 0; i < propNames.length; i++) {
+	        addHiddenProp(object, propNames[i], object[propNames[i]]);
+	    }
+	}
+	function addHiddenProp(object, propName, value) {
+	    Object.defineProperty(object, propName, {
+	        enumerable: false,
+	        writable: true,
+	        configurable: true,
+	        value: value
+	    });
+	}
+	function addHiddenFinalProp(object, propName, value) {
+	    Object.defineProperty(object, propName, {
+	        enumerable: false,
+	        writable: false,
+	        configurable: true,
+	        value: value
+	    });
+	}
+	function isPropertyConfigurable(object, prop) {
+	    var descriptor = Object.getOwnPropertyDescriptor(object, prop);
+	    return !descriptor || (descriptor.configurable !== false && descriptor.writable !== false);
+	}
+	function assertPropertyConfigurable(object, prop) {
+	    invariant(isPropertyConfigurable(object, prop), "Cannot make property '" + prop + "' observable, it is not configurable and writable in the target object");
+	}
+	function getEnumerableKeys(obj) {
+	    var res = [];
+	    for (var key in obj)
+	        res.push(key);
+	    return res;
+	}
+	function deepEquals(a, b) {
+	    if (a === null && b === null)
+	        return true;
+	    if (a === undefined && b === undefined)
+	        return true;
+	    var aIsArray = isArrayLike(a);
+	    if (aIsArray !== isArrayLike(b)) {
+	        return false;
+	    }
+	    else if (aIsArray) {
+	        if (a.length !== b.length)
+	            return false;
+	        for (var i = a.length - 1; i >= 0; i--)
+	            if (!deepEquals(a[i], b[i]))
+	                return false;
+	        return true;
+	    }
+	    else if (typeof a === "object" && typeof b === "object") {
+	        if (a === null || b === null)
+	            return false;
+	        if (getEnumerableKeys(a).length !== getEnumerableKeys(b).length)
+	            return false;
+	        for (var prop in a) {
+	            if (!(prop in b))
+	                return false;
+	            if (!deepEquals(a[prop], b[prop]))
+	                return false;
+	        }
+	        return true;
+	    }
+	    return a === b;
+	}
+	function createInstanceofPredicate(name, clazz) {
+	    var propName = "isMobX" + name;
+	    clazz.prototype[propName] = true;
+	    return function (x) {
+	        return isObject(x) && x[propName] === true;
+	    };
+	}
+	function isArrayLike(x) {
+	    return Array.isArray(x) || isObservableArray(x);
+	}
+	exports.isArrayLike = isArrayLike;
+	function isES6Map(thing) {
+	    if (thing instanceof getGlobal().Map)
+	        return true;
+	    return false;
+	}
 	
-	}(this));
-
+	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
 /* 72 */
@@ -15305,10 +18453,20 @@
 	 * @version 0.1.0
 	 */
 	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
 	const React = __webpack_require__(2);
 	const Loading_1 = __webpack_require__(263);
+	const mobx_react_1 = __webpack_require__(70);
 	const workspace_1 = __webpack_require__(264);
-	class Workspace extends React.Component {
+	let Workspace = class Workspace extends React.Component {
 	    constructor() {
 	        super();
 	        this.state = {
@@ -15343,7 +18501,12 @@
 	        return (React.createElement("div", { className: 'flex-fill workspace-outer-wrapper' },
 	            React.createElement("div", { className: 'workspace-inner-wrapper flex-fill' }, React.createElement(workspaceComponent, { api: this.props.api, dataStore: this.props.dataStore, id: this.props.id }))));
 	    }
-	}
+	};
+	Workspace = __decorate([
+	    mobx_react_1.inject('dataStore'),
+	    mobx_react_1.observer,
+	    __metadata("design:paramtypes", [])
+	], Workspace);
 	exports.Workspace = Workspace;
 
 
@@ -15415,15 +18578,24 @@
 	 * @version 0.1.0
 	 */
 	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
 	const React = __webpack_require__(2);
 	const ApiService_1 = __webpack_require__(45);
 	const falcon_core_1 = __webpack_require__(47);
 	const lodash_1 = __webpack_require__(69);
-	const Signaller_1 = __webpack_require__(70);
 	const findParentTree_1 = __webpack_require__(267);
 	const EditableHeader_1 = __webpack_require__(268);
 	const EntityWorkspaceCoreView_1 = __webpack_require__(270);
 	const EntityWorkspaceReferenceView_1 = __webpack_require__(394);
+	const mobx_react_1 = __webpack_require__(70);
 	class StringEditableFieldComponent extends EditableHeader_1.EditableFieldComponent {
 	}
 	class ComboEditableFieldComponent extends EditableHeader_1.EditableFieldComponent {
@@ -15444,7 +18616,7 @@
 	//   to one of its parents. The range MUST be set.
 	// Visualisations:
 	// - Network graph of entity relationships
-	class EntityEditorWorkspace extends React.Component {
+	let EntityEditorWorkspace = class EntityEditorWorkspace extends React.Component {
 	    constructor(props, context) {
 	        super();
 	        this.state = {
@@ -15456,7 +18628,7 @@
 	    del() {
 	        this.props.api.delItem(falcon_core_1.Entity, ApiService_1.AppUrls.entity, this.props.id)
 	            .then(() => {
-	            Signaller_1.closeTab.dispatch('entity', this.props.id);
+	            this.props.dataStore.closeTab('entity', this.props.id);
 	            this.context.router.transitionTo('/edit/notfound');
 	        })
 	            .catch((e) => {
@@ -15467,10 +18639,10 @@
 	                    complete: (result) => {
 	                        if (result === 'addToWorkspace') {
 	                            data.record.forEach((datum) => {
-	                                Signaller_1.createTab.dispatch('entity', datum.entity, 'item');
+	                                this.props.dataStore.createTab('entity', datum.entity, 'item');
 	                            });
 	                            data.entity.forEach((datum) => {
-	                                Signaller_1.createTab.dispatch('entity', datum.uid, 'item');
+	                                this.props.dataStore.createTab('entity', datum.uid, 'item');
 	                            });
 	                        }
 	                        if (result === 'deleteAll') {
@@ -15485,15 +18657,15 @@
 	                        message: 'Deleting Entity'
 	                    }
 	                };
-	                Signaller_1.showModal.dispatch(conflictResolutionModal);
+	                this.props.modalStore.addModal(conflictResolutionModal);
 	            });
 	        });
 	    }
 	    createNewRecord() {
-	        const entity = this.props.dataStore.tabs.entity.get('entity-' + this.props.id).value.entity;
-	        const entityType = this.props.dataStore.all.entity_type.value.find((t) => t.uid === entity.entityType);
-	        const entityTypeParents = findParentTree_1.findParentTree(entity.entityType, this.props.dataStore.all.entity_type.value);
-	        const predicates = this.props.dataStore.all.predicate
+	        const entity = this.props.dataStore.dataStore.tabs.entity.get('entity-' + this.props.id).value.entity;
+	        const entityType = this.props.dataStore.dataStore.all.entity_type.value.find((t) => t.uid === entity.entityType);
+	        const entityTypeParents = findParentTree_1.findParentTree(entity.entityType, this.props.dataStore.dataStore.all.entity_type.value);
+	        const predicates = this.props.dataStore.dataStore.all.predicate
 	            .value.filter((pred) => entityTypeParents.indexOf(pred.domain) !== -1);
 	        const modalDef = {
 	            name: 'record',
@@ -15510,20 +18682,20 @@
 	                entityType: entityType.uid
 	            }
 	        };
-	        Signaller_1.showModal.dispatch(modalDef);
+	        this.props.modalStore.addModal(modalDef);
 	    }
 	    update(data) {
 	        this.props.api.patchItem(falcon_core_1.Entity, ApiService_1.AppUrls.entity, this.props.id, data);
 	    }
 	    render() {
-	        const entity = this.props.dataStore.tabs.entity.get('entity-' + this.props.id).value.entity;
-	        const entityType = this.props.dataStore.all.entity_type.value.find((t) => t.uid === entity.entityType);
-	        const potentialParents = this.props.dataStore.all.entity.value;
-	        const entityTypeParents = findParentTree_1.findParentTree(entity.entityType, this.props.dataStore.all.entity_type.value);
-	        const predicates = this.props.dataStore.all.predicate
+	        const entity = this.props.dataStore.dataStore.tabs.entity.get('entity-' + this.props.id).value.entity;
+	        const entityType = this.props.dataStore.dataStore.all.entity_type.value.find((t) => t.uid === entity.entityType);
+	        const potentialParents = this.props.dataStore.dataStore.all.entity.value;
+	        const entityTypeParents = findParentTree_1.findParentTree(entity.entityType, this.props.dataStore.dataStore.all.entity_type.value);
+	        const predicates = this.props.dataStore.dataStore.all.predicate
 	            .value.filter((pred) => entityTypeParents.indexOf(pred.domain) !== -1);
-	        const sources = this.props.dataStore.all.source.value;
-	        const records = lodash_1.groupBy(this.props.dataStore.tabs.entity.get('entity-' + this.props.id).value.records, 'predicate');
+	        const sources = this.props.dataStore.dataStore.all.source.value;
+	        const records = lodash_1.groupBy(this.props.dataStore.dataStore.tabs.entity.get('entity-' + this.props.id).value.records, 'predicate');
 	        const options = predicates.map((pred) => ({ key: pred.label, value: pred.uid, meta: pred }));
 	        let parentName = '';
 	        if (potentialParents !== null && entity.parent !== undefined) {
@@ -15547,11 +18719,16 @@
 	                        React.createElement("div", { className: 'entity ' + (this.state.tab === 1 ? 'selected' : ''), onClick: () => this.setState({ tab: 1 }) }, "REFERENCED BY")))),
 	            this.state.tab === 0 ? (React.createElement(EntityWorkspaceCoreView_1.EntityWorkspaceCoreView, { dataStore: this.props.dataStore, api: this.props.api, id: this.props.id })) : (React.createElement(EntityWorkspaceReferenceView_1.EntityWorkspaceReferenceView, { dataStore: this.props.dataStore, api: this.props.api, id: this.props.id }))));
 	    }
-	}
+	};
 	EntityEditorWorkspace.contextTypes = {
 	    router: React.PropTypes.object.isRequired,
 	    manager: React.PropTypes.object.isRequired
 	};
+	EntityEditorWorkspace = __decorate([
+	    mobx_react_1.inject('dataStore', 'modalStore'),
+	    mobx_react_1.observer,
+	    __metadata("design:paramtypes", [Object, Object])
+	], EntityEditorWorkspace);
 	exports.EntityEditorWorkspace = EntityEditorWorkspace;
 
 
@@ -15781,7 +18958,6 @@
 	const SearchBar_1 = __webpack_require__(272);
 	const RecordPredicate_1 = __webpack_require__(273);
 	const findParentTree_1 = __webpack_require__(267);
-	const Signaller_1 = __webpack_require__(70);
 	class RecordEditableFieldComponent extends EditableFieldComponent_1.EditableFieldComponent {
 	}
 	class RecordsEditor extends React.Component {
@@ -15821,7 +18997,7 @@
 	                entityType: this.props.entityTypeId
 	            }
 	        };
-	        Signaller_1.showModal.dispatch(modalDef);
+	        this.props.modalStore.addModal(modalDef);
 	    }
 	    render() {
 	        const predicates = this.props.predicates;
@@ -15942,7 +19118,7 @@
 	                this.props.predicate.label,
 	                " ",
 	                React.createElement("i", { className: 'fa fa-plus-circle add button', "aria-hidden": 'true', onClick: this.createNewRecord.bind(this), title: `Add new ${this.props.predicate.label} record` }),
-	                React.createElement(AddTabButton_1.AddTabButton, { dataStore: this.props.dataStore, uid: this.props.predicate.uid, tabType: 'predicate' })),
+	                React.createElement(AddTabButton_1.AddTabButton, { uid: this.props.predicate.uid, tabType: 'predicate' })),
 	            React.createElement("table", { className: 'record-editing-table' },
 	                React.createElement("thead", null,
 	                    React.createElement("tr", { className: 'record-row title' },
@@ -15956,7 +19132,6 @@
 	                        dimension: 'predicates',
 	                        sources: this.props.sources,
 	                        entities: this.state.potentialValues,
-	                        dataStore: this.props.dataStore
 	                    } })))))));
 	    }
 	}
@@ -15978,7 +19153,6 @@
 	exports.EditableFieldComponent = EditableFieldComponent_1.EditableFieldComponent;
 	const ScorePicker_1 = __webpack_require__(275);
 	const ComboDropdown_1 = __webpack_require__(67);
-	const Signaller_1 = __webpack_require__(70);
 	const StringFieldEditor_1 = __webpack_require__(276);
 	const EntityFieldEditor_1 = __webpack_require__(277);
 	const DateFieldEditor_1 = __webpack_require__(278);
@@ -15997,7 +19171,7 @@
 	            initialValue
 	        }
 	    };
-	    Signaller_1.showModal.dispatch(a);
+	    this.props.modalStore.addModal(a);
 	};
 	const recordEditor = (props, record) => {
 	    switch (record.valueType) {
@@ -31283,15 +34457,15 @@
 	 */
 	"use strict";
 	const React = __webpack_require__(2);
-	const Signaller_1 = __webpack_require__(70);
-	exports.AddTabButton = (props, context) => {
-	    if (props.dataStore.tabs[props.tabType] !== undefined
-	        && props.dataStore.tabs[props.tabType].has(`${props.tabType}-${props.uid}`)) {
+	const mobx_react_1 = __webpack_require__(70);
+	exports.AddTabButton = mobx_react_1.inject('dataStore')(mobx_react_1.observer((props, context) => {
+	    if (props.dataStore.dataStore.tabs[props.tabType] !== undefined
+	        && props.dataStore.dataStore.tabs[props.tabType].has(`${props.tabType}-${props.uid}`)) {
 	        return (React.createElement("i", { className: 'fa fa-folder-open-o add button', title: 'Open item', onClick: () => context.router.transitionTo(`/edit/${props.tabType}/${props.uid}`) }, " "));
 	    }
-	    return (React.createElement("i", { className: 'icon-list-add add button', title: 'Add to list', onClick: () => Signaller_1.createTab.dispatch(props.tabType, props.uid, 'item', props.data) }));
-	};
-	exports.AddTabButton.contextTypes = {
+	    return (React.createElement("i", { className: 'icon-list-add add button', title: 'Add to list', onClick: () => props.dataStore.createTab(props.tabType, props.uid, 'item', props.data) }));
+	}));
+	exports.AddTabButton.wrappedComponent.contextTypes = {
 	    router: React.PropTypes.object.isRequired
 	};
 
@@ -31415,6 +34589,15 @@
 	 * @version 0.0.1
 	 */
 	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
 	const React = __webpack_require__(2);
 	const SameAsEditor_1 = __webpack_require__(396);
 	const ApiService_1 = __webpack_require__(45);
@@ -31423,27 +34606,27 @@
 	const EditableHeader_1 = __webpack_require__(268);
 	const EditableParagraph_1 = __webpack_require__(398);
 	const EditableComboDropdown_1 = __webpack_require__(393);
-	const Signaller_1 = __webpack_require__(70);
+	const mobx_react_1 = __webpack_require__(70);
 	class StringEditableFieldComponent extends EditableHeader_1.EditableFieldComponent {
 	}
 	class ComboEditableFieldComponent extends EditableHeader_1.EditableFieldComponent {
 	}
-	class EntityTypeWorkspace extends React.Component {
+	let EntityTypeWorkspace = class EntityTypeWorkspace extends React.Component {
 	    constructor() {
 	        super();
 	        this.state = {};
 	    }
 	    update(data) {
-	        const entityType = this.props.dataStore.tabs.entity_type.get('entity_type-' + this.props.id).value;
+	        const entityType = this.props.dataStore.dataStore.tabs.entity_type.get('entity_type-' + this.props.id).value;
 	        this.props.api.patchItem(falcon_core_1.EntityType, ApiService_1.AppUrls.entity_type, this.props.id, data)
 	            .then(() => this.setState({ entityType: Object.assign({}, entityType, data) }));
 	    }
 	    copy() {
-	        const entityType = this.props.dataStore.tabs.entity_type.get('entity_type-' + this.props.id).value;
+	        const entityType = this.props.dataStore.dataStore.tabs.entity_type.get('entity_type-' + this.props.id).value;
 	        const newEntityType = falcon_core_1.Serializer.fromJson(falcon_core_1.EntityType, Object.assign({}, falcon_core_1.Serializer.toJson(entityType), { name: 'Copy of ' + entityType.label }));
 	        this.props.api.postItem(falcon_core_1.EntityType, ApiService_1.AppUrls.entity_type, newEntityType)
 	            .then(([id]) => {
-	            Signaller_1.createTab.dispatch('entity_type', id, 'item');
+	            this.props.dataStore.createTab('entity_type', id, 'item');
 	        });
 	    }
 	    del() {
@@ -31457,13 +34640,13 @@
 	                    complete: (result) => {
 	                        if (result === 'addToWorkspace') {
 	                            data.entityType.forEach((datum) => {
-	                                Signaller_1.createTab.dispatch('entity_type', datum.uid, 'item');
+	                                this.props.dataStore.createTab('entity_type', datum.uid, 'item');
 	                            });
 	                            data.predicate.forEach((datum) => {
-	                                Signaller_1.createTab.dispatch('predicate', datum.uid, 'item');
+	                                this.props.dataStore.createTab('predicate', datum.uid, 'item');
 	                            });
 	                            data.entity.forEach((datum) => {
-	                                Signaller_1.createTab.dispatch('entity', datum.uid, 'item');
+	                                this.props.dataStore.createTab('entity', datum.uid, 'item');
 	                            });
 	                        }
 	                    },
@@ -31472,7 +34655,7 @@
 	                        message: 'Deleting Entity Type'
 	                    }
 	                };
-	                Signaller_1.showModal.dispatch(conflictResolutionModal);
+	                this.props.modalStore.addModal(conflictResolutionModal);
 	            });
 	        });
 	    }
@@ -31480,7 +34663,7 @@
 	        const a = {
 	            name: 'entity',
 	            complete: ([id]) => {
-	                Signaller_1.createTab.dispatch('entity', id, 'item');
+	                this.props.dataStore.createTab('entity', id, 'item');
 	            },
 	            cancel: () => { console.log('cancel'); },
 	            settings: {
@@ -31488,11 +34671,11 @@
 	                initialType: this.props.id
 	            }
 	        };
-	        Signaller_1.showModal.dispatch(a);
+	        this.props.modalStore.addModal(a);
 	    }
 	    render() {
-	        const entityType = this.props.dataStore.tabs.entity_type.get('entity_type-' + this.props.id).value;
-	        const potentialParents = this.props.dataStore.all.entity_type.value;
+	        const entityType = this.props.dataStore.dataStore.tabs.entity_type.get('entity_type-' + this.props.id).value;
+	        const potentialParents = this.props.dataStore.dataStore.all.entity_type.value;
 	        let parentName = '';
 	        if (potentialParents !== null && entityType.parent !== undefined) {
 	            const found = potentialParents.find((par) => par.uid === entityType.parent);
@@ -31543,10 +34726,15 @@
 	                        " ",
 	                        React.createElement(AddTabButton_1.AddTabButton, { tabType: 'entity_type', dataStore: this.props.dataStore, uid: childEt.uid })))))))));
 	    }
-	}
+	};
 	EntityTypeWorkspace.contextTypes = {
 	    router: React.PropTypes.object.isRequired
 	};
+	EntityTypeWorkspace = __decorate([
+	    mobx_react_1.inject('dataStore', 'modalStore'),
+	    mobx_react_1.observer,
+	    __metadata("design:paramtypes", [])
+	], EntityTypeWorkspace);
 	exports.EntityTypeWorkspace = EntityTypeWorkspace;
 
 
@@ -32734,6 +35922,15 @@
 	 * @version 0.0.1
 	 */
 	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
 	const React = __webpack_require__(2);
 	const SameAsEditor_1 = __webpack_require__(396);
 	const ApiService_1 = __webpack_require__(45);
@@ -32742,7 +35939,7 @@
 	const EditableParagraph_1 = __webpack_require__(398);
 	const EditableComboDropdown_1 = __webpack_require__(393);
 	const lodash_1 = __webpack_require__(69);
-	const Signaller_1 = __webpack_require__(70);
+	const mobx_react_1 = __webpack_require__(70);
 	const AddTabButton_1 = __webpack_require__(392);
 	class StringEditableFieldComponent extends EditableHeader_1.EditableFieldComponent {
 	}
@@ -32755,7 +35952,7 @@
 	// - Strong check (double button press or type) to confirm
 	// - Changing name/description/sameAs - absolutly fine
 	// - Cannot change 'readonly'
-	class SourceEditorWorkspace extends React.Component {
+	let SourceEditorWorkspace = class SourceEditorWorkspace extends React.Component {
 	    constructor() {
 	        super();
 	        this.state = {
@@ -32769,25 +35966,17 @@
 	        this.loadData(newProps);
 	    }
 	    loadData(props) {
-	        const source = props.dataStore.tabs.source.get('source-' + this.props.id).value.source;
+	        const source = props.dataStore.dataStore.tabs.source.get('source-' + this.props.id).value.source;
 	        this.setState({
 	            metaData: lodash_1.keyBy(source.metaData, 'name')
 	        });
 	    }
 	    updateSource(field, value) {
-	        const source = this.props.dataStore.tabs.source.get('source-' + this.props.id).value.source;
+	        const source = this.props.dataStore.dataStore.tabs.source.get('source-' + this.props.id).value.source;
 	        this.props.api.patchItem(falcon_core_1.Source, ApiService_1.AppUrls.source, source.uid, { [field]: value });
-	        //.then((success) => {
-	        // const updatedSource = new Source().deserialize(Object.assign({},
-	        //     source.serialize(), { [field]: value }));
-	        // this.setState({
-	        //     source: updatedSource,
-	        //     metaData: keyBy(updatedSource.metaData, 'name')
-	        // });
-	        //});
 	    }
 	    updateSourceElement(element, value) {
-	        const source = this.props.dataStore.tabs.source.get('source-' + this.props.id).value.source;
+	        const source = this.props.dataStore.dataStore.tabs.source.get('source-' + this.props.id).value.source;
 	        const compositeKey = {
 	            order: ['source', 'element'],
 	            values: {
@@ -32822,7 +36011,7 @@
 	                    complete: (result) => {
 	                        if (result === 'addToWorkspace') {
 	                            data.source.forEach((datum) => {
-	                                Signaller_1.createTab.dispatch('source', datum.uid, 'item');
+	                                this.props.dataStore.createTab('source', datum.uid, 'item');
 	                            });
 	                        }
 	                        if (result === 'deleteAll') {
@@ -32837,16 +36026,16 @@
 	                        message: 'Deleting Source'
 	                    }
 	                };
-	                Signaller_1.showModal.dispatch(conflictResolutionModal);
+	                this.props.modalStore.addModal(conflictResolutionModal);
 	            });
 	        });
 	    }
 	    createChild() {
-	        const source = this.props.dataStore.tabs.source.get('source-' + this.props.id).value.source;
+	        const source = this.props.dataStore.dataStore.tabs.source.get('source-' + this.props.id).value.source;
 	        const newSource = falcon_core_1.Serializer.fromJson(falcon_core_1.Source, Object.assign({}, falcon_core_1.Serializer.toJson(source), { label: 'Child of ' + source.label, parent: this.props.id }));
 	        this.props.api.postItem(falcon_core_1.Source, ApiService_1.AppUrls.source, newSource)
 	            .then(([id]) => {
-	            Signaller_1.createTab.dispatch('source', id, 'item');
+	            this.props.dataStore.createTab('source', id, 'item');
 	        });
 	    }
 	    // create entity with 'mentioned in' already set to this source
@@ -32854,18 +36043,18 @@
 	        const a = {
 	            name: 'preset_record',
 	            complete: ([id]) => {
-	                Signaller_1.createTab.dispatch('entity', id, 'item');
+	                this.props.dataStore.createTab('entity', id, 'item');
 	            },
 	            cancel: () => { },
 	            settings: {
-	                source: this.props.dataStore.tabs.source.get('source-' + this.props.id).value.source
+	                source: this.props.dataStore.dataStore.tabs.source.get('source-' + this.props.id).value.source
 	            }
 	        };
-	        Signaller_1.showModal.dispatch(a);
+	        this.props.modalStore.addModal(a);
 	    }
 	    render() {
-	        const source = this.props.dataStore.tabs.source.get('source-' + this.props.id).value.source;
-	        const potentialParents = this.props.dataStore.all.source.value;
+	        const source = this.props.dataStore.dataStore.tabs.source.get('source-' + this.props.id).value.source;
+	        const potentialParents = this.props.dataStore.dataStore.all.source.value;
 	        let parentName = '';
 	        if (potentialParents !== null && source.parent !== undefined) {
 	            const found = potentialParents.find((par) => par.uid === source.parent);
@@ -32880,7 +36069,7 @@
 	                        React.createElement("div", { className: 'bread-crumbs' }, source.parents
 	                            .slice()
 	                            .reverse()
-	                            .map((child) => this.props.dataStore.all.source.value.find((et) => et.uid === child))
+	                            .map((child) => this.props.dataStore.dataStore.all.source.value.find((et) => et.uid === child))
 	                            .map((parent, i) => (React.createElement("span", { key: `breadcrumb-${parent.uid}` },
 	                            React.createElement("span", null,
 	                                "  ",
@@ -32910,7 +36099,7 @@
 	                    source.parent !== null ? (React.createElement(AddTabButton_1.AddTabButton, { dataStore: this.props.dataStore, tabType: 'source', uid: source.parent })) : null),
 	                React.createElement("div", { className: 'edit-group' },
 	                    React.createElement(StringEditableFieldComponent, { value: source.sameAs, component: SameAsEditor_1.SameAsEditor, onChange: (value) => this.updateSource('sameAs', value) })),
-	                this.props.dataStore.all.dublinCore.value.elements.map((element) => {
+	                this.props.dataStore.dataStore.all.dublinCore.value.elements.map((element) => {
 	                    const values = source.metaData.hasOwnProperty(element.label) ?
 	                        source.metaData[element.label].values : [{ source: this.props.id, value: '' }];
 	                    const editableValue = values[0].source == this.props.id ? values[0].value : '';
@@ -32922,7 +36111,7 @@
 	                                React.createElement("a", { href: element.url }, element.uri))),
 	                        React.createElement("p", { className: 'element-description' }, element.description),
 	                        React.createElement("ul", null, values.map((value) => value.source != this.props.id ? (React.createElement("li", { key: `${element.uid}-${value.source}` },
-	                            this.props.dataStore.all.source.value.find((s) => s.uid === value.source).label,
+	                            this.props.dataStore.dataStore.all.source.value.find((s) => s.uid === value.source).label,
 	                            ": ",
 	                            value.value)) : null)),
 	                        React.createElement(StringEditableFieldComponent, { value: editableValue, component: EditableParagraph_1.EditableParagraph, onChange: (value) => this.updateSourceElement(element, value) })));
@@ -32930,16 +36119,21 @@
 	                React.createElement("div", null,
 	                    React.createElement("h4", null, "Direct Children"),
 	                    React.createElement("ul", null, source.children
-	                        .map((child) => this.props.dataStore.all.source.value.find((et) => et.uid === child))
+	                        .map((child) => this.props.dataStore.dataStore.all.source.value.find((et) => et.uid === child))
 	                        .map((childEt) => (React.createElement("li", { key: `dc-${childEt.uid}` },
 	                        childEt.label,
 	                        " ",
 	                        React.createElement(AddTabButton_1.AddTabButton, { tabType: 'source', dataStore: this.props.dataStore, uid: childEt.uid })))))))));
 	    }
-	}
+	};
 	SourceEditorWorkspace.contextTypes = {
 	    router: React.PropTypes.object.isRequired
 	};
+	SourceEditorWorkspace = __decorate([
+	    mobx_react_1.inject('dataStore', 'modalStore'),
+	    mobx_react_1.observer,
+	    __metadata("design:paramtypes", [])
+	], SourceEditorWorkspace);
 	exports.SourceEditorWorkspace = SourceEditorWorkspace;
 
 
@@ -32953,16 +36147,25 @@
 	 * @version 0.0.1
 	 */
 	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
 	const React = __webpack_require__(2);
 	const react_router_1 = __webpack_require__(4);
 	const SameAsEditor_1 = __webpack_require__(396);
 	const ApiService_1 = __webpack_require__(45);
-	const Signaller_1 = __webpack_require__(70);
 	const falcon_core_1 = __webpack_require__(47);
 	const EditableHeader_1 = __webpack_require__(268);
 	const EditableParagraph_1 = __webpack_require__(398);
 	const PredicateDescription_1 = __webpack_require__(401);
 	const literalTypes_1 = __webpack_require__(402);
+	const mobx_react_1 = __webpack_require__(70);
 	class StringEditableFieldComponent extends EditableHeader_1.EditableFieldComponent {
 	}
 	// - Should state the number of times this predicate is used
@@ -32972,7 +36175,7 @@
 	// - Strong check (double button press or type) to confirm
 	// - Changing name/description/sameAs - absolutly fine
 	// - Cannot change 'readonly'
-	class PredicateEditorWorkspace extends React.Component {
+	let PredicateEditorWorkspace = class PredicateEditorWorkspace extends React.Component {
 	    constructor() {
 	        super();
 	        this.state = {
@@ -32993,7 +36196,7 @@
 	        // });
 	    }
 	    updatePredicate(field, value, rangeIsReferenceOverride = null) {
-	        const predicate = this.props.dataStore.tabs.predicate.get('predicate-' + this.props.id).value;
+	        const predicate = this.props.dataStore.dataStore.tabs.predicate.get('predicate-' + this.props.id).value;
 	        if (predicate === null) {
 	            console.warn('Tried to edit unready predicate');
 	            return;
@@ -33006,11 +36209,11 @@
 	        });
 	    }
 	    copy() {
-	        const predicate = this.props.dataStore.tabs.predicate.get('predicate-' + this.props.id).value;
+	        const predicate = this.props.dataStore.dataStore.tabs.predicate.get('predicate-' + this.props.id).value;
 	        const newPredicate = falcon_core_1.Serializer.fromJson(falcon_core_1.Predicate, Object.assign({}, falcon_core_1.Serializer.toJson(predicate), { name: 'Copy of ' + predicate.label }));
 	        this.props.api.postItem(falcon_core_1.Predicate, ApiService_1.AppUrls.predicate, newPredicate)
 	            .then(([id]) => {
-	            Signaller_1.createTab.dispatch('predicate', id, 'item');
+	            this.props.dataStore.createTab('predicate', id, 'item');
 	        });
 	    }
 	    del() {
@@ -33024,7 +36227,7 @@
 	                    complete: (result) => {
 	                        if (result === 'addToWorkspace') {
 	                            data.forEach((datum) => {
-	                                Signaller_1.createTab.dispatch('entity', datum.entity, 'item');
+	                                this.props.dataStore.createTab('entity', datum.entity, 'item');
 	                            });
 	                        }
 	                        if (result === 'deleteAll') {
@@ -33039,13 +36242,13 @@
 	                        message: 'Deleting Predicate'
 	                    }
 	                };
-	                Signaller_1.showModal.dispatch(conflictResolutionModal);
+	                this.props.modalStore.addModal(conflictResolutionModal);
 	            });
 	        });
 	    }
 	    render() {
-	        const predicate = this.props.dataStore.tabs.predicate.get('predicate-' + this.props.id).value;
-	        const entityTypes = this.props.dataStore.all.entity_type.value;
+	        const predicate = this.props.dataStore.dataStore.tabs.predicate.get('predicate-' + this.props.id).value;
+	        const entityTypes = this.props.dataStore.dataStore.all.entity_type.value;
 	        const currentDomainEntityType = entityTypes.find((t) => t.uid == predicate.domain);
 	        let currentDomainEntityTypeName = '';
 	        if (currentDomainEntityType !== undefined) {
@@ -33098,10 +36301,15 @@
 	                React.createElement("div", null,
 	                    React.createElement(StringEditableFieldComponent, { value: predicate.sameAs, component: SameAsEditor_1.SameAsEditor, onChange: (value) => this.updatePredicate('sameAs', value) })))));
 	    }
-	}
+	};
 	PredicateEditorWorkspace.contextTypes = {
 	    router: React.PropTypes.object.isRequired
 	};
+	PredicateEditorWorkspace = __decorate([
+	    mobx_react_1.inject('dataStore', 'modalStore'),
+	    mobx_react_1.observer,
+	    __metadata("design:paramtypes", [])
+	], PredicateEditorWorkspace);
 	exports.PredicateEditorWorkspace = PredicateEditorWorkspace;
 
 
@@ -33236,19 +36444,19 @@
 	"use strict";
 	const React = __webpack_require__(2);
 	const EntityList_1 = __webpack_require__(405);
-	const PredicateList_1 = __webpack_require__(409);
-	const SourceList_1 = __webpack_require__(410);
-	const EntityTypeList_1 = __webpack_require__(412);
+	const PredicateList_1 = __webpack_require__(407);
+	const SourceList_1 = __webpack_require__(408);
+	const EntityTypeList_1 = __webpack_require__(410);
 	exports.ObjectListWorkspace = (props) => (React.createElement("div", { className: 'workspace-editor object-list' }, (() => {
 	    switch (props.listType) {
 	        case 'entity':
 	            return (React.createElement(EntityList_1.EntityList, { api: props.api, query: props.query }));
 	        case 'source':
-	            return (React.createElement(SourceList_1.SourceList, { api: props.api, dataStore: props.dataStore }));
+	            return (React.createElement(SourceList_1.SourceList, { api: props.api }));
 	        case 'predicate':
-	            return (React.createElement(PredicateList_1.PredicateList, { api: props.api, dataStore: props.dataStore }));
+	            return (React.createElement(PredicateList_1.PredicateList, { api: props.api }));
 	        case 'entity_type':
-	            return (React.createElement(EntityTypeList_1.EntityTypeList, { api: props.api, dataStore: props.dataStore }));
+	            return (React.createElement(EntityTypeList_1.EntityTypeList, { api: props.api }));
 	    }
 	})()));
 
@@ -33279,9 +36487,8 @@
 	const ComboDropdown_1 = __webpack_require__(67);
 	const lodash_1 = __webpack_require__(69);
 	const AddTabButton_1 = __webpack_require__(392);
-	const Signaller_1 = __webpack_require__(70);
 	const formatDate_1 = __webpack_require__(390);
-	const mobx_react_1 = __webpack_require__(407);
+	const mobx_react_1 = __webpack_require__(70);
 	const sortIcons = {
 	    'none': 'fa fa-sort',
 	    'asc': 'fa fa-sort-asc',
@@ -33362,7 +36569,7 @@
 	                initialName: ''
 	            }
 	        };
-	        Signaller_1.showModal.dispatch(a);
+	        this.props.modalStore.addModal(a);
 	    }
 	    updateColumnParams(colId, key, value) {
 	        this.context.router.transitionTo({
@@ -33389,7 +36596,7 @@
 	    addViewTab() {
 	        const tabData = {};
 	        const mapping = [
-	            { key: 'p', display: 'Predicate', mod: (data) => this.props.dataStore.all.predicate.value.find((pred) => pred.uid == data).label },
+	            { key: 'p', display: 'Predicate', mod: (data) => this.props.dataStore.dataStore.all.predicate.value.find((pred) => pred.uid == data).label },
 	            { key: 's', display: 'Sort', mod: (data) => data },
 	            { key: 'f', display: 'filterType', mod: (data) => data },
 	            { key: 'v', display: 'filterValue', mod: (data) => data },
@@ -33405,12 +36612,12 @@
 	                }
 	            }
 	        }
-	        Signaller_1.createTab.dispatch('entity', Date.now(), 'view', tabData, this.props.query);
+	        this.props.dataStore.createTab('entity', Date.now(), 'view', tabData, this.props.query);
 	    }
 	    render() {
-	        const entities = this.props.dataStore.all.entity.value;
-	        const predicates = this.props.dataStore.all.predicate.value;
-	        const entityTypes = this.props.dataStore.all.entity_type.value;
+	        const entities = this.props.dataStore.dataStore.all.entity.value;
+	        const predicates = this.props.dataStore.dataStore.all.predicate.value;
+	        const entityTypes = this.props.dataStore.dataStore.all.entity_type.value;
 	        const entityTypeOptions = entityTypes.map((entityType) => ({ key: entityType.label, value: entityType.uid }));
 	        const tableData = entities.map((entity) => {
 	            const entityType = entityTypes.find((t) => t.uid === entity.entityType);
@@ -33433,13 +36640,13 @@
 	                                    if (pred.value === null) {
 	                                        return 'Not set';
 	                                    }
-	                                    return this.props.dataStore.all.source.value.find((source) => source.uid === pred.value).label;
+	                                    return this.props.dataStore.dataStore.all.source.value.find((source) => source.uid === pred.value).label;
 	                                }
 	                                if (pred.valueType === 'entity') {
 	                                    if (pred.value === null) {
 	                                        return 'Not set';
 	                                    }
-	                                    return this.props.dataStore.all.entity.value.find((entity) => entity.uid === pred.value).label;
+	                                    return this.props.dataStore.dataStore.all.entity.value.find((entity) => entity.uid === pred.value).label;
 	                                }
 	                                return pred.value;
 	                            }).join(', ');
@@ -33528,7 +36735,8 @@
 	    router: React.PropTypes.object.isRequired
 	};
 	EntityList = __decorate([
-	    mobx_react_1.inject('dataStore'),
+	    mobx_react_1.inject('dataStore', 'modalStore'),
+	    mobx_react_1.observer,
 	    __metadata("design:paramtypes", [Object])
 	], EntityList);
 	exports.EntityList = EntityList;
@@ -33650,3777 +36858,26 @@
 /* 407 */
 /***/ function(module, exports, __webpack_require__) {
 
-	(function webpackUniversalModuleDefinition(root, factory) {
-		if(true)
-			module.exports = factory(__webpack_require__(408), __webpack_require__(2), __webpack_require__(1));
-		else if(typeof define === 'function' && define.amd)
-			define(["mobx", "react", "react-dom"], factory);
-		else if(typeof exports === 'object')
-			exports["mobxReact"] = factory(require("mobx"), require("react"), require("react-dom"));
-		else
-			root["mobxReact"] = factory(root["mobx"], root["React"], root["ReactDOM"]);
-	})(this, function(__WEBPACK_EXTERNAL_MODULE_2__, __WEBPACK_EXTERNAL_MODULE_3__, __WEBPACK_EXTERNAL_MODULE_4__) {
-	return /******/ (function(modules) { // webpackBootstrap
-	/******/ 	// The module cache
-	/******/ 	var installedModules = {};
-	
-	/******/ 	// The require function
-	/******/ 	function __webpack_require__(moduleId) {
-	
-	/******/ 		// Check if module is in cache
-	/******/ 		if(installedModules[moduleId])
-	/******/ 			return installedModules[moduleId].exports;
-	
-	/******/ 		// Create a new module (and put it into the cache)
-	/******/ 		var module = installedModules[moduleId] = {
-	/******/ 			exports: {},
-	/******/ 			id: moduleId,
-	/******/ 			loaded: false
-	/******/ 		};
-	
-	/******/ 		// Execute the module function
-	/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
-	
-	/******/ 		// Flag the module as loaded
-	/******/ 		module.loaded = true;
-	
-	/******/ 		// Return the exports of the module
-	/******/ 		return module.exports;
-	/******/ 	}
-	
-	
-	/******/ 	// expose the modules object (__webpack_modules__)
-	/******/ 	__webpack_require__.m = modules;
-	
-	/******/ 	// expose the module cache
-	/******/ 	__webpack_require__.c = installedModules;
-	
-	/******/ 	// __webpack_public_path__
-	/******/ 	__webpack_require__.p = "";
-	
-	/******/ 	// Load entry module and return exports
-	/******/ 	return __webpack_require__(0);
-	/******/ })
-	/************************************************************************/
-	/******/ ([
-	/* 0 */
-	/***/ function(module, exports, __webpack_require__) {
-	
-		'use strict';
-	
-		Object.defineProperty(exports, "__esModule", {
-		  value: true
-		});
-		exports.PropTypes = exports.propTypes = exports.inject = exports.Provider = exports.useStaticRendering = exports.trackComponents = exports.componentByNodeRegistery = exports.renderReporter = exports.Observer = exports.observer = undefined;
-	
-		var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-	
-		var _observer = __webpack_require__(1);
-	
-		Object.defineProperty(exports, 'observer', {
-		  enumerable: true,
-		  get: function get() {
-		    return _observer.observer;
-		  }
-		});
-		Object.defineProperty(exports, 'Observer', {
-		  enumerable: true,
-		  get: function get() {
-		    return _observer.Observer;
-		  }
-		});
-		Object.defineProperty(exports, 'renderReporter', {
-		  enumerable: true,
-		  get: function get() {
-		    return _observer.renderReporter;
-		  }
-		});
-		Object.defineProperty(exports, 'componentByNodeRegistery', {
-		  enumerable: true,
-		  get: function get() {
-		    return _observer.componentByNodeRegistery;
-		  }
-		});
-		Object.defineProperty(exports, 'trackComponents', {
-		  enumerable: true,
-		  get: function get() {
-		    return _observer.trackComponents;
-		  }
-		});
-		Object.defineProperty(exports, 'useStaticRendering', {
-		  enumerable: true,
-		  get: function get() {
-		    return _observer.useStaticRendering;
-		  }
-		});
-	
-		var _Provider = __webpack_require__(8);
-	
-		Object.defineProperty(exports, 'Provider', {
-		  enumerable: true,
-		  get: function get() {
-		    return _interopRequireDefault(_Provider).default;
-		  }
-		});
-	
-		var _inject = __webpack_require__(6);
-	
-		Object.defineProperty(exports, 'inject', {
-		  enumerable: true,
-		  get: function get() {
-		    return _interopRequireDefault(_inject).default;
-		  }
-		});
-	
-		var _mobx = __webpack_require__(2);
-	
-		var mobx = _interopRequireWildcard(_mobx);
-	
-		var _react = __webpack_require__(3);
-	
-		var _react2 = _interopRequireDefault(_react);
-	
-		var _reactDom = __webpack_require__(4);
-	
-		var _reactNative = __webpack_require__(9);
-	
-		var _propTypes = __webpack_require__(10);
-	
-		var propTypes = _interopRequireWildcard(_propTypes);
-	
-		function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-	
-		function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-		var TARGET_LIB_NAME = void 0;
-		if (true) TARGET_LIB_NAME = 'mobx-react';
-		if (false) TARGET_LIB_NAME = 'mobx-react/native';
-		if (false) TARGET_LIB_NAME = 'mobx-react/custom';
-	
-		if (!mobx) throw new Error(TARGET_LIB_NAME + ' requires the MobX package');
-		if (!_react2.default) throw new Error(TARGET_LIB_NAME + ' requires React to be available');
-	
-		if (("browser") === 'browser' && typeof _reactDom.unstable_batchedUpdates === "function") mobx.extras.setReactionScheduler(_reactDom.unstable_batchedUpdates);
-		if (false) mobx.extras.setReactionScheduler(_reactNative.unstable_batchedUpdates);
-	
-		exports.propTypes = propTypes;
-		exports.PropTypes = propTypes;
-		exports.default = module.exports;
-	
-		/* DevTool support */
-	
-		if ((typeof __MOBX_DEVTOOLS_GLOBAL_HOOK__ === 'undefined' ? 'undefined' : _typeof(__MOBX_DEVTOOLS_GLOBAL_HOOK__)) === 'object') {
-		  __MOBX_DEVTOOLS_GLOBAL_HOOK__.injectMobxReact(module.exports, mobx);
-		}
-	
-	/***/ },
-	/* 1 */
-	/***/ function(module, exports, __webpack_require__) {
-	
-		'use strict';
-	
-		Object.defineProperty(exports, "__esModule", {
-		  value: true
-		});
-		exports.Observer = exports.renderReporter = exports.componentByNodeRegistery = undefined;
-	
-		var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-	
-		exports.trackComponents = trackComponents;
-		exports.useStaticRendering = useStaticRendering;
-		exports.observer = observer;
-	
-		var _mobx = __webpack_require__(2);
-	
-		var _mobx2 = _interopRequireDefault(_mobx);
-	
-		var _react = __webpack_require__(3);
-	
-		var _react2 = _interopRequireDefault(_react);
-	
-		var _reactDom = __webpack_require__(4);
-	
-		var _reactDom2 = _interopRequireDefault(_reactDom);
-	
-		var _EventEmitter = __webpack_require__(5);
-	
-		var _EventEmitter2 = _interopRequireDefault(_EventEmitter);
-	
-		var _inject = __webpack_require__(6);
-	
-		var _inject2 = _interopRequireDefault(_inject);
-	
-		function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-		/**
-		 * dev tool support
-		 */
-		var isDevtoolsEnabled = false;
-	
-		var isUsingStaticRendering = false;
-	
-		var warnedAboutObserverInjectDeprecation = false;
-	
-		// WeakMap<Node, Object>;
-		var componentByNodeRegistery = exports.componentByNodeRegistery = typeof WeakMap !== "undefined" ? new WeakMap() : undefined;
-		var renderReporter = exports.renderReporter = new _EventEmitter2.default();
-	
-		function findDOMNode(component) {
-		  if (_reactDom2.default) return _reactDom2.default.findDOMNode(component);
-		  return null;
-		}
-	
-		function reportRendering(component) {
-		  var node = findDOMNode(component);
-		  if (node && componentByNodeRegistery) componentByNodeRegistery.set(node, component);
-	
-		  renderReporter.emit({
-		    event: 'render',
-		    renderTime: component.__$mobRenderEnd - component.__$mobRenderStart,
-		    totalTime: Date.now() - component.__$mobRenderStart,
-		    component: component,
-		    node: node
-		  });
-		}
-	
-		function trackComponents() {
-		  if (typeof WeakMap === "undefined") throw new Error("[mobx-react] tracking components is not supported in this browser.");
-		  if (!isDevtoolsEnabled) isDevtoolsEnabled = true;
-		}
-	
-		function useStaticRendering(useStaticRendering) {
-		  isUsingStaticRendering = useStaticRendering;
-		}
-	
-		/**
-		 * Utilities
-		 */
-	
-		function patch(target, funcName) {
-		  var runMixinFirst = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
-	
-		  var base = target[funcName];
-		  var mixinFunc = reactiveMixin[funcName];
-		  if (!base) {
-		    target[funcName] = mixinFunc;
-		  } else {
-		    target[funcName] = runMixinFirst === true ? function () {
-		      mixinFunc.apply(this, arguments);
-		      base.apply(this, arguments);
-		    } : function () {
-		      base.apply(this, arguments);
-		      mixinFunc.apply(this, arguments);
-		    };
-		  }
-		}
-	
-		function isObjectShallowModified(prev, next) {
-		  if (null == prev || null == next || (typeof prev === 'undefined' ? 'undefined' : _typeof(prev)) !== "object" || (typeof next === 'undefined' ? 'undefined' : _typeof(next)) !== "object") {
-		    return prev !== next;
-		  }
-		  var keys = Object.keys(prev);
-		  if (keys.length !== Object.keys(next).length) {
-		    return true;
-		  }
-		  var key = void 0;
-		  for (var i = keys.length - 1; i >= 0, key = keys[i]; i--) {
-		    if (next[key] !== prev[key]) {
-		      return true;
-		    }
-		  }
-		  return false;
-		}
-	
-		/**
-		 * ReactiveMixin
-		 */
-		var reactiveMixin = {
-		  componentWillMount: function componentWillMount() {
-		    var _this = this;
-	
-		    if (isUsingStaticRendering === true) return;
-		    // Generate friendly name for debugging
-		    var initialName = this.displayName || this.name || this.constructor && (this.constructor.displayName || this.constructor.name) || "<component>";
-		    var rootNodeID = this._reactInternalInstance && this._reactInternalInstance._rootNodeID;
-	
-		    /**
-		     * If props are shallowly modified, react will render anyway,
-		     * so atom.reportChanged() should not result in yet another re-render
-		     */
-		    var skipRender = false;
-		    /**
-		     * forceUpdate will re-assign this.props. We don't want that to cause a loop,
-		     * so detect these changes
-		     */
-		    var isForcingUpdate = false;
-	
-		    function makePropertyObservableReference(propName) {
-		      var valueHolder = this[propName];
-		      var atom = new _mobx2.default.Atom("reactive " + propName);
-		      Object.defineProperty(this, propName, {
-		        configurable: true, enumerable: true,
-		        get: function get() {
-		          atom.reportObserved();
-		          return valueHolder;
-		        },
-		        set: function set(v) {
-		          if (!isForcingUpdate && isObjectShallowModified(valueHolder, v)) {
-		            valueHolder = v;
-		            skipRender = true;
-		            atom.reportChanged();
-		            skipRender = false;
-		          } else {
-		            valueHolder = v;
-		          }
-		        }
-		      });
-		    }
-	
-		    // make this.props an observable reference, see #124
-		    makePropertyObservableReference.call(this, "props");
-		    // make state an observable reference
-		    makePropertyObservableReference.call(this, "state");
-	
-		    // wire up reactive render
-		    var baseRender = this.render.bind(this);
-		    var reaction = null;
-		    var isRenderingPending = false;
-	
-		    var initialRender = function initialRender() {
-		      reaction = new _mobx2.default.Reaction(initialName + '#' + rootNodeID + '.render()', function () {
-		        if (!isRenderingPending) {
-		          // N.B. Getting here *before mounting* means that a component constructor has side effects (see the relevant test in misc.js)
-		          // This unidiomatic React usage but React will correctly warn about this so we continue as usual
-		          // See #85 / Pull #44
-		          isRenderingPending = true;
-		          if (typeof _this.componentWillReact === "function") _this.componentWillReact(); // TODO: wrap in action?
-		          if (_this.__$mobxIsUnmounted !== true) {
-		            // If we are unmounted at this point, componentWillReact() had a side effect causing the component to unmounted
-		            // TODO: remove this check? Then react will properly warn about the fact that this should not happen? See #73
-		            // However, people also claim this migth happen during unit tests..
-		            var hasError = true;
-		            try {
-		              isForcingUpdate = true;
-		              if (!skipRender) _react2.default.Component.prototype.forceUpdate.call(_this);
-		              hasError = false;
-		            } finally {
-		              isForcingUpdate = false;
-		              if (hasError) reaction.dispose();
-		            }
-		          }
-		        }
-		      });
-		      reactiveRender.$mobx = reaction;
-		      _this.render = reactiveRender;
-		      return reactiveRender();
-		    };
-	
-		    var reactiveRender = function reactiveRender() {
-		      isRenderingPending = false;
-		      var rendering = undefined;
-		      reaction.track(function () {
-		        if (isDevtoolsEnabled) {
-		          _this.__$mobRenderStart = Date.now();
-		        }
-		        rendering = _mobx2.default.extras.allowStateChanges(false, baseRender);
-		        if (isDevtoolsEnabled) {
-		          _this.__$mobRenderEnd = Date.now();
-		        }
-		      });
-		      return rendering;
-		    };
-	
-		    this.render = initialRender;
-		  },
-	
-		  componentWillUnmount: function componentWillUnmount() {
-		    if (isUsingStaticRendering === true) return;
-		    this.render.$mobx && this.render.$mobx.dispose();
-		    this.__$mobxIsUnmounted = true;
-		    if (isDevtoolsEnabled) {
-		      var node = findDOMNode(this);
-		      if (node && componentByNodeRegistery) {
-		        componentByNodeRegistery.delete(node);
-		      }
-		      renderReporter.emit({
-		        event: 'destroy',
-		        component: this,
-		        node: node
-		      });
-		    }
-		  },
-	
-		  componentDidMount: function componentDidMount() {
-		    if (isDevtoolsEnabled) {
-		      reportRendering(this);
-		    }
-		  },
-	
-		  componentDidUpdate: function componentDidUpdate() {
-		    if (isDevtoolsEnabled) {
-		      reportRendering(this);
-		    }
-		  },
-	
-		  shouldComponentUpdate: function shouldComponentUpdate(nextProps, nextState) {
-		    if (isUsingStaticRendering) {
-		      console.warn("[mobx-react] It seems that a re-rendering of a React component is triggered while in static (server-side) mode. Please make sure components are rendered only once server-side.");
-		    }
-		    // update on any state changes (as is the default)
-		    if (this.state !== nextState) {
-		      return true;
-		    }
-		    // update if props are shallowly not equal, inspired by PureRenderMixin
-		    // we could return just 'false' here, and avoid the `skipRender` checks etc
-		    // however, it is nicer if lifecycle events are triggered like usually,
-		    // so we return true here if props are shallowly modified.
-		    return isObjectShallowModified(this.props, nextProps);
-		  }
-		};
-	
-		/**
-		 * Observer function / decorator
-		 */
-		function observer(arg1, arg2) {
-		  if (typeof arg1 === "string") {
-		    throw new Error("Store names should be provided as array");
-		  }
-		  if (Array.isArray(arg1)) {
-		    // component needs stores
-		    if (!warnedAboutObserverInjectDeprecation) {
-		      warnedAboutObserverInjectDeprecation = true;
-		      console.warn('Mobx observer: Using observer to inject stores is deprecated since 4.0. Use `@inject("store1", "store2") @observer ComponentClass` or `inject("store1", "store2")(observer(componentClass))` instead of `@observer(["store1", "store2"]) ComponentClass`');
-		    }
-		    if (!arg2) {
-		      // invoked as decorator
-		      return function (componentClass) {
-		        return observer(arg1, componentClass);
-		      };
-		    } else {
-		      return _inject2.default.apply(null, arg1)(observer(arg2));
-		    }
-		  }
-		  var componentClass = arg1;
-	
-		  if (componentClass.isMobxInjector === true) {
-		    console.warn('Mobx observer: You are trying to use \'observer\' on a component that already has \'inject\'. Please apply \'observer\' before applying \'inject\'');
-		  }
-	
-		  // Stateless function component:
-		  // If it is function but doesn't seem to be a react class constructor,
-		  // wrap it to a react class automatically
-		  if (typeof componentClass === "function" && (!componentClass.prototype || !componentClass.prototype.render) && !componentClass.isReactClass && !_react2.default.Component.isPrototypeOf(componentClass)) {
-	
-		    return observer(_react2.default.createClass({
-		      displayName: componentClass.displayName || componentClass.name,
-		      propTypes: componentClass.propTypes,
-		      contextTypes: componentClass.contextTypes,
-		      getDefaultProps: function getDefaultProps() {
-		        return componentClass.defaultProps;
-		      },
-		      render: function render() {
-		        return componentClass.call(this, this.props, this.context);
-		      }
-		    }));
-		  }
-	
-		  if (!componentClass) {
-		    throw new Error("Please pass a valid component to 'observer'");
-		  }
-	
-		  var target = componentClass.prototype || componentClass;
-		  mixinLifecycleEvents(target);
-		  componentClass.isMobXReactObserver = true;
-		  return componentClass;
-		}
-	
-		function mixinLifecycleEvents(target) {
-		  patch(target, "componentWillMount", true);
-		  ["componentDidMount", "componentWillUnmount", "componentDidUpdate"].forEach(function (funcName) {
-		    patch(target, funcName);
-		  });
-		  if (!target.shouldComponentUpdate) {
-		    target.shouldComponentUpdate = reactiveMixin.shouldComponentUpdate;
-		  }
-		}
-	
-		// TODO: support injection somehow as well?
-		var Observer = exports.Observer = observer(function (_ref) {
-		  var children = _ref.children;
-		  return children();
-		});
-	
-		Observer.propTypes = {
-		  children: _react2.default.PropTypes.func.isRequired
-		};
-	
-	/***/ },
-	/* 2 */
-	/***/ function(module, exports) {
-	
-		module.exports = __WEBPACK_EXTERNAL_MODULE_2__;
-	
-	/***/ },
-	/* 3 */
-	/***/ function(module, exports) {
-	
-		module.exports = __WEBPACK_EXTERNAL_MODULE_3__;
-	
-	/***/ },
-	/* 4 */
-	/***/ function(module, exports) {
-	
-		module.exports = __WEBPACK_EXTERNAL_MODULE_4__;
-	
-	/***/ },
-	/* 5 */
-	/***/ function(module, exports) {
-	
-		"use strict";
-	
-		Object.defineProperty(exports, "__esModule", {
-		  value: true
-		});
-	
-		var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-	
-		function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-	
-		var EventEmitter = function () {
-		  function EventEmitter() {
-		    _classCallCheck(this, EventEmitter);
-	
-		    this.listeners = [];
-		  }
-	
-		  _createClass(EventEmitter, [{
-		    key: "on",
-		    value: function on(cb) {
-		      var _this = this;
-	
-		      this.listeners.push(cb);
-		      return function () {
-		        var index = _this.listeners.indexOf(cb);
-		        if (index !== -1) _this.listeners.splice(index, 1);
-		      };
-		    }
-		  }, {
-		    key: "emit",
-		    value: function emit(data) {
-		      this.listeners.forEach(function (fn) {
-		        return fn(data);
-		      });
-		    }
-		  }]);
-	
-		  return EventEmitter;
-		}();
-	
-		exports.default = EventEmitter;
-	
-	/***/ },
-	/* 6 */
-	/***/ function(module, exports, __webpack_require__) {
-	
-		'use strict';
-	
-		Object.defineProperty(exports, "__esModule", {
-		  value: true
-		});
-	
-		var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-	
-		exports.default = inject;
-	
-		var _react = __webpack_require__(3);
-	
-		var _react2 = _interopRequireDefault(_react);
-	
-		var _hoistNonReactStatics = __webpack_require__(7);
-	
-		var _hoistNonReactStatics2 = _interopRequireDefault(_hoistNonReactStatics);
-	
-		var _observer = __webpack_require__(1);
-	
-		function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-		var injectorContextTypes = {
-		  mobxStores: _react.PropTypes.object
-		};
-		Object.seal(injectorContextTypes);
-	
-		var proxiedInjectorProps = {
-		  contextTypes: {
-		    get: function get() {
-		      return injectorContextTypes;
-		    },
-		    set: function set(_) {
-		      console.warn("Mobx Injector: you are trying to attach `contextTypes` on an component decorated with `inject` (or `observer`) HOC. Please specify the contextTypes on the wrapped component instead. It is accessible through the `wrappedComponent`");
-		    },
-		    configurable: true,
-		    enumerable: false
-		  },
-		  isMobxInjector: {
-		    value: true,
-		    writable: true,
-		    configurable: true,
-		    enumerable: true
-		  }
-		};
-	
-		/**
-		 * Store Injection
-		 */
-		function createStoreInjector(grabStoresFn, component, injectNames) {
-		  var displayName = "inject-" + (component.displayName || component.name || component.constructor && component.constructor.name || "Unknown");
-		  if (injectNames) displayName += "-with-" + injectNames;
-	
-		  var Injector = _react2.default.createClass({
-		    displayName: displayName,
-		    storeRef: function storeRef(instance) {
-		      this.wrappedInstance = instance;
-		    },
-		    render: function render() {
-		      // Optimization: it might be more efficient to apply the mapper function *outside* the render method
-		      // (if the mapper is a function), that could avoid expensive(?) re-rendering of the injector component
-		      // See this test: 'using a custom injector is not too reactive' in inject.js
-		      var newProps = {};
-		      for (var key in this.props) {
-		        if (this.props.hasOwnProperty(key)) {
-		          newProps[key] = this.props[key];
-		        }
-		      }var additionalProps = grabStoresFn(this.context.mobxStores || {}, newProps, this.context) || {};
-		      for (var _key in additionalProps) {
-		        newProps[_key] = additionalProps[_key];
-		      }
-		      newProps.ref = this.storeRef;
-	
-		      return _react2.default.createElement(component, newProps);
-		    }
-		  });
-	
-		  // Static fields from component should be visible on the generated Injector
-		  (0, _hoistNonReactStatics2.default)(Injector, component);
-	
-		  Injector.wrappedComponent = component;
-		  Object.defineProperties(Injector, proxiedInjectorProps);
-	
-		  return Injector;
-		}
-	
-		function grabStoresByName(storeNames) {
-		  return function (baseStores, nextProps) {
-		    storeNames.forEach(function (storeName) {
-		      if (storeName in nextProps) // prefer props over stores
-		        return;
-		      if (!(storeName in baseStores)) throw new Error("MobX observer: Store '" + storeName + "' is not available! Make sure it is provided by some Provider");
-		      nextProps[storeName] = baseStores[storeName];
-		    });
-		    return nextProps;
-		  };
-		}
-	
-		/**
-		 * higher order component that injects stores to a child.
-		 * takes either a varargs list of strings, which are stores read from the context,
-		 * or a function that manually maps the available stores from the context to props:
-		 * storesToProps(mobxStores, props, context) => newProps
-		 */
-		function inject() /* fn(stores, nextProps) or ...storeNames */{
-		  var _arguments = arguments;
-	
-		  var grabStoresFn = void 0;
-		  if (typeof arguments[0] === "function") {
-		    grabStoresFn = arguments[0];
-		    return function (componentClass) {
-		      var injected = createStoreInjector(grabStoresFn, componentClass);
-		      injected.isMobxInjector = false; // supress warning
-		      // mark the Injector as observer, to make it react to expressions in `grabStoresFn`,
-		      // see #111
-		      injected = (0, _observer.observer)(injected);
-		      injected.isMobxInjector = true; // restore warning
-		      return injected;
-		    };
-		  } else {
-		    var _ret = function () {
-		      var storeNames = [];
-		      for (var i = 0; i < _arguments.length; i++) {
-		        storeNames[i] = _arguments[i];
-		      }grabStoresFn = grabStoresByName(storeNames);
-		      return {
-		        v: function v(componentClass) {
-		          return createStoreInjector(grabStoresFn, componentClass, storeNames.join("-"));
-		        }
-		      };
-		    }();
-	
-		    if ((typeof _ret === 'undefined' ? 'undefined' : _typeof(_ret)) === "object") return _ret.v;
-		  }
-		}
-	
-	/***/ },
-	/* 7 */
-	/***/ function(module, exports) {
-	
-		/**
-		 * Copyright 2015, Yahoo! Inc.
-		 * Copyrights licensed under the New BSD License. See the accompanying LICENSE file for terms.
-		 */
-		'use strict';
-	
-		var REACT_STATICS = {
-		    childContextTypes: true,
-		    contextTypes: true,
-		    defaultProps: true,
-		    displayName: true,
-		    getDefaultProps: true,
-		    mixins: true,
-		    propTypes: true,
-		    type: true
-		};
-	
-		var KNOWN_STATICS = {
-		    name: true,
-		    length: true,
-		    prototype: true,
-		    caller: true,
-		    arguments: true,
-		    arity: true
-		};
-	
-		var isGetOwnPropertySymbolsAvailable = typeof Object.getOwnPropertySymbols === 'function';
-	
-		module.exports = function hoistNonReactStatics(targetComponent, sourceComponent, customStatics) {
-		    if (typeof sourceComponent !== 'string') { // don't hoist over string (html) components
-		        var keys = Object.getOwnPropertyNames(sourceComponent);
-	
-		        /* istanbul ignore else */
-		        if (isGetOwnPropertySymbolsAvailable) {
-		            keys = keys.concat(Object.getOwnPropertySymbols(sourceComponent));
-		        }
-	
-		        for (var i = 0; i < keys.length; ++i) {
-		            if (!REACT_STATICS[keys[i]] && !KNOWN_STATICS[keys[i]] && (!customStatics || !customStatics[keys[i]])) {
-		                try {
-		                    targetComponent[keys[i]] = sourceComponent[keys[i]];
-		                } catch (error) {
-	
-		                }
-		            }
-		        }
-		    }
-	
-		    return targetComponent;
-		};
-	
-	
-	/***/ },
-	/* 8 */
-	/***/ function(module, exports, __webpack_require__) {
-	
-		"use strict";
-	
-		Object.defineProperty(exports, "__esModule", {
-		  value: true
-		});
-		exports.default = undefined;
-	
-		var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-	
-		var _class, _temp;
-	
-		var _react = __webpack_require__(3);
-	
-		var _react2 = _interopRequireDefault(_react);
-	
-		function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-		function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-	
-		function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-	
-		function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-	
-		var specialReactKeys = { children: true, key: true, ref: true };
-	
-		var Provider = (_temp = _class = function (_Component) {
-		  _inherits(Provider, _Component);
-	
-		  function Provider() {
-		    _classCallCheck(this, Provider);
-	
-		    return _possibleConstructorReturn(this, (Provider.__proto__ || Object.getPrototypeOf(Provider)).apply(this, arguments));
-		  }
-	
-		  _createClass(Provider, [{
-		    key: "render",
-		    value: function render() {
-		      return _react2.default.Children.only(this.props.children);
-		    }
-		  }, {
-		    key: "getChildContext",
-		    value: function getChildContext() {
-		      var stores = {};
-		      // inherit stores
-		      var baseStores = this.context.mobxStores;
-		      if (baseStores) for (var key in baseStores) {
-		        stores[key] = baseStores[key];
-		      }
-		      // add own stores
-		      for (var _key in this.props) {
-		        if (!specialReactKeys[_key] && _key !== "suppressChangedStoreWarning") stores[_key] = this.props[_key];
-		      }return {
-		        mobxStores: stores
-		      };
-		    }
-		  }, {
-		    key: "componentWillReceiveProps",
-		    value: function componentWillReceiveProps(nextProps) {
-		      // Maybe this warning is too aggressive?
-		      if (Object.keys(nextProps).length !== Object.keys(this.props).length) console.warn("MobX Provider: The set of provided stores has changed. Please avoid changing stores as the change might not propagate to all children");
-		      if (!nextProps.suppressChangedStoreWarning) for (var key in nextProps) {
-		        if (!specialReactKeys[key] && this.props[key] !== nextProps[key]) console.warn("MobX Provider: Provided store '" + key + "' has changed. Please avoid replacing stores as the change might not propagate to all children");
-		      }
-		    }
-		  }]);
-	
-		  return Provider;
-		}(_react.Component), _class.contextTypes = {
-		  mobxStores: _react.PropTypes.object
-		}, _class.childContextTypes = {
-		  mobxStores: _react.PropTypes.object.isRequired
-		}, _temp);
-		exports.default = Provider;
-	
-	/***/ },
-	/* 9 */
-	/***/ function(module, exports) {
-	
-		module.exports = null
-	
-	
-	/***/ },
-	/* 10 */
-	/***/ function(module, exports, __webpack_require__) {
-	
-		'use strict';
-	
-		Object.defineProperty(exports, "__esModule", {
-		  value: true
-		});
-		exports.objectOrObservableObject = exports.arrayOrObservableArrayOf = exports.arrayOrObservableArray = exports.observableObject = exports.observableMap = exports.observableArrayOf = exports.observableArray = undefined;
-	
-		var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-	
-		var _mobx = __webpack_require__(2);
-	
-		// Copied from React.PropTypes
-		function createChainableTypeChecker(validate) {
-		  function checkType(isRequired, props, propName, componentName, location, propFullName) {
-		    for (var _len = arguments.length, rest = Array(_len > 6 ? _len - 6 : 0), _key = 6; _key < _len; _key++) {
-		      rest[_key - 6] = arguments[_key];
-		    }
-	
-		    return (0, _mobx.untracked)(function () {
-		      componentName = componentName || '<<anonymous>>';
-		      propFullName = propFullName || propName;
-		      if (props[propName] == null) {
-		        if (isRequired) {
-		          var actual = props[propName] === null ? 'null' : 'undefined';
-		          return new Error('The ' + location + ' `' + propFullName + '` is marked as required ' + 'in `' + componentName + '`, but its value is `' + actual + '`.');
-		        }
-		        return null;
-		      } else {
-		        return validate.apply(undefined, [props, propName, componentName, location, propFullName].concat(rest));
-		      }
-		    });
-		  }
-	
-		  var chainedCheckType = checkType.bind(null, false);
-		  chainedCheckType.isRequired = checkType.bind(null, true);
-		  return chainedCheckType;
-		}
-	
-		// Copied from React.PropTypes
-		function isSymbol(propType, propValue) {
-		  // Native Symbol.
-		  if (propType === 'symbol') {
-		    return true;
-		  }
-	
-		  // 19.4.3.5 Symbol.prototype[@@toStringTag] === 'Symbol'
-		  if (propValue['@@toStringTag'] === 'Symbol') {
-		    return true;
-		  }
-	
-		  // Fallback for non-spec compliant Symbols which are polyfilled.
-		  if (typeof Symbol === 'function' && propValue instanceof Symbol) {
-		    return true;
-		  }
-	
-		  return false;
-		}
-	
-		// Copied from React.PropTypes
-		function getPropType(propValue) {
-		  var propType = typeof propValue === 'undefined' ? 'undefined' : _typeof(propValue);
-		  if (Array.isArray(propValue)) {
-		    return 'array';
-		  }
-		  if (propValue instanceof RegExp) {
-		    // Old webkits (at least until Android 4.0) return 'function' rather than
-		    // 'object' for typeof a RegExp. We'll normalize this here so that /bla/
-		    // passes PropTypes.object.
-		    return 'object';
-		  }
-		  if (isSymbol(propType, propValue)) {
-		    return 'symbol';
-		  }
-		  return propType;
-		}
-	
-		// This handles more types than `getPropType`. Only used for error messages.
-		// Copied from React.PropTypes
-		function getPreciseType(propValue) {
-		  var propType = getPropType(propValue);
-		  if (propType === 'object') {
-		    if (propValue instanceof Date) {
-		      return 'date';
-		    } else if (propValue instanceof RegExp) {
-		      return 'regexp';
-		    }
-		  }
-		  return propType;
-		}
-	
-		function createObservableTypeCheckerCreator(allowNativeType, mobxType) {
-		  return createChainableTypeChecker(function (props, propName, componentName, location, propFullName) {
-		    return (0, _mobx.untracked)(function () {
-		      if (allowNativeType) {
-		        if (getPropType(props[propName]) === mobxType.toLowerCase()) return null;
-		      }
-		      var mobxChecker = void 0;
-		      switch (mobxType) {
-		        case 'Array':
-		          mobxChecker = _mobx.isObservableArray;break;
-		        case 'Object':
-		          mobxChecker = _mobx.isObservableObject;break;
-		        case 'Map':
-		          mobxChecker = _mobx.isObservableMap;break;
-		        default:
-		          throw new Error('Unexpected mobxType: ' + mobxType);
-		      }
-		      var propValue = props[propName];
-		      if (!mobxChecker(propValue)) {
-		        var preciseType = getPreciseType(propValue);
-		        var nativeTypeExpectationMessage = allowNativeType ? ' or javascript `' + mobxType.toLowerCase() + '`' : '';
-		        return new Error('Invalid prop `' + propFullName + '` of type `' + preciseType + '` supplied to' + ' `' + componentName + '`, expected `mobx.Observable' + mobxType + '`' + nativeTypeExpectationMessage + '.');
-		      }
-		      return null;
-		    });
-		  });
-		}
-	
-		function createObservableArrayOfTypeChecker(allowNativeType, typeChecker) {
-		  return createChainableTypeChecker(function (props, propName, componentName, location, propFullName) {
-		    for (var _len2 = arguments.length, rest = Array(_len2 > 5 ? _len2 - 5 : 0), _key2 = 5; _key2 < _len2; _key2++) {
-		      rest[_key2 - 5] = arguments[_key2];
-		    }
-	
-		    return (0, _mobx.untracked)(function () {
-		      if (typeof typeChecker !== 'function') {
-		        return new Error('Property `' + propFullName + '` of component `' + componentName + '` has ' + 'invalid PropType notation.');
-		      }
-		      var error = createObservableTypeCheckerCreator(allowNativeType, 'Array')(props, propName, componentName);
-		      if (error instanceof Error) return error;
-		      var propValue = props[propName];
-		      for (var i = 0; i < propValue.length; i++) {
-		        error = typeChecker.apply(undefined, [propValue, i, componentName, location, propFullName + '[' + i + ']'].concat(rest));
-		        if (error instanceof Error) return error;
-		      }
-		      return null;
-		    });
-		  });
-		}
-	
-		var observableArray = exports.observableArray = createObservableTypeCheckerCreator(false, 'Array');
-		var observableArrayOf = exports.observableArrayOf = createObservableArrayOfTypeChecker.bind(null, false);
-		var observableMap = exports.observableMap = createObservableTypeCheckerCreator(false, 'Map');
-		var observableObject = exports.observableObject = createObservableTypeCheckerCreator(false, 'Object');
-		var arrayOrObservableArray = exports.arrayOrObservableArray = createObservableTypeCheckerCreator(true, 'Array');
-		var arrayOrObservableArrayOf = exports.arrayOrObservableArrayOf = createObservableArrayOfTypeChecker.bind(null, true);
-		var objectOrObservableObject = exports.objectOrObservableObject = createObservableTypeCheckerCreator(true, 'Object');
-	
-	/***/ }
-	/******/ ])
-	});
-	;
-
-/***/ },
-/* 408 */
-/***/ function(module, exports) {
-
-	/* WEBPACK VAR INJECTION */(function(global) {"use strict";
-	var __extends = (this && this.__extends) || function (d, b) {
-	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-	    function __() { this.constructor = d; }
-	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-	};
-	registerGlobals();
-	exports.extras = {
-	    allowStateChanges: allowStateChanges,
-	    getAtom: getAtom,
-	    getDebugName: getDebugName,
-	    getDependencyTree: getDependencyTree,
-	    getAdministration: getAdministration,
-	    getGlobalState: getGlobalState,
-	    getObserverTree: getObserverTree,
-	    isComputingDerivation: isComputingDerivation,
-	    isSpyEnabled: isSpyEnabled,
-	    onReactionError: onReactionError,
-	    resetGlobalState: resetGlobalState,
-	    shareGlobalState: shareGlobalState,
-	    spyReport: spyReport,
-	    spyReportEnd: spyReportEnd,
-	    spyReportStart: spyReportStart,
-	    setReactionScheduler: setReactionScheduler
-	};
-	if (typeof __MOBX_DEVTOOLS_GLOBAL_HOOK__ === "object") {
-	    __MOBX_DEVTOOLS_GLOBAL_HOOK__.injectMobx(module.exports);
-	}
-	var actionFieldDecorator = createClassPropertyDecorator(function (target, key, value, args, originalDescriptor) {
-	    var actionName = (args && args.length === 1) ? args[0] : (value.name || key || "<unnamed action>");
-	    var wrappedAction = action(actionName, value);
-	    addHiddenProp(target, key, wrappedAction);
-	}, function (key) {
-	    return this[key];
-	}, function () {
-	    invariant(false, "It is not allowed to assign new values to @action fields");
-	}, false, true);
-	var boundActionDecorator = createClassPropertyDecorator(function (target, key, value) {
-	    defineBoundAction(target, key, value);
-	}, function (key) {
-	    return this[key];
-	}, function () {
-	    invariant(false, "It is not allowed to assign new values to @action fields");
-	}, false, false);
-	var action = function action(arg1, arg2, arg3, arg4) {
-	    if (arguments.length === 1 && typeof arg1 === "function")
-	        return createAction(arg1.name || "<unnamed action>", arg1);
-	    if (arguments.length === 2 && typeof arg2 === "function")
-	        return createAction(arg1, arg2);
-	    if (arguments.length === 1 && typeof arg1 === "string")
-	        return namedActionDecorator(arg1);
-	    return namedActionDecorator(arg2).apply(null, arguments);
-	};
-	exports.action = action;
-	action.bound = function boundAction(arg1, arg2, arg3) {
-	    if (typeof arg1 === "function") {
-	        var action_1 = createAction("<not yet bound action>", arg1);
-	        action_1.autoBind = true;
-	        return action_1;
-	    }
-	    return boundActionDecorator.apply(null, arguments);
-	};
-	function namedActionDecorator(name) {
-	    return function (target, prop, descriptor) {
-	        if (descriptor && typeof descriptor.value === "function") {
-	            descriptor.value = createAction(name, descriptor.value);
-	            descriptor.enumerable = false;
-	            descriptor.configurable = true;
-	            return descriptor;
-	        }
-	        return actionFieldDecorator(name).apply(this, arguments);
-	    };
-	}
-	function runInAction(arg1, arg2, arg3) {
-	    var actionName = typeof arg1 === "string" ? arg1 : arg1.name || "<unnamed action>";
-	    var fn = typeof arg1 === "function" ? arg1 : arg2;
-	    var scope = typeof arg1 === "function" ? arg2 : arg3;
-	    invariant(typeof fn === "function", "`runInAction` expects a function");
-	    invariant(fn.length === 0, "`runInAction` expects a function without arguments");
-	    invariant(typeof actionName === "string" && actionName.length > 0, "actions should have valid names, got: '" + actionName + "'");
-	    return executeAction(actionName, fn, scope, undefined);
-	}
-	exports.runInAction = runInAction;
-	function isAction(thing) {
-	    return typeof thing === "function" && thing.isMobxAction === true;
-	}
-	exports.isAction = isAction;
-	function defineBoundAction(target, propertyName, fn) {
-	    var res = function () {
-	        return executeAction(propertyName, fn, target, arguments);
-	    };
-	    res.isMobxAction = true;
-	    addHiddenProp(target, propertyName, res);
-	}
-	function autorun(arg1, arg2, arg3) {
-	    var name, view, scope;
-	    if (typeof arg1 === "string") {
-	        name = arg1;
-	        view = arg2;
-	        scope = arg3;
-	    }
-	    else {
-	        name = arg1.name || ("Autorun@" + getNextId());
-	        view = arg1;
-	        scope = arg2;
-	    }
-	    invariant(typeof view === "function", "autorun expects a function");
-	    invariant(isAction(view) === false, "Warning: attempted to pass an action to autorun. Actions are untracked and will not trigger on state changes. Use `reaction` or wrap only your state modification code in an action.");
-	    if (scope)
-	        view = view.bind(scope);
-	    var reaction = new Reaction(name, function () {
-	        this.track(reactionRunner);
-	    });
-	    function reactionRunner() {
-	        view(reaction);
-	    }
-	    reaction.schedule();
-	    return reaction.getDisposer();
-	}
-	exports.autorun = autorun;
-	function when(arg1, arg2, arg3, arg4) {
-	    var name, predicate, effect, scope;
-	    if (typeof arg1 === "string") {
-	        name = arg1;
-	        predicate = arg2;
-	        effect = arg3;
-	        scope = arg4;
-	    }
-	    else {
-	        name = ("When@" + getNextId());
-	        predicate = arg1;
-	        effect = arg2;
-	        scope = arg3;
-	    }
-	    var disposer = autorun(name, function (r) {
-	        if (predicate.call(scope)) {
-	            r.dispose();
-	            var prevUntracked = untrackedStart();
-	            effect.call(scope);
-	            untrackedEnd(prevUntracked);
-	        }
-	    });
-	    return disposer;
-	}
-	exports.when = when;
-	function autorunAsync(arg1, arg2, arg3, arg4) {
-	    var name, func, delay, scope;
-	    if (typeof arg1 === "string") {
-	        name = arg1;
-	        func = arg2;
-	        delay = arg3;
-	        scope = arg4;
-	    }
-	    else {
-	        name = arg1.name || ("AutorunAsync@" + getNextId());
-	        func = arg1;
-	        delay = arg2;
-	        scope = arg3;
-	    }
-	    invariant(isAction(func) === false, "Warning: attempted to pass an action to autorunAsync. Actions are untracked and will not trigger on state changes. Use `reaction` or wrap only your state modification code in an action.");
-	    if (delay === void 0)
-	        delay = 1;
-	    if (scope)
-	        func = func.bind(scope);
-	    var isScheduled = false;
-	    var r = new Reaction(name, function () {
-	        if (!isScheduled) {
-	            isScheduled = true;
-	            setTimeout(function () {
-	                isScheduled = false;
-	                if (!r.isDisposed)
-	                    r.track(reactionRunner);
-	            }, delay);
-	        }
-	    });
-	    function reactionRunner() { func(r); }
-	    r.schedule();
-	    return r.getDisposer();
-	}
-	exports.autorunAsync = autorunAsync;
-	function reaction(expression, effect, arg3) {
-	    if (arguments.length > 3) {
-	        fail("reaction only accepts 2 or 3 arguments. If migrating from MobX 2, please provide an options object");
-	    }
-	    if (isModifierDescriptor(expression)) {
-	        fail("wrapping reaction expression in `asReference` is no longer supported, use options object instead");
-	    }
-	    var opts;
-	    if (typeof arg3 === "object") {
-	        opts = arg3;
-	    }
-	    else {
-	        opts = {};
-	    }
-	    opts.name = opts.name || expression.name || effect.name || ("Reaction@" + getNextId());
-	    opts.fireImmediately = arg3 === true || opts.fireImmediately === true;
-	    opts.delay = opts.delay || 0;
-	    opts.compareStructural = opts.compareStructural || false;
-	    effect = action(opts.name, opts.context ? effect.bind(opts.context) : effect);
-	    if (opts.context) {
-	        expression = expression.bind(opts.context);
-	    }
-	    var firstTime = true;
-	    var isScheduled = false;
-	    var nextValue;
-	    var r = new Reaction(opts.name, function () {
-	        if (opts.delay < 1) {
-	            reactionRunner();
-	        }
-	        else if (!isScheduled) {
-	            isScheduled = true;
-	            setTimeout(function () {
-	                isScheduled = false;
-	                reactionRunner();
-	            }, opts.delay);
-	        }
-	    });
-	    function reactionRunner() {
-	        if (r.isDisposed)
-	            return;
-	        var changed = false;
-	        r.track(function () {
-	            var v = expression(r);
-	            changed = valueDidChange(opts.compareStructural, nextValue, v);
-	            nextValue = v;
-	        });
-	        if (firstTime && opts.fireImmediately)
-	            effect(nextValue, r);
-	        if (!firstTime && changed === true)
-	            effect(nextValue, r);
-	        if (firstTime)
-	            firstTime = false;
-	    }
-	    r.schedule();
-	    return r.getDisposer();
-	}
-	exports.reaction = reaction;
-	function createComputedDecorator(compareStructural) {
-	    return createClassPropertyDecorator(function (target, name, _, __, originalDescriptor) {
-	        invariant(typeof originalDescriptor !== "undefined", "@computed can only be used on getter functions, like: '@computed get myProps() { return ...; }'. It looks like it was used on a property.");
-	        invariant(typeof originalDescriptor.get === "function", "@computed can only be used on getter functions, like: '@computed get myProps() { return ...; }'");
-	        var adm = asObservableObject(target, "");
-	        defineComputedProperty(adm, name, originalDescriptor.get, originalDescriptor.set, compareStructural, false);
-	    }, function (name) {
-	        var observable = this.$mobx.values[name];
-	        if (observable === undefined)
-	            return undefined;
-	        return observable.get();
-	    }, function (name, value) {
-	        this.$mobx.values[name].set(value);
-	    }, false, false);
-	}
-	var computedDecorator = createComputedDecorator(false);
-	var computedStructDecorator = createComputedDecorator(true);
-	var computed = (function computed(arg1, arg2, arg3) {
-	    if (typeof arg2 === "string") {
-	        return computedDecorator.apply(null, arguments);
-	    }
-	    invariant(typeof arg1 === "function", "First argument to `computed` should be an expression. If using computed as decorator, don't pass it arguments");
-	    invariant(arguments.length < 3, "computed takes one or two arguments if used as function");
-	    var opts = typeof arg2 === "object" ? arg2 : {};
-	    opts.setter = typeof arg2 === "function" ? arg2 : opts.setter;
-	    return new ComputedValue(arg1, opts.context, opts.compareStructural || false, opts.name || arg1.name || "", opts.setter);
-	});
-	exports.computed = computed;
-	computed.struct = computedStructDecorator;
-	function createTransformer(transformer, onCleanup) {
-	    invariant(typeof transformer === "function" && transformer.length < 2, "createTransformer expects a function that accepts one argument");
-	    var objectCache = {};
-	    var resetId = globalState.resetId;
-	    var Transformer = (function (_super) {
-	        __extends(Transformer, _super);
-	        function Transformer(sourceIdentifier, sourceObject) {
-	            var _this = _super.call(this, function () { return transformer(sourceObject); }, undefined, false, "Transformer-" + transformer.name + "-" + sourceIdentifier, undefined) || this;
-	            _this.sourceIdentifier = sourceIdentifier;
-	            _this.sourceObject = sourceObject;
-	            return _this;
-	        }
-	        Transformer.prototype.onBecomeUnobserved = function () {
-	            var lastValue = this.value;
-	            _super.prototype.onBecomeUnobserved.call(this);
-	            delete objectCache[this.sourceIdentifier];
-	            if (onCleanup)
-	                onCleanup(lastValue, this.sourceObject);
-	        };
-	        return Transformer;
-	    }(ComputedValue));
-	    return function (object) {
-	        if (resetId !== globalState.resetId) {
-	            objectCache = {};
-	            resetId = globalState.resetId;
-	        }
-	        var identifier = getMemoizationId(object);
-	        var reactiveTransformer = objectCache[identifier];
-	        if (reactiveTransformer)
-	            return reactiveTransformer.get();
-	        reactiveTransformer = objectCache[identifier] = new Transformer(identifier, object);
-	        return reactiveTransformer.get();
-	    };
-	}
-	exports.createTransformer = createTransformer;
-	function getMemoizationId(object) {
-	    if (object === null || typeof object !== "object")
-	        throw new Error("[mobx] transform expected some kind of object, got: " + object);
-	    var tid = object.$transformId;
-	    if (tid === undefined) {
-	        tid = getNextId();
-	        addHiddenProp(object, "$transformId", tid);
-	    }
-	    return tid;
-	}
-	function expr(expr, scope) {
-	    if (!isComputingDerivation())
-	        console.warn("[mobx.expr] 'expr' should only be used inside other reactive functions.");
-	    return computed(expr, { context: scope }).get();
-	}
-	exports.expr = expr;
-	function extendObservable(target) {
-	    var properties = [];
-	    for (var _i = 1; _i < arguments.length; _i++) {
-	        properties[_i - 1] = arguments[_i];
-	    }
-	    return extendObservableHelper(target, deepEnhancer, properties);
-	}
-	exports.extendObservable = extendObservable;
-	function extendShallowObservable(target) {
-	    var properties = [];
-	    for (var _i = 1; _i < arguments.length; _i++) {
-	        properties[_i - 1] = arguments[_i];
-	    }
-	    return extendObservableHelper(target, referenceEnhancer, properties);
-	}
-	exports.extendShallowObservable = extendShallowObservable;
-	function extendObservableHelper(target, defaultEnhancer, properties) {
-	    invariant(arguments.length >= 2, "extendObservable expected 2 or more arguments");
-	    invariant(typeof target === "object", "extendObservable expects an object as first argument");
-	    invariant(!(isObservableMap(target)), "extendObservable should not be used on maps, use map.merge instead");
-	    properties.forEach(function (propSet) {
-	        invariant(typeof propSet === "object", "all arguments of extendObservable should be objects");
-	        invariant(!isObservable(propSet), "extending an object with another observable (object) is not supported. Please construct an explicit propertymap, using `toJS` if need. See issue #540");
-	    });
-	    var adm = asObservableObject(target);
-	    var definedProps = {};
-	    for (var i = properties.length - 1; i >= 0; i--) {
-	        var propSet = properties[i];
-	        for (var key in propSet)
-	            if (definedProps[key] !== true && hasOwnProperty(propSet, key)) {
-	                definedProps[key] = true;
-	                if (target === propSet && !isPropertyConfigurable(target, key))
-	                    continue;
-	                var descriptor = Object.getOwnPropertyDescriptor(propSet, key);
-	                defineObservablePropertyFromDescriptor(adm, key, descriptor, defaultEnhancer);
-	            }
-	    }
-	    return target;
-	}
-	function getDependencyTree(thing, property) {
-	    return nodeToDependencyTree(getAtom(thing, property));
-	}
-	function nodeToDependencyTree(node) {
-	    var result = {
-	        name: node.name
-	    };
-	    if (node.observing && node.observing.length > 0)
-	        result.dependencies = unique(node.observing).map(nodeToDependencyTree);
-	    return result;
-	}
-	function getObserverTree(thing, property) {
-	    return nodeToObserverTree(getAtom(thing, property));
-	}
-	function nodeToObserverTree(node) {
-	    var result = {
-	        name: node.name
-	    };
-	    if (hasObservers(node))
-	        result.observers = getObservers(node).map(nodeToObserverTree);
-	    return result;
-	}
-	function intercept(thing, propOrHandler, handler) {
-	    if (typeof handler === "function")
-	        return interceptProperty(thing, propOrHandler, handler);
-	    else
-	        return interceptInterceptable(thing, propOrHandler);
-	}
-	exports.intercept = intercept;
-	function interceptInterceptable(thing, handler) {
-	    return getAdministration(thing).intercept(handler);
-	}
-	function interceptProperty(thing, property, handler) {
-	    return getAdministration(thing, property).intercept(handler);
-	}
-	function isComputed(value, property) {
-	    if (value === null || value === undefined)
-	        return false;
-	    if (property !== undefined) {
-	        if (isObservableObject(value) === false)
-	            return false;
-	        var atom = getAtom(value, property);
-	        return isComputedValue(atom);
-	    }
-	    return isComputedValue(value);
-	}
-	exports.isComputed = isComputed;
-	function isObservable(value, property) {
-	    if (value === null || value === undefined)
-	        return false;
-	    if (property !== undefined) {
-	        if (isObservableArray(value) || isObservableMap(value))
-	            throw new Error("[mobx.isObservable] isObservable(object, propertyName) is not supported for arrays and maps. Use map.has or array.length instead.");
-	        else if (isObservableObject(value)) {
-	            var o = value.$mobx;
-	            return o.values && !!o.values[property];
-	        }
-	        return false;
-	    }
-	    return isObservableObject(value) || !!value.$mobx || isAtom(value) || isReaction(value) || isComputedValue(value);
-	}
-	exports.isObservable = isObservable;
-	function createDecoratorForEnhancer(enhancer) {
-	    invariant(!!enhancer, ":(");
-	    return createClassPropertyDecorator(function (target, name, baseValue, _, baseDescriptor) {
-	        assertPropertyConfigurable(target, name);
-	        invariant(!baseDescriptor || !baseDescriptor.get, "@observable can not be used on getters, use @computed instead");
-	        var prevA = allowStateChangesStart(true);
-	        var adm = asObservableObject(target, undefined);
-	        defineObservableProperty(adm, name, baseValue, enhancer);
-	        allowStateChangesEnd(prevA);
-	    }, function (name) {
-	        var observable = this.$mobx.values[name];
-	        if (observable === undefined)
-	            return undefined;
-	        return observable.get();
-	    }, function (name, value) {
-	        setPropertyValue(this, name, value);
-	    }, true, false);
-	}
-	var deepObservableDecorator = createDecoratorForEnhancer(deepEnhancer);
-	var shallowObservableDecorator = createDecoratorForEnhancer(shallowEnhancer);
-	var refObservableDecorator = createDecoratorForEnhancer(referenceEnhancer);
-	function createObservable(v) {
-	    if (v === void 0) { v = undefined; }
-	    if (typeof arguments[1] === "string")
-	        return deepObservableDecorator.apply(null, arguments);
-	    invariant(arguments.length <= 1, "observable expects zero or one arguments");
-	    invariant(!isModifierDescriptor(v), "modifiers can only be used for induvidual object properties");
-	    if (isObservable(v))
-	        return v;
-	    var res = deepEnhancer(v, undefined, undefined);
-	    if (res !== v)
-	        return res;
-	    return observable.box(v);
-	}
-	var IObservableFactories = (function () {
-	    function IObservableFactories() {
-	    }
-	    IObservableFactories.prototype.box = function (value, name) {
-	        return new ObservableValue(value, deepEnhancer, name);
-	    };
-	    IObservableFactories.prototype.shallowBox = function (value, name) {
-	        return new ObservableValue(value, referenceEnhancer, name);
-	    };
-	    IObservableFactories.prototype.array = function (initialValues, name) {
-	        return new ObservableArray(initialValues, deepEnhancer, name);
-	    };
-	    IObservableFactories.prototype.shallowArray = function (initialValues, name) {
-	        return new ObservableArray(initialValues, referenceEnhancer, name);
-	    };
-	    IObservableFactories.prototype.map = function (initialValues, name) {
-	        return new ObservableMap(initialValues, deepEnhancer, name);
-	    };
-	    IObservableFactories.prototype.shallowMap = function (initialValues, name) {
-	        return new ObservableMap(initialValues, referenceEnhancer, name);
-	    };
-	    IObservableFactories.prototype.object = function (props, name) {
-	        var res = {};
-	        asObservableObject(res, name);
-	        extendObservable(res, props);
-	        return res;
-	    };
-	    IObservableFactories.prototype.shallowObject = function (props, name) {
-	        var res = {};
-	        asObservableObject(res, name);
-	        extendShallowObservable(res, props);
-	        return res;
-	    };
-	    IObservableFactories.prototype.ref = function () {
-	        if (arguments.length < 2) {
-	            return createModifierDescriptor(referenceEnhancer, arguments[0]);
-	        }
-	        else {
-	            return refObservableDecorator.apply(null, arguments);
-	        }
-	    };
-	    IObservableFactories.prototype.shallow = function () {
-	        if (arguments.length < 2) {
-	            return createModifierDescriptor(shallowEnhancer, arguments[0]);
-	        }
-	        else {
-	            return shallowObservableDecorator.apply(null, arguments);
-	        }
-	    };
-	    IObservableFactories.prototype.deep = function () {
-	        if (arguments.length < 2) {
-	            return createModifierDescriptor(deepEnhancer, arguments[0]);
-	        }
-	        else {
-	            return deepObservableDecorator.apply(null, arguments);
-	        }
-	    };
-	    return IObservableFactories;
-	}());
-	exports.IObservableFactories = IObservableFactories;
-	var observable = createObservable;
-	exports.observable = observable;
-	Object.keys(IObservableFactories.prototype).forEach(function (key) { return observable[key] = IObservableFactories.prototype[key]; });
-	function observe(thing, propOrCb, cbOrFire, fireImmediately) {
-	    if (typeof cbOrFire === "function")
-	        return observeObservableProperty(thing, propOrCb, cbOrFire, fireImmediately);
-	    else
-	        return observeObservable(thing, propOrCb, cbOrFire);
-	}
-	exports.observe = observe;
-	function observeObservable(thing, listener, fireImmediately) {
-	    return getAdministration(thing).observe(listener, fireImmediately);
-	}
-	function observeObservableProperty(thing, property, listener, fireImmediately) {
-	    return getAdministration(thing, property).observe(listener, fireImmediately);
-	}
-	function toJS(source, detectCycles, __alreadySeen) {
-	    if (detectCycles === void 0) { detectCycles = true; }
-	    if (__alreadySeen === void 0) { __alreadySeen = []; }
-	    function cache(value) {
-	        if (detectCycles)
-	            __alreadySeen.push([source, value]);
-	        return value;
-	    }
-	    if (isObservable(source)) {
-	        if (detectCycles && __alreadySeen === null)
-	            __alreadySeen = [];
-	        if (detectCycles && source !== null && typeof source === "object") {
-	            for (var i = 0, l = __alreadySeen.length; i < l; i++)
-	                if (__alreadySeen[i][0] === source)
-	                    return __alreadySeen[i][1];
-	        }
-	        if (isObservableArray(source)) {
-	            var res = cache([]);
-	            var toAdd = source.map(function (value) { return toJS(value, detectCycles, __alreadySeen); });
-	            res.length = toAdd.length;
-	            for (var i = 0, l = toAdd.length; i < l; i++)
-	                res[i] = toAdd[i];
-	            return res;
-	        }
-	        if (isObservableObject(source)) {
-	            var res = cache({});
-	            for (var key in source)
-	                res[key] = toJS(source[key], detectCycles, __alreadySeen);
-	            return res;
-	        }
-	        if (isObservableMap(source)) {
-	            var res_1 = cache({});
-	            source.forEach(function (value, key) { return res_1[key] = toJS(value, detectCycles, __alreadySeen); });
-	            return res_1;
-	        }
-	        if (isObservableValue(source))
-	            return toJS(source.get(), detectCycles, __alreadySeen);
-	    }
-	    return source;
-	}
-	exports.toJS = toJS;
-	function transaction(action, thisArg) {
-	    if (thisArg === void 0) { thisArg = undefined; }
-	    deprecated("Using `transaction` is deprecated, use `runInAction` or `(@)action` instead.");
-	    return runInTransaction.apply(undefined, arguments);
-	}
-	exports.transaction = transaction;
-	function runInTransaction(action, thisArg) {
-	    if (thisArg === void 0) { thisArg = undefined; }
-	    return executeAction("", action);
-	}
-	function log(msg) {
-	    console.log(msg);
-	    return msg;
-	}
-	function whyRun(thing, prop) {
-	    switch (arguments.length) {
-	        case 0:
-	            thing = globalState.trackingDerivation;
-	            if (!thing)
-	                return log("whyRun() can only be used if a derivation is active, or by passing an computed value / reaction explicitly. If you invoked whyRun from inside a computation; the computation is currently suspended but re-evaluating because somebody requested it's value.");
-	            break;
-	        case 2:
-	            thing = getAtom(thing, prop);
-	            break;
-	    }
-	    thing = getAtom(thing);
-	    if (isComputedValue(thing))
-	        return log(thing.whyRun());
-	    else if (isReaction(thing))
-	        return log(thing.whyRun());
-	    return fail("whyRun can only be used on reactions and computed values");
-	}
-	exports.whyRun = whyRun;
-	function createAction(actionName, fn) {
-	    invariant(typeof fn === "function", "`action` can only be invoked on functions");
-	    invariant(typeof actionName === "string" && actionName.length > 0, "actions should have valid names, got: '" + actionName + "'");
-	    var res = function () {
-	        return executeAction(actionName, fn, this, arguments);
-	    };
-	    res.originalFn = fn;
-	    res.isMobxAction = true;
-	    return res;
-	}
-	function executeAction(actionName, fn, scope, args) {
-	    var runInfo = startAction(actionName, fn, scope, args);
-	    try {
-	        return fn.apply(scope, args);
-	    }
-	    finally {
-	        endAction(runInfo);
-	    }
-	}
-	function startAction(actionName, fn, scope, args) {
-	    invariant(!isComputedValue(globalState.trackingDerivation), "Computed values or transformers should not invoke actions or trigger other side effects");
-	    var notifySpy = isSpyEnabled() && !!actionName;
-	    var startTime = 0;
-	    if (notifySpy) {
-	        startTime = Date.now();
-	        var l = (args && args.length) || 0;
-	        var flattendArgs = new Array(l);
-	        if (l > 0)
-	            for (var i = 0; i < l; i++)
-	                flattendArgs[i] = args[i];
-	        spyReportStart({
-	            type: "action",
-	            name: actionName,
-	            fn: fn,
-	            object: scope,
-	            arguments: flattendArgs
-	        });
-	    }
-	    var prevDerivation = untrackedStart();
-	    startBatch();
-	    var prevAllowStateChanges = allowStateChangesStart(true);
-	    return {
-	        prevDerivation: prevDerivation,
-	        prevAllowStateChanges: prevAllowStateChanges,
-	        notifySpy: notifySpy,
-	        startTime: startTime
-	    };
-	}
-	function endAction(runInfo) {
-	    allowStateChangesEnd(runInfo.prevAllowStateChanges);
-	    endBatch();
-	    untrackedEnd(runInfo.prevDerivation);
-	    if (runInfo.notifySpy)
-	        spyReportEnd({ time: Date.now() - runInfo.startTime });
-	}
-	function useStrict(strict) {
-	    invariant(globalState.trackingDerivation === null, "It is not allowed to set `useStrict` when a derivation is running");
-	    globalState.strictMode = strict;
-	    globalState.allowStateChanges = !strict;
-	}
-	exports.useStrict = useStrict;
-	function isStrictModeEnabled() {
-	    return globalState.strictMode;
-	}
-	exports.isStrictModeEnabled = isStrictModeEnabled;
-	function allowStateChanges(allowStateChanges, func) {
-	    var prev = allowStateChangesStart(allowStateChanges);
-	    var res = func();
-	    allowStateChangesEnd(prev);
-	    return res;
-	}
-	function allowStateChangesStart(allowStateChanges) {
-	    var prev = globalState.allowStateChanges;
-	    globalState.allowStateChanges = allowStateChanges;
-	    return prev;
-	}
-	function allowStateChangesEnd(prev) {
-	    globalState.allowStateChanges = prev;
-	}
-	var BaseAtom = (function () {
-	    function BaseAtom(name) {
-	        if (name === void 0) { name = "Atom@" + getNextId(); }
-	        this.name = name;
-	        this.isPendingUnobservation = true;
-	        this.observers = [];
-	        this.observersIndexes = {};
-	        this.diffValue = 0;
-	        this.lastAccessedBy = 0;
-	        this.lowestObserverState = IDerivationState.NOT_TRACKING;
-	    }
-	    BaseAtom.prototype.onBecomeUnobserved = function () {
-	    };
-	    BaseAtom.prototype.reportObserved = function () {
-	        reportObserved(this);
-	    };
-	    BaseAtom.prototype.reportChanged = function () {
-	        startBatch();
-	        propagateChanged(this);
-	        endBatch();
-	    };
-	    BaseAtom.prototype.toString = function () {
-	        return this.name;
-	    };
-	    return BaseAtom;
-	}());
-	exports.BaseAtom = BaseAtom;
-	var Atom = (function (_super) {
-	    __extends(Atom, _super);
-	    function Atom(name, onBecomeObservedHandler, onBecomeUnobservedHandler) {
-	        if (name === void 0) { name = "Atom@" + getNextId(); }
-	        if (onBecomeObservedHandler === void 0) { onBecomeObservedHandler = noop; }
-	        if (onBecomeUnobservedHandler === void 0) { onBecomeUnobservedHandler = noop; }
-	        var _this = _super.call(this, name) || this;
-	        _this.name = name;
-	        _this.onBecomeObservedHandler = onBecomeObservedHandler;
-	        _this.onBecomeUnobservedHandler = onBecomeUnobservedHandler;
-	        _this.isPendingUnobservation = false;
-	        _this.isBeingTracked = false;
-	        return _this;
-	    }
-	    Atom.prototype.reportObserved = function () {
-	        startBatch();
-	        _super.prototype.reportObserved.call(this);
-	        if (!this.isBeingTracked) {
-	            this.isBeingTracked = true;
-	            this.onBecomeObservedHandler();
-	        }
-	        endBatch();
-	        return !!globalState.trackingDerivation;
-	    };
-	    Atom.prototype.onBecomeUnobserved = function () {
-	        this.isBeingTracked = false;
-	        this.onBecomeUnobservedHandler();
-	    };
-	    return Atom;
-	}(BaseAtom));
-	exports.Atom = Atom;
-	var isAtom = createInstanceofPredicate("Atom", BaseAtom);
-	var ComputedValue = (function () {
-	    function ComputedValue(derivation, scope, compareStructural, name, setter) {
-	        this.derivation = derivation;
-	        this.scope = scope;
-	        this.compareStructural = compareStructural;
-	        this.dependenciesState = IDerivationState.NOT_TRACKING;
-	        this.observing = [];
-	        this.newObserving = null;
-	        this.isPendingUnobservation = false;
-	        this.observers = [];
-	        this.observersIndexes = {};
-	        this.diffValue = 0;
-	        this.runId = 0;
-	        this.lastAccessedBy = 0;
-	        this.lowestObserverState = IDerivationState.UP_TO_DATE;
-	        this.unboundDepsCount = 0;
-	        this.__mapid = "#" + getNextId();
-	        this.value = undefined;
-	        this.isComputing = false;
-	        this.isRunningSetter = false;
-	        this.name = name || "ComputedValue@" + getNextId();
-	        if (setter)
-	            this.setter = createAction(name + "-setter", setter);
-	    }
-	    ComputedValue.prototype.onBecomeStale = function () {
-	        propagateMaybeChanged(this);
-	    };
-	    ComputedValue.prototype.onBecomeUnobserved = function () {
-	        invariant(this.dependenciesState !== IDerivationState.NOT_TRACKING, "INTERNAL ERROR only onBecomeUnobserved shouldn't be called twice in a row");
-	        clearObserving(this);
-	        this.value = undefined;
-	    };
-	    ComputedValue.prototype.get = function () {
-	        invariant(!this.isComputing, "Cycle detected in computation " + this.name, this.derivation);
-	        if (globalState.inBatch === 0) {
-	            startBatch();
-	            if (shouldCompute(this))
-	                this.value = this.computeValue(false);
-	            endBatch();
-	        }
-	        else {
-	            reportObserved(this);
-	            if (shouldCompute(this))
-	                if (this.trackAndCompute())
-	                    propagateChangeConfirmed(this);
-	        }
-	        var result = this.value;
-	        if (isCaughtException(result))
-	            throw result.cause;
-	        return result;
-	    };
-	    ComputedValue.prototype.peek = function () {
-	        var res = this.computeValue(false);
-	        if (isCaughtException(res))
-	            throw res.cause;
-	        return res;
-	    };
-	    ComputedValue.prototype.set = function (value) {
-	        if (this.setter) {
-	            invariant(!this.isRunningSetter, "The setter of computed value '" + this.name + "' is trying to update itself. Did you intend to update an _observable_ value, instead of the computed property?");
-	            this.isRunningSetter = true;
-	            try {
-	                this.setter.call(this.scope, value);
-	            }
-	            finally {
-	                this.isRunningSetter = false;
-	            }
-	        }
-	        else
-	            invariant(false, "[ComputedValue '" + this.name + "'] It is not possible to assign a new value to a computed value.");
-	    };
-	    ComputedValue.prototype.trackAndCompute = function () {
-	        if (isSpyEnabled()) {
-	            spyReport({
-	                object: this.scope,
-	                type: "compute",
-	                fn: this.derivation
-	            });
-	        }
-	        var oldValue = this.value;
-	        var newValue = this.value = this.computeValue(true);
-	        return isCaughtException(newValue) || valueDidChange(this.compareStructural, newValue, oldValue);
-	    };
-	    ComputedValue.prototype.computeValue = function (track) {
-	        this.isComputing = true;
-	        var prevAllowStateChanges = allowStateChangesStart(false);
-	        var res;
-	        if (track) {
-	            res = trackDerivedFunction(this, this.derivation, this.scope);
-	        }
-	        else {
-	            try {
-	                res = this.derivation.call(this.scope);
-	            }
-	            catch (e) {
-	                res = new CaughtException(e);
-	            }
-	        }
-	        allowStateChangesEnd(prevAllowStateChanges);
-	        this.isComputing = false;
-	        return res;
-	    };
-	    ;
-	    ComputedValue.prototype.observe = function (listener, fireImmediately) {
-	        var _this = this;
-	        var firstTime = true;
-	        var prevValue = undefined;
-	        return autorun(function () {
-	            var newValue = _this.get();
-	            if (!firstTime || fireImmediately) {
-	                var prevU = untrackedStart();
-	                listener({
-	                    type: "update",
-	                    object: _this,
-	                    newValue: newValue,
-	                    oldValue: prevValue
-	                });
-	                untrackedEnd(prevU);
-	            }
-	            firstTime = false;
-	            prevValue = newValue;
-	        });
-	    };
-	    ComputedValue.prototype.toJSON = function () {
-	        return this.get();
-	    };
-	    ComputedValue.prototype.toString = function () {
-	        return this.name + "[" + this.derivation.toString() + "]";
-	    };
-	    ComputedValue.prototype.whyRun = function () {
-	        var isTracking = Boolean(globalState.trackingDerivation);
-	        var observing = unique(this.isComputing ? this.newObserving : this.observing).map(function (dep) { return dep.name; });
-	        var observers = unique(getObservers(this).map(function (dep) { return dep.name; }));
-	        return ("\nWhyRun? computation '" + this.name + "':\n * Running because: " + (isTracking ? "[active] the value of this computation is needed by a reaction" : this.isComputing ? "[get] The value of this computed was requested outside a reaction" : "[idle] not running at the moment") + "\n" +
-	            (this.dependenciesState === IDerivationState.NOT_TRACKING
-	                ?
-	                    " * This computation is suspended (not in use by any reaction) and won't run automatically.\n\tDidn't expect this computation to be suspended at this point?\n\t  1. Make sure this computation is used by a reaction (reaction, autorun, observer).\n\t  2. Check whether you are using this computation synchronously (in the same stack as they reaction that needs it).\n"
-	                :
-	                    " * This computation will re-run if any of the following observables changes:\n    " + joinStrings(observing) + "\n    " + ((this.isComputing && isTracking) ? " (... or any observable accessed during the remainder of the current run)" : "") + "\n\tMissing items in this list?\n\t  1. Check whether all used values are properly marked as observable (use isObservable to verify)\n\t  2. Make sure you didn't dereference values too early. MobX observes props, not primitives. E.g: use 'person.name' instead of 'name' in your computation.\n  * If the outcome of this computation changes, the following observers will be re-run:\n    " + joinStrings(observers) + "\n"));
-	    };
-	    return ComputedValue;
-	}());
-	var isComputedValue = createInstanceofPredicate("ComputedValue", ComputedValue);
-	var IDerivationState;
-	(function (IDerivationState) {
-	    IDerivationState[IDerivationState["NOT_TRACKING"] = -1] = "NOT_TRACKING";
-	    IDerivationState[IDerivationState["UP_TO_DATE"] = 0] = "UP_TO_DATE";
-	    IDerivationState[IDerivationState["POSSIBLY_STALE"] = 1] = "POSSIBLY_STALE";
-	    IDerivationState[IDerivationState["STALE"] = 2] = "STALE";
-	})(IDerivationState || (IDerivationState = {}));
-	exports.IDerivationState = IDerivationState;
-	var CaughtException = (function () {
-	    function CaughtException(cause) {
-	        this.cause = cause;
-	    }
-	    return CaughtException;
-	}());
-	function isCaughtException(e) {
-	    return e instanceof CaughtException;
-	}
-	function shouldCompute(derivation) {
-	    switch (derivation.dependenciesState) {
-	        case IDerivationState.UP_TO_DATE: return false;
-	        case IDerivationState.NOT_TRACKING:
-	        case IDerivationState.STALE: return true;
-	        case IDerivationState.POSSIBLY_STALE: {
-	            var prevUntracked = untrackedStart();
-	            var obs = derivation.observing, l = obs.length;
-	            for (var i = 0; i < l; i++) {
-	                var obj = obs[i];
-	                if (isComputedValue(obj)) {
-	                    try {
-	                        obj.get();
-	                    }
-	                    catch (e) {
-	                        untrackedEnd(prevUntracked);
-	                        return true;
-	                    }
-	                    if (derivation.dependenciesState === IDerivationState.STALE) {
-	                        untrackedEnd(prevUntracked);
-	                        return true;
-	                    }
-	                }
-	            }
-	            changeDependenciesStateTo0(derivation);
-	            untrackedEnd(prevUntracked);
-	            return false;
-	        }
-	    }
-	}
-	function isComputingDerivation() {
-	    return globalState.trackingDerivation !== null;
-	}
-	function checkIfStateModificationsAreAllowed() {
-	    if (!globalState.allowStateChanges) {
-	        invariant(false, globalState.strictMode
-	            ? "It is not allowed to create or change state outside an `action` when MobX is in strict mode. Wrap the current method in `action` if this state change is intended"
-	            : "It is not allowed to change the state when a computed value or transformer is being evaluated. Use 'autorun' to create reactive functions with side-effects.");
-	    }
-	}
-	function trackDerivedFunction(derivation, f, context) {
-	    changeDependenciesStateTo0(derivation);
-	    derivation.newObserving = new Array(derivation.observing.length + 100);
-	    derivation.unboundDepsCount = 0;
-	    derivation.runId = ++globalState.runId;
-	    var prevTracking = globalState.trackingDerivation;
-	    globalState.trackingDerivation = derivation;
-	    var result;
-	    try {
-	        result = f.call(context);
-	    }
-	    catch (e) {
-	        result = new CaughtException(e);
-	    }
-	    globalState.trackingDerivation = prevTracking;
-	    bindDependencies(derivation);
-	    return result;
-	}
-	function bindDependencies(derivation) {
-	    var prevObserving = derivation.observing;
-	    var observing = derivation.observing = derivation.newObserving;
-	    derivation.newObserving = null;
-	    var i0 = 0, l = derivation.unboundDepsCount;
-	    for (var i = 0; i < l; i++) {
-	        var dep = observing[i];
-	        if (dep.diffValue === 0) {
-	            dep.diffValue = 1;
-	            if (i0 !== i)
-	                observing[i0] = dep;
-	            i0++;
-	        }
-	    }
-	    observing.length = i0;
-	    l = prevObserving.length;
-	    while (l--) {
-	        var dep = prevObserving[l];
-	        if (dep.diffValue === 0) {
-	            removeObserver(dep, derivation);
-	        }
-	        dep.diffValue = 0;
-	    }
-	    while (i0--) {
-	        var dep = observing[i0];
-	        if (dep.diffValue === 1) {
-	            dep.diffValue = 0;
-	            addObserver(dep, derivation);
-	        }
-	    }
-	}
-	function clearObserving(derivation) {
-	    var obs = derivation.observing;
-	    var i = obs.length;
-	    while (i--)
-	        removeObserver(obs[i], derivation);
-	    derivation.dependenciesState = IDerivationState.NOT_TRACKING;
-	    obs.length = 0;
-	}
-	function untracked(action) {
-	    var prev = untrackedStart();
-	    var res = action();
-	    untrackedEnd(prev);
-	    return res;
-	}
-	exports.untracked = untracked;
-	function untrackedStart() {
-	    var prev = globalState.trackingDerivation;
-	    globalState.trackingDerivation = null;
-	    return prev;
-	}
-	function untrackedEnd(prev) {
-	    globalState.trackingDerivation = prev;
-	}
-	function changeDependenciesStateTo0(derivation) {
-	    if (derivation.dependenciesState === IDerivationState.UP_TO_DATE)
-	        return;
-	    derivation.dependenciesState = IDerivationState.UP_TO_DATE;
-	    var obs = derivation.observing;
-	    var i = obs.length;
-	    while (i--)
-	        obs[i].lowestObserverState = IDerivationState.UP_TO_DATE;
-	}
-	var persistentKeys = ["mobxGuid", "resetId", "spyListeners", "strictMode", "runId"];
-	var MobXGlobals = (function () {
-	    function MobXGlobals() {
-	        this.version = 5;
-	        this.trackingDerivation = null;
-	        this.runId = 0;
-	        this.mobxGuid = 0;
-	        this.inBatch = 0;
-	        this.pendingUnobservations = [];
-	        this.pendingReactions = [];
-	        this.isRunningReactions = false;
-	        this.allowStateChanges = true;
-	        this.strictMode = false;
-	        this.resetId = 0;
-	        this.spyListeners = [];
-	        this.globalReactionErrorHandlers = [];
-	    }
-	    return MobXGlobals;
-	}());
-	var globalState = new MobXGlobals();
-	function shareGlobalState() {
-	    var global = getGlobal();
-	    var ownState = globalState;
-	    if (global.__mobservableTrackingStack || global.__mobservableViewStack)
-	        throw new Error("[mobx] An incompatible version of mobservable is already loaded.");
-	    if (global.__mobxGlobal && global.__mobxGlobal.version !== ownState.version)
-	        throw new Error("[mobx] An incompatible version of mobx is already loaded.");
-	    if (global.__mobxGlobal)
-	        globalState = global.__mobxGlobal;
-	    else
-	        global.__mobxGlobal = ownState;
-	}
-	function getGlobalState() {
-	    return globalState;
-	}
-	function registerGlobals() {
-	}
-	function resetGlobalState() {
-	    globalState.resetId++;
-	    var defaultGlobals = new MobXGlobals();
-	    for (var key in defaultGlobals)
-	        if (persistentKeys.indexOf(key) === -1)
-	            globalState[key] = defaultGlobals[key];
-	    globalState.allowStateChanges = !globalState.strictMode;
-	}
-	function hasObservers(observable) {
-	    return observable.observers && observable.observers.length > 0;
-	}
-	function getObservers(observable) {
-	    return observable.observers;
-	}
-	function invariantObservers(observable) {
-	    var list = observable.observers;
-	    var map = observable.observersIndexes;
-	    var l = list.length;
-	    for (var i = 0; i < l; i++) {
-	        var id = list[i].__mapid;
-	        if (i) {
-	            invariant(map[id] === i, "INTERNAL ERROR maps derivation.__mapid to index in list");
-	        }
-	        else {
-	            invariant(!(id in map), "INTERNAL ERROR observer on index 0 shouldnt be held in map.");
-	        }
-	    }
-	    invariant(list.length === 0 || Object.keys(map).length === list.length - 1, "INTERNAL ERROR there is no junk in map");
-	}
-	function addObserver(observable, node) {
-	    var l = observable.observers.length;
-	    if (l) {
-	        observable.observersIndexes[node.__mapid] = l;
-	    }
-	    observable.observers[l] = node;
-	    if (observable.lowestObserverState > node.dependenciesState)
-	        observable.lowestObserverState = node.dependenciesState;
-	}
-	function removeObserver(observable, node) {
-	    if (observable.observers.length === 1) {
-	        observable.observers.length = 0;
-	        queueForUnobservation(observable);
-	    }
-	    else {
-	        var list = observable.observers;
-	        var map_1 = observable.observersIndexes;
-	        var filler = list.pop();
-	        if (filler !== node) {
-	            var index = map_1[node.__mapid] || 0;
-	            if (index) {
-	                map_1[filler.__mapid] = index;
-	            }
-	            else {
-	                delete map_1[filler.__mapid];
-	            }
-	            list[index] = filler;
-	        }
-	        delete map_1[node.__mapid];
-	    }
-	}
-	function queueForUnobservation(observable) {
-	    if (!observable.isPendingUnobservation) {
-	        observable.isPendingUnobservation = true;
-	        globalState.pendingUnobservations.push(observable);
-	    }
-	}
-	function startBatch() {
-	    globalState.inBatch++;
-	}
-	function endBatch() {
-	    if (--globalState.inBatch === 0) {
-	        runReactions();
-	        var list = globalState.pendingUnobservations;
-	        for (var i = 0; i < list.length; i++) {
-	            var observable_1 = list[i];
-	            observable_1.isPendingUnobservation = false;
-	            if (observable_1.observers.length === 0) {
-	                observable_1.onBecomeUnobserved();
-	            }
-	        }
-	        globalState.pendingUnobservations = [];
-	    }
-	}
-	function reportObserved(observable) {
-	    var derivation = globalState.trackingDerivation;
-	    if (derivation !== null) {
-	        if (derivation.runId !== observable.lastAccessedBy) {
-	            observable.lastAccessedBy = derivation.runId;
-	            derivation.newObserving[derivation.unboundDepsCount++] = observable;
-	        }
-	    }
-	    else if (observable.observers.length === 0) {
-	        queueForUnobservation(observable);
-	    }
-	}
-	function invariantLOS(observable, msg) {
-	    var min = getObservers(observable).reduce(function (a, b) { return Math.min(a, b.dependenciesState); }, 2);
-	    if (min >= observable.lowestObserverState)
-	        return;
-	    throw new Error("lowestObserverState is wrong for " + msg + " because " + min + " < " + observable.lowestObserverState);
-	}
-	function propagateChanged(observable) {
-	    if (observable.lowestObserverState === IDerivationState.STALE)
-	        return;
-	    observable.lowestObserverState = IDerivationState.STALE;
-	    var observers = observable.observers;
-	    var i = observers.length;
-	    while (i--) {
-	        var d = observers[i];
-	        if (d.dependenciesState === IDerivationState.UP_TO_DATE)
-	            d.onBecomeStale();
-	        d.dependenciesState = IDerivationState.STALE;
-	    }
-	}
-	function propagateChangeConfirmed(observable) {
-	    if (observable.lowestObserverState === IDerivationState.STALE)
-	        return;
-	    observable.lowestObserverState = IDerivationState.STALE;
-	    var observers = observable.observers;
-	    var i = observers.length;
-	    while (i--) {
-	        var d = observers[i];
-	        if (d.dependenciesState === IDerivationState.POSSIBLY_STALE)
-	            d.dependenciesState = IDerivationState.STALE;
-	        else if (d.dependenciesState === IDerivationState.UP_TO_DATE)
-	            observable.lowestObserverState = IDerivationState.UP_TO_DATE;
-	    }
-	}
-	function propagateMaybeChanged(observable) {
-	    if (observable.lowestObserverState !== IDerivationState.UP_TO_DATE)
-	        return;
-	    observable.lowestObserverState = IDerivationState.POSSIBLY_STALE;
-	    var observers = observable.observers;
-	    var i = observers.length;
-	    while (i--) {
-	        var d = observers[i];
-	        if (d.dependenciesState === IDerivationState.UP_TO_DATE) {
-	            d.dependenciesState = IDerivationState.POSSIBLY_STALE;
-	            d.onBecomeStale();
-	        }
-	    }
-	}
-	var Reaction = (function () {
-	    function Reaction(name, onInvalidate) {
-	        if (name === void 0) { name = "Reaction@" + getNextId(); }
-	        this.name = name;
-	        this.onInvalidate = onInvalidate;
-	        this.observing = [];
-	        this.newObserving = [];
-	        this.dependenciesState = IDerivationState.NOT_TRACKING;
-	        this.diffValue = 0;
-	        this.runId = 0;
-	        this.unboundDepsCount = 0;
-	        this.__mapid = "#" + getNextId();
-	        this.isDisposed = false;
-	        this._isScheduled = false;
-	        this._isTrackPending = false;
-	        this._isRunning = false;
-	    }
-	    Reaction.prototype.onBecomeStale = function () {
-	        this.schedule();
-	    };
-	    Reaction.prototype.schedule = function () {
-	        if (!this._isScheduled) {
-	            this._isScheduled = true;
-	            globalState.pendingReactions.push(this);
-	            runReactions();
-	        }
-	    };
-	    Reaction.prototype.isScheduled = function () {
-	        return this._isScheduled;
-	    };
-	    Reaction.prototype.runReaction = function () {
-	        if (!this.isDisposed) {
-	            startBatch();
-	            this._isScheduled = false;
-	            if (shouldCompute(this)) {
-	                this._isTrackPending = true;
-	                this.onInvalidate();
-	                if (this._isTrackPending && isSpyEnabled()) {
-	                    spyReport({
-	                        object: this,
-	                        type: "scheduled-reaction"
-	                    });
-	                }
-	            }
-	            endBatch();
-	        }
-	    };
-	    Reaction.prototype.track = function (fn) {
-	        startBatch();
-	        var notify = isSpyEnabled();
-	        var startTime;
-	        if (notify) {
-	            startTime = Date.now();
-	            spyReportStart({
-	                object: this,
-	                type: "reaction",
-	                fn: fn
-	            });
-	        }
-	        this._isRunning = true;
-	        var result = trackDerivedFunction(this, fn, undefined);
-	        this._isRunning = false;
-	        this._isTrackPending = false;
-	        if (this.isDisposed) {
-	            clearObserving(this);
-	        }
-	        if (isCaughtException(result))
-	            this.reportExceptionInDerivation(result.cause);
-	        if (notify) {
-	            spyReportEnd({
-	                time: Date.now() - startTime
-	            });
-	        }
-	        endBatch();
-	    };
-	    Reaction.prototype.reportExceptionInDerivation = function (error) {
-	        var _this = this;
-	        if (this.errorHandler) {
-	            this.errorHandler(error, this);
-	            return;
-	        }
-	        var message = "[mobx] Catched uncaught exception that was thrown by a reaction or observer component, in: '" + this;
-	        var messageToUser = "\n\t\tHi there! I'm sorry you have just run into an exception.\n\n\t\tIf your debugger ends up here, know that some reaction (like the render() of an observer component, autorun or reaction)\n\t\tthrew an exception and that mobx catched it, too avoid that it brings the rest of your application down.\n\n\t\tThe original cause of the exception (the code that caused this reaction to run (again)), is still in the stack.\n\n\t\tHowever, more interesting is the actual stack trace of the error itself.\n\t\tHopefully the error is an instanceof Error, because in that case you can inspect the original stack of the error from where it was thrown.\n\t\tSee `error.stack` property, or press the very subtle \"(...)\" link you see near the console.error message that probably brought you here.\n\t\tThat stack is more interesting than the stack of this console.error itself.\n\n\t\tIf the exception you see is an exception you created yourself, make sure to use `throw new Error(\"Oops\")` instead of `throw \"Oops\"`,\n\t\tbecause the javascript environment will only preserve the original stack trace in the first form.\n\n\t\tYou can also make sure the debugger pauses the next time this very same exception is thrown by enabling \"Pause on caught exception\".\n\t\t(Note that it might pause on many other, unrelated exception as well).\n\n\t\tIf that all doesn't help you out, feel free to open an issue https://github.com/mobxjs/mobx/issues!\n\t\t";
-	        console.error(message || messageToUser, error);
-	        if (isSpyEnabled()) {
-	            spyReport({
-	                type: "error",
-	                message: message,
-	                error: error,
-	                object: this
-	            });
-	        }
-	        globalState.globalReactionErrorHandlers.forEach(function (f) { return f(error, _this); });
-	    };
-	    Reaction.prototype.dispose = function () {
-	        if (!this.isDisposed) {
-	            this.isDisposed = true;
-	            if (!this._isRunning) {
-	                startBatch();
-	                clearObserving(this);
-	                endBatch();
-	            }
-	        }
-	    };
-	    Reaction.prototype.getDisposer = function () {
-	        var r = this.dispose.bind(this);
-	        r.$mobx = this;
-	        r.onError = registerErrorHandler;
-	        return r;
-	    };
-	    Reaction.prototype.toString = function () {
-	        return "Reaction[" + this.name + "]";
-	    };
-	    Reaction.prototype.whyRun = function () {
-	        var observing = unique(this._isRunning ? this.newObserving : this.observing).map(function (dep) { return dep.name; });
-	        return ("\nWhyRun? reaction '" + this.name + "':\n * Status: [" + (this.isDisposed ? "stopped" : this._isRunning ? "running" : this.isScheduled() ? "scheduled" : "idle") + "]\n * This reaction will re-run if any of the following observables changes:\n    " + joinStrings(observing) + "\n    " + ((this._isRunning) ? " (... or any observable accessed during the remainder of the current run)" : "") + "\n\tMissing items in this list?\n\t  1. Check whether all used values are properly marked as observable (use isObservable to verify)\n\t  2. Make sure you didn't dereference values too early. MobX observes props, not primitives. E.g: use 'person.name' instead of 'name' in your computation.\n");
-	    };
-	    return Reaction;
-	}());
-	exports.Reaction = Reaction;
-	function registerErrorHandler(handler) {
-	    invariant(this && this.$mobx && isReaction(this.$mobx), "Invalid `this`");
-	    invariant(!this.$mobx.errorHandler, "Only one onErrorHandler can be registered");
-	    this.$mobx.errorHandler = handler;
-	}
-	function onReactionError(handler) {
-	    globalState.globalReactionErrorHandlers.push(handler);
-	    return function () {
-	        var idx = globalState.globalReactionErrorHandlers.indexOf(handler);
-	        if (idx >= 0)
-	            globalState.globalReactionErrorHandlers.splice(idx, 1);
-	    };
-	}
-	var MAX_REACTION_ITERATIONS = 100;
-	var reactionScheduler = function (f) { return f(); };
-	function runReactions() {
-	    if (globalState.inBatch > 0 || globalState.isRunningReactions)
-	        return;
-	    reactionScheduler(runReactionsHelper);
-	}
-	function runReactionsHelper() {
-	    globalState.isRunningReactions = true;
-	    var allReactions = globalState.pendingReactions;
-	    var iterations = 0;
-	    while (allReactions.length > 0) {
-	        if (++iterations === MAX_REACTION_ITERATIONS) {
-	            allReactions.splice(0);
-	            console.error("Reaction doesn't converge to a stable state after " + MAX_REACTION_ITERATIONS + " iterations."
-	                + (" Probably there is a cycle in the reactive function: " + allReactions[0]));
-	        }
-	        var remainingReactions = allReactions.splice(0);
-	        for (var i = 0, l = remainingReactions.length; i < l; i++)
-	            remainingReactions[i].runReaction();
-	    }
-	    globalState.isRunningReactions = false;
-	}
-	var isReaction = createInstanceofPredicate("Reaction", Reaction);
-	function setReactionScheduler(fn) {
-	    var baseScheduler = reactionScheduler;
-	    reactionScheduler = function (f) { return fn(function () { return baseScheduler(f); }); };
-	}
-	function isSpyEnabled() {
-	    return !!globalState.spyListeners.length;
-	}
-	function spyReport(event) {
-	    if (!globalState.spyListeners.length)
-	        return;
-	    var listeners = globalState.spyListeners;
-	    for (var i = 0, l = listeners.length; i < l; i++)
-	        listeners[i](event);
-	}
-	function spyReportStart(event) {
-	    var change = objectAssign({}, event, { spyReportStart: true });
-	    spyReport(change);
-	}
-	var END_EVENT = { spyReportEnd: true };
-	function spyReportEnd(change) {
-	    if (change)
-	        spyReport(objectAssign({}, change, END_EVENT));
-	    else
-	        spyReport(END_EVENT);
-	}
-	function spy(listener) {
-	    globalState.spyListeners.push(listener);
-	    return once(function () {
-	        var idx = globalState.spyListeners.indexOf(listener);
-	        if (idx !== -1)
-	            globalState.spyListeners.splice(idx, 1);
-	    });
-	}
-	exports.spy = spy;
-	function hasInterceptors(interceptable) {
-	    return (interceptable.interceptors && interceptable.interceptors.length > 0);
-	}
-	function registerInterceptor(interceptable, handler) {
-	    var interceptors = interceptable.interceptors || (interceptable.interceptors = []);
-	    interceptors.push(handler);
-	    return once(function () {
-	        var idx = interceptors.indexOf(handler);
-	        if (idx !== -1)
-	            interceptors.splice(idx, 1);
-	    });
-	}
-	function interceptChange(interceptable, change) {
-	    var prevU = untrackedStart();
-	    try {
-	        var interceptors = interceptable.interceptors;
-	        if (interceptors)
-	            for (var i = 0, l = interceptors.length; i < l; i++) {
-	                change = interceptors[i](change);
-	                invariant(!change || change.type, "Intercept handlers should return nothing or a change object");
-	                if (!change)
-	                    break;
-	            }
-	        return change;
-	    }
-	    finally {
-	        untrackedEnd(prevU);
-	    }
-	}
-	function hasListeners(listenable) {
-	    return listenable.changeListeners && listenable.changeListeners.length > 0;
-	}
-	function registerListener(listenable, handler) {
-	    var listeners = listenable.changeListeners || (listenable.changeListeners = []);
-	    listeners.push(handler);
-	    return once(function () {
-	        var idx = listeners.indexOf(handler);
-	        if (idx !== -1)
-	            listeners.splice(idx, 1);
-	    });
-	}
-	function notifyListeners(listenable, change) {
-	    var prevU = untrackedStart();
-	    var listeners = listenable.changeListeners;
-	    if (!listeners)
-	        return;
-	    listeners = listeners.slice();
-	    for (var i = 0, l = listeners.length; i < l; i++) {
-	        listeners[i](change);
-	    }
-	    untrackedEnd(prevU);
-	}
-	function asReference(value) {
-	    deprecated("asReference is deprecated, use modifiers.ref instead");
-	    return observable.ref(value);
-	}
-	exports.asReference = asReference;
-	function asStructure(value) {
-	    return fail("asStructure is deprecated. Use computed.struct or reaction options instead.");
-	}
-	exports.asStructure = asStructure;
-	function asFlat(value) {
-	    deprecated("asFlat is deprecated, use modifiers.shallow instead");
-	    return observable.shallow(value);
-	}
-	exports.asFlat = asFlat;
-	function asMap(data) {
-	    deprecated("asMap is deprecated, use observable.map or observable.shallowMap instead");
-	    return observable.map(data || {});
-	}
-	exports.asMap = asMap;
-	function isModifierDescriptor(thing) {
-	    return typeof thing === "object" && thing !== null && thing.isMobxModifierDescriptor === true;
-	}
-	exports.isModifierDescriptor = isModifierDescriptor;
-	function createModifierDescriptor(enhancer, initialValue) {
-	    invariant(!isModifierDescriptor(initialValue), "Modifiers cannot be nested");
-	    return {
-	        isMobxModifierDescriptor: true,
-	        initialValue: initialValue,
-	        enhancer: enhancer
-	    };
-	}
-	function deepEnhancer(v, _, name) {
-	    if (isModifierDescriptor(v))
-	        fail("You tried to assign a modifier wrapped value to a collection, please define modifiers when creating the collection, not when modifying it");
-	    if (isObservable(v))
-	        return v;
-	    if (Array.isArray(v))
-	        return observable.array(v, name);
-	    if (isPlainObject(v))
-	        return observable.object(v, name);
-	    if (isES6Map(v))
-	        return observable.shallowMap(v, name);
-	    return v;
-	}
-	function shallowEnhancer(v, _, name) {
-	    if (isModifierDescriptor(v))
-	        fail("You tried to assign a modifier wrapped value to a collection, please define modifiers when creating the collection, not when modifying it");
-	    if (v === undefined || v === null)
-	        return v;
-	    if (isObservableObject(v) || isObservableArray(v) || isObservableMap(v))
-	        return v;
-	    if (Array.isArray(v))
-	        return observable.shallowArray(v, name);
-	    if (isPlainObject(v))
-	        return observable.shallowObject(v, name);
-	    if (isES6Map(v))
-	        return observable.shallowMap(v, name);
-	    return fail("The shallow modifier / decorator can only used in combination with arrays, objects and maps");
-	}
-	function referenceEnhancer(newValue) {
-	    return newValue;
-	}
-	var safariPrototypeSetterInheritanceBug = (function () {
-	    var v = false;
-	    var p = {};
-	    Object.defineProperty(p, "0", { set: function () { v = true; } });
-	    Object.create(p)["0"] = 1;
-	    return v === false;
-	})();
-	var OBSERVABLE_ARRAY_BUFFER_SIZE = 0;
-	var StubArray = (function () {
-	    function StubArray() {
-	    }
-	    return StubArray;
-	}());
-	StubArray.prototype = [];
-	var ObservableArrayAdministration = (function () {
-	    function ObservableArrayAdministration(name, enhancer, array, owned) {
-	        this.array = array;
-	        this.owned = owned;
-	        this.lastKnownLength = 0;
-	        this.interceptors = null;
-	        this.changeListeners = null;
-	        this.atom = new BaseAtom(name || ("ObservableArray@" + getNextId()));
-	        this.enhancer = function (newV, oldV) { return enhancer(newV, oldV, name + "[..]"); };
-	    }
-	    ObservableArrayAdministration.prototype.intercept = function (handler) {
-	        return registerInterceptor(this, handler);
-	    };
-	    ObservableArrayAdministration.prototype.observe = function (listener, fireImmediately) {
-	        if (fireImmediately === void 0) { fireImmediately = false; }
-	        if (fireImmediately) {
-	            listener({
-	                object: this.array,
-	                type: "splice",
-	                index: 0,
-	                added: this.values.slice(),
-	                addedCount: this.values.length,
-	                removed: [],
-	                removedCount: 0
-	            });
-	        }
-	        return registerListener(this, listener);
-	    };
-	    ObservableArrayAdministration.prototype.getArrayLength = function () {
-	        this.atom.reportObserved();
-	        return this.values.length;
-	    };
-	    ObservableArrayAdministration.prototype.setArrayLength = function (newLength) {
-	        if (typeof newLength !== "number" || newLength < 0)
-	            throw new Error("[mobx.array] Out of range: " + newLength);
-	        var currentLength = this.values.length;
-	        if (newLength === currentLength)
-	            return;
-	        else if (newLength > currentLength)
-	            this.spliceWithArray(currentLength, 0, new Array(newLength - currentLength));
-	        else
-	            this.spliceWithArray(newLength, currentLength - newLength);
-	    };
-	    ObservableArrayAdministration.prototype.updateArrayLength = function (oldLength, delta) {
-	        if (oldLength !== this.lastKnownLength)
-	            throw new Error("[mobx] Modification exception: the internal structure of an observable array was changed. Did you use peek() to change it?");
-	        this.lastKnownLength += delta;
-	        if (delta > 0 && oldLength + delta + 1 > OBSERVABLE_ARRAY_BUFFER_SIZE)
-	            reserveArrayBuffer(oldLength + delta + 1);
-	    };
-	    ObservableArrayAdministration.prototype.spliceWithArray = function (index, deleteCount, newItems) {
-	        var _this = this;
-	        checkIfStateModificationsAreAllowed();
-	        var length = this.values.length;
-	        if (index === undefined)
-	            index = 0;
-	        else if (index > length)
-	            index = length;
-	        else if (index < 0)
-	            index = Math.max(0, length + index);
-	        if (arguments.length === 1)
-	            deleteCount = length - index;
-	        else if (deleteCount === undefined || deleteCount === null)
-	            deleteCount = 0;
-	        else
-	            deleteCount = Math.max(0, Math.min(deleteCount, length - index));
-	        if (newItems === undefined)
-	            newItems = [];
-	        if (hasInterceptors(this)) {
-	            var change = interceptChange(this, {
-	                object: this.array,
-	                type: "splice",
-	                index: index,
-	                removedCount: deleteCount,
-	                added: newItems
-	            });
-	            if (!change)
-	                return EMPTY_ARRAY;
-	            deleteCount = change.removedCount;
-	            newItems = change.added;
-	        }
-	        newItems = newItems.map(function (v) { return _this.enhancer(v, undefined); });
-	        var lengthDelta = newItems.length - deleteCount;
-	        this.updateArrayLength(length, lengthDelta);
-	        var res = (_a = this.values).splice.apply(_a, [index, deleteCount].concat(newItems));
-	        if (deleteCount !== 0 || newItems.length !== 0)
-	            this.notifyArraySplice(index, newItems, res);
-	        return res;
-	        var _a;
-	    };
-	    ObservableArrayAdministration.prototype.notifyArrayChildUpdate = function (index, newValue, oldValue) {
-	        var notifySpy = !this.owned && isSpyEnabled();
-	        var notify = hasListeners(this);
-	        var change = notify || notifySpy ? {
-	            object: this.array,
-	            type: "update",
-	            index: index, newValue: newValue, oldValue: oldValue
-	        } : null;
-	        if (notifySpy)
-	            spyReportStart(change);
-	        this.atom.reportChanged();
-	        if (notify)
-	            notifyListeners(this, change);
-	        if (notifySpy)
-	            spyReportEnd();
-	    };
-	    ObservableArrayAdministration.prototype.notifyArraySplice = function (index, added, removed) {
-	        var notifySpy = !this.owned && isSpyEnabled();
-	        var notify = hasListeners(this);
-	        var change = notify || notifySpy ? {
-	            object: this.array,
-	            type: "splice",
-	            index: index, removed: removed, added: added,
-	            removedCount: removed.length,
-	            addedCount: added.length
-	        } : null;
-	        if (notifySpy)
-	            spyReportStart(change);
-	        this.atom.reportChanged();
-	        if (notify)
-	            notifyListeners(this, change);
-	        if (notifySpy)
-	            spyReportEnd();
-	    };
-	    return ObservableArrayAdministration;
-	}());
-	var ObservableArray = (function (_super) {
-	    __extends(ObservableArray, _super);
-	    function ObservableArray(initialValues, enhancer, name, owned) {
-	        if (name === void 0) { name = "ObservableArray@" + getNextId(); }
-	        if (owned === void 0) { owned = false; }
-	        var _this = _super.call(this) || this;
-	        var adm = new ObservableArrayAdministration(name, enhancer, _this, owned);
-	        addHiddenFinalProp(_this, "$mobx", adm);
-	        if (initialValues && initialValues.length) {
-	            adm.updateArrayLength(0, initialValues.length);
-	            adm.values = initialValues.map(function (v) { return enhancer(v, undefined, name + "[..]"); });
-	            adm.notifyArraySplice(0, adm.values.slice(), EMPTY_ARRAY);
-	        }
-	        else {
-	            adm.values = [];
-	        }
-	        if (safariPrototypeSetterInheritanceBug) {
-	            Object.defineProperty(adm.array, "0", ENTRY_0);
-	        }
-	        return _this;
-	    }
-	    ObservableArray.prototype.intercept = function (handler) {
-	        return this.$mobx.intercept(handler);
-	    };
-	    ObservableArray.prototype.observe = function (listener, fireImmediately) {
-	        if (fireImmediately === void 0) { fireImmediately = false; }
-	        return this.$mobx.observe(listener, fireImmediately);
-	    };
-	    ObservableArray.prototype.clear = function () {
-	        return this.splice(0);
-	    };
-	    ObservableArray.prototype.concat = function () {
-	        var arrays = [];
-	        for (var _i = 0; _i < arguments.length; _i++) {
-	            arrays[_i] = arguments[_i];
-	        }
-	        this.$mobx.atom.reportObserved();
-	        return Array.prototype.concat.apply(this.peek(), arrays.map(function (a) { return isObservableArray(a) ? a.peek() : a; }));
-	    };
-	    ObservableArray.prototype.replace = function (newItems) {
-	        return this.$mobx.spliceWithArray(0, this.$mobx.values.length, newItems);
-	    };
-	    ObservableArray.prototype.toJS = function () {
-	        return this.slice();
-	    };
-	    ObservableArray.prototype.toJSON = function () {
-	        return this.toJS();
-	    };
-	    ObservableArray.prototype.peek = function () {
-	        return this.$mobx.values;
-	    };
-	    ObservableArray.prototype.find = function (predicate, thisArg, fromIndex) {
-	        if (fromIndex === void 0) { fromIndex = 0; }
-	        this.$mobx.atom.reportObserved();
-	        var items = this.$mobx.values, l = items.length;
-	        for (var i = fromIndex; i < l; i++)
-	            if (predicate.call(thisArg, items[i], i, this))
-	                return items[i];
-	        return undefined;
-	    };
-	    ObservableArray.prototype.splice = function (index, deleteCount) {
-	        var newItems = [];
-	        for (var _i = 2; _i < arguments.length; _i++) {
-	            newItems[_i - 2] = arguments[_i];
-	        }
-	        switch (arguments.length) {
-	            case 0:
-	                return [];
-	            case 1:
-	                return this.$mobx.spliceWithArray(index);
-	            case 2:
-	                return this.$mobx.spliceWithArray(index, deleteCount);
-	        }
-	        return this.$mobx.spliceWithArray(index, deleteCount, newItems);
-	    };
-	    ObservableArray.prototype.push = function () {
-	        var items = [];
-	        for (var _i = 0; _i < arguments.length; _i++) {
-	            items[_i] = arguments[_i];
-	        }
-	        var adm = this.$mobx;
-	        adm.spliceWithArray(adm.values.length, 0, items);
-	        return adm.values.length;
-	    };
-	    ObservableArray.prototype.pop = function () {
-	        return this.splice(Math.max(this.$mobx.values.length - 1, 0), 1)[0];
-	    };
-	    ObservableArray.prototype.shift = function () {
-	        return this.splice(0, 1)[0];
-	    };
-	    ObservableArray.prototype.unshift = function () {
-	        var items = [];
-	        for (var _i = 0; _i < arguments.length; _i++) {
-	            items[_i] = arguments[_i];
-	        }
-	        var adm = this.$mobx;
-	        adm.spliceWithArray(0, 0, items);
-	        return adm.values.length;
-	    };
-	    ObservableArray.prototype.reverse = function () {
-	        this.$mobx.atom.reportObserved();
-	        var clone = this.slice();
-	        return clone.reverse.apply(clone, arguments);
-	    };
-	    ObservableArray.prototype.sort = function (compareFn) {
-	        this.$mobx.atom.reportObserved();
-	        var clone = this.slice();
-	        return clone.sort.apply(clone, arguments);
-	    };
-	    ObservableArray.prototype.remove = function (value) {
-	        var idx = this.$mobx.values.indexOf(value);
-	        if (idx > -1) {
-	            this.splice(idx, 1);
-	            return true;
-	        }
-	        return false;
-	    };
-	    ObservableArray.prototype.move = function (fromIndex, toIndex) {
-	        function checkIndex(index) {
-	            if (index < 0) {
-	                throw new Error("[mobx.array] Index out of bounds: " + index + " is negative");
-	            }
-	            var length = this.$mobx.values.length;
-	            if (index >= length) {
-	                throw new Error("[mobx.array] Index out of bounds: " + index + " is not smaller than " + length);
-	            }
-	        }
-	        checkIndex.call(this, fromIndex);
-	        checkIndex.call(this, toIndex);
-	        if (fromIndex === toIndex) {
-	            return;
-	        }
-	        var oldItems = this.$mobx.values;
-	        var newItems;
-	        if (fromIndex < toIndex) {
-	            newItems = oldItems.slice(0, fromIndex).concat(oldItems.slice(fromIndex + 1, toIndex + 1), [oldItems[fromIndex]], oldItems.slice(toIndex + 1));
-	        }
-	        else {
-	            newItems = oldItems.slice(0, toIndex).concat([oldItems[fromIndex]], oldItems.slice(toIndex, fromIndex), oldItems.slice(fromIndex + 1));
-	        }
-	        this.replace(newItems);
-	    };
-	    ObservableArray.prototype.toString = function () {
-	        return "[mobx.array] " + Array.prototype.toString.apply(this.$mobx.values, arguments);
-	    };
-	    ObservableArray.prototype.toLocaleString = function () {
-	        return "[mobx.array] " + Array.prototype.toLocaleString.apply(this.$mobx.values, arguments);
-	    };
-	    return ObservableArray;
-	}(StubArray));
-	declareIterator(ObservableArray.prototype, function () {
-	    return arrayAsIterator(this.slice());
-	});
-	makeNonEnumerable(ObservableArray.prototype, [
-	    "constructor",
-	    "intercept",
-	    "observe",
-	    "clear",
-	    "concat",
-	    "replace",
-	    "toJS",
-	    "toJSON",
-	    "peek",
-	    "find",
-	    "splice",
-	    "push",
-	    "pop",
-	    "shift",
-	    "unshift",
-	    "reverse",
-	    "sort",
-	    "remove",
-	    "move",
-	    "toString",
-	    "toLocaleString"
-	]);
-	Object.defineProperty(ObservableArray.prototype, "length", {
-	    enumerable: false,
-	    configurable: true,
-	    get: function () {
-	        return this.$mobx.getArrayLength();
-	    },
-	    set: function (newLength) {
-	        this.$mobx.setArrayLength(newLength);
-	    }
-	});
-	[
-	    "every",
-	    "filter",
-	    "forEach",
-	    "indexOf",
-	    "join",
-	    "lastIndexOf",
-	    "map",
-	    "reduce",
-	    "reduceRight",
-	    "slice",
-	    "some"
-	].forEach(function (funcName) {
-	    var baseFunc = Array.prototype[funcName];
-	    invariant(typeof baseFunc === "function", "Base function not defined on Array prototype: '" + funcName + "'");
-	    addHiddenProp(ObservableArray.prototype, funcName, function () {
-	        this.$mobx.atom.reportObserved();
-	        return baseFunc.apply(this.$mobx.values, arguments);
-	    });
-	});
-	var ENTRY_0 = {
-	    configurable: true,
-	    enumerable: false,
-	    set: createArraySetter(0),
-	    get: createArrayGetter(0)
-	};
-	function createArrayBufferItem(index) {
-	    var set = createArraySetter(index);
-	    var get = createArrayGetter(index);
-	    Object.defineProperty(ObservableArray.prototype, "" + index, {
-	        enumerable: false,
-	        configurable: true,
-	        set: set, get: get
-	    });
-	}
-	function createArraySetter(index) {
-	    return function (newValue) {
-	        var adm = this.$mobx;
-	        var values = adm.values;
-	        if (index < values.length) {
-	            checkIfStateModificationsAreAllowed();
-	            var oldValue = values[index];
-	            if (hasInterceptors(adm)) {
-	                var change = interceptChange(adm, {
-	                    type: "update",
-	                    object: adm.array,
-	                    index: index, newValue: newValue
-	                });
-	                if (!change)
-	                    return;
-	                newValue = change.newValue;
-	            }
-	            newValue = adm.enhancer(newValue, oldValue);
-	            var changed = newValue !== oldValue;
-	            if (changed) {
-	                values[index] = newValue;
-	                adm.notifyArrayChildUpdate(index, newValue, oldValue);
-	            }
-	        }
-	        else if (index === values.length) {
-	            adm.spliceWithArray(index, 0, [newValue]);
-	        }
-	        else
-	            throw new Error("[mobx.array] Index out of bounds, " + index + " is larger than " + values.length);
-	    };
-	}
-	function createArrayGetter(index) {
-	    return function () {
-	        var impl = this.$mobx;
-	        if (impl && index < impl.values.length) {
-	            impl.atom.reportObserved();
-	            return impl.values[index];
-	        }
-	        console.warn("[mobx.array] Attempt to read an array index (" + index + ") that is out of bounds (" + impl.values.length + "). Please check length first. Out of bound indices will not be tracked by MobX");
-	        return undefined;
-	    };
-	}
-	function reserveArrayBuffer(max) {
-	    for (var index = OBSERVABLE_ARRAY_BUFFER_SIZE; index < max; index++)
-	        createArrayBufferItem(index);
-	    OBSERVABLE_ARRAY_BUFFER_SIZE = max;
-	}
-	reserveArrayBuffer(1000);
-	var isObservableArrayAdministration = createInstanceofPredicate("ObservableArrayAdministration", ObservableArrayAdministration);
-	function isObservableArray(thing) {
-	    return isObject(thing) && isObservableArrayAdministration(thing.$mobx);
-	}
-	exports.isObservableArray = isObservableArray;
-	var ObservableMapMarker = {};
-	var ObservableMap = (function () {
-	    function ObservableMap(initialData, enhancer, name) {
-	        if (enhancer === void 0) { enhancer = deepEnhancer; }
-	        if (name === void 0) { name = "ObservableMap@" + getNextId(); }
-	        var _this = this;
-	        this.enhancer = enhancer;
-	        this.name = name;
-	        this.$mobx = ObservableMapMarker;
-	        this._data = {};
-	        this._hasMap = {};
-	        this._keys = new ObservableArray(undefined, referenceEnhancer, this.name + ".keys()", true);
-	        this.interceptors = null;
-	        this.changeListeners = null;
-	        allowStateChanges(true, function () {
-	            _this.merge(initialData);
-	        });
-	    }
-	    ObservableMap.prototype._has = function (key) {
-	        return typeof this._data[key] !== "undefined";
-	    };
-	    ObservableMap.prototype.has = function (key) {
-	        if (!this.isValidKey(key))
-	            return false;
-	        key = "" + key;
-	        if (this._hasMap[key])
-	            return this._hasMap[key].get();
-	        return this._updateHasMapEntry(key, false).get();
-	    };
-	    ObservableMap.prototype.set = function (key, value) {
-	        this.assertValidKey(key);
-	        key = "" + key;
-	        var hasKey = this._has(key);
-	        if (hasInterceptors(this)) {
-	            var change = interceptChange(this, {
-	                type: hasKey ? "update" : "add",
-	                object: this,
-	                newValue: value,
-	                name: key
-	            });
-	            if (!change)
-	                return this;
-	            value = change.newValue;
-	        }
-	        if (hasKey) {
-	            this._updateValue(key, value);
-	        }
-	        else {
-	            this._addValue(key, value);
-	        }
-	        return this;
-	    };
-	    ObservableMap.prototype.delete = function (key) {
-	        var _this = this;
-	        this.assertValidKey(key);
-	        key = "" + key;
-	        if (hasInterceptors(this)) {
-	            var change = interceptChange(this, {
-	                type: "delete",
-	                object: this,
-	                name: key
-	            });
-	            if (!change)
-	                return false;
-	        }
-	        if (this._has(key)) {
-	            var notifySpy = isSpyEnabled();
-	            var notify = hasListeners(this);
-	            var change = notify || notifySpy ? {
-	                type: "delete",
-	                object: this,
-	                oldValue: this._data[key].value,
-	                name: key
-	            } : null;
-	            if (notifySpy)
-	                spyReportStart(change);
-	            runInTransaction(function () {
-	                _this._keys.remove(key);
-	                _this._updateHasMapEntry(key, false);
-	                var observable = _this._data[key];
-	                observable.setNewValue(undefined);
-	                _this._data[key] = undefined;
-	            });
-	            if (notify)
-	                notifyListeners(this, change);
-	            if (notifySpy)
-	                spyReportEnd();
-	            return true;
-	        }
-	        return false;
-	    };
-	    ObservableMap.prototype._updateHasMapEntry = function (key, value) {
-	        var entry = this._hasMap[key];
-	        if (entry) {
-	            entry.setNewValue(value);
-	        }
-	        else {
-	            entry = this._hasMap[key] = new ObservableValue(value, referenceEnhancer, this.name + "." + key + "?", false);
-	        }
-	        return entry;
-	    };
-	    ObservableMap.prototype._updateValue = function (name, newValue) {
-	        var observable = this._data[name];
-	        newValue = observable.prepareNewValue(newValue);
-	        if (newValue !== UNCHANGED) {
-	            var notifySpy = isSpyEnabled();
-	            var notify = hasListeners(this);
-	            var change = notify || notifySpy ? {
-	                type: "update",
-	                object: this,
-	                oldValue: observable.value,
-	                name: name, newValue: newValue
-	            } : null;
-	            if (notifySpy)
-	                spyReportStart(change);
-	            observable.setNewValue(newValue);
-	            if (notify)
-	                notifyListeners(this, change);
-	            if (notifySpy)
-	                spyReportEnd();
-	        }
-	    };
-	    ObservableMap.prototype._addValue = function (name, newValue) {
-	        var _this = this;
-	        runInTransaction(function () {
-	            var observable = _this._data[name] = new ObservableValue(newValue, _this.enhancer, _this.name + "." + name, false);
-	            newValue = observable.value;
-	            _this._updateHasMapEntry(name, true);
-	            _this._keys.push(name);
-	        });
-	        var notifySpy = isSpyEnabled();
-	        var notify = hasListeners(this);
-	        var change = notify || notifySpy ? {
-	            type: "add",
-	            object: this,
-	            name: name, newValue: newValue
-	        } : null;
-	        if (notifySpy)
-	            spyReportStart(change);
-	        if (notify)
-	            notifyListeners(this, change);
-	        if (notifySpy)
-	            spyReportEnd();
-	    };
-	    ObservableMap.prototype.get = function (key) {
-	        key = "" + key;
-	        if (this.has(key))
-	            return this._data[key].get();
-	        return undefined;
-	    };
-	    ObservableMap.prototype.keys = function () {
-	        return arrayAsIterator(this._keys.slice());
-	    };
-	    ObservableMap.prototype.values = function () {
-	        return arrayAsIterator(this._keys.map(this.get, this));
-	    };
-	    ObservableMap.prototype.entries = function () {
-	        var _this = this;
-	        return arrayAsIterator(this._keys.map(function (key) { return [key, _this.get(key)]; }));
-	    };
-	    ObservableMap.prototype.forEach = function (callback, thisArg) {
-	        var _this = this;
-	        this.keys().forEach(function (key) { return callback.call(thisArg, _this.get(key), key, _this); });
-	    };
-	    ObservableMap.prototype.merge = function (other) {
-	        var _this = this;
-	        if (isObservableMap(other)) {
-	            other = other.toJS();
-	        }
-	        runInTransaction(function () {
-	            if (isPlainObject(other))
-	                Object.keys(other).forEach(function (key) { return _this.set(key, other[key]); });
-	            else if (Array.isArray(other))
-	                other.forEach(function (_a) {
-	                    var key = _a[0], value = _a[1];
-	                    return _this.set(key, value);
-	                });
-	            else if (isES6Map(other))
-	                other.forEach(function (value, key) { return _this.set(key, value); });
-	            else if (other !== null && other !== undefined)
-	                fail("Cannot initialize map from " + other);
-	        });
-	        return this;
-	    };
-	    ObservableMap.prototype.clear = function () {
-	        var _this = this;
-	        runInTransaction(function () {
-	            untracked(function () {
-	                _this.keys().forEach(_this.delete, _this);
-	            });
-	        });
-	    };
-	    ObservableMap.prototype.replace = function (values) {
-	        var _this = this;
-	        runInTransaction(function () {
-	            _this.clear();
-	            _this.merge(values);
-	        });
-	        return this;
-	    };
-	    Object.defineProperty(ObservableMap.prototype, "size", {
-	        get: function () {
-	            return this._keys.length;
-	        },
-	        enumerable: true,
-	        configurable: true
-	    });
-	    ObservableMap.prototype.toJS = function () {
-	        var _this = this;
-	        var res = {};
-	        this.keys().forEach(function (key) { return res[key] = _this.get(key); });
-	        return res;
-	    };
-	    ObservableMap.prototype.toJSON = function () {
-	        return this.toJS();
-	    };
-	    ObservableMap.prototype.isValidKey = function (key) {
-	        if (key === null || key === undefined)
-	            return false;
-	        if (typeof key === "string" || typeof key === "number" || typeof key === "boolean")
-	            return true;
-	        return false;
-	    };
-	    ObservableMap.prototype.assertValidKey = function (key) {
-	        if (!this.isValidKey(key))
-	            throw new Error("[mobx.map] Invalid key: '" + key + "', only strings, numbers and booleans are accepted as key in observable maps.");
-	    };
-	    ObservableMap.prototype.toString = function () {
-	        var _this = this;
-	        return this.name + "[{ " + this.keys().map(function (key) { return key + ": " + ("" + _this.get(key)); }).join(", ") + " }]";
-	    };
-	    ObservableMap.prototype.observe = function (listener, fireImmediately) {
-	        invariant(fireImmediately !== true, "`observe` doesn't support the fire immediately property for observable maps.");
-	        return registerListener(this, listener);
-	    };
-	    ObservableMap.prototype.intercept = function (handler) {
-	        return registerInterceptor(this, handler);
-	    };
-	    return ObservableMap;
-	}());
-	exports.ObservableMap = ObservableMap;
-	declareIterator(ObservableMap.prototype, function () {
-	    return this.entries();
-	});
-	function map(initialValues) {
-	    deprecated("`mobx.map` is deprecated, use `new ObservableMap` or `mobx.observable.map` instead");
-	    return observable.map(initialValues);
-	}
-	exports.map = map;
-	var isObservableMap = createInstanceofPredicate("ObservableMap", ObservableMap);
-	exports.isObservableMap = isObservableMap;
-	var ObservableObjectAdministration = (function () {
-	    function ObservableObjectAdministration(target, name) {
-	        this.target = target;
-	        this.name = name;
-	        this.values = {};
-	        this.changeListeners = null;
-	        this.interceptors = null;
-	    }
-	    ObservableObjectAdministration.prototype.observe = function (callback, fireImmediately) {
-	        invariant(fireImmediately !== true, "`observe` doesn't support the fire immediately property for observable objects.");
-	        return registerListener(this, callback);
-	    };
-	    ObservableObjectAdministration.prototype.intercept = function (handler) {
-	        return registerInterceptor(this, handler);
-	    };
-	    return ObservableObjectAdministration;
-	}());
-	function asObservableObject(target, name) {
-	    if (isObservableObject(target))
-	        return target.$mobx;
-	    invariant(Object.isExtensible(target), "Cannot make the designated object observable; it is not extensible");
-	    if (!isPlainObject(target))
-	        name = (target.constructor.name || "ObservableObject") + "@" + getNextId();
-	    if (!name)
-	        name = "ObservableObject@" + getNextId();
-	    var adm = new ObservableObjectAdministration(target, name);
-	    addHiddenFinalProp(target, "$mobx", adm);
-	    return adm;
-	}
-	function defineObservablePropertyFromDescriptor(adm, propName, descriptor, defaultEnhancer) {
-	    if (adm.values[propName]) {
-	        invariant("value" in descriptor, "The property " + propName + " in " + adm.name + " is already observable, cannot redefine it as computed property");
-	        adm.target[propName] = descriptor.value;
-	        return;
-	    }
-	    if ("value" in descriptor) {
-	        if (isModifierDescriptor(descriptor.value)) {
-	            var modifierDescriptor = descriptor.value;
-	            defineObservableProperty(adm, propName, modifierDescriptor.initialValue, modifierDescriptor.enhancer);
-	        }
-	        else if (isAction(descriptor.value) && descriptor.value.autoBind === true) {
-	            defineBoundAction(adm.target, propName, descriptor.value.originalFn);
-	        }
-	        else if (isComputedValue(descriptor.value)) {
-	            defineComputedPropertyFromComputedValue(adm, propName, descriptor.value);
-	        }
-	        else {
-	            defineObservableProperty(adm, propName, descriptor.value, defaultEnhancer);
-	        }
-	    }
-	    else {
-	        defineComputedProperty(adm, propName, descriptor.get, descriptor.set, false, true);
-	    }
-	}
-	function defineObservableProperty(adm, propName, newValue, enhancer) {
-	    assertPropertyConfigurable(adm.target, propName);
-	    if (hasInterceptors(adm)) {
-	        var change = interceptChange(adm, {
-	            object: adm.target,
-	            name: propName,
-	            type: "add",
-	            newValue: newValue
-	        });
-	        if (!change)
-	            return;
-	        newValue = change.newValue;
-	    }
-	    var observable = adm.values[propName] = new ObservableValue(newValue, enhancer, adm.name + "." + propName, false);
-	    newValue = observable.value;
-	    Object.defineProperty(adm.target, propName, generateObservablePropConfig(propName));
-	    notifyPropertyAddition(adm, adm.target, propName, newValue);
-	}
-	function defineComputedProperty(adm, propName, getter, setter, compareStructural, asInstanceProperty) {
-	    if (asInstanceProperty)
-	        assertPropertyConfigurable(adm.target, propName);
-	    adm.values[propName] = new ComputedValue(getter, adm.target, compareStructural, adm.name + "." + propName, setter);
-	    if (asInstanceProperty) {
-	        Object.defineProperty(adm.target, propName, generateComputedPropConfig(propName));
-	    }
-	}
-	function defineComputedPropertyFromComputedValue(adm, propName, computedValue) {
-	    var name = adm.name + "." + propName;
-	    computedValue.name = name;
-	    if (!computedValue.scope)
-	        computedValue.scope = adm.target;
-	    adm.values[propName] = computedValue;
-	    Object.defineProperty(adm.target, propName, generateComputedPropConfig(propName));
-	}
-	var observablePropertyConfigs = {};
-	var computedPropertyConfigs = {};
-	function generateObservablePropConfig(propName) {
-	    var config = observablePropertyConfigs[propName];
-	    if (config)
-	        return config;
-	    return observablePropertyConfigs[propName] = {
-	        configurable: true,
-	        enumerable: true,
-	        get: function () {
-	            return this.$mobx.values[propName].get();
-	        },
-	        set: function (v) {
-	            setPropertyValue(this, propName, v);
-	        }
-	    };
-	}
-	function generateComputedPropConfig(propName) {
-	    var config = computedPropertyConfigs[propName];
-	    if (config)
-	        return config;
-	    return computedPropertyConfigs[propName] = {
-	        configurable: true,
-	        enumerable: false,
-	        get: function () {
-	            return this.$mobx.values[propName].get();
-	        },
-	        set: function (v) {
-	            return this.$mobx.values[propName].set(v);
-	        }
-	    };
-	}
-	function setPropertyValue(instance, name, newValue) {
-	    var adm = instance.$mobx;
-	    var observable = adm.values[name];
-	    if (hasInterceptors(adm)) {
-	        var change = interceptChange(adm, {
-	            type: "update",
-	            object: instance,
-	            name: name, newValue: newValue
-	        });
-	        if (!change)
-	            return;
-	        newValue = change.newValue;
-	    }
-	    newValue = observable.prepareNewValue(newValue);
-	    if (newValue !== UNCHANGED) {
-	        var notify = hasListeners(adm);
-	        var notifySpy = isSpyEnabled();
-	        var change = notify || notifySpy ? {
-	            type: "update",
-	            object: instance,
-	            oldValue: observable.value,
-	            name: name, newValue: newValue
-	        } : null;
-	        if (notifySpy)
-	            spyReportStart(change);
-	        observable.setNewValue(newValue);
-	        if (notify)
-	            notifyListeners(adm, change);
-	        if (notifySpy)
-	            spyReportEnd();
-	    }
-	}
-	function notifyPropertyAddition(adm, object, name, newValue) {
-	    var notify = hasListeners(adm);
-	    var notifySpy = isSpyEnabled();
-	    var change = notify || notifySpy ? {
-	        type: "add",
-	        object: object, name: name, newValue: newValue
-	    } : null;
-	    if (notifySpy)
-	        spyReportStart(change);
-	    if (notify)
-	        notifyListeners(adm, change);
-	    if (notifySpy)
-	        spyReportEnd();
-	}
-	var isObservableObjectAdministration = createInstanceofPredicate("ObservableObjectAdministration", ObservableObjectAdministration);
-	function isObservableObject(thing) {
-	    if (isObject(thing)) {
-	        runLazyInitializers(thing);
-	        return isObservableObjectAdministration(thing.$mobx);
-	    }
-	    return false;
-	}
-	exports.isObservableObject = isObservableObject;
-	var UNCHANGED = {};
-	var ObservableValue = (function (_super) {
-	    __extends(ObservableValue, _super);
-	    function ObservableValue(value, enhancer, name, notifySpy) {
-	        if (name === void 0) { name = "ObservableValue@" + getNextId(); }
-	        if (notifySpy === void 0) { notifySpy = true; }
-	        var _this = _super.call(this, name) || this;
-	        _this.enhancer = enhancer;
-	        _this.hasUnreportedChange = false;
-	        _this.value = enhancer(value, undefined, name);
-	        if (notifySpy && isSpyEnabled()) {
-	            spyReport({ type: "create", object: _this, newValue: _this.value });
-	        }
-	        return _this;
-	    }
-	    ObservableValue.prototype.set = function (newValue) {
-	        var oldValue = this.value;
-	        newValue = this.prepareNewValue(newValue);
-	        if (newValue !== UNCHANGED) {
-	            var notifySpy = isSpyEnabled();
-	            if (notifySpy) {
-	                spyReportStart({
-	                    type: "update",
-	                    object: this,
-	                    newValue: newValue, oldValue: oldValue
-	                });
-	            }
-	            this.setNewValue(newValue);
-	            if (notifySpy)
-	                spyReportEnd();
-	        }
-	    };
-	    ObservableValue.prototype.prepareNewValue = function (newValue) {
-	        checkIfStateModificationsAreAllowed();
-	        if (hasInterceptors(this)) {
-	            var change = interceptChange(this, { object: this, type: "update", newValue: newValue });
-	            if (!change)
-	                return UNCHANGED;
-	            newValue = change.newValue;
-	        }
-	        newValue = this.enhancer(newValue, this.value, this.name);
-	        return this.value !== newValue
-	            ? newValue
-	            : UNCHANGED;
-	    };
-	    ObservableValue.prototype.setNewValue = function (newValue) {
-	        var oldValue = this.value;
-	        this.value = newValue;
-	        this.reportChanged();
-	        if (hasListeners(this)) {
-	            notifyListeners(this, {
-	                type: "update",
-	                object: this,
-	                newValue: newValue,
-	                oldValue: oldValue
-	            });
-	        }
-	    };
-	    ObservableValue.prototype.get = function () {
-	        this.reportObserved();
-	        return this.value;
-	    };
-	    ObservableValue.prototype.intercept = function (handler) {
-	        return registerInterceptor(this, handler);
-	    };
-	    ObservableValue.prototype.observe = function (listener, fireImmediately) {
-	        if (fireImmediately)
-	            listener({
-	                object: this,
-	                type: "update",
-	                newValue: this.value,
-	                oldValue: undefined
-	            });
-	        return registerListener(this, listener);
-	    };
-	    ObservableValue.prototype.toJSON = function () {
-	        return this.get();
-	    };
-	    ObservableValue.prototype.toString = function () {
-	        return this.name + "[" + this.value + "]";
-	    };
-	    return ObservableValue;
-	}(BaseAtom));
-	var isObservableValue = createInstanceofPredicate("ObservableValue", ObservableValue);
-	function getAtom(thing, property) {
-	    if (typeof thing === "object" && thing !== null) {
-	        if (isObservableArray(thing)) {
-	            invariant(property === undefined, "It is not possible to get index atoms from arrays");
-	            return thing.$mobx.atom;
-	        }
-	        if (isObservableMap(thing)) {
-	            var anyThing = thing;
-	            if (property === undefined)
-	                return getAtom(anyThing._keys);
-	            var observable_2 = anyThing._data[property] || anyThing._hasMap[property];
-	            invariant(!!observable_2, "the entry '" + property + "' does not exist in the observable map '" + getDebugName(thing) + "'");
-	            return observable_2;
-	        }
-	        runLazyInitializers(thing);
-	        if (isObservableObject(thing)) {
-	            if (!property)
-	                return fail("please specify a property");
-	            var observable_3 = thing.$mobx.values[property];
-	            invariant(!!observable_3, "no observable property '" + property + "' found on the observable object '" + getDebugName(thing) + "'");
-	            return observable_3;
-	        }
-	        if (isAtom(thing) || isComputedValue(thing) || isReaction(thing)) {
-	            return thing;
-	        }
-	    }
-	    else if (typeof thing === "function") {
-	        if (isReaction(thing.$mobx)) {
-	            return thing.$mobx;
-	        }
-	    }
-	    return fail("Cannot obtain atom from " + thing);
-	}
-	function getAdministration(thing, property) {
-	    invariant(thing, "Expecting some object");
-	    if (property !== undefined)
-	        return getAdministration(getAtom(thing, property));
-	    if (isAtom(thing) || isComputedValue(thing) || isReaction(thing))
-	        return thing;
-	    if (isObservableMap(thing))
-	        return thing;
-	    runLazyInitializers(thing);
-	    if (thing.$mobx)
-	        return thing.$mobx;
-	    invariant(false, "Cannot obtain administration from " + thing);
-	}
-	function getDebugName(thing, property) {
-	    var named;
-	    if (property !== undefined)
-	        named = getAtom(thing, property);
-	    else if (isObservableObject(thing) || isObservableMap(thing))
-	        named = getAdministration(thing);
-	    else
-	        named = getAtom(thing);
-	    return named.name;
-	}
-	function createClassPropertyDecorator(onInitialize, get, set, enumerable, allowCustomArguments) {
-	    function classPropertyDecorator(target, key, descriptor, customArgs, argLen) {
-	        invariant(allowCustomArguments || quacksLikeADecorator(arguments), "This function is a decorator, but it wasn't invoked like a decorator");
-	        if (!descriptor) {
-	            var newDescriptor = {
-	                enumerable: enumerable,
-	                configurable: true,
-	                get: function () {
-	                    if (!this.__mobxInitializedProps || this.__mobxInitializedProps[key] !== true)
-	                        typescriptInitializeProperty(this, key, undefined, onInitialize, customArgs, descriptor);
-	                    return get.call(this, key);
-	                },
-	                set: function (v) {
-	                    if (!this.__mobxInitializedProps || this.__mobxInitializedProps[key] !== true) {
-	                        typescriptInitializeProperty(this, key, v, onInitialize, customArgs, descriptor);
-	                    }
-	                    else {
-	                        set.call(this, key, v);
-	                    }
-	                }
-	            };
-	            if (arguments.length < 3 || arguments.length === 5 && argLen < 3) {
-	                Object.defineProperty(target, key, newDescriptor);
-	            }
-	            return newDescriptor;
-	        }
-	        else {
-	            if (!hasOwnProperty(target, "__mobxLazyInitializers")) {
-	                addHiddenProp(target, "__mobxLazyInitializers", (target.__mobxLazyInitializers && target.__mobxLazyInitializers.slice()) || []);
-	            }
-	            var value_1 = descriptor.value, initializer_1 = descriptor.initializer;
-	            target.__mobxLazyInitializers.push(function (instance) {
-	                onInitialize(instance, key, (initializer_1 ? initializer_1.call(instance) : value_1), customArgs, descriptor);
-	            });
-	            return {
-	                enumerable: enumerable, configurable: true,
-	                get: function () {
-	                    if (this.__mobxDidRunLazyInitializers !== true)
-	                        runLazyInitializers(this);
-	                    return get.call(this, key);
-	                },
-	                set: function (v) {
-	                    if (this.__mobxDidRunLazyInitializers !== true)
-	                        runLazyInitializers(this);
-	                    set.call(this, key, v);
-	                }
-	            };
-	        }
-	    }
-	    if (allowCustomArguments) {
-	        return function () {
-	            if (quacksLikeADecorator(arguments))
-	                return classPropertyDecorator.apply(null, arguments);
-	            var outerArgs = arguments;
-	            var argLen = arguments.length;
-	            return function (target, key, descriptor) { return classPropertyDecorator(target, key, descriptor, outerArgs, argLen); };
-	        };
-	    }
-	    return classPropertyDecorator;
-	}
-	function typescriptInitializeProperty(instance, key, v, onInitialize, customArgs, baseDescriptor) {
-	    if (!hasOwnProperty(instance, "__mobxInitializedProps"))
-	        addHiddenProp(instance, "__mobxInitializedProps", {});
-	    instance.__mobxInitializedProps[key] = true;
-	    onInitialize(instance, key, v, customArgs, baseDescriptor);
-	}
-	function runLazyInitializers(instance) {
-	    if (instance.__mobxDidRunLazyInitializers === true)
-	        return;
-	    if (instance.__mobxLazyInitializers) {
-	        addHiddenProp(instance, "__mobxDidRunLazyInitializers", true);
-	        instance.__mobxDidRunLazyInitializers && instance.__mobxLazyInitializers.forEach(function (initializer) { return initializer(instance); });
-	    }
-	}
-	function quacksLikeADecorator(args) {
-	    return (args.length === 2 || args.length === 3) && typeof args[1] === "string";
-	}
-	function iteratorSymbol() {
-	    return (typeof Symbol === "function" && Symbol.iterator) || "@@iterator";
-	}
-	var IS_ITERATING_MARKER = "__$$iterating";
-	function arrayAsIterator(array) {
-	    invariant(array[IS_ITERATING_MARKER] !== true, "Illegal state: cannot recycle array as iterator");
-	    addHiddenFinalProp(array, IS_ITERATING_MARKER, true);
-	    var idx = -1;
-	    addHiddenFinalProp(array, "next", function next() {
-	        idx++;
-	        return {
-	            done: idx >= this.length,
-	            value: idx < this.length ? this[idx] : undefined
-	        };
-	    });
-	    return array;
-	}
-	function declareIterator(prototType, iteratorFactory) {
-	    addHiddenFinalProp(prototType, iteratorSymbol(), iteratorFactory);
-	}
-	var EMPTY_ARRAY = [];
-	Object.freeze(EMPTY_ARRAY);
-	function getGlobal() {
-	    return global;
-	}
-	function getNextId() {
-	    return ++globalState.mobxGuid;
-	}
-	function fail(message, thing) {
-	    invariant(false, message, thing);
-	    throw "X";
-	}
-	function invariant(check, message, thing) {
-	    if (!check)
-	        throw new Error("[mobx] Invariant failed: " + message + (thing ? " in '" + thing + "'" : ""));
-	}
-	var deprecatedMessages = [];
-	function deprecated(msg) {
-	    if (deprecatedMessages.indexOf(msg) !== -1)
-	        return false;
-	    deprecatedMessages.push(msg);
-	    console.error("[mobx] Deprecated: " + msg);
-	    return true;
-	}
-	function once(func) {
-	    var invoked = false;
-	    return function () {
-	        if (invoked)
-	            return;
-	        invoked = true;
-	        return func.apply(this, arguments);
-	    };
-	}
-	var noop = function () { };
-	function unique(list) {
-	    var res = [];
-	    list.forEach(function (item) {
-	        if (res.indexOf(item) === -1)
-	            res.push(item);
-	    });
-	    return res;
-	}
-	function joinStrings(things, limit, separator) {
-	    if (limit === void 0) { limit = 100; }
-	    if (separator === void 0) { separator = " - "; }
-	    if (!things)
-	        return "";
-	    var sliced = things.slice(0, limit);
-	    return "" + sliced.join(separator) + (things.length > limit ? " (... and " + (things.length - limit) + "more)" : "");
-	}
-	function isObject(value) {
-	    return value !== null && typeof value === "object";
-	}
-	function isPlainObject(value) {
-	    if (value === null || typeof value !== "object")
-	        return false;
-	    var proto = Object.getPrototypeOf(value);
-	    return proto === Object.prototype || proto === null;
-	}
-	function objectAssign() {
-	    var res = arguments[0];
-	    for (var i = 1, l = arguments.length; i < l; i++) {
-	        var source = arguments[i];
-	        for (var key in source)
-	            if (hasOwnProperty(source, key)) {
-	                res[key] = source[key];
-	            }
-	    }
-	    return res;
-	}
-	function valueDidChange(compareStructural, oldValue, newValue) {
-	    return compareStructural
-	        ? !deepEquals(oldValue, newValue)
-	        : oldValue !== newValue;
-	}
-	var prototypeHasOwnProperty = Object.prototype.hasOwnProperty;
-	function hasOwnProperty(object, propName) {
-	    return prototypeHasOwnProperty.call(object, propName);
-	}
-	function makeNonEnumerable(object, propNames) {
-	    for (var i = 0; i < propNames.length; i++) {
-	        addHiddenProp(object, propNames[i], object[propNames[i]]);
-	    }
-	}
-	function addHiddenProp(object, propName, value) {
-	    Object.defineProperty(object, propName, {
-	        enumerable: false,
-	        writable: true,
-	        configurable: true,
-	        value: value
-	    });
-	}
-	function addHiddenFinalProp(object, propName, value) {
-	    Object.defineProperty(object, propName, {
-	        enumerable: false,
-	        writable: false,
-	        configurable: true,
-	        value: value
-	    });
-	}
-	function isPropertyConfigurable(object, prop) {
-	    var descriptor = Object.getOwnPropertyDescriptor(object, prop);
-	    return !descriptor || (descriptor.configurable !== false && descriptor.writable !== false);
-	}
-	function assertPropertyConfigurable(object, prop) {
-	    invariant(isPropertyConfigurable(object, prop), "Cannot make property '" + prop + "' observable, it is not configurable and writable in the target object");
-	}
-	function getEnumerableKeys(obj) {
-	    var res = [];
-	    for (var key in obj)
-	        res.push(key);
-	    return res;
-	}
-	function deepEquals(a, b) {
-	    if (a === null && b === null)
-	        return true;
-	    if (a === undefined && b === undefined)
-	        return true;
-	    var aIsArray = isArrayLike(a);
-	    if (aIsArray !== isArrayLike(b)) {
-	        return false;
-	    }
-	    else if (aIsArray) {
-	        if (a.length !== b.length)
-	            return false;
-	        for (var i = a.length - 1; i >= 0; i--)
-	            if (!deepEquals(a[i], b[i]))
-	                return false;
-	        return true;
-	    }
-	    else if (typeof a === "object" && typeof b === "object") {
-	        if (a === null || b === null)
-	            return false;
-	        if (getEnumerableKeys(a).length !== getEnumerableKeys(b).length)
-	            return false;
-	        for (var prop in a) {
-	            if (!(prop in b))
-	                return false;
-	            if (!deepEquals(a[prop], b[prop]))
-	                return false;
-	        }
-	        return true;
-	    }
-	    return a === b;
-	}
-	function createInstanceofPredicate(name, clazz) {
-	    var propName = "isMobX" + name;
-	    clazz.prototype[propName] = true;
-	    return function (x) {
-	        return isObject(x) && x[propName] === true;
-	    };
-	}
-	function isArrayLike(x) {
-	    return Array.isArray(x) || isObservableArray(x);
-	}
-	exports.isArrayLike = isArrayLike;
-	function isES6Map(thing) {
-	    if (thing instanceof getGlobal().Map)
-	        return true;
-	    return false;
-	}
-	
-	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
-
-/***/ },
-/* 409 */
-/***/ function(module, exports, __webpack_require__) {
-
 	/**
 	 * @fileOverview Sidebar for editor
 	 * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
 	 * @version 0.1.0
 	 */
 	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
 	const React = __webpack_require__(2);
 	const AddTabButton_1 = __webpack_require__(392);
-	const Signaller_1 = __webpack_require__(70);
+	const mobx_react_1 = __webpack_require__(70);
 	const SearchBar_1 = __webpack_require__(272);
-	class PredicateList extends React.Component {
+	let PredicateList = class PredicateList extends React.Component {
 	    constructor() {
 	        super();
 	        this.state = {
@@ -37437,7 +36894,7 @@
 	                initialName: ''
 	            }
 	        };
-	        Signaller_1.showModal.dispatch(a);
+	        this.props.modalController.addModal(a);
 	    }
 	    render() {
 	        return (React.createElement("div", { className: 'workspace-editor' },
@@ -37460,10 +36917,10 @@
 	                            React.createElement("td", null, "Domain"),
 	                            React.createElement("td", null, "Range"),
 	                            React.createElement("td", null, "Uses"))),
-	                    React.createElement("tbody", null, this.props.dataStore.all.predicate.value.filter(this.state.filterFunc).map((predicate) => {
-	                        const entityType = this.props.dataStore.all.entity_type.value.find((t) => t.uid === predicate.domain);
+	                    React.createElement("tbody", null, this.props.dataStore.dataStore.all.predicate.value.filter(this.state.filterFunc).map((predicate) => {
+	                        const entityType = this.props.dataStore.dataStore.all.entity_type.value.find((t) => t.uid === predicate.domain);
 	                        const rangeType = predicate.rangeIsReference ?
-	                            this.props.dataStore.all.entity_type.value.find((t) => t.uid === predicate.range) :
+	                            this.props.dataStore.dataStore.all.entity_type.value.find((t) => t.uid === predicate.range) :
 	                            predicate.range;
 	                        return (React.createElement("tr", { key: `predicate-${predicate.uid}` },
 	                            React.createElement("td", null,
@@ -37476,12 +36933,17 @@
 	                            React.createElement("td", null, predicate.uses)));
 	                    }))))));
 	    }
-	}
+	};
+	PredicateList = __decorate([
+	    mobx_react_1.inject('dataStore', 'modalStore'),
+	    mobx_react_1.observer,
+	    __metadata("design:paramtypes", [])
+	], PredicateList);
 	exports.PredicateList = PredicateList;
 
 
 /***/ },
-/* 410 */
+/* 408 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -37490,12 +36952,21 @@
 	 * @version 0.1.0
 	 */
 	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
 	const React = __webpack_require__(2);
 	const AddTabButton_1 = __webpack_require__(392);
-	const Signaller_1 = __webpack_require__(70);
+	const mobx_react_1 = __webpack_require__(70);
 	const SearchBar_1 = __webpack_require__(272);
-	const RecursiveTree_1 = __webpack_require__(411);
-	class SourceList extends React.Component {
+	const RecursiveTree_1 = __webpack_require__(409);
+	let SourceList = class SourceList extends React.Component {
 	    constructor() {
 	        super();
 	        this.state = {
@@ -37511,7 +36982,7 @@
 	            cancel: () => { console.log('cancel'); },
 	            settings: {}
 	        };
-	        Signaller_1.showModal.dispatch(a);
+	        this.props.modalStore.addModal(a);
 	    }
 	    render() {
 	        return (React.createElement("div", { className: 'workspace-editor' },
@@ -37533,7 +37004,7 @@
 	                            React.createElement("td", null, "#"),
 	                            React.createElement("td", null, "Name"),
 	                            React.createElement("td", null, "Parent"))),
-	                    React.createElement("tbody", null, this.props.dataStore.all.source.value.filter(this.state.filterFunc).map((source) => {
+	                    React.createElement("tbody", null, this.props.dataStore.dataStore.all.source.value.filter(this.state.filterFunc).map((source) => {
 	                        return (React.createElement("tr", { key: `source-${source.uid}` },
 	                            React.createElement("td", null,
 	                                source.uid,
@@ -37542,14 +37013,19 @@
 	                            React.createElement("td", null, source.label),
 	                            React.createElement("td", null, source.parent)));
 	                    })))) : (React.createElement("div", { className: 'tree-root' },
-	                    React.createElement(RecursiveTree_1.RecursiveTree, { data: this.props.dataStore.all.source.value, tabType: 'source', parentId: null, dataStore: this.props.dataStore }))))));
+	                    React.createElement(RecursiveTree_1.RecursiveTree, { data: this.props.dataStore.dataStore.all.source.value, tabType: 'source', parentId: null, dataStore: this.props.dataStore }))))));
 	    }
-	}
+	};
+	SourceList = __decorate([
+	    mobx_react_1.inject('dataStore', 'modalStore'),
+	    mobx_react_1.observer,
+	    __metadata("design:paramtypes", [])
+	], SourceList);
 	exports.SourceList = SourceList;
 
 
 /***/ },
-/* 411 */
+/* 409 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -37584,7 +37060,7 @@
 
 
 /***/ },
-/* 412 */
+/* 410 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -37593,12 +37069,21 @@
 	 * @version 0.1.0
 	 */
 	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
 	const React = __webpack_require__(2);
 	const AddTabButton_1 = __webpack_require__(392);
-	const Signaller_1 = __webpack_require__(70);
 	const SearchBar_1 = __webpack_require__(272);
-	const RecursiveTree_1 = __webpack_require__(411);
-	class EntityTypeList extends React.Component {
+	const RecursiveTree_1 = __webpack_require__(409);
+	const mobx_react_1 = __webpack_require__(70);
+	let EntityTypeList = class EntityTypeList extends React.Component {
 	    constructor() {
 	        super();
 	        this.state = {
@@ -37614,7 +37099,7 @@
 	            cancel: () => { console.log('cancel'); },
 	            settings: {}
 	        };
-	        Signaller_1.showModal.dispatch(a);
+	        this.props.modalStore.addModal(a);
 	    }
 	    render() {
 	        return (React.createElement("div", { className: 'workspace-editor' },
@@ -37649,12 +37134,17 @@
 	                    })))) : (React.createElement("div", { className: 'tree-root' },
 	                    React.createElement(RecursiveTree_1.RecursiveTree, { data: this.props.dataStore.all.entity_type.value, tabType: 'entity_type', parentId: null, dataStore: this.props.dataStore }))))));
 	    }
-	}
+	};
+	EntityTypeList = __decorate([
+	    mobx_react_1.inject('dataStore', 'modalStore'),
+	    mobx_react_1.observer,
+	    __metadata("design:paramtypes", [])
+	], EntityTypeList);
 	exports.EntityTypeList = EntityTypeList;
 
 
 /***/ },
-/* 413 */
+/* 411 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -37664,7 +37154,6 @@
 	 */
 	"use strict";
 	const React = __webpack_require__(2);
-	const Signaller_1 = __webpack_require__(70);
 	class Toast extends React.Component {
 	    constructor() {
 	        super();
@@ -37672,11 +37161,6 @@
 	            toasts: [],
 	            nextId: 0
 	        };
-	        this.boundShowToast = this.addToast.bind(this);
-	        Signaller_1.showToast.add(this.boundShowToast);
-	    }
-	    componentWillUnmount() {
-	        Signaller_1.showToast.remove(this.boundShowToast);
 	    }
 	    addToast(title, message, level = 'warning', lifeTime = 3000) {
 	        const id = this.state.nextId;
@@ -37700,506 +37184,7 @@
 
 
 /***/ },
-/* 414 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * @fileOverview Sidebar for editor
-	 * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
-	 * @version 0.1.0
-	 */
-	"use strict";
-	const React = __webpack_require__(2);
-	const Overlay_1 = __webpack_require__(415);
-	const PredicateDescription_1 = __webpack_require__(401);
-	const falcon_core_1 = __webpack_require__(47);
-	const literalTypes_1 = __webpack_require__(402);
-	const ApiService_1 = __webpack_require__(45);
-	class CreatePredicate extends React.Component {
-	    constructor() {
-	        super();
-	        this.state = {
-	            name: '',
-	            domain: { key: '', value: '' },
-	            range: { key: '', value: '' },
-	            domainOptions: [],
-	            rangeOptions: []
-	        };
-	    }
-	    componentWillMount() {
-	        this.setState({ name: this.props.initialName });
-	    }
-	    componentDidMount() {
-	        if (this.props.initialDomain !== undefined) {
-	            this.props.api.getItem(falcon_core_1.EntityType, ApiService_1.AppUrls.entity_type, this.props.initialDomain)
-	                .then((result) => {
-	                if (result.uid === null) {
-	                    throw new Error('Unexpected null uid');
-	                }
-	                this.setState({
-	                    domain: { key: result.label, value: result.uid.toString() },
-	                    domainOptions: [
-	                        { key: result.label, value: result.uid.toString() }
-	                    ].concat(result.parents.map((entityType) => {
-	                        if (entityType.uid === null) {
-	                            throw new Error('Unexpected null uid');
-	                        }
-	                        return { key: entityType.label, value: entityType.uid.toString() };
-	                    }))
-	                });
-	            });
-	        }
-	        const results = this.props.dataStore.all.entity_type.value;
-	        const entityTypeMap = results.map((entityType) => {
-	            if (entityType.uid === null) {
-	                throw new Error('Unexpected null uid');
-	            }
-	            return { key: entityType.label, value: entityType.uid.toString() };
-	        });
-	        if (this.props.initialDomain === undefined) {
-	            this.setState({ domainOptions: entityTypeMap });
-	        }
-	        this.setState({
-	            rangeOptions: literalTypes_1.literalTypes.map((lit) => ({ key: lit.label, value: lit.value, meta: 'literal' })).concat(entityTypeMap)
-	        });
-	    }
-	    create() {
-	        const newPredicate = falcon_core_1.Serializer.fromJson(falcon_core_1.Predicate, {
-	            name: this.state.name,
-	            domain: this.state.domain.value,
-	            range: this.state.range.value,
-	            rangeIsReference: this.state.range.meta !== 'literal'
-	        });
-	        this.props.api.postItem(falcon_core_1.Predicate, ApiService_1.AppUrls.predicate, newPredicate)
-	            .then((result) => {
-	            newPredicate.uid = result[0];
-	            this.props.complete(newPredicate);
-	        });
-	    }
-	    render() {
-	        return (React.createElement(Overlay_1.Overlay, null,
-	            React.createElement("h2", null,
-	                React.createElement("i", { className: 'fa fa-plus', "aria-hidden": 'true' }),
-	                " Create Property"),
-	            React.createElement("label", { className: 'small' }, "Name"),
-	            React.createElement("input", { type: 'text', className: 'gap', ref: (a) => { if (a !== null)
-	                    a.focus(); }, value: this.state.name, onChange: (e) => this.setState({ name: e.target.value }) }),
-	            React.createElement(PredicateDescription_1.PredicateDescription, { domain: this.state.domain, range: this.state.range, domainChanged: (s) => this.setState({ domain: s }), rangeChanged: (s) => this.setState({ range: s }), domainOptions: this.state.domainOptions, rangeOptions: this.state.rangeOptions, mode: 'editAll' }),
-	            React.createElement("div", { className: 'modal-toolbar' },
-	                React.createElement("button", { onClick: this.props.cancel, className: 'pull-left' }, "Cancel"),
-	                React.createElement("button", { onClick: this.create.bind(this), className: 'pull-right' }, "Create Property"))));
-	    }
-	}
-	exports.CreatePredicate = CreatePredicate;
-	;
-
-
-/***/ },
-/* 415 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * @fileOverview Sidebar for editor
-	 * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
-	 * @version 0.1.0
-	 */
-	"use strict";
-	const React = __webpack_require__(2);
-	class Overlay extends React.Component {
-	    render() {
-	        return (React.createElement("div", { className: 'full-page-overlay' },
-	            React.createElement("div", { className: 'overlay-container' }, this.props.children)));
-	    }
-	}
-	exports.Overlay = Overlay;
-	;
-
-
-/***/ },
-/* 416 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * @fileOverview Sidebar for editor
-	 * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
-	 * @version 0.1.0
-	 */
-	"use strict";
-	const React = __webpack_require__(2);
-	const Overlay_1 = __webpack_require__(415);
-	const falcon_core_1 = __webpack_require__(47);
-	const ApiService_1 = __webpack_require__(45);
-	const ComboDropdown_1 = __webpack_require__(67);
-	const Signaller_1 = __webpack_require__(70);
-	class CreateRecord extends React.Component {
-	    constructor() {
-	        super();
-	        this.state = {
-	            comboValue: { key: '', value: '' },
-	            searchValue: ''
-	        };
-	    }
-	    componentDidMount() {
-	        this.refs['comboDropDown'].refs['comboDropDownInputBox'].focus();
-	    }
-	    createNewPredicate() {
-	        const modalDef = {
-	            name: 'predicate',
-	            complete: (data) => {
-	                console.log('Predicate editor called complete');
-	                this.setComboValue({ key: data.label, value: data.uid === null ? null : data.uid.toString(), meta: data });
-	            },
-	            cancel: () => {
-	                console.log('Predicate editor called cancel');
-	            },
-	            settings: {
-	                initialName: this.state.searchValue,
-	                initialDomain: this.props.entityType
-	            }
-	        };
-	        Signaller_1.showModal.dispatch(modalDef);
-	    }
-	    setComboValue(opt) {
-	        this.props.api.postItem(falcon_core_1.Record, ApiService_1.AppUrls.record, falcon_core_1.Serializer.fromJson(falcon_core_1.Record, {
-	            predicate: opt.meta.uid,
-	            entity: this.props.entityUid,
-	            valueType: opt.meta.rangeIsReference ? 'entity' : opt.meta.range,
-	            score: 3
-	        }))
-	            .then((result) => this.props.complete(result))
-	            .catch(this.props.cancel);
-	    }
-	    render() {
-	        return (React.createElement(Overlay_1.Overlay, null,
-	            React.createElement("h2", null, "Create Record"),
-	            React.createElement(ComboDropdown_1.ComboDropdown, { ref: 'comboDropDown', options: this.props.options, typeName: 'predicate', value: this.state.comboValue, setValue: this.setComboValue.bind(this), createNewValue: this.createNewPredicate.bind(this), updateSearchString: (s) => this.setState({ searchValue: s }) })));
-	    }
-	}
-	exports.CreateRecord = CreateRecord;
-	;
-
-
-/***/ },
-/* 417 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * @fileOverview Sidebar for editor
-	 * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
-	 * @version 0.1.0
-	 */
-	"use strict";
-	const React = __webpack_require__(2);
-	const falcon_core_1 = __webpack_require__(47);
-	const ApiService_1 = __webpack_require__(45);
-	const Signaller_1 = __webpack_require__(70);
-	class CreatePresetRecord extends React.Component {
-	    constructor() {
-	        super();
-	        this.state = {};
-	    }
-	    componentDidMount() {
-	        if (CreatePresetRecord.openEntityDialog) {
-	            CreatePresetRecord.openEntityDialog = false;
-	            this.createNewEntity();
-	        }
-	        else {
-	            CreatePresetRecord.openEntityDialog = true;
-	        }
-	    }
-	    createNewEntity() {
-	        const modalDef = {
-	            name: 'entity',
-	            complete: (data) => {
-	                const isMentioned = this.props.dataStore.all.predicate.value.find((pred) => pred.label === 'is mentioned');
-	                this.props.api.postItem(falcon_core_1.Record, ApiService_1.AppUrls.record, falcon_core_1.Serializer.fromJson(falcon_core_1.Record, {
-	                    predicate: isMentioned.uid,
-	                    entity: data[0],
-	                    valueType: 'source',
-	                    source: this.props.source.uid,
-	                    score: 3
-	                }))
-	                    .then((result) => {
-	                    this.props.complete(result);
-	                })
-	                    .catch(this.props.cancel);
-	            },
-	            cancel: () => {
-	            },
-	            settings: {}
-	        };
-	        Signaller_1.showModal.dispatch(modalDef);
-	    }
-	    render() {
-	        return null;
-	    }
-	}
-	CreatePresetRecord.openEntityDialog = true;
-	exports.CreatePresetRecord = CreatePresetRecord;
-	;
-
-
-/***/ },
-/* 418 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * @fileOverview Sidebar for editor
-	 * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
-	 * @version 0.1.0
-	 */
-	"use strict";
-	const React = __webpack_require__(2);
-	const Overlay_1 = __webpack_require__(415);
-	const falcon_core_1 = __webpack_require__(47);
-	const ApiService_1 = __webpack_require__(45);
-	const mousetrap = __webpack_require__(397);
-	class CreateSource extends React.Component {
-	    constructor() {
-	        super();
-	        this.state = {
-	            internalValue: ''
-	        };
-	    }
-	    componentWillMount() {
-	        this.setState({ internalValue: this.props.initialValue });
-	    }
-	    createSource() {
-	        this.props.api.postItem(falcon_core_1.Source, ApiService_1.AppUrls.source, falcon_core_1.Serializer.fromJson(falcon_core_1.Source, {
-	            name: this.state.internalValue
-	        }))
-	            .then(this.props.complete);
-	    }
-	    inputRef(val) {
-	        if (val !== null) {
-	            val.focus();
-	            this.keyboardShortcuts = new mousetrap(val);
-	            this.keyboardShortcuts.bind('return', this.createSource.bind(this));
-	            this.keyboardShortcuts.bind('escape', this.props.cancel);
-	        }
-	        else {
-	            this.keyboardShortcuts.unbind('return');
-	            this.keyboardShortcuts.unbind('escape');
-	        }
-	    }
-	    render() {
-	        return (React.createElement(Overlay_1.Overlay, null,
-	            React.createElement("h2", null, "Create Source"),
-	            React.createElement("label", { className: 'small' }, "Name"),
-	            React.createElement("input", { type: 'text', value: this.state.internalValue, ref: this.inputRef.bind(this), onChange: (e) => this.setState({ internalValue: e.target.value }) }),
-	            React.createElement("button", { onClick: () => this.props.cancel(), className: 'pull-left' }, "Cancel"),
-	            React.createElement("button", { onClick: this.createSource.bind(this), className: 'pull-right' }, "Create Source")));
-	    }
-	}
-	CreateSource.defaultProps = {
-	    initialValue: ''
-	};
-	exports.CreateSource = CreateSource;
-
-
-/***/ },
-/* 419 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * @fileOverview Sidebar for editor
-	 * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
-	 * @version 0.1.0
-	 */
-	"use strict";
-	const React = __webpack_require__(2);
-	const Overlay_1 = __webpack_require__(415);
-	const falcon_core_1 = __webpack_require__(47);
-	const ApiService_1 = __webpack_require__(45);
-	const ComboDropdown_1 = __webpack_require__(67);
-	const lodash_1 = __webpack_require__(69);
-	class CreateEntity extends React.Component {
-	    constructor() {
-	        super();
-	        this.state = {
-	            label: '',
-	            entityType: { key: '', value: '' },
-	            allEntityTypes: []
-	        };
-	    }
-	    componentWillMount() {
-	        this.props.api.getCollection(falcon_core_1.EntityType, ApiService_1.AppUrls.entity_type, {})
-	            .then((allEntityTypes) => {
-	            if (this.props.initialType !== undefined) {
-	                const initialType = allEntityTypes.find((et) => et.uid === this.props.initialType);
-	                this.setState({
-	                    entityType: { key: initialType.label, value: initialType.uid.toString() }
-	                });
-	            }
-	            this.setState({ allEntityTypes });
-	        });
-	    }
-	    CreateEntity() {
-	        this.props.api.postItem(falcon_core_1.Entity, ApiService_1.AppUrls.entity, falcon_core_1.Serializer.fromJson(falcon_core_1.Entity, {
-	            label: this.state.label,
-	            entityType: this.state.entityType.value
-	        }))
-	            .then(this.props.complete);
-	    }
-	    render() {
-	        return (React.createElement(Overlay_1.Overlay, null,
-	            React.createElement("h2", null, "Create Entity"),
-	            React.createElement("label", { className: 'small' }, "Label"),
-	            React.createElement("input", { type: 'text', value: this.state.label, ref: (a) => { if (a !== null)
-	                    a.focus(); }, name: 'new-entity-name', className: 'gap', onChange: (e) => this.setState({ label: e.target.value }) }),
-	            React.createElement("label", { className: 'small' }, "Type"),
-	            React.createElement(ComboDropdown_1.ComboDropdown, { options: this.state.allEntityTypes.map((t) => ({ key: t.label, value: t.uid.toString() })), typeName: 'entity type', value: this.state.entityType, setValue: (entityType) => this.setState({ entityType }), createNewValue: lodash_1.noop, allowNew: false }),
-	            React.createElement("button", { name: 'cancel-modal', onClick: () => this.props.cancel(), className: 'pull-left' }, "Cancel"),
-	            React.createElement("button", { name: 'create-entity', onClick: this.CreateEntity.bind(this), className: 'pull-right' }, "Create Entity")));
-	    }
-	}
-	exports.CreateEntity = CreateEntity;
-	;
-
-
-/***/ },
-/* 420 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * @fileOverview Sidebar for editor
-	 * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
-	 * @version 0.1.0
-	 */
-	"use strict";
-	const React = __webpack_require__(2);
-	const Overlay_1 = __webpack_require__(415);
-	const falcon_core_1 = __webpack_require__(47);
-	const ApiService_1 = __webpack_require__(45);
-	const mousetrap = __webpack_require__(397);
-	class CreateEntityType extends React.Component {
-	    constructor() {
-	        super();
-	        this.state = {
-	            internalValue: ''
-	        };
-	    }
-	    createEntityType() {
-	        this.props.api.postItem(falcon_core_1.EntityType, ApiService_1.AppUrls.entity_type, falcon_core_1.Serializer.fromJson(falcon_core_1.EntityType, {
-	            label: this.state.internalValue
-	        }))
-	            .then(this.props.complete);
-	    }
-	    inputRef(val) {
-	        if (val !== null) {
-	            val.focus();
-	            this.keyboardShortcuts = new mousetrap(val);
-	            this.keyboardShortcuts.bind('return', this.createEntityType.bind(this));
-	            this.keyboardShortcuts.bind('escape', this.props.cancel);
-	        }
-	        else {
-	            this.keyboardShortcuts.unbind('return');
-	        }
-	    }
-	    render() {
-	        return (React.createElement(Overlay_1.Overlay, null,
-	            React.createElement("h2", null, "Create Entity Type"),
-	            React.createElement("label", { className: 'small' }, "Name"),
-	            React.createElement("input", { type: 'text', value: this.state.internalValue, ref: this.inputRef.bind(this), onChange: (e) => this.setState({ internalValue: e.target.value }) }),
-	            React.createElement("button", { onClick: () => this.props.cancel(), className: 'pull-left' }, "Cancel"),
-	            React.createElement("button", { onClick: this.createEntityType.bind(this), className: 'pull-right' }, "Create Entity Type")));
-	    }
-	}
-	exports.CreateEntityType = CreateEntityType;
-	;
-
-
-/***/ },
-/* 421 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * @fileOverview Sidebar for editor
-	 * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
-	 * @version 0.1.0
-	 */
-	"use strict";
-	const React = __webpack_require__(2);
-	const Overlay_1 = __webpack_require__(415);
-	class ConflictResolution extends React.Component {
-	    constructor() {
-	        super();
-	        this.state = {
-	            label: '',
-	            entityType: { key: '', value: '' },
-	            allEntityTypes: []
-	        };
-	    }
-	    render() {
-	        return (React.createElement(Overlay_1.Overlay, null,
-	            React.createElement("h2", null,
-	                React.createElement("i", { className: 'fa fa-exclamation-triangle warning' }),
-	                " Conflict: ",
-	                this.props.message),
-	            this.props.conflictingItems.record !== undefined && this.props.conflictingItems.record.length > 0 ? (React.createElement("span", null,
-	                React.createElement("p", null, "The following records conflict with your request change:"),
-	                React.createElement("table", { className: 'table' },
-	                    React.createElement("thead", null,
-	                        React.createElement("tr", null,
-	                            React.createElement("th", null, "Entity"),
-	                            React.createElement("th", null, "Predicate"),
-	                            React.createElement("th", null, "Value"))),
-	                    React.createElement("tbody", null, this.props.conflictingItems.record.map((record) => {
-	                        const entityName = this.props.dataStore.all.entity.value
-	                            .find((entity) => entity.uid == record.entity).label;
-	                        const predicateName = this.props.dataStore.all.predicate.value
-	                            .find((predicate) => predicate.uid == record.predicate).label;
-	                        return (React.createElement("tr", { key: `row-${record.uid}` },
-	                            React.createElement("td", null, entityName),
-	                            React.createElement("td", null, predicateName),
-	                            React.createElement("td", null, record.value)));
-	                    }))))) : null,
-	            this.props.conflictingItems.entity !== undefined && this.props.conflictingItems.entity.length > 0 ? (React.createElement("span", null,
-	                React.createElement("p", null, "The following entities conflict with your request change:"),
-	                React.createElement("table", { className: 'table' },
-	                    React.createElement("thead", null,
-	                        React.createElement("tr", null,
-	                            React.createElement("th", null, "Entity"))),
-	                    React.createElement("tbody", null, this.props.conflictingItems.entity.map((entity) => {
-	                        return (React.createElement("tr", { key: `row-${entity.uid}` },
-	                            React.createElement("td", null, entity.label)));
-	                    }))))) : null,
-	            this.props.conflictingItems.entityType !== undefined && this.props.conflictingItems.entityType.length > 0 ? (React.createElement("span", null,
-	                React.createElement("p", null, "The following entity types conflict with your request change:"),
-	                React.createElement("table", { className: 'table' },
-	                    React.createElement("thead", null,
-	                        React.createElement("tr", null,
-	                            React.createElement("th", null, "Entity Type"))),
-	                    React.createElement("tbody", null, this.props.conflictingItems.entityType.map((entityType) => {
-	                        return (React.createElement("tr", { key: `row-${entityType.uid}` },
-	                            React.createElement("td", null, entityType.label)));
-	                    }))))) : null,
-	            this.props.conflictingItems.source !== undefined && this.props.conflictingItems.source.length > 0 ? (React.createElement("span", null,
-	                React.createElement("p", null, "The following sources conflict with your request change:"),
-	                React.createElement("table", { className: 'table' },
-	                    React.createElement("thead", null,
-	                        React.createElement("tr", null,
-	                            React.createElement("th", null, "Sources"))),
-	                    React.createElement("tbody", null, this.props.conflictingItems.source.map((source) => {
-	                        return (React.createElement("tr", { key: `row-${source.uid}` },
-	                            React.createElement("td", null, source.label)));
-	                    }))))) : null,
-	            React.createElement("div", { className: 'block-buttons' },
-	                React.createElement("button", { onClick: () => this.props.cancel() }, "Cancel"),
-	                React.createElement("button", { onClick: () => this.props.complete('addToWorkspace') },
-	                    React.createElement("i", { className: 'icon-list-add' }),
-	                    "Cancel and add conflicting records to workspace"),
-	                React.createElement("button", { onClick: () => this.props.complete('deleteAll') },
-	                    React.createElement("i", { className: 'fa fa-trash' }),
-	                    " Continue and delete all conflicting records"))));
-	    }
-	}
-	exports.ConflictResolution = ConflictResolution;
-	;
-
-
-/***/ },
-/* 422 */
+/* 412 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -38208,7 +37193,213 @@
 	 * @version 0.1.0
 	 */
 	"use strict";
-	const immutable_1 = __webpack_require__(423);
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
+	var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+	    return new (P || (P = Promise))(function (resolve, reject) {
+	        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+	        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+	        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+	        step((generator = generator.apply(thisArg, _arguments)).next());
+	    });
+	};
+	const falcon_core_1 = __webpack_require__(47);
+	const ApiService_1 = __webpack_require__(45);
+	const DataStore_1 = __webpack_require__(413);
+	const immutable_1 = __webpack_require__(414);
+	const react_sortable_hoc_1 = __webpack_require__(72);
+	const mobx_1 = __webpack_require__(71);
+	const lodash_1 = __webpack_require__(69);
+	const moment = __webpack_require__(280);
+	class DataController {
+	    constructor(api) {
+	        this.api = api;
+	        this.dataStore = lodash_1.cloneDeep(DataStore_1.emptyDataStore);
+	        this.tabs = [];
+	        if (typeof window !== 'undefined') {
+	            const tabString = window.localStorage.getItem('open_tabs');
+	            if (tabString !== null) {
+	                this.tabs = JSON.parse(tabString);
+	            }
+	        }
+	    }
+	    // checks that the page exists and adds it to tabs if necessery
+	    enterPage(workspace, uid, other) {
+	        if (lodash_1.find(this.tabs, (tab) => tab.tabType === workspace && tab.uid == uid) === undefined) {
+	            this.tabs = this.tabs.concat([{ tabType: workspace, uid: uid, tabClass: 'item' }]);
+	        }
+	    }
+	    loadTabData(tab) {
+	        if (tab.tabClass !== 'item') {
+	            return Promise.resolve(new falcon_core_1.Entity());
+	        }
+	        switch (tab.tabType) {
+	            case 'entity':
+	                return Promise.all([
+	                    this.api.getItem(falcon_core_1.Entity, ApiService_1.AppUrls.entity, tab.uid),
+	                    this.api.getCollection(falcon_core_1.Record, ApiService_1.AppUrls.record, { entity: tab.uid }),
+	                    this.api.getCollection(falcon_core_1.Record, ApiService_1.AppUrls.record, { value_type: 'entity', value_entity: tab.uid })
+	                ]).then(([entity, records, referenceRecords]) => ({ entity, records, referenceRecords }));
+	            case 'predicate':
+	                return this.api.getItem(falcon_core_1.Predicate, ApiService_1.AppUrls.predicate, tab.uid);
+	            case 'entity_type':
+	                return this.api.getItem(falcon_core_1.EntityType, ApiService_1.AppUrls.entity_type, tab.uid);
+	            case 'source':
+	                return Promise.all([
+	                    this.api.getItem(falcon_core_1.Source, ApiService_1.AppUrls.source, tab.uid),
+	                    this.api.getCollection(falcon_core_1.SourceElement, ApiService_1.AppUrls.source_element, { source: tab.uid })
+	                ]).then(([source, source_element]) => ({ source, source_element }));
+	            default:
+	                throw new Error('Unexpected tab type requested');
+	        }
+	    }
+	    update() {
+	        return __awaiter(this, void 0, void 0, function* () {
+	            // LOAD TABS
+	            const groupedTabs = lodash_1.groupBy(this.tabs, 'tabType');
+	            const tabPromise = Promise.all(Object.keys(groupedTabs).map((tabType) => Promise.all(groupedTabs[tabType].map((tab) => this.loadTabData(tab)
+	                .then((value) => {
+	                return { [`${tab.tabType}-${tab.uid}`]: { value, lastUpdate: moment() } };
+	            })))
+	                .then((tabData) => {
+	                return { [tabType]: immutable_1.Map(Object.assign({}, ...tabData)) };
+	            })));
+	            // load lists of data commonly required by views
+	            const allPromise = Promise.all([
+	                this.api.getCollection(falcon_core_1.Predicate, ApiService_1.AppUrls.predicate, {}),
+	                this.api.getCollection(falcon_core_1.Source, ApiService_1.AppUrls.source, {}),
+	                this.api.getCollection(falcon_core_1.Entity, ApiService_1.AppUrls.entity, {}),
+	                this.api.getCollection(falcon_core_1.EntityType, ApiService_1.AppUrls.entity_type, {}),
+	                this.api.getItem(falcon_core_1.ElementSet, ApiService_1.AppUrls.element_set, 1)
+	            ])
+	                .then(([predicates, sources, entities, entityType, dublinCore]) => {
+	                return {
+	                    predicate: { value: predicates, lastUpdate: moment() },
+	                    source: { value: sources, lastUpdate: moment() },
+	                    entity: { value: entities, lastUpdate: moment() },
+	                    entity_type: { value: entityType, lastUpdate: moment() },
+	                    dublinCore: { value: dublinCore, lastUpdate: moment() }
+	                };
+	            });
+	            Promise.all([tabPromise, allPromise])
+	                .then(([tabsArray, all]) => {
+	                const tabs = Object.assign({}, ...tabsArray);
+	                return { tabs, all };
+	            });
+	            return Promise.resolve(true);
+	        });
+	    }
+	    /*
+	    *
+	    *    TABS
+	    *
+	    */
+	    createTab(tabType, uid, tabClass, data, query) {
+	        // don't add a tab if it already exists
+	        if (lodash_1.find(this.tabs, (tab) => tab.tabType === tabType && tab.uid == uid) === undefined) {
+	            this.tabs = [{ tabType, uid, data, tabClass, query }].concat(this.tabs);
+	            this.saveTabs();
+	            this.update();
+	        }
+	    }
+	    updateTab(tabType, uid, data) {
+	        const tabs = lodash_1.cloneDeep(this.tabs);
+	        const tabId = lodash_1.findIndex(tabs, (tab) => tab.tabType === tabType && tab.uid === uid);
+	        if (tabId !== -1) {
+	            tabs[tabId].data = data;
+	            this.tabs = tabs;
+	        }
+	    }
+	    closeTab(tabType, uid) {
+	        this.tabs = this.tabs.filter((a) => a.tabType !== tabType || a.uid !== uid);
+	        this.saveTabs();
+	        this.update();
+	    }
+	    saveTabs() {
+	        const tabsString = JSON.stringify(this.tabs);
+	        window.localStorage.setItem('open_tabs', tabsString);
+	    }
+	    clearAllTabs() {
+	        this.tabs = [];
+	        this.saveTabs();
+	        this.update();
+	    }
+	    reorderTabs(data) {
+	        this.tabs = react_sortable_hoc_1.arrayMove(this.tabs, data.oldIndex, data.newIndex);
+	        this.saveTabs();
+	    }
+	}
+	__decorate([
+	    mobx_1.observable,
+	    __metadata("design:type", Object)
+	], DataController.prototype, "dataStore", void 0);
+	__decorate([
+	    mobx_1.observable,
+	    __metadata("design:type", Array)
+	], DataController.prototype, "tabs", void 0);
+	__decorate([
+	    mobx_1.action,
+	    __metadata("design:type", Function),
+	    __metadata("design:paramtypes", []),
+	    __metadata("design:returntype", Promise)
+	], DataController.prototype, "update", null);
+	__decorate([
+	    mobx_1.action,
+	    __metadata("design:type", Function),
+	    __metadata("design:paramtypes", [String, Number, String, Object, Object]),
+	    __metadata("design:returntype", void 0)
+	], DataController.prototype, "createTab", null);
+	__decorate([
+	    mobx_1.action,
+	    __metadata("design:type", Function),
+	    __metadata("design:paramtypes", [String, Number, Object]),
+	    __metadata("design:returntype", void 0)
+	], DataController.prototype, "updateTab", null);
+	__decorate([
+	    mobx_1.action,
+	    __metadata("design:type", Function),
+	    __metadata("design:paramtypes", [String, Number]),
+	    __metadata("design:returntype", void 0)
+	], DataController.prototype, "closeTab", null);
+	__decorate([
+	    mobx_1.action,
+	    __metadata("design:type", Function),
+	    __metadata("design:paramtypes", []),
+	    __metadata("design:returntype", void 0)
+	], DataController.prototype, "saveTabs", null);
+	__decorate([
+	    mobx_1.action,
+	    __metadata("design:type", Function),
+	    __metadata("design:paramtypes", []),
+	    __metadata("design:returntype", void 0)
+	], DataController.prototype, "clearAllTabs", null);
+	__decorate([
+	    mobx_1.action,
+	    __metadata("design:type", Function),
+	    __metadata("design:paramtypes", [Object]),
+	    __metadata("design:returntype", void 0)
+	], DataController.prototype, "reorderTabs", null);
+	exports.DataController = DataController;
+
+
+/***/ },
+/* 413 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * @fileOverview <Description Missing>
+	 * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+	 * @version 0.1.0
+	 */
+	"use strict";
+	const immutable_1 = __webpack_require__(414);
 	const falcon_core_1 = __webpack_require__(47);
 	exports.emptyDataStore = {
 	    all: {
@@ -38237,7 +37428,7 @@
 
 
 /***/ },
-/* 423 */
+/* 414 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -43221,7 +42412,7 @@
 	}));
 
 /***/ },
-/* 424 */
+/* 415 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -43230,77 +42421,624 @@
 	 * @version 0.1.0
 	 */
 	"use strict";
-	const falcon_core_1 = __webpack_require__(47);
-	const ApiService_1 = __webpack_require__(45);
-	const immutable_1 = __webpack_require__(423);
+	var __assign = (this && this.__assign) || Object.assign || function(t) {
+	    for (var s, i = 1, n = arguments.length; i < n; i++) {
+	        s = arguments[i];
+	        for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+	            t[p] = s[p];
+	    }
+	    return t;
+	};
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
+	const React = __webpack_require__(2);
 	const lodash_1 = __webpack_require__(69);
-	const moment = __webpack_require__(280);
-	const loadTabData = (api, tab) => {
-	    if (tab.tabClass !== 'item') {
-	        return Promise.resolve(new falcon_core_1.Entity());
+	const CreatePredicate_1 = __webpack_require__(416);
+	const CreateRecord_1 = __webpack_require__(418);
+	const CreatePresetRecord_1 = __webpack_require__(419);
+	const CreateSource_1 = __webpack_require__(420);
+	const CreateEntity_1 = __webpack_require__(421);
+	const CreateEntityType_1 = __webpack_require__(422);
+	const ConflictResolution_1 = __webpack_require__(423);
+	const mobx_1 = __webpack_require__(71);
+	class ModalStore {
+	    constructor() {
+	        this.modalQueue = [];
 	    }
-	    switch (tab.tabType) {
-	        case 'entity':
-	            return Promise.all([
-	                api.getItem(falcon_core_1.Entity, ApiService_1.AppUrls.entity, tab.uid),
-	                api.getCollection(falcon_core_1.Record, ApiService_1.AppUrls.record, { entity: tab.uid }),
-	                api.getCollection(falcon_core_1.Record, ApiService_1.AppUrls.record, { value_type: 'entity', value_entity: tab.uid })
-	            ]).then(([entity, records, referenceRecords]) => ({ entity, records, referenceRecords }));
-	        case 'predicate':
-	            return api.getItem(falcon_core_1.Predicate, ApiService_1.AppUrls.predicate, tab.uid);
-	        case 'entity_type':
-	            return api.getItem(falcon_core_1.EntityType, ApiService_1.AppUrls.entity_type, tab.uid);
-	        case 'source':
-	            return Promise.all([
-	                api.getItem(falcon_core_1.Source, ApiService_1.AppUrls.source, tab.uid),
-	                api.getCollection(falcon_core_1.SourceElement, ApiService_1.AppUrls.source_element, { source: tab.uid })
-	            ]).then(([source, source_element]) => ({ source, source_element }));
-	        default:
-	            throw new Error('Unexpected tab type requested');
-	    }
-	};
-	exports.reload = (api, tabs, force = false, failureCallback) => {
-	    const groupedTabs = lodash_1.groupBy(tabs, 'tabType');
-	    const tabPromise = Promise.all(Object.keys(groupedTabs).map((tabType) => Promise.all(groupedTabs[tabType].map((tab) => loadTabData(api, tab)
-	        .then((value) => {
-	        return { [`${tab.tabType}-${tab.uid}`]: { value, lastUpdate: moment() } };
-	    })
-	        .catch((err) => {
-	        failureCallback(tab.tabType, tab.uid);
-	    })))
-	        .then((tabData) => {
-	        return { [tabType]: immutable_1.Map(Object.assign({}, ...tabData)) };
-	    })));
-	    // load lists of data commonly required by views
-	    const allPromise = Promise.all([
-	        api.getCollection(falcon_core_1.Predicate, ApiService_1.AppUrls.predicate, {}),
-	        api.getCollection(falcon_core_1.Source, ApiService_1.AppUrls.source, {}),
-	        api.getCollection(falcon_core_1.Entity, ApiService_1.AppUrls.entity, {}),
-	        api.getCollection(falcon_core_1.EntityType, ApiService_1.AppUrls.entity_type, {}),
-	        api.getItem(falcon_core_1.ElementSet, ApiService_1.AppUrls.element_set, 1)
-	    ])
-	        .then(([predicates, sources, entities, entityType, dublinCore]) => {
-	        return {
-	            predicate: { value: predicates, lastUpdate: moment() },
-	            source: { value: sources, lastUpdate: moment() },
-	            entity: { value: entities, lastUpdate: moment() },
-	            entity_type: { value: entityType, lastUpdate: moment() },
-	            dublinCore: { value: dublinCore, lastUpdate: moment() }
+	    // might be @computed?
+	    currentModal() {
+	        if (this.modalQueue.length === 0) {
+	            return null;
+	        }
+	        const sharedProps = {
+	            complete: this.modalComplete.bind(this),
+	            cancel: this.modalCancel.bind(this)
 	        };
-	    });
-	    return Promise.all([tabPromise, allPromise])
-	        .then(([tabsArray, all]) => {
-	        const tabs = Object.assign({}, ...tabsArray);
-	        return { tabs, all };
-	    });
-	};
-	exports.DataController = {
-	    reload: exports.reload
-	};
+	        switch (this.modalQueue[0].name) {
+	            case 'predicate':
+	                return (React.createElement(CreatePredicate_1.CreatePredicate, __assign({}, sharedProps, this.modalQueue[0].settings)));
+	            case 'record':
+	                return (React.createElement(CreateRecord_1.CreateRecord, __assign({}, sharedProps, this.modalQueue[0].settings)));
+	            case 'preset_record':
+	                return (React.createElement(CreatePresetRecord_1.CreatePresetRecord, __assign({}, sharedProps, this.modalQueue[0].settings)));
+	            case 'source':
+	                return (React.createElement(CreateSource_1.CreateSource, __assign({}, sharedProps, this.modalQueue[0].settings)));
+	            case 'entity':
+	                return (React.createElement(CreateEntity_1.CreateEntity, __assign({}, sharedProps, this.modalQueue[0].settings)));
+	            case 'entity_type':
+	                return (React.createElement(CreateEntityType_1.CreateEntityType, __assign({}, sharedProps, this.modalQueue[0].settings)));
+	            case 'conflict_resolution':
+	                return (React.createElement(ConflictResolution_1.ConflictResolution, __assign({}, sharedProps, this.modalQueue[0].settings)));
+	        }
+	        return null;
+	    }
+	    addModal(def) {
+	        this.modalQueue = [def].concat(this.modalQueue);
+	    }
+	    modalComplete(data) {
+	        if (this.modalQueue.length === 0) {
+	            throw new Error('Attempted to complete non-existent modal');
+	        }
+	        this.modalQueue[0].complete(data);
+	        if (this.modalQueue.length > 0) {
+	            this.modalQueue = lodash_1.tail(this.modalQueue);
+	            ;
+	        }
+	    }
+	    modalCancel() {
+	        if (this.modalQueue.length === 0) {
+	            throw new Error('Attempted to cancel non-existent modal');
+	        }
+	        this.modalQueue[0].cancel();
+	        this.modalQueue = [];
+	    }
+	}
+	__decorate([
+	    mobx_1.observable,
+	    __metadata("design:type", Array)
+	], ModalStore.prototype, "modalQueue", void 0);
+	__decorate([
+	    mobx_1.action,
+	    __metadata("design:type", Function),
+	    __metadata("design:paramtypes", [Object]),
+	    __metadata("design:returntype", void 0)
+	], ModalStore.prototype, "addModal", null);
+	__decorate([
+	    mobx_1.action,
+	    __metadata("design:type", Function),
+	    __metadata("design:paramtypes", [Object]),
+	    __metadata("design:returntype", void 0)
+	], ModalStore.prototype, "modalComplete", null);
+	__decorate([
+	    mobx_1.action,
+	    __metadata("design:type", Function),
+	    __metadata("design:paramtypes", []),
+	    __metadata("design:returntype", void 0)
+	], ModalStore.prototype, "modalCancel", null);
+	exports.ModalStore = ModalStore;
 
 
 /***/ },
-/* 425 */
+/* 416 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * @fileOverview Sidebar for editor
+	 * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+	 * @version 0.1.0
+	 */
+	"use strict";
+	const React = __webpack_require__(2);
+	const Overlay_1 = __webpack_require__(417);
+	const PredicateDescription_1 = __webpack_require__(401);
+	const falcon_core_1 = __webpack_require__(47);
+	const literalTypes_1 = __webpack_require__(402);
+	const ApiService_1 = __webpack_require__(45);
+	class CreatePredicate extends React.Component {
+	    constructor() {
+	        super();
+	        this.state = {
+	            name: '',
+	            domain: { key: '', value: '' },
+	            range: { key: '', value: '' },
+	            domainOptions: [],
+	            rangeOptions: []
+	        };
+	    }
+	    componentWillMount() {
+	        this.setState({ name: this.props.initialName });
+	    }
+	    componentDidMount() {
+	        if (this.props.initialDomain !== undefined) {
+	            this.props.api.getItem(falcon_core_1.EntityType, ApiService_1.AppUrls.entity_type, this.props.initialDomain)
+	                .then((result) => {
+	                if (result.uid === null) {
+	                    throw new Error('Unexpected null uid');
+	                }
+	                this.setState({
+	                    domain: { key: result.label, value: result.uid.toString() },
+	                    domainOptions: [
+	                        { key: result.label, value: result.uid.toString() }
+	                    ].concat(result.parents.map((entityType) => {
+	                        if (entityType.uid === null) {
+	                            throw new Error('Unexpected null uid');
+	                        }
+	                        return { key: entityType.label, value: entityType.uid.toString() };
+	                    }))
+	                });
+	            });
+	        }
+	        const results = this.props.dataStore.all.entity_type.value;
+	        const entityTypeMap = results.map((entityType) => {
+	            if (entityType.uid === null) {
+	                throw new Error('Unexpected null uid');
+	            }
+	            return { key: entityType.label, value: entityType.uid.toString() };
+	        });
+	        if (this.props.initialDomain === undefined) {
+	            this.setState({ domainOptions: entityTypeMap });
+	        }
+	        this.setState({
+	            rangeOptions: literalTypes_1.literalTypes.map((lit) => ({ key: lit.label, value: lit.value, meta: 'literal' })).concat(entityTypeMap)
+	        });
+	    }
+	    create() {
+	        const newPredicate = falcon_core_1.Serializer.fromJson(falcon_core_1.Predicate, {
+	            name: this.state.name,
+	            domain: this.state.domain.value,
+	            range: this.state.range.value,
+	            rangeIsReference: this.state.range.meta !== 'literal'
+	        });
+	        this.props.api.postItem(falcon_core_1.Predicate, ApiService_1.AppUrls.predicate, newPredicate)
+	            .then((result) => {
+	            newPredicate.uid = result[0];
+	            this.props.complete(newPredicate);
+	        });
+	    }
+	    render() {
+	        return (React.createElement(Overlay_1.Overlay, null,
+	            React.createElement("h2", null,
+	                React.createElement("i", { className: 'fa fa-plus', "aria-hidden": 'true' }),
+	                " Create Property"),
+	            React.createElement("label", { className: 'small' }, "Name"),
+	            React.createElement("input", { type: 'text', className: 'gap', ref: (a) => { if (a !== null)
+	                    a.focus(); }, value: this.state.name, onChange: (e) => this.setState({ name: e.target.value }) }),
+	            React.createElement(PredicateDescription_1.PredicateDescription, { domain: this.state.domain, range: this.state.range, domainChanged: (s) => this.setState({ domain: s }), rangeChanged: (s) => this.setState({ range: s }), domainOptions: this.state.domainOptions, rangeOptions: this.state.rangeOptions, mode: 'editAll' }),
+	            React.createElement("div", { className: 'modal-toolbar' },
+	                React.createElement("button", { onClick: this.props.cancel, className: 'pull-left' }, "Cancel"),
+	                React.createElement("button", { onClick: this.create.bind(this), className: 'pull-right' }, "Create Property"))));
+	    }
+	}
+	exports.CreatePredicate = CreatePredicate;
+	;
+
+
+/***/ },
+/* 417 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * @fileOverview Sidebar for editor
+	 * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+	 * @version 0.1.0
+	 */
+	"use strict";
+	const React = __webpack_require__(2);
+	class Overlay extends React.Component {
+	    render() {
+	        return (React.createElement("div", { className: 'full-page-overlay' },
+	            React.createElement("div", { className: 'overlay-container' }, this.props.children)));
+	    }
+	}
+	exports.Overlay = Overlay;
+	;
+
+
+/***/ },
+/* 418 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * @fileOverview Sidebar for editor
+	 * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+	 * @version 0.1.0
+	 */
+	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
+	const React = __webpack_require__(2);
+	const Overlay_1 = __webpack_require__(417);
+	const falcon_core_1 = __webpack_require__(47);
+	const ApiService_1 = __webpack_require__(45);
+	const ComboDropdown_1 = __webpack_require__(67);
+	const mobx_react_1 = __webpack_require__(70);
+	let CreateRecord = class CreateRecord extends React.Component {
+	    constructor() {
+	        super();
+	        this.state = {
+	            comboValue: { key: '', value: '' },
+	            searchValue: ''
+	        };
+	    }
+	    componentDidMount() {
+	        this.refs['comboDropDown'].refs['comboDropDownInputBox'].focus();
+	    }
+	    createNewPredicate() {
+	        const modalDef = {
+	            name: 'predicate',
+	            complete: (data) => {
+	                console.log('Predicate editor called complete');
+	                this.setComboValue({ key: data.label, value: data.uid === null ? null : data.uid.toString(), meta: data });
+	            },
+	            cancel: () => {
+	                console.log('Predicate editor called cancel');
+	            },
+	            settings: {
+	                initialName: this.state.searchValue,
+	                initialDomain: this.props.entityType
+	            }
+	        };
+	        this.props.modalStore.addModal(modalDef);
+	    }
+	    setComboValue(opt) {
+	        this.props.api.postItem(falcon_core_1.Record, ApiService_1.AppUrls.record, falcon_core_1.Serializer.fromJson(falcon_core_1.Record, {
+	            predicate: opt.meta.uid,
+	            entity: this.props.entityUid,
+	            valueType: opt.meta.rangeIsReference ? 'entity' : opt.meta.range,
+	            score: 3
+	        }))
+	            .then((result) => this.props.complete(result))
+	            .catch(this.props.cancel);
+	    }
+	    render() {
+	        return (React.createElement(Overlay_1.Overlay, null,
+	            React.createElement("h2", null, "Create Record"),
+	            React.createElement(ComboDropdown_1.ComboDropdown, { ref: 'comboDropDown', options: this.props.options, typeName: 'predicate', value: this.state.comboValue, setValue: this.setComboValue.bind(this), createNewValue: this.createNewPredicate.bind(this), updateSearchString: (s) => this.setState({ searchValue: s }) })));
+	    }
+	};
+	CreateRecord = __decorate([
+	    mobx_react_1.inject('modalStore'),
+	    mobx_react_1.observer,
+	    __metadata("design:paramtypes", [])
+	], CreateRecord);
+	exports.CreateRecord = CreateRecord;
+	;
+
+
+/***/ },
+/* 419 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * @fileOverview Sidebar for editor
+	 * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+	 * @version 0.1.0
+	 */
+	"use strict";
+	const React = __webpack_require__(2);
+	const falcon_core_1 = __webpack_require__(47);
+	const ApiService_1 = __webpack_require__(45);
+	class CreatePresetRecord extends React.Component {
+	    constructor() {
+	        super();
+	        this.state = {};
+	    }
+	    componentDidMount() {
+	        if (CreatePresetRecord.openEntityDialog) {
+	            CreatePresetRecord.openEntityDialog = false;
+	            this.createNewEntity();
+	        }
+	        else {
+	            CreatePresetRecord.openEntityDialog = true;
+	        }
+	    }
+	    createNewEntity() {
+	        const modalDef = {
+	            name: 'entity',
+	            complete: (data) => {
+	                const isMentioned = this.props.dataStore.all.predicate.value.find((pred) => pred.label === 'is mentioned');
+	                this.props.api.postItem(falcon_core_1.Record, ApiService_1.AppUrls.record, falcon_core_1.Serializer.fromJson(falcon_core_1.Record, {
+	                    predicate: isMentioned.uid,
+	                    entity: data[0],
+	                    valueType: 'source',
+	                    source: this.props.source.uid,
+	                    score: 3
+	                }))
+	                    .then((result) => {
+	                    this.props.complete(result);
+	                })
+	                    .catch(this.props.cancel);
+	            },
+	            cancel: () => {
+	            },
+	            settings: {}
+	        };
+	        this.props.modalStore.addModal(modalDef);
+	    }
+	    render() {
+	        return null;
+	    }
+	}
+	CreatePresetRecord.openEntityDialog = true;
+	exports.CreatePresetRecord = CreatePresetRecord;
+	;
+
+
+/***/ },
+/* 420 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * @fileOverview Sidebar for editor
+	 * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+	 * @version 0.1.0
+	 */
+	"use strict";
+	const React = __webpack_require__(2);
+	const Overlay_1 = __webpack_require__(417);
+	const falcon_core_1 = __webpack_require__(47);
+	const ApiService_1 = __webpack_require__(45);
+	const mousetrap = __webpack_require__(397);
+	class CreateSource extends React.Component {
+	    constructor() {
+	        super();
+	        this.state = {
+	            internalValue: ''
+	        };
+	    }
+	    componentWillMount() {
+	        this.setState({ internalValue: this.props.initialValue });
+	    }
+	    createSource() {
+	        this.props.api.postItem(falcon_core_1.Source, ApiService_1.AppUrls.source, falcon_core_1.Serializer.fromJson(falcon_core_1.Source, {
+	            name: this.state.internalValue
+	        }))
+	            .then(this.props.complete);
+	    }
+	    inputRef(val) {
+	        if (val !== null) {
+	            val.focus();
+	            this.keyboardShortcuts = new mousetrap(val);
+	            this.keyboardShortcuts.bind('return', this.createSource.bind(this));
+	            this.keyboardShortcuts.bind('escape', this.props.cancel);
+	        }
+	        else {
+	            this.keyboardShortcuts.unbind('return');
+	            this.keyboardShortcuts.unbind('escape');
+	        }
+	    }
+	    render() {
+	        return (React.createElement(Overlay_1.Overlay, null,
+	            React.createElement("h2", null, "Create Source"),
+	            React.createElement("label", { className: 'small' }, "Name"),
+	            React.createElement("input", { type: 'text', value: this.state.internalValue, ref: this.inputRef.bind(this), onChange: (e) => this.setState({ internalValue: e.target.value }) }),
+	            React.createElement("button", { onClick: () => this.props.cancel(), className: 'pull-left' }, "Cancel"),
+	            React.createElement("button", { onClick: this.createSource.bind(this), className: 'pull-right' }, "Create Source")));
+	    }
+	}
+	CreateSource.defaultProps = {
+	    initialValue: ''
+	};
+	exports.CreateSource = CreateSource;
+
+
+/***/ },
+/* 421 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * @fileOverview Sidebar for editor
+	 * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+	 * @version 0.1.0
+	 */
+	"use strict";
+	const React = __webpack_require__(2);
+	const Overlay_1 = __webpack_require__(417);
+	const falcon_core_1 = __webpack_require__(47);
+	const ApiService_1 = __webpack_require__(45);
+	const ComboDropdown_1 = __webpack_require__(67);
+	const lodash_1 = __webpack_require__(69);
+	class CreateEntity extends React.Component {
+	    constructor() {
+	        super();
+	        this.state = {
+	            label: '',
+	            entityType: { key: '', value: '' },
+	            allEntityTypes: []
+	        };
+	    }
+	    componentWillMount() {
+	        this.props.api.getCollection(falcon_core_1.EntityType, ApiService_1.AppUrls.entity_type, {})
+	            .then((allEntityTypes) => {
+	            if (this.props.initialType !== undefined) {
+	                const initialType = allEntityTypes.find((et) => et.uid === this.props.initialType);
+	                this.setState({
+	                    entityType: { key: initialType.label, value: initialType.uid.toString() }
+	                });
+	            }
+	            this.setState({ allEntityTypes });
+	        });
+	    }
+	    CreateEntity() {
+	        this.props.api.postItem(falcon_core_1.Entity, ApiService_1.AppUrls.entity, falcon_core_1.Serializer.fromJson(falcon_core_1.Entity, {
+	            label: this.state.label,
+	            entityType: this.state.entityType.value
+	        }))
+	            .then(this.props.complete);
+	    }
+	    render() {
+	        return (React.createElement(Overlay_1.Overlay, null,
+	            React.createElement("h2", null, "Create Entity"),
+	            React.createElement("label", { className: 'small' }, "Label"),
+	            React.createElement("input", { type: 'text', value: this.state.label, ref: (a) => { if (a !== null)
+	                    a.focus(); }, name: 'new-entity-name', className: 'gap', onChange: (e) => this.setState({ label: e.target.value }) }),
+	            React.createElement("label", { className: 'small' }, "Type"),
+	            React.createElement(ComboDropdown_1.ComboDropdown, { options: this.state.allEntityTypes.map((t) => ({ key: t.label, value: t.uid.toString() })), typeName: 'entity type', value: this.state.entityType, setValue: (entityType) => this.setState({ entityType }), createNewValue: lodash_1.noop, allowNew: false }),
+	            React.createElement("button", { name: 'cancel-modal', onClick: () => this.props.cancel(), className: 'pull-left' }, "Cancel"),
+	            React.createElement("button", { name: 'create-entity', onClick: this.CreateEntity.bind(this), className: 'pull-right' }, "Create Entity")));
+	    }
+	}
+	exports.CreateEntity = CreateEntity;
+	;
+
+
+/***/ },
+/* 422 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * @fileOverview Sidebar for editor
+	 * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+	 * @version 0.1.0
+	 */
+	"use strict";
+	const React = __webpack_require__(2);
+	const Overlay_1 = __webpack_require__(417);
+	const falcon_core_1 = __webpack_require__(47);
+	const ApiService_1 = __webpack_require__(45);
+	const mousetrap = __webpack_require__(397);
+	class CreateEntityType extends React.Component {
+	    constructor() {
+	        super();
+	        this.state = {
+	            internalValue: ''
+	        };
+	    }
+	    createEntityType() {
+	        this.props.api.postItem(falcon_core_1.EntityType, ApiService_1.AppUrls.entity_type, falcon_core_1.Serializer.fromJson(falcon_core_1.EntityType, {
+	            label: this.state.internalValue
+	        }))
+	            .then(this.props.complete);
+	    }
+	    inputRef(val) {
+	        if (val !== null) {
+	            val.focus();
+	            this.keyboardShortcuts = new mousetrap(val);
+	            this.keyboardShortcuts.bind('return', this.createEntityType.bind(this));
+	            this.keyboardShortcuts.bind('escape', this.props.cancel);
+	        }
+	        else {
+	            this.keyboardShortcuts.unbind('return');
+	        }
+	    }
+	    render() {
+	        return (React.createElement(Overlay_1.Overlay, null,
+	            React.createElement("h2", null, "Create Entity Type"),
+	            React.createElement("label", { className: 'small' }, "Name"),
+	            React.createElement("input", { type: 'text', value: this.state.internalValue, ref: this.inputRef.bind(this), onChange: (e) => this.setState({ internalValue: e.target.value }) }),
+	            React.createElement("button", { onClick: () => this.props.cancel(), className: 'pull-left' }, "Cancel"),
+	            React.createElement("button", { onClick: this.createEntityType.bind(this), className: 'pull-right' }, "Create Entity Type")));
+	    }
+	}
+	exports.CreateEntityType = CreateEntityType;
+	;
+
+
+/***/ },
+/* 423 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * @fileOverview Sidebar for editor
+	 * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+	 * @version 0.1.0
+	 */
+	"use strict";
+	const React = __webpack_require__(2);
+	const Overlay_1 = __webpack_require__(417);
+	class ConflictResolution extends React.Component {
+	    constructor() {
+	        super();
+	        this.state = {
+	            label: '',
+	            entityType: { key: '', value: '' },
+	            allEntityTypes: []
+	        };
+	    }
+	    render() {
+	        return (React.createElement(Overlay_1.Overlay, null,
+	            React.createElement("h2", null,
+	                React.createElement("i", { className: 'fa fa-exclamation-triangle warning' }),
+	                " Conflict: ",
+	                this.props.message),
+	            this.props.conflictingItems.record !== undefined && this.props.conflictingItems.record.length > 0 ? (React.createElement("span", null,
+	                React.createElement("p", null, "The following records conflict with your request change:"),
+	                React.createElement("table", { className: 'table' },
+	                    React.createElement("thead", null,
+	                        React.createElement("tr", null,
+	                            React.createElement("th", null, "Entity"),
+	                            React.createElement("th", null, "Predicate"),
+	                            React.createElement("th", null, "Value"))),
+	                    React.createElement("tbody", null, this.props.conflictingItems.record.map((record) => {
+	                        const entityName = this.props.dataStore.all.entity.value
+	                            .find((entity) => entity.uid == record.entity).label;
+	                        const predicateName = this.props.dataStore.all.predicate.value
+	                            .find((predicate) => predicate.uid == record.predicate).label;
+	                        return (React.createElement("tr", { key: `row-${record.uid}` },
+	                            React.createElement("td", null, entityName),
+	                            React.createElement("td", null, predicateName),
+	                            React.createElement("td", null, record.value)));
+	                    }))))) : null,
+	            this.props.conflictingItems.entity !== undefined && this.props.conflictingItems.entity.length > 0 ? (React.createElement("span", null,
+	                React.createElement("p", null, "The following entities conflict with your request change:"),
+	                React.createElement("table", { className: 'table' },
+	                    React.createElement("thead", null,
+	                        React.createElement("tr", null,
+	                            React.createElement("th", null, "Entity"))),
+	                    React.createElement("tbody", null, this.props.conflictingItems.entity.map((entity) => {
+	                        return (React.createElement("tr", { key: `row-${entity.uid}` },
+	                            React.createElement("td", null, entity.label)));
+	                    }))))) : null,
+	            this.props.conflictingItems.entityType !== undefined && this.props.conflictingItems.entityType.length > 0 ? (React.createElement("span", null,
+	                React.createElement("p", null, "The following entity types conflict with your request change:"),
+	                React.createElement("table", { className: 'table' },
+	                    React.createElement("thead", null,
+	                        React.createElement("tr", null,
+	                            React.createElement("th", null, "Entity Type"))),
+	                    React.createElement("tbody", null, this.props.conflictingItems.entityType.map((entityType) => {
+	                        return (React.createElement("tr", { key: `row-${entityType.uid}` },
+	                            React.createElement("td", null, entityType.label)));
+	                    }))))) : null,
+	            this.props.conflictingItems.source !== undefined && this.props.conflictingItems.source.length > 0 ? (React.createElement("span", null,
+	                React.createElement("p", null, "The following sources conflict with your request change:"),
+	                React.createElement("table", { className: 'table' },
+	                    React.createElement("thead", null,
+	                        React.createElement("tr", null,
+	                            React.createElement("th", null, "Sources"))),
+	                    React.createElement("tbody", null, this.props.conflictingItems.source.map((source) => {
+	                        return (React.createElement("tr", { key: `row-${source.uid}` },
+	                            React.createElement("td", null, source.label)));
+	                    }))))) : null,
+	            React.createElement("div", { className: 'block-buttons' },
+	                React.createElement("button", { onClick: () => this.props.cancel() }, "Cancel"),
+	                React.createElement("button", { onClick: () => this.props.complete('addToWorkspace') },
+	                    React.createElement("i", { className: 'icon-list-add' }),
+	                    "Cancel and add conflicting records to workspace"),
+	                React.createElement("button", { onClick: () => this.props.complete('deleteAll') },
+	                    React.createElement("i", { className: 'fa fa-trash' }),
+	                    " Continue and delete all conflicting records"))));
+	    }
+	}
+	exports.ConflictResolution = ConflictResolution;
+	;
+
+
+/***/ },
+/* 424 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -43311,9 +43049,8 @@
 	"use strict";
 	const falcon_core_1 = __webpack_require__(47);
 	const queryString = __webpack_require__(33);
-	const Signaller_1 = __webpack_require__(70);
 	const lodash_1 = __webpack_require__(69);
-	const Exceptions_1 = __webpack_require__(426);
+	const Exceptions_1 = __webpack_require__(425);
 	var ApiService_1 = __webpack_require__(45);
 	exports.AppUrls = ApiService_1.AppUrls;
 	function handleErrors(response) {
@@ -43321,8 +43058,7 @@
 	        if (response.status === 422) {
 	            throw new Exceptions_1.UnprocessableEntity(response.statusText, response.json().then((result) => result.data));
 	        }
-	        Signaller_1.showToast.dispatch('Something went wrong ;(', response.statusText);
-	        Signaller_1.triggerReload.dispatch();
+	        // showToast.dispatch('Something went wrong ;(', response.statusText);
 	        if (response.status === 404) {
 	            throw Error(JSON.stringify({
 	                statusText: response.statusText,
@@ -43360,7 +43096,6 @@
 	        })
 	            .then(handleErrors)
 	            .then((response) => {
-	            Signaller_1.triggerReload.dispatch();
 	            return response.json();
 	        }).then((data) => {
 	            return Promise.resolve(data);
@@ -43381,7 +43116,6 @@
 	        })
 	            .then(handleErrors)
 	            .then((response) => {
-	            Signaller_1.triggerReload.dispatch();
 	            return response.json();
 	        });
 	    }
@@ -43400,7 +43134,6 @@
 	        })
 	            .then(handleErrors)
 	            .then((response) => {
-	            Signaller_1.triggerReload.dispatch();
 	            return response.json();
 	        });
 	    }
@@ -43414,7 +43147,6 @@
 	        })
 	            .then(handleErrors)
 	            .then((response) => {
-	            Signaller_1.triggerReload.dispatch();
 	            return response.json();
 	        });
 	    }
@@ -43433,7 +43165,7 @@
 
 
 /***/ },
-/* 426 */
+/* 425 */
 /***/ function(module, exports) {
 
 	/**

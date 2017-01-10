@@ -6,7 +6,7 @@
 
 import * as React from 'react';
 import { ComboDropdown } from '../ComboDropdown';
-import { DataStore } from '../../DataStore';
+import { DataController } from '../../stores/DataController';
 
 import { AppUrls } from '../../ApiService';
 
@@ -15,21 +15,22 @@ import { toString } from 'lodash';
 interface SearchBoxProps {
     onChange : React.EventHandler<React.FormEvent>;
     searchString: string;
-    dataStore: DataStore;
+    dataStore: DataController;
+
 }
 
 export const SearchBox : React.StatelessComponent<SearchBoxProps> = (props : SearchBoxProps, context: any) => {
 
-    const entities = props.dataStore.all.entity.value.map((entity) =>
+    const entities = props.dataStore!.dataStore.all.entity.value.map((entity) =>
         ({ key: entity.label, value: toString(entity.uid), meta: { itemType: AppUrls.entity } }));
 
-    const entityTypes = props.dataStore.all.entity_type.value.map((entityType) =>
+    const entityTypes = props.dataStore!.dataStore.all.entity_type.value.map((entityType) =>
         ({ key: entityType.label, value: toString(entityType.uid), meta: { itemType: AppUrls.entity_type }  }));
 
-    const predicates = props.dataStore.all.predicate.value.map((predicate) =>
+    const predicates = props.dataStore!.dataStore.all.predicate.value.map((predicate) =>
         ({ key: predicate.label, value: toString(predicate.uid), meta: { itemType: AppUrls.predicate }  }));
 
-    const sources = props.dataStore.all.source.value.map((source) =>
+    const sources = props.dataStore!.dataStore.all.source.value.map((source) =>
         ({ key: source.label, value: toString(source.uid), meta: { itemType: AppUrls.source }  }));
 
     const all = entities.concat(entityTypes, predicates, sources);
@@ -55,6 +56,6 @@ export const SearchBox : React.StatelessComponent<SearchBoxProps> = (props : Sea
         </span>
     );
 
-} ;
+};
 
 SearchBox.contextTypes = {router: React.PropTypes.object.isRequired};

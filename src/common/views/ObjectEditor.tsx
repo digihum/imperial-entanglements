@@ -106,7 +106,7 @@ export class ObjectEditor extends React.Component<EntityEditorProps, EntityEdito
         super();
 
         this.state = {
-            dataController: new DataController(this.props.api),
+            dataController: new DataController(props.api),
             modalStore: new ModalStore(),
             loadingWheel: true,
             loading: true,
@@ -174,7 +174,7 @@ export class ObjectEditor extends React.Component<EntityEditorProps, EntityEdito
 
     public render() {
         return (
-          <Provider dataStore={this.state.dataController}>
+          <Provider dataStore={this.state.dataController} modalStore={this.state.modalStore}>
             <section id='entity-editor' className='flex-fill'>
                 <span className={'header-colour ' + this.props.workspace}></span>
                     <span className='flex-fill'>

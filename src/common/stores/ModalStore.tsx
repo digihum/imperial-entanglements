@@ -22,6 +22,10 @@ export class ModalStore {
 
   @observable private  modalQueue: ModalDefinition[];
 
+  public constructor() {
+    this.modalQueue = [];
+  }
+
   // might be @computed?
   public currentModal() : JSX.Element | null {
     if (this.modalQueue.length === 0) {

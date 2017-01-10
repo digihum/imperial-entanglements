@@ -14,6 +14,11 @@ import { capitalize, isArray, isObject } from 'lodash';
 
 import {SortableContainer, SortableElement, SortableHandle, arrayMove} from 'react-sortable-hoc';
 
+import { ModalStore } from '../stores/ModalStore';
+
+import { inject, observer } from 'mobx-react';
+
+
 export interface Tab {
     tabType: string;
     tabClass: string;
@@ -30,14 +35,14 @@ const Handle = SortableHandle((props: {tabType: string}) => (
   </div>
 ));
 
-const onCloseTab = (e: React.MouseEvent, tabType: string, uid: number) => {
-    closeTab.dispatch(tabType, uid);
+const onCloseTab = (e: React.MouseEvent, tabType: string, uid: number, dataStore: DataController) => {
+    dataStore.closeTab(tabType, uid);
     e.stopPropagation();
     e.preventDefault();
     e.nativeEvent.stopImmediatePropagation();
 }
 
-const Card = SortableElement((props: {currentTab: boolean, url: any, index: number, tab: Tab, title: string, subtitle: string | string[],
+const Card = SortableElement((props: {dataStore: DataController, currentTab: boolean, url: any, index: number, tab: Tab, title: string, subtitle: string | string[],
             compact: boolean}) => (
       <li key={`${props.url}`}>
           <div className={((currentTab) => {
@@ -80,7 +85,7 @@ const Card = SortableElement((props: {currentTab: boolean, url: any, index: numb
                       {props.tab.tabType === 'source' ? (
                         <i className='fa fa-unlock'></i>
                       ) : null}
-                      <i className='fa fa-times' onClick={(e) => onCloseTab(e, props.tab.tabType, props.tab.uid)}></i>
+                      <i className='fa fa-times' onClick={(e) => onCloseTab(e, props.tab.tabType, props.tab.uid, props.dataStore)}></i>
                   </span>
               ) : null}
           </div>
@@ -88,8 +93,8 @@ const Card = SortableElement((props: {currentTab: boolean, url: any, index: numb
   ));
 
 const CardList = (props: {
-    dataStore?: DataStore,
-    tabs: Tab[],
+
+    dataStore: DataController,
     list: boolean,
     workspace: string,
     id: number,
@@ -97,10 +102,10 @@ const CardList = (props: {
 
     return (
       <ul className='card-list'>
-            {props.tabs.map((tab, index) => {
+            {props.dataStore.tabs.map((tab, index) => {
 
                 // TODO: shouldn't be ==
-                const item = props.dataStore.all[tab.tabType].value
+                const item = props.dataStore.dataStore.all[tab.tabType].value
                     .find((item) => item.uid == tab.uid);
 
                 let url : string | Object | null = null;
@@ -132,6 +137,7 @@ const CardList = (props: {
                   title={title}
                   subtitle={subtitle}
                   index={index}
+                  dataStore={props.dataStore}
                   compact={props.compact}
                 />
               );
@@ -153,6 +159,8 @@ interface SidebarState {
     compactMode: boolean;
 }
 
+@inject('dataStore')
+@observer
 export class Sidebar extends React.Component<SidebarProps, SidebarState> {
 
     constructor() {
@@ -167,17 +175,18 @@ export class Sidebar extends React.Component<SidebarProps, SidebarState> {
 
         return (
             <section id='sidebar'>
-                <SearchBox searchString={this.state.searchString}
-                dataStore={this.props.dataStore}
+
+                <SearchBox searchString={this.state.searchString} dataStore={this.props.dataStore!}
                 onChange={(evt) => this.setState({searchString: (evt.currentTarget as HTMLInputElement).value})} />
+
                 <div className='sidebar-toolbar'>
-                    <button onClick={this.props.clearTabs}><i className='fa fa-trash'></i> Clear All</button>
+                    <button onClick={this.props.dataStore!.clearAllTabs}><i className='fa fa-trash'></i> Clear All</button>
                     <button onClick={() => this.setState({compactMode: !this.state.compactMode})}><i className='fa fa-compress'></i> Compact</button>
                 </div>
                 <div className='card-list-container'>
+
                  <CardList
-                    dataStore={this.props.dataStore}
-                    tabs={this.props.tabs}
+                    dataStore={this.props.dataStore!}
                     list={this.props.list}
                     workspace={this.props.workspace}
                     id={this.props.id}

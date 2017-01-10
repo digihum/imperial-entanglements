@@ -32,6 +32,6 @@ export const AddTabButton : React.ClassicComponentClass<AddTabButtonProps> = inj
             onClick={() => props.dataStore!.createTab(props.tabType, props.uid, 'item', props.data)}></i>
 )}));
 
-AddTabButton.contextTypes = {
+AddTabButton.wrappedComponent.contextTypes = {
     router: React.PropTypes.object.isRequired
 };
