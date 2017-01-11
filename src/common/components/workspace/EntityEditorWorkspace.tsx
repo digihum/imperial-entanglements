@@ -86,7 +86,7 @@ export class EntityEditorWorkspace extends React.Component<EntityEditorProps, En
           this.context.router.transitionTo('/edit/notfound');
         })
          .catch((e) => {
-            e.data.data.then((data) => {
+            e.data.then((data) => {
 
                 const conflictResolutionModal : ModalDefinition = {
                     name: 'conflict_resolution',

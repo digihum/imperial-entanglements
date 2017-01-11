@@ -96,7 +96,7 @@ export class PredicateEditorWorkspace extends React.Component<PredicateEditorPro
         this.props.dataStore!.delItem(Predicate, AppUrls.predicate, this.props.id)
         .then(() => this.context.router.transitionTo('/edit/notfound'))
         .catch((e) => {
-            e.data.data.then((data) => {
+            e.data.then((data) => {
 
                 const conflictResolutionModal : ModalDefinition = {
                     name: 'conflict_resolution',

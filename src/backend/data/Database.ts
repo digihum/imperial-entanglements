@@ -62,8 +62,6 @@ export class Database {
                     return results;
                 });
             })
-            .then(trx.commit)
-            .catch(trx.rollback);
         });
     }
 
@@ -83,8 +81,6 @@ export class Database {
                     return results;
                 });
             })
-            .then(trx.commit)
-            .catch(trx.rollback);
         });
     }
 
@@ -103,8 +99,6 @@ export class Database {
                     return results;
                 });
             })
-            .then(trx.commit)
-            .catch(trx.rollback);
         });
     }
 

@@ -18637,7 +18637,7 @@
 	            this.context.router.transitionTo('/edit/notfound');
 	        })
 	            .catch((e) => {
-	            e.data.data.then((data) => {
+	            e.data.then((data) => {
 	                const conflictResolutionModal = {
 	                    name: 'conflict_resolution',
 	                    cancel: () => { },
@@ -34661,7 +34661,7 @@
 	        this.props.dataStore.delItem(falcon_core_1.EntityType, ApiService_1.AppUrls.entity_type, this.props.id)
 	            .then(() => this.context.router.transitionTo('/edit/notfound'))
 	            .catch((e) => {
-	            e.data.data.then((data) => {
+	            e.data.then((data) => {
 	                const conflictResolutionModal = {
 	                    name: 'conflict_resolution',
 	                    cancel: () => { },
@@ -36032,7 +36032,7 @@
 	        this.props.dataStore.delItem(falcon_core_1.Source, ApiService_1.AppUrls.source, this.props.id)
 	            .then(() => this.context.router.transitionTo('/edit/notfound'))
 	            .catch((e) => {
-	            e.data.data.then((data) => {
+	            e.data.then((data) => {
 	                const conflictResolutionModal = {
 	                    name: 'conflict_resolution',
 	                    cancel: () => { },
@@ -36235,7 +36235,7 @@
 	        this.props.dataStore.delItem(falcon_core_1.Predicate, ApiService_1.AppUrls.predicate, this.props.id)
 	            .then(() => this.context.router.transitionTo('/edit/notfound'))
 	            .catch((e) => {
-	            e.data.data.then((data) => {
+	            e.data.then((data) => {
 	                const conflictResolutionModal = {
 	                    name: 'conflict_resolution',
 	                    cancel: () => { },

@@ -125,7 +125,7 @@ export class SourceEditorWorkspace extends React.Component<SourceEditorProps, So
         this.props.dataStore!.delItem(Source, AppUrls.source, this.props.id)
         .then(() => this.context.router.transitionTo('/edit/notfound'))
         .catch((e) => {
-            e.data.data.then((data) => {
+            e.data.then((data) => {
 
                 const conflictResolutionModal : ModalDefinition = {
                     name: 'conflict_resolution',

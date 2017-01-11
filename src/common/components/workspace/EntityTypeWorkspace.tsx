@@ -76,7 +76,7 @@ export class EntityTypeWorkspace extends React.Component<EntityTypeWorkspaceProp
         this.props.dataStore!.delItem(EntityType, AppUrls.entity_type, this.props.id)
         .then(() => this.context.router.transitionTo('/edit/notfound'))
         .catch((e) => {
-            e.data.data.then((data) => {
+            e.data.then((data) => {
 
                 const conflictResolutionModal : ModalDefinition = {
                     name: 'conflict_resolution',
