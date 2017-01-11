@@ -40,12 +40,13 @@ export class DataController {
   }
 
   // checks that the page exists and adds it to tabs if necessery
-  public enterPage(workspace: string, uid: number, other: any) {
+  @action public enterPage(workspace: string, uid: number, other: any) {
     if (!isNaN(uid)) {
       if (find(this.tabs, (tab) => tab.tabType === workspace && tab.uid == uid) === undefined) {
         this.tabs = this.tabs.concat([{ tabType: workspace, uid: uid, tabClass: 'item'}]);
       }
     }
+    return this.update();
   }
 
   private loadTabData(tab: Tab) : Promise<any> {
@@ -112,11 +113,12 @@ export class DataController {
     });
 
     return Promise.all([tabPromise, allPromise])
-    .then(([tabsArray, all]) => {
+    .then(action(([tabsArray, all]) => {
         const tabs = Object.assign({}, ...tabsArray);
         this.dataStore.tabs = tabs;
         this.dataStore.all = all;
-    }).then(() => true);
+        return true;
+    }));
   }
 
   /*
@@ -128,7 +130,7 @@ export class DataController {
   @action public createTab(tabType: string, uid: number, tabClass: string, data?: any, query?: { [s: string]: string }) {
     // don't add a tab if it already exists
     if (find(this.tabs, (tab) => tab.tabType === tabType && tab.uid == uid) === undefined) {
-      this.tabs = [{ tabType, uid, data, tabClass, query }].concat(this.tabs)
+      this.tabs.unshift({ tabType, uid, data, tabClass, query });
       this.saveTabs();
       this.update();
     }

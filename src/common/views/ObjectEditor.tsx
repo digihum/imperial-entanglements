@@ -19,6 +19,8 @@ import { ModalStore } from '../stores/ModalStore';
 
 import { SortableContainer, arrayMove } from 'react-sortable-hoc';
 
+import DevTools from 'mobx-react-devtools';
+
 import { observable } from 'mobx';
 import { Provider } from 'mobx-react';
 
@@ -176,6 +178,7 @@ export class ObjectEditor extends React.Component<EntityEditorProps, EntityEdito
         return (
           <Provider dataStore={this.state.dataController} modalStore={this.state.modalStore}>
             <section id='entity-editor' className='flex-fill'>
+              <DevTools />
                 <span className={'header-colour ' + this.props.workspace}></span>
                     <span className='flex-fill'>
                       <ObjectEditorCore

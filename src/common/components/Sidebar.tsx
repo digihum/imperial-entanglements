@@ -92,7 +92,7 @@ const Card = SortableElement((props: {dataStore: DataController, currentTab: boo
       </li>
   ));
 
-const CardList = (props: {
+const CardList = observer((props: {
 
     dataStore: DataController,
     list: boolean,
@@ -144,7 +144,7 @@ const CardList = (props: {
         })}
         </ul>
     );
-};
+});
 
 
 interface SidebarProps {

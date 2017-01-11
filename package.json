@@ -110,6 +110,7 @@
     "gulp": "^3.9.1",
     "gulp-nightwatch": "^0.3.2",
     "gulp-sass": "^2.3.2",
+    "mobx-react-devtools": "^4.2.11",
     "mocha": "^3.0.2",
     "neat": "^1.2.2",
     "nightwatch": "^0.9.8",
