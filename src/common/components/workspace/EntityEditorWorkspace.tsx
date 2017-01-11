@@ -9,7 +9,7 @@ import * as React from 'react';
 import { RecordsEditor } from '../entity_editor/RecordsEditor';
 import { AppUrls } from '../../ApiService';
 
-import { Entity, Record } from 'falcon-core';
+import { Entity, Record, Serializer } from 'falcon-core';
 
 import { ComboDropdown, ComboDropdownOption } from '../ComboDropdown';
 import { ModalDefinition } from '../modal/ModalDefinition';
@@ -154,6 +154,17 @@ export class EntityEditorWorkspace extends React.Component<EntityEditorProps, En
         this.props.dataStore!.patchItem(Entity, AppUrls.entity, this.props.id, data);
     }
 
+    public clone() {
+
+      const entity = this.props.dataStore!.dataStore.tabs.entity.get('entity-' + this.props.id).value.entity;
+
+      this.props.dataStore!.postItem(Entity, AppUrls.entity,
+          Serializer.fromJson(Entity, {
+              label: 'Copy of ' + entity.label,
+              entityType: entity.entityType
+          })).then(([id]) => this.props.dataStore!.createTab('entity', id, 'item'));
+    }
+
     public render() {
 
         const entity = this.props.dataStore!.dataStore.tabs.entity.get('entity-' + this.props.id).value.entity;
@@ -201,7 +212,7 @@ export class EntityEditorWorkspace extends React.Component<EntityEditorProps, En
                         <i
                             className='fa fa-clone button'
                             aria-hidden='true'
-                            onClick={() => console.log('copy')}
+                            onClick={this.clone.bind(this)}
                         ></i>
                     </div>
                   </div>

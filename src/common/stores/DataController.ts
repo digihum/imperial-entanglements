@@ -145,21 +145,21 @@ export class DataController implements ApiService {
   }
 
   public postItem<T extends TrackedFalconItem>(obj: { new(): T; }, baseUrl : string, data: T) : Promise<any> {
-    return this.api.postItem.apply(this, arguments).then(this.update.bind(this));
+    return this.api.postItem.apply(this, arguments).then((result) => this.update().then(() => result));
   }
 
   public putItem<T extends TrackedFalconItem>(obj: { new(): T; }, baseUrl : string, uid: number | CompositeKey, data: T) : Promise<any> {
-    return this.api.putItem.apply(this, arguments).then(this.update.bind(this));
+    return this.api.putItem.apply(this, arguments).then((result) => this.update().then(() => result));
   }
 
   //TODO: patch item takes a subset of an objects properties. This is currently being looked at in TS in the
   //context of the 'setState' function in react
   public patchItem<T extends TrackedFalconItem>(obj: { new(): T; }, baseUrl : string, uid: number | CompositeKey, data : any) : Promise<any> {
-    return this.api.patchItem.apply(this, arguments).then(this.update.bind(this));
+    return this.api.patchItem.apply(this, arguments).then((result) => this.update().then(() => result));
   }
 
   public delItem<T extends TrackedFalconItem>(obj: { new(): T; }, baseUrl : string, uid: number | CompositeKey) : Promise<any> {
-    return this.api.delItem.apply(this, arguments).then(this.update.bind(this));
+    return this.api.delItem.apply(this, arguments).then((result) => this.update().then(() => result));
   }
 
   public query(graphQLQuery: string) : Promise<any> {

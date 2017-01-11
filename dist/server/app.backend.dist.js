@@ -2897,6 +2897,13 @@
 	    update(data) {
 	        this.props.dataStore.patchItem(falcon_core_1.Entity, ApiService_1.AppUrls.entity, this.props.id, data);
 	    }
+	    clone() {
+	        const entity = this.props.dataStore.dataStore.tabs.entity.get('entity-' + this.props.id).value.entity;
+	        this.props.dataStore.postItem(falcon_core_1.Entity, ApiService_1.AppUrls.entity, falcon_core_1.Serializer.fromJson(falcon_core_1.Entity, {
+	            label: 'Copy of ' + entity.label,
+	            entityType: entity.entityType
+	        })).then(([id]) => this.props.dataStore.createTab('entity', id, 'item'));
+	    }
 	    render() {
 	        const entity = this.props.dataStore.dataStore.tabs.entity.get('entity-' + this.props.id).value.entity;
 	        const entityType = this.props.dataStore.dataStore.all.entity_type.value.find((t) => t.uid === entity.entityType);
@@ -2922,7 +2929,7 @@
 	                        React.createElement(StringEditableFieldComponent, { value: entity.label, component: EditableHeader_1.EditableHeader, onChange: (value) => this.update({ 'label': value }) })),
 	                    React.createElement("div", { className: 'sub-toolbar' },
 	                        React.createElement("i", { className: 'fa fa-trash delete button', "aria-hidden": 'true', onClick: this.del.bind(this) }),
-	                        React.createElement("i", { className: 'fa fa-clone button', "aria-hidden": 'true', onClick: () => console.log('copy') }))),
+	                        React.createElement("i", { className: 'fa fa-clone button', "aria-hidden": 'true', onClick: this.clone.bind(this) }))),
 	                React.createElement("div", { className: 'secondary-toolbar' },
 	                    React.createElement("div", { className: 'tab-bar' },
 	                        React.createElement("div", { className: 'entity ' + (this.state.tab === 0 ? 'selected' : ''), onClick: () => this.setState({ tab: 0 }) }, "CORE"),
@@ -5500,18 +5507,18 @@
 	        return this.api.getCollection.apply(this, arguments);
 	    }
 	    postItem(obj, baseUrl, data) {
-	        return this.api.postItem.apply(this, arguments).then(this.update.bind(this));
+	        return this.api.postItem.apply(this, arguments).then((result) => this.update().then(() => result));
 	    }
 	    putItem(obj, baseUrl, uid, data) {
-	        return this.api.putItem.apply(this, arguments).then(this.update.bind(this));
+	        return this.api.putItem.apply(this, arguments).then((result) => this.update().then(() => result));
 	    }
 	    //TODO: patch item takes a subset of an objects properties. This is currently being looked at in TS in the
 	    //context of the 'setState' function in react
 	    patchItem(obj, baseUrl, uid, data) {
-	        return this.api.patchItem.apply(this, arguments).then(this.update.bind(this));
+	        return this.api.patchItem.apply(this, arguments).then((result) => this.update().then(() => result));
 	    }
 	    delItem(obj, baseUrl, uid) {
-	        return this.api.delItem.apply(this, arguments).then(this.update.bind(this));
+	        return this.api.delItem.apply(this, arguments).then((result) => this.update().then(() => result));
 	    }
 	    query(graphQLQuery) {
 	        return this.api.query.apply(this, arguments);
