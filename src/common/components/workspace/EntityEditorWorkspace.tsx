@@ -7,7 +7,7 @@
 import * as React from 'react';
 
 import { RecordsEditor } from '../entity_editor/RecordsEditor';
-import { ApiService, AppUrls } from '../../ApiService';
+import { AppUrls } from '../../ApiService';
 
 import { Entity, Record } from 'falcon-core';
 
@@ -36,7 +36,6 @@ class StringEditableFieldComponent extends EditableFieldComponent<string> {}
 class ComboEditableFieldComponent extends EditableFieldComponent<ComboDropdownOption> {}
 
 interface EntityEditorProps {
-    api: ApiService;
     id: number;
     dataStore?: DataController;
     modalStore?: ModalStore;
@@ -81,7 +80,7 @@ export class EntityEditorWorkspace extends React.Component<EntityEditorProps, En
     }
 
     public del() {
-        this.props.api.delItem(Entity, AppUrls.entity, this.props.id)
+        this.props.dataStore!.delItem(Entity, AppUrls.entity, this.props.id)
         .then(() => {
           this.props.dataStore!.closeTab('entity', this.props.id);
           this.context.router.transitionTo('/edit/notfound');
@@ -104,7 +103,7 @@ export class EntityEditorWorkspace extends React.Component<EntityEditorProps, En
 
                         if (result === 'deleteAll') {
                             Promise.all(
-                                data.record.map((datum) => this.props.api.delItem(Record, AppUrls.record, datum.uid))
+                                data.record.map((datum) => this.props.dataStore!.delItem(Record, AppUrls.record, datum.uid))
                             )
                             .then(() => {
                                 this.del();
@@ -152,7 +151,7 @@ export class EntityEditorWorkspace extends React.Component<EntityEditorProps, En
     }
 
     public update(data: any) {
-        this.props.api.patchItem(Entity, AppUrls.entity, this.props.id, data);
+        this.props.dataStore!.patchItem(Entity, AppUrls.entity, this.props.id, data);
     }
 
     public render() {
@@ -217,13 +216,11 @@ export class EntityEditorWorkspace extends React.Component<EntityEditorProps, En
                 {this.state.tab === 0 ? (
                   <EntityWorkspaceCoreView
                   dataStore={this.props.dataStore}
-                  api={this.props.api}
                   id={this.props.id}
                  />
                 ) : (
                   <EntityWorkspaceReferenceView
-                  dataStore={this.props.dataStore}
-                  api={this.props.api}
+                  dataStore={this.props.dataStore!}
                   id={this.props.id}
                  />
                 )}

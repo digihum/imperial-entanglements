@@ -5,10 +5,8 @@
  */
 
 import * as React from 'react';
-import { ApiService } from '../../ApiService';
 
 interface AdvancedSearchWorkspaceProps {
-    api: ApiService;
 }
 
 export const AdvancedSearchWorkspace : React.StatelessComponent<AdvancedSearchWorkspaceProps> =

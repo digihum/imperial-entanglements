@@ -8,7 +8,7 @@ import * as React from 'react';
 
 import { SameAsEditor } from '../fields/SameAsEditor';
 import { Loading } from '../Loading';
-import { ApiService, AppUrls } from '../../ApiService';
+import { AppUrls } from '../../ApiService';
 
 import { Source, Serializer, Element, SourceElement, Record } from 'falcon-core';
 
@@ -32,7 +32,6 @@ class StringEditableFieldComponent extends EditableFieldComponent<string> {}
 class ComboEditableFieldComponent extends EditableFieldComponent<ComboDropdownOption> {}
 
 interface SourceEditorProps {
-    api: ApiService;
     id: number;
     dataStore?: DataController;
     modalStore?: ModalStore;
@@ -86,7 +85,7 @@ export class SourceEditorWorkspace extends React.Component<SourceEditorProps, So
 
         const source = this.props.dataStore!.dataStore.tabs.source.get('source-' + this.props.id).value.source;
 
-        this.props.api.patchItem(Source, AppUrls.source, source.uid, { [field]: value })
+        this.props.dataStore!.patchItem(Source, AppUrls.source, source.uid, { [field]: value })
 
     }
 
@@ -105,7 +104,7 @@ export class SourceEditorWorkspace extends React.Component<SourceEditorProps, So
         if (source.metaData[element.label] !== undefined
             && source.metaData[element.label].values.find((a) => a.source === this.props.id) !== undefined) {
 
-            this.props.api.patchItem(SourceElement, AppUrls.source_element,
+            this.props.dataStore!.patchItem(SourceElement, AppUrls.source_element,
             compositeKey,
                 Serializer.fromJson(SourceElement, {
                     uid: compositeKey,
@@ -114,7 +113,7 @@ export class SourceEditorWorkspace extends React.Component<SourceEditorProps, So
                     value
                 }));
         } else {
-            this.props.api.postItem(SourceElement, AppUrls.source_element,
+            this.props.dataStore!.postItem(SourceElement, AppUrls.source_element,
                 Serializer.fromJson(SourceElement, {
                     uid: compositeKey,
                     value: value
@@ -123,7 +122,7 @@ export class SourceEditorWorkspace extends React.Component<SourceEditorProps, So
     }
 
     public del() {
-        this.props.api.delItem(Source, AppUrls.source, this.props.id)
+        this.props.dataStore!.delItem(Source, AppUrls.source, this.props.id)
         .then(() => this.context.router.transitionTo('/edit/notfound'))
         .catch((e) => {
             e.data.data.then((data) => {
@@ -139,7 +138,7 @@ export class SourceEditorWorkspace extends React.Component<SourceEditorProps, So
                         }
 
                         if (result === 'deleteAll') {
-                            Promise.all(data.source.map((datum) => this.props.api.delItem(Source, AppUrls.source, datum.uid)))
+                            Promise.all(data.source.map((datum) => this.props.dataStore!.delItem(Source, AppUrls.source, datum.uid)))
                             .then(() => {
                                 this.del();
                             });
@@ -164,7 +163,7 @@ export class SourceEditorWorkspace extends React.Component<SourceEditorProps, So
         const newSource = Serializer.fromJson(Source,
             Object.assign({}, Serializer.toJson(source), { label: 'Child of ' + source.label, parent: this.props.id }));
 
-        this.props.api.postItem(Source, AppUrls.source, newSource)
+        this.props.dataStore!.postItem(Source, AppUrls.source, newSource)
             .then(([id]) => {
                 this.props.dataStore!.createTab('source', id, 'item');
         });

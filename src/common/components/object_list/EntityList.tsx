@@ -8,7 +8,7 @@ import * as React from 'react';
 
 import * as lev from 'levenshtein';
 
-import { ApiService, AppUrls } from '../../ApiService';
+import { AppUrls } from '../../ApiService';
 
 import { Entity, EntityType, Predicate, Record } from 'falcon-core';
 import { ComboDropdown, ComboDropdownOption } from '../ComboDropdown';
@@ -145,7 +145,7 @@ export class EntityList extends React.Component<EntityListProps, EntityListState
 
         const setColumns = this.state.columns.filter((col) => col.predicate != -1);
 
-        this.props.dataStore!.api.getCollection(Record, AppUrls.record, {
+        this.props.dataStore!.getCollection(Record, AppUrls.record, {
             predicate: setColumns.map((col) => col.predicate),
             entity: this.props.dataStore!.dataStore.all.entity.value.map((entity) => entity.uid)
         })

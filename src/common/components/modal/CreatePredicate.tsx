@@ -10,18 +10,19 @@ import { Overlay } from '../Overlay';
 import { PredicateDescription } from '../fields/PredicateDescription';
 import { Predicate, EntityType, Serializer } from 'falcon-core';
 import { literalTypes } from '../../literalTypes';
-import { ApiService, AppUrls } from '../../ApiService';
-import { DataStore } from '../../DataStore';
+import { AppUrls } from '../../ApiService';
+
 import { ComboDropdownOption } from '../ComboDropdown';
 
+import { DataController } from '../../stores/DataController';
+import { inject, observer } from 'mobx-react';
 
 interface CreatePredicateProps {
     initialName: string;
     cancel: () => void;
     complete: (newPredicate: Predicate) => void;
-    api: ApiService;
     initialDomain?: number;
-    dataStore: DataStore;
+    dataStore?: DataController;
 }
 
 interface CreatePredicateState {
@@ -32,6 +33,8 @@ interface CreatePredicateState {
     rangeOptions: ComboDropdownOption[];
 }
 
+@inject('dataStore')
+@observer
 export class CreatePredicate extends React.Component<CreatePredicateProps, CreatePredicateState> {
 
     constructor() {
@@ -51,7 +54,7 @@ export class CreatePredicate extends React.Component<CreatePredicateProps, Creat
 
     public componentDidMount() {
         if (this.props.initialDomain !== undefined) {
-             this.props.api.getItem(EntityType, AppUrls.entity_type, this.props.initialDomain)
+             this.props.dataStore!.getItem(EntityType, AppUrls.entity_type, this.props.initialDomain)
             .then((result) => {
 
                 if (result.uid === null) {
@@ -71,7 +74,7 @@ export class CreatePredicate extends React.Component<CreatePredicateProps, Creat
             });
         }
 
-        const results = this.props.dataStore.all.entity_type.value;
+        const results = this.props.dataStore!.dataStore.all.entity_type.value;
         const entityTypeMap : ComboDropdownOption[] = results.map((entityType) => {
             if (entityType.uid === null) {
                 throw new Error('Unexpected null uid');
@@ -97,7 +100,7 @@ export class CreatePredicate extends React.Component<CreatePredicateProps, Creat
             rangeIsReference: this.state.range.meta !== 'literal'
         });
 
-        this.props.api.postItem(Predicate, AppUrls.predicate, newPredicate)
+        this.props.dataStore!.postItem(Predicate, AppUrls.predicate, newPredicate)
             .then((result) => {
                 newPredicate.uid = result[0];
                 this.props.complete(newPredicate);

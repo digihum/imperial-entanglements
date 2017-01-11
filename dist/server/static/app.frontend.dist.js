@@ -4878,8 +4878,8 @@
 	const ObjectEditorCore = react_sortable_hoc_1.SortableContainer((props) => {
 	    return (React.createElement("span", { className: 'flex-fill' },
 	        React.createElement(Sidebar_1.Sidebar, { list: props.list, id: props.id, workspace: props.workspace }),
-	        React.createElement(Workspace_1.Workspace, { api: props.api, workspace: props.workspace, id: props.id, loading: props.loadingWheel, location: props.location, list: props.list }),
-	        props.splitWorkspace ? (React.createElement(Workspace_1.Workspace, { api: props.api, workspace: props.workspace, id: props.id, loading: props.loadingWheel, location: props.location, list: props.list })) : null,
+	        React.createElement(Workspace_1.Workspace, { workspace: props.workspace, id: props.id, loading: props.loadingWheel, location: props.location, list: props.list }),
+	        props.splitWorkspace ? (React.createElement(Workspace_1.Workspace, { workspace: props.workspace, id: props.id, loading: props.loadingWheel, location: props.location, list: props.list })) : null,
 	        React.createElement("div", { className: 'split-workspace-button-container', onClick: props.toggleSplitWorkspace }, props.splitWorkspace ? (React.createElement("i", { className: 'fa fa-times', title: 'split' })) : (React.createElement("i", { className: 'fa fa-columns', title: 'split' })))));
 	});
 	class ObjectEditor extends React.Component {
@@ -18480,7 +18480,7 @@
 	            return (React.createElement(Loading_1.Loading, null));
 	        }
 	        if (this.props.list) {
-	            return (React.createElement(workspace_1.ObjectListWorkspace, { api: this.props.api, name: this.props.name, query: this.props.location.query, listType: this.props.workspace, dataStore: this.props.dataStore }));
+	            return (React.createElement(workspace_1.ObjectListWorkspace, { name: this.props.name, query: this.props.location.query, listType: this.props.workspace }));
 	        }
 	        let workspaceComponent = workspace_1.EmptyWorkspace;
 	        switch (this.props.workspace) {
@@ -18501,7 +18501,7 @@
 	                break;
 	        }
 	        return (React.createElement("div", { className: 'flex-fill workspace-outer-wrapper' },
-	            React.createElement("div", { className: 'workspace-inner-wrapper flex-fill' }, React.createElement(workspaceComponent, { api: this.props.api, dataStore: this.props.dataStore, id: this.props.id }))));
+	            React.createElement("div", { className: 'workspace-inner-wrapper flex-fill' }, React.createElement(workspaceComponent, { id: this.props.id }))));
 	    }
 	};
 	Workspace = __decorate([
@@ -18628,7 +18628,7 @@
 	        };
 	    }
 	    del() {
-	        this.props.api.delItem(falcon_core_1.Entity, ApiService_1.AppUrls.entity, this.props.id)
+	        this.props.dataStore.delItem(falcon_core_1.Entity, ApiService_1.AppUrls.entity, this.props.id)
 	            .then(() => {
 	            this.props.dataStore.closeTab('entity', this.props.id);
 	            this.context.router.transitionTo('/edit/notfound');
@@ -18648,7 +18648,7 @@
 	                            });
 	                        }
 	                        if (result === 'deleteAll') {
-	                            Promise.all(data.record.map((datum) => this.props.api.delItem(falcon_core_1.Record, ApiService_1.AppUrls.record, datum.uid)))
+	                            Promise.all(data.record.map((datum) => this.props.dataStore.delItem(falcon_core_1.Record, ApiService_1.AppUrls.record, datum.uid)))
 	                                .then(() => {
 	                                this.del();
 	                            });
@@ -18687,7 +18687,7 @@
 	        this.props.modalStore.addModal(modalDef);
 	    }
 	    update(data) {
-	        this.props.api.patchItem(falcon_core_1.Entity, ApiService_1.AppUrls.entity, this.props.id, data);
+	        this.props.dataStore.patchItem(falcon_core_1.Entity, ApiService_1.AppUrls.entity, this.props.id, data);
 	    }
 	    render() {
 	        const entity = this.props.dataStore.dataStore.tabs.entity.get('entity-' + this.props.id).value.entity;
@@ -18719,7 +18719,7 @@
 	                    React.createElement("div", { className: 'tab-bar' },
 	                        React.createElement("div", { className: 'entity ' + (this.state.tab === 0 ? 'selected' : ''), onClick: () => this.setState({ tab: 0 }) }, "CORE"),
 	                        React.createElement("div", { className: 'entity ' + (this.state.tab === 1 ? 'selected' : ''), onClick: () => this.setState({ tab: 1 }) }, "REFERENCED BY")))),
-	            this.state.tab === 0 ? (React.createElement(EntityWorkspaceCoreView_1.EntityWorkspaceCoreView, { dataStore: this.props.dataStore, api: this.props.api, id: this.props.id })) : (React.createElement(EntityWorkspaceReferenceView_1.EntityWorkspaceReferenceView, { dataStore: this.props.dataStore, api: this.props.api, id: this.props.id }))));
+	            this.state.tab === 0 ? (React.createElement(EntityWorkspaceCoreView_1.EntityWorkspaceCoreView, { dataStore: this.props.dataStore, id: this.props.id })) : (React.createElement(EntityWorkspaceReferenceView_1.EntityWorkspaceReferenceView, { dataStore: this.props.dataStore, id: this.props.id }))));
 	    }
 	};
 	EntityEditorWorkspace.contextTypes = {
@@ -18899,7 +18899,7 @@
 	        };
 	    }
 	    update(data) {
-	        this.props.api.patchItem(falcon_core_1.Entity, ApiService_1.AppUrls.entity, this.props.id, data);
+	        this.props.dataStore.patchItem(falcon_core_1.Entity, ApiService_1.AppUrls.entity, this.props.id, data);
 	    }
 	    render() {
 	        const entity = this.props.dataStore.dataStore.tabs.entity.get('entity-' + this.props.id).value.entity;
@@ -18934,7 +18934,7 @@
 	                            } } }),
 	                    entity.parent !== null ? (React.createElement(AddTabButton_1.AddTabButton, { tabType: 'entity', uid: entity.parent })) : null)),
 	            React.createElement("div", { className: 'edit-group' },
-	                React.createElement(RecordsEditor_1.RecordsEditor, { dimension: 'predicates', entityExists: true, id: this.props.id, api: this.props.api, records: records, onChange: () => { }, predicates: predicates, sources: sources, entityTypeId: entityType.uid, dataStore: this.props.dataStore }))));
+	                React.createElement(RecordsEditor_1.RecordsEditor, { dimension: 'predicates', entityExists: true, id: this.props.id, records: records, onChange: () => { }, predicates: predicates, sources: sources, entityTypeId: entityType.uid }))));
 	    }
 	}
 	EntityWorkspaceCoreView.contextTypes = {
@@ -18953,6 +18953,15 @@
 	 * @version 0.1.0
 	 */
 	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
 	const React = __webpack_require__(2);
 	const ApiService_1 = __webpack_require__(45);
 	const falcon_core_1 = __webpack_require__(47);
@@ -18960,8 +18969,14 @@
 	const SearchBar_1 = __webpack_require__(272);
 	const RecordPredicate_1 = __webpack_require__(273);
 	const findParentTree_1 = __webpack_require__(267);
-	class RecordEditableFieldComponent extends EditableFieldComponent_1.EditableFieldComponent {
-	}
+	const mobx_react_1 = __webpack_require__(260);
+	let RecordEditableFieldComponent = class RecordEditableFieldComponent extends EditableFieldComponent_1.EditableFieldComponent {
+	};
+	RecordEditableFieldComponent = __decorate([
+	    mobx_react_1.inject('dataStore', 'modalStore'),
+	    mobx_react_1.observer,
+	    __metadata("design:paramtypes", [])
+	], RecordEditableFieldComponent);
 	class RecordsEditor extends React.Component {
 	    constructor() {
 	        super();
@@ -18973,16 +18988,16 @@
 	        if (record.uid === null) {
 	            throw new Error('Trying to delete a record with null id');
 	        }
-	        this.props.dataStore.api.delItem(falcon_core_1.Record, ApiService_1.AppUrls.record, record.uid)
+	        this.props.dataStore.delItem(falcon_core_1.Record, ApiService_1.AppUrls.record, record.uid)
 	            .then(() => {
 	            this.props.onChange();
 	        });
 	    }
 	    createNewRecord() {
-	        const entity = this.props.dataStore.tabs.entity.get('entity-' + this.props.id).value.entity;
-	        const entityType = this.props.dataStore.all.entity_type.value.find((t) => t.uid === entity.entityType);
-	        const entityTypeParents = findParentTree_1.findParentTree(entity.entityType, this.props.dataStore.all.entity_type.value);
-	        const predicates = this.props.dataStore.all.predicate
+	        const entity = this.props.dataStore.dataStore.tabs.entity.get('entity-' + this.props.id).value.entity;
+	        const entityType = this.props.dataStore.dataStore.all.entity_type.value.find((t) => t.uid === entity.entityType);
+	        const entityTypeParents = findParentTree_1.findParentTree(entity.entityType, this.props.dataStore.dataStore.all.entity_type.value);
+	        const predicates = this.props.dataStore.dataStore.all.predicate
 	            .value.filter((pred) => entityTypeParents.indexOf(pred.domain) !== -1);
 	        const modalDef = {
 	            name: 'record',
@@ -19025,7 +19040,7 @@
 	                        if (!this.state.filterFunc(currentPredicate)) {
 	                            return null;
 	                        }
-	                        return (React.createElement(RecordPredicate_1.RecordPredicate, { key: `section-${section}`, entity_id: this.props.id, api: this.props.dataStore.api, dimension: 'predicate', records: this.props.records[section], predicate: currentPredicate, sources: this.props.sources, onChange: this.props.onChange }));
+	                        return (React.createElement(RecordPredicate_1.RecordPredicate, { key: `section-${section}`, entity_id: this.props.id, dataStore: this.props.dataStore, dimension: 'predicate', records: this.props.records[section], predicate: currentPredicate, sources: this.props.sources, onChange: this.props.onChange }));
 	                    }))))));
 	    }
 	}
@@ -19087,12 +19102,12 @@
 	    }
 	    componentDidMount() {
 	        if (this.props.predicate.rangeIsReference) {
-	            this.props.api.getCollection(falcon_core_1.Entity, ApiService_1.AppUrls.entity, { type: this.props.predicate.range })
+	            this.props.dataStore.getCollection(falcon_core_1.Entity, ApiService_1.AppUrls.entity, { type: this.props.predicate.range })
 	                .then((potentialValues) => this.setState({ potentialValues }));
 	        }
 	    }
 	    createNewRecord() {
-	        this.props.api.postItem(falcon_core_1.Record, ApiService_1.AppUrls.record, falcon_core_1.Serializer.fromJson(falcon_core_1.Record, {
+	        this.props.dataStore.postItem(falcon_core_1.Record, ApiService_1.AppUrls.record, falcon_core_1.Serializer.fromJson(falcon_core_1.Record, {
 	            predicate: this.props.predicate.uid,
 	            entity: this.props.entity_id,
 	            valueType: this.props.predicate.rangeIsReference ? 'entity' : this.props.predicate.range,
@@ -19103,13 +19118,13 @@
 	        if (record.uid === null) {
 	            throw new Error('Trying to delete a record with null id');
 	        }
-	        this.props.api.delItem(falcon_core_1.Record, ApiService_1.AppUrls.record, record.uid)
+	        this.props.dataStore.delItem(falcon_core_1.Record, ApiService_1.AppUrls.record, record.uid)
 	            .then(() => {
 	            this.props.onChange();
 	        });
 	    }
 	    recordChanged(record) {
-	        this.props.api.putItem(falcon_core_1.Record, ApiService_1.AppUrls.record, this.props.entity_id, falcon_core_1.Serializer.toJson(record));
+	        this.props.dataStore.putItem(falcon_core_1.Record, ApiService_1.AppUrls.record, this.props.entity_id, falcon_core_1.Serializer.toJson(record));
 	    }
 	    render() {
 	        if (this.props.predicate.uid === null) {
@@ -34552,7 +34567,7 @@
 	        };
 	    }
 	    update(data) {
-	        this.props.api.patchItem(falcon_core_1.Entity, ApiService_1.AppUrls.entity, this.props.id, data);
+	        this.props.dataStore.patchItem(falcon_core_1.Entity, ApiService_1.AppUrls.entity, this.props.id, data);
 	    }
 	    render() {
 	        return (React.createElement("section", { className: 'editor-body' },
@@ -34620,19 +34635,19 @@
 	    }
 	    update(data) {
 	        const entityType = this.props.dataStore.dataStore.tabs.entity_type.get('entity_type-' + this.props.id).value;
-	        this.props.api.patchItem(falcon_core_1.EntityType, ApiService_1.AppUrls.entity_type, this.props.id, data)
+	        this.props.dataStore.patchItem(falcon_core_1.EntityType, ApiService_1.AppUrls.entity_type, this.props.id, data)
 	            .then(() => this.setState({ entityType: Object.assign({}, entityType, data) }));
 	    }
 	    copy() {
 	        const entityType = this.props.dataStore.dataStore.tabs.entity_type.get('entity_type-' + this.props.id).value;
 	        const newEntityType = falcon_core_1.Serializer.fromJson(falcon_core_1.EntityType, Object.assign({}, falcon_core_1.Serializer.toJson(entityType), { name: 'Copy of ' + entityType.label }));
-	        this.props.api.postItem(falcon_core_1.EntityType, ApiService_1.AppUrls.entity_type, newEntityType)
+	        this.props.dataStore.postItem(falcon_core_1.EntityType, ApiService_1.AppUrls.entity_type, newEntityType)
 	            .then(([id]) => {
 	            this.props.dataStore.createTab('entity_type', id, 'item');
 	        });
 	    }
 	    del() {
-	        this.props.api.delItem(falcon_core_1.EntityType, ApiService_1.AppUrls.entity_type, this.props.id)
+	        this.props.dataStore.delItem(falcon_core_1.EntityType, ApiService_1.AppUrls.entity_type, this.props.id)
 	            .then(() => this.context.router.transitionTo('/edit/notfound'))
 	            .catch((e) => {
 	            e.data.data.then((data) => {
@@ -35975,7 +35990,7 @@
 	    }
 	    updateSource(field, value) {
 	        const source = this.props.dataStore.dataStore.tabs.source.get('source-' + this.props.id).value.source;
-	        this.props.api.patchItem(falcon_core_1.Source, ApiService_1.AppUrls.source, source.uid, { [field]: value });
+	        this.props.dataStore.patchItem(falcon_core_1.Source, ApiService_1.AppUrls.source, source.uid, { [field]: value });
 	    }
 	    updateSourceElement(element, value) {
 	        const source = this.props.dataStore.dataStore.tabs.source.get('source-' + this.props.id).value.source;
@@ -35988,7 +36003,7 @@
 	        };
 	        if (source.metaData[element.label] !== undefined
 	            && source.metaData[element.label].values.find((a) => a.source === this.props.id) !== undefined) {
-	            this.props.api.patchItem(falcon_core_1.SourceElement, ApiService_1.AppUrls.source_element, compositeKey, falcon_core_1.Serializer.fromJson(falcon_core_1.SourceElement, {
+	            this.props.dataStore.patchItem(falcon_core_1.SourceElement, ApiService_1.AppUrls.source_element, compositeKey, falcon_core_1.Serializer.fromJson(falcon_core_1.SourceElement, {
 	                uid: compositeKey,
 	                element: source.metaData[element.label].element_uid,
 	                source: this.props.id,
@@ -35996,14 +36011,14 @@
 	            }));
 	        }
 	        else {
-	            this.props.api.postItem(falcon_core_1.SourceElement, ApiService_1.AppUrls.source_element, falcon_core_1.Serializer.fromJson(falcon_core_1.SourceElement, {
+	            this.props.dataStore.postItem(falcon_core_1.SourceElement, ApiService_1.AppUrls.source_element, falcon_core_1.Serializer.fromJson(falcon_core_1.SourceElement, {
 	                uid: compositeKey,
 	                value: value
 	            }));
 	        }
 	    }
 	    del() {
-	        this.props.api.delItem(falcon_core_1.Source, ApiService_1.AppUrls.source, this.props.id)
+	        this.props.dataStore.delItem(falcon_core_1.Source, ApiService_1.AppUrls.source, this.props.id)
 	            .then(() => this.context.router.transitionTo('/edit/notfound'))
 	            .catch((e) => {
 	            e.data.data.then((data) => {
@@ -36017,7 +36032,7 @@
 	                            });
 	                        }
 	                        if (result === 'deleteAll') {
-	                            Promise.all(data.source.map((datum) => this.props.api.delItem(falcon_core_1.Source, ApiService_1.AppUrls.source, datum.uid)))
+	                            Promise.all(data.source.map((datum) => this.props.dataStore.delItem(falcon_core_1.Source, ApiService_1.AppUrls.source, datum.uid)))
 	                                .then(() => {
 	                                this.del();
 	                            });
@@ -36035,7 +36050,7 @@
 	    createChild() {
 	        const source = this.props.dataStore.dataStore.tabs.source.get('source-' + this.props.id).value.source;
 	        const newSource = falcon_core_1.Serializer.fromJson(falcon_core_1.Source, Object.assign({}, falcon_core_1.Serializer.toJson(source), { label: 'Child of ' + source.label, parent: this.props.id }));
-	        this.props.api.postItem(falcon_core_1.Source, ApiService_1.AppUrls.source, newSource)
+	        this.props.dataStore.postItem(falcon_core_1.Source, ApiService_1.AppUrls.source, newSource)
 	            .then(([id]) => {
 	            this.props.dataStore.createTab('source', id, 'item');
 	        });
@@ -36184,19 +36199,6 @@
 	            records: []
 	        };
 	    }
-	    componentDidMount() {
-	        this.loadData(this.props);
-	    }
-	    componentWillReceiveProps(newProps) {
-	        this.loadData(newProps);
-	    }
-	    loadData(props) {
-	        // Promise.all([
-	        //     props.api.getCollection(Record, AppUrls.record, { predicate: props.id })
-	        // ]).then(([records]) => {
-	        //     this.setState({ records });
-	        // });
-	    }
 	    updatePredicate(field, value, rangeIsReferenceOverride = null) {
 	        const predicate = this.props.dataStore.dataStore.tabs.predicate.get('predicate-' + this.props.id).value;
 	        if (predicate === null) {
@@ -36205,7 +36207,7 @@
 	        }
 	        const rangeIsReferenceVal = rangeIsReferenceOverride === null
 	            ? predicate.rangeIsReference : rangeIsReferenceOverride;
-	        this.props.api.patchItem(falcon_core_1.Predicate, ApiService_1.AppUrls.predicate, predicate.uid, {
+	        this.props.dataStore.patchItem(falcon_core_1.Predicate, ApiService_1.AppUrls.predicate, predicate.uid, {
 	            [field]: value,
 	            rangeIsReference: rangeIsReferenceVal
 	        });
@@ -36213,13 +36215,13 @@
 	    copy() {
 	        const predicate = this.props.dataStore.dataStore.tabs.predicate.get('predicate-' + this.props.id).value;
 	        const newPredicate = falcon_core_1.Serializer.fromJson(falcon_core_1.Predicate, Object.assign({}, falcon_core_1.Serializer.toJson(predicate), { name: 'Copy of ' + predicate.label }));
-	        this.props.api.postItem(falcon_core_1.Predicate, ApiService_1.AppUrls.predicate, newPredicate)
+	        this.props.dataStore.postItem(falcon_core_1.Predicate, ApiService_1.AppUrls.predicate, newPredicate)
 	            .then(([id]) => {
 	            this.props.dataStore.createTab('predicate', id, 'item');
 	        });
 	    }
 	    del() {
-	        this.props.api.delItem(falcon_core_1.Predicate, ApiService_1.AppUrls.predicate, this.props.id)
+	        this.props.dataStore.delItem(falcon_core_1.Predicate, ApiService_1.AppUrls.predicate, this.props.id)
 	            .then(() => this.context.router.transitionTo('/edit/notfound'))
 	            .catch((e) => {
 	            e.data.data.then((data) => {
@@ -36233,7 +36235,7 @@
 	                            });
 	                        }
 	                        if (result === 'deleteAll') {
-	                            Promise.all(data.record.map((datum) => this.props.api.delItem(falcon_core_1.Record, ApiService_1.AppUrls.record, datum.uid)))
+	                            Promise.all(data.record.map((datum) => this.props.dataStore.delItem(falcon_core_1.Record, ApiService_1.AppUrls.record, datum.uid)))
 	                                .then(() => {
 	                                this.del();
 	                            });
@@ -36452,13 +36454,13 @@
 	exports.ObjectListWorkspace = (props) => (React.createElement("div", { className: 'workspace-editor object-list' }, (() => {
 	    switch (props.listType) {
 	        case 'entity':
-	            return (React.createElement(EntityList_1.EntityList, { api: props.api, query: props.query }));
+	            return (React.createElement(EntityList_1.EntityList, { query: props.query }));
 	        case 'source':
-	            return (React.createElement(SourceList_1.SourceList, { api: props.api }));
+	            return (React.createElement(SourceList_1.SourceList, null));
 	        case 'predicate':
-	            return (React.createElement(PredicateList_1.PredicateList, { api: props.api }));
+	            return (React.createElement(PredicateList_1.PredicateList, null));
 	        case 'entity_type':
-	            return (React.createElement(EntityTypeList_1.EntityTypeList, { api: props.api }));
+	            return (React.createElement(EntityTypeList_1.EntityTypeList, null));
 	    }
 	})()));
 
@@ -36555,7 +36557,7 @@
 	    }
 	    reload() {
 	        const setColumns = this.state.columns.filter((col) => col.predicate != -1);
-	        this.props.dataStore.api.getCollection(falcon_core_1.Record, ApiService_1.AppUrls.record, {
+	        this.props.dataStore.getCollection(falcon_core_1.Record, ApiService_1.AppUrls.record, {
 	            predicate: setColumns.map((col) => col.predicate),
 	            entity: this.props.dataStore.dataStore.all.entity.value.map((entity) => entity.uid)
 	        })
@@ -37301,6 +37303,37 @@
 	                return true;
 	            }));
 	        });
+	    }
+	    /*
+	    *
+	    *    API
+	    *
+	    */
+	    getItem(obj, baseUrl, uid) {
+	        return this.api.getItem.apply(this, arguments);
+	    }
+	    getCollection(obj, baseUrl, params) {
+	        return this.api.getCollection.apply(this, arguments);
+	    }
+	    postItem(obj, baseUrl, data) {
+	        return this.api.postItem.apply(this, arguments).then(this.update.bind(this));
+	    }
+	    putItem(obj, baseUrl, uid, data) {
+	        return this.api.putItem.apply(this, arguments).then(this.update.bind(this));
+	    }
+	    //TODO: patch item takes a subset of an objects properties. This is currently being looked at in TS in the
+	    //context of the 'setState' function in react
+	    patchItem(obj, baseUrl, uid, data) {
+	        return this.api.patchItem.apply(this, arguments).then(this.update.bind(this));
+	    }
+	    delItem(obj, baseUrl, uid) {
+	        return this.api.delItem.apply(this, arguments).then(this.update.bind(this));
+	    }
+	    query(graphQLQuery) {
+	        return this.api.query.apply(this, arguments);
+	    }
+	    getStats() {
+	        return this.api.getStats.apply(this, arguments);
 	    }
 	    /*
 	    *
@@ -42547,13 +42580,23 @@
 	 * @version 0.1.0
 	 */
 	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
 	const React = __webpack_require__(2);
 	const Overlay_1 = __webpack_require__(417);
 	const PredicateDescription_1 = __webpack_require__(401);
 	const falcon_core_1 = __webpack_require__(47);
 	const literalTypes_1 = __webpack_require__(402);
 	const ApiService_1 = __webpack_require__(45);
-	class CreatePredicate extends React.Component {
+	const mobx_react_1 = __webpack_require__(260);
+	let CreatePredicate = class CreatePredicate extends React.Component {
 	    constructor() {
 	        super();
 	        this.state = {
@@ -42569,7 +42612,7 @@
 	    }
 	    componentDidMount() {
 	        if (this.props.initialDomain !== undefined) {
-	            this.props.api.getItem(falcon_core_1.EntityType, ApiService_1.AppUrls.entity_type, this.props.initialDomain)
+	            this.props.dataStore.getItem(falcon_core_1.EntityType, ApiService_1.AppUrls.entity_type, this.props.initialDomain)
 	                .then((result) => {
 	                if (result.uid === null) {
 	                    throw new Error('Unexpected null uid');
@@ -42587,7 +42630,7 @@
 	                });
 	            });
 	        }
-	        const results = this.props.dataStore.all.entity_type.value;
+	        const results = this.props.dataStore.dataStore.all.entity_type.value;
 	        const entityTypeMap = results.map((entityType) => {
 	            if (entityType.uid === null) {
 	                throw new Error('Unexpected null uid');
@@ -42608,7 +42651,7 @@
 	            range: this.state.range.value,
 	            rangeIsReference: this.state.range.meta !== 'literal'
 	        });
-	        this.props.api.postItem(falcon_core_1.Predicate, ApiService_1.AppUrls.predicate, newPredicate)
+	        this.props.dataStore.postItem(falcon_core_1.Predicate, ApiService_1.AppUrls.predicate, newPredicate)
 	            .then((result) => {
 	            newPredicate.uid = result[0];
 	            this.props.complete(newPredicate);
@@ -42627,7 +42670,12 @@
 	                React.createElement("button", { onClick: this.props.cancel, className: 'pull-left' }, "Cancel"),
 	                React.createElement("button", { onClick: this.create.bind(this), className: 'pull-right' }, "Create Property"))));
 	    }
-	}
+	};
+	CreatePredicate = __decorate([
+	    mobx_react_1.inject('dataStore'),
+	    mobx_react_1.observer,
+	    __metadata("design:paramtypes", [])
+	], CreatePredicate);
 	exports.CreatePredicate = CreatePredicate;
 	;
 
@@ -42707,7 +42755,7 @@
 	        this.props.modalStore.addModal(modalDef);
 	    }
 	    setComboValue(opt) {
-	        this.props.api.postItem(falcon_core_1.Record, ApiService_1.AppUrls.record, falcon_core_1.Serializer.fromJson(falcon_core_1.Record, {
+	        this.props.dataStore.postItem(falcon_core_1.Record, ApiService_1.AppUrls.record, falcon_core_1.Serializer.fromJson(falcon_core_1.Record, {
 	            predicate: opt.meta.uid,
 	            entity: this.props.entityUid,
 	            valueType: opt.meta.rangeIsReference ? 'entity' : opt.meta.range,
@@ -42723,7 +42771,7 @@
 	    }
 	};
 	CreateRecord = __decorate([
-	    mobx_react_1.inject('modalStore'),
+	    mobx_react_1.inject('modalStore', 'dataStore'),
 	    mobx_react_1.observer,
 	    __metadata("design:paramtypes", [])
 	], CreateRecord);
@@ -42741,29 +42789,39 @@
 	 * @version 0.1.0
 	 */
 	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
 	const React = __webpack_require__(2);
 	const falcon_core_1 = __webpack_require__(47);
 	const ApiService_1 = __webpack_require__(45);
-	class CreatePresetRecord extends React.Component {
+	const mobx_react_1 = __webpack_require__(260);
+	let CreatePresetRecord = CreatePresetRecord_1 = class CreatePresetRecord extends React.Component {
 	    constructor() {
 	        super();
 	        this.state = {};
 	    }
 	    componentDidMount() {
-	        if (CreatePresetRecord.openEntityDialog) {
-	            CreatePresetRecord.openEntityDialog = false;
+	        if (CreatePresetRecord_1.openEntityDialog) {
+	            CreatePresetRecord_1.openEntityDialog = false;
 	            this.createNewEntity();
 	        }
 	        else {
-	            CreatePresetRecord.openEntityDialog = true;
+	            CreatePresetRecord_1.openEntityDialog = true;
 	        }
 	    }
 	    createNewEntity() {
 	        const modalDef = {
 	            name: 'entity',
 	            complete: (data) => {
-	                const isMentioned = this.props.dataStore.all.predicate.value.find((pred) => pred.label === 'is mentioned');
-	                this.props.api.postItem(falcon_core_1.Record, ApiService_1.AppUrls.record, falcon_core_1.Serializer.fromJson(falcon_core_1.Record, {
+	                const isMentioned = this.props.dataStore.dataStore.all.predicate.value.find((pred) => pred.label === 'is mentioned');
+	                this.props.dataStore.postItem(falcon_core_1.Record, ApiService_1.AppUrls.record, falcon_core_1.Serializer.fromJson(falcon_core_1.Record, {
 	                    predicate: isMentioned.uid,
 	                    entity: data[0],
 	                    valueType: 'source',
@@ -42784,10 +42842,16 @@
 	    render() {
 	        return null;
 	    }
-	}
+	};
 	CreatePresetRecord.openEntityDialog = true;
+	CreatePresetRecord = CreatePresetRecord_1 = __decorate([
+	    mobx_react_1.inject('dataStore', 'modalStore'),
+	    mobx_react_1.observer,
+	    __metadata("design:paramtypes", [])
+	], CreatePresetRecord);
 	exports.CreatePresetRecord = CreatePresetRecord;
 	;
+	var CreatePresetRecord_1;
 
 
 /***/ },
@@ -42800,12 +42864,22 @@
 	 * @version 0.1.0
 	 */
 	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
 	const React = __webpack_require__(2);
 	const Overlay_1 = __webpack_require__(417);
 	const falcon_core_1 = __webpack_require__(47);
 	const ApiService_1 = __webpack_require__(45);
+	const mobx_react_1 = __webpack_require__(260);
 	const mousetrap = __webpack_require__(397);
-	class CreateSource extends React.Component {
+	let CreateSource = class CreateSource extends React.Component {
 	    constructor() {
 	        super();
 	        this.state = {
@@ -42816,7 +42890,7 @@
 	        this.setState({ internalValue: this.props.initialValue });
 	    }
 	    createSource() {
-	        this.props.api.postItem(falcon_core_1.Source, ApiService_1.AppUrls.source, falcon_core_1.Serializer.fromJson(falcon_core_1.Source, {
+	        this.props.dataStore.postItem(falcon_core_1.Source, ApiService_1.AppUrls.source, falcon_core_1.Serializer.fromJson(falcon_core_1.Source, {
 	            name: this.state.internalValue
 	        }))
 	            .then(this.props.complete);
@@ -42841,10 +42915,15 @@
 	            React.createElement("button", { onClick: () => this.props.cancel(), className: 'pull-left' }, "Cancel"),
 	            React.createElement("button", { onClick: this.createSource.bind(this), className: 'pull-right' }, "Create Source")));
 	    }
-	}
+	};
 	CreateSource.defaultProps = {
 	    initialValue: ''
 	};
+	CreateSource = __decorate([
+	    mobx_react_1.inject('dataStore'),
+	    mobx_react_1.observer,
+	    __metadata("design:paramtypes", [])
+	], CreateSource);
 	exports.CreateSource = CreateSource;
 
 
@@ -42858,13 +42937,23 @@
 	 * @version 0.1.0
 	 */
 	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
 	const React = __webpack_require__(2);
 	const Overlay_1 = __webpack_require__(417);
 	const falcon_core_1 = __webpack_require__(47);
 	const ApiService_1 = __webpack_require__(45);
 	const ComboDropdown_1 = __webpack_require__(67);
 	const lodash_1 = __webpack_require__(69);
-	class CreateEntity extends React.Component {
+	const mobx_react_1 = __webpack_require__(260);
+	let CreateEntity = class CreateEntity extends React.Component {
 	    constructor() {
 	        super();
 	        this.state = {
@@ -42874,7 +42963,7 @@
 	        };
 	    }
 	    componentWillMount() {
-	        this.props.api.getCollection(falcon_core_1.EntityType, ApiService_1.AppUrls.entity_type, {})
+	        this.props.dataStore.getCollection(falcon_core_1.EntityType, ApiService_1.AppUrls.entity_type, {})
 	            .then((allEntityTypes) => {
 	            if (this.props.initialType !== undefined) {
 	                const initialType = allEntityTypes.find((et) => et.uid === this.props.initialType);
@@ -42886,7 +42975,7 @@
 	        });
 	    }
 	    CreateEntity() {
-	        this.props.api.postItem(falcon_core_1.Entity, ApiService_1.AppUrls.entity, falcon_core_1.Serializer.fromJson(falcon_core_1.Entity, {
+	        this.props.dataStore.postItem(falcon_core_1.Entity, ApiService_1.AppUrls.entity, falcon_core_1.Serializer.fromJson(falcon_core_1.Entity, {
 	            label: this.state.label,
 	            entityType: this.state.entityType.value
 	        }))
@@ -42903,7 +42992,12 @@
 	            React.createElement("button", { name: 'cancel-modal', onClick: () => this.props.cancel(), className: 'pull-left' }, "Cancel"),
 	            React.createElement("button", { name: 'create-entity', onClick: this.CreateEntity.bind(this), className: 'pull-right' }, "Create Entity")));
 	    }
-	}
+	};
+	CreateEntity = __decorate([
+	    mobx_react_1.inject('dataStore'),
+	    mobx_react_1.observer,
+	    __metadata("design:paramtypes", [])
+	], CreateEntity);
 	exports.CreateEntity = CreateEntity;
 	;
 
@@ -42918,12 +43012,22 @@
 	 * @version 0.1.0
 	 */
 	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
 	const React = __webpack_require__(2);
 	const Overlay_1 = __webpack_require__(417);
 	const falcon_core_1 = __webpack_require__(47);
 	const ApiService_1 = __webpack_require__(45);
+	const mobx_react_1 = __webpack_require__(260);
 	const mousetrap = __webpack_require__(397);
-	class CreateEntityType extends React.Component {
+	let CreateEntityType = class CreateEntityType extends React.Component {
 	    constructor() {
 	        super();
 	        this.state = {
@@ -42931,7 +43035,7 @@
 	        };
 	    }
 	    createEntityType() {
-	        this.props.api.postItem(falcon_core_1.EntityType, ApiService_1.AppUrls.entity_type, falcon_core_1.Serializer.fromJson(falcon_core_1.EntityType, {
+	        this.props.dataStore.postItem(falcon_core_1.EntityType, ApiService_1.AppUrls.entity_type, falcon_core_1.Serializer.fromJson(falcon_core_1.EntityType, {
 	            label: this.state.internalValue
 	        }))
 	            .then(this.props.complete);
@@ -42955,7 +43059,12 @@
 	            React.createElement("button", { onClick: () => this.props.cancel(), className: 'pull-left' }, "Cancel"),
 	            React.createElement("button", { onClick: this.createEntityType.bind(this), className: 'pull-right' }, "Create Entity Type")));
 	    }
-	}
+	};
+	CreateEntityType = __decorate([
+	    mobx_react_1.inject('dataStore'),
+	    mobx_react_1.observer,
+	    __metadata("design:paramtypes", [])
+	], CreateEntityType);
 	exports.CreateEntityType = CreateEntityType;
 	;
 
@@ -42970,9 +43079,19 @@
 	 * @version 0.1.0
 	 */
 	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
 	const React = __webpack_require__(2);
 	const Overlay_1 = __webpack_require__(417);
-	class ConflictResolution extends React.Component {
+	const mobx_react_1 = __webpack_require__(260);
+	let ConflictResolution = class ConflictResolution extends React.Component {
 	    constructor() {
 	        super();
 	        this.state = {
@@ -42996,9 +43115,9 @@
 	                            React.createElement("th", null, "Predicate"),
 	                            React.createElement("th", null, "Value"))),
 	                    React.createElement("tbody", null, this.props.conflictingItems.record.map((record) => {
-	                        const entityName = this.props.dataStore.all.entity.value
+	                        const entityName = this.props.dataStore.dataStore.all.entity.value
 	                            .find((entity) => entity.uid == record.entity).label;
-	                        const predicateName = this.props.dataStore.all.predicate.value
+	                        const predicateName = this.props.dataStore.dataStore.all.predicate.value
 	                            .find((predicate) => predicate.uid == record.predicate).label;
 	                        return (React.createElement("tr", { key: `row-${record.uid}` },
 	                            React.createElement("td", null, entityName),
@@ -43044,7 +43163,12 @@
 	                    React.createElement("i", { className: 'fa fa-trash' }),
 	                    " Continue and delete all conflicting records"))));
 	    }
-	}
+	};
+	ConflictResolution = __decorate([
+	    mobx_react_1.inject('dataStore'),
+	    mobx_react_1.observer,
+	    __metadata("design:paramtypes", [])
+	], ConflictResolution);
 	exports.ConflictResolution = ConflictResolution;
 	;
 

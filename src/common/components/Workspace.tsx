@@ -22,7 +22,6 @@ import {
     ObjectListWorkspace } from './workspace/workspace';
 
 interface WorkspaceProps {
-    api: ApiService;
     workspace: string;
     id: number;
     name?: string;
@@ -55,11 +54,10 @@ export class Workspace extends React.Component<WorkspaceProps, WorkspaceState> {
 
         if (this.props.list) {
             return (<ObjectListWorkspace
-                api={this.props.api}
                 name={this.props.name}
                 query={this.props.location.query}
                 listType={this.props.workspace}
-                dataStore={this.props.dataStore} />);
+            />);
         }
 
         let workspaceComponent : any = EmptyWorkspace;
@@ -85,7 +83,7 @@ export class Workspace extends React.Component<WorkspaceProps, WorkspaceState> {
         return (
             <div className='flex-fill workspace-outer-wrapper'>
                 <div className='workspace-inner-wrapper flex-fill'>
-                    {React.createElement(workspaceComponent, {api: this.props.api, dataStore: this.props.dataStore, id:this.props.id})}
+                    {React.createElement(workspaceComponent, { id: this.props.id })}
                 </div>
             </div>
         );

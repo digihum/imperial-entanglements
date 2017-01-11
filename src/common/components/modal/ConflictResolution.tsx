@@ -8,15 +8,16 @@ import * as React from 'react';
 
 import { Overlay } from '../Overlay';
 import { Entity, EntityType, Record, Predicate } from 'falcon-core';
-import { ApiService, AppUrls } from '../../ApiService';
-import { DataStore } from '../../DataStore';
+
 import { ComboDropdown, ComboDropdownOption } from '../ComboDropdown';
 
 import { noop } from 'lodash';
 
+import { DataController } from '../../stores/DataController';
+import { inject, observer } from 'mobx-react';
+
 interface ConflictResolutionProps {
-    api: ApiService;
-    dataStore: DataStore;
+    dataStore?: DataController;
     complete: (s: string) => void;
     cancel: () => void;
     message: string;
@@ -33,6 +34,8 @@ interface ConflictResolutionState {
     allEntityTypes: EntityType[];
 }
 
+@inject('dataStore')
+@observer
 export class ConflictResolution extends React.Component<ConflictResolutionProps, ConflictResolutionState> {
 
     constructor() {
@@ -63,10 +66,10 @@ export class ConflictResolution extends React.Component<ConflictResolutionProps,
                         <tbody>
                         {this.props.conflictingItems.record.map((record) => {
 
-                            const entityName = this.props.dataStore.all.entity.value
+                            const entityName = this.props.dataStore!.dataStore.all.entity.value
                                 .find((entity) => entity.uid == record.entity).label;
 
-                            const predicateName = this.props.dataStore.all.predicate.value
+                            const predicateName = this.props.dataStore!.dataStore.all.predicate.value
                                 .find((predicate) => predicate.uid == record.predicate).label;
 
 

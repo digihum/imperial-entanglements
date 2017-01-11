@@ -51,7 +51,6 @@ interface EntityEditorState {
 }
 
 const ObjectEditorCore = SortableContainer((props: {
-  api: ApiService,
   id: number,
   workspace: string,
   list: boolean,
@@ -69,7 +68,6 @@ const ObjectEditorCore = SortableContainer((props: {
     />
 
     <Workspace
-      api={props.api}
       workspace={props.workspace}
       id={props.id}
       loading={props.loadingWheel}
@@ -78,7 +76,6 @@ const ObjectEditorCore = SortableContainer((props: {
 
     {props.splitWorkspace ? (
        <Workspace
-        api={props.api}
         workspace={props.workspace}
         id={props.id}
         loading={props.loadingWheel}

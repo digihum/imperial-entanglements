@@ -8,12 +8,15 @@ import * as React from 'react';
 
 import { Overlay } from '../Overlay';
 import { EntityType, Serializer } from 'falcon-core';
-import { ApiService, AppUrls } from '../../ApiService';
+import { AppUrls } from '../../ApiService';
+
+import { DataController } from '../../stores/DataController';
+import { inject, observer } from 'mobx-react';
 
 import * as mousetrap from 'mousetrap';
 
 interface CreateEntityTypeProps {
-    api: ApiService;
+    dataStore?: DataController;
     complete: (s: string) => void;
     cancel: () => void;
 }
@@ -22,6 +25,8 @@ interface CreateEntityTypeState {
     internalValue: string;
 }
 
+@inject('dataStore')
+@observer
 export class CreateEntityType extends React.Component<CreateEntityTypeProps, CreateEntityTypeState> {
 
     private keyboardShortcuts;
@@ -34,7 +39,7 @@ export class CreateEntityType extends React.Component<CreateEntityTypeProps, Cre
     }
 
     public createEntityType() {
-        this.props.api.postItem(EntityType, AppUrls.entity_type,
+        this.props.dataStore!.postItem(EntityType, AppUrls.entity_type,
             Serializer.fromJson(EntityType, {
                 label: this.state.internalValue
             }))

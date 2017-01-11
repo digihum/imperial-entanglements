@@ -23,6 +23,10 @@ import { ModalDefinition } from '../modal/ModalDefinition';
 
 import { groupBy, Dictionary } from 'lodash';
 
+import { inject, observer } from 'mobx-react';
+
+@inject('dataStore', 'modalStore')
+@observer
 class RecordEditableFieldComponent extends EditableFieldComponent<Record> {}
 
 interface RecordsEditorProps {
@@ -57,7 +61,7 @@ export class RecordsEditor extends React.Component<RecordsEditorProps, RecordsEd
 			throw new Error('Trying to delete a record with null id');
 		}
 
-		this.props.dataStore!.api.delItem(Record, AppUrls.record, record.uid)
+		this.props.dataStore!.delItem(Record, AppUrls.record, record.uid)
 		.then(() => {
 			this.props.onChange();
 		});
@@ -65,12 +69,12 @@ export class RecordsEditor extends React.Component<RecordsEditorProps, RecordsEd
 
 	public createNewRecord() {
 
-        const entity = this.props.dataStore.tabs.entity.get('entity-' + this.props.id).value.entity;
+        const entity = this.props.dataStore!.dataStore.tabs.entity.get('entity-' + this.props.id).value.entity;
 
-        const entityType = this.props.dataStore.all.entity_type.value.find((t) => t.uid === entity.entityType);
+        const entityType = this.props.dataStore!.dataStore.all.entity_type.value.find((t) => t.uid === entity.entityType);
 
-        const entityTypeParents = findParentTree(entity.entityType, this.props.dataStore.all.entity_type.value);
-        const predicates = this.props.dataStore.all.predicate
+        const entityTypeParents = findParentTree(entity.entityType, this.props.dataStore!.dataStore.all.entity_type.value);
+        const predicates = this.props.dataStore!.dataStore.all.predicate
             .value.filter((pred) => entityTypeParents.indexOf(pred.domain) !== -1);
 
         const modalDef: ModalDefinition = {
@@ -139,7 +143,7 @@ export class RecordsEditor extends React.Component<RecordsEditorProps, RecordsEd
 							return (<RecordPredicate
 								key={`section-${section}`}
 								entity_id={this.props.id}
-								api={this.props.dataStore!.api}
+								dataStore={this.props.dataStore!}
 								dimension='predicate'
 								records={this.props.records[section]}
 								predicate={currentPredicate}

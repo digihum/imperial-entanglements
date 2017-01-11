@@ -8,21 +8,26 @@ import * as React from 'react';
 
 import { Overlay } from '../Overlay';
 import { Source, Serializer } from 'falcon-core';
-import { ApiService, AppUrls } from '../../ApiService';
+import { AppUrls } from '../../ApiService';
+
+import { DataController } from '../../stores/DataController';
+import { inject, observer } from 'mobx-react';
 
 import * as mousetrap from 'mousetrap';
 
 interface CreateSourceProps {
-    api: ApiService;
     complete: (s: string) => void;
     cancel: () => void;
     initialValue: string;
+    dataStore?: DataController;
 }
 
 interface CreateSourceState {
     internalValue: string;
 }
 
+@inject('dataStore')
+@observer
 export class CreateSource extends React.Component<CreateSourceProps, CreateSourceState> {
 
     private keyboardShortcuts;
@@ -43,7 +48,7 @@ export class CreateSource extends React.Component<CreateSourceProps, CreateSourc
     }
 
     public createSource() {
-        this.props.api.postItem(Source, AppUrls.source,
+        this.props.dataStore!.postItem(Source, AppUrls.source,
             Serializer.fromJson(Source, {
                 name: this.state.internalValue
             }))

@@ -7,7 +7,7 @@
 import * as React from 'react';
 
 import { SameAsEditor } from '../fields/SameAsEditor';
-import { ApiService, AppUrls } from '../../ApiService';
+import { AppUrls } from '../../ApiService';
 
 import { EntityType, Serializer } from 'falcon-core';
 
@@ -30,7 +30,6 @@ class StringEditableFieldComponent extends EditableFieldComponent<string> {}
 class ComboEditableFieldComponent extends EditableFieldComponent<ComboDropdownOption> {}
 
 interface EntityTypeWorkspaceProps {
-    api: ApiService;
     id: number;
     dataStore?: DataController;
     modalStore?: ModalStore;
@@ -55,7 +54,7 @@ export class EntityTypeWorkspace extends React.Component<EntityTypeWorkspaceProp
 
     public update(data: any) {
         const entityType = this.props.dataStore!.dataStore.tabs.entity_type.get('entity_type-' + this.props.id).value;
-        this.props.api.patchItem(EntityType, AppUrls.entity_type, this.props.id, data)
+        this.props.dataStore!.patchItem(EntityType, AppUrls.entity_type, this.props.id, data)
         .then(() => this.setState({ entityType: Object.assign({}, entityType, data)}));
     }
 
@@ -67,14 +66,14 @@ export class EntityTypeWorkspace extends React.Component<EntityTypeWorkspaceProp
         const newEntityType = Serializer.fromJson(EntityType,
             Object.assign({}, Serializer.toJson(entityType), { name: 'Copy of ' + entityType.label}));
 
-        this.props.api.postItem(EntityType, AppUrls.entity_type, newEntityType)
+        this.props.dataStore!.postItem(EntityType, AppUrls.entity_type, newEntityType)
             .then(([id]) => {
                 this.props.dataStore!.createTab('entity_type', id, 'item');
         });
     }
 
     public del() {
-        this.props.api.delItem(EntityType, AppUrls.entity_type, this.props.id)
+        this.props.dataStore!.delItem(EntityType, AppUrls.entity_type, this.props.id)
         .then(() => this.context.router.transitionTo('/edit/notfound'))
         .catch((e) => {
             e.data.data.then((data) => {

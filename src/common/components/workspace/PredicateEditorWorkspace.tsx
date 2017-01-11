@@ -8,8 +8,7 @@ import * as React from 'react';
 import { Link } from 'react-router';
 
 import { SameAsEditor } from '../fields/SameAsEditor';
-import { Loading } from '../Loading';
-import { ApiService, AppUrls } from '../../ApiService';
+import { AppUrls } from '../../ApiService';
 
 import { Predicate, Serializer, Record } from 'falcon-core';
 
@@ -30,7 +29,6 @@ import { ModalStore } from '../../stores/ModalStore';
 class StringEditableFieldComponent extends EditableFieldComponent<string> {}
 
 interface PredicateEditorProps {
-    api: ApiService;
     id: number;
     dataStore?: DataController;
     modalStore?: ModalStore;
@@ -62,22 +60,6 @@ export class PredicateEditorWorkspace extends React.Component<PredicateEditorPro
         };
     }
 
-    public componentDidMount() {
-        this.loadData(this.props);
-    }
-
-    public componentWillReceiveProps(newProps: PredicateEditorProps) {
-        this.loadData(newProps);
-    }
-
-    public loadData(props: PredicateEditorProps) {
-        // Promise.all([
-        //     props.api.getCollection(Record, AppUrls.record, { predicate: props.id })
-        // ]).then(([records]) => {
-        //     this.setState({ records });
-        // });
-    }
-
     public updatePredicate(field: string, value: string, rangeIsReferenceOverride: boolean | null = null) {
 
         const predicate = this.props.dataStore!.dataStore.tabs.predicate.get('predicate-' + this.props.id).value;
@@ -90,7 +72,7 @@ export class PredicateEditorWorkspace extends React.Component<PredicateEditorPro
         const rangeIsReferenceVal = rangeIsReferenceOverride === null
             ? predicate.rangeIsReference : rangeIsReferenceOverride;
 
-        this.props.api.patchItem(Predicate, AppUrls.predicate, predicate.uid,
+        this.props.dataStore!.patchItem(Predicate, AppUrls.predicate, predicate.uid,
         {
             [field]: value,
             rangeIsReference: rangeIsReferenceVal
@@ -104,14 +86,14 @@ export class PredicateEditorWorkspace extends React.Component<PredicateEditorPro
         const newPredicate = Serializer.fromJson(Predicate,
             Object.assign({}, Serializer.toJson(predicate), { name: 'Copy of ' + predicate.label}));
 
-        this.props.api.postItem(Predicate, AppUrls.predicate, newPredicate)
+        this.props.dataStore!.postItem(Predicate, AppUrls.predicate, newPredicate)
             .then(([id]) => {
                 this.props.dataStore!.createTab('predicate', id, 'item');
         });
     }
 
     public del() {
-        this.props.api.delItem(Predicate, AppUrls.predicate, this.props.id)
+        this.props.dataStore!.delItem(Predicate, AppUrls.predicate, this.props.id)
         .then(() => this.context.router.transitionTo('/edit/notfound'))
         .catch((e) => {
             e.data.data.then((data) => {
@@ -127,7 +109,7 @@ export class PredicateEditorWorkspace extends React.Component<PredicateEditorPro
                         }
 
                         if (result === 'deleteAll') {
-                            Promise.all(data.record.map((datum) => this.props.api.delItem(Record, AppUrls.record, datum.uid)))
+                            Promise.all(data.record.map((datum) => this.props.dataStore!.delItem(Record, AppUrls.record, datum.uid)))
                             .then(() => {
                                 this.del();
                             });

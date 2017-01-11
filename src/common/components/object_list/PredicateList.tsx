@@ -6,7 +6,6 @@
 
 import * as React from 'react';
 
-import { ApiService } from '../../ApiService';
 import { Predicate } from 'falcon-core';
 
 import { AddTabButton } from '../AddTabButton';
@@ -22,7 +21,6 @@ import { SearchBar } from '../SearchBar';
 
 
 interface PredicateListProps {
-    api: ApiService;
     dataStore?: DataController;
     modalController?: ModalStore;
 }

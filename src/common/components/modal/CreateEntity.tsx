@@ -8,17 +8,20 @@ import * as React from 'react';
 
 import { Overlay } from '../Overlay';
 import { Entity, EntityType, Serializer } from 'falcon-core';
-import { ApiService, AppUrls } from '../../ApiService';
+import { AppUrls } from '../../ApiService';
 import { ComboDropdown, ComboDropdownOption } from '../ComboDropdown';
 
 import { noop } from 'lodash';
 
+import { DataController } from '../../stores/DataController';
+import { inject, observer } from 'mobx-react';
+
 interface CreateEntityProps {
-    api: ApiService;
+    dataStore?: DataController;
     complete: (s: string) => void;
     cancel: () => void;
-    initialName?: string,
-    initialType?: number
+    initialName?: string;
+    initialType?: number;
 }
 
 interface CreateEntityState {
@@ -27,6 +30,8 @@ interface CreateEntityState {
     allEntityTypes: EntityType[];
 }
 
+@inject('dataStore')
+@observer
 export class CreateEntity extends React.Component<CreateEntityProps, CreateEntityState> {
 
     constructor() {
@@ -39,7 +44,7 @@ export class CreateEntity extends React.Component<CreateEntityProps, CreateEntit
     }
 
     public componentWillMount() {
-        this.props.api.getCollection(EntityType, AppUrls.entity_type, {})
+        this.props.dataStore!.getCollection(EntityType, AppUrls.entity_type, {})
         .then((allEntityTypes) => {
             if (this.props.initialType !== undefined) {
                 const initialType = allEntityTypes.find((et) => et.uid === this.props.initialType);
@@ -52,7 +57,7 @@ export class CreateEntity extends React.Component<CreateEntityProps, CreateEntit
     }
 
     public CreateEntity() {
-        this.props.api.postItem(Entity, AppUrls.entity,
+        this.props.dataStore!.postItem(Entity, AppUrls.entity,
             Serializer.fromJson(Entity, {
                 label: this.state.label,
                 entityType: this.state.entityType.value

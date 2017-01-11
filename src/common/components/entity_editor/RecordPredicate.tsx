@@ -6,6 +6,7 @@
 
 import * as React from 'react';
 import { ApiService, AppUrls } from '../../ApiService';
+import { DataController } from '../../stores/DataController';
 
 import { Record, Predicate, Source, Entity, Serializer } from 'falcon-core';
 import { EditableFieldComponent } from '../fields/EditableFieldComponent';
@@ -18,7 +19,7 @@ class RecordEditableFieldComponent extends EditableFieldComponent<Record> {}
 
 interface RecordPredicateProps {
   entity_id: number;
-	api: ApiService;
+	dataStore: DataController;
 	dimension: string;
 	records: Record[];
 	predicate : Predicate;
@@ -41,13 +42,13 @@ export class RecordPredicate extends React.Component<RecordPredicateProps, Recor
 
     public componentDidMount() {
         if (this.props.predicate.rangeIsReference) {
-            this.props.api.getCollection(Entity, AppUrls.entity, { type: this.props.predicate.range })
+            this.props.dataStore!.getCollection(Entity, AppUrls.entity, { type: this.props.predicate.range })
             .then((potentialValues) => this.setState({ potentialValues }));
         }
     }
 
     public createNewRecord() {
-        this.props.api.postItem(Record, AppUrls.record,
+        this.props.dataStore!.postItem(Record, AppUrls.record,
         Serializer.fromJson(Record, {
             predicate: this.props.predicate.uid,
             entity: this.props.entity_id,
@@ -62,14 +63,14 @@ export class RecordPredicate extends React.Component<RecordPredicateProps, Recor
 			throw new Error('Trying to delete a record with null id');
 		}
 
-		this.props.api.delItem(Record, AppUrls.record, record.uid)
+		this.props.dataStore!.delItem(Record, AppUrls.record, record.uid)
 		.then(() => {
 			this.props.onChange();
 		});
 	}
 
 	public recordChanged(record: Record) {
-		this.props.api.putItem(Record, AppUrls.record, this.props.entity_id, Serializer.toJson(record));
+		this.props.dataStore!.putItem(Record, AppUrls.record, this.props.entity_id, Serializer.toJson(record));
 	}
 
 	public render() {

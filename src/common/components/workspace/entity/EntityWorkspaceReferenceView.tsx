@@ -14,7 +14,6 @@ import { AddTabButton } from '../../AddTabButton';
 import { DataController } from '../../../stores/DataController';
 
 interface EntityWorkspaceReferenceViewProps {
-    api: ApiService;
     id: number;
     dataStore: DataController;
 }
@@ -54,7 +53,7 @@ export class EntityWorkspaceReferenceView extends React.Component<EntityWorkspac
     }
 
     public update(data: any) {
-        this.props.api.patchItem(Entity, AppUrls.entity, this.props.id, data);
+        this.props.dataStore!.patchItem(Entity, AppUrls.entity, this.props.id, data);
     }
 
     public render() {

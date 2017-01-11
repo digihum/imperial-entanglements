@@ -11,6 +11,8 @@ import { Tab } from '../components/Sidebar';
 import { Map } from 'immutable';
 import { arrayMove } from 'react-sortable-hoc';
 
+import { TrackedFalconItem, CompositeKey } from 'falcon-core';
+
 import { observable, action } from 'mobx';
 
 
@@ -18,15 +20,17 @@ import { cloneDeep, find, groupBy, findIndex, isNaN } from 'lodash';
 
 import * as moment from 'moment';
 
-export class DataController {
+export class DataController implements ApiService {
 
   @observable public dataStore: DataStore;
   @observable public tabs: Tab[];
 
-  public readonly api: ApiService;
+  private readonly api: ApiService;
 
   public constructor(api: ApiService) {
+
     this.api = api;
+
     this.dataStore = cloneDeep(emptyDataStore);
 
     this.tabs = [];
@@ -119,6 +123,46 @@ export class DataController {
         this.dataStore.all = all;
         return true;
     }));
+  }
+
+  /*
+  *
+  *    API
+  *
+  */
+
+  public getItem<T extends TrackedFalconItem>(obj: { new(): T; }, baseUrl : string, uid: number | CompositeKey) : Promise<T> {
+    return this.api.getItem.apply(this, arguments);
+  }
+
+  public getCollection<T extends TrackedFalconItem>(obj: { new(): T; }, baseUrl : string, params: any) : Promise<T[]> {
+    return this.api.getCollection.apply(this, arguments);
+  }
+
+  public postItem<T extends TrackedFalconItem>(obj: { new(): T; }, baseUrl : string, data: T) : Promise<any> {
+    return this.api.postItem.apply(this, arguments).then(this.update.bind(this));
+  }
+
+  public putItem<T extends TrackedFalconItem>(obj: { new(): T; }, baseUrl : string, uid: number | CompositeKey, data: T) : Promise<any> {
+    return this.api.putItem.apply(this, arguments).then(this.update.bind(this));
+  }
+
+  //TODO: patch item takes a subset of an objects properties. This is currently being looked at in TS in the
+  //context of the 'setState' function in react
+  public patchItem<T extends TrackedFalconItem>(obj: { new(): T; }, baseUrl : string, uid: number | CompositeKey, data : any) : Promise<any> {
+    return this.api.patchItem.apply(this, arguments).then(this.update.bind(this));
+  }
+
+  public delItem<T extends TrackedFalconItem>(obj: { new(): T; }, baseUrl : string, uid: number | CompositeKey) : Promise<any> {
+    return this.api.delItem.apply(this, arguments).then(this.update.bind(this));
+  }
+
+  public query(graphQLQuery: string) : Promise<any> {
+    return this.api.query.apply(this, arguments);
+  }
+
+  public getStats() : Promise<any> {
+    return this.api.getStats.apply(this, arguments);
   }
 
   /*

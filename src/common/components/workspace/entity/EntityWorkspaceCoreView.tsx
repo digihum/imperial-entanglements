@@ -7,7 +7,7 @@
 import * as React from 'react';
 
 import { RecordsEditor } from '../../entity_editor/RecordsEditor';
-import { ApiService, AppUrls } from '../../../ApiService';
+import { AppUrls } from '../../../ApiService';
 
 import { Entity } from 'falcon-core';
 
@@ -29,7 +29,6 @@ class StringEditableFieldComponent extends EditableFieldComponent<string> {}
 class ComboEditableFieldComponent extends EditableFieldComponent<ComboDropdownOption> {}
 
 interface EntityWorkspaceCoreViewProps {
-    api: ApiService;
     id: number;
     dataStore?: DataController;
 }
@@ -70,7 +69,7 @@ export class EntityWorkspaceCoreView extends React.Component<EntityWorkspaceCore
     }
 
     public update(data: any) {
-        this.props.api.patchItem(Entity, AppUrls.entity, this.props.id, data);
+        this.props.dataStore!.patchItem(Entity, AppUrls.entity, this.props.id, data);
     }
 
     public render() {
@@ -130,13 +129,11 @@ export class EntityWorkspaceCoreView extends React.Component<EntityWorkspaceCore
                     dimension='predicates'
                     entityExists={true}
                     id={this.props.id}
-                    api={this.props.api}
                     records={records}
                     onChange={() => {}}
                     predicates={predicates}
                     sources={sources}
                     entityTypeId={entityType.uid}
-                    dataStore={this.props.dataStore!}
                 />
             </div>
           </section>

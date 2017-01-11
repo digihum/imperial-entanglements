@@ -6,8 +6,6 @@
 
 import * as React from 'react';
 
-import { ApiService } from '../../ApiService';
-
 import { Source } from 'falcon-core';
 
 import { AddTabButton } from '../AddTabButton';
@@ -24,7 +22,6 @@ import { SearchBar } from '../SearchBar';
 import { RecursiveTree } from '../RecursiveTree';
 
 interface SourceListProps {
-    api: ApiService;
     dataStore?: DataController;
     modalStore?: ModalStore;
 }
