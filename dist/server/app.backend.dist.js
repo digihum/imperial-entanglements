@@ -2297,7 +2297,7 @@
 	    e.preventDefault();
 	    e.nativeEvent.stopImmediatePropagation();
 	};
-	const Card = react_sortable_hoc_1.SortableElement((props) => (React.createElement("li", { key: `${props.url}` },
+	const Card = react_sortable_hoc_1.SortableElement(mobx_react_1.observer((props) => (React.createElement("li", { key: `${props.url}` },
 	    React.createElement("div", { className: ((currentTab) => {
 	            const classes = ['sidebar-card', props.tab.tabClass];
 	            if (currentTab) {
@@ -2320,9 +2320,11 @@
 	                            subSub,
 	                            ": ",
 	                            props.subtitle[sub][subSub])))))) : null))))) : (React.createElement("span", { className: 'entity-type' }, props.subtitle)))),
+	        React.createElement("span", { className: 'lock-button' }, props.tab.tabType === 'source' ? (props.dataStore.defaultSource === props.tab.uid ?
+	            (React.createElement("i", { onClick: () => props.dataStore.defaultSource = null, className: 'fa fa-lock' })) :
+	            (React.createElement("i", { onClick: () => props.dataStore.defaultSource = props.tab.uid, className: 'fa fa-unlock' }))) : null),
 	        !props.currentTab ? (React.createElement("span", { className: 'close-button' },
-	            props.tab.tabType === 'source' ? (React.createElement("i", { className: 'fa fa-unlock' })) : null,
-	            React.createElement("i", { className: 'fa fa-times', onClick: (e) => onCloseTab(e, props.tab.tabType, props.tab.uid, props.dataStore) }))) : null))));
+	            React.createElement("i", { className: 'fa fa-times', onClick: (e) => onCloseTab(e, props.tab.tabType, props.tab.uid, props.dataStore) }))) : null)))));
 	const CardList = mobx_react_1.observer((props) => {
 	    return (React.createElement("ul", { className: 'card-list' }, props.dataStore.tabs.map((tab, index) => {
 	        // TODO: shouldn't be ==
@@ -3317,7 +3319,8 @@
 	            predicate: this.props.predicate.uid,
 	            entity: this.props.entity_id,
 	            valueType: this.props.predicate.rangeIsReference ? 'entity' : this.props.predicate.range,
-	            score: 3
+	            score: 3,
+	            source: this.props.dataStore.defaultSource
 	        }));
 	    }
 	    deleteRecord(record) {
@@ -5449,6 +5452,9 @@
 	        return __awaiter(this, void 0, void 0, function* () {
 	            // LOAD TABS
 	            const groupedTabs = lodash_1.groupBy(this.tabs, 'tabType');
+	            if (lodash_1.find(this.tabs, (tab) => tab.tabType === 'source' && tab.uid === this.defaultSource) === undefined) {
+	                this.defaultSource = null;
+	            }
 	            const tabPromise = Promise.all(Object.keys(groupedTabs).map((tabType) => Promise.all(groupedTabs[tabType].map((tab) => this.loadTabData(tab)
 	                .then((value) => {
 	                return { [`${tab.tabType}-${tab.uid}`]: { value, lastUpdate: moment() } };
@@ -5561,6 +5567,10 @@
 	    mobx_1.observable,
 	    __metadata("design:type", Array)
 	], DataController.prototype, "tabs", void 0);
+	__decorate([
+	    mobx_1.observable,
+	    __metadata("design:type", Object)
+	], DataController.prototype, "defaultSource", void 0);
 	__decorate([
 	    mobx_1.action,
 	    __metadata("design:type", Function),
@@ -5969,7 +5979,8 @@
 	            predicate: opt.meta.uid,
 	            entity: this.props.entityUid,
 	            valueType: opt.meta.rangeIsReference ? 'entity' : opt.meta.range,
-	            score: 3
+	            score: 3,
+	            source: this.props.dataStore.defaultSource
 	        }))
 	            .then((result) => this.props.complete(result))
 	            .catch(this.props.cancel);

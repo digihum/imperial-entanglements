@@ -42,7 +42,7 @@ const onCloseTab = (e: React.MouseEvent, tabType: string, uid: number, dataStore
     e.nativeEvent.stopImmediatePropagation();
 }
 
-const Card = SortableElement((props: {dataStore: DataController, currentTab: boolean, url: any, index: number, tab: Tab, title: string, subtitle: string | string[],
+const Card = SortableElement(observer((props: {dataStore: DataController, currentTab: boolean, url: any, index: number, tab: Tab, title: string, subtitle: string | string[],
             compact: boolean}) => (
       <li key={`${props.url}`}>
           <div className={((currentTab) => {
@@ -80,17 +80,21 @@ const Card = SortableElement((props: {dataStore: DataController, currentTab: boo
                       )}
                   </Link>
               </div>
+              <span className='lock-button'>
+                  {props.tab.tabType === 'source' ? (
+                    props.dataStore.defaultSource === props.tab.uid ?
+                    (<i onClick={() => props.dataStore.defaultSource = null} className='fa fa-lock'></i>) :
+                    (<i onClick={() => props.dataStore.defaultSource = props.tab.uid} className='fa fa-unlock'></i>)
+                  ) : null}
+              </span>
               {!props.currentTab ? (
                   <span className='close-button'>
-                      {props.tab.tabType === 'source' ? (
-                        <i className='fa fa-unlock'></i>
-                      ) : null}
                       <i className='fa fa-times' onClick={(e) => onCloseTab(e, props.tab.tabType, props.tab.uid, props.dataStore)}></i>
                   </span>
               ) : null}
           </div>
       </li>
-  ));
+)));
 
 const CardList = observer((props: {
 

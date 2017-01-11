@@ -53,7 +53,8 @@ export class RecordPredicate extends React.Component<RecordPredicateProps, Recor
             predicate: this.props.predicate.uid,
             entity: this.props.entity_id,
             valueType: this.props.predicate.rangeIsReference ? 'entity' : this.props.predicate.range,
-            score: 3
+            score: 3,
+            source: this.props.dataStore!.defaultSource
         }));
     }
 

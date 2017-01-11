@@ -24,6 +24,7 @@ export class DataController implements ApiService {
 
   @observable public dataStore: DataStore;
   @observable public tabs: Tab[];
+  @observable public defaultSource: null | number;
 
   private readonly api: ApiService;
 
@@ -82,6 +83,10 @@ export class DataController implements ApiService {
 
     // LOAD TABS
     const groupedTabs = groupBy(this.tabs, 'tabType');
+
+    if (find(this.tabs, (tab: Tab) => tab.tabType === 'source' && tab.uid === this.defaultSource) === undefined) {
+      this.defaultSource = null;
+    }
 
     const tabPromise = Promise.all(
       Object.keys(groupedTabs).map((tabType) =>

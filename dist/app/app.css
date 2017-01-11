@@ -3302,6 +3302,12 @@ body {
   right: 0.5em;
   cursor: pointer; }
 
+.lock-button {
+  position: absolute;
+  top: 0.5em;
+  right: 1.5em;
+  cursor: pointer; }
+
 .sidebar-card {
   background-color: white;
   border-bottom: #989898 1px solid;
@@ -3317,7 +3323,7 @@ body {
       line-height: 1.5em; }
     .sidebar-card.compact .description {
       padding: 0.2em; }
-    .sidebar-card.compact .close-button {
+    .sidebar-card.compact .close-button, .sidebar-card.compact .lock-button {
       top: 0.25em; }
   .sidebar-card.current {
     transform: translate(-0.6em, 0); }

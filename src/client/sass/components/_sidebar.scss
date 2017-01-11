@@ -56,6 +56,13 @@
     cursor: pointer;
 }
 
+.lock-button {
+    position: absolute;
+    top: 0.5em;
+    right: 1.5em;
+    cursor: pointer;
+}
+
 
 .sidebar-card {
 
@@ -78,7 +85,7 @@
           padding: 0.2em;
       }
 
-      .close-button {
+      .close-button, .lock-button{
           top: 0.25em;
       }
   }
