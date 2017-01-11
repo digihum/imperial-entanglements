@@ -25,8 +25,6 @@ import { groupBy, Dictionary } from 'lodash';
 
 import { inject, observer } from 'mobx-react';
 
-@inject('dataStore', 'modalStore')
-@observer
 class RecordEditableFieldComponent extends EditableFieldComponent<Record> {}
 
 interface RecordsEditorProps {
@@ -45,6 +43,9 @@ interface RecordsEditorProps {
 interface RecordsEditorState {
 	filterFunc: (p: Predicate) => boolean;
 }
+
+@inject('dataStore', 'modalStore')
+@observer
 
 export class RecordsEditor extends React.Component<RecordsEditorProps, RecordsEditorState> {
 

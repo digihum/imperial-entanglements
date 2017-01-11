@@ -16,7 +16,7 @@ import { CreateEntity } from '../components/modal/CreateEntity';
 import { CreateEntityType } from '../components/modal/CreateEntityType';
 import { ConflictResolution } from '../components/modal/ConflictResolution';
 
-import { observable, action } from 'mobx';
+import { observable, action, computed } from 'mobx';
 
 export class ModalStore {
 
@@ -27,7 +27,7 @@ export class ModalStore {
   }
 
   // might be @computed?
-  public currentModal() : JSX.Element | null {
+  @computed public get currentModal() : JSX.Element | null {
     if (this.modalQueue.length === 0) {
         return null;
     }
@@ -64,7 +64,7 @@ export class ModalStore {
   }
 
   @action public addModal(def: ModalDefinition) {
-    this.modalQueue = [def].concat(this.modalQueue);
+    this.modalQueue.unshift(def);
   }
 
   @action public modalComplete(data: any) {
@@ -73,7 +73,7 @@ export class ModalStore {
     }
     this.modalQueue[0].complete(data);
     if (this.modalQueue.length > 0) {
-        this.modalQueue = tail(this.modalQueue));
+        this.modalQueue = tail(this.modalQueue);
     }
   }
 

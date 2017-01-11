@@ -22,7 +22,7 @@ import { SortableContainer, arrayMove } from 'react-sortable-hoc';
 import DevTools from 'mobx-react-devtools';
 
 import { observable } from 'mobx';
-import { Provider } from 'mobx-react';
+import { Provider, observer, inject } from 'mobx-react';
 
 interface ExpectedParams {
     id: string;
@@ -94,6 +94,8 @@ const ObjectEditorCore = SortableContainer((props: {
   </span>
   );
 });
+
+const ModalWrapper = inject('modalStore')(observer((props: { modalStore?: ModalStore }) => (<span>{ props.modalStore!.currentModal }</span>)));
 
 export class ObjectEditor extends React.Component<EntityEditorProps, EntityEditorState> {
 
@@ -188,11 +190,12 @@ export class ObjectEditor extends React.Component<EntityEditorProps, EntityEdito
                         toggleSplitWorkspace={() => this.setState({ splitWorkspace: !this.state.splitWorkspace})}
                         list={this.state.list}
                         location={this.props.location}
+                        onSortEnd={(change) => this.state.dataController.reorderTabs(change)}
                        />
 
                     <Toast />
 
-                    { this.state.modalStore.currentModal() }
+                    <ModalWrapper />
                 </span>
                 <span className={'header-colour ' + this.props.workspace}></span>
             </section>
