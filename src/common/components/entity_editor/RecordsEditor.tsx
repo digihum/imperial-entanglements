@@ -5,7 +5,7 @@
  */
 
 import * as React from 'react';
-import { ApiService, AppUrls } from '../../ApiService';
+import { AppUrls } from '../../ApiService';
 
 import { DataController } from '../../stores/DataController';
 import { ModalStore } from '../../stores/ModalStore';
@@ -26,8 +26,7 @@ import { groupBy, Dictionary } from 'lodash';
 class RecordEditableFieldComponent extends EditableFieldComponent<Record> {}
 
 interface RecordsEditorProps {
-    id: number;
-	api: ApiService;
+  id: number;
 	dimension: string;
 	entityTypeId: number;
 	entityExists: boolean;
@@ -58,7 +57,7 @@ export class RecordsEditor extends React.Component<RecordsEditorProps, RecordsEd
 			throw new Error('Trying to delete a record with null id');
 		}
 
-		this.props.api.delItem(Record, AppUrls.record, record.uid)
+		this.props.dataStore!.api.delItem(Record, AppUrls.record, record.uid)
 		.then(() => {
 			this.props.onChange();
 		});
@@ -138,10 +137,9 @@ export class RecordsEditor extends React.Component<RecordsEditorProps, RecordsEd
 							}
 
 							return (<RecordPredicate
-								dataStore={this.props.dataStore}
 								key={`section-${section}`}
 								entity_id={this.props.id}
-								api={this.props.api}
+								api={this.props.dataStore!.api}
 								dimension='predicate'
 								records={this.props.records[section]}
 								predicate={currentPredicate}

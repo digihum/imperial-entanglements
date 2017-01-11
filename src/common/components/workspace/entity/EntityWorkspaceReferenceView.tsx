@@ -11,12 +11,12 @@ import { Entity } from 'falcon-core';
 
 import { AddTabButton } from '../../AddTabButton';
 
-import { DataStore } from '../../../DataStore';
+import { DataController } from '../../../stores/DataController';
 
 interface EntityWorkspaceReferenceViewProps {
     api: ApiService;
     id: number;
-    dataStore: DataStore;
+    dataStore: DataController;
 }
 
 interface EntityWorkspaceReferenceViewState {
@@ -70,13 +70,12 @@ export class EntityWorkspaceReferenceView extends React.Component<EntityWorkspac
                 </tr>
               </thead>
               <tbody>
-                {this.props.dataStore.tabs.entity.get('entity-' + this.props.id).value.referenceRecords.map((record) => {
+                {this.props.dataStore.dataStore.tabs.entity.get('entity-' + this.props.id).value.referenceRecords.map((record) => {
                   return (<tr key={`record-${record.uid}`}>
-                    <td>{this.props.dataStore.all.entity.value.find((entity) => entity.uid === record.entity).label} <AddTabButton tabType={'entity'} uid={record.entity} dataStore={this.props.dataStore}/></td>
-                    <td>{this.props.dataStore.all.predicate.value.find((predicate) => predicate.uid === record.predicate).label} <AddTabButton
+                    <td>{this.props.dataStore.dataStore.all.entity.value.find((entity) => entity.uid === record.entity).label} <AddTabButton tabType={'entity'} uid={record.entity} /></td>
+                    <td>{this.props.dataStore.dataStore.all.predicate.value.find((predicate) => predicate.uid === record.predicate).label} <AddTabButton
                       tabType={'predicate'}
-                      uid={record.predicate}
-                      dataStore={this.props.dataStore}/></td>
+                      uid={record.predicate} /></td>
                   </tr>);
                 })}
               </tbody>

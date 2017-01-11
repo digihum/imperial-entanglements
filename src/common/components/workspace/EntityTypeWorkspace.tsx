@@ -146,7 +146,6 @@ export class EntityTypeWorkspace extends React.Component<EntityTypeWorkspaceProp
                             {entityType.parents.map((parent, i) => (
                                 <span key={`breadcrumb-${parent.uid}`}>
                                     <span>  {parent.label} <AddTabButton
-                                        dataStore={this.props.dataStore}
                                         tabType='entity_type'
                                         uid={parent.uid} /> </span>
                                     <i className='fa fa-angle-right'></i>
@@ -199,7 +198,6 @@ export class EntityTypeWorkspace extends React.Component<EntityTypeWorkspaceProp
                             }}} />
                         {entityType.parent !== null ? (<AddTabButton
                             tabType='entity_type'
-                            dataStore={this.props.dataStore}
                             uid={entityType.parent} />) : null}
                     </div>
 
@@ -222,11 +220,10 @@ export class EntityTypeWorkspace extends React.Component<EntityTypeWorkspaceProp
                         <h4>Direct Children</h4>
                         <ul>
                         {entityType.children
-                            .map((child) => this.props.dataStore.all.entity_type.value.find((et) => et.uid === child))
+                            .map((child) => this.props.dataStore!.dataStore.all.entity_type.value.find((et) => et.uid === child))
                             .map((childEt) =>
                                 (<li key={`dc-${childEt.label}`}>{childEt.label} <AddTabButton
                                     tabType='entity_type'
-                                    dataStore={this.props.dataStore}
                                     uid={childEt.uid} /></li>
                             ))}
                         </ul>

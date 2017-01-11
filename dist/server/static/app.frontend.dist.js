@@ -18900,14 +18900,14 @@
 	        this.props.api.patchItem(falcon_core_1.Entity, ApiService_1.AppUrls.entity, this.props.id, data);
 	    }
 	    render() {
-	        const entity = this.props.dataStore.tabs.entity.get('entity-' + this.props.id).value.entity;
-	        const entityType = this.props.dataStore.all.entity_type.value.find((t) => t.uid === entity.entityType);
-	        const potentialParents = this.props.dataStore.all.entity.value;
-	        const entityTypeParents = findParentTree_1.findParentTree(entity.entityType, this.props.dataStore.all.entity_type.value);
-	        const predicates = this.props.dataStore.all.predicate
+	        const entity = this.props.dataStore.dataStore.tabs.entity.get('entity-' + this.props.id).value.entity;
+	        const entityType = this.props.dataStore.dataStore.all.entity_type.value.find((t) => t.uid === entity.entityType);
+	        const potentialParents = this.props.dataStore.dataStore.all.entity.value;
+	        const entityTypeParents = findParentTree_1.findParentTree(entity.entityType, this.props.dataStore.dataStore.all.entity_type.value);
+	        const predicates = this.props.dataStore.dataStore.all.predicate
 	            .value.filter((pred) => entityTypeParents.indexOf(pred.domain) !== -1);
-	        const sources = this.props.dataStore.all.source.value;
-	        const records = lodash_1.groupBy(this.props.dataStore.tabs.entity.get('entity-' + this.props.id).value.records, 'predicate');
+	        const sources = this.props.dataStore.dataStore.all.source.value;
+	        const records = lodash_1.groupBy(this.props.dataStore.dataStore.tabs.entity.get('entity-' + this.props.id).value.records, 'predicate');
 	        const options = predicates.map((pred) => ({ key: pred.label, value: pred.uid, meta: pred }));
 	        let parentName = '';
 	        if (potentialParents !== null && entity.parent !== undefined) {
@@ -18923,14 +18923,14 @@
 	                        React.createElement("label", { className: 'small' }, "Type"),
 	                        entityType.label,
 	                        " ",
-	                        React.createElement(AddTabButton_1.AddTabButton, { dataStore: this.props.dataStore, uid: entityType.uid, tabType: 'entity_type' }))),
+	                        React.createElement(AddTabButton_1.AddTabButton, { uid: entityType.uid, tabType: 'entity_type' }))),
 	                React.createElement("div", { style: { flex: 1 } },
 	                    React.createElement("label", { className: 'small' }, "Parent"),
 	                    React.createElement(ComboEditableFieldComponent, { value: { key: parentName, value: entity.parent }, component: EditableComboDropdown_1.EditableComboDropdown, onChange: (value) => this.update({ 'parent': value.value }), additionalProps: { comboSettings: {
 	                                options: potentialParents.map((par) => ({ key: par.label, value: par.uid })),
 	                                typeName: 'Entity'
 	                            } } }),
-	                    entity.parent !== null ? (React.createElement(AddTabButton_1.AddTabButton, { dataStore: this.props.dataStore, tabType: 'entity', uid: entity.parent })) : null)),
+	                    entity.parent !== null ? (React.createElement(AddTabButton_1.AddTabButton, { tabType: 'entity', uid: entity.parent })) : null)),
 	            React.createElement("div", { className: 'edit-group' },
 	                React.createElement(RecordsEditor_1.RecordsEditor, { dimension: 'predicates', entityExists: true, id: this.props.id, api: this.props.api, records: records, onChange: () => { }, predicates: predicates, sources: sources, entityTypeId: entityType.uid, dataStore: this.props.dataStore }))));
 	    }
@@ -18971,7 +18971,7 @@
 	        if (record.uid === null) {
 	            throw new Error('Trying to delete a record with null id');
 	        }
-	        this.props.api.delItem(falcon_core_1.Record, ApiService_1.AppUrls.record, record.uid)
+	        this.props.dataStore.api.delItem(falcon_core_1.Record, ApiService_1.AppUrls.record, record.uid)
 	            .then(() => {
 	            this.props.onChange();
 	        });
@@ -19023,7 +19023,7 @@
 	                        if (!this.state.filterFunc(currentPredicate)) {
 	                            return null;
 	                        }
-	                        return (React.createElement(RecordPredicate_1.RecordPredicate, { dataStore: this.props.dataStore, key: `section-${section}`, entity_id: this.props.id, api: this.props.api, dimension: 'predicate', records: this.props.records[section], predicate: currentPredicate, sources: this.props.sources, onChange: this.props.onChange }));
+	                        return (React.createElement(RecordPredicate_1.RecordPredicate, { key: `section-${section}`, entity_id: this.props.id, api: this.props.dataStore.api, dimension: 'predicate', records: this.props.records[section], predicate: currentPredicate, sources: this.props.sources, onChange: this.props.onChange }));
 	                    }))))));
 	    }
 	}
@@ -19197,7 +19197,7 @@
 	            return (React.createElement("span", null,
 	                entity.label,
 	                " ",
-	                React.createElement(AddTabButton_1.AddTabButton, { dataStore: props.dataStore, uid: entity.uid, tabType: 'entity' })));
+	                React.createElement(AddTabButton_1.AddTabButton, { uid: entity.uid, tabType: 'entity' })));
 	        }
 	        else {
 	            return (React.createElement("em", null, "Missing Entity"));
@@ -19244,7 +19244,7 @@
 	            recordValue.valueType !== 'source' ? (React.createElement("td", { className: 'record-row-item' }, formatValue(props, recordValue))) : null,
 	            React.createElement("td", { className: 'record-row-item' },
 	                dropDownValue.key,
-	                dropDownValue.key.length > 0 && dropDownValue.value !== null ? (React.createElement(AddTabButton_1.AddTabButton, { dataStore: props.dataStore, uid: parseInt(dropDownValue.value), tabType: 'source' })) : null),
+	                dropDownValue.key.length > 0 && dropDownValue.value !== null ? (React.createElement(AddTabButton_1.AddTabButton, { uid: parseInt(dropDownValue.value), tabType: 'source' })) : null),
 	            React.createElement("td", { className: 'record-row-item score' },
 	                React.createElement(ScorePicker_1.ScorePicker, { value: recordValue.score, readOnly: true })),
 	            React.createElement("td", { className: 'record-row-item period' }, formatDate_1.formatDate(recordValue.period)),
@@ -34560,16 +34560,16 @@
 	                    React.createElement("tr", null,
 	                        React.createElement("th", null, "Entity"),
 	                        React.createElement("th", null, "Property"))),
-	                React.createElement("tbody", null, this.props.dataStore.tabs.entity.get('entity-' + this.props.id).value.referenceRecords.map((record) => {
+	                React.createElement("tbody", null, this.props.dataStore.dataStore.tabs.entity.get('entity-' + this.props.id).value.referenceRecords.map((record) => {
 	                    return (React.createElement("tr", { key: `record-${record.uid}` },
 	                        React.createElement("td", null,
-	                            this.props.dataStore.all.entity.value.find((entity) => entity.uid === record.entity).label,
+	                            this.props.dataStore.dataStore.all.entity.value.find((entity) => entity.uid === record.entity).label,
 	                            " ",
-	                            React.createElement(AddTabButton_1.AddTabButton, { tabType: 'entity', uid: record.entity, dataStore: this.props.dataStore })),
+	                            React.createElement(AddTabButton_1.AddTabButton, { tabType: 'entity', uid: record.entity })),
 	                        React.createElement("td", null,
-	                            this.props.dataStore.all.predicate.value.find((predicate) => predicate.uid === record.predicate).label,
+	                            this.props.dataStore.dataStore.all.predicate.value.find((predicate) => predicate.uid === record.predicate).label,
 	                            " ",
-	                            React.createElement(AddTabButton_1.AddTabButton, { tabType: 'predicate', uid: record.predicate, dataStore: this.props.dataStore }))));
+	                            React.createElement(AddTabButton_1.AddTabButton, { tabType: 'predicate', uid: record.predicate }))));
 	                })))));
 	    }
 	}
@@ -34692,7 +34692,7 @@
 	                                "  ",
 	                                parent.label,
 	                                " ",
-	                                React.createElement(AddTabButton_1.AddTabButton, { dataStore: this.props.dataStore, tabType: 'entity_type', uid: parent.uid }),
+	                                React.createElement(AddTabButton_1.AddTabButton, { tabType: 'entity_type', uid: parent.uid }),
 	                                " "),
 	                            React.createElement("i", { className: 'fa fa-angle-right' }))))),
 	                        React.createElement("i", { className: 'fa fa-tag item-icon' }),
@@ -34711,7 +34711,7 @@
 	                                options: potentialParents.map((par) => ({ key: par.label, value: par.uid })),
 	                                typeName: 'EntityType'
 	                            } } }),
-	                    entityType.parent !== null ? (React.createElement(AddTabButton_1.AddTabButton, { tabType: 'entity_type', dataStore: this.props.dataStore, uid: entityType.parent })) : null),
+	                    entityType.parent !== null ? (React.createElement(AddTabButton_1.AddTabButton, { tabType: 'entity_type', uid: entityType.parent })) : null),
 	                React.createElement("div", { className: 'edit-group' },
 	                    React.createElement("label", { className: 'small' }, "Description"),
 	                    React.createElement(StringEditableFieldComponent, { value: entityType.description, component: EditableParagraph_1.EditableParagraph, onChange: (value) => this.update({ 'description': value }) })),
@@ -34720,11 +34720,11 @@
 	                React.createElement("div", null,
 	                    React.createElement("h4", null, "Direct Children"),
 	                    React.createElement("ul", null, entityType.children
-	                        .map((child) => this.props.dataStore.all.entity_type.value.find((et) => et.uid === child))
+	                        .map((child) => this.props.dataStore.dataStore.all.entity_type.value.find((et) => et.uid === child))
 	                        .map((childEt) => (React.createElement("li", { key: `dc-${childEt.label}` },
 	                        childEt.label,
 	                        " ",
-	                        React.createElement(AddTabButton_1.AddTabButton, { tabType: 'entity_type', dataStore: this.props.dataStore, uid: childEt.uid })))))))));
+	                        React.createElement(AddTabButton_1.AddTabButton, { tabType: 'entity_type', uid: childEt.uid })))))))));
 	    }
 	};
 	EntityTypeWorkspace.contextTypes = {
@@ -36075,7 +36075,7 @@
 	                                "  ",
 	                                parent.label,
 	                                " ",
-	                                React.createElement(AddTabButton_1.AddTabButton, { dataStore: this.props.dataStore, tabType: 'source', uid: parent.uid }),
+	                                React.createElement(AddTabButton_1.AddTabButton, { tabType: 'source', uid: parent.uid }),
 	                                " "),
 	                            React.createElement("i", { className: 'fa fa-angle-right' }))))),
 	                        React.createElement("i", { className: 'fa fa-sun-o item-icon' }),
@@ -36096,7 +36096,7 @@
 	                                options: potentialParents.map((par) => ({ key: par.label, value: par.uid })),
 	                                typeName: 'Source'
 	                            } } }),
-	                    source.parent !== null ? (React.createElement(AddTabButton_1.AddTabButton, { dataStore: this.props.dataStore, tabType: 'source', uid: source.parent })) : null),
+	                    source.parent !== null ? (React.createElement(AddTabButton_1.AddTabButton, { tabType: 'source', uid: source.parent })) : null),
 	                React.createElement("div", { className: 'edit-group' },
 	                    React.createElement(StringEditableFieldComponent, { value: source.sameAs, component: SameAsEditor_1.SameAsEditor, onChange: (value) => this.updateSource('sameAs', value) })),
 	                this.props.dataStore.dataStore.all.dublinCore.value.elements.map((element) => {
@@ -36123,7 +36123,7 @@
 	                        .map((childEt) => (React.createElement("li", { key: `dc-${childEt.uid}` },
 	                        childEt.label,
 	                        " ",
-	                        React.createElement(AddTabButton_1.AddTabButton, { tabType: 'source', dataStore: this.props.dataStore, uid: childEt.uid })))))))));
+	                        React.createElement(AddTabButton_1.AddTabButton, { tabType: 'source', uid: childEt.uid })))))))));
 	    }
 	};
 	SourceEditorWorkspace.contextTypes = {
@@ -36726,7 +36726,7 @@
 	                        React.createElement("td", null,
 	                            row.label,
 	                            " ",
-	                            React.createElement(AddTabButton_1.AddTabButton, { dataStore: this.props.dataStore, uid: row.uid, tabType: 'entity' })),
+	                            React.createElement(AddTabButton_1.AddTabButton, { uid: row.uid, tabType: 'entity' })),
 	                        React.createElement("td", null, row.entityType ? row.entityType.label : ''),
 	                        [0, 1, 2].map((id) => (React.createElement("td", { key: `col-val-${id}` }, row.columns[id])))))))))));
 	    }
@@ -36926,7 +36926,7 @@
 	                            React.createElement("td", null,
 	                                predicate.uid,
 	                                " ",
-	                                React.createElement(AddTabButton_1.AddTabButton, { dataStore: this.props.dataStore, uid: predicate.uid, tabType: 'predicate' })),
+	                                React.createElement(AddTabButton_1.AddTabButton, { uid: predicate.uid, tabType: 'predicate' })),
 	                            React.createElement("td", null, predicate.label),
 	                            React.createElement("td", null, entityType ? entityType.label : ''),
 	                            React.createElement("td", null, predicate.rangeIsReference ? rangeType ? rangeType.label : '' : rangeType),
@@ -37009,7 +37009,7 @@
 	                            React.createElement("td", null,
 	                                source.uid,
 	                                " ",
-	                                React.createElement(AddTabButton_1.AddTabButton, { dataStore: this.props.dataStore, uid: source.uid, tabType: 'source' })),
+	                                React.createElement(AddTabButton_1.AddTabButton, { uid: source.uid, tabType: 'source' })),
 	                            React.createElement("td", null, source.label),
 	                            React.createElement("td", null, source.parent)));
 	                    })))) : (React.createElement("div", { className: 'tree-root' },
@@ -37051,7 +37051,7 @@
 	                "- ",
 	                item.label,
 	                " ",
-	                React.createElement(AddTabButton_1.AddTabButton, { dataStore: this.props.dataStore, uid: item.uid, tabType: this.props.tabType })),
+	                React.createElement(AddTabButton_1.AddTabButton, { uid: item.uid, tabType: this.props.tabType })),
 	            !this.state.collapsed ? (React.createElement("div", { className: 'tree-children' },
 	                React.createElement(RecursiveTree, { dataStore: this.props.dataStore, data: this.props.data, tabType: this.props.tabType, parentId: item.uid }))) : null)))));
 	    }
@@ -37127,7 +37127,7 @@
 	                            React.createElement("td", null,
 	                                entityType.uid,
 	                                " ",
-	                                React.createElement(AddTabButton_1.AddTabButton, { dataStore: this.props.dataStore, uid: entityType.uid, tabType: 'entity_type' })),
+	                                React.createElement(AddTabButton_1.AddTabButton, { uid: entityType.uid, tabType: 'entity_type' })),
 	                            React.createElement("td", null, entityType.label),
 	                            React.createElement("td", null, entityType.parent),
 	                            React.createElement("td", null, entityType.description)));

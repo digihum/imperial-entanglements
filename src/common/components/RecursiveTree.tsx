@@ -39,7 +39,7 @@ export class RecursiveTree<T extends FalconItem & HierarchicalItem> extends Reac
           filtered.map((item) => (
             <div key={item.label}>
               <div className='tree-label' onClick={() => this.setState({ collapsed: !this.state.collapsed})}>
-                - {item.label} <AddTabButton dataStore={this.props.dataStore} uid={item.uid as number} tabType={this.props.tabType} />
+                - {item.label} <AddTabButton uid={item.uid as number} tabType={this.props.tabType} />
               </div>
               {!this.state.collapsed ? (
                 <div className='tree-children'>

@@ -212,7 +212,6 @@ export class SourceEditorWorkspace extends React.Component<SourceEditorProps, So
                                 .map((parent, i) => (
                                 <span key={`breadcrumb-${parent.uid}`}>
                                     <span>  {parent.label} <AddTabButton
-                                        dataStore={this.props.dataStore}
                                         tabType='source'
                                         uid={parent.uid} /> </span>
                                     <i className='fa fa-angle-right'></i>
@@ -265,7 +264,6 @@ export class SourceEditorWorkspace extends React.Component<SourceEditorProps, So
                                 typeName: 'Source'
                             }}} />
                             {source.parent !== null ? (<AddTabButton
-                                dataStore={this.props.dataStore}
                                 tabType='source'
                                 uid={source.parent} />) : null}
                     </div>
@@ -310,8 +308,7 @@ export class SourceEditorWorkspace extends React.Component<SourceEditorProps, So
                             .map((childEt) =>
                                 (<li key={`dc-${childEt.uid}`}>{childEt.label} <AddTabButton
                                     tabType='source'
-                                    dataStore={this.props.dataStore}
-                                    uid={childEt.uid} /></li>
+                                       uid={childEt.uid} /></li>
                             ))}
                         </ul>
                     </div>

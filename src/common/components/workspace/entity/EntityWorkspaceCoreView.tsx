@@ -23,7 +23,7 @@ import { findParentTree } from '../../../helper/findParentTree';
 import { EditableFieldComponent } from '../../fields/EditableHeader';
 import { EditableComboDropdown } from '../../fields/EditableComboDropdown';
 
-import { DataStore } from '../../../DataStore';
+import { DataController } from '../../../stores/DataController';
 
 class StringEditableFieldComponent extends EditableFieldComponent<string> {}
 class ComboEditableFieldComponent extends EditableFieldComponent<ComboDropdownOption> {}
@@ -31,7 +31,7 @@ class ComboEditableFieldComponent extends EditableFieldComponent<ComboDropdownOp
 interface EntityWorkspaceCoreViewProps {
     api: ApiService;
     id: number;
-    dataStore: DataStore;
+    dataStore?: DataController;
 }
 
 interface EntityWorkspaceCoreViewState {
@@ -75,17 +75,17 @@ export class EntityWorkspaceCoreView extends React.Component<EntityWorkspaceCore
 
     public render() {
 
-        const entity = this.props.dataStore.tabs.entity.get('entity-' + this.props.id).value.entity;
+        const entity = this.props.dataStore!.dataStore.tabs.entity.get('entity-' + this.props.id).value.entity;
 
-        const entityType = this.props.dataStore.all.entity_type.value.find((t) => t.uid === entity.entityType);
-        const potentialParents = this.props.dataStore.all.entity.value;
+        const entityType = this.props.dataStore!.dataStore.all.entity_type.value.find((t) => t.uid === entity.entityType);
+        const potentialParents = this.props.dataStore!.dataStore.all.entity.value;
 
-        const entityTypeParents = findParentTree(entity.entityType, this.props.dataStore.all.entity_type.value);
-        const predicates = this.props.dataStore.all.predicate
+        const entityTypeParents = findParentTree(entity.entityType, this.props.dataStore!.dataStore.all.entity_type.value);
+        const predicates = this.props.dataStore!.dataStore.all.predicate
             .value.filter((pred) => entityTypeParents.indexOf(pred.domain) !== -1);
 
-        const sources = this.props.dataStore.all.source.value;
-        const records = groupBy(this.props.dataStore.tabs.entity.get('entity-' + this.props.id).value.records, 'predicate');
+        const sources = this.props.dataStore!.dataStore.all.source.value;
+        const records = groupBy(this.props.dataStore!.dataStore.tabs.entity.get('entity-' + this.props.id).value.records, 'predicate');
 
 
         const options = predicates.map((pred) => ({ key: pred.label, value: pred.uid, meta: pred}));
@@ -104,7 +104,6 @@ export class EntityWorkspaceCoreView extends React.Component<EntityWorkspaceCore
             <div className='flex-fill'>
                 <div className='flex-fill'>
                     <div><label className='small'>Type</label>{entityType.label} <AddTabButton
-                        dataStore={this.props.dataStore}
                         uid={entityType.uid}
                         tabType='entity_type'
                     /></div>
@@ -120,7 +119,7 @@ export class EntityWorkspaceCoreView extends React.Component<EntityWorkspaceCore
                             options: potentialParents.map((par) => ({ key: par.label, value: par.uid})),
                             typeName: 'Entity'
                         }}} />
-                    {entity.parent !== null ? (<AddTabButton dataStore={this.props.dataStore}
+                    {entity.parent !== null ? (<AddTabButton
                         tabType='entity'
                         uid={entity.parent} />) : null}
                 </div>
@@ -137,7 +136,7 @@ export class EntityWorkspaceCoreView extends React.Component<EntityWorkspaceCore
                     predicates={predicates}
                     sources={sources}
                     entityTypeId={entityType.uid}
-                    dataStore={this.props.dataStore}
+                    dataStore={this.props.dataStore!}
                 />
             </div>
           </section>

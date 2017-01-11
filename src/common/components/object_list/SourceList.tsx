@@ -112,8 +112,7 @@ export class SourceList extends React.Component<SourceListProps, SourceListState
                         return (
                             <tr key={`source-${source.uid}`}>
                                 <td>{source.uid} <AddTabButton
-                                    dataStore={this.props.dataStore}
-                                    uid={source.uid}
+                                     uid={source.uid}
                                     tabType='source' /></td>
                                 <td>{source.label}</td>
                                 <td>{source.parent}</td>
