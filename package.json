@@ -8,6 +8,7 @@
     "dist": "build --x64",
     "electron": "electron dist/app",
     "test": "mocha --opts ./config/mocha.opts",
+    "nightwatch": "nightwatch --config ./config/nightwatch.conf.js",
     "migrate": "knex migrate:latest",
     "seed": "knex seed:run",
     "webpack": "webpack  --config ./config/webpack.config.js",
