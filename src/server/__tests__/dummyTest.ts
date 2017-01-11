@@ -21,39 +21,39 @@ const knexConfig = {
   }
 };
 
-describe('A simple test', () => {
+// describe('A simple test', () => {
 
-  before(() => {
-    knex = Knex(knexConfig);
-    apiService = wrapDatabase(new Database(knexConfig), true);
-  });
+//   before(() => {
+//     knex = Knex(knexConfig);
+//     apiService = wrapDatabase(new Database(knexConfig), true);
+//   });
 
-  describe('on the element_sets table', () => {
+//   describe('on the element_sets table', () => {
 
-    before((done) => {
-      knex('element_sets')
-      .del()
-      .then(() => done());
-    });
+//     before((done) => {
+//       knex('element_sets')
+//       .del()
+//       .then(() => done());
+//     });
 
-    it('to check things work #api', (done) => {
+//     it('to check things work #api', (done) => {
 
-      apiService.postItem(ElementSet, AppUrls.element_set, Serializer.fromJson(ElementSet, {
-        uri: 'example.com',
-        label: 'example',
-        description: 'a example set'
-      }))
-      .then((success) => {
-       // expect(isNumber(result[0])).to.be.equal(true, 'insert query returned a non-numeric value');
+//       apiService.postItem(ElementSet, AppUrls.element_set, Serializer.fromJson(ElementSet, {
+//         uri: 'example.com',
+//         label: 'example',
+//         description: 'a example set'
+//       }))
+//       .then((success) => {
+//        // expect(isNumber(result[0])).to.be.equal(true, 'insert query returned a non-numeric value');
 
-        knex('element_sets')
-        .count()
-        .first()
-        .then((result) => {
-          expect(result['count(*)']).to.equal(1);
-          done();
-        });
-      });
-    });
-  });
-});
+//         knex('element_sets')
+//         .count()
+//         .first()
+//         .then((result) => {
+//           expect(result['count(*)']).to.equal(1);
+//           done();
+//         });
+//       });
+//     });
+//   });
+// });
