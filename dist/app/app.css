@@ -3410,17 +3410,17 @@ body {
   flex: 1;
   position: relative; }
 
-.predicate-function-description {
+.predicate-function-description .typing {
   display: flex;
   text-align: center; }
-  .predicate-function-description .domain {
+  .predicate-function-description .typing .domain {
     flex: 1; }
-  .predicate-function-description .arrow {
+  .predicate-function-description .typing .arrow {
     flex: 0 0 3em;
     display: flex;
     justify-content: center;
     align-items: center; }
-  .predicate-function-description .range {
+  .predicate-function-description .typing .range {
     flex: 1; }
 
 .editor-header {

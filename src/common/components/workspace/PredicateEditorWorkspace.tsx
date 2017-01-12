@@ -194,6 +194,7 @@ export class PredicateEditorWorkspace extends React.Component<PredicateEditorPro
                   <div className='secondary-toolbar'>
                       <div className='tab-bar'>
                         <div className={'predicate selected'}>CORE</div>
+                        <div className={'predicate'}>SAME AS</div>
                       </div>
                   </div>
                 </header>

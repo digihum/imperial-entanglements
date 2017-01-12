@@ -69,6 +69,14 @@ export class PredicateDescription extends React.Component<PredicateDescriptionPr
         this.setState({ editingDomain: false, rangeValue: this.props.range});
     }
 
+        //  <label className='small'>Property Class</label>
+        //   <section className='class'>
+        //     <input type='radio' name='property-class' value='ObjectProperty' /> Object Property <small>Links to another entity</small><br/>
+        //     <input type='radio' name='property-class' value='DataTypeProperty' /> Data Type Property <small>Links to some data, like text or a date</small><br/>
+        //     <input type='radio' name='property-class' value='SourceProperty' /> Source Property <small>Links to a source</small><br/>
+        //   </section>
+        //   <label className='small'>Typing</label>
+
     public render() {
 
         const domainChanged = this.props.mode === 'editAll' ?
@@ -79,6 +87,7 @@ export class PredicateDescription extends React.Component<PredicateDescriptionPr
 
         return (
         <div className='predicate-function-description'>
+          <div className='typing'>
             <div className='domain'>
                 {this.props.mode === 'editAll' || this.state.editingDomain ? (
                 <div>
@@ -136,6 +145,7 @@ export class PredicateDescription extends React.Component<PredicateDescriptionPr
                     onClick={() => this.setState({ editingRange: true })}>
                 </i></div>)}
             </div>
+          </div>
         </div>);
     }
 }

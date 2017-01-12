@@ -112,7 +112,7 @@
 	const fs_1 = __webpack_require__(14);
 	const api_1 = __webpack_require__(15);
 	const adminApp_1 = __webpack_require__(39);
-	const auth_1 = __webpack_require__(282);
+	const user_1 = __webpack_require__(295);
 	const snapshot_1 = __webpack_require__(283);
 	const stats_1 = __webpack_require__(284);
 	const Auth_1 = __webpack_require__(285);
@@ -136,7 +136,7 @@
 	    Auth_1.setupAuth(db);
 	    app.use(koaMount('/api/v1', api_1.api(db)));
 	    const admin = new Koa();
-	    admin.use(koaMount('/', auth_1.auth()));
+	    admin.use(koaMount('/', user_1.user(db)));
 	    admin.use(koaMount('/snapshot', snapshot_1.snapshot(snapshotter)));
 	    admin.use(koaMount('/stats', stats_1.stats(db)));
 	    admin.use(koaMount('/', adminApp_1.adminApp(skeleton, db)));
@@ -1909,7 +1909,8 @@
 	        super();
 	        this.state = {
 	            user: '',
-	            stats: null
+	            stats: null,
+	            tabsets: []
 	        };
 	    }
 	    componentDidMount() {
@@ -1917,6 +1918,9 @@
 	            fetch('/admin/currentuser', { credentials: 'same-origin' })
 	                .then((response) => response.json())
 	                .then((userData) => this.setState({ user: userData.username }));
+	            fetch('/admin/tabset', { credentials: 'same-origin' })
+	                .then((response) => response.json())
+	                .then((tabsets) => this.setState({ tabsets }));
 	        }
 	        this.props.api.getStats()
 	            .then((stats) => {
@@ -1941,7 +1945,7 @@
 	                            React.createElement("a", { href: '/admin/logout', className: 'header-link' }, "Logout"),
 	                            React.createElement("a", { href: '/', className: 'header-link' },
 	                                React.createElement("i", { className: 'fa fa-external-link' })))) : null),
-	                    this.props.environment === 'website' ? (React.createElement(react_router_1.Match, { exactly: true, pattern: '/', render: (matchprops) => (React.createElement(Admin_1.Admin, __assign({}, matchprops, { stats: this.state.stats }))) })) : (React.createElement(react_router_1.Match, { exactly: true, pattern: '/', render: (matchprops) => (React.createElement(AdminApp_1.AdminApp, __assign({}, matchprops, { stats: this.state.stats }))) })),
+	                    this.props.environment === 'website' ? (React.createElement(react_router_1.Match, { exactly: true, pattern: '/', render: (matchprops) => (React.createElement(Admin_1.Admin, __assign({}, matchprops, { stats: this.state.stats, tabsets: this.state.tabsets }))) })) : (React.createElement(react_router_1.Match, { exactly: true, pattern: '/', render: (matchprops) => (React.createElement(AdminApp_1.AdminApp, __assign({}, matchprops, { stats: this.state.stats }))) })),
 	                    React.createElement(react_router_1.Match, { exactly: true, pattern: '/user', component: User_1.User }),
 	                    React.createElement(react_router_1.Match, { exactly: true, pattern: '/users', component: UserManagement_1.UserManagement }),
 	                    React.createElement(react_router_1.Match, { exactly: true, pattern: '/app', component: AppDownload_1.AppDownload }),
@@ -1997,6 +2001,9 @@
 	const React = __webpack_require__(41);
 	const react_router_1 = __webpack_require__(42);
 	const StatsGrid_1 = __webpack_require__(45);
+	const setTabList = (data) => {
+	    window.localStorage.setItem('open_tabs', data);
+	};
 	exports.Admin = (props) => (React.createElement("div", { className: 'page' },
 	    React.createElement("section", null,
 	        React.createElement("h1", null, "Welcome to the admin pages"),
@@ -2017,7 +2024,10 @@
 	                React.createElement(react_router_1.Link, { to: '/upload' },
 	                    React.createElement("i", { className: 'fa fa-cloud-upload' }),
 	                    " Upload database file")))),
-	    props.stats !== null ? (React.createElement(StatsGrid_1.StatsGrid, { stats: props.stats })) : null));
+	    props.stats !== null ? (React.createElement(StatsGrid_1.StatsGrid, { stats: props.stats })) : null,
+	    props.tabsets.map((tabset) => {
+	        return (React.createElement("div", { onClick: () => setTabList(tabset.tabs), key: `tabset-{tabset.name}` }, tabset.name));
+	    })));
 
 
 /***/ },
@@ -2359,6 +2369,9 @@
 	                React.createElement("button", { onClick: this.props.dataStore.clearAllTabs },
 	                    React.createElement("i", { className: 'fa fa-trash' }),
 	                    " Clear All"),
+	                React.createElement("button", { onClick: () => this.props.modalStore.addModal({ name: 'createTabSet', cancel: lodash_1.noop, complete: lodash_1.noop, settings: {} }) },
+	                    React.createElement("i", { className: 'fa fa-floppy-o' }),
+	                    " Save"),
 	                React.createElement("button", { onClick: () => this.setState({ compactMode: !this.state.compactMode }) },
 	                    React.createElement("i", { className: 'fa fa-compress' }),
 	                    " Compact")),
@@ -2367,7 +2380,7 @@
 	    }
 	};
 	Sidebar = __decorate([
-	    mobx_react_1.inject('dataStore'),
+	    mobx_react_1.inject('dataStore', 'modalStore'),
 	    mobx_react_1.observer,
 	    __metadata("design:paramtypes", [])
 	], Sidebar);
@@ -4578,7 +4591,8 @@
 	                        React.createElement("i", { className: 'fa fa-clone button', "aria-hidden": 'true', onClick: this.copy.bind(this) }))),
 	                React.createElement("div", { className: 'secondary-toolbar' },
 	                    React.createElement("div", { className: 'tab-bar' },
-	                        React.createElement("div", { className: 'predicate selected' }, "CORE")))),
+	                        React.createElement("div", { className: 'predicate selected' }, "CORE"),
+	                        React.createElement("div", { className: 'predicate' }, "SAME AS")))),
 	            React.createElement("section", { className: 'editor-body' },
 	                React.createElement("div", null,
 	                    React.createElement(react_router_1.Link, { to: `/edit/entity?col1p=${this.props.id}&col1f=exists` },
@@ -4654,36 +4668,44 @@
 	    cancelRangeChanges() {
 	        this.setState({ editingDomain: false, rangeValue: this.props.range });
 	    }
+	    //  <label className='small'>Property Class</label>
+	    //   <section className='class'>
+	    //     <input type='radio' name='property-class' value='ObjectProperty' /> Object Property <small>Links to another entity</small><br/>
+	    //     <input type='radio' name='property-class' value='DataTypeProperty' /> Data Type Property <small>Links to some data, like text or a date</small><br/>
+	    //     <input type='radio' name='property-class' value='SourceProperty' /> Source Property <small>Links to a source</small><br/>
+	    //   </section>
+	    //   <label className='small'>Typing</label>
 	    render() {
 	        const domainChanged = this.props.mode === 'editAll' ?
 	            this.props.domainChanged : (c) => this.setState({ domainValue: c });
 	        const rangeChanged = this.props.mode === 'editAll' ?
 	            this.props.rangeChanged : (c) => this.setState({ rangeValue: c });
 	        return (React.createElement("div", { className: 'predicate-function-description' },
-	            React.createElement("div", { className: 'domain' }, this.props.mode === 'editAll' || this.state.editingDomain ? (React.createElement("div", null,
-	                React.createElement("label", { className: 'small' }, "Domain"),
-	                React.createElement(ComboDropdown_1.ComboDropdown, { options: this.props.domainOptions, typeName: 'entity type', allowNew: false, value: this.state.domainValue, setValue: domainChanged, createNewValue: lodash_1.noop }),
-	                this.props.mode === 'editSingle' ? (React.createElement("div", null,
-	                    React.createElement("button", { onClick: this.acceptDomainChanges.bind(this) },
-	                        React.createElement("i", { className: 'fa fa-check', "aria-hidden": 'true' })),
-	                    React.createElement("button", { onClick: this.cancelDomainChanges.bind(this) },
-	                        React.createElement("i", { className: 'fa fa-times', "aria-hidden": 'true' })))) : null)) : (React.createElement("div", null,
-	                this.props.domain.key,
-	                " ",
-	                React.createElement("i", { className: 'fa fa-pencil-square-o', title: 'Edit', "aria-hidden": 'true', onClick: () => this.setState({ editingDomain: true }) })))),
-	            React.createElement("div", { className: 'arrow' },
-	                React.createElement("i", { className: 'fa fa-long-arrow-right', "aria-hidden": 'true' })),
-	            React.createElement("div", { className: 'range' }, this.props.mode === 'editAll' || this.state.editingRange ? (React.createElement("div", null,
-	                React.createElement("label", { className: 'small' }, "Range"),
-	                React.createElement(ComboDropdown_1.ComboDropdown, { options: this.props.rangeOptions, typeName: 'entity type', allowNew: false, value: this.state.rangeValue, setValue: rangeChanged, createNewValue: lodash_1.noop }),
-	                this.props.mode === 'editSingle' ? (React.createElement("div", null,
-	                    React.createElement("button", { onClick: this.acceptRangeChanges.bind(this) },
-	                        React.createElement("i", { className: 'fa fa-check', "aria-hidden": 'true' })),
-	                    React.createElement("button", { onClick: this.cancelRangeChanges.bind(this) },
-	                        React.createElement("i", { className: 'fa fa-times', "aria-hidden": 'true' })))) : null)) : (React.createElement("div", null,
-	                this.props.range.key,
-	                " ",
-	                React.createElement("i", { className: 'fa fa-pencil-square-o', title: 'Edit', "aria-hidden": 'true', onClick: () => this.setState({ editingRange: true }) }))))));
+	            React.createElement("div", { className: 'typing' },
+	                React.createElement("div", { className: 'domain' }, this.props.mode === 'editAll' || this.state.editingDomain ? (React.createElement("div", null,
+	                    React.createElement("label", { className: 'small' }, "Domain"),
+	                    React.createElement(ComboDropdown_1.ComboDropdown, { options: this.props.domainOptions, typeName: 'entity type', allowNew: false, value: this.state.domainValue, setValue: domainChanged, createNewValue: lodash_1.noop }),
+	                    this.props.mode === 'editSingle' ? (React.createElement("div", null,
+	                        React.createElement("button", { onClick: this.acceptDomainChanges.bind(this) },
+	                            React.createElement("i", { className: 'fa fa-check', "aria-hidden": 'true' })),
+	                        React.createElement("button", { onClick: this.cancelDomainChanges.bind(this) },
+	                            React.createElement("i", { className: 'fa fa-times', "aria-hidden": 'true' })))) : null)) : (React.createElement("div", null,
+	                    this.props.domain.key,
+	                    " ",
+	                    React.createElement("i", { className: 'fa fa-pencil-square-o', title: 'Edit', "aria-hidden": 'true', onClick: () => this.setState({ editingDomain: true }) })))),
+	                React.createElement("div", { className: 'arrow' },
+	                    React.createElement("i", { className: 'fa fa-long-arrow-right', "aria-hidden": 'true' })),
+	                React.createElement("div", { className: 'range' }, this.props.mode === 'editAll' || this.state.editingRange ? (React.createElement("div", null,
+	                    React.createElement("label", { className: 'small' }, "Range"),
+	                    React.createElement(ComboDropdown_1.ComboDropdown, { options: this.props.rangeOptions, typeName: 'entity type', allowNew: false, value: this.state.rangeValue, setValue: rangeChanged, createNewValue: lodash_1.noop }),
+	                    this.props.mode === 'editSingle' ? (React.createElement("div", null,
+	                        React.createElement("button", { onClick: this.acceptRangeChanges.bind(this) },
+	                            React.createElement("i", { className: 'fa fa-check', "aria-hidden": 'true' })),
+	                        React.createElement("button", { onClick: this.cancelRangeChanges.bind(this) },
+	                            React.createElement("i", { className: 'fa fa-times', "aria-hidden": 'true' })))) : null)) : (React.createElement("div", null,
+	                    this.props.range.key,
+	                    " ",
+	                    React.createElement("i", { className: 'fa fa-pencil-square-o', title: 'Edit', "aria-hidden": 'true', onClick: () => this.setState({ editingRange: true }) })))))));
 	    }
 	}
 	exports.PredicateDescription = PredicateDescription;
@@ -5709,6 +5731,7 @@
 	const CreateEntity_1 = __webpack_require__(108);
 	const CreateEntityType_1 = __webpack_require__(109);
 	const ConflictResolution_1 = __webpack_require__(110);
+	const CreateTabSet_1 = __webpack_require__(296);
 	const mobx_1 = __webpack_require__(101);
 	class ModalStore {
 	    constructor() {
@@ -5738,6 +5761,8 @@
 	                return (React.createElement(CreateEntityType_1.CreateEntityType, __assign({}, sharedProps, this.modalQueue[0].settings)));
 	            case 'conflict_resolution':
 	                return (React.createElement(ConflictResolution_1.ConflictResolution, __assign({}, sharedProps, this.modalQueue[0].settings)));
+	            case 'createTabSet':
+	                return (React.createElement(CreateTabSet_1.CreateTabSet, __assign({}, sharedProps, this.modalQueue[0].settings)));
 	        }
 	        return null;
 	    }
@@ -26572,52 +26597,7 @@
 	module.exports = require("path");
 
 /***/ },
-/* 282 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * @fileOverview Map of URIs to controllers
-	 * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
-	 * @version 0.0.1
-	 */
-	"use strict";
-	var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-	    return new (P || (P = Promise))(function (resolve, reject) {
-	        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-	        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-	        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
-	        step((generator = generator.apply(thisArg, _arguments)).next());
-	    });
-	};
-	// Vendor
-	const Koa = __webpack_require__(2);
-	const __ = __webpack_require__(16);
-	const koaPassport = __webpack_require__(7);
-	exports.auth = () => {
-	    const server = new Koa();
-	    server.use(__.post('/login', koaPassport.authenticate('local', {
-	        successRedirect: '/admin',
-	        failureRedirect: '/login'
-	    })));
-	    const self = this;
-	    server.use(__.get('/logout', (ctx) => __awaiter(this, void 0, void 0, function* () {
-	        ctx.logout();
-	        ctx.redirect('/admin');
-	    })));
-	    server.use(__.get('/currentuser', (ctx) => __awaiter(this, void 0, void 0, function* () {
-	        ctx.body = {
-	            username: ctx.req.user.name
-	        };
-	    })));
-	    // create user
-	    // delete user
-	    // reset user password
-	    // change user permission
-	    return server;
-	};
-
-
-/***/ },
+/* 282 */,
 /* 283 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -26876,6 +26856,158 @@
 /***/ function(module, exports) {
 
 	module.exports = require("dotenv");
+
+/***/ },
+/* 295 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * @fileOverview Map of URIs to controllers
+	 * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+	 * @version 0.0.1
+	 */
+	"use strict";
+	var __assign = (this && this.__assign) || Object.assign || function(t) {
+	    for (var s, i = 1, n = arguments.length; i < n; i++) {
+	        s = arguments[i];
+	        for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+	            t[p] = s[p];
+	    }
+	    return t;
+	};
+	var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+	    return new (P || (P = Promise))(function (resolve, reject) {
+	        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+	        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+	        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+	        step((generator = generator.apply(thisArg, _arguments)).next());
+	    });
+	};
+	// Vendor
+	const Koa = __webpack_require__(2);
+	const __ = __webpack_require__(16);
+	const koaPassport = __webpack_require__(7);
+	exports.user = (db) => {
+	    const server = new Koa();
+	    server.use(__.post('/login', koaPassport.authenticate('local', {
+	        successRedirect: '/admin',
+	        failureRedirect: '/login'
+	    })));
+	    server.use(__.get('/logout', (ctx) => __awaiter(this, void 0, void 0, function* () {
+	        ctx.logout();
+	        ctx.redirect('/admin');
+	    })));
+	    server.use(__.get('/currentuser', (ctx) => __awaiter(this, void 0, void 0, function* () {
+	        ctx.body = {
+	            username: ctx.req.user.name
+	        };
+	    })));
+	    server.use(__.get('/tabset', (ctx) => __awaiter(this, void 0, void 0, function* () {
+	        if (ctx.isAuthenticated()) {
+	            ctx.body = yield db.query()('tabset').where({ uid: ctx.req.user.uid })
+	                .then((res) => res.map((tabset) => (__assign({}, tabset, { tabs: JSON.parse(tabset.tabs) }))));
+	        }
+	    })));
+	    server.use(__.post('/tabset', (ctx) => __awaiter(this, void 0, void 0, function* () {
+	        if (ctx.isAuthenticated()) {
+	            yield db.query()('tabset')
+	                .insert({ owner: ctx.req.user.uid, name: ctx.request.body.name, tabs: JSON.stringify(ctx.request.body.tabs) })
+	                .then(() => { });
+	            ctx.body = 1;
+	        }
+	    })));
+	    server.use(__.delete('/tabset/:id', (ctx, id) => __awaiter(this, void 0, void 0, function* () {
+	        if (ctx.isAuthenticated()) {
+	            yield db.query()('tabset')
+	                .where({ uid: id })
+	                .del()
+	                .then(() => { });
+	            ctx.body = 1;
+	        }
+	    })));
+	    // create user
+	    // delete user
+	    // reset user password
+	    // change user permission
+	    return server;
+	};
+
+
+/***/ },
+/* 296 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * @fileOverview Sidebar for editor
+	 * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+	 * @version 0.1.0
+	 */
+	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
+	const React = __webpack_require__(41);
+	const Overlay_1 = __webpack_require__(104);
+	const mobx_react_1 = __webpack_require__(57);
+	const mousetrap = __webpack_require__(83);
+	let CreateTabSet = class CreateTabSet extends React.Component {
+	    constructor() {
+	        super();
+	        this.state = {
+	            internalValue: ''
+	        };
+	    }
+	    createTabSet() {
+	        return fetch('/admin/tabset', {
+	            method: 'POST',
+	            body: JSON.stringify({
+	                name: this.state.internalValue,
+	                tabs: this.props.dataStore.tabs
+	            }),
+	            headers: {
+	                'Accept': 'application/json',
+	                'Content-Type': 'application/json'
+	            },
+	            credentials: 'same-origin'
+	        })
+	            .then((response) => {
+	            return response.json();
+	        }).then(() => this.props.complete(''));
+	    }
+	    inputRef(val) {
+	        if (val !== null) {
+	            val.focus();
+	            this.keyboardShortcuts = new mousetrap(val);
+	            this.keyboardShortcuts.bind('return', this.createTabSet.bind(this));
+	            this.keyboardShortcuts.bind('escape', this.props.cancel);
+	        }
+	        else {
+	            this.keyboardShortcuts.unbind('return');
+	        }
+	    }
+	    render() {
+	        return (React.createElement(Overlay_1.Overlay, null,
+	            React.createElement("h2", null, "Create Entity Type"),
+	            React.createElement("label", { className: 'small' }, "Name"),
+	            React.createElement("input", { type: 'text', value: this.state.internalValue, ref: this.inputRef.bind(this), onChange: (e) => this.setState({ internalValue: e.target.value }) }),
+	            React.createElement("button", { onClick: () => this.props.cancel(), className: 'pull-left' }, "Cancel"),
+	            React.createElement("button", { onClick: this.createTabSet.bind(this), className: 'pull-right' }, "Create Tab Set")));
+	    }
+	};
+	CreateTabSet = __decorate([
+	    mobx_react_1.inject('dataStore'),
+	    mobx_react_1.observer,
+	    __metadata("design:paramtypes", [])
+	], CreateTabSet);
+	exports.CreateTabSet = CreateTabSet;
+	;
+
 
 /***/ }
 /******/ ]);

@@ -23,7 +23,7 @@ import { readFileSync } from 'fs';
 
 import { api } from '../routes/api';
 import { adminApp } from '../routes/adminApp';
-import { auth  } from '../routes/auth';
+import { user  } from '../routes/user';
 import { snapshot  } from '../routes/snapshot';
 import { stats  } from '../routes/stats';
 
@@ -66,7 +66,7 @@ export const Server = (databaseConfig: KnexConfig) : Koa => {
 
     const admin = new Koa();
 
-    admin.use(koaMount('/', auth()));
+    admin.use(koaMount('/', user(db)));
 
     admin.use(koaMount('/snapshot', snapshot(snapshotter)));
     admin.use(koaMount('/stats', stats(db)));

@@ -41,6 +41,7 @@
 }
 
 .predicate-function-description {
+  .typing {
 
     display: flex;
     text-align: center;
@@ -57,6 +58,7 @@
     .range {
         flex: 1;
     }
+  }
 }
 
 .editor-header {

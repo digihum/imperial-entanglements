@@ -11,7 +11,12 @@ import { StatsGrid } from '../stats/StatsGrid';
 
 interface AdminProps {
   stats: GeneralStatistics | null;
+  tabsets: any[];
 }
+
+const setTabList = (data: any) => {
+  window.localStorage.setItem('open_tabs', data);
+};
 
 export const Admin = (props : AdminProps) => (
     <div className='page'>
@@ -28,5 +33,8 @@ export const Admin = (props : AdminProps) => (
           <StatsGrid stats={props.stats} />
         ) : null}
 
+        { props.tabsets.map((tabset) => {
+          return (<div onClick={() => setTabList(tabset.tabs)} key={`tabset-{tabset.name}`}>{tabset.name}</div>);
+        })}
      </div>
 );

@@ -15,6 +15,7 @@ import { CreateSource } from '../components/modal/CreateSource';
 import { CreateEntity } from '../components/modal/CreateEntity';
 import { CreateEntityType } from '../components/modal/CreateEntityType';
 import { ConflictResolution } from '../components/modal/ConflictResolution';
+import { CreateTabSet } from '../components/modal/CreateTabSet';
 
 import { observable, action, computed } from 'mobx';
 
@@ -58,6 +59,9 @@ export class ModalStore {
 
         case 'conflict_resolution':
             return (<ConflictResolution {...sharedProps} {...this.modalQueue[0].settings} />);
+
+        case 'createTabSet':
+            return (<CreateTabSet {...sharedProps} {...this.modalQueue[0].settings} />);
     }
 
     return null;

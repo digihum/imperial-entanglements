@@ -38,6 +38,7 @@ interface FalconAppProps {
 
 interface FalconAppState {
     user: string;
+    tabsets: any[];
     stats: GeneralStatistics | null;
 }
 
@@ -47,7 +48,8 @@ export class FalconApp extends React.Component<FalconAppProps, FalconAppState> {
         super();
         this.state = {
             user: '',
-            stats: null
+            stats: null,
+            tabsets: []
         };
     }
 
@@ -56,6 +58,10 @@ export class FalconApp extends React.Component<FalconAppProps, FalconAppState> {
             fetch('/admin/currentuser', { credentials: 'same-origin' })
                 .then((response) => response.json())
                 .then((userData) => this.setState({ user: userData.username }));
+
+            fetch('/admin/tabset', { credentials: 'same-origin' })
+                .then((response) => response.json())
+                .then((tabsets) => this.setState({ tabsets }));
         }
 
         this.props.api.getStats()
@@ -92,7 +98,7 @@ export class FalconApp extends React.Component<FalconAppProps, FalconAppState> {
                     { this.props.environment === 'website' ? (
                         <Match exactly pattern='/' render={
                         (matchprops) => (
-                          <Admin {...matchprops} stats={this.state.stats}/>
+                          <Admin {...matchprops} stats={this.state.stats} tabsets={this.state.tabsets}/>
                         )}/>
                     ) : (
                         <Match exactly pattern='/' render={

@@ -10,7 +10,7 @@ import { AppUrls } from '../ApiService';
 import { Link } from 'react-router';
 import { DataController } from '../stores/DataController';
 
-import { capitalize, isArray, isObject } from 'lodash';
+import { capitalize, noop, isObject } from 'lodash';
 
 import {SortableContainer, SortableElement, SortableHandle, arrayMove} from 'react-sortable-hoc';
 
@@ -153,6 +153,7 @@ const CardList = observer((props: {
 
 interface SidebarProps {
   dataStore?: DataController;
+  modalStore?: ModalStore;
   workspace: string;
   list: boolean;
   id: number;
@@ -163,7 +164,7 @@ interface SidebarState {
     compactMode: boolean;
 }
 
-@inject('dataStore')
+@inject('dataStore', 'modalStore')
 @observer
 export class Sidebar extends React.Component<SidebarProps, SidebarState> {
 
@@ -185,6 +186,7 @@ export class Sidebar extends React.Component<SidebarProps, SidebarState> {
 
                 <div className='sidebar-toolbar'>
                     <button onClick={this.props.dataStore!.clearAllTabs}><i className='fa fa-trash'></i> Clear All</button>
+                    <button onClick={() => this.props.modalStore!.addModal({ name: 'createTabSet', cancel: noop, complete: noop, settings: {}})}><i className='fa fa-floppy-o'></i> Save</button>
                     <button onClick={() => this.setState({compactMode: !this.state.compactMode})}><i className='fa fa-compress'></i> Compact</button>
                 </div>
                 <div className='card-list-container'>

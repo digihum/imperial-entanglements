@@ -38,14 +38,14 @@ exports.up = function(knex, Promise) {
 
 exports.down = function(knex, Promise) {
   return Promise.all([
-        // knex.schema.raw('DROP VIEW predicate_usage'),
-        // knex.schema.dropTable('records'),
-        // knex.schema.dropTable('entities'),
-        // knex.schema.dropTable('predicates'),        
-        // knex.schema.dropTable('source_elements'),
-        // knex.schema.dropTable('elements'),
-        // knex.schema.dropTable('element_sets'),
-        // knex.schema.dropTable('entity_types'),
+        knex.schema.raw('DROP VIEW predicate_usage'),
+        knex.schema.dropTable('records'),
+        knex.schema.dropTable('entities'),
+        knex.schema.dropTable('predicates'),        
+        knex.schema.dropTable('source_elements'),
+        knex.schema.dropTable('elements'),
+        knex.schema.dropTable('element_sets'),
+        knex.schema.dropTable('entity_types'),
         knex.schema.dropTable('sources'),
     ]);
 };
