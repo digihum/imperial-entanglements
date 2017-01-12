@@ -146,20 +146,19 @@ export class ObjectEditor extends React.Component<EntityEditorProps, EntityEdito
         this.context.router.transitionTo('/edit/notfound');
       }
 
-      this.state.dataController.enterPage(newWorkspace, newId, {});
+      const alreadyLoaded = this.state.dataController.enterPage(newWorkspace, newId, {});
 
-      // this state always updates
-      this.setState({
-        id: newId,
-        list: props.location.pathname.substr(props.pathname.length + 1).length === 0
-      }, () => {
-         if (!initialLoad && this.state.loading && !force) {
-            return;
-        }
-
+      if (!initialLoad && this.state.loading && !force) {
         this.setState({
+          id: newId,
+          list: props.location.pathname.substr(props.pathname.length + 1).length === 0
+        });
+      } else {
+        this.setState({
+          id: newId,
+          list: props.location.pathname.substr(props.pathname.length + 1).length === 0
           loading: true,
-          loadingWheel: initialLoad
+          loadingWheel: initialLoad || !alreadyLoaded
         }, () => {
 
           this.state.dataController.update()
@@ -170,7 +169,7 @@ export class ObjectEditor extends React.Component<EntityEditorProps, EntityEdito
             });
           });
         });
-      });
+      }
     }
 
     public render() {

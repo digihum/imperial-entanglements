@@ -2260,18 +2260,19 @@
 	        if (['entity', 'source', 'predicate', 'entity_type', 'notfound'].indexOf(newWorkspace) === -1) {
 	            this.context.router.transitionTo('/edit/notfound');
 	        }
-	        this.state.dataController.enterPage(newWorkspace, newId, {});
-	        // this state always updates
-	        this.setState({
-	            id: newId,
-	            list: props.location.pathname.substr(props.pathname.length + 1).length === 0
-	        }, () => {
-	            if (!initialLoad && this.state.loading && !force) {
-	                return;
-	            }
+	        const alreadyLoaded = this.state.dataController.enterPage(newWorkspace, newId, {});
+	        if (!initialLoad && this.state.loading && !force) {
 	            this.setState({
+	                id: newId,
+	                list: props.location.pathname.substr(props.pathname.length + 1).length === 0
+	            });
+	        }
+	        else {
+	            this.setState({
+	                id: newId,
+	                list: props.location.pathname.substr(props.pathname.length + 1).length === 0,
 	                loading: true,
-	                loadingWheel: initialLoad
+	                loadingWheel: initialLoad || !alreadyLoaded
 	            }, () => {
 	                this.state.dataController.update()
 	                    .then((dataStore) => {
@@ -2281,7 +2282,7 @@
 	                    });
 	                });
 	            });
-	        });
+	        }
 	    }
 	    render() {
 	        return (React.createElement(mobx_react_1.Provider, { dataStore: this.state.dataController, modalStore: this.state.modalStore },
@@ -5470,9 +5471,10 @@
 	        if (!lodash_1.isNaN(uid)) {
 	            if (lodash_1.find(this.tabs, (tab) => tab.tabType === workspace && tab.uid == uid) === undefined) {
 	                this.tabs = this.tabs.concat([{ tabType: workspace, uid: uid, tabClass: 'item' }]);
+	                return false;
 	            }
 	        }
-	        return this.update();
+	        return true;
 	    }
 	    loadTabData(tab) {
 	        if (tab.tabClass !== 'item') {
@@ -5625,7 +5627,7 @@
 	    mobx_1.action,
 	    __metadata("design:type", Function),
 	    __metadata("design:paramtypes", [String, Number, Object]),
-	    __metadata("design:returntype", void 0)
+	    __metadata("design:returntype", Boolean)
 	], DataController.prototype, "enterPage", null);
 	__decorate([
 	    mobx_1.action,

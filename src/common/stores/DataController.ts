@@ -45,13 +45,15 @@ export class DataController implements ApiService {
   }
 
   // checks that the page exists and adds it to tabs if necessery
-  @action public enterPage(workspace: string, uid: number, other: any) {
+  @action public enterPage(workspace: string, uid: number, other: any) : boolean {
+
     if (!isNaN(uid)) {
       if (find(this.tabs, (tab) => tab.tabType === workspace && tab.uid == uid) === undefined) {
         this.tabs = this.tabs.concat([{ tabType: workspace, uid: uid, tabClass: 'item'}]);
+        return false;
       }
     }
-    return this.update();
+    return true;
   }
 
   private loadTabData(tab: Tab) : Promise<any> {
