@@ -44,7 +44,7 @@ export abstract class GenericController<T extends FalconItem> implements IContro
          .then((data) => data.map((datum) =>  this.fromSchema(datum)));
     }
 
-    public postItem(obj: { new(): T; }, data: T) : Promise<any> {
+    public postItem(obj: { new(): T; }, data: T, params: any) : Promise<any> {
         return this.db.createItem(this.tableName, this.toSchema(data));
     }
 

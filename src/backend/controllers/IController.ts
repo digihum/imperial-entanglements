@@ -12,7 +12,7 @@ export interface IController {
     getCollectionJson<T extends FalconItem>(obj: { new(): T; }, params: any) : Promise<T[]>;
 
     // create
-    postItem<T extends FalconItem>(obj: { new(): T; }, data: T) : Promise<any>;
+    postItem<T extends FalconItem>(obj: { new(): T; }, data: T, params: any) : Promise<any>;
 
     // replace
     putItem<T extends FalconItem>(obj: { new(): T; }, uid: number | CompositeKey, data: T) : Promise<any>;

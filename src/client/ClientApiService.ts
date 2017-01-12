@@ -53,8 +53,8 @@ export class ClientApiService implements ApiService {
             .then((data) => data.map((datum) => Serializer.fromJson(obj, datum)));
     }
 
-    public postItem<T extends TrackedFalconItem>(obj: { new(): T; }, baseUrl : string, data: T)  : Promise<boolean> {
-        return fetch(`/api/v1/${baseUrl}`, {
+    public postItem<T extends TrackedFalconItem>(obj: { new(): T; }, baseUrl : string, data: T, params: any)  : Promise<boolean> {
+        return fetch(`/api/v1/${baseUrl}?` + queryString.stringify(params), {
             method: 'POST',
             body: JSON.stringify(data),
             headers: {

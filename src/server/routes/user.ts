@@ -33,7 +33,7 @@ export const user = (db: Database) : Koa => {
 
    server.use(__.get('/tabset', async (ctx: Koa.Context) => {
      if (ctx.isAuthenticated()) {
-       ctx.body = await db.query()('tabset').where({ uid: ctx.req.user.uid })
+       ctx.body = await db.query()('tabset').where({ owner: ctx.req.user.uid })
        .then((res) => res.map((tabset) => ({...tabset, tabs: JSON.parse(tabset.tabs) })));
      }
    }));
@@ -50,7 +50,7 @@ export const user = (db: Database) : Koa => {
    server.use(__.delete('/tabset/:id', async (ctx: Koa.Context, id: number) => {
      if (ctx.isAuthenticated()) {
      await db.query()('tabset')
-      .where({ uid: id })
+      .where({ uid: id, owner: ctx.req.user.uid })
       .del()
       .then(() => {});
        ctx.body = 1;

@@ -61,6 +61,18 @@ export class EntityController extends GenericController<Entity> {
         }
     }
 
+    public async postItem(obj: { new(): Entity; }, data: Entity, params: any) : Promise<any> {
+      const result = await this.db.createItem(this.tableName, this.toSchema(data));
+      if (params.clone !== undefined) {
+        const recordsToClone = await this.db.query()('records').where({ entity: params.clone })
+          .then((records) => records.map((record) => ({...record, entity: result[0], uid: undefined})));
+
+        await this.db.query()('records').insert(recordsToClone).then(() => {});
+      }
+      return result;
+    }
+
+
     public async deleteItem(obj: { new(): Entity; }, uid: number) : Promise<string> {
         // check if this entity is the parent of another entity or if it has any relationships
         // pointing towards it.

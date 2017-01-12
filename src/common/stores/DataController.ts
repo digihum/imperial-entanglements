@@ -144,7 +144,7 @@ export class DataController implements ApiService {
     return this.api.getCollection.apply(this, arguments);
   }
 
-  public postItem<T extends TrackedFalconItem>(obj: { new(): T; }, baseUrl : string, data: T) : Promise<any> {
+  public postItem<T extends TrackedFalconItem>(obj: { new(): T; }, baseUrl : string, data: T, params: any) : Promise<any> {
     return this.api.postItem.apply(this, arguments).then((result) => this.update().then(() => result));
   }
 

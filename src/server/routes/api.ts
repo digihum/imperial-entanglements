@@ -95,7 +95,7 @@ export const api = (db: Database) : Koa => {
             .postItem<any>(itemTypes[route].item, route,
               Serializer.fromJson(itemTypes[route].item, Object.assign(ctx.request.body, {
                 creator: ctx.req.user.uid
-            })));
+            })), ctx.query);
 
         ctx.body = data;
     }));

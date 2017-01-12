@@ -69,7 +69,7 @@ export class CreateTabSet extends React.Component<CreateTabSetProps, CreateEntit
     public render() {
         return (
         <Overlay>
-            <h2>Create Entity Type</h2>
+            <h2>Save Tab Set</h2>
             <label className='small'>Name</label>
             <input type='text'
                 value={this.state.internalValue}

@@ -52,7 +52,7 @@ export class ServerApiService implements ApiService {
         return controller.getCollectionJson<T>(obj, params);
     }
 
-    public postItem<T extends TrackedFalconItem>(obj: { new(): T; }, baseUrl : string, data: T)  : Promise<boolean> {
+    public postItem<T extends TrackedFalconItem>(obj: { new(): T; }, baseUrl : string, data: T, params: any)  : Promise<boolean> {
         const controller = this.controllerMap.get(baseUrl);
         if (controller === undefined) {
             return Promise.reject(new CollectionNotFoundException('Controller not found'));
@@ -61,7 +61,7 @@ export class ServerApiService implements ApiService {
             creationTimestamp: moment().toISOString(),
             lastmodifiedTimestamp: moment().toISOString(),
             creator: this.fakeCreator ? 0 : data.creator
-        }));
+        }), params);
     }
 
     public putItem<T extends TrackedFalconItem>(obj: { new(): T; },

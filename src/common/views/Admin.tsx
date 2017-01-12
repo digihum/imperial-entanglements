@@ -14,11 +14,19 @@ interface AdminProps {
   tabsets: any[];
 }
 
-const setTabList = (data: any) => {
-  window.localStorage.setItem('open_tabs', data);
+const setTabList = (data: any, router: any) => {
+  window.localStorage.setItem('open_tabs', JSON.stringify(data));
+  router.transitionTo('/edit/empty');
 };
 
-export const Admin = (props : AdminProps) => (
+const deleteTabSet = (id: number) => {
+  fetch('/admin/tabset/' + id, {
+    method: 'DELETE',
+    credentials: 'same-origin'
+  });
+};
+
+export const Admin = (props : AdminProps, context: any) => (
     <div className='page'>
         <section>
             <h1>Welcome to the admin pages</h1>
@@ -29,12 +37,25 @@ export const Admin = (props : AdminProps) => (
                 <li><Link to='/upload'><i className='fa fa-cloud-upload'></i> Upload database file</Link></li>
             </ul>
         </section>
+        <section>
+          <h2>Saved Tab Sets</h2>
+          <ul className='links-list'>
+          { props.tabsets.map((tabset) => {
+            return (<li key={`tabset-${tabset.uid}`}>
+              <span className='a'>
+                <span onClick={() => setTabList(tabset.tabs, context.router)}>{tabset.name}</span>
+                <span><i className='fa fa-times' onClick={() => deleteTabSet(tabset.uid)}></i></span>
+              </span>
+            </li>);
+          })}
+          </ul>
+        </section>
         {props.stats !== null ? (
           <StatsGrid stats={props.stats} />
         ) : null}
-
-        { props.tabsets.map((tabset) => {
-          return (<div onClick={() => setTabList(tabset.tabs)} key={`tabset-{tabset.name}`}>{tabset.name}</div>);
-        })}
      </div>
 );
+
+Admin.contextTypes = {
+  router: React.PropTypes.object.isRequired
+};

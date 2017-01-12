@@ -185,7 +185,7 @@ export class Sidebar extends React.Component<SidebarProps, SidebarState> {
                 onChange={(evt) => this.setState({searchString: (evt.currentTarget as HTMLInputElement).value})} />
 
                 <div className='sidebar-toolbar'>
-                    <button onClick={this.props.dataStore!.clearAllTabs}><i className='fa fa-trash'></i> Clear All</button>
+                    <button onClick={() => this.props.dataStore!.clearAllTabs()}><i className='fa fa-trash'></i> Clear All</button>
                     <button onClick={() => this.props.modalStore!.addModal({ name: 'createTabSet', cancel: noop, complete: noop, settings: {}})}><i className='fa fa-floppy-o'></i> Save</button>
                     <button onClick={() => this.setState({compactMode: !this.state.compactMode})}><i className='fa fa-compress'></i> Compact</button>
                 </div>

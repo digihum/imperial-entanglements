@@ -80,14 +80,14 @@ export class RecordController extends GenericController<Record> {
       return RecordController.fromSchema(data);
     }
 
-    public postItem(obj: { new(): Record; }, data: Record) : Promise<string> {
+    public postItem(obj: { new(): Record; }, data: Record, params: any) : Promise<string> {
 
         // predicate domain must equal value_type
         return this.db.select('predicates', ['range_type']).where({ uid: data.predicate })
         .then(([predicate]) => {
             if (data.valueType === predicate.range_type) {
                 //TODO: still need to check entity type constraints
-                return super.postItem(obj, data);
+                return super.postItem(obj, data, params);
             }
             throw new OperationNotPermittedException({
                 message: 'Attempted to add a record with an incorrect type!',

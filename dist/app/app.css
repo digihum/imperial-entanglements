@@ -3705,16 +3705,16 @@ ul.links-list {
   list-style: none; }
   ul.links-list li {
     margin: 0.5em 0; }
-    ul.links-list li a {
+    ul.links-list li a, ul.links-list li .a {
       text-decoration: none;
       display: flex;
       align-items: center;
       color: #2c2c2c;
       font-family: 'Roboto', sans-serif;
       padding: 0.5em; }
-      ul.links-list li a:hover {
+      ul.links-list li a:hover, ul.links-list li .a:hover {
         background-color: lightgray; }
-      ul.links-list li a i {
+      ul.links-list li a i, ul.links-list li .a i {
         font-size: 2em;
         margin-right: 0.2em; }
 

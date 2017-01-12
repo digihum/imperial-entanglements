@@ -162,25 +162,13 @@ export class EntityEditorWorkspace extends React.Component<EntityEditorProps, En
           Serializer.fromJson(Entity, {
               label: 'Copy of ' + entity.label,
               entityType: entity.entityType
-          })).then(([id]) => this.props.dataStore!.createTab('entity', id, 'item'));
+          }), { clone: this.props.id }).then(([id]) => this.props.dataStore!.createTab('entity', id, 'item'));
     }
 
     public render() {
 
         const entity = this.props.dataStore!.dataStore.tabs.entity.get('entity-' + this.props.id).value.entity;
-
-        const entityType = this.props.dataStore!.dataStore.all.entity_type.value.find((t) => t.uid === entity.entityType);
         const potentialParents = this.props.dataStore!.dataStore.all.entity.value;
-
-        const entityTypeParents = findParentTree(entity.entityType, this.props.dataStore!.dataStore.all.entity_type.value);
-        const predicates = this.props.dataStore!.dataStore.all.predicate
-            .value.filter((pred) => entityTypeParents.indexOf(pred.domain) !== -1);
-
-        const sources = this.props.dataStore!.dataStore.all.source.value;
-        const records = groupBy(this.props.dataStore!.dataStore.tabs.entity.get('entity-' + this.props.id).value.records, 'predicate');
-
-
-        const options = predicates.map((pred) => ({ key: pred.label, value: pred.uid, meta: pred}));
 
         let parentName = '';
         if (potentialParents !== null && entity.parent !== undefined) {
