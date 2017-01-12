@@ -1,5 +1,4 @@
 DROP VIEW IF EXISTS predicate_complete;
-
 CREATE VIEW predicate_complete AS
 SELECT predicates.*, predicate_counts.count as uses
 FROM predicates
