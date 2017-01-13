@@ -146,7 +146,7 @@ export class ObjectEditor extends React.Component<EntityEditorProps, EntityEdito
         this.context.router.transitionTo('/edit/notfound');
       }
 
-      const alreadyLoaded = this.state.dataController.enterPage(newWorkspace, newId, {});
+      const alreadyLoaded = newWorkspace === 'notfound' || this.state.dataController.enterPage(newWorkspace, newId, {});
 
       if (!initialLoad && this.state.loading && !force) {
         this.setState({
@@ -167,6 +167,8 @@ export class ObjectEditor extends React.Component<EntityEditorProps, EntityEdito
               loading: false,
               loadingWheel: false
             });
+          }).catch(() => {
+            this.context.router.transitionTo('/edit/notfound');
           });
         });
       }

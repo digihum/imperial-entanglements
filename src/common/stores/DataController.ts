@@ -97,6 +97,12 @@ export class DataController implements ApiService {
           .then((value) => {
             return { [`${tab.tabType}-${tab.uid}`]: { value, lastUpdate: moment() }};
           })
+          .catch((err) => {
+            this.tabs = this.tabs.filter((tab2: Tab) => tab2 !== tab);
+            this.saveTabs();
+            // propogate the error
+            throw err;
+          })
         ))
         .then((tabData) => {
           return { [tabType]: Map(Object.assign({}, ...tabData)) };

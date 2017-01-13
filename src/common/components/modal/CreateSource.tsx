@@ -50,7 +50,7 @@ export class CreateSource extends React.Component<CreateSourceProps, CreateSourc
     public createSource() {
         this.props.dataStore!.postItem(Source, AppUrls.source,
             Serializer.fromJson(Source, {
-                name: this.state.internalValue
+                label: this.state.internalValue
             }))
         .then(this.props.complete);
     }

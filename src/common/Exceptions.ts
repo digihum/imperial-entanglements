@@ -7,6 +7,7 @@
 export class UnprocessableEntity extends Error {
 
     public data: Promise<any> | undefined;
+    public readonly code: number = 422;
 
     constructor(message: string, data?: Promise<any>) {
         super(message);
@@ -15,10 +16,10 @@ export class UnprocessableEntity extends Error {
 }
 
 export class KeyNotFoundException extends Error {
-    public data: string;
+  public readonly code: number = 404;
+
     constructor(message: string = 'Could not find the given key') {
         super(message);
-        this.data = message;
     }
 }
 

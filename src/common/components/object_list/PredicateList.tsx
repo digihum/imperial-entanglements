@@ -22,7 +22,7 @@ import { SearchBar } from '../SearchBar';
 
 interface PredicateListProps {
     dataStore?: DataController;
-    modalController?: ModalStore;
+    modalStore?: ModalStore;
 }
 
 interface PredicateListState {
@@ -57,7 +57,7 @@ export class PredicateList extends React.Component<PredicateListProps, Predicate
             }
         };
 
-        this.props.modalController!.addModal(a);
+        this.props.modalStore!.addModal(a);
     }
 
     public render() {

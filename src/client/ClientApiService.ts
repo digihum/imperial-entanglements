@@ -10,7 +10,7 @@ import * as queryString from 'query-string';
 
 import { isObject } from 'lodash';
 
-import { UnprocessableEntity } from '../common/Exceptions';
+import { UnprocessableEntity, KeyNotFoundException } from '../common/Exceptions';
 
 export { AppUrls } from '../common/ApiService';
 
@@ -24,7 +24,7 @@ function handleErrors(response: any) {
         // showToast.dispatch('Something went wrong ;(', response.statusText);
 
         if (response.status === 404) {
-             throw Error(JSON.stringify({
+             throw new KeyNotFoundException(JSON.stringify({
                 statusText: response.statusText,
                 status: response.status
             }));

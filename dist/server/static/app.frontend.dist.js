@@ -4943,7 +4943,7 @@
 	        if (['entity', 'source', 'predicate', 'entity_type', 'notfound'].indexOf(newWorkspace) === -1) {
 	            this.context.router.transitionTo('/edit/notfound');
 	        }
-	        const alreadyLoaded = this.state.dataController.enterPage(newWorkspace, newId, {});
+	        const alreadyLoaded = newWorkspace === 'notfound' || this.state.dataController.enterPage(newWorkspace, newId, {});
 	        if (!initialLoad && this.state.loading && !force) {
 	            this.setState({
 	                id: newId,
@@ -4963,6 +4963,8 @@
 	                        loading: false,
 	                        loadingWheel: false
 	                    });
+	                }).catch(() => {
+	                    this.context.router.transitionTo('/edit/notfound');
 	                });
 	            });
 	        }
@@ -18666,33 +18668,38 @@
 	            this.context.router.transitionTo('/edit/notfound');
 	        })
 	            .catch((e) => {
-	            e.data.then((data) => {
-	                const conflictResolutionModal = {
-	                    name: 'conflict_resolution',
-	                    cancel: () => { },
-	                    complete: (result) => {
-	                        if (result === 'addToWorkspace') {
-	                            data.record.forEach((datum) => {
-	                                this.props.dataStore.createTab('entity', datum.entity, 'item');
-	                            });
-	                            data.entity.forEach((datum) => {
-	                                this.props.dataStore.createTab('entity', datum.uid, 'item');
-	                            });
+	            if (e.code === 404) {
+	                this.context.router.transitionTo('/edit/notfound');
+	            }
+	            if (e.code === 422) {
+	                e.data.then((data) => {
+	                    const conflictResolutionModal = {
+	                        name: 'conflict_resolution',
+	                        cancel: () => { },
+	                        complete: (result) => {
+	                            if (result === 'addToWorkspace') {
+	                                data.record.forEach((datum) => {
+	                                    this.props.dataStore.createTab('entity', datum.entity, 'item');
+	                                });
+	                                data.entity.forEach((datum) => {
+	                                    this.props.dataStore.createTab('entity', datum.uid, 'item');
+	                                });
+	                            }
+	                            if (result === 'deleteAll') {
+	                                Promise.all(data.record.map((datum) => this.props.dataStore.delItem(falcon_core_1.Record, ApiService_1.AppUrls.record, datum.uid)))
+	                                    .then(() => {
+	                                    this.del();
+	                                });
+	                            }
+	                        },
+	                        settings: {
+	                            conflictingItems: data,
+	                            message: 'Deleting Entity'
 	                        }
-	                        if (result === 'deleteAll') {
-	                            Promise.all(data.record.map((datum) => this.props.dataStore.delItem(falcon_core_1.Record, ApiService_1.AppUrls.record, datum.uid)))
-	                                .then(() => {
-	                                this.del();
-	                            });
-	                        }
-	                    },
-	                    settings: {
-	                        conflictingItems: data,
-	                        message: 'Deleting Entity'
-	                    }
-	                };
-	                this.props.modalStore.addModal(conflictResolutionModal);
-	            });
+	                    };
+	                    this.props.modalStore.addModal(conflictResolutionModal);
+	                });
+	            }
 	        });
 	    }
 	    createNewRecord() {
@@ -34683,30 +34690,35 @@
 	        this.props.dataStore.delItem(falcon_core_1.EntityType, ApiService_1.AppUrls.entity_type, this.props.id)
 	            .then(() => this.context.router.transitionTo('/edit/notfound'))
 	            .catch((e) => {
-	            e.data.then((data) => {
-	                const conflictResolutionModal = {
-	                    name: 'conflict_resolution',
-	                    cancel: () => { },
-	                    complete: (result) => {
-	                        if (result === 'addToWorkspace') {
-	                            data.entityType.forEach((datum) => {
-	                                this.props.dataStore.createTab('entity_type', datum.uid, 'item');
-	                            });
-	                            data.predicate.forEach((datum) => {
-	                                this.props.dataStore.createTab('predicate', datum.uid, 'item');
-	                            });
-	                            data.entity.forEach((datum) => {
-	                                this.props.dataStore.createTab('entity', datum.uid, 'item');
-	                            });
+	            if (e.code === 404) {
+	                this.context.router.transitionTo('/edit/notfound');
+	            }
+	            if (e.code === 422) {
+	                e.data.then((data) => {
+	                    const conflictResolutionModal = {
+	                        name: 'conflict_resolution',
+	                        cancel: () => { },
+	                        complete: (result) => {
+	                            if (result === 'addToWorkspace') {
+	                                data.entityType.forEach((datum) => {
+	                                    this.props.dataStore.createTab('entity_type', datum.uid, 'item');
+	                                });
+	                                data.predicate.forEach((datum) => {
+	                                    this.props.dataStore.createTab('predicate', datum.uid, 'item');
+	                                });
+	                                data.entity.forEach((datum) => {
+	                                    this.props.dataStore.createTab('entity', datum.uid, 'item');
+	                                });
+	                            }
+	                        },
+	                        settings: {
+	                            conflictingItems: data,
+	                            message: 'Deleting Entity Type'
 	                        }
-	                    },
-	                    settings: {
-	                        conflictingItems: data,
-	                        message: 'Deleting Entity Type'
-	                    }
-	                };
-	                this.props.modalStore.addModal(conflictResolutionModal);
-	            });
+	                    };
+	                    this.props.modalStore.addModal(conflictResolutionModal);
+	                });
+	            }
 	        });
 	    }
 	    createEntity() {
@@ -36054,30 +36066,35 @@
 	        this.props.dataStore.delItem(falcon_core_1.Source, ApiService_1.AppUrls.source, this.props.id)
 	            .then(() => this.context.router.transitionTo('/edit/notfound'))
 	            .catch((e) => {
-	            e.data.then((data) => {
-	                const conflictResolutionModal = {
-	                    name: 'conflict_resolution',
-	                    cancel: () => { },
-	                    complete: (result) => {
-	                        if (result === 'addToWorkspace') {
-	                            data.source.forEach((datum) => {
-	                                this.props.dataStore.createTab('source', datum.uid, 'item');
-	                            });
+	            if (e.code === 404) {
+	                this.context.router.transitionTo('/edit/notfound');
+	            }
+	            if (e.code === 422) {
+	                e.data.then((data) => {
+	                    const conflictResolutionModal = {
+	                        name: 'conflict_resolution',
+	                        cancel: () => { },
+	                        complete: (result) => {
+	                            if (result === 'addToWorkspace') {
+	                                data.source.forEach((datum) => {
+	                                    this.props.dataStore.createTab('source', datum.uid, 'item');
+	                                });
+	                            }
+	                            if (result === 'deleteAll') {
+	                                Promise.all(data.source.map((datum) => this.props.dataStore.delItem(falcon_core_1.Source, ApiService_1.AppUrls.source, datum.uid)))
+	                                    .then(() => {
+	                                    this.del();
+	                                });
+	                            }
+	                        },
+	                        settings: {
+	                            conflictingItems: data,
+	                            message: 'Deleting Source'
 	                        }
-	                        if (result === 'deleteAll') {
-	                            Promise.all(data.source.map((datum) => this.props.dataStore.delItem(falcon_core_1.Source, ApiService_1.AppUrls.source, datum.uid)))
-	                                .then(() => {
-	                                this.del();
-	                            });
-	                        }
-	                    },
-	                    settings: {
-	                        conflictingItems: data,
-	                        message: 'Deleting Source'
-	                    }
-	                };
-	                this.props.modalStore.addModal(conflictResolutionModal);
-	            });
+	                    };
+	                    this.props.modalStore.addModal(conflictResolutionModal);
+	                });
+	            }
 	        });
 	    }
 	    createChild() {
@@ -36257,30 +36274,35 @@
 	        this.props.dataStore.delItem(falcon_core_1.Predicate, ApiService_1.AppUrls.predicate, this.props.id)
 	            .then(() => this.context.router.transitionTo('/edit/notfound'))
 	            .catch((e) => {
-	            e.data.then((data) => {
-	                const conflictResolutionModal = {
-	                    name: 'conflict_resolution',
-	                    cancel: () => { },
-	                    complete: (result) => {
-	                        if (result === 'addToWorkspace') {
-	                            data.forEach((datum) => {
-	                                this.props.dataStore.createTab('entity', datum.entity, 'item');
-	                            });
+	            if (e.code === 404) {
+	                this.context.router.transitionTo('/edit/notfound');
+	            }
+	            if (e.code === 422) {
+	                e.data.then((data) => {
+	                    const conflictResolutionModal = {
+	                        name: 'conflict_resolution',
+	                        cancel: () => { },
+	                        complete: (result) => {
+	                            if (result === 'addToWorkspace') {
+	                                data.forEach((datum) => {
+	                                    this.props.dataStore.createTab('entity', datum.entity, 'item');
+	                                });
+	                            }
+	                            if (result === 'deleteAll') {
+	                                Promise.all(data.record.map((datum) => this.props.dataStore.delItem(falcon_core_1.Record, ApiService_1.AppUrls.record, datum.uid)))
+	                                    .then(() => {
+	                                    this.del();
+	                                });
+	                            }
+	                        },
+	                        settings: {
+	                            conflictingItems: data,
+	                            message: 'Deleting Predicate'
 	                        }
-	                        if (result === 'deleteAll') {
-	                            Promise.all(data.record.map((datum) => this.props.dataStore.delItem(falcon_core_1.Record, ApiService_1.AppUrls.record, datum.uid)))
-	                                .then(() => {
-	                                this.del();
-	                            });
-	                        }
-	                    },
-	                    settings: {
-	                        conflictingItems: data,
-	                        message: 'Deleting Predicate'
-	                    }
-	                };
-	                this.props.modalStore.addModal(conflictResolutionModal);
-	            });
+	                    };
+	                    this.props.modalStore.addModal(conflictResolutionModal);
+	                });
+	            }
 	        });
 	    }
 	    render() {
@@ -36940,7 +36962,7 @@
 	                initialName: ''
 	            }
 	        };
-	        this.props.modalController.addModal(a);
+	        this.props.modalStore.addModal(a);
 	    }
 	    render() {
 	        return (React.createElement("div", { className: 'workspace-editor' },
@@ -37320,6 +37342,12 @@
 	            const tabPromise = Promise.all(Object.keys(groupedTabs).map((tabType) => Promise.all(groupedTabs[tabType].map((tab) => this.loadTabData(tab)
 	                .then((value) => {
 	                return { [`${tab.tabType}-${tab.uid}`]: { value, lastUpdate: moment() } };
+	            })
+	                .catch((err) => {
+	                this.tabs = this.tabs.filter((tab2) => tab2 !== tab);
+	                this.saveTabs();
+	                // propogate the error
+	                throw err;
 	            })))
 	                .then((tabData) => {
 	                return { [tabType]: immutable_1.Map(Object.assign({}, ...tabData)) };
@@ -42657,7 +42685,7 @@
 	    constructor() {
 	        super();
 	        this.state = {
-	            name: '',
+	            label: '',
 	            domain: { key: '', value: '' },
 	            range: { key: '', value: '' },
 	            domainOptions: [],
@@ -42703,7 +42731,7 @@
 	    }
 	    create() {
 	        const newPredicate = falcon_core_1.Serializer.fromJson(falcon_core_1.Predicate, {
-	            name: this.state.name,
+	            label: this.state.label,
 	            domain: this.state.domain.value,
 	            range: this.state.range.value,
 	            rangeIsReference: this.state.range.meta !== 'literal'
@@ -42721,7 +42749,7 @@
 	                " Create Property"),
 	            React.createElement("label", { className: 'small' }, "Name"),
 	            React.createElement("input", { type: 'text', className: 'gap', ref: (a) => { if (a !== null)
-	                    a.focus(); }, value: this.state.name, onChange: (e) => this.setState({ name: e.target.value }) }),
+	                    a.focus(); }, value: this.state.label, onChange: (e) => this.setState({ label: e.target.value }) }),
 	            React.createElement(PredicateDescription_1.PredicateDescription, { domain: this.state.domain, range: this.state.range, domainChanged: (s) => this.setState({ domain: s }), rangeChanged: (s) => this.setState({ range: s }), domainOptions: this.state.domainOptions, rangeOptions: this.state.rangeOptions, mode: 'editAll' }),
 	            React.createElement("div", { className: 'modal-toolbar' },
 	                React.createElement("button", { onClick: this.props.cancel, className: 'pull-left' }, "Cancel"),
@@ -42949,7 +42977,7 @@
 	    }
 	    createSource() {
 	        this.props.dataStore.postItem(falcon_core_1.Source, ApiService_1.AppUrls.source, falcon_core_1.Serializer.fromJson(falcon_core_1.Source, {
-	            name: this.state.internalValue
+	            label: this.state.internalValue
 	        }))
 	            .then(this.props.complete);
 	    }
@@ -43337,7 +43365,7 @@
 	        }
 	        // showToast.dispatch('Something went wrong ;(', response.statusText);
 	        if (response.status === 404) {
-	            throw Error(JSON.stringify({
+	            throw new Exceptions_1.KeyNotFoundException(JSON.stringify({
 	                statusText: response.statusText,
 	                status: response.status
 	            }));
@@ -43454,6 +43482,7 @@
 	class UnprocessableEntity extends Error {
 	    constructor(message, data) {
 	        super(message);
+	        this.code = 422;
 	        this.data = data;
 	    }
 	}
@@ -43461,7 +43490,7 @@
 	class KeyNotFoundException extends Error {
 	    constructor(message = 'Could not find the given key') {
 	        super(message);
-	        this.data = message;
+	        this.code = 404;
 	    }
 	}
 	exports.KeyNotFoundException = KeyNotFoundException;

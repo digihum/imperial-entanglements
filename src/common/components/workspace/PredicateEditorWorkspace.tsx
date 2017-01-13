@@ -96,6 +96,12 @@ export class PredicateEditorWorkspace extends React.Component<PredicateEditorPro
         this.props.dataStore!.delItem(Predicate, AppUrls.predicate, this.props.id)
         .then(() => this.context.router.transitionTo('/edit/notfound'))
         .catch((e) => {
+           if (e.code === 404) {
+              this.context.router.transitionTo('/edit/notfound');
+           }
+
+           if (e.code === 422) {
+
             e.data.then((data) => {
 
                 const conflictResolutionModal : ModalDefinition = {
@@ -123,6 +129,7 @@ export class PredicateEditorWorkspace extends React.Component<PredicateEditorPro
 
                 this.props.modalStore!.addModal(conflictResolutionModal);
             });
+           }
         });
     }
 

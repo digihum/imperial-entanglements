@@ -26,7 +26,7 @@ interface CreatePredicateProps {
 }
 
 interface CreatePredicateState {
-    name: string;
+    label: string;
     domain: ComboDropdownOption;
     range: ComboDropdownOption;
     domainOptions: ComboDropdownOption[];
@@ -40,7 +40,7 @@ export class CreatePredicate extends React.Component<CreatePredicateProps, Creat
     constructor() {
         super();
         this.state = {
-            name: '',
+            label: '',
             domain: {key: '', value: ''},
             range: {key: '', value: ''},
             domainOptions: [],
@@ -94,7 +94,7 @@ export class CreatePredicate extends React.Component<CreatePredicateProps, Creat
     public create() {
 
         const newPredicate = Serializer.fromJson(Predicate, {
-            name: this.state.name,
+            label: this.state.label,
             domain: this.state.domain.value,
             range: this.state.range.value,
             rangeIsReference: this.state.range.meta !== 'literal'
@@ -116,8 +116,8 @@ export class CreatePredicate extends React.Component<CreatePredicateProps, Creat
             <input type='text'
                 className='gap'
                 ref={(a) =>  { if(a !== null) a.focus(); }}
-                value={this.state.name}
-                onChange={(e) => this.setState({ name: (e.target as HTMLInputElement).value })} />
+                value={this.state.label}
+                onChange={(e) => this.setState({ label: (e.target as HTMLInputElement).value })} />
 
             <PredicateDescription
                 domain={this.state.domain}

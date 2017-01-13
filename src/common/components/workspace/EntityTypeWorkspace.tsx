@@ -76,6 +76,11 @@ export class EntityTypeWorkspace extends React.Component<EntityTypeWorkspaceProp
         this.props.dataStore!.delItem(EntityType, AppUrls.entity_type, this.props.id)
         .then(() => this.context.router.transitionTo('/edit/notfound'))
         .catch((e) => {
+           if (e.code === 404) {
+              this.context.router.transitionTo('/edit/notfound');
+           }
+
+           if (e.code === 422) {
             e.data.then((data) => {
 
                 const conflictResolutionModal : ModalDefinition = {
@@ -102,6 +107,7 @@ export class EntityTypeWorkspace extends React.Component<EntityTypeWorkspaceProp
 
                 this.props.modalStore!.addModal(conflictResolutionModal);
             });
+           }
         });
     }
 

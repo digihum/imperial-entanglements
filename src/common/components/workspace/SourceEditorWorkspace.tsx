@@ -125,6 +125,11 @@ export class SourceEditorWorkspace extends React.Component<SourceEditorProps, So
         this.props.dataStore!.delItem(Source, AppUrls.source, this.props.id)
         .then(() => this.context.router.transitionTo('/edit/notfound'))
         .catch((e) => {
+           if (e.code === 404) {
+              this.context.router.transitionTo('/edit/notfound');
+           }
+
+           if (e.code === 422) {
             e.data.then((data) => {
 
                 const conflictResolutionModal : ModalDefinition = {
@@ -152,6 +157,7 @@ export class SourceEditorWorkspace extends React.Component<SourceEditorProps, So
 
                 this.props.modalStore!.addModal(conflictResolutionModal);
             });
+           }
         });
     }
 
