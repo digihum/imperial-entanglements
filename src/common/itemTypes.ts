@@ -1,7 +1,7 @@
 /**
  * @fileOverview <Description Missing>
  * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.1.0
+ * @version 0.2.0
  */
 
 import { CompositeKey, FalconItem, ElementSet, Record, Entity, EntityType, Predicate, Source, SourceElement, Element } from 'falcon-core';

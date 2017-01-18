@@ -1,7 +1,7 @@
 /**
  * @fileOverview Collated list of controllers
  * @author <a href='mailto:tim.hollies@warwick.ac.uk'>Tim Hollies</a>
- * @version 0.0.1
+ * @version 0.2.0
  */
 
 export { ElementSetController } from './ElementSetController';

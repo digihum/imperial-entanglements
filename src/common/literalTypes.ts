@@ -1,7 +1,7 @@
 /**
  * @fileOverview <Description Missing>
  * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.1.0
+ * @version 0.2.0
  */
 
 export const literalTypes: { label: string, value: string, url: string, description: string }[] = [

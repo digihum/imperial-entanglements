@@ -47,7 +47,7 @@
 	/**
 	 * @fileOverview Entry point for server application
 	 * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
-	 * @version 0.0.1
+	 * @version 0.2.0
 	 */
 	"use strict";
 	const Server_1 = __webpack_require__(1);
@@ -86,7 +86,7 @@
 	/**
 	 * @fileOverview <Description Missing>
 	 * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
-	 * @version 0.1.0
+	 * @version 0.2.0
 	 */
 	"use strict";
 	var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
@@ -204,7 +204,7 @@
 	/**
 	 * @fileOverview Abstract interface for sources
 	 * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
-	 * @version 0.0.1
+	 * @version 0.2.0
 	 */
 	"use strict";
 	const Knex = __webpack_require__(11);
@@ -377,7 +377,7 @@
 	/**
 	 * @fileOverview Abstract interface for sources
 	 * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
-	 * @version 0.0.1
+	 * @version 0.2.0
 	 */
 	"use strict";
 	class UnprocessableEntity extends Error {
@@ -457,7 +457,7 @@
 	/**
 	 * @fileOverview Map of URIs to controllers
 	 * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
-	 * @version 0.0.1
+	 * @version 0.2.0
 	 */
 	"use strict";
 	var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
@@ -580,7 +580,7 @@
 	/**
 	 * @fileOverview Abstract interface for sources
 	 * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
-	 * @version 0.0.1
+	 * @version 0.2.0
 	 */
 	const itemTypes_1 = __webpack_require__(19);
 	const ServerApiService_1 = __webpack_require__(21);
@@ -608,7 +608,7 @@
 	/**
 	 * @fileOverview <Description Missing>
 	 * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
-	 * @version 0.1.0
+	 * @version 0.2.0
 	 */
 	"use strict";
 	const falcon_core_1 = __webpack_require__(20);
@@ -702,7 +702,7 @@
 	/**
 	 * @fileOverview Abstract interface for sources
 	 * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
-	 * @version 0.0.1
+	 * @version 0.2.0
 	 */
 	"use strict";
 	const Exceptions_1 = __webpack_require__(13);
@@ -790,7 +790,7 @@
 	/**
 	 * @fileOverview <Description Missing>
 	 * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
-	 * @version 0.1.0
+	 * @version 0.2.0
 	 */
 	"use strict";
 	const itemTypes_1 = __webpack_require__(19);
@@ -813,7 +813,7 @@
 	/**
 	 * @fileOverview Map of URIs to controllers
 	 * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
-	 * @version 0.0.1
+	 * @version 0.2.0
 	 */
 	"use strict";
 	exports.GeneralStatisticsController = (db) => {
@@ -843,7 +843,7 @@
 	/**
 	 * @fileOverview Query processor
 	 * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
-	 * @version 0.0.1
+	 * @version 0.2.0
 	 */
 	"use strict";
 	const graphql_1 = __webpack_require__(26);
@@ -895,7 +895,7 @@
 	/**
 	 * @fileOverview Query processor
 	 * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
-	 * @version 0.0.1
+	 * @version 0.2.0
 	 */
 	"use strict";
 	const graphql_1 = __webpack_require__(26);
@@ -967,7 +967,7 @@
 	/**
 	 * @fileOverview Query processor
 	 * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
-	 * @version 0.0.1
+	 * @version 0.2.0
 	 */
 	"use strict";
 	const graphql_1 = __webpack_require__(26);
@@ -1008,7 +1008,7 @@
 	/**
 	 * @fileOverview Collated list of controllers
 	 * @author <a href='mailto:tim.hollies@warwick.ac.uk'>Tim Hollies</a>
-	 * @version 0.0.1
+	 * @version 0.2.0
 	 */
 	"use strict";
 	var ElementSetController_1 = __webpack_require__(30);
@@ -1036,7 +1036,7 @@
 	/**
 	 * @fileOverview Controller for element sets
 	 * @author <a href='mailto:tim.hollies@warwick.ac.uk'>Tim Hollies</a>
-	 * @version 0.0.1
+	 * @version 0.2.0
 	 */
 	"use strict";
 	var __assign = (this && this.__assign) || Object.assign || function(t) {
@@ -1092,7 +1092,7 @@
 	/**
 	 * @fileOverview Generic controller containing logic common to most controller classes
 	 * @author <a href='mailto:tim.hollies@warwick.ac.uk'>Tim Hollies</a>
-	 * @version 0.0.1
+	 * @version 0.2.0
 	 */
 	"use strict";
 	const Exceptions_1 = __webpack_require__(13);
@@ -1151,7 +1151,7 @@
 	/**
 	 * @fileOverview Controller for entities
 	 * @author <a href='mailto:tim.hollies@warwick.ac.uk'>Tim Hollies</a>
-	 * @version 0.0.1
+	 * @version 0.2.0
 	 */
 	"use strict";
 	var __assign = (this && this.__assign) || Object.assign || function(t) {
@@ -1262,7 +1262,7 @@
 	/**
 	 * @fileOverview Controller for entity types
 	 * @author <a href='mailto:tim.hollies@warwick.ac.uk'>Tim Hollies</a>
-	 * @version 0.0.1
+	 * @version 0.2.0
 	 */
 	"use strict";
 	var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
@@ -1348,7 +1348,7 @@
 	/**
 	 * @fileOverview Controller for predicates
 	 * @author <a href='mailto:tim.hollies@warwick.ac.uk'>Tim Hollies</a>
-	 * @version 0.0.1
+	 * @version 0.2.0
 	 */
 	"use strict";
 	var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
@@ -1508,7 +1508,7 @@
 	/**
 	 * @fileOverview Controller for records
 	 * @author <a href='mailto:tim.hollies@warwick.ac.uk'>Tim Hollies</a>
-	 * @version 0.0.1
+	 * @version 0.2.0
 	 */
 	"use strict";
 	const falcon_core_1 = __webpack_require__(20);
@@ -1617,7 +1617,7 @@
 	/**
 	 * @fileOverview Controller for sources
 	 * @author <a href='mailto:tim.hollies@warwick.ac.uk'>Tim Hollies</a>
-	 * @version 0.0.1
+	 * @version 0.2.0
 	 */
 	"use strict";
 	var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
@@ -1770,7 +1770,7 @@
 	/**
 	 * @fileOverview Controller for elements
 	 * @author <a href='mailto:tim.hollies@warwick.ac.uk'>Tim Hollies</a>
-	 * @version 0.0.1
+	 * @version 0.2.0
 	 */
 	"use strict";
 	const falcon_core_1 = __webpack_require__(20);
@@ -1796,7 +1796,7 @@
 	/**
 	 * @fileOverview Controller for source elements
 	 * @author <a href='mailto:tim.hollies@warwick.ac.uk'>Tim Hollies</a>
-	 * @version 0.0.1
+	 * @version 0.2.0
 	 */
 	"use strict";
 	const falcon_core_1 = __webpack_require__(20);
@@ -1871,7 +1871,7 @@
 	/**
 	 * @fileOverview Map of URIs to controllers
 	 * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
-	 * @version 0.0.1
+	 * @version 0.2.0
 	 */
 	"use strict";
 	var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
@@ -1925,7 +1925,7 @@
 	/**
 	 * @fileOverview <Description Missing>
 	 * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
-	 * @version 0.1.0
+	 * @version 0.2.0
 	 */
 	"use strict";
 	var __assign = (this && this.__assign) || Object.assign || function(t) {
@@ -2023,7 +2023,7 @@
 	/**
 	 * @fileOverview <Description Missing>
 	 * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
-	 * @version 0.1.0
+	 * @version 0.2.0
 	 */
 	"use strict";
 	const React = __webpack_require__(41);
@@ -2041,7 +2041,7 @@
 	/**
 	 * @fileOverview <Description Missing>
 	 * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
-	 * @version 0.1.0
+	 * @version 0.2.0
 	 */
 	"use strict";
 	const React = __webpack_require__(41);
@@ -2099,7 +2099,7 @@
 	/**
 	 * @fileOverview Sidebar for editor
 	 * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
-	 * @version 0.1.0
+	 * @version 0.2.0
 	 */
 	"use strict";
 	const React = __webpack_require__(41);
@@ -2135,7 +2135,7 @@
 	/**
 	 * @fileOverview <Description Missing>
 	 * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
-	 * @version 0.1.0
+	 * @version 0.2.0
 	 */
 	"use strict";
 	const React = __webpack_require__(41);
@@ -2153,7 +2153,7 @@
 	/**
 	 * @fileOverview <Description Missing>
 	 * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
-	 * @version 0.1.0
+	 * @version 0.2.0
 	 */
 	"use strict";
 	const React = __webpack_require__(41);
@@ -2169,7 +2169,7 @@
 	/**
 	 * @fileOverview <Description Missing>
 	 * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
-	 * @version 0.1.0
+	 * @version 0.2.0
 	 */
 	"use strict";
 	const React = __webpack_require__(41);
@@ -2185,7 +2185,7 @@
 	/**
 	 * @fileOverview <Description Missing>
 	 * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
-	 * @version 0.1.0
+	 * @version 0.2.0
 	 */
 	"use strict";
 	const React = __webpack_require__(41);
@@ -2215,7 +2215,7 @@
 	/**
 	 * @fileOverview <Description Missing>
 	 * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
-	 * @version 0.1.0
+	 * @version 0.2.0
 	 */
 	"use strict";
 	const React = __webpack_require__(41);
@@ -2233,7 +2233,7 @@
 	/**
 	 * @fileOverview <Description Missing>
 	 * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
-	 * @version 0.1.0
+	 * @version 0.2.0
 	 */
 	"use strict";
 	const React = __webpack_require__(41);
@@ -2338,7 +2338,7 @@
 	/**
 	 * @fileOverview Sidebar for editor
 	 * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
-	 * @version 0.1.0
+	 * @version 0.2.0
 	 */
 	"use strict";
 	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -2459,7 +2459,7 @@
 	/**
 	 * @fileOverview Searchboc for sidebar
 	 * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
-	 * @version 0.1.0
+	 * @version 0.2.0
 	 */
 	"use strict";
 	const React = __webpack_require__(41);
@@ -2492,7 +2492,7 @@
 	/**
 	 * @fileOverview Sidebar for editor
 	 * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
-	 * @version 0.1.0
+	 * @version 0.2.0
 	 */
 	"use strict";
 	const React = __webpack_require__(41);
@@ -2732,7 +2732,7 @@
 	/**
 	 * @fileOverview Sidebar for editor
 	 * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
-	 * @version 0.1.0
+	 * @version 0.2.0
 	 */
 	"use strict";
 	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -2799,7 +2799,7 @@
 	/**
 	 * @fileOverview Sidebar for editor
 	 * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
-	 * @version 0.1.0
+	 * @version 0.2.0
 	 */
 	"use strict";
 	const React = __webpack_require__(41);
@@ -2816,7 +2816,7 @@
 	/**
 	 * @fileOverview Unified export of workspaces
 	 * @author <a href="mailto:tim.hollies@warwick.ac.uk" />Tim Hollies</a>
-	 * @version 0.1.0
+	 * @version 0.2.0
 	 */
 	"use strict";
 	var EmptyWorkspace_1 = __webpack_require__(61);
@@ -2842,7 +2842,7 @@
 	/**
 	 * @fileOverview Empty workspace for when nothing is open!
 	 * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
-	 * @version 0.1.0
+	 * @version 0.2.0
 	 */
 	"use strict";
 	const React = __webpack_require__(41);
@@ -2857,7 +2857,7 @@
 	/**
 	 * @fileOverview Empty workspace for when nothing is open!
 	 * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
-	 * @version 0.1.0
+	 * @version 0.2.0
 	 */
 	"use strict";
 	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -3025,7 +3025,7 @@
 	/**
 	 * @fileOverview <Description Missing>
 	 * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
-	 * @version 0.1.0
+	 * @version 0.2.0
 	 */
 	"use strict";
 	exports.findParentTree = (uid, data, ancestors = []) => {
@@ -3058,7 +3058,7 @@
 	/**
 	 * @fileOverview Sidebar for editor
 	 * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
-	 * @version 0.1.0
+	 * @version 0.2.0
 	 */
 	"use strict";
 	const React = __webpack_require__(41);
@@ -3089,7 +3089,7 @@
 	/**
 	 * @fileOverview Sidebar for editor
 	 * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
-	 * @version 0.1.0
+	 * @version 0.2.0
 	 */
 	"use strict";
 	var __assign = (this && this.__assign) || Object.assign || function(t) {
@@ -3142,7 +3142,7 @@
 	/**
 	 * @fileOverview Empty workspace for when nothing is open!
 	 * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
-	 * @version 0.1.0
+	 * @version 0.2.0
 	 */
 	"use strict";
 	const React = __webpack_require__(41);
@@ -3234,7 +3234,7 @@
 	/**
 	 * @fileOverview <Description Missing>
 	 * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
-	 * @version 0.1.0
+	 * @version 0.2.0
 	 */
 	"use strict";
 	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -3338,7 +3338,7 @@
 	/**
 	 * @fileOverview Sidebar for editor
 	 * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
-	 * @version 0.1.0
+	 * @version 0.2.0
 	 */
 	"use strict";
 	const React = __webpack_require__(41);
@@ -3366,7 +3366,7 @@
 	/**
 	 * @fileOverview <Description Missing>
 	 * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
-	 * @version 0.1.0
+	 * @version 0.2.0
 	 */
 	"use strict";
 	const React = __webpack_require__(41);
@@ -3447,7 +3447,7 @@
 	/**
 	 * @fileOverview <Description Missing>
 	 * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
-	 * @version 0.1.0
+	 * @version 0.2.0
 	 */
 	"use strict";
 	const React = __webpack_require__(41);
@@ -3566,7 +3566,7 @@
 	/**
 	 * @fileOverview Sidebar for editor
 	 * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
-	 * @version 0.1.0
+	 * @version 0.2.0
 	 */
 	"use strict";
 	const React = __webpack_require__(41);
@@ -3594,7 +3594,7 @@
 	/**
 	 * @fileOverview <Description Missing>
 	 * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
-	 * @version 0.1.0
+	 * @version 0.2.0
 	 */
 	"use strict";
 	const React = __webpack_require__(41);
@@ -3610,7 +3610,7 @@
 	/**
 	 * @fileOverview Entity Field Editor - select box for entities
 	 * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
-	 * @version 0.1.0
+	 * @version 0.2.0
 	 */
 	"use strict";
 	const React = __webpack_require__(41);
@@ -3635,7 +3635,7 @@
 	/**
 	 * @fileOverview <Description Missing>
 	 * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
-	 * @version 0.1.0
+	 * @version 0.2.0
 	 */
 	"use strict";
 	const React = __webpack_require__(41);
@@ -3653,7 +3653,7 @@
 	/**
 	 * @fileOverview Sidebar for editor
 	 * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
-	 * @version 0.1.0
+	 * @version 0.2.0
 	 */
 	"use strict";
 	const React = __webpack_require__(41);
@@ -3825,7 +3825,7 @@
 	/**
 	 * @fileOverview <Description Missing>
 	 * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
-	 * @version 0.1.0
+	 * @version 0.2.0
 	 */
 	"use strict";
 	const moment = __webpack_require__(22);
@@ -3854,7 +3854,7 @@
 	/**
 	 * @fileOverview <Description Missing>
 	 * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
-	 * @version 0.1.0
+	 * @version 0.2.0
 	 */
 	"use strict";
 	const React = __webpack_require__(41);
@@ -3871,7 +3871,7 @@
 	/**
 	 * @fileOverview Sidebar for editor
 	 * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
-	 * @version 0.1.0
+	 * @version 0.2.0
 	 */
 	"use strict";
 	const React = __webpack_require__(41);
@@ -3895,7 +3895,7 @@
 	/**
 	 * @fileOverview <Description Missing>
 	 * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
-	 * @version 0.1.0
+	 * @version 0.2.0
 	 */
 	"use strict";
 	var __assign = (this && this.__assign) || Object.assign || function(t) {
@@ -3936,7 +3936,7 @@
 	/**
 	 * @fileOverview Empty workspace for when nothing is open!
 	 * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
-	 * @version 0.1.0
+	 * @version 0.2.0
 	 */
 	"use strict";
 	const React = __webpack_require__(41);
@@ -4004,7 +4004,7 @@
 	/**
 	 * @fileOverview Predicate editor workspace
 	 * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
-	 * @version 0.0.1
+	 * @version 0.2.0
 	 */
 	"use strict";
 	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -4168,7 +4168,7 @@
 	/**
 	 * @fileOverview Sidebar for editor
 	 * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
-	 * @version 0.1.0
+	 * @version 0.2.0
 	 */
 	"use strict";
 	const React = __webpack_require__(41);
@@ -4258,7 +4258,7 @@
 	/**
 	 * @fileOverview Sidebar for editor
 	 * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
-	 * @version 0.1.0
+	 * @version 0.2.0
 	 */
 	"use strict";
 	const React = __webpack_require__(41);
@@ -4304,7 +4304,7 @@
 	/**
 	 * @fileOverview Predicate editor workspace
 	 * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
-	 * @version 0.0.1
+	 * @version 0.2.0
 	 */
 	"use strict";
 	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -4540,7 +4540,7 @@
 	/**
 	 * @fileOverview Predicate editor workspace
 	 * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
-	 * @version 0.0.1
+	 * @version 0.2.0
 	 */
 	"use strict";
 	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -4709,7 +4709,7 @@
 	/**
 	 * @fileOverview Sidebar for editor
 	 * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
-	 * @version 0.1.0
+	 * @version 0.2.0
 	 */
 	"use strict";
 	const React = __webpack_require__(41);
@@ -4801,7 +4801,7 @@
 	/**
 	 * @fileOverview <Description Missing>
 	 * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
-	 * @version 0.1.0
+	 * @version 0.2.0
 	 */
 	"use strict";
 	exports.literalTypes = [
@@ -4821,7 +4821,7 @@
 	/**
 	 * @fileOverview Empty workspace for when nothing is open!
 	 * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
-	 * @version 0.1.0
+	 * @version 0.2.0
 	 */
 	"use strict";
 	const React = __webpack_require__(41);
@@ -4836,7 +4836,7 @@
 	/**
 	 * @fileOverview Empty workspace for when nothing is open!
 	 * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
-	 * @version 0.1.0
+	 * @version 0.2.0
 	 */
 	"use strict";
 	const React = __webpack_require__(41);
@@ -4865,7 +4865,7 @@
 	/**
 	 * @fileOverview Sidebar for editor
 	 * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
-	 * @version 0.1.0
+	 * @version 0.2.0
 	 */
 	"use strict";
 	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -5152,7 +5152,7 @@
 	/**
 	 * @fileOverview Sidebar for editor
 	 * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
-	 * @version 0.1.0
+	 * @version 0.2.0
 	 */
 	"use strict";
 	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -5240,7 +5240,7 @@
 	/**
 	 * @fileOverview Sidebar for editor
 	 * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
-	 * @version 0.1.0
+	 * @version 0.2.0
 	 */
 	"use strict";
 	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -5322,7 +5322,7 @@
 	/**
 	 * @fileOverview Sidebar for editor
 	 * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
-	 * @version 0.1.0
+	 * @version 0.2.0
 	 */
 	"use strict";
 	const React = __webpack_require__(41);
@@ -5357,7 +5357,7 @@
 	/**
 	 * @fileOverview Sidebar for editor
 	 * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
-	 * @version 0.1.0
+	 * @version 0.2.0
 	 */
 	"use strict";
 	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -5446,7 +5446,7 @@
 	/**
 	 * @fileOverview Toast controller
 	 * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
-	 * @version 0.1.0
+	 * @version 0.2.0
 	 */
 	"use strict";
 	const React = __webpack_require__(41);
@@ -5486,7 +5486,7 @@
 	/**
 	 * @fileOverview <Description Missing>
 	 * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
-	 * @version 0.1.0
+	 * @version 0.2.0
 	 */
 	"use strict";
 	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -5747,7 +5747,7 @@
 	/**
 	 * @fileOverview <Description Missing>
 	 * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
-	 * @version 0.1.0
+	 * @version 0.2.0
 	 */
 	"use strict";
 	const immutable_1 = __webpack_require__(100);
@@ -5797,7 +5797,7 @@
 	/**
 	 * @fileOverview <Description Missing>
 	 * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
-	 * @version 0.1.0
+	 * @version 0.2.0
 	 */
 	"use strict";
 	var __assign = (this && this.__assign) || Object.assign || function(t) {
@@ -5918,7 +5918,7 @@
 	/**
 	 * @fileOverview Sidebar for editor
 	 * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
-	 * @version 0.1.0
+	 * @version 0.2.0
 	 */
 	"use strict";
 	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -6028,7 +6028,7 @@
 	/**
 	 * @fileOverview Sidebar for editor
 	 * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
-	 * @version 0.1.0
+	 * @version 0.2.0
 	 */
 	"use strict";
 	const React = __webpack_require__(41);
@@ -6049,7 +6049,7 @@
 	/**
 	 * @fileOverview Sidebar for editor
 	 * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
-	 * @version 0.1.0
+	 * @version 0.2.0
 	 */
 	"use strict";
 	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -6128,7 +6128,7 @@
 	/**
 	 * @fileOverview Sidebar for editor
 	 * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
-	 * @version 0.1.0
+	 * @version 0.2.0
 	 */
 	"use strict";
 	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -6203,7 +6203,7 @@
 	/**
 	 * @fileOverview Sidebar for editor
 	 * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
-	 * @version 0.1.0
+	 * @version 0.2.0
 	 */
 	"use strict";
 	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -6276,7 +6276,7 @@
 	/**
 	 * @fileOverview Sidebar for editor
 	 * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
-	 * @version 0.1.0
+	 * @version 0.2.0
 	 */
 	"use strict";
 	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -6357,7 +6357,7 @@
 	/**
 	 * @fileOverview Sidebar for editor
 	 * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
-	 * @version 0.1.0
+	 * @version 0.2.0
 	 */
 	"use strict";
 	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -6424,7 +6424,7 @@
 	/**
 	 * @fileOverview Sidebar for editor
 	 * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
-	 * @version 0.1.0
+	 * @version 0.2.0
 	 */
 	"use strict";
 	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -6528,7 +6528,7 @@
 	/**
 	 * @fileOverview Sidebar for editor
 	 * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
-	 * @version 0.1.0
+	 * @version 0.2.0
 	 */
 	"use strict";
 	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -26780,7 +26780,7 @@
 	/**
 	 * @fileOverview Map of URIs to controllers
 	 * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
-	 * @version 0.0.1
+	 * @version 0.2.0
 	 */
 	"use strict";
 	var __assign = (this && this.__assign) || Object.assign || function(t) {
@@ -26856,7 +26856,7 @@
 	/**
 	 * @fileOverview Map of URIs to controllers
 	 * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
-	 * @version 0.0.1
+	 * @version 0.2.0
 	 */
 	"use strict";
 	// Vendor
@@ -26883,7 +26883,7 @@
 	/**
 	 * @fileOverview Map of URIs to controllers
 	 * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
-	 * @version 0.0.1
+	 * @version 0.2.0
 	 */
 	"use strict";
 	var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
@@ -26913,7 +26913,7 @@
 	/**
 	 * @fileOverview Authentication
 	 * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
-	 * @version 0.0.1
+	 * @version 0.2.0
 	 */
 	"use strict";
 	const passport = __webpack_require__(7);
@@ -26966,7 +26966,7 @@
 	/**
 	 * @fileOverview Database Snapshot
 	 * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
-	 * @version 0.0.1
+	 * @version 0.2.0
 	 */
 	"use strict";
 	const Knex = __webpack_require__(11);
