@@ -13,25 +13,25 @@ const typescriptLoaderConfig = {
 };
 
 const resolve = {
-    extensions: ['', '.webpack.js', '.web.js', '.js', '.ts', '.tsx'],
-    modulesDirectories: ["build", "node_modules", "src"],
+    extensions: ['.js', '.ts', '.tsx'],
+    modules: ["node_modules", "src"],
 };
 
 const loaderConfig = [
     { 
         test: /\.tsx?$/,
-        loader: 'ts-loader',
+        use: ['ts-loader?' + JSON.stringify(typescriptLoaderConfig)],
         include: path.join(__dirname, '..', 'src')
     },
     { 
         test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/, 
-        loader: "url-loader?limit=10000&mimetype=application/font-woff",
+        use: ["url-loader?limit=10000&mimetype=application/font-woff"],
         include: path.join(__dirname, 'src')
     },
 
     { 
         test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/, 
-        loader: "file-loader",
+        use: ["file-loader"],
         include: path.join(__dirname, 'src')
     },
 ];
@@ -55,15 +55,14 @@ var frontendConfig = {
     },
     resolve: resolve,
     module: {
-       loaders: loaderConfig
+       rules: loaderConfig
     },
     target: 'web',
     externals: {
         "react": "React",
         "react-dom": "ReactDOM",
         "lodash": "_"
-    },
-    ts: typescriptLoaderConfig
+    }
 }
 
 var backendConfig = {
@@ -77,11 +76,10 @@ var backendConfig = {
     },
     resolve: resolve,
     module: {
-        loaders: loaderConfig
+        rules: loaderConfig
     },
     target: 'node',
-    externals: nodeModules,
-    ts: typescriptLoaderConfig
+    externals: nodeModules
 }
 
 var electronConfig = {
@@ -93,11 +91,10 @@ var electronConfig = {
     },
     resolve: resolve,
     module:  {
-        loaders: loaderConfig
+        rules: loaderConfig
     },
     target: 'electron-renderer',    
-    externals: nodeModules,
-    ts: typescriptLoaderConfig
+    externals: nodeModules
 }
 
 var electronAppConfig = {
@@ -113,11 +110,10 @@ var electronAppConfig = {
         __filename: false
     },
     module:  {
-        loaders: loaderConfig
+        rules: loaderConfig
     },
     target: 'electron',    
-    externals: nodeModules,
-    ts: typescriptLoaderConfig
+    externals: nodeModules
 }
 
 module.exports = [frontendConfig, backendConfig];//, electronConfig, electronAppConfig];
