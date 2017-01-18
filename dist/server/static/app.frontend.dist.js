@@ -41775,30 +41775,30 @@ class DataController {
     *
     */
     getItem(obj, baseUrl, uid) {
-        return this.api.getItem.apply(this, arguments);
+        return this.api.getItem.apply(this.api, arguments);
     }
     getCollection(obj, baseUrl, params) {
-        return this.api.getCollection.apply(this, arguments);
+        return this.api.getCollection.apply(this.api, arguments);
     }
     postItem(obj, baseUrl, data, params) {
-        return this.api.postItem.apply(this, arguments).then((result) => this.update().then(() => result));
+        return this.api.postItem.apply(this.api, arguments).then((result) => this.update().then(() => result));
     }
     putItem(obj, baseUrl, uid, data) {
-        return this.api.putItem.apply(this, arguments).then((result) => this.update().then(() => result));
+        return this.api.putItem.apply(this.api, arguments).then((result) => this.update().then(() => result));
     }
     //TODO: patch item takes a subset of an objects properties. This is currently being looked at in TS in the
     //context of the 'setState' function in react
     patchItem(obj, baseUrl, uid, data) {
-        return this.api.patchItem.apply(this, arguments).then((result) => this.update().then(() => result));
+        return this.api.patchItem.apply(this.api, arguments).then((result) => this.update().then(() => result));
     }
     delItem(obj, baseUrl, uid) {
-        return this.api.delItem.apply(this, arguments).then((result) => this.update().then(() => result));
+        return this.api.delItem.apply(this.api, arguments).then((result) => this.update().then(() => result));
     }
     query(graphQLQuery) {
-        return this.api.query.apply(this, arguments);
+        return this.api.query.apply(this.api, arguments);
     }
     getStats() {
-        return this.api.getStats.apply(this, arguments);
+        return this.api.getStats.apply(this.api, arguments);
     }
     /*
     *

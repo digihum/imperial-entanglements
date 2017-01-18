@@ -145,37 +145,37 @@ export class DataController implements ApiService {
   */
 
   public getItem<T extends TrackedFalconItem>(obj: { new(): T; }, baseUrl : string, uid: number | CompositeKey) : Promise<T> {
-    return this.api.getItem.apply(this, arguments);
+    return this.api.getItem.apply(this.api, arguments);
   }
 
   public getCollection<T extends TrackedFalconItem>(obj: { new(): T; }, baseUrl : string, params: any) : Promise<T[]> {
-    return this.api.getCollection.apply(this, arguments);
+    return this.api.getCollection.apply(this.api, arguments);
   }
 
   public postItem<T extends TrackedFalconItem>(obj: { new(): T; }, baseUrl : string, data: T, params: any) : Promise<number[]> {
-    return this.api.postItem.apply(this, arguments).then((result) => this.update().then(() => result));
+    return this.api.postItem.apply(this.api, arguments).then((result) => this.update().then(() => result));
   }
 
   public putItem<T extends TrackedFalconItem>(obj: { new(): T; }, baseUrl : string, uid: number | CompositeKey, data: T) : Promise<void> {
-    return this.api.putItem.apply(this, arguments).then((result) => this.update().then(() => result));
+    return this.api.putItem.apply(this.api, arguments).then((result) => this.update().then(() => result));
   }
 
   //TODO: patch item takes a subset of an objects properties. This is currently being looked at in TS in the
   //context of the 'setState' function in react
   public patchItem<T extends TrackedFalconItem>(obj: { new(): T; }, baseUrl : string, uid: number | CompositeKey, data : any) : Promise<void> {
-    return this.api.patchItem.apply(this, arguments).then((result) => this.update().then(() => result));
+    return this.api.patchItem.apply(this.api, arguments).then((result) => this.update().then(() => result));
   }
 
   public delItem<T extends TrackedFalconItem>(obj: { new(): T; }, baseUrl : string, uid: number | CompositeKey) : Promise<void> {
-    return this.api.delItem.apply(this, arguments).then((result) => this.update().then(() => result));
+    return this.api.delItem.apply(this.api, arguments).then((result) => this.update().then(() => result));
   }
 
   public query(graphQLQuery: string) : Promise<any> {
-    return this.api.query.apply(this, arguments);
+    return this.api.query.apply(this.api, arguments);
   }
 
   public getStats() : Promise<any> {
-    return this.api.getStats.apply(this, arguments);
+    return this.api.getStats.apply(this.api, arguments);
   }
 
   /*
