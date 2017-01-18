@@ -21,6 +21,8 @@ import { inject, observer } from 'mobx-react';
 import { DataController } from '../../stores/DataController';
 import { ModalStore } from '../../stores/ModalStore';
 
+class EntityRecursiveTree extends RecursiveTree<EntityType> {}
+
 interface EntityTypeListProps {
     dataStore?: DataController;
     modalStore?: ModalStore;
@@ -101,6 +103,11 @@ export class EntityTypeList extends React.Component<EntityTypeListProps, EntityT
                       </thead>
                       <tbody>
                       {this.props.dataStore!.dataStore.all.entity_type.value.filter(this.state.filterFunc).map((entityType) => {
+
+                        if (entityType.uid === null) {
+                          throw new Error('Found entity with no id');
+                        }
+
                           return (
                               <tr key={`entityType-${entityType.uid}`}>
                                   <td>{entityType.uid} <AddTabButton
@@ -116,7 +123,7 @@ export class EntityTypeList extends React.Component<EntityTypeListProps, EntityT
                   </table>
 
                 ) : (<div className='tree-root'>
-                   <RecursiveTree
+                   <EntityRecursiveTree
                     data={this.props.dataStore!.dataStore.all.entity_type.value}
                     tabType={'entity_type'}
                     parentId={null}

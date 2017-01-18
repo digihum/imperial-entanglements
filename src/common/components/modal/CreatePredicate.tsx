@@ -100,7 +100,7 @@ export class CreatePredicate extends React.Component<CreatePredicateProps, Creat
             rangeIsReference: this.state.range.meta !== 'literal'
         });
 
-        this.props.dataStore!.postItem(Predicate, AppUrls.predicate, newPredicate)
+        this.props.dataStore!.postItem(Predicate, AppUrls.predicate, newPredicate, {})
             .then((result) => {
                 newPredicate.uid = result[0];
                 this.props.complete(newPredicate);

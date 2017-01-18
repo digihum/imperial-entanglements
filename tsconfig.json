@@ -11,10 +11,13 @@
   "jsx": "react",
   "sourceMap": true,
   "strictNullChecks": true,
-  "typeRoots" : ["./types", "./node_modules/@types/"]
+  "typeRoots" : ["types", "node_modules/@types/"]
   },
   "include": [
     "types",
     "src/**/*"
+  ],
+  "exclude": [
+    "!/node_modules/@types"
   ]
 }

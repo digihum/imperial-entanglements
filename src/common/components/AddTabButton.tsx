@@ -16,6 +16,10 @@ interface AddTabButtonProps {
     data?: any;
 }
 
+interface WrappedReactComponent<T> extends React.ClassicComponentClass<T> {
+  wrappedComponent: React.StatelessComponent<T>;
+}
+
 export const AddTabButton : React.ClassicComponentClass<AddTabButtonProps> = inject('dataStore')(observer(
     (props: AddTabButtonProps, context: any) => {
 
@@ -32,6 +36,6 @@ export const AddTabButton : React.ClassicComponentClass<AddTabButtonProps> = inj
             onClick={() => props.dataStore!.createTab(props.tabType, props.uid, 'item', props.data)}></i>
 )}));
 
-AddTabButton.wrappedComponent.contextTypes = {
+(AddTabButton as WrappedReactComponent<AddTabButtonProps>).wrappedComponent.contextTypes = {
     router: React.PropTypes.object.isRequired
 };

@@ -32,9 +32,9 @@ export class CreateSource extends React.Component<CreateSourceProps, CreateSourc
 
     private keyboardShortcuts;
 
-    public static defaultProps : CreateSourceProps = {
+    public static defaultProps : Partial<CreateSourceProps> = {
        initialValue: ''
-    }
+    };
 
     constructor() {
         super();
@@ -51,7 +51,7 @@ export class CreateSource extends React.Component<CreateSourceProps, CreateSourc
         this.props.dataStore!.postItem(Source, AppUrls.source,
             Serializer.fromJson(Source, {
                 label: this.state.internalValue
-            }))
+            }), {})
         .then(this.props.complete);
     }
 
@@ -75,7 +75,7 @@ export class CreateSource extends React.Component<CreateSourceProps, CreateSourc
             <input type='text'
                 value={this.state.internalValue}
                 ref={this.inputRef.bind(this)}
-                onChange={(e) => this.setState({ internalValue: e.target.value })} />
+                onChange={(e) => this.setState({ internalValue: (e.target as HTMLInputElement).value })} />
             <button onClick={() => this.props.cancel()} className='pull-left'>Cancel</button>
             <button onClick={this.createSource.bind(this)} className='pull-right'>Create Source</button>
         </Overlay>

@@ -48,6 +48,15 @@ export class CreateEntity extends React.Component<CreateEntityProps, CreateEntit
         .then((allEntityTypes) => {
             if (this.props.initialType !== undefined) {
                 const initialType = allEntityTypes.find((et) => et.uid === this.props.initialType);
+
+                if (initialType === undefined) {
+                  throw new Error('Invalid initial type');
+                }
+
+                if (initialType.uid === null) {
+                  throw new Error('found entity type with null uid');
+                }
+
                 this.setState({
                     entityType:  { key: initialType.label, value: initialType.uid.toString() }
                 })
@@ -56,12 +65,12 @@ export class CreateEntity extends React.Component<CreateEntityProps, CreateEntit
         });
     }
 
-    public CreateEntity() {
+    public createEntity() {
         this.props.dataStore!.postItem(Entity, AppUrls.entity,
             Serializer.fromJson(Entity, {
                 label: this.state.label,
                 entityType: this.state.entityType.value
-            }))
+            }), {})
         .then(this.props.complete);
     }
 
@@ -76,7 +85,7 @@ export class CreateEntity extends React.Component<CreateEntityProps, CreateEntit
                 ref={(a) => { if(a !== null) a.focus(); }}
                 name='new-entity-name'
                 className='gap'
-                onChange={(e) => this.setState({ label: e.target.value })} />
+                onChange={(e) => this.setState({ label: (e.target as HTMLInputElement).value })} />
 
             <label className='small'>Type</label>
             <ComboDropdown
@@ -88,7 +97,7 @@ export class CreateEntity extends React.Component<CreateEntityProps, CreateEntit
                 allowNew={false}
             />
             <button name='cancel-modal' onClick={() => this.props.cancel()} className='pull-left'>Cancel</button>
-            <button name='create-entity' onClick={this.CreateEntity.bind(this)} className='pull-right'>Create Entity</button>
+            <button name='create-entity' onClick={this.createEntity.bind(this)} className='pull-right'>Create Entity</button>
         </Overlay>
         );
     }

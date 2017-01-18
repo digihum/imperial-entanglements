@@ -66,7 +66,7 @@ export class EntityTypeWorkspace extends React.Component<EntityTypeWorkspaceProp
         const newEntityType = Serializer.fromJson(EntityType,
             Object.assign({}, Serializer.toJson(entityType), { name: 'Copy of ' + entityType.label}));
 
-        this.props.dataStore!.postItem(EntityType, AppUrls.entity_type, newEntityType)
+        this.props.dataStore!.postItem(EntityType, AppUrls.entity_type, newEntityType, {})
             .then(([id]) => {
                 this.props.dataStore!.createTab('entity_type', id, 'item');
         });

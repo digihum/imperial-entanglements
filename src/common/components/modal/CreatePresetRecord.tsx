@@ -67,7 +67,7 @@ export class CreatePresetRecord extends React.Component<CreatePresetRecordProps,
                         valueType: 'source',
                         source: this.props.source.uid,
                         score: 3
-                    }))
+                    }), {})
                 .then((result) => {
                     this.props.complete(result);
                 })

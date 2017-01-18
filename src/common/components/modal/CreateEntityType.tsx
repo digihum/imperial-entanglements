@@ -42,7 +42,7 @@ export class CreateEntityType extends React.Component<CreateEntityTypeProps, Cre
         this.props.dataStore!.postItem(EntityType, AppUrls.entity_type,
             Serializer.fromJson(EntityType, {
                 label: this.state.internalValue
-            }))
+            }), {})
         .then(this.props.complete);
     }
 

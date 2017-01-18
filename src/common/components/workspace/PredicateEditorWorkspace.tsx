@@ -86,7 +86,7 @@ export class PredicateEditorWorkspace extends React.Component<PredicateEditorPro
         const newPredicate = Serializer.fromJson(Predicate,
             Object.assign({}, Serializer.toJson(predicate), { name: 'Copy of ' + predicate.label}));
 
-        this.props.dataStore!.postItem(Predicate, AppUrls.predicate, newPredicate)
+        this.props.dataStore!.postItem(Predicate, AppUrls.predicate, newPredicate, {})
             .then(([id]) => {
                 this.props.dataStore!.createTab('predicate', id, 'item');
         });

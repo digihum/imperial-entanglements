@@ -83,15 +83,23 @@ export class SourceEditorWorkspace extends React.Component<SourceEditorProps, So
 
     public updateSource(field: string, value: string) {
 
-        const source = this.props.dataStore!.dataStore.tabs.source.get('source-' + this.props.id).value.source;
+      const source = this.props.dataStore!.dataStore.tabs.source.get('source-' + this.props.id).value.source;
 
-        this.props.dataStore!.patchItem(Source, AppUrls.source, source.uid, { [field]: value })
+      if (source.uid === null) {
+        throw new Error('source uid should not be null');
+      }
 
+      this.props.dataStore!.patchItem(Source, AppUrls.source, source.uid, { [field]: value });
     }
 
     public updateSourceElement(element: Element, value: string) {
 
         const source = this.props.dataStore!.dataStore.tabs.source.get('source-' + this.props.id).value.source;
+
+
+        if (element.uid === null) {
+          throw new Error('source element uid should not be null');
+        }
 
         const compositeKey = {
             order: ['source', 'element'],
@@ -117,7 +125,7 @@ export class SourceEditorWorkspace extends React.Component<SourceEditorProps, So
                 Serializer.fromJson(SourceElement, {
                     uid: compositeKey,
                     value: value
-                }));
+                }), {});
         }
     }
 
@@ -169,7 +177,7 @@ export class SourceEditorWorkspace extends React.Component<SourceEditorProps, So
         const newSource = Serializer.fromJson(Source,
             Object.assign({}, Serializer.toJson(source), { label: 'Child of ' + source.label, parent: this.props.id }));
 
-        this.props.dataStore!.postItem(Source, AppUrls.source, newSource)
+        this.props.dataStore!.postItem(Source, AppUrls.source, newSource, {})
             .then(([id]) => {
                 this.props.dataStore!.createTab('source', id, 'item');
         });

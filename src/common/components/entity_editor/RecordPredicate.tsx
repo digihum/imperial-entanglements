@@ -55,7 +55,7 @@ export class RecordPredicate extends React.Component<RecordPredicateProps, Recor
             valueType: this.props.predicate.rangeIsReference ? 'entity' : this.props.predicate.range,
             score: 3,
             source: this.props.dataStore!.defaultSource
-        }));
+        }), {});
     }
 
 	public deleteRecord(record: Record) {

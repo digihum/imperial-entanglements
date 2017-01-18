@@ -26,7 +26,7 @@ const deleteTabSet = (id: number) => {
   });
 };
 
-export const Admin = (props : AdminProps, context: any) => (
+export const Admin : React.StatelessComponent<AdminProps> = (props : AdminProps, context: any) => (
     <div className='page'>
         <section>
             <h1>Welcome to the admin pages</h1>

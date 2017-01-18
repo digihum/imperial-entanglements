@@ -156,7 +156,7 @@ export class ObjectEditor extends React.Component<EntityEditorProps, EntityEdito
       } else {
         this.setState({
           id: newId,
-          list: props.location.pathname.substr(props.pathname.length + 1).length === 0
+          list: props.location.pathname.substr(props.pathname.length + 1).length === 0,
           loading: true,
           loadingWheel: initialLoad || !alreadyLoaded
         }, () => {

@@ -76,7 +76,7 @@ export class CreateRecord extends React.Component<CreateRecordProps, CreateRecor
                 valueType: opt.meta.rangeIsReference ? 'entity' : opt.meta.range,
                 score: 3,
                 source: this.props.dataStore!.defaultSource
-            }))
+            }), {})
         .then((result) => this.props.complete(result))
         .catch(this.props.cancel);
     }

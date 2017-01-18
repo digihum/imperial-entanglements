@@ -21,7 +21,7 @@ CREATE TABLE element_sets (
     uid <%= auto_increment %> NOT NULL,
     uri varchar(255),
     label varchar(255),
-    description varchar(255)
+    description text
 );
 
 DROP TABLE IF EXISTS elements;
