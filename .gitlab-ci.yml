@@ -13,9 +13,6 @@ run_tests:
 
   - npm run gulp
   
-  # copy test db
-  - cp /data/blank.sqlite /data/mydb.sqlite
-
   # copy .env file
   - cp .env.example .env
 
