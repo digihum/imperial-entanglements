@@ -11,7 +11,7 @@ run_tests:
   # build typescript
   - npm run webpack || true
 
-  - gulp
+  - npm run gulp
   
   # copy test db
   - cp /data/blank.sqlite /data/mydb.sqlite
