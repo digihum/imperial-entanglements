@@ -9,7 +9,9 @@ run_tests:
   - npm install
 
   # build typescript
-  - npm run compile
+  - npm run webpack
+
+  - gulp
   
   # copy test db
   - cp /data/blank.sqlite /data/mydb.sqlite
