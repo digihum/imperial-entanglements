@@ -9,7 +9,7 @@ import { Database } from '../data/Database';
 import { Entity, Serializer } from 'falcon-core';
 import { GenericController } from './GenericController';
 
-import { OperationNotPermittedException } from '../../common/Exceptions';
+import { OperationNotPermittedException, InvalidUpdateException } from '../../common/Exceptions';
 
 import { omit, isArray } from 'lodash';
 
@@ -29,14 +29,22 @@ export class EntityController extends GenericController<Entity> {
     }
 
     public static toSchema(data: Entity) : any {
-       return Object.assign(omit(Serializer.toJson(data),
-            'entityType',
-            'creationTimestamp',
-            'lastmodifiedTimestamp'), {
-            type: data.entityType,
-            creation_timestamp: data.creationTimestamp,
-            lastmodified_timeStamp: data.lastmodifiedTimestamp
-        });
+
+      const allowedKeys = new Set(['uid', 'label', 'entityType', 'parent', 'creator', 'creationTimestamp', 'lastmodifiedTimestamp']);
+      const extraKeys = Object.keys(data).filter((a) => !allowedKeys.has(a));
+
+      if (extraKeys.length > 0) {
+        throw new InvalidUpdateException('Unknown keys: ' + extraKeys.join(', '));
+      }
+
+      return Object.assign(omit(Serializer.toJson(data),
+          'entityType',
+          'creationTimestamp',
+          'lastmodifiedTimestamp'), {
+          type: data.entityType,
+          creation_timestamp: data.creationTimestamp,
+          lastmodified_timeStamp: data.lastmodifiedTimestamp
+      });
     }
 
     protected fromSchema(data: any) : Entity {

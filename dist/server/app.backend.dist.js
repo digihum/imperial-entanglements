@@ -94,7 +94,7 @@
 	        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
 	        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
 	        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
-	        step((generator = generator.apply(thisArg, _arguments)).next());
+	        step((generator = generator.apply(thisArg, _arguments || [])).next());
 	    });
 	};
 	const Koa = __webpack_require__(2);
@@ -395,6 +395,13 @@
 	    }
 	}
 	exports.KeyNotFoundException = KeyNotFoundException;
+	class ReadOnlyResourceException extends Error {
+	    constructor(message = 'Attempt to update a readonly resource') {
+	        super(message);
+	        this.code = 400;
+	    }
+	}
+	exports.ReadOnlyResourceException = ReadOnlyResourceException;
 	class CollectionNotFoundException extends Error {
 	    constructor(message = 'Could not find the given collection') {
 	        super(message);
@@ -405,10 +412,18 @@
 	class OperationNotPermittedException extends Error {
 	    constructor(data) {
 	        super(data.message);
+	        this.code = 422;
 	        this.data = data;
 	    }
 	}
 	exports.OperationNotPermittedException = OperationNotPermittedException;
+	class InvalidUpdateException extends Error {
+	    constructor(message) {
+	        super(message);
+	        this.code = 400;
+	    }
+	}
+	exports.InvalidUpdateException = InvalidUpdateException;
 	class DatabaseIntegrityError extends Error {
 	    constructor(message = `A database integrity constraint has been broken - your change has not been
 	 submitted. This is likely due to a change which violates the property types model; please check the types of
@@ -423,7 +438,9 @@
 	    KeyNotFoundException,
 	    CollectionNotFoundException,
 	    OperationNotPermittedException,
-	    DatabaseIntegrityError
+	    DatabaseIntegrityError,
+	    InvalidUpdateException,
+	    ReadOnlyResourceException
 	};
 
 
@@ -448,7 +465,7 @@
 	        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
 	        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
 	        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
-	        step((generator = generator.apply(thisArg, _arguments)).next());
+	        step((generator = generator.apply(thisArg, _arguments || [])).next());
 	    });
 	};
 	// Vendor
@@ -1070,7 +1087,7 @@
 
 /***/ },
 /* 31 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
 	/**
 	 * @fileOverview Generic controller containing logic common to most controller classes
@@ -1078,6 +1095,7 @@
 	 * @version 0.0.1
 	 */
 	"use strict";
+	const Exceptions_1 = __webpack_require__(13);
 	class GenericController {
 	    constructor(db, table, readTable) {
 	        this.db = db;
@@ -1107,6 +1125,9 @@
 	    patchItem(obj, uid, data) {
 	        if (typeof (uid) !== 'number') {
 	            throw new Error('Expected single column identifier');
+	        }
+	        if (data.uid !== undefined) {
+	            throw new Exceptions_1.InvalidUpdateException('Cannot patch uid');
 	        }
 	        return this.db.loadItem(this.tableName, uid)
 	            .then((originalData) => {
@@ -1146,7 +1167,7 @@
 	        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
 	        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
 	        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
-	        step((generator = generator.apply(thisArg, _arguments)).next());
+	        step((generator = generator.apply(thisArg, _arguments || [])).next());
 	    });
 	};
 	const falcon_core_1 = __webpack_require__(20);
@@ -1166,6 +1187,11 @@
 	        });
 	    }
 	    static toSchema(data) {
+	        const allowedKeys = new Set(['uid', 'label', 'entityType', 'parent', 'creator', 'creationTimestamp', 'lastmodifiedTimestamp']);
+	        const extraKeys = Object.keys(data).filter((a) => !allowedKeys.has(a));
+	        if (extraKeys.length > 0) {
+	            throw new Exceptions_1.InvalidUpdateException('Unknown keys: ' + extraKeys.join(', '));
+	        }
 	        return Object.assign(lodash_1.omit(falcon_core_1.Serializer.toJson(data), 'entityType', 'creationTimestamp', 'lastmodifiedTimestamp'), {
 	            type: data.entityType,
 	            creation_timestamp: data.creationTimestamp,
@@ -1244,7 +1270,7 @@
 	        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
 	        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
 	        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
-	        step((generator = generator.apply(thisArg, _arguments)).next());
+	        step((generator = generator.apply(thisArg, _arguments || [])).next());
 	    });
 	};
 	const falcon_core_1 = __webpack_require__(20);
@@ -1330,7 +1356,7 @@
 	        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
 	        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
 	        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
-	        step((generator = generator.apply(thisArg, _arguments)).next());
+	        step((generator = generator.apply(thisArg, _arguments || [])).next());
 	    });
 	};
 	const falcon_core_1 = __webpack_require__(20);
@@ -1599,7 +1625,7 @@
 	        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
 	        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
 	        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
-	        step((generator = generator.apply(thisArg, _arguments)).next());
+	        step((generator = generator.apply(thisArg, _arguments || [])).next());
 	    });
 	};
 	const falcon_core_1 = __webpack_require__(20);
@@ -1853,7 +1879,7 @@
 	        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
 	        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
 	        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
-	        step((generator = generator.apply(thisArg, _arguments)).next());
+	        step((generator = generator.apply(thisArg, _arguments || [])).next());
 	    });
 	};
 	const Koa = __webpack_require__(2);
@@ -3371,7 +3397,7 @@
 	            valueType: this.props.predicate.rangeIsReference ? 'entity' : this.props.predicate.range,
 	            score: 3,
 	            source: this.props.dataStore.defaultSource
-	        }));
+	        }), {});
 	    }
 	    deleteRecord(record) {
 	        if (record.uid === null) {
@@ -4016,7 +4042,7 @@
 	    copy() {
 	        const entityType = this.props.dataStore.dataStore.tabs.entity_type.get('entity_type-' + this.props.id).value;
 	        const newEntityType = falcon_core_1.Serializer.fromJson(falcon_core_1.EntityType, Object.assign({}, falcon_core_1.Serializer.toJson(entityType), { name: 'Copy of ' + entityType.label }));
-	        this.props.dataStore.postItem(falcon_core_1.EntityType, ApiService_1.AppUrls.entity_type, newEntityType)
+	        this.props.dataStore.postItem(falcon_core_1.EntityType, ApiService_1.AppUrls.entity_type, newEntityType, {})
 	            .then(([id]) => {
 	            this.props.dataStore.createTab('entity_type', id, 'item');
 	        });
@@ -4332,10 +4358,16 @@
 	    }
 	    updateSource(field, value) {
 	        const source = this.props.dataStore.dataStore.tabs.source.get('source-' + this.props.id).value.source;
+	        if (source.uid === null) {
+	            throw new Error('source uid should not be null');
+	        }
 	        this.props.dataStore.patchItem(falcon_core_1.Source, ApiService_1.AppUrls.source, source.uid, { [field]: value });
 	    }
 	    updateSourceElement(element, value) {
 	        const source = this.props.dataStore.dataStore.tabs.source.get('source-' + this.props.id).value.source;
+	        if (element.uid === null) {
+	            throw new Error('source element uid should not be null');
+	        }
 	        const compositeKey = {
 	            order: ['source', 'element'],
 	            values: {
@@ -4356,7 +4388,7 @@
 	            this.props.dataStore.postItem(falcon_core_1.SourceElement, ApiService_1.AppUrls.source_element, falcon_core_1.Serializer.fromJson(falcon_core_1.SourceElement, {
 	                uid: compositeKey,
 	                value: value
-	            }));
+	            }), {});
 	        }
 	    }
 	    del() {
@@ -4397,7 +4429,7 @@
 	    createChild() {
 	        const source = this.props.dataStore.dataStore.tabs.source.get('source-' + this.props.id).value.source;
 	        const newSource = falcon_core_1.Serializer.fromJson(falcon_core_1.Source, Object.assign({}, falcon_core_1.Serializer.toJson(source), { label: 'Child of ' + source.label, parent: this.props.id }));
-	        this.props.dataStore.postItem(falcon_core_1.Source, ApiService_1.AppUrls.source, newSource)
+	        this.props.dataStore.postItem(falcon_core_1.Source, ApiService_1.AppUrls.source, newSource, {})
 	            .then(([id]) => {
 	            this.props.dataStore.createTab('source', id, 'item');
 	        });
@@ -4562,7 +4594,7 @@
 	    copy() {
 	        const predicate = this.props.dataStore.dataStore.tabs.predicate.get('predicate-' + this.props.id).value;
 	        const newPredicate = falcon_core_1.Serializer.fromJson(falcon_core_1.Predicate, Object.assign({}, falcon_core_1.Serializer.toJson(predicate), { name: 'Copy of ' + predicate.label }));
-	        this.props.dataStore.postItem(falcon_core_1.Predicate, ApiService_1.AppUrls.predicate, newPredicate)
+	        this.props.dataStore.postItem(falcon_core_1.Predicate, ApiService_1.AppUrls.predicate, newPredicate, {})
 	            .then(([id]) => {
 	            this.props.dataStore.createTab('predicate', id, 'item');
 	        });
@@ -5342,6 +5374,8 @@
 	const SearchBar_1 = __webpack_require__(68);
 	const RecursiveTree_1 = __webpack_require__(95);
 	const mobx_react_1 = __webpack_require__(57);
+	class EntityRecursiveTree extends RecursiveTree_1.RecursiveTree {
+	}
 	let EntityTypeList = class EntityTypeList extends React.Component {
 	    constructor() {
 	        super();
@@ -5382,6 +5416,9 @@
 	                            React.createElement("td", null, "Parent"),
 	                            React.createElement("td", null, "Description"))),
 	                    React.createElement("tbody", null, this.props.dataStore.dataStore.all.entity_type.value.filter(this.state.filterFunc).map((entityType) => {
+	                        if (entityType.uid === null) {
+	                            throw new Error('Found entity with no id');
+	                        }
 	                        return (React.createElement("tr", { key: `entityType-${entityType.uid}` },
 	                            React.createElement("td", null,
 	                                entityType.uid,
@@ -5391,7 +5428,7 @@
 	                            React.createElement("td", null, entityType.parent),
 	                            React.createElement("td", null, entityType.description)));
 	                    })))) : (React.createElement("div", { className: 'tree-root' },
-	                    React.createElement(RecursiveTree_1.RecursiveTree, { data: this.props.dataStore.dataStore.all.entity_type.value, tabType: 'entity_type', parentId: null, dataStore: this.props.dataStore }))))));
+	                    React.createElement(EntityRecursiveTree, { data: this.props.dataStore.dataStore.all.entity_type.value, tabType: 'entity_type', parentId: null, dataStore: this.props.dataStore }))))));
 	    }
 	};
 	EntityTypeList = __decorate([
@@ -5466,7 +5503,7 @@
 	        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
 	        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
 	        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
-	        step((generator = generator.apply(thisArg, _arguments)).next());
+	        step((generator = generator.apply(thisArg, _arguments || [])).next());
 	    });
 	};
 	const falcon_core_1 = __webpack_require__(20);
@@ -5650,7 +5687,7 @@
 	], DataController.prototype, "tabs", void 0);
 	__decorate([
 	    mobx_1.observable,
-	    __metadata("design:type", Object)
+	    __metadata("design:type", Number)
 	], DataController.prototype, "defaultSource", void 0);
 	__decorate([
 	    mobx_1.action,
@@ -5955,7 +5992,7 @@
 	            range: this.state.range.value,
 	            rangeIsReference: this.state.range.meta !== 'literal'
 	        });
-	        this.props.dataStore.postItem(falcon_core_1.Predicate, ApiService_1.AppUrls.predicate, newPredicate)
+	        this.props.dataStore.postItem(falcon_core_1.Predicate, ApiService_1.AppUrls.predicate, newPredicate, {})
 	            .then((result) => {
 	            newPredicate.uid = result[0];
 	            this.props.complete(newPredicate);
@@ -6065,7 +6102,7 @@
 	            valueType: opt.meta.rangeIsReference ? 'entity' : opt.meta.range,
 	            score: 3,
 	            source: this.props.dataStore.defaultSource
-	        }))
+	        }), {})
 	            .then((result) => this.props.complete(result))
 	            .catch(this.props.cancel);
 	    }
@@ -6132,7 +6169,7 @@
 	                    valueType: 'source',
 	                    source: this.props.source.uid,
 	                    score: 3
-	                }))
+	                }), {})
 	                    .then((result) => {
 	                    this.props.complete(result);
 	                })
@@ -6197,7 +6234,7 @@
 	    createSource() {
 	        this.props.dataStore.postItem(falcon_core_1.Source, ApiService_1.AppUrls.source, falcon_core_1.Serializer.fromJson(falcon_core_1.Source, {
 	            label: this.state.internalValue
-	        }))
+	        }), {})
 	            .then(this.props.complete);
 	    }
 	    inputRef(val) {
@@ -6272,6 +6309,12 @@
 	            .then((allEntityTypes) => {
 	            if (this.props.initialType !== undefined) {
 	                const initialType = allEntityTypes.find((et) => et.uid === this.props.initialType);
+	                if (initialType === undefined) {
+	                    throw new Error('Invalid initial type');
+	                }
+	                if (initialType.uid === null) {
+	                    throw new Error('found entity type with null uid');
+	                }
 	                this.setState({
 	                    entityType: { key: initialType.label, value: initialType.uid.toString() }
 	                });
@@ -6279,11 +6322,11 @@
 	            this.setState({ allEntityTypes });
 	        });
 	    }
-	    CreateEntity() {
+	    createEntity() {
 	        this.props.dataStore.postItem(falcon_core_1.Entity, ApiService_1.AppUrls.entity, falcon_core_1.Serializer.fromJson(falcon_core_1.Entity, {
 	            label: this.state.label,
 	            entityType: this.state.entityType.value
-	        }))
+	        }), {})
 	            .then(this.props.complete);
 	    }
 	    render() {
@@ -6295,7 +6338,7 @@
 	            React.createElement("label", { className: 'small' }, "Type"),
 	            React.createElement(ComboDropdown_1.ComboDropdown, { options: this.state.allEntityTypes.map((t) => ({ key: t.label, value: t.uid.toString() })), typeName: 'entity type', value: this.state.entityType, setValue: (entityType) => this.setState({ entityType }), createNewValue: lodash_1.noop, allowNew: false }),
 	            React.createElement("button", { name: 'cancel-modal', onClick: () => this.props.cancel(), className: 'pull-left' }, "Cancel"),
-	            React.createElement("button", { name: 'create-entity', onClick: this.CreateEntity.bind(this), className: 'pull-right' }, "Create Entity")));
+	            React.createElement("button", { name: 'create-entity', onClick: this.createEntity.bind(this), className: 'pull-right' }, "Create Entity")));
 	    }
 	};
 	CreateEntity = __decorate([
@@ -6342,7 +6385,7 @@
 	    createEntityType() {
 	        this.props.dataStore.postItem(falcon_core_1.EntityType, ApiService_1.AppUrls.entity_type, falcon_core_1.Serializer.fromJson(falcon_core_1.EntityType, {
 	            label: this.state.internalValue
-	        }))
+	        }), {})
 	            .then(this.props.complete);
 	    }
 	    inputRef(val) {
@@ -26753,7 +26796,7 @@
 	        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
 	        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
 	        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
-	        step((generator = generator.apply(thisArg, _arguments)).next());
+	        step((generator = generator.apply(thisArg, _arguments || [])).next());
 	    });
 	};
 	// Vendor
@@ -26848,7 +26891,7 @@
 	        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
 	        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
 	        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
-	        step((generator = generator.apply(thisArg, _arguments)).next());
+	        step((generator = generator.apply(thisArg, _arguments || [])).next());
 	    });
 	};
 	const Koa = __webpack_require__(2);

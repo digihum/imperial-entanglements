@@ -61,7 +61,7 @@ export class Database {
                     }
                     return results;
                 });
-            })
+            });
         });
     }
 
@@ -80,7 +80,7 @@ export class Database {
                     }
                     return results;
                 });
-            })
+            });
         });
     }
 
@@ -98,7 +98,7 @@ export class Database {
                     }
                     return results;
                 });
-            })
+            });
         });
     }
 

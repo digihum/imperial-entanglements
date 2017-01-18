@@ -7,6 +7,8 @@
 import { IController } from './IController';
 import { Database } from '../data/Database';
 
+import { InvalidUpdateException } from '../../common/Exceptions';
+
 import { CompositeKey, FalconItem } from 'falcon-core';
 
 export abstract class GenericController<T extends FalconItem> implements IController {
@@ -61,6 +63,10 @@ export abstract class GenericController<T extends FalconItem> implements IContro
 
         if (typeof(uid) !== 'number') {
             throw new Error('Expected single column identifier');
+        }
+
+        if (data.uid !== undefined) {
+          throw new InvalidUpdateException('Cannot patch uid');
         }
 
         return this.db.loadItem(this.tableName, uid)

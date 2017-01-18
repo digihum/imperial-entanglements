@@ -53,7 +53,7 @@ export class ClientApiService implements ApiService {
             .then((data) => data.map((datum) => Serializer.fromJson(obj, datum)));
     }
 
-    public postItem<T extends TrackedFalconItem>(obj: { new(): T; }, baseUrl : string, data: T, params: any)  : Promise<boolean> {
+    public postItem<T extends TrackedFalconItem>(obj: { new(): T; }, baseUrl : string, data: T, params: any) : Promise<number[]> {
         return fetch(`/api/v1/${baseUrl}?` + queryString.stringify(params), {
             method: 'POST',
             body: JSON.stringify(data),
@@ -72,7 +72,7 @@ export class ClientApiService implements ApiService {
     }
 
     public putItem<T extends TrackedFalconItem>(obj: { new(): T; },
-            baseUrl : string, uid: number | CompositeKey, data: T) : Promise<boolean> {
+            baseUrl : string, uid: number | CompositeKey, data: T) : Promise<void> {
 
         const endURL = isObject(uid) ?
             (<CompositeKey> uid).order.map((key) => (<CompositeKey> uid).values[key]).join('/')
@@ -87,14 +87,11 @@ export class ClientApiService implements ApiService {
             },
             credentials: 'same-origin'
         })
-        .then(handleErrors)
-        .then((response) => {
-            return response.json();
-        });
+        .then(handleErrors);
     }
 
     public patchItem<T extends TrackedFalconItem>(obj: { new(): T; },
-            baseUrl : string, uid: number | CompositeKey, data : T) : Promise<boolean> {
+            baseUrl : string, uid: number | CompositeKey, data : T) : Promise<void> {
 
         const endURL = isObject(uid) ?
             (<CompositeKey> uid).order.map((key) => (<CompositeKey> uid).values[key]).join('/')
@@ -109,13 +106,10 @@ export class ClientApiService implements ApiService {
             },
             credentials: 'same-origin'
         })
-        .then(handleErrors)
-        .then((response) => {
-            return response.json();
-        });
+        .then(handleErrors);
     }
 
-    public delItem<T extends TrackedFalconItem>(obj: { new(): T; }, baseUrl : string, uid: number | CompositeKey) {
+    public delItem<T extends TrackedFalconItem>(obj: { new(): T; }, baseUrl : string, uid: number | CompositeKey) : Promise<void>{
 
         const endURL = isObject(uid) ?
             (<CompositeKey> uid).order.map((key) => (<CompositeKey> uid).values[key]).join('/')
@@ -125,10 +119,7 @@ export class ClientApiService implements ApiService {
             method: 'DELETE',
             credentials: 'same-origin'
         })
-        .then(handleErrors)
-        .then((response) => {
-            return response.json();
-        });
+        .then(handleErrors);
     }
 
     public query(graphQLQueryString: string) : Promise<any> {

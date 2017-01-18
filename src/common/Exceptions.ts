@@ -23,6 +23,14 @@ export class KeyNotFoundException extends Error {
     }
 }
 
+export class ReadOnlyResourceException extends Error {
+  public readonly code: number = 400;
+
+    constructor(message: string = 'Attempt to update a readonly resource') {
+        super(message);
+    }
+}
+
 export class CollectionNotFoundException extends Error {
     public data: string;
     constructor(message: string = 'Could not find the given collection') {
@@ -32,11 +40,23 @@ export class CollectionNotFoundException extends Error {
 }
 
 export class OperationNotPermittedException extends Error {
+
+  public readonly code: number = 422;
+
     public data: { message: string, data: any};
     constructor(data: { message: string, data: any}) {
         super(data.message);
         this.data = data;
     }
+}
+
+export class InvalidUpdateException extends Error {
+
+  public readonly code: number = 400;
+
+  constructor(message: string) {
+      super(message);
+  }
 }
 
 export class DatabaseIntegrityError extends Error {
@@ -55,5 +75,7 @@ export const Exceptions = {
     KeyNotFoundException,
     CollectionNotFoundException,
     OperationNotPermittedException,
-    DatabaseIntegrityError
+    DatabaseIntegrityError,
+    InvalidUpdateException,
+    ReadOnlyResourceException
 };

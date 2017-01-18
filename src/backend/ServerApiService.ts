@@ -52,7 +52,7 @@ export class ServerApiService implements ApiService {
         return controller.getCollectionJson<T>(obj, params);
     }
 
-    public postItem<T extends TrackedFalconItem>(obj: { new(): T; }, baseUrl : string, data: T, params: any)  : Promise<boolean> {
+    public postItem<T extends TrackedFalconItem>(obj: { new(): T; }, baseUrl : string, data: T, params: any)  : Promise<number[]> {
         const controller = this.controllerMap.get(baseUrl);
         if (controller === undefined) {
             return Promise.reject(new CollectionNotFoundException('Controller not found'));
@@ -65,7 +65,7 @@ export class ServerApiService implements ApiService {
     }
 
     public putItem<T extends TrackedFalconItem>(obj: { new(): T; },
-            baseUrl : string, uid: number | CompositeKey, data: T) : Promise<boolean> {
+            baseUrl : string, uid: number | CompositeKey, data: T) : Promise<void> {
 
         const controller = this.controllerMap.get(baseUrl);
         if (controller === undefined) {
@@ -77,7 +77,7 @@ export class ServerApiService implements ApiService {
     }
 
     public patchItem<T extends TrackedFalconItem>(obj: { new(): T; },
-            baseUrl : string, uid: number | CompositeKey, data : any) : Promise<boolean> {
+            baseUrl : string, uid: number | CompositeKey, data : any) : Promise<void> {
 
         const controller = this.controllerMap.get(baseUrl);
         if (controller === undefined) {
@@ -88,7 +88,7 @@ export class ServerApiService implements ApiService {
         }));
     }
 
-    public delItem<T extends TrackedFalconItem>(obj: { new(): T; }, baseUrl : string, uid: number | CompositeKey) {
+    public delItem<T extends TrackedFalconItem>(obj: { new(): T; }, baseUrl : string, uid: number | CompositeKey) : Promise<void> {
         const controller = this.controllerMap.get(baseUrl);
         if (controller === undefined) {
             return Promise.reject(new CollectionNotFoundException('Controller not found'));
