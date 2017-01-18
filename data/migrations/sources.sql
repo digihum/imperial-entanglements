@@ -35,7 +35,7 @@ CREATE TABLE elements (
         ON DELETE CASCADE,
 
     label varchar(255) NOT NULL,
-    description varchar(255),
+    description text,
     comment varchar(255)
 );
 
