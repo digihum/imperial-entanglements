@@ -10014,6 +10014,7 @@ exports.wrapDatabase = (db, fakeCreator) => {
  */
 
 exports.GeneralStatisticsController = (db) => {
+    const countVarName = db.client.config.client === 'pg' ? 'count' : 'count(*)';
     return Promise.all([
         db('entities').count(),
         db('entity_types').count(),
@@ -10022,11 +10023,11 @@ exports.GeneralStatisticsController = (db) => {
         db('predicates').count()
     ]).then(([[entityCount], [entityTypeCount], [sourceCount], [recordCount], [predicateCount]]) => {
         const statistics = {
-            entity: entityCount['count(*)'],
-            entityType: entityTypeCount['count(*)'],
-            source: sourceCount['count(*)'],
-            record: recordCount['count(*)'],
-            predicate: predicateCount['count(*)']
+            entity: entityCount[countVarName],
+            entityType: entityTypeCount[countVarName],
+            source: sourceCount[countVarName],
+            record: recordCount[countVarName],
+            predicate: predicateCount[countVarName]
         };
         return statistics;
     });

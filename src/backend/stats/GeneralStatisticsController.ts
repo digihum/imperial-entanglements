@@ -10,6 +10,8 @@ import { GeneralStatistics } from '../../common/stats/GeneralStatistics';
 
 export const GeneralStatisticsController = (db : Knex) : Promise<GeneralStatistics> => {
 
+  const countVarName = db.client.config.client === 'pg' ? 'count' : 'count(*)';
+
     return Promise.all([
       db('entities').count(),
       db('entity_types').count(),
@@ -19,11 +21,11 @@ export const GeneralStatisticsController = (db : Knex) : Promise<GeneralStatisti
     ]).then(([[entityCount], [entityTypeCount], [sourceCount], [recordCount], [predicateCount]]) => {
 
       const statistics : GeneralStatistics = {
-        entity: entityCount['count(*)'],
-        entityType: entityTypeCount['count(*)'],
-        source: sourceCount['count(*)'],
-        record: recordCount['count(*)'],
-        predicate: predicateCount['count(*)']
+        entity: entityCount[countVarName],
+        entityType: entityTypeCount[countVarName],
+        source: sourceCount[countVarName],
+        record: recordCount[countVarName],
+        predicate: predicateCount[countVarName]
       };
 
       return statistics;
