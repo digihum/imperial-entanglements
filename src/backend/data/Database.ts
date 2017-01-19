@@ -13,9 +13,11 @@ import { KeyNotFoundException, DatabaseIntegrityError } from '../../common/Excep
 export class Database {
 
     private knex : Knex;
+    private dbType : string;
 
     constructor(config: Knex.Config) {
         this.knex = Knex(config);
+        this.dbType = config.client!;
     }
 
     public query() : Knex {
@@ -111,6 +113,9 @@ export class Database {
                 SELECT parent FROM parent_of JOIN ancestor USING(uid) )
 				SELECT * from ancestor`)
             .then((result) => {
+              if (this.dbType === 'pg') {
+                result = result.rows;
+              }
                 return result.filter((a) => a.uid !== null).map((a) => a.uid);
             });
     }
@@ -124,20 +129,27 @@ export class Database {
                 SELECT uid FROM parent_of JOIN ancestor USING(parent) )
 				SELECT * from ancestor`)
             .then((result) => {
-                return result.filter((a) => a.parent !== null).map((a) => a.parent);
+              if (this.dbType === 'pg') {
+                result = result.rows;
+              }
+              return result.filter((a) => a.parent !== null).map((a) => a.parent);
             });
     }
 
     public checkIntegrity(trx: Knex.Transaction) : Promise<boolean> {
+
+      const verb = this.dbType === 'pg' ? 'COUNT' : 'SUM';
+      const invertResult = this.dbType === 'pg' ? '' : 'not';
+
         return Promise.all([
-            this.knex.transacting(trx).select(this.knex.raw('SUM((records.value_type != predicates.range_type)) AS valid'))
+            this.knex.transacting(trx).select(this.knex.raw(`${verb}((records.value_type != predicates.range_type)) AS valid`))
             .from('records')
             .innerJoin('predicates', 'records.predicate', 'predicates.uid'),
 
             this.knex.transacting(trx).select(this.knex.raw(`
-                SUM((
+                ${verb}((
 
-                entities.type not in (
+                entities.type ${invertResult} in (
                     WITH RECURSIVE parent_of(uid, parent) AS  (SELECT uid, parent FROM entity_types),
                                 ancestor(parent) AS (
                                 SELECT uid FROM parent_of WHERE uid=predicates.range_ref
@@ -154,9 +166,9 @@ export class Database {
             .where('records.value_type', '=', 'entity'),
 
             this.knex.transacting(trx).select(this.knex.raw(`
-               SUM((
+               ${verb}((
 
-                entities.type not in (
+                entities.type ${invertResult} in (
                     WITH RECURSIVE parent_of(uid, parent) AS  (SELECT uid, parent FROM entity_types),
                                 ancestor(parent) AS (
                                 SELECT uid FROM parent_of WHERE uid=predicates.domain
@@ -172,7 +184,7 @@ export class Database {
             .innerJoin('entities', 'entities.uid', 'records.entity')
 
           ]).then(([[a], [b], [c]]) => {
-            return (a.valid + b.valid + c.valid) === 0;
+            return (parseInt(a.valid) + parseInt(b.valid) + parseInt(c.valid)) === 0;
         });
     }
 }

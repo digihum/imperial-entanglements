@@ -22533,7 +22533,7 @@ class SourceController extends GenericController_1.GenericController {
         return Object.assign({}, lodash_1.omit(falcon_core_1.Serializer.toJson(data), 'metaData', 'sameAs', 'parents', 'children', 'creationTimestamp', 'lastmodifiedTimestamp'), {
             same_as: data.sameAs,
             creation_timestamp: data.creationTimestamp,
-            lastmodified_timeStamp: data.lastmodifiedTimestamp
+            lastmodified_timestamp: data.lastmodifiedTimestamp
         });
     }
     fromSchema(data) {
@@ -22544,18 +22544,8 @@ class SourceController extends GenericController_1.GenericController {
     // override the getItemJson and getCollectionJson functions to also get information about the
     // metadata associated with the retrieved source
     getMetadata(fields, sourceId) {
-        return this.db.query().raw(`
-            WITH RECURSIVE parent_of(uid, parent) AS  (SELECT uid, parent FROM sources),
-                ancestor(uid) AS (
-                SELECT parent FROM parent_of WHERE uid=?
-                UNION ALL
-                SELECT parent FROM parent_of JOIN ancestor USING(uid) )
-
-            SELECT *
-                FROM ancestor;
-        `, sourceId).then((parents) => {
-            parents = lodash_1.map(parents, 'uid');
-            parents.pop();
+        return this.db.getAncestorsOf(sourceId, 'sources')
+            .then((parents) => {
             parents = [sourceId].concat(parents);
             return Promise.all(parents.map((parent) => this.db.query().select(fields)
                 .from('source_elements')
@@ -22591,21 +22581,12 @@ class SourceController extends GenericController_1.GenericController {
                     'elements.uid as element_uid'
                 ], source.uid),
                 this.db.query().select('uid').from('sources').where({ parent: uid }),
-                this.db.query().raw(`
-                    WITH RECURSIVE parent_of(uid, parent) AS  (SELECT uid, parent FROM sources),
-                    ancestor(uid) AS (
-                    SELECT parent FROM parent_of WHERE uid=?
-                    UNION ALL
-                    SELECT parent FROM parent_of JOIN ancestor USING(uid) )
-
-                    SELECT uid
-                    FROM ancestor;
-                `, uid)
+                this.db.getAncestorsOf(uid, 'sources')
             ])
                 .then(([sourceElements, children, parents]) => {
                 source.metaData = sourceElements;
                 source.children = children.map((child) => child.uid).filter((child) => child !== null);
-                source.parents = parents.map((parent) => parent.uid).filter((parent) => parent !== null);
+                source.parents = parents;
                 return source;
             });
         });
@@ -22777,6 +22758,7 @@ const Exceptions_1 = __webpack_require__(17);
 class Database {
     constructor(config) {
         this.knex = Knex(config);
+        this.dbType = config.client;
     }
     query() {
         return this.knex;
@@ -22859,6 +22841,9 @@ class Database {
                 SELECT parent FROM parent_of JOIN ancestor USING(uid) )
 				SELECT * from ancestor`)
             .then((result) => {
+            if (this.dbType === 'pg') {
+                result = result.rows;
+            }
             return result.filter((a) => a.uid !== null).map((a) => a.uid);
         });
     }
@@ -22871,18 +22856,23 @@ class Database {
                 SELECT uid FROM parent_of JOIN ancestor USING(parent) )
 				SELECT * from ancestor`)
             .then((result) => {
+            if (this.dbType === 'pg') {
+                result = result.rows;
+            }
             return result.filter((a) => a.parent !== null).map((a) => a.parent);
         });
     }
     checkIntegrity(trx) {
+        const verb = this.dbType === 'pg' ? 'COUNT' : 'SUM';
+        const invertResult = this.dbType === 'pg' ? '' : 'not';
         return Promise.all([
-            this.knex.transacting(trx).select(this.knex.raw('SUM((records.value_type != predicates.range_type)) AS valid'))
+            this.knex.transacting(trx).select(this.knex.raw(`${verb}((records.value_type != predicates.range_type)) AS valid`))
                 .from('records')
                 .innerJoin('predicates', 'records.predicate', 'predicates.uid'),
             this.knex.transacting(trx).select(this.knex.raw(`
-                SUM((
+                ${verb}((
 
-                entities.type not in (
+                entities.type ${invertResult} in (
                     WITH RECURSIVE parent_of(uid, parent) AS  (SELECT uid, parent FROM entity_types),
                                 ancestor(parent) AS (
                                 SELECT uid FROM parent_of WHERE uid=predicates.range_ref
@@ -22898,9 +22888,9 @@ class Database {
                 .innerJoin('entities', 'entities.uid', 'records.value_entity')
                 .where('records.value_type', '=', 'entity'),
             this.knex.transacting(trx).select(this.knex.raw(`
-               SUM((
+               ${verb}((
 
-                entities.type not in (
+                entities.type ${invertResult} in (
                     WITH RECURSIVE parent_of(uid, parent) AS  (SELECT uid, parent FROM entity_types),
                                 ancestor(parent) AS (
                                 SELECT uid FROM parent_of WHERE uid=predicates.domain
@@ -22915,7 +22905,7 @@ class Database {
                 .innerJoin('predicates', 'records.predicate', 'predicates.uid')
                 .innerJoin('entities', 'entities.uid', 'records.entity')
         ]).then(([[a], [b], [c]]) => {
-            return (a.valid + b.valid + c.valid) === 0;
+            return (parseInt(a.valid) + parseInt(b.valid) + parseInt(c.valid)) === 0;
         });
     }
 }
