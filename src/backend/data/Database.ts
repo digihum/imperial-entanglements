@@ -138,18 +138,17 @@ export class Database {
 
     public checkIntegrity(trx: Knex.Transaction) : Promise<boolean> {
 
-      const verb = this.dbType === 'pg' ? 'COUNT' : 'SUM';
-      const invertResult = this.dbType === 'pg' ? '' : 'not';
+      const toInt = this.dbType === 'pg' ? '::int' : '';
 
         return Promise.all([
-            this.knex.transacting(trx).select(this.knex.raw(`${verb}((records.value_type != predicates.range_type)) AS valid`))
+            this.knex.transacting(trx).select(this.knex.raw(`SUM((records.value_type != predicates.range_type)${toInt}) AS valid`))
             .from('records')
             .innerJoin('predicates', 'records.predicate', 'predicates.uid'),
 
             this.knex.transacting(trx).select(this.knex.raw(`
-                ${verb}((
+                SUM((
 
-                entities.type ${invertResult} in (
+                entities.type not in (
                     WITH RECURSIVE parent_of(uid, parent) AS  (SELECT uid, parent FROM entity_types),
                                 ancestor(parent) AS (
                                 SELECT uid FROM parent_of WHERE uid=predicates.range_ref
@@ -158,7 +157,7 @@ export class Database {
                                 SELECT * from ancestor
                 )
 
-                )) as valid
+                )${toInt}) as valid
             `))
             .from('records')
             .innerJoin('predicates', 'records.predicate', 'predicates.uid')
@@ -166,9 +165,9 @@ export class Database {
             .where('records.value_type', '=', 'entity'),
 
             this.knex.transacting(trx).select(this.knex.raw(`
-               ${verb}((
+               SUM((
 
-                entities.type ${invertResult} in (
+                entities.type not in (
                     WITH RECURSIVE parent_of(uid, parent) AS  (SELECT uid, parent FROM entity_types),
                                 ancestor(parent) AS (
                                 SELECT uid FROM parent_of WHERE uid=predicates.domain
@@ -177,7 +176,7 @@ export class Database {
                                 SELECT * from ancestor
                 )
 
-                )) as valid
+                )${toInt}) as valid
             `))
             .from('records')
             .innerJoin('predicates', 'records.predicate', 'predicates.uid')

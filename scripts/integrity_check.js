@@ -4,13 +4,15 @@ FROM records
 INNER JOIN predicates ON records.predicate = predicates.uid
 `
 
-//should be 0
+//should be 0 - checks that record types are in sync with their predicates
 `
 SELECT SUM((records.value_type != predicates.range_type)) AS test
 FROM records
 INNER JOIN predicates ON records.predicate = predicates.uid
 `
 
+
+// checks that predicate ranges are being respected
 `
 SELECT predicates.range_ref, entities.type, (
 
@@ -30,7 +32,7 @@ INNER JOIN entities ON entities.uid = predicates.range_ref
 WHERE records.value_type = 'entity';
 `
 
-// should be > 0
+// checks that predicate domains are being respected
 `
 SELECT SUM((
 
