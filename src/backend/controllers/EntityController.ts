@@ -43,7 +43,7 @@ export class EntityController extends GenericController<Entity> {
           'lastmodifiedTimestamp'), {
           type: data.entityType,
           creation_timestamp: data.creationTimestamp,
-          lastmodified_timeStamp: data.lastmodifiedTimestamp
+          lastmodified_timestamp: data.lastmodifiedTimestamp
       });
     }
 

@@ -33,7 +33,7 @@ export class PredicateController extends GenericController<Predicate> {
             same_as: data.sameAs,
             range_type: data.rangeIsReference ? 'entity' : data.range,
             creation_timestamp: data.creationTimestamp,
-            lastmodified_timeStamp: data.lastmodifiedTimestamp
+            lastmodified_timestamp: data.lastmodifiedTimestamp
         });
 
         if (data.rangeIsReference) {

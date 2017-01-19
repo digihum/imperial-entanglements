@@ -35,7 +35,7 @@ export class RecordController extends GenericController<Record> {
 
         return Object.assign({}, schemaOutput, {
             creation_timestamp: data.creationTimestamp,
-            lastmodified_timeStamp: data.lastmodifiedTimestamp
+            lastmodified_timestamp: data.lastmodifiedTimestamp
         });
     }
 

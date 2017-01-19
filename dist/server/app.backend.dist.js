@@ -6847,7 +6847,7 @@ class RecordController extends GenericController_1.GenericController {
         }
         return Object.assign({}, schemaOutput, {
             creation_timestamp: data.creationTimestamp,
-            lastmodified_timeStamp: data.lastmodifiedTimestamp
+            lastmodified_timestamp: data.lastmodifiedTimestamp
         });
     }
     static fromSchema(data) {
@@ -9751,7 +9751,7 @@ class EntityController extends GenericController_1.GenericController {
         return Object.assign(lodash_1.omit(falcon_core_1.Serializer.toJson(data), 'entityType', 'creationTimestamp', 'lastmodifiedTimestamp'), {
             type: data.entityType,
             creation_timestamp: data.creationTimestamp,
-            lastmodified_timeStamp: data.lastmodifiedTimestamp
+            lastmodified_timestamp: data.lastmodifiedTimestamp
         });
     }
     fromSchema(data) {
@@ -9844,7 +9844,7 @@ class PredicateController extends GenericController_1.GenericController {
             same_as: data.sameAs,
             range_type: data.rangeIsReference ? 'entity' : data.range,
             creation_timestamp: data.creationTimestamp,
-            lastmodified_timeStamp: data.lastmodifiedTimestamp
+            lastmodified_timestamp: data.lastmodifiedTimestamp
         });
         if (data.rangeIsReference) {
             out['range_ref'] = data.range;
@@ -22448,7 +22448,7 @@ class EntityTypeController extends GenericController_1.GenericController {
         return Object.assign(lodash_1.omit(falcon_core_1.Serializer.toJson(data), 'sameAs', 'parents', 'children', 'creationTimestamp', 'lastmodifiedTimestamp'), {
             same_as: data.sameAs,
             creation_timestamp: data.creationTimestamp,
-            lastmodified_timeStamp: data.lastmodifiedTimestamp
+            lastmodified_timestamp: data.lastmodifiedTimestamp
         });
     }
     fromSchema(data) {
@@ -22659,7 +22659,7 @@ class SourceElementController extends GenericController_1.GenericController {
     toSchema(data) {
         return Object.assign(lodash_1.omit(falcon_core_1.Serializer.toJson(data), 'creationTimestamp', 'lastmodifiedTimestamp', 'uid', 'label'), {
             creation_timestamp: data.creationTimestamp,
-            lastmodified_timeStamp: data.lastmodifiedTimestamp,
+            lastmodified_timestamp: data.lastmodifiedTimestamp,
             // TODO: check these exist
             source: data.uid.values['source'],
             element: data.uid.values['element']

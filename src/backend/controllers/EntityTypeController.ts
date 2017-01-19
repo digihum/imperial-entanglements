@@ -32,7 +32,7 @@ export class EntityTypeController extends GenericController<EntityType> {
                 'lastmodifiedTimestamp'), {
             same_as: data.sameAs,
             creation_timestamp: data.creationTimestamp,
-            lastmodified_timeStamp: data.lastmodifiedTimestamp
+            lastmodified_timestamp: data.lastmodifiedTimestamp
         });
     }
 
