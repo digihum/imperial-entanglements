@@ -23,6 +23,8 @@ export let api : ServerApiService;
 
 before((done) => {
 
+  console.log('SETTING UP DATABASE');
+
   if (fs.existsSync(pathToTestDatabase)) {
     fs.unlinkSync(pathToTestDatabase);
   }

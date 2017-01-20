@@ -10,7 +10,7 @@ import { Predicate, Serializer } from 'falcon-core';
 
 import { GenericController } from './GenericController';
 
-import { OperationNotPermittedException } from '../../common/Exceptions';
+import { OperationNotPermittedException, InvalidUpdateException } from '../../common/Exceptions';
 
 import { RecordController } from './RecordController';
 
@@ -23,12 +23,21 @@ export class PredicateController extends GenericController<Predicate> {
     }
 
     public static toSchema(data: Predicate) {
+
+        const allowedKeys = new Set(['uid', 'uses', 'label', 'domain', 'range', 'description', 'rangeIsReference', 'sameAs', 'creator', 'creationTimestamp', 'lastmodifiedTimestamp']);
+        const extraKeys = Object.keys(data).filter((a) => !allowedKeys.has(a));
+
+        if (extraKeys.length > 0) {
+          throw new InvalidUpdateException('Unknown keys: ' + extraKeys.join(', '));
+        }
+
         const out : { [s: string] : any } = Object.assign(omit(Serializer.toJson(data),
             'range',
             'rangeIsReference',
             'sameAs',
             'creationTimestamp',
-            'lastmodifiedTimestamp'
+            'lastmodifiedTimestamp',
+            'uses'
         ), {
             same_as: data.sameAs,
             range_type: data.rangeIsReference ? 'entity' : data.range,
@@ -58,9 +67,20 @@ export class PredicateController extends GenericController<Predicate> {
           data.uses = 0;
         }
 
-        return Object.assign(Object.create(Predicate.prototype), Object.assign(data, {
-            'sameAs': data.same_as
-        }));
+        return Object.assign(Object.create(Predicate.prototype),
+
+         {
+           'uid': data.uid,
+            'sameAs': data.same_as,
+            'label': data.label,
+            'lastmodifiedTimestamp': data.lastmodified_timestamp,
+            'creationTimestamp': data.creation_timestamp,
+            'rangeIsReference': data.rangeIsReference,
+            'range': data.range,
+            'domain': data.domain,
+            'uses': data.uses
+
+        });
     }
 
 
@@ -94,71 +114,71 @@ export class PredicateController extends GenericController<Predicate> {
         return this.db.updateItem(this.tableName, Serializer.toJson(data));
     }
 
-    public patchItem(obj: { new(): Predicate; }, uid: number, data: Predicate) : Promise<boolean> {
+    // public patchItem(obj: { new(): Predicate; }, uid: number, data: Predicate) : Promise<boolean> {
 
-        if (data.domain !== undefined) {
-            return this.db.select('records', ['entities.type as entityType'])
-                .distinct()
-                .where({ predicate: uid })
-                .innerJoin('entities', 'records.entity', 'entities.uid')
-            .then((records) => {
+    //     if (data.domain !== undefined) {
+    //         return this.db.select('records', ['entities.type as entityType'])
+    //             .distinct()
+    //             .where({ predicate: uid })
+    //             .innerJoin('entities', 'records.entity', 'entities.uid')
+    //         .then((records) => {
 
-                if (records.length > 0) {
+    //             if (records.length > 0) {
 
-                    return this.db.getChildrenOf(data.domain, 'entity_types')
-                    .then((res) => {
-                        records.map((e) => e.entityType)
-                        .forEach((e) => {
-                            if (res.indexOf(e) === -1) {
-                                throw new OperationNotPermittedException({
-                                    message: 'The operation could not be completed as it would invalidate predicate relationships',
-                                    data: Promise.resolve({})
-                                });
-                            }
-                        });
-                    }).then(() => super.patchItem(obj, uid, data));
-                }
+    //                 return this.db.getChildrenOf(data.domain, 'entity_types')
+    //                 .then((res) => {
+    //                     records.map((e) => e.entityType)
+    //                     .forEach((e) => {
+    //                         if (res.indexOf(e) === -1) {
+    //                             throw new OperationNotPermittedException({
+    //                                 message: 'The operation could not be completed as it would invalidate predicate relationships',
+    //                                 data: Promise.resolve({})
+    //                             });
+    //                         }
+    //                     });
+    //                 }).then(() => super.patchItem(obj, uid, data));
+    //             }
 
-                return super.patchItem(obj, uid, data);
-            });
-        }
+    //             return super.patchItem(obj, uid, data);
+    //         });
+    //     }
 
-        //TODO: fix range enforcement
-        if (data.range !== undefined) {
+    //     //TODO: fix range enforcement
+    //     if (data.range !== undefined) {
 
-            return this.db.select('records')
-                .where({ predicate: uid })
-            .then((records) => {
+    //         return this.db.select('records')
+    //             .where({ predicate: uid })
+    //         .then((records) => {
 
-                if (records.length > 0) {
+    //             if (records.length > 0) {
 
-                    if (data.rangeIsReference === false) {
-                        throw new OperationNotPermittedException({
-                            message: 'The operation could not be completed as it would invalidate predicate relationships',
-                            data: Promise.resolve({})
-                        });
-                    }
+    //                 if (data.rangeIsReference === false) {
+    //                     throw new OperationNotPermittedException({
+    //                         message: 'The operation could not be completed as it would invalidate predicate relationships',
+    //                         data: Promise.resolve({})
+    //                     });
+    //                 }
 
-                    return this.db.getChildrenOf(parseInt(data.range as string), 'entity_types')
-                    .then((res) => {
-                        records.map((e) => e.value_entity)
-                        .forEach((e) => {
-                            if (res.indexOf(e) === -1) {
-                                throw new OperationNotPermittedException({
-                                    message: 'The operation could not be completed as it would invalidate predicate relationships',
-                                    data: Promise.resolve({})
-                                });
-                            }
-                        });
-                    }).then(() => super.patchItem(obj, uid, data));
-                }
+    //                 return this.db.getChildrenOf(parseInt(data.range as string), 'entity_types')
+    //                 .then((res) => {
+    //                     records.map((e) => e.value_entity)
+    //                     .forEach((e) => {
+    //                         if (res.indexOf(e) === -1) {
+    //                             throw new OperationNotPermittedException({
+    //                                 message: 'The operation could not be completed as it would invalidate predicate relationships',
+    //                                 data: Promise.resolve({})
+    //                             });
+    //                         }
+    //                     });
+    //                 }).then(() => super.patchItem(obj, uid, data));
+    //             }
 
-                return super.patchItem(obj, uid, data);
-            });
-        }
+    //             return super.patchItem(obj, uid, data);
+    //         });
+    //     }
 
-        return super.patchItem(obj, uid, data);
-    }
+    //     return super.patchItem(obj, uid, data);
+    // }
 
      public async deleteItem(obj: { new(): Predicate; }, uid: number) : Promise<string> {
         // check if this entity is the parent of another entity or if it has any relationships
