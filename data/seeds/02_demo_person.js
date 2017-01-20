@@ -11,7 +11,6 @@ exports.seed = function(knex, Promise) {
         // Inserts seed entries
 
         knex('entities').insert({
-          uid: 1, 
           type: result.uid, 
           label: 'test person 1',
           creator: 1,
@@ -19,7 +18,6 @@ exports.seed = function(knex, Promise) {
           lastmodified_timestamp: moment().toISOString()}),
 
         knex('entities').insert({
-          uid: 2, 
           type: result.uid, 
           label: 'test person 2',
           creator: 1,
@@ -27,7 +25,6 @@ exports.seed = function(knex, Promise) {
           lastmodified_timestamp: moment().toISOString()}),
 
         knex('entities').insert({
-          uid: 3, 
           type: result.uid, 
           label: 'test person 3',
           creator: 1,

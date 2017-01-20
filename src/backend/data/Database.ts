@@ -183,7 +183,9 @@ export class Database {
             .innerJoin('entities', 'entities.uid', 'records.entity')
 
           ]).then(([[a], [b], [c]]) => {
-            return (parseInt(a.valid) + parseInt(b.valid) + parseInt(c.valid)) === 0;
+            return (parseInt(a.valid === null ? 0 : a.valid) +
+                    parseInt(b.valid === null ? 0 : b.valid) +
+                    parseInt(c.valid === null ? 0 : c.valid) === 0);
         });
     }
 }

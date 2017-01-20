@@ -38545,7 +38545,7 @@ class DatabaseIntegrityError extends Error {
  submitted. This is likely due to a change which violates the property types model; please check the types of
  what you are trying to do. Please also contact the Digital Humanities team, this error should not occur.`) {
         super(message);
-        this.data = message;
+        this.code = 500;
     }
 }
 exports.DatabaseIntegrityError = DatabaseIntegrityError;

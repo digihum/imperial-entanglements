@@ -38,7 +38,7 @@ exports.up = function(knex, Promise) {
 
 exports.down = function(knex, Promise) {
   return Promise.all([
-        knex.schema.raw('DROP VIEW predicate_usage'),
+        knex.schema.raw('DROP VIEW predicate_complete'),
         knex.schema.dropTable('records'),
         knex.schema.dropTable('entities'),
         knex.schema.dropTable('predicates'),        
