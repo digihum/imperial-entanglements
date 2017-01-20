@@ -24,7 +24,7 @@ import { formatDate } from '../../helper/formatDate';
 
 import { toString } from 'lodash';
 
-import { inject } from 'mobx-react';
+import { inject, observer } from 'mobx-react';
 
 import { DataController } from '../../stores/DataController';
 import { ModalStore } from '../../stores/ModalStore';
@@ -34,23 +34,8 @@ interface RecordRowProps extends EditableSubfieldProps<Record> {
     sources: Source[];
     entities: Entity[];
     dataStore?: DataController;
-    modelStore?: ModalStore;
+    modalStore?: ModalStore;
 }
-
-const createNewSource = (initialValue: string) => {
-        const a : ModalDefinition = {
-            name: 'source',
-            complete: () => {
-                // TODO : Automatically reload sources
-            },
-            cancel: () => { console.log('cancel')},
-            settings: {
-                initialValue
-            }
-        };
-
-        this.props.modalStore!.addModal(a);
-    };
 
 const recordEditor = (props: RecordRowProps, record: Record) => {
     switch (record.valueType) {
@@ -100,7 +85,22 @@ const formatValue = (props: RecordRowProps, record: Record) => {
     return (<span>{record.value}</span>);
 };
 
-export const RecordRow = (props: RecordRowProps) => {
+export const RecordRow = inject('dataStore', 'modalStore')(observer((props: RecordRowProps) => {
+
+    const createNewSource = (initialValue: string) => {
+        const a : ModalDefinition = {
+            name: 'source',
+            complete: () => {
+                // TODO : Automatically reload sources
+            },
+            cancel: () => { console.log('cancel')},
+            settings: {
+                initialValue
+            }
+        };
+
+        props.modalStore!.addModal(a);
+    };
 
     const recordValue = props.value;
 
@@ -108,7 +108,9 @@ export const RecordRow = (props: RecordRowProps) => {
         throw new Error('Should not be null!!');
     }
 
-    const currentSource = props.sources.find((source) => source.uid === recordValue.source);
+    const currentSource = recordValue.source === null ? undefined :
+      props.sources.find((source) => source.uid === parseInt(recordValue.source));
+
     const dropDownValue : ComboDropdownOption = {
         key: '', value: recordValue.source === null ? null : toString(recordValue.source)
     };
@@ -133,7 +135,7 @@ export const RecordRow = (props: RecordRowProps) => {
                     typeName='source'
                     value={dropDownValue}
                     setValue={(combo) => props.onChange(Object.assign(recordValue, { source: combo === null ? combo : combo.value }))}
-                    createNewValue={createNewSource}
+                    createNewValue={() => createNewSource('')}
                 />
             </td>
             <td className='record-row-item score'>
@@ -179,4 +181,4 @@ export const RecordRow = (props: RecordRowProps) => {
         </tr>
         );
     }
-};
+}));

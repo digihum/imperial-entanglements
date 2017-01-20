@@ -2968,7 +2968,7 @@ class RecordPredicate extends React.Component {
                 React.createElement("tbody", null, this.props.records.map((record) => (React.createElement(RecordEditableFieldComponent, { key: `row-${record.uid}`, value: record, onChange: this.recordChanged.bind(this), onDelete: this.deleteRecord.bind(this), component: RecordRow_1.RecordRow, additionalProps: {
                         dimension: 'predicates',
                         sources: this.props.sources,
-                        entities: this.state.potentialValues,
+                        entities: this.state.potentialValues
                     } })))))));
     }
 }
@@ -2998,19 +2998,7 @@ const IntegerFieldEditor_1 = __webpack_require__(56);
 const AddTabButton_1 = __webpack_require__(5);
 const formatDate_1 = __webpack_require__(21);
 const lodash_1 = __webpack_require__(2);
-const createNewSource = (initialValue) => {
-    const a = {
-        name: 'source',
-        complete: () => {
-            // TODO : Automatically reload sources
-        },
-        cancel: () => { console.log('cancel'); },
-        settings: {
-            initialValue
-        }
-    };
-    this.props.modalStore.addModal(a);
-};
+const mobx_react_1 = __webpack_require__(3);
 const recordEditor = (props, record) => {
     switch (record.valueType) {
         case 'string':
@@ -3046,12 +3034,26 @@ const formatValue = (props, record) => {
     }
     return (React.createElement("span", null, record.value));
 };
-exports.RecordRow = (props) => {
+exports.RecordRow = mobx_react_1.inject('dataStore', 'modalStore')(mobx_react_1.observer((props) => {
+    const createNewSource = (initialValue) => {
+        const a = {
+            name: 'source',
+            complete: () => {
+                // TODO : Automatically reload sources
+            },
+            cancel: () => { console.log('cancel'); },
+            settings: {
+                initialValue
+            }
+        };
+        props.modalStore.addModal(a);
+    };
     const recordValue = props.value;
     if (recordValue === null) {
         throw new Error('Should not be null!!');
     }
-    const currentSource = props.sources.find((source) => source.uid === recordValue.source);
+    const currentSource = recordValue.source === null ? undefined :
+        props.sources.find((source) => source.uid === parseInt(recordValue.source));
     const dropDownValue = {
         key: '', value: recordValue.source === null ? null : lodash_1.toString(recordValue.source)
     };
@@ -3063,7 +3065,7 @@ exports.RecordRow = (props) => {
             React.createElement("td", { className: 'record-row-item uid' }, recordValue.uid),
             recordValue.valueType !== 'source' ? (React.createElement("td", { className: 'record-row-item' }, recordEditor(props, recordValue))) : null,
             React.createElement("td", { className: 'record-row-item' },
-                React.createElement(ComboDropdown_1.ComboDropdown, { options: props.sources.map((source) => ({ key: source.label, value: source.uid !== null ? lodash_1.toString(source.uid) : null })), typeName: 'source', value: dropDownValue, setValue: (combo) => props.onChange(Object.assign(recordValue, { source: combo === null ? combo : combo.value })), createNewValue: createNewSource })),
+                React.createElement(ComboDropdown_1.ComboDropdown, { options: props.sources.map((source) => ({ key: source.label, value: source.uid !== null ? lodash_1.toString(source.uid) : null })), typeName: 'source', value: dropDownValue, setValue: (combo) => props.onChange(Object.assign(recordValue, { source: combo === null ? combo : combo.value })), createNewValue: () => createNewSource('') })),
             React.createElement("td", { className: 'record-row-item score' },
                 React.createElement(ScorePicker_1.ScorePicker, { value: recordValue.score, readOnly: false, onChange: (score) => props.onChange(Object.assign(recordValue, { score })) })),
             React.createElement("td", { className: 'record-row-item period' },
@@ -3092,7 +3094,7 @@ exports.RecordRow = (props) => {
                 React.createElement("button", null,
                     React.createElement("i", { className: 'fa fa-trash', "aria-hidden": 'true', onClick: props.onDelete })))));
     }
-};
+}));
 
 
 /***/ }),

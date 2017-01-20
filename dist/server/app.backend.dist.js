@@ -265,13 +265,13 @@ module.exports = require("lodash");
 /* 6 */
 /***/ (function(module, exports) {
 
-module.exports = require("object-assign");
+module.exports = require("mobx-react");
 
 /***/ }),
 /* 7 */
 /***/ (function(module, exports) {
 
-module.exports = require("mobx-react");
+module.exports = require("object-assign");
 
 /***/ }),
 /* 8 */
@@ -623,7 +623,7 @@ module.exports = { debugTool: debugTool };
  */
 
 const React = __webpack_require__(0);
-const mobx_react_1 = __webpack_require__(7);
+const mobx_react_1 = __webpack_require__(6);
 exports.AddTabButton = mobx_react_1.inject('dataStore')(mobx_react_1.observer((props, context) => {
     if (props.dataStore.dataStore.tabs[props.tabType] !== undefined
         && props.dataStore.dataStore.tabs[props.tabType].has(`${props.tabType}-${props.uid}`)) {
@@ -993,7 +993,7 @@ module.exports = ReactComponentTreeHook;
 
 
 var _prodInvariant = __webpack_require__(3),
-    _assign = __webpack_require__(6);
+    _assign = __webpack_require__(7);
 
 var CallbackQueue = __webpack_require__(84);
 var PooledClass = __webpack_require__(21);
@@ -1248,7 +1248,7 @@ module.exports = ReactUpdates;
 
 
 
-var _assign = __webpack_require__(6);
+var _assign = __webpack_require__(7);
 
 var PooledClass = __webpack_require__(21);
 
@@ -2032,7 +2032,7 @@ module.exports = PooledClass;
 
 
 
-var _assign = __webpack_require__(6);
+var _assign = __webpack_require__(7);
 
 var ReactCurrentOwner = __webpack_require__(18);
 
@@ -3532,7 +3532,7 @@ module.exports = SyntheticUIEvent;
 
 
 
-var _assign = __webpack_require__(6);
+var _assign = __webpack_require__(7);
 
 var ReactChildren = __webpack_require__(209);
 var ReactComponent = __webpack_require__(63);
@@ -5252,7 +5252,7 @@ module.exports = LinkedValueUtils;
 
 
 
-var _assign = __webpack_require__(6);
+var _assign = __webpack_require__(7);
 
 var EventPluginRegistry = __webpack_require__(48);
 var ReactEventEmitterMixin = __webpack_require__(166);
@@ -6119,7 +6119,7 @@ module.exports = setInnerHTML;
 
 
 
-var _assign = __webpack_require__(6);
+var _assign = __webpack_require__(7);
 
 var emptyFunction = __webpack_require__(11);
 var warning = __webpack_require__(2);
@@ -7924,7 +7924,7 @@ module.exports = ReactDOMComponentFlags;
 
 
 
-var _assign = __webpack_require__(6);
+var _assign = __webpack_require__(7);
 
 var LinkedValueUtils = __webpack_require__(51);
 var ReactDOMComponentTree = __webpack_require__(9);
@@ -8129,7 +8129,7 @@ module.exports = ReactDOMSelect;
 
 
 
-var _assign = __webpack_require__(6);
+var _assign = __webpack_require__(7);
 
 var ReactUpdates = __webpack_require__(15);
 var Transaction = __webpack_require__(40);
@@ -8461,7 +8461,7 @@ module.exports = ReactPropTypesSecret;
 
 
 
-var _assign = __webpack_require__(6);
+var _assign = __webpack_require__(7);
 
 var PooledClass = __webpack_require__(21);
 var Transaction = __webpack_require__(40);
@@ -8957,7 +8957,7 @@ module.exports = getTextContentAccessor;
 
 
 var _prodInvariant = __webpack_require__(3),
-    _assign = __webpack_require__(6);
+    _assign = __webpack_require__(7);
 
 var ReactCompositeComponent = __webpack_require__(151);
 var ReactEmptyComponent = __webpack_require__(89);
@@ -12390,7 +12390,7 @@ module.exports = EnterLeaveEventPlugin;
 
 
 
-var _assign = __webpack_require__(6);
+var _assign = __webpack_require__(7);
 
 var PooledClass = __webpack_require__(21);
 
@@ -12902,7 +12902,7 @@ module.exports = ReactComponentBrowserEnvironment;
 
 
 var _prodInvariant = __webpack_require__(3),
-    _assign = __webpack_require__(6);
+    _assign = __webpack_require__(7);
 
 var React = __webpack_require__(35);
 var ReactComponentEnvironment = __webpack_require__(53);
@@ -13811,7 +13811,7 @@ module.exports = ReactCompositeComponent;
 
 
 var _prodInvariant = __webpack_require__(3),
-    _assign = __webpack_require__(6);
+    _assign = __webpack_require__(7);
 
 var AutoFocusUtils = __webpack_require__(140);
 var CSSPropertyOperations = __webpack_require__(142);
@@ -14852,7 +14852,7 @@ module.exports = ReactDOMContainerInfo;
 
 
 
-var _assign = __webpack_require__(6);
+var _assign = __webpack_require__(7);
 
 var DOMLazyTree = __webpack_require__(29);
 var ReactDOMComponentTree = __webpack_require__(9);
@@ -14957,7 +14957,7 @@ module.exports = ReactDOMIDOperations;
 
 
 var _prodInvariant = __webpack_require__(3),
-    _assign = __webpack_require__(6);
+    _assign = __webpack_require__(7);
 
 var DOMPropertyOperations = __webpack_require__(85);
 var LinkedValueUtils = __webpack_require__(51);
@@ -15239,7 +15239,7 @@ module.exports = ReactDOMInput;
 
 
 
-var _assign = __webpack_require__(6);
+var _assign = __webpack_require__(7);
 
 var React = __webpack_require__(35);
 var ReactDOMComponentTree = __webpack_require__(9);
@@ -15616,7 +15616,7 @@ module.exports = ReactDOMServer;
 
 
 var _prodInvariant = __webpack_require__(3),
-    _assign = __webpack_require__(6);
+    _assign = __webpack_require__(7);
 
 var DOMChildrenOperations = __webpack_require__(46);
 var DOMLazyTree = __webpack_require__(29);
@@ -15785,7 +15785,7 @@ module.exports = ReactDOMTextComponent;
 
 
 var _prodInvariant = __webpack_require__(3),
-    _assign = __webpack_require__(6);
+    _assign = __webpack_require__(7);
 
 var LinkedValueUtils = __webpack_require__(51);
 var ReactDOMComponentTree = __webpack_require__(9);
@@ -16610,7 +16610,7 @@ module.exports = ReactEventEmitterMixin;
 
 
 
-var _assign = __webpack_require__(6);
+var _assign = __webpack_require__(7);
 
 var EventListener = __webpack_require__(80);
 var ExecutionEnvironment = __webpack_require__(10);
@@ -17601,7 +17601,7 @@ module.exports = ReactPropTypeLocationNames;
 
 
 
-var _assign = __webpack_require__(6);
+var _assign = __webpack_require__(7);
 
 var CallbackQueue = __webpack_require__(84);
 var PooledClass = __webpack_require__(21);
@@ -20482,7 +20482,7 @@ module.exports = ReactChildren;
 
 
 var _prodInvariant = __webpack_require__(23),
-    _assign = __webpack_require__(6);
+    _assign = __webpack_require__(7);
 
 var ReactComponent = __webpack_require__(63);
 var ReactElement = __webpack_require__(22);
@@ -21817,7 +21817,7 @@ module.exports = ReactPropTypes;
 
 
 
-var _assign = __webpack_require__(6);
+var _assign = __webpack_require__(7);
 
 var ReactComponent = __webpack_require__(63);
 var ReactNoopUpdateQueue = __webpack_require__(64);
@@ -23160,7 +23160,7 @@ const ApiService_1 = __webpack_require__(8);
 const react_router_1 = __webpack_require__(26);
 const lodash_1 = __webpack_require__(5);
 const react_sortable_hoc_1 = __webpack_require__(79);
-const mobx_react_1 = __webpack_require__(7);
+const mobx_react_1 = __webpack_require__(6);
 const Handle = react_sortable_hoc_1.SortableHandle((props) => (React.createElement("div", { className: 'badge-container' },
     React.createElement("div", { className: 'badge ' + props.tabType },
         React.createElement("span", null, props.tabType[0].toUpperCase())))));
@@ -23319,7 +23319,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 const React = __webpack_require__(0);
 const Loading_1 = __webpack_require__(231);
-const mobx_react_1 = __webpack_require__(7);
+const mobx_react_1 = __webpack_require__(6);
 const workspace_1 = __webpack_require__(266);
 let Workspace = class Workspace extends React.Component {
     constructor() {
@@ -23503,7 +23503,7 @@ class RecordPredicate extends React.Component {
                 React.createElement("tbody", null, this.props.records.map((record) => (React.createElement(RecordEditableFieldComponent, { key: `row-${record.uid}`, value: record, onChange: this.recordChanged.bind(this), onDelete: this.deleteRecord.bind(this), component: RecordRow_1.RecordRow, additionalProps: {
                         dimension: 'predicates',
                         sources: this.props.sources,
-                        entities: this.state.potentialValues,
+                        entities: this.state.potentialValues
                     } })))))));
     }
 }
@@ -23533,19 +23533,7 @@ const IntegerFieldEditor_1 = __webpack_require__(237);
 const AddTabButton_1 = __webpack_require__(13);
 const formatDate_1 = __webpack_require__(73);
 const lodash_1 = __webpack_require__(5);
-const createNewSource = (initialValue) => {
-    const a = {
-        name: 'source',
-        complete: () => {
-            // TODO : Automatically reload sources
-        },
-        cancel: () => { console.log('cancel'); },
-        settings: {
-            initialValue
-        }
-    };
-    this.props.modalStore.addModal(a);
-};
+const mobx_react_1 = __webpack_require__(6);
 const recordEditor = (props, record) => {
     switch (record.valueType) {
         case 'string':
@@ -23581,12 +23569,26 @@ const formatValue = (props, record) => {
     }
     return (React.createElement("span", null, record.value));
 };
-exports.RecordRow = (props) => {
+exports.RecordRow = mobx_react_1.inject('dataStore', 'modalStore')(mobx_react_1.observer((props) => {
+    const createNewSource = (initialValue) => {
+        const a = {
+            name: 'source',
+            complete: () => {
+                // TODO : Automatically reload sources
+            },
+            cancel: () => { console.log('cancel'); },
+            settings: {
+                initialValue
+            }
+        };
+        props.modalStore.addModal(a);
+    };
     const recordValue = props.value;
     if (recordValue === null) {
         throw new Error('Should not be null!!');
     }
-    const currentSource = props.sources.find((source) => source.uid === recordValue.source);
+    const currentSource = recordValue.source === null ? undefined :
+        props.sources.find((source) => source.uid === parseInt(recordValue.source));
     const dropDownValue = {
         key: '', value: recordValue.source === null ? null : lodash_1.toString(recordValue.source)
     };
@@ -23598,7 +23600,7 @@ exports.RecordRow = (props) => {
             React.createElement("td", { className: 'record-row-item uid' }, recordValue.uid),
             recordValue.valueType !== 'source' ? (React.createElement("td", { className: 'record-row-item' }, recordEditor(props, recordValue))) : null,
             React.createElement("td", { className: 'record-row-item' },
-                React.createElement(ComboDropdown_1.ComboDropdown, { options: props.sources.map((source) => ({ key: source.label, value: source.uid !== null ? lodash_1.toString(source.uid) : null })), typeName: 'source', value: dropDownValue, setValue: (combo) => props.onChange(Object.assign(recordValue, { source: combo === null ? combo : combo.value })), createNewValue: createNewSource })),
+                React.createElement(ComboDropdown_1.ComboDropdown, { options: props.sources.map((source) => ({ key: source.label, value: source.uid !== null ? lodash_1.toString(source.uid) : null })), typeName: 'source', value: dropDownValue, setValue: (combo) => props.onChange(Object.assign(recordValue, { source: combo === null ? combo : combo.value })), createNewValue: () => createNewSource('') })),
             React.createElement("td", { className: 'record-row-item score' },
                 React.createElement(ScorePicker_1.ScorePicker, { value: recordValue.score, readOnly: false, onChange: (score) => props.onChange(Object.assign(recordValue, { score })) })),
             React.createElement("td", { className: 'record-row-item period' },
@@ -23627,7 +23629,7 @@ exports.RecordRow = (props) => {
                 React.createElement("button", null,
                     React.createElement("i", { className: 'fa fa-trash', "aria-hidden": 'true', onClick: props.onDelete })))));
     }
-};
+}));
 
 
 /***/ }),
@@ -23657,7 +23659,7 @@ const EditableFieldComponent_1 = __webpack_require__(27);
 const SearchBar_1 = __webpack_require__(42);
 const RecordPredicate_1 = __webpack_require__(238);
 const findParentTree_1 = __webpack_require__(72);
-const mobx_react_1 = __webpack_require__(7);
+const mobx_react_1 = __webpack_require__(6);
 class RecordEditableFieldComponent extends EditableFieldComponent_1.EditableFieldComponent {
 }
 let RecordsEditor = class RecordsEditor extends React.Component {
@@ -23976,7 +23978,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 const React = __webpack_require__(0);
 const Overlay_1 = __webpack_require__(24);
-const mobx_react_1 = __webpack_require__(7);
+const mobx_react_1 = __webpack_require__(6);
 let ConflictResolution = class ConflictResolution extends React.Component {
     constructor() {
         super();
@@ -24085,7 +24087,7 @@ const falcon_core_1 = __webpack_require__(4);
 const ApiService_1 = __webpack_require__(8);
 const ComboDropdown_1 = __webpack_require__(20);
 const lodash_1 = __webpack_require__(5);
-const mobx_react_1 = __webpack_require__(7);
+const mobx_react_1 = __webpack_require__(6);
 let CreateEntity = class CreateEntity extends React.Component {
     constructor() {
         super();
@@ -24165,7 +24167,7 @@ const React = __webpack_require__(0);
 const Overlay_1 = __webpack_require__(24);
 const falcon_core_1 = __webpack_require__(4);
 const ApiService_1 = __webpack_require__(8);
-const mobx_react_1 = __webpack_require__(7);
+const mobx_react_1 = __webpack_require__(6);
 const mousetrap = __webpack_require__(38);
 let CreateEntityType = class CreateEntityType extends React.Component {
     constructor() {
@@ -24235,7 +24237,7 @@ const PredicateDescription_1 = __webpack_require__(112);
 const falcon_core_1 = __webpack_require__(4);
 const literalTypes_1 = __webpack_require__(113);
 const ApiService_1 = __webpack_require__(8);
-const mobx_react_1 = __webpack_require__(7);
+const mobx_react_1 = __webpack_require__(6);
 let CreatePredicate = class CreatePredicate extends React.Component {
     constructor() {
         super();
@@ -24343,7 +24345,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 const React = __webpack_require__(0);
 const falcon_core_1 = __webpack_require__(4);
 const ApiService_1 = __webpack_require__(8);
-const mobx_react_1 = __webpack_require__(7);
+const mobx_react_1 = __webpack_require__(6);
 let CreatePresetRecord = CreatePresetRecord_1 = class CreatePresetRecord extends React.Component {
     constructor() {
         super();
@@ -24421,7 +24423,7 @@ const Overlay_1 = __webpack_require__(24);
 const falcon_core_1 = __webpack_require__(4);
 const ApiService_1 = __webpack_require__(8);
 const ComboDropdown_1 = __webpack_require__(20);
-const mobx_react_1 = __webpack_require__(7);
+const mobx_react_1 = __webpack_require__(6);
 let CreateRecord = class CreateRecord extends React.Component {
     constructor() {
         super();
@@ -24500,7 +24502,7 @@ const React = __webpack_require__(0);
 const Overlay_1 = __webpack_require__(24);
 const falcon_core_1 = __webpack_require__(4);
 const ApiService_1 = __webpack_require__(8);
-const mobx_react_1 = __webpack_require__(7);
+const mobx_react_1 = __webpack_require__(6);
 const mousetrap = __webpack_require__(38);
 let CreateSource = class CreateSource extends React.Component {
     constructor() {
@@ -24572,7 +24574,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 const React = __webpack_require__(0);
 const Overlay_1 = __webpack_require__(24);
-const mobx_react_1 = __webpack_require__(7);
+const mobx_react_1 = __webpack_require__(6);
 const mousetrap = __webpack_require__(38);
 let CreateTabSet = class CreateTabSet extends React.Component {
     constructor() {
@@ -24655,7 +24657,7 @@ const ComboDropdown_1 = __webpack_require__(20);
 const lodash_1 = __webpack_require__(5);
 const AddTabButton_1 = __webpack_require__(13);
 const formatDate_1 = __webpack_require__(73);
-const mobx_react_1 = __webpack_require__(7);
+const mobx_react_1 = __webpack_require__(6);
 const sortIcons = {
     'none': 'fa fa-sort',
     'asc': 'fa fa-sort-asc',
@@ -24933,7 +24935,7 @@ const React = __webpack_require__(0);
 const AddTabButton_1 = __webpack_require__(13);
 const SearchBar_1 = __webpack_require__(42);
 const RecursiveTree_1 = __webpack_require__(111);
-const mobx_react_1 = __webpack_require__(7);
+const mobx_react_1 = __webpack_require__(6);
 class EntityRecursiveTree extends RecursiveTree_1.RecursiveTree {
 }
 let EntityTypeList = class EntityTypeList extends React.Component {
@@ -25021,7 +25023,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 const React = __webpack_require__(0);
 const AddTabButton_1 = __webpack_require__(13);
-const mobx_react_1 = __webpack_require__(7);
+const mobx_react_1 = __webpack_require__(6);
 const SearchBar_1 = __webpack_require__(42);
 let PredicateList = class PredicateList extends React.Component {
     constructor() {
@@ -25110,7 +25112,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 const React = __webpack_require__(0);
 const AddTabButton_1 = __webpack_require__(13);
-const mobx_react_1 = __webpack_require__(7);
+const mobx_react_1 = __webpack_require__(6);
 const SearchBar_1 = __webpack_require__(42);
 const RecursiveTree_1 = __webpack_require__(111);
 let SourceList = class SourceList extends React.Component {
@@ -25264,7 +25266,7 @@ const findParentTree_1 = __webpack_require__(72);
 const EditableHeader_1 = __webpack_require__(36);
 const EntityWorkspaceCoreView_1 = __webpack_require__(264);
 const EntityWorkspaceReferenceView_1 = __webpack_require__(265);
-const mobx_react_1 = __webpack_require__(7);
+const mobx_react_1 = __webpack_require__(6);
 class StringEditableFieldComponent extends EditableHeader_1.EditableFieldComponent {
 }
 class ComboEditableFieldComponent extends EditableHeader_1.EditableFieldComponent {
@@ -25434,7 +25436,7 @@ const AddTabButton_1 = __webpack_require__(13);
 const EditableHeader_1 = __webpack_require__(36);
 const EditableParagraph_1 = __webpack_require__(70);
 const EditableComboDropdown_1 = __webpack_require__(69);
-const mobx_react_1 = __webpack_require__(7);
+const mobx_react_1 = __webpack_require__(6);
 class StringEditableFieldComponent extends EditableHeader_1.EditableFieldComponent {
 }
 class ComboEditableFieldComponent extends EditableHeader_1.EditableFieldComponent {
@@ -25630,7 +25632,7 @@ const EditableHeader_1 = __webpack_require__(36);
 const EditableParagraph_1 = __webpack_require__(70);
 const PredicateDescription_1 = __webpack_require__(112);
 const literalTypes_1 = __webpack_require__(113);
-const mobx_react_1 = __webpack_require__(7);
+const mobx_react_1 = __webpack_require__(6);
 class StringEditableFieldComponent extends EditableHeader_1.EditableFieldComponent {
 }
 // - Should state the number of times this predicate is used
@@ -25799,7 +25801,7 @@ const EditableHeader_1 = __webpack_require__(36);
 const EditableParagraph_1 = __webpack_require__(70);
 const EditableComboDropdown_1 = __webpack_require__(69);
 const lodash_1 = __webpack_require__(5);
-const mobx_react_1 = __webpack_require__(7);
+const mobx_react_1 = __webpack_require__(6);
 const AddTabButton_1 = __webpack_require__(13);
 class StringEditableFieldComponent extends EditableHeader_1.EditableFieldComponent {
 }
@@ -26748,7 +26750,7 @@ const DataController_1 = __webpack_require__(267);
 const ModalStore_1 = __webpack_require__(269);
 const react_sortable_hoc_1 = __webpack_require__(79);
 const mobx_react_devtools_1 = __webpack_require__(293);
-const mobx_react_1 = __webpack_require__(7);
+const mobx_react_1 = __webpack_require__(6);
 const ObjectEditorCore = react_sortable_hoc_1.SortableContainer((props) => {
     return (React.createElement("span", { className: 'flex-fill' },
         React.createElement(Sidebar_1.Sidebar, { list: props.list, id: props.id, workspace: props.workspace }),

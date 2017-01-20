@@ -114,7 +114,7 @@ export class RecordPredicate extends React.Component<RecordPredicateProps, Recor
                             additionalProps={{
                                 dimension: 'predicates',
                                 sources: this.props.sources,
-                                entities: this.state.potentialValues,
+                                entities: this.state.potentialValues
                             }}
                         />
                     ))}
