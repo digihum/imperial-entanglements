@@ -4,19 +4,17 @@
 
 A database and VRE to support the Imperial Entanglements Project by Kirsty Hooper.
 
-Building generates two directories:
-
-- build : All of the TypeScript is transpiled to JavaScript and put here. Directory structure is identical to the root directory. 
-- dist: The binaries for the electron app are placed here.
-
 ## How to deploy
 - Clone git repo
 - Run `npm install`
-- Run `npm run tsc` to compile TypeScript
-- Run `npm run webpack` to build the frontend bundle
+- Run `npm run webpack` to build code
 - Run `gulp`
-- Copy `index.html` from `./common` to `./build/common`
-- Run `node ./build/server/index`
+- Run `node ./dist/server/app.backend.dist`
+
+## Other commands
+
+- `npm test` to run test suite
+- `npm run gen-docs` to generate technical documentation
 
 ## How to build sqlite3 for electron
 

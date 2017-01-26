@@ -9,7 +9,7 @@ import { Database } from '../data/Database';
 import { Source, Serializer } from 'falcon-core';
 import { GenericController } from './GenericController';
 
-import { OperationNotPermittedException } from '../../common/Exceptions';
+import { OperationNotPermittedException, InvalidUpdateException } from '../../common/Exceptions';
 
 import { RecordController } from './RecordController';
 
@@ -22,6 +22,15 @@ export class SourceController extends GenericController<Source> {
     }
 
     public toSchema(data: Source) {
+
+        const allowedKeys = new Set(['uid', 'label', 'parent', 'sameAs', 'readonly', 'creator', 'creationTimestamp', 'lastmodifiedTimestamp']);
+
+        const extraKeys = Object.keys(data).filter((a) => !allowedKeys.has(a));
+
+        if (extraKeys.length > 0) {
+          throw new InvalidUpdateException('Unknown keys: ' + extraKeys.join(', '));
+        }
+
         return Object.assign({}, omit(Serializer.toJson(data),
             'metaData',
             'sameAs',
@@ -37,8 +46,14 @@ export class SourceController extends GenericController<Source> {
     }
 
     public fromSchema(data: any) : Source {
-        return Object.assign(Object.create(Source.prototype), Object.assign(data, {
-            'sameAs': data.same_as
+        return Object.assign(Object.create(Source.prototype), Object.assign(omit(data,
+          'same_as',
+          'creation_timestamp',
+          'lastmodified_timestamp'
+        ), {
+            'sameAs': data.same_as,
+            'creationTimestamp': data.creation_timestamp,
+            'lastmodifiedTimestamp': data.lastmodified_timestamp
         }));
     }
 

@@ -24,7 +24,9 @@ export class PredicateController extends GenericController<Predicate> {
 
     public static toSchema(data: Predicate) {
 
-        const allowedKeys = new Set(['uid', 'uses', 'label', 'domain', 'range', 'description', 'rangeIsReference', 'sameAs', 'creator', 'creationTimestamp', 'lastmodifiedTimestamp']);
+        const allowedKeys = new Set(['uid', 'uses', 'label', 'domain', 'range',
+          'description', 'rangeIsReference', 'sameAs', 'creator', 'creationTimestamp', 'lastmodifiedTimestamp']);
+
         const extraKeys = Object.keys(data).filter((a) => !allowedKeys.has(a));
 
         if (extraKeys.length > 0) {

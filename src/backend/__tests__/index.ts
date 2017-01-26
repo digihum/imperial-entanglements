@@ -9,8 +9,10 @@ chai.use(chaiPromise);
 
 import { entityTests } from './entityTests';
 import { predicateTests } from './predicateTests';
+import { sourceTests } from './sourceTests';
 
 describe('Falcon API', () => {
   entityTests(chai);
   predicateTests(chai);
+  sourceTests(chai);
 });
