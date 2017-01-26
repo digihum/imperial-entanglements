@@ -276,7 +276,7 @@ export class SourceEditorWorkspace extends React.Component<SourceEditorProps, So
                     <div className='edit-group'>
                         <label className='small'>Parent</label>
                         <ComboEditableFieldComponent
-                            value={{key: parentName, value: source.parent!.toString()}}
+                            value={{key: parentName, value: source.parent}}
                             component={EditableComboDropdown}
                             onChange={(value) => this.updateSource('parent', value.value)}
                             additionalProps={{ comboSettings: {

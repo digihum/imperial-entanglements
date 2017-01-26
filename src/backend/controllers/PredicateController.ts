@@ -80,7 +80,8 @@ export class PredicateController extends GenericController<Predicate> {
             'rangeIsReference': data.rangeIsReference,
             'range': data.range,
             'domain': data.domain,
-            'uses': data.uses
+            'uses': data.uses,
+            'description': data.description
 
         });
     }

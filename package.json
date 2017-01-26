@@ -44,6 +44,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@digihum/falcon-core": "^0.8.0",
     "@types/bcrypt": "0.0.30",
     "@types/chai": "^3.4.34",
     "@types/chai-http": "0.0.29",
@@ -59,7 +60,6 @@
     "bcrypt": "^0.8.7",
     "dotenv": "^2.0.0",
     "etag": "^1.7.0",
-    "falcon-core": "git+ssh://git@actechlab.warwick.ac.uk:u1572229/falcon-core.git",
     "font-awesome": "^4.7.0",
     "graphql": "^0.7.2",
     "immutable": "^3.8.1",

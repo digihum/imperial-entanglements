@@ -9881,7 +9881,8 @@ class PredicateController extends GenericController_1.GenericController {
             'rangeIsReference': data.rangeIsReference,
             'range': data.range,
             'domain': data.domain,
-            'uses': data.uses
+            'uses': data.uses,
+            'description': data.description
         });
     }
     toSchema(data) {
@@ -23202,7 +23203,7 @@ const Card = react_sortable_hoc_1.SortableElement(mobx_react_1.observer((props) 
             }
             return classes.join(' ');
         })(props.currentTab) },
-        React.createElement(Handle, { tabType: props.tab.tabType, index: props.index, collection: props.collection, disabled: props.disabled }),
+        React.createElement(Handle, { tabType: props.tab.tabType, index: props.index }),
         React.createElement("div", { className: 'description' },
             React.createElement(react_router_1.Link, { to: props.url },
                 React.createElement("span", { className: 'entity-name' }, props.title),
@@ -24672,8 +24673,6 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 const React = __webpack_require__(0);
 const lev = __webpack_require__(291);
-const ApiService_1 = __webpack_require__(8);
-const falcon_core_1 = __webpack_require__(4);
 const ComboDropdown_1 = __webpack_require__(20);
 const lodash_1 = __webpack_require__(5);
 const AddTabButton_1 = __webpack_require__(13);
@@ -24738,17 +24737,17 @@ let EntityList = class EntityList extends React.Component {
         }
         this.setState({
             columns,
-            queryData: queryStringOptions === null ? {} : queryStringOptions,
-        }, this.reload.bind(this));
+            queryData: queryStringOptions === null ? {} : queryStringOptions
+        });
     }
-    reload() {
-        const setColumns = this.state.columns.filter((col) => col.predicate != -1);
-        this.props.dataStore.getCollection(falcon_core_1.Record, ApiService_1.AppUrls.record, {
-            predicate: setColumns.map((col) => col.predicate),
-            entity: this.props.dataStore.dataStore.all.entity.value.map((entity) => entity.uid)
-        })
-            .then((results) => this.setState({ results }));
-    }
+    // public reload() {
+    //     const setColumns = this.state.columns.filter((col) => col.predicate != -1);
+    //     this.props.dataStore!.getCollection(Record, AppUrls.record, {
+    //         predicate: setColumns.map((col) => col.predicate),
+    //         entity: this.props.dataStore!.dataStore.all.entity.value.map((entity) => entity.uid)
+    //     })
+    //     .then((results) => this.setState({ results }));
+    // }
     addNew() {
         const a = {
             name: 'entity',
@@ -24781,7 +24780,7 @@ let EntityList = class EntityList extends React.Component {
         }
         this.setState({
             columns
-        }, this.reload.bind(this));
+        });
     }
     addViewTab() {
         const tabData = {};
@@ -25964,14 +25963,22 @@ let SourceEditorWorkspace = class SourceEditorWorkspace extends React.Component 
                             .slice()
                             .reverse()
                             .map((child) => this.props.dataStore.dataStore.all.source.value.find((et) => et.uid === child))
-                            .map((parent, i) => (React.createElement("span", { key: `breadcrumb-${parent.uid}` },
-                            React.createElement("span", null,
-                                "  ",
-                                parent.label,
-                                " ",
-                                React.createElement(AddTabButton_1.AddTabButton, { tabType: 'source', uid: parent.uid }),
-                                " "),
-                            React.createElement("i", { className: 'fa fa-angle-right' }))))),
+                            .map((parent, i) => {
+                            if (parent === undefined) {
+                                throw new Error('Encountered undefined parent');
+                            }
+                            if (parent.uid === null) {
+                                throw new Error('Encountered parent with null uid');
+                            }
+                            return (React.createElement("span", { key: `breadcrumb-${parent.uid}` },
+                                React.createElement("span", null,
+                                    "  ",
+                                    parent.label,
+                                    " ",
+                                    React.createElement(AddTabButton_1.AddTabButton, { tabType: 'source', uid: parent.uid }),
+                                    " "),
+                                React.createElement("i", { className: 'fa fa-angle-right' })));
+                        })),
                         React.createElement("i", { className: 'fa fa-sun-o item-icon' }),
                         React.createElement(StringEditableFieldComponent, { value: source.label, component: EditableHeader_1.EditableHeader, onChange: (value) => this.updateSource('label', value) })),
                     React.createElement("div", { className: 'sub-toolbar' },
@@ -26002,7 +26009,7 @@ let SourceEditorWorkspace = class SourceEditorWorkspace extends React.Component 
                             element.label,
                             " ",
                             React.createElement("small", null,
-                                React.createElement("a", { href: element.url }, element.uri))),
+                                React.createElement("a", { href: element.uri }, element.uri))),
                         React.createElement("p", { className: 'element-description' }, element.description),
                         React.createElement("ul", null, values.map((value) => value.source != this.props.id ? (React.createElement("li", { key: `${element.uid}-${value.source}` },
                             this.props.dataStore.dataStore.all.source.value.find((s) => s.uid === value.source).label,

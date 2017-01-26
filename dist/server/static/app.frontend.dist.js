@@ -40096,8 +40096,6 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 const React = __webpack_require__(1);
 const lev = __webpack_require__(207);
-const ApiService_1 = __webpack_require__(4);
-const falcon_core_1 = __webpack_require__(5);
 const ComboDropdown_1 = __webpack_require__(10);
 const lodash_1 = __webpack_require__(6);
 const AddTabButton_1 = __webpack_require__(7);
@@ -40162,17 +40160,17 @@ let EntityList = class EntityList extends React.Component {
         }
         this.setState({
             columns,
-            queryData: queryStringOptions === null ? {} : queryStringOptions,
-        }, this.reload.bind(this));
+            queryData: queryStringOptions === null ? {} : queryStringOptions
+        });
     }
-    reload() {
-        const setColumns = this.state.columns.filter((col) => col.predicate != -1);
-        this.props.dataStore.getCollection(falcon_core_1.Record, ApiService_1.AppUrls.record, {
-            predicate: setColumns.map((col) => col.predicate),
-            entity: this.props.dataStore.dataStore.all.entity.value.map((entity) => entity.uid)
-        })
-            .then((results) => this.setState({ results }));
-    }
+    // public reload() {
+    //     const setColumns = this.state.columns.filter((col) => col.predicate != -1);
+    //     this.props.dataStore!.getCollection(Record, AppUrls.record, {
+    //         predicate: setColumns.map((col) => col.predicate),
+    //         entity: this.props.dataStore!.dataStore.all.entity.value.map((entity) => entity.uid)
+    //     })
+    //     .then((results) => this.setState({ results }));
+    // }
     addNew() {
         const a = {
             name: 'entity',
@@ -40205,7 +40203,7 @@ let EntityList = class EntityList extends React.Component {
         }
         this.setState({
             columns
-        }, this.reload.bind(this));
+        });
     }
     addViewTab() {
         const tabData = {};
@@ -41418,7 +41416,7 @@ let SourceEditorWorkspace = class SourceEditorWorkspace extends React.Component 
             React.createElement("section", { className: 'editor-body' },
                 React.createElement("div", { className: 'edit-group' },
                     React.createElement("label", { className: 'small' }, "Parent"),
-                    React.createElement(ComboEditableFieldComponent, { value: { key: parentName, value: source.parent.toString() }, component: EditableComboDropdown_1.EditableComboDropdown, onChange: (value) => this.updateSource('parent', value.value), additionalProps: { comboSettings: {
+                    React.createElement(ComboEditableFieldComponent, { value: { key: parentName, value: source.parent }, component: EditableComboDropdown_1.EditableComboDropdown, onChange: (value) => this.updateSource('parent', value.value), additionalProps: { comboSettings: {
                                 options: potentialParents.map((par) => ({ key: par.label, value: par.uid })),
                                 typeName: 'Source'
                             } } }),

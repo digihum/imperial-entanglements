@@ -137,20 +137,20 @@ export class EntityList extends React.Component<EntityListProps, EntityListState
         }
          this.setState({
             columns,
-            queryData: queryStringOptions === null ? {} : queryStringOptions,
-        }, this.reload.bind(this));
+            queryData: queryStringOptions === null ? {} : queryStringOptions
+        });
     }
 
-    public reload() {
+    // public reload() {
 
-        const setColumns = this.state.columns.filter((col) => col.predicate != -1);
+    //     const setColumns = this.state.columns.filter((col) => col.predicate != -1);
 
-        this.props.dataStore!.getCollection(Record, AppUrls.record, {
-            predicate: setColumns.map((col) => col.predicate),
-            entity: this.props.dataStore!.dataStore.all.entity.value.map((entity) => entity.uid)
-        })
-        .then((results) => this.setState({ results }));
-    }
+    //     this.props.dataStore!.getCollection(Record, AppUrls.record, {
+    //         predicate: setColumns.map((col) => col.predicate),
+    //         entity: this.props.dataStore!.dataStore.all.entity.value.map((entity) => entity.uid)
+    //     })
+    //     .then((results) => this.setState({ results }));
+    // }
 
     public addNew() {
         const a : ModalDefinition = {
@@ -187,14 +187,14 @@ export class EntityList extends React.Component<EntityListProps, EntityListState
         }
         this.setState({
             columns
-        }, this.reload.bind(this));
+        });
     }
 
     public addViewTab() {
       const tabData = {};
 
       const mapping = [
-        { key: 'p', display: 'Predicate', mod: (data) => this.props.dataStore!.dataStore.all.predicate.value.find((pred) => pred.uid == data).label },
+        { key: 'p', display: 'Predicate', mod: (data) => this.props.dataStore!.dataStore.all.predicate.value.find((pred) => pred.uid == data)!.label },
         { key: 's', display: 'Sort', mod: (data) => data },
         { key: 'f', display: 'filterType', mod: (data) => data },
         { key: 'v', display: 'filterValue', mod: (data) => data },
@@ -249,14 +249,14 @@ export class EntityList extends React.Component<EntityListProps, EntityListState
                                         if (pred.value === null) {
                                             return 'Not set';
                                         }
-                                        return this.props.dataStore!.dataStore.all.source.value.find((source) => source.uid === pred.value).label;
+                                        return this.props.dataStore!.dataStore.all.source.value.find((source) => source.uid === pred.value)!.label;
                                     }
 
                                     if (pred.valueType === 'entity') {
                                         if (pred.value === null) {
                                             return 'Not set';
                                         }
-                                        return this.props.dataStore!.dataStore.all.entity.value.find((entity) => entity.uid === pred.value).label;
+                                        return this.props.dataStore!.dataStore.all.entity.value.find((entity) => entity.uid === pred.value)!.label;
                                     }
 
                                     return pred.value;
@@ -271,13 +271,13 @@ export class EntityList extends React.Component<EntityListProps, EntityListState
             let keepRow = true;
             this.state.columns.forEach((col, i) => {
                 if (col.filterType === 'contains' && col.filterValue.length > 0 && col.predicate !== null) {
-                    if (row.columns[i].toLowerCase().indexOf(col.filterValue.toLowerCase()) === -1) {
+                    if (row.columns[i]!.toLowerCase().indexOf(col.filterValue.toLowerCase()) === -1) {
                         keepRow = false;
                     }
                 }
 
                 if (col.filterType === 'exists' && col.predicate !== null) {
-                    if (row.columns[i].length === 0) {
+                    if (row.columns[i]!.length === 0) {
                         keepRow = false;
                     }
                 }
@@ -382,7 +382,7 @@ export class EntityList extends React.Component<EntityListProps, EntityListState
                             <tr key={`entity-${row.uid}`}>
                                 <td>{row.uid}</td>
                                 <td>{row.label} <AddTabButton
-                                    uid={row.uid}
+                                    uid={row.uid!}
                                     tabType='entity'/></td>
                                 <td>{row.entityType ? row.entityType.label : ''}</td>
                                 {[0,1,2].map((id) => (<td key={`col-val-${id}`}>{row.columns[id]}</td>))}
