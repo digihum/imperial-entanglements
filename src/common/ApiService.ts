@@ -4,7 +4,7 @@
  * @version 0.2.0
  */
 
-import { TrackedFalconItem, CompositeKey } from 'falcon-core';
+import { TrackedFalconItem, CompositeKey } from '@digihum/falcon-core';
 
 import { itemTypes } from './itemTypes';
 

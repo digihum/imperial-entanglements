@@ -9,7 +9,7 @@ import { Database } from '../data/Database';
 
 import { InvalidUpdateException } from '../../common/Exceptions';
 
-import { CompositeKey, FalconItem } from 'falcon-core';
+import { CompositeKey, FalconItem } from '@digihum/falcon-core';
 
 export abstract class GenericController<T extends FalconItem> implements IController {
 

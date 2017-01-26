@@ -5,7 +5,7 @@
  */
 
 import { ApiService } from '../common/ApiService';
-import { Serializer, TrackedFalconItem, CompositeKey } from 'falcon-core';
+import { Serializer, TrackedFalconItem, CompositeKey } from '@digihum/falcon-core';
 import * as queryString from 'query-string';
 
 import { isObject } from 'lodash';

@@ -6,7 +6,7 @@
 
 import { Database } from '../data/Database';
 
-import { Predicate, Serializer } from 'falcon-core';
+import { Predicate, Serializer } from '@digihum/falcon-core';
 
 import { GenericController } from './GenericController';
 

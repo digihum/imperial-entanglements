@@ -9,7 +9,7 @@ import * as React from 'react';
 import { RecordsEditor } from '../entity_editor/RecordsEditor';
 import { AppUrls } from '../../ApiService';
 
-import { Entity, Record, Serializer } from 'falcon-core';
+import { Entity, Record, Serializer } from '@digihum/falcon-core';
 
 import { ComboDropdown, ComboDropdownOption } from '../ComboDropdown';
 import { ModalDefinition } from '../modal/ModalDefinition';

@@ -7,7 +7,7 @@
 import * as React from 'react';
 
 import { Overlay } from '../Overlay';
-import { Entity, EntityType, Serializer } from 'falcon-core';
+import { Entity, EntityType, Serializer } from '@digihum/falcon-core';
 import { AppUrls } from '../../ApiService';
 import { ComboDropdown, ComboDropdownOption } from '../ComboDropdown';
 

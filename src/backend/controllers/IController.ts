@@ -4,7 +4,7 @@
  * @version 0.2.0
  */
 
-import { FalconItem, CompositeKey } from 'falcon-core';
+import { FalconItem, CompositeKey } from '@digihum/falcon-core';
 export interface IController {
 
     getItemJson<T extends FalconItem>(obj: { new(): T; }, uid: number | CompositeKey) : Promise<T>;

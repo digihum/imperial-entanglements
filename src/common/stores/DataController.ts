@@ -4,7 +4,7 @@
  * @version 0.2.0
  */
 
-import { FalconItem, Entity, Record, Source, Predicate, EntityType, SourceElement, ElementSet } from 'falcon-core';
+import { FalconItem, Entity, Record, Source, Predicate, EntityType, SourceElement, ElementSet } from '@digihum/falcon-core';
 import { ApiService, AppUrls } from '../ApiService';
 import { DataStore, emptyTabs, emptyDataStore } from './DataStore';
 import { Tab } from '../components/Sidebar';
@@ -12,7 +12,7 @@ import { Tab } from '../components/Sidebar';
 import { Map } from 'immutable';
 import { arrayMove } from 'react-sortable-hoc';
 
-import { TrackedFalconItem, CompositeKey } from 'falcon-core';
+import { TrackedFalconItem, CompositeKey } from '@digihum/falcon-core';
 
 import { observable, action } from 'mobx';
 

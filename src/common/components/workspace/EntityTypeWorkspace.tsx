@@ -9,7 +9,7 @@ import * as React from 'react';
 import { SameAsEditor } from '../fields/SameAsEditor';
 import { AppUrls } from '../../ApiService';
 
-import { EntityType, Serializer } from 'falcon-core';
+import { EntityType, Serializer } from '@digihum/falcon-core';
 
 import { AddTabButton } from '../AddTabButton';
 

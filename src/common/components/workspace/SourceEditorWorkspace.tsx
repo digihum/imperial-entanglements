@@ -10,7 +10,7 @@ import { SameAsEditor } from '../fields/SameAsEditor';
 import { Loading } from '../Loading';
 import { AppUrls } from '../../ApiService';
 
-import { Source, Serializer, Element, SourceElement, Record } from 'falcon-core';
+import { Source, Serializer, Element, SourceElement, Record } from '@digihum/falcon-core';
 
 import { EditableHeader, EditableFieldComponent } from '../fields/EditableHeader';
 import { EditableParagraph } from '../fields/EditableParagraph';

@@ -6,7 +6,7 @@
 
 import * as React from 'react';
 
-import { Source } from 'falcon-core';
+import { Source } from '@digihum/falcon-core';
 
 import { AddTabButton } from '../AddTabButton';
 

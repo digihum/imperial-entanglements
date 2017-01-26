@@ -8,7 +8,7 @@ import * as React from 'react';
 
 import { Overlay } from '../Overlay';
 import { PredicateDescription } from '../fields/PredicateDescription';
-import { Predicate, EntityType, Serializer } from 'falcon-core';
+import { Predicate, EntityType, Serializer } from '@digihum/falcon-core';
 import { literalTypes } from '../../literalTypes';
 import { AppUrls } from '../../ApiService';
 

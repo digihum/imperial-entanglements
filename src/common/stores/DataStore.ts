@@ -5,7 +5,7 @@
  */
 
 import { Map } from 'immutable';
-import { Predicate, EntityType, Entity, Record, Source, SourceElement, ElementSet } from 'falcon-core';
+import { Predicate, EntityType, Entity, Record, Source, SourceElement, ElementSet } from '@digihum/falcon-core';
 import * as moment from 'moment';
 
 export interface DataStoreEntry<T> {

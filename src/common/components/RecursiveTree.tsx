@@ -5,7 +5,7 @@
  */
 
 import * as React from 'react';
-import { FalconItem, HierarchicalItem } from 'falcon-core';
+import { FalconItem, HierarchicalItem } from '@digihum/falcon-core';
 import { AddTabButton } from './AddTabButton';
 import { DataController } from '../stores/DataController';
 

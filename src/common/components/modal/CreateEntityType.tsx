@@ -7,7 +7,7 @@
 import * as React from 'react';
 
 import { Overlay } from '../Overlay';
-import { EntityType, Serializer } from 'falcon-core';
+import { EntityType, Serializer } from '@digihum/falcon-core';
 import { AppUrls } from '../../ApiService';
 
 import { DataController } from '../../stores/DataController';

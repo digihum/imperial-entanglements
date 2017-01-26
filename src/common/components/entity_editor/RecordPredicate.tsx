@@ -8,7 +8,7 @@ import * as React from 'react';
 import { ApiService, AppUrls } from '../../ApiService';
 import { DataController } from '../../stores/DataController';
 
-import { Record, Predicate, Source, Entity, Serializer } from 'falcon-core';
+import { Record, Predicate, Source, Entity, Serializer } from '@digihum/falcon-core';
 import { EditableFieldComponent } from '../fields/EditableFieldComponent';
 
 import { RecordRow } from './RecordRow';

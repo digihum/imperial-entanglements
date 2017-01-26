@@ -10,7 +10,7 @@ import { Link } from 'react-router';
 import { SameAsEditor } from '../fields/SameAsEditor';
 import { AppUrls } from '../../ApiService';
 
-import { Predicate, Serializer, Record } from 'falcon-core';
+import { Predicate, Serializer, Record } from '@digihum/falcon-core';
 
 import { EditableHeader, EditableFieldComponent } from '../fields/EditableHeader';
 import { EditableParagraph } from '../fields/EditableParagraph';

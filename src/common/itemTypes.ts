@@ -4,7 +4,7 @@
  * @version 0.2.0
  */
 
-import { CompositeKey, FalconItem, ElementSet, Record, Entity, EntityType, Predicate, Source, SourceElement, Element } from 'falcon-core';
+import { CompositeKey, FalconItem, ElementSet, Record, Entity, EntityType, Predicate, Source, SourceElement, Element } from '@digihum/falcon-core';
 
 interface ItemDescription {
     machineName: string;

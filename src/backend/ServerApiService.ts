@@ -11,7 +11,7 @@ import { CollectionNotFoundException } from '../common/Exceptions';
 
 import { QueryEngine } from './QueryEngine';
 
-import { CompositeKey, TrackedFalconItem } from 'falcon-core';
+import { CompositeKey, TrackedFalconItem } from '@digihum/falcon-core';
 
 import * as moment from 'moment';
 

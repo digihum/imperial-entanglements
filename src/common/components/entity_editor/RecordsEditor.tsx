@@ -10,7 +10,7 @@ import { AppUrls } from '../../ApiService';
 import { DataController } from '../../stores/DataController';
 import { ModalStore } from '../../stores/ModalStore';
 
-import { Record, Predicate, Source } from 'falcon-core';
+import { Record, Predicate, Source } from '@digihum/falcon-core';
 import { EditableFieldComponent } from '../fields/EditableFieldComponent';
 
 import { SearchBar } from '../SearchBar';

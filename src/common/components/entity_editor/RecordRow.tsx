@@ -6,7 +6,7 @@
 
 import * as React from 'react';
 
-import { Record, Source, Entity } from 'falcon-core';
+import { Record, Source, Entity } from '@digihum/falcon-core';
 import { EditableSubfieldProps } from '../fields/EditableFieldComponent';
 export { EditableFieldComponent } from '../fields/EditableFieldComponent';
 import { ScorePicker } from '../fields/ScorePicker';

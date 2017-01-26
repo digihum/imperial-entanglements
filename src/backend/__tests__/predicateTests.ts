@@ -8,7 +8,7 @@
 //During the test the env variable is set to test
 process.env.NODE_ENV = 'test';
 
-import { Serializer, Record, Predicate } from 'falcon-core';
+import { Serializer, Record, Predicate } from '@digihum/falcon-core';
 import { AppUrls } from '../../common/ApiService';
 
 import { knex, api } from './testHelper';

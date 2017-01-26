@@ -7,7 +7,7 @@
 import { expect } from 'chai';
 import * as Knex from 'knex';
 
-import { ElementSet, Serializer } from 'falcon-core';
+import { ElementSet, Serializer } from '@digihum/falcon-core';
 import { ServerApiService, AppUrls } from '../../backend/ServerApiService';
 import { wrapDatabase } from '../../backend/data/wrapDatabase';
 import { Database } from '../../backend/data/Database';

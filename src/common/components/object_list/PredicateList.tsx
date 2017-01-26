@@ -6,7 +6,7 @@
 
 import * as React from 'react';
 
-import { Predicate } from 'falcon-core';
+import { Predicate } from '@digihum/falcon-core';
 
 import { AddTabButton } from '../AddTabButton';
 

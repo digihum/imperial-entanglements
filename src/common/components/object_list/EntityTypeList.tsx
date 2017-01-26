@@ -6,7 +6,7 @@
 
 import * as React from 'react';
 
-import { EntityType } from 'falcon-core';
+import { EntityType } from '@digihum/falcon-core';
 
 import { AddTabButton } from '../AddTabButton';
 

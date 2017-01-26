@@ -6,7 +6,7 @@
 
 import { Database } from '../data/Database';
 
-import { Entity, Serializer } from 'falcon-core';
+import { Entity, Serializer } from '@digihum/falcon-core';
 import { GenericController } from './GenericController';
 
 import { OperationNotPermittedException, InvalidUpdateException } from '../../common/Exceptions';

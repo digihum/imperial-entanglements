@@ -17,7 +17,7 @@ import { wrapDatabase } from '../../backend/data/wrapDatabase';
 import * as koaConditionalGet from 'koa-conditional-get';
 import * as koaEtags from 'koa-etag';
 
-import { Serializer } from 'falcon-core';
+import { Serializer } from '@digihum/falcon-core';
 
 import { itemTypes } from '../../common/itemTypes';
 

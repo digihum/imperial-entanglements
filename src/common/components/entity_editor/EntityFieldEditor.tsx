@@ -6,7 +6,7 @@
 
 import * as React from 'react';
 import { ComboDropdown, ComboDropdownOption } from '../ComboDropdown';
-import { Entity } from 'falcon-core';
+import { Entity } from '@digihum/falcon-core';
 import { noop, toString } from 'lodash';
 
 
