@@ -9840,7 +9840,8 @@ class PredicateController extends GenericController_1.GenericController {
         super(db, 'predicates', 'predicate_complete');
     }
     static toSchema(data) {
-        const allowedKeys = new Set(['uid', 'uses', 'label', 'domain', 'range', 'description', 'rangeIsReference', 'sameAs', 'creator', 'creationTimestamp', 'lastmodifiedTimestamp']);
+        const allowedKeys = new Set(['uid', 'uses', 'label', 'domain', 'range',
+            'description', 'rangeIsReference', 'sameAs', 'creator', 'creationTimestamp', 'lastmodifiedTimestamp']);
         const extraKeys = Object.keys(data).filter((a) => !allowedKeys.has(a));
         if (extraKeys.length > 0) {
             throw new Exceptions_1.InvalidUpdateException('Unknown keys: ' + extraKeys.join(', '));
@@ -22544,6 +22545,11 @@ class SourceController extends GenericController_1.GenericController {
         super(db, 'sources');
     }
     toSchema(data) {
+        const allowedKeys = new Set(['uid', 'label', 'parent', 'sameAs', 'readonly', 'creator', 'creationTimestamp', 'lastmodifiedTimestamp']);
+        const extraKeys = Object.keys(data).filter((a) => !allowedKeys.has(a));
+        if (extraKeys.length > 0) {
+            throw new Exceptions_1.InvalidUpdateException('Unknown keys: ' + extraKeys.join(', '));
+        }
         return Object.assign({}, lodash_1.omit(falcon_core_1.Serializer.toJson(data), 'metaData', 'sameAs', 'parents', 'children', 'creationTimestamp', 'lastmodifiedTimestamp'), {
             same_as: data.sameAs,
             creation_timestamp: data.creationTimestamp,
@@ -22551,8 +22557,10 @@ class SourceController extends GenericController_1.GenericController {
         });
     }
     fromSchema(data) {
-        return Object.assign(Object.create(falcon_core_1.Source.prototype), Object.assign(data, {
-            'sameAs': data.same_as
+        return Object.assign(Object.create(falcon_core_1.Source.prototype), Object.assign(lodash_1.omit(data, 'same_as', 'creation_timestamp', 'lastmodified_timestamp'), {
+            'sameAs': data.same_as,
+            'creationTimestamp': data.creation_timestamp,
+            'lastmodifiedTimestamp': data.lastmodified_timestamp
         }));
     }
     // override the getItemJson and getCollectionJson functions to also get information about the
@@ -26567,21 +26575,21 @@ class ModalStore {
         };
         switch (this.modalQueue[0].name) {
             case 'predicate':
-                return (React.createElement(CreatePredicate_1.CreatePredicate, __assign({}, sharedProps, this.modalQueue[0].settings)));
+                return (React.createElement(CreatePredicate_1.CreatePredicate, __assign({}, sharedProps, { initialName: this.modalQueue[0].settings['initialName'] })));
             case 'record':
-                return (React.createElement(CreateRecord_1.CreateRecord, __assign({}, sharedProps, this.modalQueue[0].settings)));
+                return (React.createElement(CreateRecord_1.CreateRecord, __assign({}, sharedProps, { entityType: this.modalQueue[0].settings['entityType'], entityUid: this.modalQueue[0].settings['entityUid'], options: this.modalQueue[0].settings['options'] })));
             case 'preset_record':
-                return (React.createElement(CreatePresetRecord_1.CreatePresetRecord, __assign({}, sharedProps, this.modalQueue[0].settings)));
+                return (React.createElement(CreatePresetRecord_1.CreatePresetRecord, __assign({}, sharedProps, { source: this.modalQueue[0].settings['source'] })));
             case 'source':
-                return (React.createElement(CreateSource_1.CreateSource, __assign({}, sharedProps, this.modalQueue[0].settings)));
+                return (React.createElement(CreateSource_1.CreateSource, __assign({}, sharedProps, { initialValue: this.modalQueue[0].settings['initialName'] })));
             case 'entity':
                 return (React.createElement(CreateEntity_1.CreateEntity, __assign({}, sharedProps, this.modalQueue[0].settings)));
             case 'entity_type':
                 return (React.createElement(CreateEntityType_1.CreateEntityType, __assign({}, sharedProps, this.modalQueue[0].settings)));
             case 'conflict_resolution':
-                return (React.createElement(ConflictResolution_1.ConflictResolution, __assign({}, sharedProps, this.modalQueue[0].settings)));
+                return (React.createElement(ConflictResolution_1.ConflictResolution, __assign({}, sharedProps, { conflictingItems: this.modalQueue[0].settings['conflictingItems'], message: this.modalQueue[0].settings['message'] })));
             case 'createTabSet':
-                return (React.createElement(CreateTabSet_1.CreateTabSet, __assign({}, sharedProps, this.modalQueue[0].settings)));
+                return (React.createElement(CreateTabSet_1.CreateTabSet, __assign({}, sharedProps)));
         }
         return null;
     }

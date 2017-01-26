@@ -72,7 +72,7 @@ export class PredicateEditorWorkspace extends React.Component<PredicateEditorPro
         const rangeIsReferenceVal = rangeIsReferenceOverride === null
             ? predicate.rangeIsReference : rangeIsReferenceOverride;
 
-        this.props.dataStore!.patchItem(Predicate, AppUrls.predicate, predicate.uid,
+        this.props.dataStore!.patchItem(Predicate, AppUrls.predicate, predicate.uid!,
         {
             [field]: value,
             rangeIsReference: rangeIsReferenceVal
@@ -213,7 +213,7 @@ export class PredicateEditorWorkspace extends React.Component<PredicateEditorPro
                     <div className='edit-group'>
                         <label className='small'>Description</label>
                         <StringEditableFieldComponent
-                            value={predicate.description}
+                            value={predicate.description!}
                             component={EditableParagraph}
                             onChange={(value) => this.updatePredicate('description', value)}  />
                     </div>
@@ -223,8 +223,8 @@ export class PredicateEditorWorkspace extends React.Component<PredicateEditorPro
                         <PredicateDescription
                             domain={domain}
                             range={range}
-                            domainChanged={(value) => this.updatePredicate('domain', value.value)}
-                            rangeChanged={(value) => this.updatePredicate('range', value.value, value.meta !== 'literal')}
+                            domainChanged={(value) => this.updatePredicate('domain', value.value!)}
+                            rangeChanged={(value) => this.updatePredicate('range', value.value!, value.meta !== 'literal')}
                             mode='editSingle'
                             domainOptions={entityTypeOptions}
                             rangeOptions={literalTypeOptions.concat(entityTypeOptions)}
@@ -233,7 +233,7 @@ export class PredicateEditorWorkspace extends React.Component<PredicateEditorPro
 
                     <div>
                         <StringEditableFieldComponent
-                            value={predicate.sameAs}
+                            value={predicate.sameAs!}
                             component={SameAsEditor}
                             onChange={(value) => this.updatePredicate('sameAs', value)} />
                     </div>

@@ -28470,6 +28470,7 @@ class Element {
 exports.Element = Element;
 //# sourceMappingURL=Element.js.map
 
+
 /***/ }),
 /* 196 */
 /***/ (function(module, exports, __webpack_require__) {
@@ -38625,7 +38626,7 @@ const Card = react_sortable_hoc_1.SortableElement(mobx_react_1.observer((props) 
             }
             return classes.join(' ');
         })(props.currentTab) },
-        React.createElement(Handle, { tabType: props.tab.tabType, index: props.index, collection: props.collection, disabled: props.disabled }),
+        React.createElement(Handle, { tabType: props.tab.tabType, index: props.index }),
         React.createElement("div", { className: 'description' },
             React.createElement(react_router_1.Link, { to: props.url },
                 React.createElement("span", { className: 'entity-name' }, props.title),
@@ -41387,14 +41388,22 @@ let SourceEditorWorkspace = class SourceEditorWorkspace extends React.Component 
                             .slice()
                             .reverse()
                             .map((child) => this.props.dataStore.dataStore.all.source.value.find((et) => et.uid === child))
-                            .map((parent, i) => (React.createElement("span", { key: `breadcrumb-${parent.uid}` },
-                            React.createElement("span", null,
-                                "  ",
-                                parent.label,
-                                " ",
-                                React.createElement(AddTabButton_1.AddTabButton, { tabType: 'source', uid: parent.uid }),
-                                " "),
-                            React.createElement("i", { className: 'fa fa-angle-right' }))))),
+                            .map((parent, i) => {
+                            if (parent === undefined) {
+                                throw new Error('Encountered undefined parent');
+                            }
+                            if (parent.uid === null) {
+                                throw new Error('Encountered parent with null uid');
+                            }
+                            return (React.createElement("span", { key: `breadcrumb-${parent.uid}` },
+                                React.createElement("span", null,
+                                    "  ",
+                                    parent.label,
+                                    " ",
+                                    React.createElement(AddTabButton_1.AddTabButton, { tabType: 'source', uid: parent.uid }),
+                                    " "),
+                                React.createElement("i", { className: 'fa fa-angle-right' })));
+                        })),
                         React.createElement("i", { className: 'fa fa-sun-o item-icon' }),
                         React.createElement(StringEditableFieldComponent, { value: source.label, component: EditableHeader_1.EditableHeader, onChange: (value) => this.updateSource('label', value) })),
                     React.createElement("div", { className: 'sub-toolbar' },
@@ -41409,7 +41418,7 @@ let SourceEditorWorkspace = class SourceEditorWorkspace extends React.Component 
             React.createElement("section", { className: 'editor-body' },
                 React.createElement("div", { className: 'edit-group' },
                     React.createElement("label", { className: 'small' }, "Parent"),
-                    React.createElement(ComboEditableFieldComponent, { value: { key: parentName, value: source.parent }, component: EditableComboDropdown_1.EditableComboDropdown, onChange: (value) => this.updateSource('parent', value.value), additionalProps: { comboSettings: {
+                    React.createElement(ComboEditableFieldComponent, { value: { key: parentName, value: source.parent.toString() }, component: EditableComboDropdown_1.EditableComboDropdown, onChange: (value) => this.updateSource('parent', value.value), additionalProps: { comboSettings: {
                                 options: potentialParents.map((par) => ({ key: par.label, value: par.uid })),
                                 typeName: 'Source'
                             } } }),
@@ -41425,7 +41434,7 @@ let SourceEditorWorkspace = class SourceEditorWorkspace extends React.Component 
                             element.label,
                             " ",
                             React.createElement("small", null,
-                                React.createElement("a", { href: element.url }, element.uri))),
+                                React.createElement("a", { href: element.uri }, element.uri))),
                         React.createElement("p", { className: 'element-description' }, element.description),
                         React.createElement("ul", null, values.map((value) => value.source != this.props.id ? (React.createElement("li", { key: `${element.uid}-${value.source}` },
                             this.props.dataStore.dataStore.all.source.value.find((s) => s.uid === value.source).label,
@@ -41998,21 +42007,21 @@ class ModalStore {
         };
         switch (this.modalQueue[0].name) {
             case 'predicate':
-                return (React.createElement(CreatePredicate_1.CreatePredicate, __assign({}, sharedProps, this.modalQueue[0].settings)));
+                return (React.createElement(CreatePredicate_1.CreatePredicate, __assign({}, sharedProps, { initialName: this.modalQueue[0].settings['initialName'] })));
             case 'record':
-                return (React.createElement(CreateRecord_1.CreateRecord, __assign({}, sharedProps, this.modalQueue[0].settings)));
+                return (React.createElement(CreateRecord_1.CreateRecord, __assign({}, sharedProps, { entityType: this.modalQueue[0].settings['entityType'], entityUid: this.modalQueue[0].settings['entityUid'], options: this.modalQueue[0].settings['options'] })));
             case 'preset_record':
-                return (React.createElement(CreatePresetRecord_1.CreatePresetRecord, __assign({}, sharedProps, this.modalQueue[0].settings)));
+                return (React.createElement(CreatePresetRecord_1.CreatePresetRecord, __assign({}, sharedProps, { source: this.modalQueue[0].settings['source'] })));
             case 'source':
-                return (React.createElement(CreateSource_1.CreateSource, __assign({}, sharedProps, this.modalQueue[0].settings)));
+                return (React.createElement(CreateSource_1.CreateSource, __assign({}, sharedProps, { initialValue: this.modalQueue[0].settings['initialName'] })));
             case 'entity':
                 return (React.createElement(CreateEntity_1.CreateEntity, __assign({}, sharedProps, this.modalQueue[0].settings)));
             case 'entity_type':
                 return (React.createElement(CreateEntityType_1.CreateEntityType, __assign({}, sharedProps, this.modalQueue[0].settings)));
             case 'conflict_resolution':
-                return (React.createElement(ConflictResolution_1.ConflictResolution, __assign({}, sharedProps, this.modalQueue[0].settings)));
+                return (React.createElement(ConflictResolution_1.ConflictResolution, __assign({}, sharedProps, { conflictingItems: this.modalQueue[0].settings['conflictingItems'], message: this.modalQueue[0].settings['message'] })));
             case 'createTabSet':
-                return (React.createElement(CreateTabSet_1.CreateTabSet, __assign({}, sharedProps, this.modalQueue[0].settings)));
+                return (React.createElement(CreateTabSet_1.CreateTabSet, __assign({}, sharedProps)));
         }
         return null;
     }

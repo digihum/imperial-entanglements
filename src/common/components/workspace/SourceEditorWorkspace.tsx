@@ -92,7 +92,7 @@ export class SourceEditorWorkspace extends React.Component<SourceEditorProps, So
       this.props.dataStore!.patchItem(Source, AppUrls.source, source.uid, { [field]: value });
     }
 
-    public updateSourceElement(element: Element, value: string) {
+    public updateSourceElement(element: Element, value: string | null) {
 
         const source = this.props.dataStore!.dataStore.tabs.source.get('source-' + this.props.id).value.source;
 
@@ -222,14 +222,21 @@ export class SourceEditorWorkspace extends React.Component<SourceEditorProps, So
                                 .slice()
                                 .reverse()
                                 .map((child) => this.props.dataStore!.dataStore.all.source.value.find((et) => et.uid === child))
-                                .map((parent, i) => (
+                                .map((parent, i) => {
+                                  if(parent === undefined) {
+                                    throw new Error('Encountered undefined parent');
+                                  }
+                                  if(parent.uid === null) {
+                                    throw new Error('Encountered parent with null uid');
+                                  }
+                                return (
                                 <span key={`breadcrumb-${parent.uid}`}>
                                     <span>  {parent.label} <AddTabButton
                                         tabType='source'
                                         uid={parent.uid} /> </span>
                                     <i className='fa fa-angle-right'></i>
                                 </span>
-                            ))}
+                                )})}
                         </div>
                         <i className='fa fa-sun-o item-icon'></i>
                         <StringEditableFieldComponent
@@ -269,7 +276,7 @@ export class SourceEditorWorkspace extends React.Component<SourceEditorProps, So
                     <div className='edit-group'>
                         <label className='small'>Parent</label>
                         <ComboEditableFieldComponent
-                            value={{key: parentName, value: source.parent}}
+                            value={{key: parentName, value: source.parent!.toString()}}
                             component={EditableComboDropdown}
                             onChange={(value) => this.updateSource('parent', value.value)}
                             additionalProps={{ comboSettings: {
@@ -288,7 +295,7 @@ export class SourceEditorWorkspace extends React.Component<SourceEditorProps, So
                             onChange={(value) => this.updateSource('sameAs', value)} />
                     </div>
 
-                    {this.props.dataStore!.dataStore.all.dublinCore.value.elements.map((element) => {
+                    {this.props.dataStore!.dataStore.all.dublinCore.value.elements!.map((element) => {
 
                         const values = source.metaData.hasOwnProperty(element.label) ?
                             source.metaData[element.label].values : [{ source: this.props.id, value: ''}];
@@ -296,12 +303,12 @@ export class SourceEditorWorkspace extends React.Component<SourceEditorProps, So
 
                         return (
                             <div key={`${element.label}-edit`}>
-                                <h5 className='section-header'>{element.label} <small><a href={element.url}>{element.uri}</a></small></h5>
+                                <h5 className='section-header'>{element.label} <small><a href={element.uri}>{element.uri}</a></small></h5>
                                 <p className='element-description'>{element.description}</p>
                                 <ul>
                                     {values.map((value) => value.source != this.props.id ? (
                                         <li key={`${element.uid}-${value.source}`}>{
-                                            this.props.dataStore!.dataStore.all.source.value.find((s) => s.uid === value.source).label
+                                            this.props.dataStore!.dataStore.all.source.value.find((s) => s.uid === value.source)!.label
                                         }: {value.value}</li>
                                     ) : null)}
                                 </ul>
@@ -319,9 +326,9 @@ export class SourceEditorWorkspace extends React.Component<SourceEditorProps, So
                         {source.children
                             .map((child) => this.props.dataStore!.dataStore.all.source.value.find((et) => et.uid === child))
                             .map((childEt) =>
-                                (<li key={`dc-${childEt.uid}`}>{childEt.label} <AddTabButton
+                                (<li key={`dc-${childEt!.uid}`}>{childEt!.label} <AddTabButton
                                     tabType='source'
-                                       uid={childEt.uid} /></li>
+                                       uid={childEt!.uid!} /></li>
                             ))}
                         </ul>
                     </div>

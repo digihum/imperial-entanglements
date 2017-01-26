@@ -35,7 +35,7 @@ const Handle = SortableHandle((props: {tabType: string}) => (
   </div>
 ));
 
-const onCloseTab = (e: React.MouseEvent, tabType: string, uid: number, dataStore: DataController) => {
+const onCloseTab = (e: React.MouseEvent<HTMLElement>, tabType: string, uid: number, dataStore: DataController) => {
     dataStore.closeTab(tabType, uid);
     e.stopPropagation();
     e.preventDefault();
@@ -55,7 +55,7 @@ const Card = SortableElement(observer((props: {dataStore: DataController, curren
               }
               return classes.join(' ');
           })(props.currentTab)}>
-              <Handle tabType={props.tab.tabType} index={props.index} collection={props.collection} disabled={props.disabled}/>
+              <Handle tabType={props.tab.tabType} index={props.index} />
               <div className='description'>
                   <Link to={props.url}>
                       <span className='entity-name'>{props.title}</span>

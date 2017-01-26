@@ -15,7 +15,7 @@ import { inject, observer } from 'mobx-react';
 import * as mousetrap from 'mousetrap';
 
 interface CreateTabSetProps {
-  dataStore: DataController;
+  dataStore?: DataController;
   complete: (s: string) => void;
   cancel: () => void;
 }

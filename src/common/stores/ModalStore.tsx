@@ -40,16 +40,19 @@ export class ModalStore {
 
     switch (this.modalQueue[0].name) {
         case 'predicate':
-            return (<CreatePredicate {...sharedProps} {...this.modalQueue[0].settings} />);
+            return (<CreatePredicate {...sharedProps} initialName={this.modalQueue[0].settings['initialName']} />);
 
         case 'record':
-            return (<CreateRecord {...sharedProps} {...this.modalQueue[0].settings}/>);
+            return (<CreateRecord {...sharedProps}
+              entityType={this.modalQueue[0].settings['entityType']}
+              entityUid={this.modalQueue[0].settings['entityUid']}
+              options={this.modalQueue[0].settings['options']} />);
 
         case 'preset_record':
-            return (<CreatePresetRecord {...sharedProps} {...this.modalQueue[0].settings}/>);
+            return (<CreatePresetRecord {...sharedProps} source={this.modalQueue[0].settings['source']}/>);
 
         case 'source':
-            return (<CreateSource {...sharedProps} {...this.modalQueue[0].settings}/>);
+            return (<CreateSource {...sharedProps} initialValue={this.modalQueue[0].settings['initialName']} />);
 
         case 'entity':
             return (<CreateEntity {...sharedProps} {...this.modalQueue[0].settings}/>);
@@ -58,10 +61,12 @@ export class ModalStore {
             return (<CreateEntityType {...sharedProps} {...this.modalQueue[0].settings}/>);
 
         case 'conflict_resolution':
-            return (<ConflictResolution {...sharedProps} {...this.modalQueue[0].settings} />);
+            return (<ConflictResolution {...sharedProps}
+              conflictingItems={this.modalQueue[0].settings['conflictingItems']}
+              message={this.modalQueue[0].settings['message']}/>);
 
         case 'createTabSet':
-            return (<CreateTabSet {...sharedProps} {...this.modalQueue[0].settings} />);
+            return (<CreateTabSet {...sharedProps} />);
     }
 
     return null;
