@@ -22,7 +22,7 @@ export interface DataStore {
     dublinCore: DataStoreEntry<ElementSet>;
   };
 
-  records: Map<string, DataStoreEntry<Record>>;
+  records: Record[];
 
   tabs: {
 
@@ -56,7 +56,7 @@ export const emptyDataStore : DataStore = {
     dublinCore: { value: new ElementSet(), lastUpdate: null }
   },
 
-  records: Map<string, DataStoreEntry<Record>>(),
+  records: [],
 
   tabs: {
     entity: Map<string, DataStoreEntry<{

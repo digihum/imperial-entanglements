@@ -31,7 +31,7 @@ interface EntityListProps {
     query: any;
 }
 
-interface ColumnSettings {
+export interface ColumnSettings {
     predicate: number;
     sort: 'none' | 'asc' | 'desc';
     filterType: 'any' | 'exists' | 'contains' | 'similar';
@@ -44,7 +44,6 @@ interface EntityListState {
     entityTypes: EntityType[];
     predicates: Predicate[];
     columns: ColumnSettings[];
-    results: Record[];
     entityType: ComboDropdownOption;
     queryData: any;
 }
@@ -110,7 +109,6 @@ export class EntityList extends React.Component<EntityListProps, EntityListState
                 { predicate: -1, sort: 'none', filterType: 'any', invertFilter: false, filterValue: '' },
                 { predicate: -1, sort: 'none', filterType: 'any', invertFilter: false, filterValue: '' }
             ],
-            results: [],
             entityType: { key: 'Any', value: 0}
         };
     }
@@ -140,17 +138,6 @@ export class EntityList extends React.Component<EntityListProps, EntityListState
             queryData: queryStringOptions === null ? {} : queryStringOptions
         });
     }
-
-    // public reload() {
-
-    //     const setColumns = this.state.columns.filter((col) => col.predicate != -1);
-
-    //     this.props.dataStore!.getCollection(Record, AppUrls.record, {
-    //         predicate: setColumns.map((col) => col.predicate),
-    //         entity: this.props.dataStore!.dataStore.all.entity.value.map((entity) => entity.uid)
-    //     })
-    //     .then((results) => this.setState({ results }));
-    // }
 
     public addNew() {
         const a : ModalDefinition = {
@@ -225,7 +212,7 @@ export class EntityList extends React.Component<EntityListProps, EntityListState
 
         const tableData = entities.map((entity) => {
             const entityType = entityTypes.find((t) => t.uid === entity.entityType);
-            const entityData = this.state.results.filter((res) => res.entity === entity.uid);
+            const entityData = this.props.dataStore!.dataStore.records.filter((res) => res.entity === entity.uid);
 
             return {
                 uid: entity.uid,

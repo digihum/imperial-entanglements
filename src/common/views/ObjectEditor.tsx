@@ -32,7 +32,7 @@ interface EntityEditorProps {
     api: ApiService;
     params: ExpectedParams;
     workspace: string;
-    location: { pathname: string, search: string };
+    location: { pathname: string, search: string, query: any  };
     pathname: string;
 }
 
@@ -57,7 +57,7 @@ const ObjectEditorCore = SortableContainer((props: {
   loadingWheel: boolean,
   splitWorkspace: boolean,
   toggleSplitWorkspace: () => void,
-  location: { pathname: string, search: string }
+  location: { pathname: string, search: string, query: any }
 }) => {
   return (
     <span className='flex-fill'>
@@ -146,7 +146,7 @@ export class ObjectEditor extends React.Component<EntityEditorProps, EntityEdito
         this.context.router.transitionTo('/edit/notfound');
       }
 
-      const alreadyLoaded = newWorkspace === 'notfound' || this.state.dataController.enterPage(newWorkspace, newId, {});
+      const alreadyLoaded = newWorkspace === 'notfound' || this.state.dataController.enterPage(newWorkspace, newId, this.props.location.query);
 
       if (!initialLoad && this.state.loading && !force) {
         this.setState({

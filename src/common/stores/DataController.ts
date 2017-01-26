@@ -8,6 +8,7 @@ import { FalconItem, Entity, Record, Source, Predicate, EntityType, SourceElemen
 import { ApiService, AppUrls } from '../ApiService';
 import { DataStore, emptyTabs, emptyDataStore } from './DataStore';
 import { Tab } from '../components/Sidebar';
+
 import { Map } from 'immutable';
 import { arrayMove } from 'react-sortable-hoc';
 
@@ -27,6 +28,8 @@ export class DataController implements ApiService {
   @observable public defaultSource: null | number;
 
   private readonly api: ApiService;
+
+  private entitySearchColumns: string[];
 
   public constructor(api: ApiService) {
 
@@ -53,6 +56,9 @@ export class DataController implements ApiService {
         return false;
       }
     }
+
+    this.entitySearchColumns = [other['col1p'], other['col2p'], other['col3p']].filter((a) => a !== undefined);
+
     return true;
   }
 
@@ -81,6 +87,10 @@ export class DataController implements ApiService {
     }
   }
 
+  /*
+  * Loads required data from the server
+  * @return Promise returning a boolean indicating whether the operation was succesful
+  */
   @action public async update() : Promise<boolean> {
 
     // LOAD TABS
@@ -130,10 +140,18 @@ export class DataController implements ApiService {
     });
 
     return Promise.all([tabPromise, allPromise])
-    .then(action(([tabsArray, all]) => {
+    .then(action(async ([tabsArray, all]) => {
         const tabs = Object.assign({}, ...tabsArray);
         this.dataStore.tabs = tabs;
         this.dataStore.all = all;
+
+        if (this.entitySearchColumns.length > 0) {
+          this.dataStore.records = await this.getCollection(Record, AppUrls.record, {
+            predicate: this.entitySearchColumns,
+              entity: this.dataStore.all.entity.value.map((entity) => entity.uid)
+          });
+        }
+
         return true;
     }));
   }

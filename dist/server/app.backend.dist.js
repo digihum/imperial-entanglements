@@ -24713,7 +24713,6 @@ let EntityList = class EntityList extends React.Component {
                 { predicate: -1, sort: 'none', filterType: 'any', invertFilter: false, filterValue: '' },
                 { predicate: -1, sort: 'none', filterType: 'any', invertFilter: false, filterValue: '' }
             ],
-            results: [],
             entityType: { key: 'Any', value: 0 }
         };
     }
@@ -24740,14 +24739,6 @@ let EntityList = class EntityList extends React.Component {
             queryData: queryStringOptions === null ? {} : queryStringOptions
         });
     }
-    // public reload() {
-    //     const setColumns = this.state.columns.filter((col) => col.predicate != -1);
-    //     this.props.dataStore!.getCollection(Record, AppUrls.record, {
-    //         predicate: setColumns.map((col) => col.predicate),
-    //         entity: this.props.dataStore!.dataStore.all.entity.value.map((entity) => entity.uid)
-    //     })
-    //     .then((results) => this.setState({ results }));
-    // }
     addNew() {
         const a = {
             name: 'entity',
@@ -24810,7 +24801,7 @@ let EntityList = class EntityList extends React.Component {
         const entityTypeOptions = entityTypes.map((entityType) => ({ key: entityType.label, value: entityType.uid }));
         const tableData = entities.map((entity) => {
             const entityType = entityTypes.find((t) => t.uid === entity.entityType);
-            const entityData = this.state.results.filter((res) => res.entity === entity.uid);
+            const entityData = this.props.dataStore.dataStore.records.filter((res) => res.entity === entity.uid);
             return {
                 uid: entity.uid,
                 label: entity.label,
@@ -26283,6 +26274,7 @@ class DataController {
                 return false;
             }
         }
+        this.entitySearchColumns = [other['col1p'], other['col2p'], other['col3p']].filter((a) => a !== undefined);
         return true;
     }
     loadTabData(tab) {
@@ -26309,6 +26301,10 @@ class DataController {
                 throw new Error('Unexpected tab type requested');
         }
     }
+    /*
+    * Loads required data from the server
+    * @return Promise returning a boolean indicating whether the operation was succesful
+    */
     update() {
         return __awaiter(this, void 0, void 0, function* () {
             // LOAD TABS
@@ -26347,12 +26343,18 @@ class DataController {
                 };
             });
             return Promise.all([tabPromise, allPromise])
-                .then(mobx_1.action(([tabsArray, all]) => {
+                .then(mobx_1.action(([tabsArray, all]) => __awaiter(this, void 0, void 0, function* () {
                 const tabs = Object.assign({}, ...tabsArray);
                 this.dataStore.tabs = tabs;
                 this.dataStore.all = all;
+                if (this.entitySearchColumns.length > 0) {
+                    this.dataStore.records = yield this.getCollection(falcon_core_1.Record, ApiService_1.AppUrls.record, {
+                        predicate: this.entitySearchColumns,
+                        entity: this.dataStore.all.entity.value.map((entity) => entity.uid)
+                    });
+                }
                 return true;
-            }));
+            })));
         });
     }
     /*
@@ -26510,7 +26512,7 @@ exports.emptyDataStore = {
         source: { value: [], lastUpdate: null },
         dublinCore: { value: new falcon_core_1.ElementSet(), lastUpdate: null }
     },
-    records: immutable_1.Map(),
+    records: [],
     tabs: {
         entity: immutable_1.Map(),
         entity_type: immutable_1.Map(),
@@ -26821,7 +26823,7 @@ class ObjectEditor extends React.Component {
         if (['entity', 'source', 'predicate', 'entity_type', 'notfound'].indexOf(newWorkspace) === -1) {
             this.context.router.transitionTo('/edit/notfound');
         }
-        const alreadyLoaded = newWorkspace === 'notfound' || this.state.dataController.enterPage(newWorkspace, newId, {});
+        const alreadyLoaded = newWorkspace === 'notfound' || this.state.dataController.enterPage(newWorkspace, newId, this.props.location.query);
         if (!initialLoad && this.state.loading && !force) {
             this.setState({
                 id: newId,
