@@ -5,24 +5,26 @@
  */
 
 import * as React from 'react';
-import { ComboDropdown, ComboDropdownOption } from '../ComboDropdown';
+import { NumberComboDropdown, ComboDropdown, ComboDropdownOption } from '../ComboDropdown';
 import { noop } from 'lodash';
 
+export class PredicateRangeComboDropdown extends ComboDropdown<{isReference: boolean, value: number | string}> {}
+
 interface PredicateDescriptionProps {
-    domain: ComboDropdownOption;
-    range: ComboDropdownOption;
+    domain: ComboDropdownOption<number>;
+    range: ComboDropdownOption<{isReference: boolean, value: number | string}>;
     mode: 'editAll' | 'editSingle';
-    domainChanged: (s: ComboDropdownOption) => void;
-    rangeChanged: (s: ComboDropdownOption) => void;
-    domainOptions: ComboDropdownOption[];
-    rangeOptions: ComboDropdownOption[];
+    domainChanged: (s: ComboDropdownOption<number>) => void;
+    rangeChanged: (s: ComboDropdownOption<{isReference: boolean, value: number | string}>) => void;
+    domainOptions: ComboDropdownOption<number>[];
+    rangeOptions: ComboDropdownOption<{isReference: boolean, value: number | string}>[];
 }
 
 interface PredicateDescriptionState {
     editingDomain: boolean;
     editingRange: boolean;
-    domainValue: ComboDropdownOption;
-    rangeValue: ComboDropdownOption;
+    domainValue: ComboDropdownOption<number>;
+    rangeValue: ComboDropdownOption<{isReference: boolean, value: number | string}>;
 }
 
 export class PredicateDescription extends React.Component<PredicateDescriptionProps, PredicateDescriptionState> {
@@ -32,8 +34,8 @@ export class PredicateDescription extends React.Component<PredicateDescriptionPr
         this.state = {
             editingDomain: false,
             editingRange: false,
-            rangeValue: {key: '', value: ''},
-            domainValue: {key: '', value: ''}
+            rangeValue: {key: '', value: null},
+            domainValue: {key: '', value: null}
         };
     }
 
@@ -92,7 +94,7 @@ export class PredicateDescription extends React.Component<PredicateDescriptionPr
                 {this.props.mode === 'editAll' || this.state.editingDomain ? (
                 <div>
                     <label className='small'>Domain</label>
-                    <ComboDropdown
+                    <NumberComboDropdown
                         options={this.props.domainOptions}
                         typeName='entity type'
                         allowNew={false}
@@ -121,7 +123,7 @@ export class PredicateDescription extends React.Component<PredicateDescriptionPr
                 {this.props.mode === 'editAll' || this.state.editingRange ? (
                     <div>
                         <label className='small'>Range</label>
-                        <ComboDropdown
+                        <PredicateRangeComboDropdown
                             options={this.props.rangeOptions}
                             typeName='entity type'
                             allowNew={false}

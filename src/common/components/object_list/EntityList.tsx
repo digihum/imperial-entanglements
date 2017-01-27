@@ -8,11 +8,9 @@ import * as React from 'react';
 
 import * as lev from 'levenshtein';
 
-import { AppUrls } from '../../ApiService';
-
-import { Entity, EntityType, Predicate, Record } from '@digihum/falcon-core';
-import { ComboDropdown, ComboDropdownOption } from '../ComboDropdown';
-import { noop, cloneDeep, isUndefined } from 'lodash';
+import { Entity, EntityType, Predicate } from '@digihum/falcon-core';
+import { NumberComboDropdown, ComboDropdownOption } from '../ComboDropdown';
+import { noop, cloneDeep } from 'lodash';
 
 import { AddTabButton } from '../AddTabButton';
 
@@ -44,7 +42,7 @@ interface EntityListState {
     entityTypes: EntityType[];
     predicates: Predicate[];
     columns: ColumnSettings[];
-    entityType: ComboDropdownOption;
+    entityType: ComboDropdownOption<number> | null;
     queryData: any;
 }
 
@@ -57,7 +55,7 @@ const sortIcons = {
 const customColumns = (predicates, columns, updateColumnParams, rotateSort) => {
     return [0, 1, 2].map((id) => {
 
-        const comboValue = { key: '', value: ''};
+        const comboValue = { key: '', value: null};
 
         if (columns[id].predicate !== -1) {
             const thisPred = predicates.find((pred) => pred.uid == columns[id].predicate);
@@ -71,14 +69,14 @@ const customColumns = (predicates, columns, updateColumnParams, rotateSort) => {
             <td key={`col-${id}`}>
                 <div className='list-combo-header'>
                     <div className='combo-wrapper'>
-                        <ComboDropdown
+                        <NumberComboDropdown
                             value={comboValue}
                             typeName='predicate'
                             allowNew={false}
                             setValue={(value) => updateColumnParams(id, 'p' , value === null ? null : value.value)}
                             options={predicates.map((pred) => ({ key: pred.label, value: pred.uid.toString()}))}
                             createNewValue={noop}
-                            compact={true}
+                            additionalClasses={['compact']}
                         />
                     </div>
                     <div className='order-wrapper'>
@@ -109,7 +107,8 @@ export class EntityList extends React.Component<EntityListProps, EntityListState
                 { predicate: -1, sort: 'none', filterType: 'any', invertFilter: false, filterValue: '' },
                 { predicate: -1, sort: 'none', filterType: 'any', invertFilter: false, filterValue: '' }
             ],
-            entityType: { key: 'Any', value: 0}
+            entityType: { key: 'Any', value: 0},
+            queryData: {}
         };
     }
 
@@ -329,14 +328,14 @@ export class EntityList extends React.Component<EntityListProps, EntityListState
                             <td></td>
                             <td></td>
                             <td>
-                                <ComboDropdown
+                                <NumberComboDropdown
                                     value={this.state.entityType}
                                     typeName='entity type'
                                     allowNew={false}
                                     setValue={(entityType) => this.setState({ entityType })}
                                     options={entityTypeOptions}
                                     createNewValue={noop}
-                                    compact={true}
+                                    additionalClasses={['compact']}
                                 />
                             </td>
 

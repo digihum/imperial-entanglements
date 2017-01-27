@@ -29,7 +29,7 @@ export const EditableHeader : React.StatelessComponent<EditableSubfieldProps<str
                     <input type='text'
                         value={props.value}
                         className='text-edit-header'
-                        onChange={(e) => props.onChange((e.target as HTMLInputElement).value)} />
+                        onChange={(e) => props.onChange!((e.target as HTMLInputElement).value)} />
                     <button onClick={props.acceptChanges}><i className='fa fa-check' aria-hidden='true'></i></button>
                     <button onClick={props.cancelChanges}><i className='fa fa-times' aria-hidden='true'></i></button>
                 </span>

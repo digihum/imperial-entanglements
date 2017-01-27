@@ -33,7 +33,6 @@ import { EntityWorkspaceReferenceView } from './entity/EntityWorkspaceReferenceV
 import { inject, observer } from 'mobx-react';
 
 class StringEditableFieldComponent extends EditableFieldComponent<string> {}
-class ComboEditableFieldComponent extends EditableFieldComponent<ComboDropdownOption> {}
 
 interface EntityEditorProps {
     id: number;
@@ -73,8 +72,6 @@ export class EntityEditorWorkspace extends React.Component<EntityEditorProps, En
     constructor(props : EntityEditorProps, context: any) {
         super();
         this.state = {
-            comboValue: { key: 'test', value: ''},
-            comboSearchValue: '',
             tab: 0
         };
     }
@@ -137,6 +134,11 @@ export class EntityEditorWorkspace extends React.Component<EntityEditorProps, En
         const entityTypeParents = findParentTree(entity.entityType, this.props.dataStore!.dataStore.all.entity_type.value);
         const predicates = this.props.dataStore!.dataStore.all.predicate
             .value.filter((pred) => entityTypeParents.indexOf(pred.domain) !== -1);
+
+        if (entityType === undefined) {
+          throw new Error('Encountered undefined entity type!');
+        }
+
 
         const modalDef: ModalDefinition = {
             name: 'record',

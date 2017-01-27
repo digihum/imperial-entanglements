@@ -27,10 +27,10 @@ interface CreatePredicateProps {
 
 interface CreatePredicateState {
     label: string;
-    domain: ComboDropdownOption;
-    range: ComboDropdownOption;
-    domainOptions: ComboDropdownOption[];
-    rangeOptions: ComboDropdownOption[];
+    domain: ComboDropdownOption<number>;
+    range: ComboDropdownOption<{isReference: boolean, value: number | string}>;
+    domainOptions: ComboDropdownOption<number>[];
+    rangeOptions: ComboDropdownOption<{isReference: boolean, value: number | string}>[];
 }
 
 @inject('dataStore')
@@ -41,15 +41,15 @@ export class CreatePredicate extends React.Component<CreatePredicateProps, Creat
         super();
         this.state = {
             label: '',
-            domain: {key: '', value: ''},
-            range: {key: '', value: ''},
+            domain: {key: '', value: null},
+            range: {key: '', value: null},
             domainOptions: [],
             rangeOptions: []
         };
     }
 
     public componentWillMount() {
-        this.setState({ name: this.props.initialName });
+        this.setState({ label: this.props.initialName });
     }
 
     public componentDidMount() {
@@ -62,32 +62,36 @@ export class CreatePredicate extends React.Component<CreatePredicateProps, Creat
                 }
 
                 this.setState({
-                domain: { key: result.label, value: result.uid.toString()},
+                domain: { key: result.label, value: result.uid},
                 domainOptions: [
-                    { key: result.label, value: result.uid.toString()}
-                ].concat(result.parents.map((entityType) => {
-                    if (entityType.uid === null) {
-                        throw new Error('Unexpected null uid');
-                    }
-                    return { key: entityType.label, value: entityType.uid.toString() }
+                    { key: result.label, value: result.uid}
+                ].concat(result.parents.map((entityTypeId) => {
+                    const parentEntityType = this.props.dataStore!.dataStore.all.entity_type.value.find((e) => e.uid === entityTypeId)!;
+                    return { key: parentEntityType.label, value: entityTypeId };
                 }))});
             });
         }
 
         const results = this.props.dataStore!.dataStore.all.entity_type.value;
-        const entityTypeMap : ComboDropdownOption[] = results.map((entityType) => {
+        const entityTypeMap : ComboDropdownOption<number>[] = results.map((entityType) => {
             if (entityType.uid === null) {
                 throw new Error('Unexpected null uid');
             }
-            return { key: entityType.label, value: entityType.uid.toString() }
+            return { key: entityType.label, value: entityType.uid };
         });
+
+        const entityTypeMap2 : ComboDropdownOption<{isReference: boolean, value: number | string}>[] =
+          entityTypeMap.map((e) => ({ key: e.key, value: { isReference: true, value: e.value!.toString()}}));
+
+        const literalTypesMap : ComboDropdownOption<{isReference: boolean, value: number | string}>[] =
+          literalTypes.map((lit) => ({ key: lit.label, value: { isReference: false, value: lit.value } }));
 
         if (this.props.initialDomain === undefined) {
             this.setState({ domainOptions: entityTypeMap });
         }
 
         this.setState({
-            rangeOptions:  literalTypes.map((lit) => ({ key: lit.label, value: lit.value, meta: 'literal'})).concat(entityTypeMap)
+            rangeOptions:  literalTypesMap.concat(entityTypeMap2)
         });
     }
 
@@ -97,7 +101,7 @@ export class CreatePredicate extends React.Component<CreatePredicateProps, Creat
             label: this.state.label,
             domain: this.state.domain.value,
             range: this.state.range.value,
-            rangeIsReference: this.state.range.meta !== 'literal'
+            rangeIsReference: this.state.range.value === null ? false : this.state.range.value.isReference
         });
 
         this.props.dataStore!.postItem(Predicate, AppUrls.predicate, newPredicate, {})
@@ -115,7 +119,11 @@ export class CreatePredicate extends React.Component<CreatePredicateProps, Creat
 
             <input type='text'
                 className='gap'
-                ref={(a) =>  { if(a !== null) a.focus(); }}
+                ref={(a) =>  {
+                  if (a !== null) {
+                    a.focus();
+                  }
+                }}
                 value={this.state.label}
                 onChange={(e) => this.setState({ label: (e.target as HTMLInputElement).value })} />
 

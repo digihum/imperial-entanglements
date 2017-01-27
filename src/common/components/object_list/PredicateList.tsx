@@ -6,7 +6,7 @@
 
 import * as React from 'react';
 
-import { Predicate } from '@digihum/falcon-core';
+import { Predicate, EntityType } from '@digihum/falcon-core';
 
 import { AddTabButton } from '../AddTabButton';
 
@@ -104,6 +104,11 @@ export class PredicateList extends React.Component<PredicateListProps, Predicate
                         const rangeType = predicate.rangeIsReference ?
                             this.props.dataStore!.dataStore.all.entity_type.value.find((t) => t.uid === predicate.range) :
                             predicate.range;
+
+                        if (predicate.uid === null) {
+                          throw new Error('Found predicate with null uid');
+                        }
+
                         return (
                             <tr key={`predicate-${predicate.uid}`}>
                                 <td>{predicate.uid} <AddTabButton
@@ -111,7 +116,7 @@ export class PredicateList extends React.Component<PredicateListProps, Predicate
                                     tabType='predicate' /></td>
                                 <td>{predicate.label}</td>
                                 <td>{entityType ? entityType.label : ''}</td>
-                                <td>{predicate.rangeIsReference ? rangeType ? rangeType.label : '' : rangeType}</td>
+                                <td>{predicate.rangeIsReference ? rangeType ? (rangeType as EntityType).label : '' : rangeType}</td>
                                 <td>{predicate.uses}</td>
                             </tr>
                         );}

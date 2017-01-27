@@ -5,10 +5,9 @@
  */
 
 import * as React from 'react';
-import { ComboDropdown, ComboDropdownOption } from '../ComboDropdown';
+import { NumberComboDropdown, ComboDropdownOption } from '../ComboDropdown';
 import { Entity } from '@digihum/falcon-core';
-import { noop, toString } from 'lodash';
-
+import { noop } from 'lodash';
 
 interface EntityFieldEditorProps {
     onChange: (val: number | null) => void;
@@ -20,24 +19,24 @@ export const EntityFieldEditor : React.StatelessComponent<EntityFieldEditorProps
   (props: EntityFieldEditorProps)  => {
 
   // build the options list
-  const options : ComboDropdownOption[] = props.entities.map((entity) =>
-    ({ key: entity.label, value: entity.uid !== null ? toString(entity.uid) : null }));
+  const options : ComboDropdownOption<number>[] = props.entities.map((entity) =>
+    ({ key: entity.label, value: entity.uid !== null ? entity.uid : null }));
 
   // find the default option to display
-  let selectedOption : ComboDropdownOption | undefined = options.find((opt) =>
-    opt.value !== null && parseInt(opt.value) === props.value);
+  let selectedOption : ComboDropdownOption<number> | undefined = options.find((opt) =>
+    opt.value !== null && opt.value === props.value);
 
   if (selectedOption === undefined) {
-    selectedOption = { key: '', value: ''};
+    selectedOption = { key: '', value: null};
   }
 
   return (
-    <ComboDropdown
+    <NumberComboDropdown
       options={options}
       typeName='entity type'
       allowNew={false}
       value={selectedOption}
-      setValue={(val) => val !== null && val.value !== null ? props.onChange(parseInt(val.value)) : props.onChange(null)}
+      setValue={(val) => val !== null && val.value !== null ? props.onChange(val.value) : props.onChange(null)}
       createNewValue={noop} />
   );
 };

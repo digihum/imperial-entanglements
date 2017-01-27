@@ -7,7 +7,7 @@
 import * as React from 'react';
 
 import { Overlay } from '../Overlay';
-import { Entity, EntityType, Record, Predicate } from '@digihum/falcon-core';
+import { Entity, EntityType, Record, Predicate, Source } from '@digihum/falcon-core';
 
 import { ComboDropdown, ComboDropdownOption } from '../ComboDropdown';
 
@@ -22,15 +22,17 @@ interface ConflictResolutionProps {
     cancel: () => void;
     message: string;
     conflictingItems: {
-        record: Record[],
-        entity: Entity[],
-        predicate: Predicate[]
+        record: Record[];
+        entity: Entity[];
+        predicate: Predicate[];
+        entityType: EntityType[];
+        source: Source[];
     };
 }
 
 interface ConflictResolutionState {
     label: string;
-    entityType: ComboDropdownOption;
+    entityType: ComboDropdownOption<number>;
     allEntityTypes: EntityType[];
 }
 
@@ -42,7 +44,7 @@ export class ConflictResolution extends React.Component<ConflictResolutionProps,
         super();
         this.state = {
             label: '',
-            entityType: { key: '', value: ''},
+            entityType: { key: '', value: null},
             allEntityTypes: []
         };
     }
@@ -67,10 +69,10 @@ export class ConflictResolution extends React.Component<ConflictResolutionProps,
                         {this.props.conflictingItems.record.map((record) => {
 
                             const entityName = this.props.dataStore!.dataStore.all.entity.value
-                                .find((entity) => entity.uid == record.entity).label;
+                                .find((entity) => entity.uid == record.entity)!.label;
 
                             const predicateName = this.props.dataStore!.dataStore.all.predicate.value
-                                .find((predicate) => predicate.uid == record.predicate).label;
+                                .find((predicate) => predicate.uid == record.predicate)!.label;
 
 
                             return (

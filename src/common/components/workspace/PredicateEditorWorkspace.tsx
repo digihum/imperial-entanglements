@@ -60,7 +60,7 @@ export class PredicateEditorWorkspace extends React.Component<PredicateEditorPro
         };
     }
 
-    public updatePredicate(field: string, value: string, rangeIsReferenceOverride: boolean | null = null) {
+    public updatePredicate(field: string, value: string | number | null, rangeIsReferenceOverride: boolean | null = null) {
 
         const predicate = this.props.dataStore!.dataStore.tabs.predicate[this.props.id].value;
 
@@ -146,13 +146,16 @@ export class PredicateEditorWorkspace extends React.Component<PredicateEditorPro
             currentDomainEntityTypeName = currentDomainEntityType.label;
         }
 
-        const domain : ComboDropdownOption = {key: currentDomainEntityTypeName, value: predicate.domain.toString()};
+        const domain : ComboDropdownOption<number> = {key: currentDomainEntityTypeName, value: predicate.domain };
 
-        const range : ComboDropdownOption = {key: '', value: predicate.range.toString()};
+        const range : ComboDropdownOption<{isReference: boolean, value: number | string}> = {key: '', value: {
+          isReference: predicate.rangeIsReference,
+          value: predicate.range
+        }};
 
         if (predicate.rangeIsReference) {
             const currentRangeEntityType =
-                entityTypes.find((t) => t.uid == predicate.range);
+                entityTypes.find((t) => t.uid === predicate.range);
 
             if (currentRangeEntityType !== undefined) {
                 range.key = currentRangeEntityType.label;
@@ -169,10 +172,14 @@ export class PredicateEditorWorkspace extends React.Component<PredicateEditorPro
             if (t.uid === null) {
                 throw new Error('Encountered entity type with no id!');
             }
-            return { key: t.label, value: t.uid.toString() };
+            return { key: t.label, value: t.uid };
         });
 
-        const literalTypeOptions = literalTypes.map((t) => ({ key: t.label, value: t.value, meta: 'literal'}));
+        const literalTypeOptions : ComboDropdownOption<{isReference: boolean, value: number | string}>[] =
+          literalTypes.map((t) => ({ key: t.label, value: { value: t.label, isReference: false }}));
+
+        const entityTypeMap2 : ComboDropdownOption<{isReference: boolean, value: number | string}>[] =
+          entityTypeOptions.map((e) => ({ key: e.key, value: { isReference: true, value: e.value!.toString()}}));
 
         return (
             <div className='workspace-editor'>
@@ -182,8 +189,9 @@ export class PredicateEditorWorkspace extends React.Component<PredicateEditorPro
                         <i className='fa fa-long-arrow-right item-icon'></i>
                         <StringEditableFieldComponent
                             value={predicate.label}
-                            component={EditableHeader}
-                            onChange={(value) => this.updatePredicate('label', value)}  />
+                            onChange={(value) => this.updatePredicate('label', value)}>
+                            <EditableHeader/>
+                        </StringEditableFieldComponent>
                     </div>
                     <div className='sub-toolbar'>
                         <i
@@ -214,8 +222,9 @@ export class PredicateEditorWorkspace extends React.Component<PredicateEditorPro
                         <label className='small'>Description</label>
                         <StringEditableFieldComponent
                             value={predicate.description!}
-                            component={EditableParagraph}
-                            onChange={(value) => this.updatePredicate('description', value)}  />
+                            onChange={(value) => this.updatePredicate('description', value)}>
+                            <EditableParagraph />
+                        </StringEditableFieldComponent>
                     </div>
 
                     <div className='edit-group'>
@@ -224,18 +233,19 @@ export class PredicateEditorWorkspace extends React.Component<PredicateEditorPro
                             domain={domain}
                             range={range}
                             domainChanged={(value) => this.updatePredicate('domain', value.value!)}
-                            rangeChanged={(value) => this.updatePredicate('range', value.value!, value.meta !== 'literal')}
+                            rangeChanged={(value) => this.updatePredicate('range', value.value!.value, value.value!.isReference)}
                             mode='editSingle'
                             domainOptions={entityTypeOptions}
-                            rangeOptions={literalTypeOptions.concat(entityTypeOptions)}
+                            rangeOptions={literalTypeOptions.concat(entityTypeMap2)}
                         />
                     </div>
 
                     <div>
                         <StringEditableFieldComponent
                             value={predicate.sameAs!}
-                            component={SameAsEditor}
-                            onChange={(value) => this.updatePredicate('sameAs', value)} />
+                            onChange={(value) => this.updatePredicate('sameAs', value)} >
+                            <SameAsEditor/>
+                        </StringEditableFieldComponent>
                     </div>
                 </section>
             </div>

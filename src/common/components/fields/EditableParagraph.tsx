@@ -30,7 +30,7 @@ export const EditableParagraph : React.StatelessComponent<EditableSubfieldProps<
         return (
             <div onClick={props.setEdit} className='editable-paragraph-box'>
                 <p>
-                    {props.value === null || props.value.length > 0 ? props.value
+                    {props.value === null || props.value!.length > 0 ? props.value
                     : (
                         <em>No value</em>
                     )}
@@ -48,9 +48,9 @@ export const EditableParagraph : React.StatelessComponent<EditableSubfieldProps<
         return (
             <div>
                 <textarea
-                    value={props.value}
+                    value={props.value!}
                     ref={bindKeyboard}
-                    onChange={(e) => props.onChange((e.target as HTMLInputElement).value)}
+                    onChange={(e) => props.onChange!((e.target as HTMLInputElement).value)}
                     style={{ width: '100%', height: '6em'}}></textarea>
                 <button onClick={props.acceptChanges}>
                     <i className='fa fa-check' aria-hidden='true'></i></button>

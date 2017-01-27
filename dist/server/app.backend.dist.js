@@ -1894,7 +1894,7 @@ class ComboDropdown extends React.Component {
         }
     }
     render() {
-        return (React.createElement("div", { className: this.props.compact ? 'compact combo-dropdown' : 'combo-dropdown' },
+        return (React.createElement("div", { className: 'combo-dropdown ' + this.props.additionalClasses.join(' ') },
             React.createElement("div", null,
                 React.createElement("input", { type: 'text', ref: ComboDropdown.comboDropdownInputBoxRef, className: 'search-input', value: this.state.searchString, placeholder: 'Click here and start typing..', onBlur: this.handleInputBlur.bind(this), onFocus: this.handleInputFocus.bind(this), onChange: this.changeSearchString.bind(this), onClick: this.handleInputClick.bind(this) }),
                 this.state.searchString.length > 0 ? (React.createElement("i", { className: 'fa fa-times clear-button', onClick: this.clearSearchBox.bind(this) })) : null),
@@ -1916,11 +1916,17 @@ class ComboDropdown extends React.Component {
 }
 ComboDropdown.defaultProps = {
     allowNew: true,
-    compact: false,
+    additionalClasses: [],
     updateSearchString: lodash_1.noop
 };
 ComboDropdown.comboDropdownInputBoxRef = 'comboDropDownInputBox';
 exports.ComboDropdown = ComboDropdown;
+class NumberComboDropdown extends ComboDropdown {
+}
+exports.NumberComboDropdown = NumberComboDropdown;
+class StringComboDropdown extends ComboDropdown {
+}
+exports.StringComboDropdown = StringComboDropdown;
 
 
 /***/ }),
@@ -2512,10 +2518,16 @@ class EditableFieldComponent extends React.Component {
         this.setState({ edit: false, internalValue: this.props.value });
     }
     render() {
-        return (React.createElement(this.props.component, __assign({ edit: this.state.edit, value: this.state.internalValue, onChange: this.setInternalValue.bind(this), setEdit: this.switchToEditState.bind(this), acceptChanges: this.acceptChanges.bind(this), cancelChanges: this.cancelChanges.bind(this), onDelete: (e) => this.props.onDelete !== undefined ? this.props.onDelete(this.props.value) : null }, this.props.additionalProps)));
+        return React.cloneElement(this.props.children, { loggedIn: this.state.loggedIn });
     }
+    return() { }
 }
+EditableFieldComponent.propTypes = {
+    children: React.PropTypes.element.isRequired
+};
 exports.EditableFieldComponent = EditableFieldComponent;
+React.createElement(this.props.component, __assign({ edit: this.state.edit, value: this.state.internalValue, onChange: this.setInternalValue.bind(this), setEdit: this.switchToEditState.bind(this), acceptChanges: this.acceptChanges.bind(this), cancelChanges: this.cancelChanges.bind(this), onDelete: (e) => this.props.onDelete !== undefined ? this.props.onDelete(this.props.value) : null }, this.props.additionalProps));
+;
 
 
 /***/ }),
@@ -6978,7 +6990,7 @@ const React = __webpack_require__(0);
 var EditableFieldComponent_1 = __webpack_require__(27);
 exports.EditableFieldComponent = EditableFieldComponent_1.EditableFieldComponent;
 const ComboDropdown_1 = __webpack_require__(20);
-exports.EditableComboDropdown = (props) => {
+function EditableComboDropdown(props) {
     if (props.edit) {
         return (React.createElement("div", null,
             React.createElement(ComboDropdown_1.ComboDropdown, __assign({}, props.comboSettings, { value: props.value, setValue: props.onChange, allowNew: false, createNewValue: () => { } })),
@@ -6994,7 +7006,9 @@ exports.EditableComboDropdown = (props) => {
             React.createElement("sup", null,
                 React.createElement("i", { className: 'fa fa-pencil-square-o', title: 'Edit', "aria-hidden": 'true', onClick: props.setEdit }))));
     }
-};
+}
+exports.EditableComboDropdown = EditableComboDropdown;
+;
 
 
 /***/ }),
@@ -10124,14 +10138,17 @@ exports.RecursiveTree = RecursiveTree;
 const React = __webpack_require__(0);
 const ComboDropdown_1 = __webpack_require__(20);
 const lodash_1 = __webpack_require__(5);
+class PredicateRangeComboDropdown extends ComboDropdown_1.ComboDropdown {
+}
+exports.PredicateRangeComboDropdown = PredicateRangeComboDropdown;
 class PredicateDescription extends React.Component {
     constructor() {
         super();
         this.state = {
             editingDomain: false,
             editingRange: false,
-            rangeValue: { key: '', value: '' },
-            domainValue: { key: '', value: '' }
+            rangeValue: { key: '', value: null },
+            domainValue: { key: '', value: null }
         };
     }
     componentWillMount() {
@@ -10176,7 +10193,7 @@ class PredicateDescription extends React.Component {
             React.createElement("div", { className: 'typing' },
                 React.createElement("div", { className: 'domain' }, this.props.mode === 'editAll' || this.state.editingDomain ? (React.createElement("div", null,
                     React.createElement("label", { className: 'small' }, "Domain"),
-                    React.createElement(ComboDropdown_1.ComboDropdown, { options: this.props.domainOptions, typeName: 'entity type', allowNew: false, value: this.state.domainValue, setValue: domainChanged, createNewValue: lodash_1.noop }),
+                    React.createElement(ComboDropdown_1.NumberComboDropdown, { options: this.props.domainOptions, typeName: 'entity type', allowNew: false, value: this.state.domainValue, setValue: domainChanged, createNewValue: lodash_1.noop }),
                     this.props.mode === 'editSingle' ? (React.createElement("div", null,
                         React.createElement("button", { onClick: this.acceptDomainChanges.bind(this) },
                             React.createElement("i", { className: 'fa fa-check', "aria-hidden": 'true' })),
@@ -10189,7 +10206,7 @@ class PredicateDescription extends React.Component {
                     React.createElement("i", { className: 'fa fa-long-arrow-right', "aria-hidden": 'true' })),
                 React.createElement("div", { className: 'range' }, this.props.mode === 'editAll' || this.state.editingRange ? (React.createElement("div", null,
                     React.createElement("label", { className: 'small' }, "Range"),
-                    React.createElement(ComboDropdown_1.ComboDropdown, { options: this.props.rangeOptions, typeName: 'entity type', allowNew: false, value: this.state.rangeValue, setValue: rangeChanged, createNewValue: lodash_1.noop }),
+                    React.createElement(PredicateRangeComboDropdown, { options: this.props.rangeOptions, typeName: 'entity type', allowNew: false, value: this.state.rangeValue, setValue: rangeChanged, createNewValue: lodash_1.noop }),
                     this.props.mode === 'editSingle' ? (React.createElement("div", null,
                         React.createElement("button", { onClick: this.acceptRangeChanges.bind(this) },
                             React.createElement("i", { className: 'fa fa-check', "aria-hidden": 'true' })),
@@ -22684,11 +22701,7 @@ class EntityTypeController extends GenericController_1.GenericController {
         return super.getItemJson(obj, uid)
             .then((result) => {
             return Promise.all([
-                this.db.getAncestorsOf(uid, 'entity_types')
-                    .then((ancestors) => {
-                    return this.db.select('entity_types').whereIn('uid', ancestors)
-                        .then((results) => results.map((result) => this.fromSchema(result)));
-                }),
+                this.db.getAncestorsOf(uid, 'entity_types'),
                 this.db.select('entity_types', ['uid']).where({ parent: uid })
             ])
                 .then(([parents, children]) => {
@@ -23631,13 +23644,13 @@ const ComboDropdown_1 = __webpack_require__(20);
 const lodash_1 = __webpack_require__(5);
 exports.EntityFieldEditor = (props) => {
     // build the options list
-    const options = props.entities.map((entity) => ({ key: entity.label, value: entity.uid !== null ? lodash_1.toString(entity.uid) : null }));
+    const options = props.entities.map((entity) => ({ key: entity.label, value: entity.uid !== null ? entity.uid : null }));
     // find the default option to display
-    let selectedOption = options.find((opt) => opt.value !== null && parseInt(opt.value) === props.value);
+    let selectedOption = options.find((opt) => opt.value !== null && opt.value === props.value);
     if (selectedOption === undefined) {
-        selectedOption = { key: '', value: '' };
+        selectedOption = { key: '', value: null };
     }
-    return (React.createElement(ComboDropdown_1.ComboDropdown, { options: options, typeName: 'entity type', allowNew: false, value: selectedOption, setValue: (val) => val !== null && val.value !== null ? props.onChange(parseInt(val.value)) : props.onChange(null), createNewValue: lodash_1.noop }));
+    return (React.createElement(ComboDropdown_1.NumberComboDropdown, { options: options, typeName: 'entity type', allowNew: false, value: selectedOption, setValue: (val) => val !== null && val.value !== null ? props.onChange(val.value) : props.onChange(null), createNewValue: lodash_1.noop }));
 };
 
 
@@ -23763,7 +23776,6 @@ const DateFieldEditor_1 = __webpack_require__(243);
 const IntegerFieldEditor_1 = __webpack_require__(245);
 const AddTabButton_1 = __webpack_require__(13);
 const formatDate_1 = __webpack_require__(73);
-const lodash_1 = __webpack_require__(5);
 const mobx_react_1 = __webpack_require__(6);
 const recordEditor = (props, record) => {
     switch (record.valueType) {
@@ -23819,9 +23831,9 @@ exports.RecordRow = mobx_react_1.inject('dataStore', 'modalStore')(mobx_react_1.
         throw new Error('Should not be null!!');
     }
     const currentSource = recordValue.source === null ? undefined :
-        props.sources.find((source) => source.uid === parseInt(recordValue.source));
+        props.sources.find((source) => source.uid === recordValue.source);
     const dropDownValue = {
-        key: '', value: recordValue.source === null ? null : lodash_1.toString(recordValue.source)
+        key: '', value: recordValue.source === null ? null : recordValue.source
     };
     if (currentSource !== undefined) {
         dropDownValue.key = currentSource.label;
@@ -23831,7 +23843,7 @@ exports.RecordRow = mobx_react_1.inject('dataStore', 'modalStore')(mobx_react_1.
             React.createElement("td", { className: 'record-row-item uid' }, recordValue.uid),
             recordValue.valueType !== 'source' ? (React.createElement("td", { className: 'record-row-item' }, recordEditor(props, recordValue))) : null,
             React.createElement("td", { className: 'record-row-item' },
-                React.createElement(ComboDropdown_1.ComboDropdown, { options: props.sources.map((source) => ({ key: source.label, value: source.uid !== null ? lodash_1.toString(source.uid) : null })), typeName: 'source', value: dropDownValue, setValue: (combo) => props.onChange(Object.assign(recordValue, { source: combo === null ? combo : combo.value })), createNewValue: () => createNewSource('') })),
+                React.createElement(ComboDropdown_1.NumberComboDropdown, { options: props.sources.map((source) => ({ key: source.label, value: source.uid !== null ? source.uid : null })), typeName: 'source', value: dropDownValue, setValue: (combo) => props.onChange(Object.assign(recordValue, { source: combo === null ? combo : combo.value })), createNewValue: () => createNewSource('') })),
             React.createElement("td", { className: 'record-row-item score' },
                 React.createElement(ScorePicker_1.ScorePicker, { value: recordValue.score, readOnly: false, onChange: (score) => props.onChange(Object.assign(recordValue, { score })) })),
             React.createElement("td", { className: 'record-row-item period' },
@@ -23850,7 +23862,7 @@ exports.RecordRow = mobx_react_1.inject('dataStore', 'modalStore')(mobx_react_1.
             recordValue.valueType !== 'source' ? (React.createElement("td", { className: 'record-row-item' }, formatValue(props, recordValue))) : null,
             React.createElement("td", { className: 'record-row-item' },
                 dropDownValue.key,
-                dropDownValue.key.length > 0 && dropDownValue.value !== null ? (React.createElement(AddTabButton_1.AddTabButton, { uid: parseInt(dropDownValue.value), tabType: 'source' })) : null),
+                dropDownValue.key.length > 0 && dropDownValue.value !== null ? (React.createElement(AddTabButton_1.AddTabButton, { uid: dropDownValue.value, tabType: 'source' })) : null),
             React.createElement("td", { className: 'record-row-item score' },
                 React.createElement(ScorePicker_1.ScorePicker, { value: recordValue.score, readOnly: true })),
             React.createElement("td", { className: 'record-row-item period' }, formatDate_1.formatDate(recordValue.period)),
@@ -24474,14 +24486,14 @@ let CreatePredicate = class CreatePredicate extends React.Component {
         super();
         this.state = {
             label: '',
-            domain: { key: '', value: '' },
-            range: { key: '', value: '' },
+            domain: { key: '', value: null },
+            range: { key: '', value: null },
             domainOptions: [],
             rangeOptions: []
         };
     }
     componentWillMount() {
-        this.setState({ name: this.props.initialName });
+        this.setState({ label: this.props.initialName });
     }
     componentDidMount() {
         if (this.props.initialDomain !== undefined) {
@@ -24491,14 +24503,12 @@ let CreatePredicate = class CreatePredicate extends React.Component {
                     throw new Error('Unexpected null uid');
                 }
                 this.setState({
-                    domain: { key: result.label, value: result.uid.toString() },
+                    domain: { key: result.label, value: result.uid },
                     domainOptions: [
-                        { key: result.label, value: result.uid.toString() }
-                    ].concat(result.parents.map((entityType) => {
-                        if (entityType.uid === null) {
-                            throw new Error('Unexpected null uid');
-                        }
-                        return { key: entityType.label, value: entityType.uid.toString() };
+                        { key: result.label, value: result.uid }
+                    ].concat(result.parents.map((entityTypeId) => {
+                        const parentEntityType = this.props.dataStore.dataStore.all.entity_type.value.find((e) => e.uid === entityTypeId);
+                        return { key: parentEntityType.label, value: entityTypeId };
                     }))
                 });
             });
@@ -24508,13 +24518,15 @@ let CreatePredicate = class CreatePredicate extends React.Component {
             if (entityType.uid === null) {
                 throw new Error('Unexpected null uid');
             }
-            return { key: entityType.label, value: entityType.uid.toString() };
+            return { key: entityType.label, value: entityType.uid };
         });
+        const entityTypeMap2 = entityTypeMap.map((e) => ({ key: e.key, value: { isReference: true, value: e.value.toString() } }));
+        const literalTypesMap = literalTypes_1.literalTypes.map((lit) => ({ key: lit.label, value: { isReference: false, value: lit.value } }));
         if (this.props.initialDomain === undefined) {
             this.setState({ domainOptions: entityTypeMap });
         }
         this.setState({
-            rangeOptions: literalTypes_1.literalTypes.map((lit) => ({ key: lit.label, value: lit.value, meta: 'literal' })).concat(entityTypeMap)
+            rangeOptions: literalTypesMap.concat(entityTypeMap2)
         });
     }
     create() {
@@ -24522,7 +24534,7 @@ let CreatePredicate = class CreatePredicate extends React.Component {
             label: this.state.label,
             domain: this.state.domain.value,
             range: this.state.range.value,
-            rangeIsReference: this.state.range.meta !== 'literal'
+            rangeIsReference: this.state.range.value === null ? false : this.state.range.value.isReference
         });
         this.props.dataStore.postItem(falcon_core_1.Predicate, ApiService_1.AppUrls.predicate, newPredicate, {})
             .then((result) => {
@@ -24536,8 +24548,11 @@ let CreatePredicate = class CreatePredicate extends React.Component {
                 React.createElement("i", { className: 'fa fa-plus', "aria-hidden": 'true' }),
                 " Create Property"),
             React.createElement("label", { className: 'small' }, "Name"),
-            React.createElement("input", { type: 'text', className: 'gap', ref: (a) => { if (a !== null)
-                    a.focus(); }, value: this.state.label, onChange: (e) => this.setState({ label: e.target.value }) }),
+            React.createElement("input", { type: 'text', className: 'gap', ref: (a) => {
+                    if (a !== null) {
+                        a.focus();
+                    }
+                }, value: this.state.label, onChange: (e) => this.setState({ label: e.target.value }) }),
             React.createElement(PredicateDescription_1.PredicateDescription, { domain: this.state.domain, range: this.state.range, domainChanged: (s) => this.setState({ domain: s }), rangeChanged: (s) => this.setState({ range: s }), domainOptions: this.state.domainOptions, rangeOptions: this.state.rangeOptions, mode: 'editAll' }),
             React.createElement("div", { className: 'modal-toolbar' },
                 React.createElement("button", { onClick: this.props.cancel, className: 'pull-left' }, "Cancel"),
@@ -25407,20 +25422,19 @@ exports.SourceList = SourceList;
 const React = __webpack_require__(0);
 const ComboDropdown_1 = __webpack_require__(20);
 const ApiService_1 = __webpack_require__(8);
-const lodash_1 = __webpack_require__(5);
 exports.SearchBox = (props, context) => {
-    const entities = props.dataStore.dataStore.all.entity.value.map((entity) => ({ key: entity.label, value: lodash_1.toString(entity.uid), meta: { itemType: ApiService_1.AppUrls.entity } }));
-    const entityTypes = props.dataStore.dataStore.all.entity_type.value.map((entityType) => ({ key: entityType.label, value: lodash_1.toString(entityType.uid), meta: { itemType: ApiService_1.AppUrls.entity_type } }));
-    const predicates = props.dataStore.dataStore.all.predicate.value.map((predicate) => ({ key: predicate.label, value: lodash_1.toString(predicate.uid), meta: { itemType: ApiService_1.AppUrls.predicate } }));
-    const sources = props.dataStore.dataStore.all.source.value.map((source) => ({ key: source.label, value: lodash_1.toString(source.uid), meta: { itemType: ApiService_1.AppUrls.source } }));
+    const entities = props.dataStore.dataStore.all.entity.value.map((entity) => ({ key: entity.label, value: `${ApiService_1.AppUrls.entity}/${entity.uid}` }));
+    const entityTypes = props.dataStore.dataStore.all.entity_type.value.map((entityType) => ({ key: entityType.label, value: `${ApiService_1.AppUrls.entity_type}/${entityType.uid}` }));
+    const predicates = props.dataStore.dataStore.all.predicate.value.map((predicate) => ({ key: predicate.label, value: `${ApiService_1.AppUrls.predicate}/${predicate.uid}` }));
+    const sources = props.dataStore.dataStore.all.source.value.map((source) => ({ key: source.label, value: `${ApiService_1.AppUrls.source}/${source.uid}` }));
     const all = entities.concat(entityTypes, predicates, sources);
     return (React.createElement("span", null,
         React.createElement("div", { className: 'input-addon-formgroup' },
             React.createElement("span", { className: 'input-addon-icon' },
                 React.createElement("i", { className: 'fa fa-search fa-fw' })),
-            React.createElement(ComboDropdown_1.ComboDropdown, { value: { key: '', value: '' }, setValue: (val) => {
+            React.createElement(ComboDropdown_1.StringComboDropdown, { value: { key: '', value: null }, setValue: (val) => {
                     if (val !== null) {
-                        context.router.transitionTo(`/edit/${val.meta.itemType}/${val.value}`);
+                        context.router.transitionTo(`/edit/${val.value}`);
                     }
                 }, typeName: 'all', options: all, allowNew: false, createNewValue: () => { } }))));
 };
@@ -25489,8 +25503,6 @@ const EntityWorkspaceReferenceView_1 = __webpack_require__(273);
 const mobx_react_1 = __webpack_require__(6);
 class StringEditableFieldComponent extends EditableHeader_1.EditableFieldComponent {
 }
-class ComboEditableFieldComponent extends EditableHeader_1.EditableFieldComponent {
-}
 // What can I do?
 // Entity Operations
 // - Delete the entity
@@ -25511,8 +25523,6 @@ let EntityEditorWorkspace = class EntityEditorWorkspace extends React.Component 
     constructor(props, context) {
         super();
         this.state = {
-            comboValue: { key: 'test', value: '' },
-            comboSearchValue: '',
             tab: 0
         };
     }
@@ -25563,6 +25573,9 @@ let EntityEditorWorkspace = class EntityEditorWorkspace extends React.Component 
         const entityTypeParents = findParentTree_1.findParentTree(entity.entityType, this.props.dataStore.dataStore.all.entity_type.value);
         const predicates = this.props.dataStore.dataStore.all.predicate
             .value.filter((pred) => entityTypeParents.indexOf(pred.domain) !== -1);
+        if (entityType === undefined) {
+            throw new Error('Encountered undefined entity type!');
+        }
         const modalDef = {
             name: 'record',
             complete: (data) => {
@@ -25933,10 +25946,13 @@ let PredicateEditorWorkspace = class PredicateEditorWorkspace extends React.Comp
         if (currentDomainEntityType !== undefined) {
             currentDomainEntityTypeName = currentDomainEntityType.label;
         }
-        const domain = { key: currentDomainEntityTypeName, value: predicate.domain.toString() };
-        const range = { key: '', value: predicate.range.toString() };
+        const domain = { key: currentDomainEntityTypeName, value: predicate.domain };
+        const range = { key: '', value: {
+                isReference: predicate.rangeIsReference,
+                value: predicate.range
+            } };
         if (predicate.rangeIsReference) {
-            const currentRangeEntityType = entityTypes.find((t) => t.uid == predicate.range);
+            const currentRangeEntityType = entityTypes.find((t) => t.uid === predicate.range);
             if (currentRangeEntityType !== undefined) {
                 range.key = currentRangeEntityType.label;
             }
@@ -25951,9 +25967,10 @@ let PredicateEditorWorkspace = class PredicateEditorWorkspace extends React.Comp
             if (t.uid === null) {
                 throw new Error('Encountered entity type with no id!');
             }
-            return { key: t.label, value: t.uid.toString() };
+            return { key: t.label, value: t.uid };
         });
-        const literalTypeOptions = literalTypes_1.literalTypes.map((t) => ({ key: t.label, value: t.value, meta: 'literal' }));
+        const literalTypeOptions = literalTypes_1.literalTypes.map((t) => ({ key: t.label, value: { value: t.label, isReference: false } }));
+        const entityTypeMap2 = entityTypeOptions.map((e) => ({ key: e.key, value: { isReference: true, value: e.value.toString() } }));
         return (React.createElement("div", { className: 'workspace-editor' },
             React.createElement("header", { className: 'editor-header predicate' },
                 React.createElement("div", { className: 'primary-toolbar' },
@@ -25977,7 +25994,7 @@ let PredicateEditorWorkspace = class PredicateEditorWorkspace extends React.Comp
                     React.createElement(StringEditableFieldComponent, { value: predicate.description, component: EditableParagraph_1.EditableParagraph, onChange: (value) => this.updatePredicate('description', value) })),
                 React.createElement("div", { className: 'edit-group' },
                     React.createElement("label", { className: 'small' }, "Typing"),
-                    React.createElement(PredicateDescription_1.PredicateDescription, { domain: domain, range: range, domainChanged: (value) => this.updatePredicate('domain', value.value), rangeChanged: (value) => this.updatePredicate('range', value.value, value.meta !== 'literal'), mode: 'editSingle', domainOptions: entityTypeOptions, rangeOptions: literalTypeOptions.concat(entityTypeOptions) })),
+                    React.createElement(PredicateDescription_1.PredicateDescription, { domain: domain, range: range, domainChanged: (value) => this.updatePredicate('domain', value.value), rangeChanged: (value) => this.updatePredicate('range', value.value.value, value.value.isReference), mode: 'editSingle', domainOptions: entityTypeOptions, rangeOptions: literalTypeOptions.concat(entityTypeMap2) })),
                 React.createElement("div", null,
                     React.createElement(StringEditableFieldComponent, { value: predicate.sameAs, component: SameAsEditor_1.SameAsEditor, onChange: (value) => this.updatePredicate('sameAs', value) })))));
     }
@@ -26193,7 +26210,7 @@ let SourceEditorWorkspace = class SourceEditorWorkspace extends React.Component 
             React.createElement("section", { className: 'editor-body' },
                 React.createElement("div", { className: 'edit-group' },
                     React.createElement("label", { className: 'small' }, "Parent"),
-                    React.createElement(ComboEditableFieldComponent, { value: { key: parentName, value: source.parent }, component: EditableComboDropdown_1.EditableComboDropdown, onChange: (value) => this.updateSource('parent', value.value), additionalProps: { comboSettings: {
+                    React.createElement(ComboEditableFieldComponent, { value: { key: parentName, value: source.parent }, component: EditableComboDropdown_1.EditableComboDropdown, onChange: (value) => this.updateSource('parent', value === null ? null : value.value), additionalProps: { comboSettings: {
                                 options: potentialParents.map((par) => ({ key: par.label, value: par.uid })),
                                 typeName: 'Source'
                             } } }),
@@ -26798,7 +26815,7 @@ class ModalStore {
         };
         switch (this.modalQueue[0].name) {
             case 'predicate':
-                return (React.createElement(CreatePredicate_1.CreatePredicate, __assign({}, sharedProps, { initialName: this.modalQueue[0].settings['initialName'] })));
+                return (React.createElement(CreatePredicate_1.CreatePredicate, __assign({}, sharedProps, { initialName: this.modalQueue[0].settings['initialName'], initialDomain: this.modalQueue[0].settings['initialDomain'] })));
             case 'record':
                 return (React.createElement(CreateRecord_1.CreateRecord, __assign({}, sharedProps, { entityType: this.modalQueue[0].settings['entityType'], entityUid: this.modalQueue[0].settings['entityUid'], options: this.modalQueue[0].settings['options'] })));
             case 'preset_record':

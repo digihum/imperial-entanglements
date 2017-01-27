@@ -6,7 +6,8 @@
         "build": true,
         "public": true,
         "dist": true,
-        ".vscode/chrome": true
+        ".vscode/chrome": true,
+        "documentation": true
     },
 
     "files.eol": "\n",

@@ -29,7 +29,7 @@ import { AddTabButton } from '../AddTabButton';
 import { ModalDefinition } from '../modal/ModalDefinition';
 
 class StringEditableFieldComponent extends EditableFieldComponent<string> {}
-class ComboEditableFieldComponent extends EditableFieldComponent<ComboDropdownOption> {}
+class ComboEditableFieldComponent extends EditableFieldComponent<ComboDropdownOption<number>> {}
 
 interface SourceEditorProps {
     id: number;
@@ -81,7 +81,7 @@ export class SourceEditorWorkspace extends React.Component<SourceEditorProps, So
         });
     }
 
-    public updateSource(field: string, value: string) {
+    public updateSource(field: string, value: string | number | null) {
 
       const source = this.props.dataStore!.dataStore.tabs.source[this.props.id].value.source;
 
@@ -278,7 +278,7 @@ export class SourceEditorWorkspace extends React.Component<SourceEditorProps, So
                         <ComboEditableFieldComponent
                             value={{key: parentName, value: source.parent}}
                             component={EditableComboDropdown}
-                            onChange={(value) => this.updateSource('parent', value.value)}
+                            onChange={(value) => this.updateSource('parent', value === null ? null : value.value)}
                             additionalProps={{ comboSettings: {
                                 options: potentialParents.map((par) => ({ key: par.label, value: par.uid})),
                                 typeName: 'Source'
@@ -291,8 +291,9 @@ export class SourceEditorWorkspace extends React.Component<SourceEditorProps, So
                     <div className='edit-group'>
                         <StringEditableFieldComponent
                             value={source.sameAs}
-                            component={SameAsEditor}
-                            onChange={(value) => this.updateSource('sameAs', value)} />
+                            onChange={(value) => this.updateSource('sameAs', value)}>
+                            <SameAsEditor />
+                        </StringEditableFieldComponent>
                     </div>
 
                     {this.props.dataStore!.dataStore.all.dublinCore.value.elements!.map((element) => {

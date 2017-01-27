@@ -24,14 +24,14 @@ export class SameAsEditor extends React.Component<EditableSubfieldProps<string>,
         super();
         this.state = {
             temporaryValue: '',
-            urls: props.value === null || props.value.length === 0 ? [] : props.value.split(',')
+            urls: props.value === null || props.value!.length === 0 ? [] : props.value!.split(',')
         };
     }
 
     public componentWillReceiveProps(props: EditableSubfieldProps<string>) {
         this.setState({
             temporaryValue: '',
-            urls: props.value === null || props.value.length === 0 ? [] : props.value.split(',')
+            urls: props.value === null || props.value!.length === 0 ? [] : props.value!.split(',')
         });
     }
 
@@ -40,13 +40,13 @@ export class SameAsEditor extends React.Component<EditableSubfieldProps<string>,
             return;
         }
         this.setState({ urls: this.state.urls.concat([this.state.temporaryValue]), temporaryValue: ''},
-            () => this.props.onChange(this.state.urls.join(',')));
+            () => this.props.onChange!(this.state.urls.join(',')));
     }
 
     public removeItemFromList(itemId: number) {
         this.setState({
             urls: this.state.urls.filter((val, i) => i !== itemId)
-        }, () => this.props.onChange(this.state.urls.join(',')));
+        }, () => this.props.onChange!(this.state.urls.join(',')));
     }
 
     public setupKeyboardShortcuts(val: null | HTMLElement ) {
@@ -62,7 +62,7 @@ export class SameAsEditor extends React.Component<EditableSubfieldProps<string>,
                     // internet explorer
                     e.returnValue = false;
                 }
-                this.props.acceptChanges();
+                this.props.acceptChanges!();
             });
         } else {
             this.keyboardShortcuts.unbind('return');
@@ -101,7 +101,7 @@ export class SameAsEditor extends React.Component<EditableSubfieldProps<string>,
             ) : null}
             <ul className='same-as-list'>
                 {this.state.urls.map((url, i) => (
-                    <li key={`li-${url}`}><a target='_blank' href={url}>{url}</a> {this.props.edit ? (<i 
+                    <li key={`li-${url}`}><a target='_blank' href={url}>{url}</a> {this.props.edit ? (<i
                         className='fa fa-times close-button'
                         onClick={this.removeItemFromList.bind(this,i)}></i>) : null}</li>
                 ))}

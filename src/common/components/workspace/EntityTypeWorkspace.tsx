@@ -27,7 +27,7 @@ import { ModalStore } from '../../stores/ModalStore';
 
 
 class StringEditableFieldComponent extends EditableFieldComponent<string> {}
-class ComboEditableFieldComponent extends EditableFieldComponent<ComboDropdownOption> {}
+class ComboEditableFieldComponent extends EditableFieldComponent<ComboDropdownOption<number>> {}
 
 interface EntityTypeWorkspaceProps {
     id: number;
@@ -148,20 +148,25 @@ export class EntityTypeWorkspace extends React.Component<EntityTypeWorkspaceProp
                   <div className='primary-toolbar'>
                     <div className='main-toolbar'>
                         <div className='bread-crumbs'>
-                            {entityType.parents.map((parent, i) => (
-                                <span key={`breadcrumb-${parent.uid}`}>
-                                    <span>  {parent.label} <AddTabButton
+                            {entityType.parents.map((parent, i) => {
+
+                              const parentEntityType = this.props.dataStore!.dataStore.all.entity_type.value.find((e) => e.uid === parent)!;
+
+                              return (
+                                <span key={`breadcrumb-${parent}`}>
+                                    <span>  {parentEntityType.label} <AddTabButton
                                         tabType='entity_type'
-                                        uid={parent.uid} /> </span>
+                                        uid={parent} /> </span>
                                     <i className='fa fa-angle-right'></i>
                                 </span>
-                            ))}
+                            )})}
                         </div>
                         <i className='fa fa-tag item-icon'></i>
                         <StringEditableFieldComponent
                             value={entityType.label}
-                            component={EditableHeader}
-                            onChange={(value) => this.update({'label': value})}  />
+                            onChange={(value) => this.update({'label': value})}>
+                            <EditableHeader />
+                        </StringEditableFieldComponent>
                     </div>
                     <div className='sub-toolbar'>
                         <i
@@ -194,13 +199,15 @@ export class EntityTypeWorkspace extends React.Component<EntityTypeWorkspaceProp
 
                         <label className='small'>Parent</label>
                         <ComboEditableFieldComponent
-                            value={entityType.parent === null ? null : {key: parentName, value: entityType.parent}}
-                            component={EditableComboDropdown}
-                            onChange={(value) => this.update({'parent': value === null ? null : value.value})}
-                            additionalProps={{ comboSettings: {
-                                options: potentialParents.map((par) => ({ key: par.label, value: par.uid})),
+                            value={entityType.parent === null ? {key: '', value: null} : {key: parentName, value: entityType.parent}}
+                            onChange={(value) => this.update({'parent': value === null ? null : value.value})} >
+                            <EditableComboDropdown
+                              comboSettings={{
+                               options: potentialParents.map((par) => ({ key: par.label, value: par.uid})),
                                 typeName: 'EntityType'
-                            }}} />
+                              }}
+                            />
+                        </ComboEditableFieldComponent>
                         {entityType.parent !== null ? (<AddTabButton
                             tabType='entity_type'
                             uid={entityType.parent} />) : null}
@@ -210,15 +217,17 @@ export class EntityTypeWorkspace extends React.Component<EntityTypeWorkspaceProp
                         <label className='small'>Description</label>
                         <StringEditableFieldComponent
                             value={entityType.description}
-                            component={EditableParagraph}
-                            onChange={(value) => this.update({'description': value})}  />
+                            onChange={(value) => this.update({'description': value})}>
+                            <EditableParagraph />
+                        </StringEditableFieldComponent>
                     </div>
 
                     <div className='edit-group'>
                         <StringEditableFieldComponent
                             value={entityType.sameAs}
-                            component={SameAsEditor}
-                            onChange={(value) => this.update({'sameAs': value})} />
+                            onChange={(value) => this.update({'sameAs': value})}>
+                            <SameAsEditor/>
+                        </StringEditableFieldComponent>
                     </div>
 
                     <div>
@@ -226,11 +235,15 @@ export class EntityTypeWorkspace extends React.Component<EntityTypeWorkspaceProp
                         <ul>
                         {entityType.children
                             .map((child) => this.props.dataStore!.dataStore.all.entity_type.value.find((et) => et.uid === child))
-                            .map((childEt) =>
-                                (<li key={`dc-${childEt.label}`}>{childEt.label} <AddTabButton
+                            .map((childEt) => {
+                              if(childEt === undefined) {
+                                return null;
+                              }
+                              //TODO: REMOVE !
+                                return (<li key={`dc-${childEt.label}`}>{childEt.label} <AddTabButton
                                     tabType='entity_type'
-                                    uid={childEt.uid} /></li>
-                            ))}
+                                    uid={childEt.uid!} /></li>
+                            );})}
                         </ul>
                     </div>
                 </section>

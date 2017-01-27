@@ -40,7 +40,9 @@ export class ModalStore {
 
     switch (this.modalQueue[0].name) {
         case 'predicate':
-            return (<CreatePredicate {...sharedProps} initialName={this.modalQueue[0].settings['initialName']} />);
+            return (<CreatePredicate {...sharedProps}
+              initialName={this.modalQueue[0].settings['initialName']}
+              initialDomain={this.modalQueue[0].settings['initialDomain']} />);
 
         case 'record':
             return (<CreateRecord {...sharedProps}

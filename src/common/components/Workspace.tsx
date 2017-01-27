@@ -28,7 +28,7 @@ interface WorkspaceProps {
     list: boolean;
     dataStore?: DataController;
     loading: boolean;
-    location: { pathname: string, search: string };
+    location: { pathname: string, search: string, query: any };
 }
 
 interface WorkspaceState {
@@ -53,6 +53,9 @@ export class Workspace extends React.Component<WorkspaceProps, WorkspaceState> {
         }
 
         if (this.props.list) {
+            if (this.props.name === undefined) {
+              throw new Error('A list view must have a name');
+            }
             return (<ObjectListWorkspace
                 name={this.props.name}
                 query={this.props.location.query}

@@ -109,14 +109,11 @@ export class RecordPredicate extends React.Component<RecordPredicateProps, Recor
                             key={`row-${record.uid}`}
                             value={record}
                             onChange={this.recordChanged.bind(this)}
-                            onDelete={this.deleteRecord.bind(this)}
-                            component={RecordRow}
-                            additionalProps={{
-                                dimension: 'predicates',
-                                sources: this.props.sources,
-                                entities: this.state.potentialValues
-                            }}
-                        />
+                            onDelete={this.deleteRecord.bind(this)}>
+                            <RecordRow dimension='predicates'
+                                sources={this.props.sources}
+                                entities={this.state.potentialValues} />
+                        </RecordEditableFieldComponent>
                     ))}
                 </tbody>
             </table>

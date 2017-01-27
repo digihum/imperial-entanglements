@@ -7,22 +7,20 @@
 import * as React from 'react';
 
 export interface EditableSubfieldProps<T> {
-    edit: boolean;
-    value: T | null;
-    onChange: (updated: T | null) => void;
-    setEdit: () => void;
-    acceptChanges: () => void;
-    cancelChanges: () => void;
+    edit?: boolean;
+    value?: T | null;
+    onChange?: (updated: T | null) => void;
+    setEdit?: () => void;
+    acceptChanges?: () => void;
+    cancelChanges?: () => void;
     // TODO: check this
-    onDelete: React.EventHandler<React.FormEvent>;
+    onDelete?: (val: T) => void;
 }
 
 interface EditableFieldProps<T> {
     value: T;
-    onChange: (s: T) => void;
+    onChange: (s: T | null) => void;
     onDelete?: (val: T) => void;
-    component: React.StatelessComponent<EditableSubfieldProps<T>> | React.Component<EditableSubfieldProps<T>, any>;
-    additionalProps?: any;
 }
 
 interface EditableFieldState<T> {
@@ -31,6 +29,10 @@ interface EditableFieldState<T> {
 }
 
 export class EditableFieldComponent<T> extends React.Component<EditableFieldProps<T>, EditableFieldState<T>> {
+
+    public static propTypes = {
+      children: React.PropTypes.element.isRequired
+    };
 
     constructor() {
         super();
@@ -41,7 +43,7 @@ export class EditableFieldComponent<T> extends React.Component<EditableFieldProp
     }
 
     public componentWillMount() {
-        this.setState({internalValue: this.props.value === undefined ? null : this.props.value});
+      this.setState({internalValue: this.props.value === undefined ? null : this.props.value});
     }
 
     public componentWillReceiveProps(newProps: EditableFieldProps<T>) {
@@ -66,14 +68,18 @@ export class EditableFieldComponent<T> extends React.Component<EditableFieldProp
     }
 
     public render() {
-       return (<this.props.component
-        edit={this.state.edit}
-        value={this.state.internalValue}
-        onChange={this.setInternalValue.bind(this)}
-        setEdit={this.switchToEditState.bind(this)}
-        acceptChanges={this.acceptChanges.bind(this)}
-        cancelChanges={this.cancelChanges.bind(this)}
-        onDelete={(e) => this.props.onDelete !== undefined ? this.props.onDelete(this.props.value) : null}
-        {...this.props.additionalProps} />);
+
+      return (<span>
+        {React.Children.map(this.props.children, (child) => React.cloneElement(child as any, {
+          edit: this.state.edit,
+          value: this.state.internalValue,
+          onChange: this.setInternalValue.bind(this),
+          setEdit: this.switchToEditState.bind(this),
+          acceptChanges: this.acceptChanges.bind(this),
+          cancelChanges: this.cancelChanges.bind(this),
+          onDelete: (e) => this.props.onDelete !== undefined ? this.props.onDelete(this.props.value) : null
+        }))}
+        </span>
+      );
     }
 }

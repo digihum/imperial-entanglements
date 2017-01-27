@@ -26,7 +26,7 @@ import { EditableComboDropdown } from '../../fields/EditableComboDropdown';
 import { DataController } from '../../../stores/DataController';
 
 class StringEditableFieldComponent extends EditableFieldComponent<string> {}
-class ComboEditableFieldComponent extends EditableFieldComponent<ComboDropdownOption> {}
+class ComboEditableFieldComponent extends EditableFieldComponent<ComboDropdownOption<number>> {}
 
 interface EntityWorkspaceCoreViewProps {
     id: number;
@@ -34,7 +34,7 @@ interface EntityWorkspaceCoreViewProps {
 }
 
 interface EntityWorkspaceCoreViewState {
-    comboValue: ComboDropdownOption;
+    comboValue: ComboDropdownOption<number>;
     comboSearchValue: string;
 }
 
@@ -63,7 +63,7 @@ export class EntityWorkspaceCoreView extends React.Component<EntityWorkspaceCore
     constructor(props : EntityWorkspaceCoreViewProps, context: any) {
         super();
         this.state = {
-            comboValue: { key: 'test', value: ''},
+            comboValue: { key: 'test', value: null},
             comboSearchValue: ''
         };
     }
@@ -77,6 +77,11 @@ export class EntityWorkspaceCoreView extends React.Component<EntityWorkspaceCore
         const entity = this.props.dataStore!.dataStore.tabs.entity[this.props.id].value.entity;
 
         const entityType = this.props.dataStore!.dataStore.all.entity_type.value.find((t) => t.uid === entity.entityType);
+
+        if (entityType === undefined || entityType.uid === null) {
+          throw new Error('Encountered undefined entity type or entity type with null id');
+        }
+
         const potentialParents = this.props.dataStore!.dataStore.all.entity.value;
 
         const entityTypeParents = findParentTree(entity.entityType, this.props.dataStore!.dataStore.all.entity_type.value);
@@ -112,12 +117,12 @@ export class EntityWorkspaceCoreView extends React.Component<EntityWorkspaceCore
                     <label className='small'>Parent</label>
                     <ComboEditableFieldComponent
                         value={{key: parentName, value: entity.parent}}
-                        component={EditableComboDropdown}
-                        onChange={(value) => this.update({'parent': value.value})}
-                        additionalProps={{ comboSettings: {
+                        onChange={(value) => this.update({'parent': value === null ? null : value.value})}>
+                        <EditableComboDropdown comboSettings={{
                             options: potentialParents.map((par) => ({ key: par.label, value: par.uid})),
                             typeName: 'Entity'
-                        }}} />
+                        }} />
+                    </ComboEditableFieldComponent>
                     {entity.parent !== null ? (<AddTabButton
                         tabType='entity'
                         uid={entity.parent} />) : null}

@@ -9,7 +9,7 @@ import * as React from 'react';
 import { Overlay } from '../Overlay';
 import { Record, Predicate, Serializer } from '@digihum/falcon-core';
 import { AppUrls } from '../../ApiService';
-import { ComboDropdown, ComboDropdownOption } from '../ComboDropdown';
+import {NumberComboDropdown, ComboDropdownOption } from '../ComboDropdown';
 
 import { ModalDefinition } from './ModalDefinition';
 
@@ -19,7 +19,7 @@ import { inject, observer } from 'mobx-react';
 import { ModalStore } from '../../stores/ModalStore';
 
 interface CreateRecordProps {
-    options: { key: string, value: string, meta: Predicate}[];
+    options: ComboDropdownOption<number>[];
     complete: (s: any) => void;
     cancel: () => void;
     entityUid: number;
@@ -29,7 +29,7 @@ interface CreateRecordProps {
 }
 
 interface CreateRecordState {
-    comboValue: ComboDropdownOption;
+    comboValue: ComboDropdownOption<number>;
     searchValue: string;
 }
 
@@ -40,7 +40,7 @@ export class CreateRecord extends React.Component<CreateRecordProps, CreateRecor
     constructor() {
         super();
         this.state = {
-            comboValue: {key: '', value: ''},
+            comboValue: {key: '', value: null},
             searchValue: ''
         };
     }
@@ -85,7 +85,7 @@ export class CreateRecord extends React.Component<CreateRecordProps, CreateRecor
         return (
         <Overlay>
             <h2>Create Record</h2>
-            <ComboDropdown
+            <NumberComboDropdown
                 ref='comboDropDown'
                 options={this.props.options}
                 typeName='predicate'

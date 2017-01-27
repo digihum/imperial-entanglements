@@ -42,7 +42,7 @@ export class CreateTabSet extends React.Component<CreateTabSetProps, CreateEntit
           method: 'POST',
           body: JSON.stringify({
             name: this.state.internalValue,
-            tabs: this.props.dataStore.tabs
+            tabs: this.props.dataStore!.tabs
           }),
           headers: {
               'Accept': 'application/json',

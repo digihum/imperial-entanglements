@@ -60,6 +60,10 @@ export class CreatePresetRecord extends React.Component<CreatePresetRecordProps,
 
                 const isMentioned = this.props.dataStore!.dataStore.all.predicate.value.find((pred) => pred.label === 'is mentioned');
 
+                if (isMentioned === undefined) {
+                  throw new Error('Is mentioned predicate is missing, it should be loaded by default');
+                }
+
                 this.props.dataStore!.postItem(Record, AppUrls.record,
                     Serializer.fromJson(Record, {
                         predicate: isMentioned.uid,

@@ -21,6 +21,8 @@ import { SearchBar } from '../SearchBar';
 
 import { RecursiveTree } from '../RecursiveTree';
 
+class SourceRecursiveTree extends RecursiveTree<Source> {}
+
 interface SourceListProps {
     dataStore?: DataController;
     modalStore?: ModalStore;
@@ -62,6 +64,7 @@ export class SourceList extends React.Component<SourceListProps, SourceListState
 
 
     public render() {
+
         return (
          <div className='workspace-editor'>
             <header className='editor-header source'>
@@ -106,6 +109,11 @@ export class SourceList extends React.Component<SourceListProps, SourceListState
                     </thead>
                     <tbody>
                     {this.props.dataStore!.dataStore.all.source.value.filter(this.state.filterFunc).map((source) => {
+
+                      if(source.uid === null) {
+                        throw new Error('Encountered source with null uid');
+                      }
+
                         return (
                             <tr key={`source-${source.uid}`}>
                                 <td>{source.uid} <AddTabButton
@@ -120,11 +128,11 @@ export class SourceList extends React.Component<SourceListProps, SourceListState
                   </table>
                 ) : (
                   <div className='tree-root'>
-                   <RecursiveTree
+                   <SourceRecursiveTree
                     data={this.props.dataStore!.dataStore.all.source.value}
                     tabType={'source'}
                     parentId={null}
-                    dataStore={this.props.dataStore} />
+                    dataStore={this.props.dataStore!} />
                   </div>
                 )}
 

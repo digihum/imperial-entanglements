@@ -47,12 +47,7 @@ export class EntityTypeController extends GenericController<EntityType> {
         .then((result) => {
             return Promise.all([
 
-                this.db.getAncestorsOf(uid, 'entity_types')
-                .then((ancestors) => {
-                    return this.db.select('entity_types').whereIn('uid', ancestors)
-                    .then((results) => results.map((result) => this.fromSchema(result)));
-                }),
-
+                this.db.getAncestorsOf(uid, 'entity_types'),
                 this.db.select('entity_types', ['uid']).where({ parent: uid })
             ])
             .then(([parents, children]) => {

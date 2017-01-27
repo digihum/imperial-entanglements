@@ -9,12 +9,12 @@ import { EditableSubfieldProps } from '../fields/EditableFieldComponent';
 export { EditableFieldComponent } from '../fields/EditableFieldComponent';
 import { ComboDropdown, ComboDropdownOption, ComboDropdownProps } from '../ComboDropdown';
 
-interface EditableComboDropdownProps extends EditableSubfieldProps<ComboDropdownOption> {
-    comboSettings: ComboDropdownProps;
+interface EditableComboDropdownProps<T> extends EditableSubfieldProps<ComboDropdownOption<T>> {
+    comboSettings: ComboDropdownProps<T>;
 }
 
-export const EditableComboDropdown = (props: EditableComboDropdownProps) => {
- 
+export function EditableComboDropdown<T>(props: EditableComboDropdownProps<T>) {
+
     if (props.edit) {
         return (<div>
             <ComboDropdown {...props.comboSettings}
@@ -43,4 +43,4 @@ export const EditableComboDropdown = (props: EditableComboDropdownProps) => {
             </div>
         );
     }
-}; 
+};

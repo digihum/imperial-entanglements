@@ -9,7 +9,7 @@ import * as React from 'react';
 import { Overlay } from '../Overlay';
 import { Entity, EntityType, Serializer } from '@digihum/falcon-core';
 import { AppUrls } from '../../ApiService';
-import { ComboDropdown, ComboDropdownOption } from '../ComboDropdown';
+import { NumberComboDropdown, ComboDropdownOption } from '../ComboDropdown';
 
 import { noop } from 'lodash';
 
@@ -26,7 +26,7 @@ interface CreateEntityProps {
 
 interface CreateEntityState {
     label: string;
-    entityType: ComboDropdownOption;
+    entityType: ComboDropdownOption<number> | null;
     allEntityTypes: EntityType[];
 }
 
@@ -38,7 +38,7 @@ export class CreateEntity extends React.Component<CreateEntityProps, CreateEntit
         super();
         this.state = {
             label: '',
-            entityType: { key: '', value: ''},
+            entityType: { key: '', value: null},
             allEntityTypes: []
         };
     }
@@ -58,7 +58,7 @@ export class CreateEntity extends React.Component<CreateEntityProps, CreateEntit
                 }
 
                 this.setState({
-                    entityType:  { key: initialType.label, value: initialType.uid.toString() }
+                    entityType:  { key: initialType.label, value: initialType.uid }
                 })
             }
             this.setState({ allEntityTypes });
@@ -66,12 +66,17 @@ export class CreateEntity extends React.Component<CreateEntityProps, CreateEntit
     }
 
     public createEntity() {
+
+      if (this.state.entityType === null) {
+        throw new Error('Cannot create entity with null type');
+      }
+
         this.props.dataStore!.postItem(Entity, AppUrls.entity,
             Serializer.fromJson(Entity, {
                 label: this.state.label,
                 entityType: this.state.entityType.value
             }), {})
-        .then(this.props.complete);
+        .then((a) => this.props.complete(a[0].toString()));
     }
 
     public render() {
@@ -88,8 +93,8 @@ export class CreateEntity extends React.Component<CreateEntityProps, CreateEntit
                 onChange={(e) => this.setState({ label: (e.target as HTMLInputElement).value })} />
 
             <label className='small'>Type</label>
-            <ComboDropdown
-                options={this.state.allEntityTypes.map((t) => ({ key: t.label, value: t.uid.toString() }))}
+            <NumberComboDropdown
+                options={this.state.allEntityTypes.map((t) => ({ key: t.label, value: t.uid }))}
                 typeName='entity type'
                 value={this.state.entityType}
                 setValue={(entityType) => this.setState({entityType})}

@@ -10,7 +10,7 @@ import { Record, Source, Entity } from '@digihum/falcon-core';
 import { EditableSubfieldProps } from '../fields/EditableFieldComponent';
 export { EditableFieldComponent } from '../fields/EditableFieldComponent';
 import { ScorePicker } from '../fields/ScorePicker';
-import { ComboDropdown, ComboDropdownOption } from '../ComboDropdown';
+import { NumberComboDropdown, ComboDropdownOption } from '../ComboDropdown';
 import { ModalDefinition } from '../modal/ModalDefinition';
 
 import { StringFieldEditor } from './StringFieldEditor';
@@ -21,8 +21,6 @@ import { IntegerFieldEditor } from './IntegerFieldEditor';
 import { AddTabButton } from '../AddTabButton';
 
 import { formatDate } from '../../helper/formatDate';
-
-import { toString } from 'lodash';
 
 import { inject, observer } from 'mobx-react';
 
@@ -42,19 +40,19 @@ const recordEditor = (props: RecordRowProps, record: Record) => {
         case 'string':
             return (<StringFieldEditor
                 value={record.value || ''}
-                onChange={(value) => props.onChange(Object.assign(record, { value }))} />);
+                onChange={(value) => props.onChange!(Object.assign(record, { value }))} />);
         case 'date':
             return (<DateFieldEditor
                 value={record.value || ''}
-                onChange={(value) => props.onChange(Object.assign(record, { value }))} />);
+                onChange={(value) => props.onChange!(Object.assign(record, { value }))} />);
         case 'integer':
             return (<IntegerFieldEditor
                 value={record.value || ''}
-                onChange={(value) => props.onChange(Object.assign(record, { value }))} />);
+                onChange={(value) => props.onChange!(Object.assign(record, { value }))} />);
         case 'entity':
             return (<EntityFieldEditor
                 value={record.value === null ? 0 : parseInt(record.value)}
-                onChange={(value) => props.onChange(Object.assign(record, { value }))}
+                onChange={(value) => props.onChange!(Object.assign(record, { value }))}
                 entities={props.entities} />);
         default:
             return (<div>Missing editor</div>);
@@ -93,7 +91,7 @@ export const RecordRow = inject('dataStore', 'modalStore')(observer((props: Reco
             complete: () => {
                 // TODO : Automatically reload sources
             },
-            cancel: () => { console.log('cancel')},
+            cancel: () => { console.log('cancel'); },
             settings: {
                 initialValue
             }
@@ -102,17 +100,17 @@ export const RecordRow = inject('dataStore', 'modalStore')(observer((props: Reco
         props.modalStore!.addModal(a);
     };
 
-    const recordValue = props.value;
+    const recordValue = props.value!;
 
     if (recordValue === null) {
         throw new Error('Should not be null!!');
     }
 
     const currentSource = recordValue.source === null ? undefined :
-      props.sources.find((source) => source.uid === parseInt(recordValue.source));
+      props.sources.find((source) => source.uid === recordValue.source);
 
-    const dropDownValue : ComboDropdownOption = {
-        key: '', value: recordValue.source === null ? null : toString(recordValue.source)
+    const dropDownValue : ComboDropdownOption<number> = {
+        key: '', value: recordValue.source === null ? null : recordValue.source
     };
 
     if (currentSource !== undefined) {
@@ -129,23 +127,23 @@ export const RecordRow = inject('dataStore', 'modalStore')(observer((props: Reco
                 </td>
             ) : null}
             <td className='record-row-item'>
-                <ComboDropdown
+                <NumberComboDropdown
                     options={props.sources.map((source) =>
-                      ({ key: source.label, value: source.uid !== null ? toString(source.uid) : null}))}
+                      ({ key: source.label, value: source.uid !== null ? source.uid : null}))}
                     typeName='source'
                     value={dropDownValue}
-                    setValue={(combo) => props.onChange(Object.assign(recordValue, { source: combo === null ? combo : combo.value }))}
+                    setValue={(combo) => props.onChange!(Object.assign(recordValue, { source: combo === null ? combo : combo.value }))}
                     createNewValue={() => createNewSource('')}
                 />
             </td>
             <td className='record-row-item score'>
                 <ScorePicker value={recordValue.score} readOnly={false}
-                    onChange={(score) => props.onChange(Object.assign(recordValue, { score }))} />
+                    onChange={(score) => props.onChange!(Object.assign(recordValue, { score }))} />
             </td>
             <td className='record-row-item period'>
                 <DateFieldEditor
                     value={recordValue.period || ''}
-                    onChange={(period) => props.onChange(Object.assign(recordValue, { period }))} />
+                    onChange={(period) => props.onChange!(Object.assign(recordValue, { period }))} />
             </td>
             <td className='record-row-item buttons'>
                 <button><i className='fa fa-check' onClick={props.acceptChanges} aria-hidden='true'></i></button>
@@ -164,7 +162,7 @@ export const RecordRow = inject('dataStore', 'modalStore')(observer((props: Reco
             <td className='record-row-item'>{dropDownValue.key}
                 {dropDownValue.key.length > 0 && dropDownValue.value !== null ? (
                     <AddTabButton
-                        uid={parseInt(dropDownValue.value)}
+                        uid={dropDownValue.value}
                         tabType='source' />
                 ) : null}
 			</td>
@@ -176,7 +174,7 @@ export const RecordRow = inject('dataStore', 'modalStore')(observer((props: Reco
             </td>
             <td className='record-row-item buttons'>
                 <button><i className='fa fa-pencil-square-o' title='Edit' onClick={props.setEdit} aria-hidden='true'></i></button>
-                <button><i className='fa fa-trash' aria-hidden='true' onClick={props.onDelete}></i></button>
+                <button><i className='fa fa-trash' aria-hidden='true' onClick={props.onDelete!}></i></button>
             </td>
         </tr>
         );

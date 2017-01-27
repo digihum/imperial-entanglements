@@ -5,46 +5,42 @@
  */
 
 import * as React from 'react';
-import { ComboDropdown } from '../ComboDropdown';
+import { StringComboDropdown, ComboDropdownOption } from '../ComboDropdown';
 import { DataController } from '../../stores/DataController';
 
 import { AppUrls } from '../../ApiService';
 
-import { toString } from 'lodash';
-
 interface SearchBoxProps {
-    onChange : React.EventHandler<React.FormEvent>;
     searchString: string;
     dataStore: DataController;
-
 }
 
 export const SearchBox : React.StatelessComponent<SearchBoxProps> = (props : SearchBoxProps, context: any) => {
 
-    const entities = props.dataStore!.dataStore.all.entity.value.map((entity) =>
-        ({ key: entity.label, value: toString(entity.uid), meta: { itemType: AppUrls.entity } }));
+    const entities : ComboDropdownOption<string>[] = props.dataStore!.dataStore.all.entity.value.map((entity) =>
+        ({ key: entity.label, value: `${AppUrls.entity}/${entity.uid}`}));
 
-    const entityTypes = props.dataStore!.dataStore.all.entity_type.value.map((entityType) =>
-        ({ key: entityType.label, value: toString(entityType.uid), meta: { itemType: AppUrls.entity_type }  }));
+    const entityTypes : ComboDropdownOption<string>[]  = props.dataStore!.dataStore.all.entity_type.value.map((entityType) =>
+        ({ key: entityType.label, value: `${AppUrls.entity_type}/${entityType.uid}` }));
 
-    const predicates = props.dataStore!.dataStore.all.predicate.value.map((predicate) =>
-        ({ key: predicate.label, value: toString(predicate.uid), meta: { itemType: AppUrls.predicate }  }));
+    const predicates : ComboDropdownOption<string>[]  = props.dataStore!.dataStore.all.predicate.value.map((predicate) =>
+        ({ key: predicate.label, value: `${AppUrls.predicate}/${predicate.uid}`  }));
 
-    const sources = props.dataStore!.dataStore.all.source.value.map((source) =>
-        ({ key: source.label, value: toString(source.uid), meta: { itemType: AppUrls.source }  }));
+    const sources : ComboDropdownOption<string>[]  = props.dataStore!.dataStore.all.source.value.map((source) =>
+        ({ key: source.label, value: `${AppUrls.source}/${source.uid}`  }));
 
-    const all = entities.concat(entityTypes, predicates, sources);
+    const all : ComboDropdownOption<string>[]  = entities.concat(entityTypes, predicates, sources);
 
 
     return (
         <span>
             <div className='input-addon-formgroup'>
                 <span className='input-addon-icon'><i className='fa fa-search fa-fw'></i></span>
-                <ComboDropdown
-                    value={{ key: '', value: ''}}
+                <StringComboDropdown
+                    value={{ key: '', value: null}}
                     setValue={(val) => {
                       if (val !== null) {
-                        context.router.transitionTo(`/edit/${val.meta.itemType}/${val.value}`)
+                        context.router.transitionTo(`/edit/${val.value}`)
                       }
                     }}
                     typeName='all'

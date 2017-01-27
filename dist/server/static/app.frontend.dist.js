@@ -4372,7 +4372,7 @@ return hooks;
 
 })));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(57)(module)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(55)(module)))
 
 /***/ }),
 /* 1 */
@@ -5666,7 +5666,7 @@ exports.AddTabButton.wrappedComponent.contextTypes = {
 /* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var freeGlobal = __webpack_require__(68);
+var freeGlobal = __webpack_require__(66);
 
 /** Detect free variable `self`. */
 var freeSelf = typeof self == 'object' && self && self.Object === Object && self;
@@ -5903,7 +5903,7 @@ class ComboDropdown extends React.Component {
         }
     }
     render() {
-        return (React.createElement("div", { className: this.props.compact ? 'compact combo-dropdown' : 'combo-dropdown' },
+        return (React.createElement("div", { className: 'combo-dropdown ' + this.props.additionalClasses.join(' ') },
             React.createElement("div", null,
                 React.createElement("input", { type: 'text', ref: ComboDropdown.comboDropdownInputBoxRef, className: 'search-input', value: this.state.searchString, placeholder: 'Click here and start typing..', onBlur: this.handleInputBlur.bind(this), onFocus: this.handleInputFocus.bind(this), onChange: this.changeSearchString.bind(this), onClick: this.handleInputClick.bind(this) }),
                 this.state.searchString.length > 0 ? (React.createElement("i", { className: 'fa fa-times clear-button', onClick: this.clearSearchBox.bind(this) })) : null),
@@ -5925,11 +5925,17 @@ class ComboDropdown extends React.Component {
 }
 ComboDropdown.defaultProps = {
     allowNew: true,
-    compact: false,
+    additionalClasses: [],
     updateSearchString: lodash_1.noop
 };
 ComboDropdown.comboDropdownInputBoxRef = 'comboDropDownInputBox';
 exports.ComboDropdown = ComboDropdown;
+class NumberComboDropdown extends ComboDropdown {
+}
+exports.NumberComboDropdown = NumberComboDropdown;
+class StringComboDropdown extends ComboDropdown {
+}
+exports.StringComboDropdown = StringComboDropdown;
 
 
 /***/ }),
@@ -5982,7 +5988,7 @@ var _StaticRouter2 = __webpack_require__(26);
 
 var _StaticRouter3 = _interopRequireDefault(_StaticRouter2);
 
-var _matchPattern2 = __webpack_require__(185);
+var _matchPattern2 = __webpack_require__(183);
 
 var _matchPattern3 = _interopRequireDefault(_matchPattern2);
 
@@ -6255,14 +6261,6 @@ var createPath = exports.createPath = function createPath(location) {
  * @version 0.2.0
  */
 
-var __assign = (this && this.__assign) || Object.assign || function(t) {
-    for (var s, i = 1, n = arguments.length; i < n; i++) {
-        s = arguments[i];
-        for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
-            t[p] = s[p];
-    }
-    return t;
-};
 const React = __webpack_require__(1);
 class EditableFieldComponent extends React.Component {
     constructor() {
@@ -6292,9 +6290,20 @@ class EditableFieldComponent extends React.Component {
         this.setState({ edit: false, internalValue: this.props.value });
     }
     render() {
-        return (React.createElement(this.props.component, __assign({ edit: this.state.edit, value: this.state.internalValue, onChange: this.setInternalValue.bind(this), setEdit: this.switchToEditState.bind(this), acceptChanges: this.acceptChanges.bind(this), cancelChanges: this.cancelChanges.bind(this), onDelete: (e) => this.props.onDelete !== undefined ? this.props.onDelete(this.props.value) : null }, this.props.additionalProps)));
+        return (React.createElement("span", null, React.Children.map(this.props.children, (child) => React.cloneElement(child, {
+            edit: this.state.edit,
+            value: this.state.internalValue,
+            onChange: this.setInternalValue.bind(this),
+            setEdit: this.switchToEditState.bind(this),
+            acceptChanges: this.acceptChanges.bind(this),
+            cancelChanges: this.cancelChanges.bind(this),
+            onDelete: (e) => this.props.onDelete !== undefined ? this.props.onDelete(this.props.value) : null
+        }))));
     }
 }
+EditableFieldComponent.propTypes = {
+    children: React.PropTypes.element.isRequired
+};
 exports.EditableFieldComponent = EditableFieldComponent;
 
 
@@ -6354,7 +6363,7 @@ module.exports = baseGetTag;
 /* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var isFunction = __webpack_require__(73),
+var isFunction = __webpack_require__(71),
     isLength = __webpack_require__(49);
 
 /**
@@ -7554,9 +7563,9 @@ var _react = __webpack_require__(1);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _queryString = __webpack_require__(183);
+var _queryString = __webpack_require__(181);
 
-var _MatchProvider = __webpack_require__(184);
+var _MatchProvider = __webpack_require__(182);
 
 var _MatchProvider2 = _interopRequireDefault(_MatchProvider);
 
@@ -11486,95 +11495,6 @@ exports.sortableHandle = _SortableHandle3.default;
 
 "use strict";
 /**
- * @fileOverview <Description Missing>
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.2.0
- */
-
-var __assign = (this && this.__assign) || Object.assign || function(t) {
-    for (var s, i = 1, n = arguments.length; i < n; i++) {
-        s = arguments[i];
-        for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
-            t[p] = s[p];
-    }
-    return t;
-};
-const React = __webpack_require__(1);
-var EditableFieldComponent_1 = __webpack_require__(17);
-exports.EditableFieldComponent = EditableFieldComponent_1.EditableFieldComponent;
-const ComboDropdown_1 = __webpack_require__(10);
-exports.EditableComboDropdown = (props) => {
-    if (props.edit) {
-        return (React.createElement("div", null,
-            React.createElement(ComboDropdown_1.ComboDropdown, __assign({}, props.comboSettings, { value: props.value, setValue: props.onChange, allowNew: false, createNewValue: () => { } })),
-            React.createElement("button", null,
-                React.createElement("i", { className: 'fa fa-check', onClick: props.acceptChanges, "aria-hidden": 'true' })),
-            React.createElement("button", null,
-                React.createElement("i", { className: 'fa fa-times', "aria-hidden": 'true', onClick: props.cancelChanges }))));
-    }
-    else {
-        return (React.createElement("div", null,
-            props.value !== null && props.value.key.length > 0 ? props.value.key
-                : (React.createElement("em", null, "No value")),
-            React.createElement("sup", null,
-                React.createElement("i", { className: 'fa fa-pencil-square-o', title: 'Edit', "aria-hidden": 'true', onClick: props.setEdit }))));
-    }
-};
-
-
-/***/ }),
-/* 53 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview Sidebar for editor
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.2.0
- */
-
-const React = __webpack_require__(1);
-var EditableFieldComponent_1 = __webpack_require__(17);
-exports.EditableFieldComponent = EditableFieldComponent_1.EditableFieldComponent;
-const mousetrap = __webpack_require__(25);
-exports.EditableParagraph = (props) => {
-    let keyBoardShortcuts;
-    const bindKeyboard = (val) => {
-        if (val !== null) {
-            val.focus();
-            keyBoardShortcuts = new mousetrap(val);
-            keyBoardShortcuts.bind('ctrl+return', props.acceptChanges);
-            keyBoardShortcuts.bind('escape', props.cancelChanges);
-        }
-        else {
-            keyBoardShortcuts.unbind('ctrl+return');
-        }
-    };
-    if (!props.edit) {
-        return (React.createElement("div", { onClick: props.setEdit, className: 'editable-paragraph-box' },
-            React.createElement("p", null,
-                props.value === null || props.value.length > 0 ? props.value
-                    : (React.createElement("em", null, "No value")),
-                React.createElement("sup", null,
-                    React.createElement("i", { className: 'fa fa-pencil-square-o', title: 'Edit', "aria-hidden": 'true' })))));
-    }
-    else {
-        return (React.createElement("div", null,
-            React.createElement("textarea", { value: props.value, ref: bindKeyboard, onChange: (e) => props.onChange(e.target.value), style: { width: '100%', height: '6em' } }),
-            React.createElement("button", { onClick: props.acceptChanges },
-                React.createElement("i", { className: 'fa fa-check', "aria-hidden": 'true' })),
-            React.createElement("button", { onClick: props.cancelChanges },
-                React.createElement("i", { className: 'fa fa-times', "aria-hidden": 'true' }))));
-    }
-};
-
-
-/***/ }),
-/* 54 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
  * @fileOverview Sidebar for editor
  * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
  * @version 0.2.0
@@ -11655,7 +11575,7 @@ exports.SameAsEditor = SameAsEditor;
 
 
 /***/ }),
-/* 55 */
+/* 53 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11689,7 +11609,7 @@ exports.findParentTree = (uid, data, ancestors = []) => {
 
 
 /***/ }),
-/* 56 */
+/* 54 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11719,7 +11639,7 @@ exports.formatDate = (str) => {
 
 
 /***/ }),
-/* 57 */
+/* 55 */
 /***/ (function(module, exports) {
 
 module.exports = function(module) {
@@ -11747,7 +11667,7 @@ module.exports = function(module) {
 
 
 /***/ }),
-/* 58 */
+/* 56 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11806,7 +11726,7 @@ var isExtraneousPopstateEvent = exports.isExtraneousPopstateEvent = function isE
 };
 
 /***/ }),
-/* 59 */
+/* 57 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11816,7 +11736,7 @@ exports.__esModule = true;
 var canUseDOM = exports.canUseDOM = !!(typeof window !== 'undefined' && window.document && window.document.createElement);
 
 /***/ }),
-/* 60 */
+/* 58 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var ListCache = __webpack_require__(29),
@@ -11849,7 +11769,7 @@ module.exports = Stack;
 
 
 /***/ }),
-/* 61 */
+/* 59 */
 /***/ (function(module, exports) {
 
 /**
@@ -11876,7 +11796,7 @@ module.exports = arrayMap;
 
 
 /***/ }),
-/* 62 */
+/* 60 */
 /***/ (function(module, exports) {
 
 /**
@@ -11902,10 +11822,10 @@ module.exports = arrayPush;
 
 
 /***/ }),
-/* 63 */
+/* 61 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var castPath = __webpack_require__(66),
+var castPath = __webpack_require__(64),
     toKey = __webpack_require__(33);
 
 /**
@@ -11932,7 +11852,7 @@ module.exports = baseGet;
 
 
 /***/ }),
-/* 64 */
+/* 62 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var baseIsEqualDeep = __webpack_require__(226),
@@ -11966,7 +11886,7 @@ module.exports = baseIsEqual;
 
 
 /***/ }),
-/* 65 */
+/* 63 */
 /***/ (function(module, exports) {
 
 /**
@@ -11986,7 +11906,7 @@ module.exports = baseUnary;
 
 
 /***/ }),
-/* 66 */
+/* 64 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var isArray = __webpack_require__(9),
@@ -12013,7 +11933,7 @@ module.exports = castPath;
 
 
 /***/ }),
-/* 67 */
+/* 65 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var SetCache = __webpack_require__(211),
@@ -12102,7 +12022,7 @@ module.exports = equalArrays;
 
 
 /***/ }),
-/* 68 */
+/* 66 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global) {/** Detect free variable `global` from Node.js. */
@@ -12113,7 +12033,7 @@ module.exports = freeGlobal;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(191)))
 
 /***/ }),
-/* 69 */
+/* 67 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var isObject = __webpack_require__(22);
@@ -12134,7 +12054,7 @@ module.exports = isStrictComparable;
 
 
 /***/ }),
-/* 70 */
+/* 68 */
 /***/ (function(module, exports) {
 
 /**
@@ -12160,7 +12080,7 @@ module.exports = matchesStrictComparable;
 
 
 /***/ }),
-/* 71 */
+/* 69 */
 /***/ (function(module, exports) {
 
 /** Used for built-in method references. */
@@ -12192,7 +12112,7 @@ module.exports = toSource;
 
 
 /***/ }),
-/* 72 */
+/* 70 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(module) {var root = __webpack_require__(8),
@@ -12234,10 +12154,10 @@ var isBuffer = nativeIsBuffer || stubFalse;
 
 module.exports = isBuffer;
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(57)(module)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(55)(module)))
 
 /***/ }),
-/* 73 */
+/* 71 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var baseGetTag = __webpack_require__(20),
@@ -12280,11 +12200,11 @@ module.exports = isFunction;
 
 
 /***/ }),
-/* 74 */
+/* 72 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var baseIsTypedArray = __webpack_require__(229),
-    baseUnary = __webpack_require__(65),
+    baseUnary = __webpack_require__(63),
     nodeUtil = __webpack_require__(282);
 
 /* Node.js helper references. */
@@ -12313,7 +12233,7 @@ module.exports = isTypedArray;
 
 
 /***/ }),
-/* 75 */
+/* 73 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -12391,7 +12311,7 @@ return af;
 
 
 /***/ }),
-/* 76 */
+/* 74 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -12455,7 +12375,7 @@ return arDz;
 
 
 /***/ }),
-/* 77 */
+/* 75 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -12586,7 +12506,7 @@ return arLy;
 
 
 /***/ }),
-/* 78 */
+/* 76 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -12651,7 +12571,7 @@ return arMa;
 
 
 /***/ }),
-/* 79 */
+/* 77 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -12761,7 +12681,7 @@ return arSa;
 
 
 /***/ }),
-/* 80 */
+/* 78 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -12825,7 +12745,7 @@ return arTn;
 
 
 /***/ }),
-/* 81 */
+/* 79 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -12972,7 +12892,7 @@ return ar;
 
 
 /***/ }),
-/* 82 */
+/* 80 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -13082,7 +13002,7 @@ return az;
 
 
 /***/ }),
-/* 83 */
+/* 81 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -13221,7 +13141,7 @@ return be;
 
 
 /***/ }),
-/* 84 */
+/* 82 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -13316,7 +13236,7 @@ return bg;
 
 
 /***/ }),
-/* 85 */
+/* 83 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -13440,7 +13360,7 @@ return bn;
 
 
 /***/ }),
-/* 86 */
+/* 84 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -13564,7 +13484,7 @@ return bo;
 
 
 /***/ }),
-/* 87 */
+/* 85 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -13677,7 +13597,7 @@ return br;
 
 
 /***/ }),
-/* 88 */
+/* 86 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -13825,7 +13745,7 @@ return bs;
 
 
 /***/ }),
-/* 89 */
+/* 87 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -13911,7 +13831,7 @@ return ca;
 
 
 /***/ }),
-/* 90 */
+/* 88 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -14088,7 +14008,7 @@ return cs;
 
 
 /***/ }),
-/* 91 */
+/* 89 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -14156,7 +14076,7 @@ return cv;
 
 
 /***/ }),
-/* 92 */
+/* 90 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -14242,7 +14162,7 @@ return cy;
 
 
 /***/ }),
-/* 93 */
+/* 91 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -14307,7 +14227,7 @@ return da;
 
 
 /***/ }),
-/* 94 */
+/* 92 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -14391,7 +14311,7 @@ return deAt;
 
 
 /***/ }),
-/* 95 */
+/* 93 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -14474,7 +14394,7 @@ return de;
 
 
 /***/ }),
-/* 96 */
+/* 94 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -14579,7 +14499,7 @@ return dv;
 
 
 /***/ }),
-/* 97 */
+/* 95 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -14682,7 +14602,7 @@ return el;
 
 
 /***/ }),
-/* 98 */
+/* 96 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -14754,7 +14674,7 @@ return enAu;
 
 
 /***/ }),
-/* 99 */
+/* 97 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -14822,7 +14742,7 @@ return enCa;
 
 
 /***/ }),
-/* 100 */
+/* 98 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -14894,7 +14814,7 @@ return enGb;
 
 
 /***/ }),
-/* 101 */
+/* 99 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -14966,7 +14886,7 @@ return enIe;
 
 
 /***/ }),
-/* 102 */
+/* 100 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -15038,7 +14958,7 @@ return enNz;
 
 
 /***/ }),
-/* 103 */
+/* 101 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -15116,7 +15036,7 @@ return eo;
 
 
 /***/ }),
-/* 104 */
+/* 102 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -15201,7 +15121,7 @@ return esDo;
 
 
 /***/ }),
-/* 105 */
+/* 103 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -15287,7 +15207,7 @@ return es;
 
 
 /***/ }),
-/* 106 */
+/* 104 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -15372,7 +15292,7 @@ return et;
 
 
 /***/ }),
-/* 107 */
+/* 105 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -15443,7 +15363,7 @@ return eu;
 
 
 /***/ }),
-/* 108 */
+/* 106 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -15555,7 +15475,7 @@ return fa;
 
 
 /***/ }),
-/* 109 */
+/* 107 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -15667,7 +15587,7 @@ return fi;
 
 
 /***/ }),
-/* 110 */
+/* 108 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -15732,7 +15652,7 @@ return fo;
 
 
 /***/ }),
-/* 111 */
+/* 109 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -15797,7 +15717,7 @@ return frCa;
 
 
 /***/ }),
-/* 112 */
+/* 110 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -15866,7 +15786,7 @@ return frCh;
 
 
 /***/ }),
-/* 113 */
+/* 111 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -15935,7 +15855,7 @@ return fr;
 
 
 /***/ }),
-/* 114 */
+/* 112 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -16013,7 +15933,7 @@ return fy;
 
 
 /***/ }),
-/* 115 */
+/* 113 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -16094,7 +16014,7 @@ return gd;
 
 
 /***/ }),
-/* 116 */
+/* 114 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -16176,7 +16096,7 @@ return gl;
 
 
 /***/ }),
-/* 117 */
+/* 115 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -16280,7 +16200,7 @@ return he;
 
 
 /***/ }),
-/* 118 */
+/* 116 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -16409,7 +16329,7 @@ return hi;
 
 
 /***/ }),
-/* 119 */
+/* 117 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -16559,7 +16479,7 @@ return hr;
 
 
 /***/ }),
-/* 120 */
+/* 118 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -16673,7 +16593,7 @@ return hu;
 
 
 /***/ }),
-/* 121 */
+/* 119 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -16773,7 +16693,7 @@ return hyAm;
 
 
 /***/ }),
-/* 122 */
+/* 120 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -16861,7 +16781,7 @@ return id;
 
 
 /***/ }),
-/* 123 */
+/* 121 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -16993,7 +16913,7 @@ return is;
 
 
 /***/ }),
-/* 124 */
+/* 122 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -17068,7 +16988,7 @@ return it;
 
 
 /***/ }),
-/* 125 */
+/* 123 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -17149,7 +17069,7 @@ return ja;
 
 
 /***/ }),
-/* 126 */
+/* 124 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -17237,7 +17157,7 @@ return jv;
 
 
 /***/ }),
-/* 127 */
+/* 125 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -17331,7 +17251,7 @@ return ka;
 
 
 /***/ }),
-/* 128 */
+/* 126 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -17423,7 +17343,7 @@ return kk;
 
 
 /***/ }),
-/* 129 */
+/* 127 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -17486,7 +17406,7 @@ return km;
 
 
 /***/ }),
-/* 130 */
+/* 128 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -17556,7 +17476,7 @@ return ko;
 
 
 /***/ }),
-/* 131 */
+/* 129 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -17649,7 +17569,7 @@ return ky;
 
 
 /***/ }),
-/* 132 */
+/* 130 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -17791,7 +17711,7 @@ return lb;
 
 
 /***/ }),
-/* 133 */
+/* 131 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -17866,7 +17786,7 @@ return lo;
 
 
 /***/ }),
-/* 134 */
+/* 132 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -17988,7 +17908,7 @@ return lt;
 
 
 /***/ }),
-/* 135 */
+/* 133 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -18090,7 +18010,7 @@ return lv;
 
 
 /***/ }),
-/* 136 */
+/* 134 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -18206,7 +18126,7 @@ return me;
 
 
 /***/ }),
-/* 137 */
+/* 135 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -18275,7 +18195,7 @@ return mi;
 
 
 /***/ }),
-/* 138 */
+/* 136 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -18370,7 +18290,7 @@ return mk;
 
 
 /***/ }),
-/* 139 */
+/* 137 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -18456,7 +18376,7 @@ return ml;
 
 
 /***/ }),
-/* 140 */
+/* 138 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -18620,7 +18540,7 @@ return mr;
 
 
 /***/ }),
-/* 141 */
+/* 139 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -18708,7 +18628,7 @@ return msMy;
 
 
 /***/ }),
-/* 142 */
+/* 140 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -18795,7 +18715,7 @@ return ms;
 
 
 /***/ }),
-/* 143 */
+/* 141 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -18896,7 +18816,7 @@ return my;
 
 
 /***/ }),
-/* 144 */
+/* 142 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -18964,7 +18884,7 @@ return nb;
 
 
 /***/ }),
-/* 145 */
+/* 143 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -19092,7 +19012,7 @@ return ne;
 
 
 /***/ }),
-/* 146 */
+/* 144 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -19183,7 +19103,7 @@ return nlBe;
 
 
 /***/ }),
-/* 147 */
+/* 145 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -19274,7 +19194,7 @@ return nl;
 
 
 /***/ }),
-/* 148 */
+/* 146 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -19339,7 +19259,7 @@ return nn;
 
 
 /***/ }),
-/* 149 */
+/* 147 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -19468,7 +19388,7 @@ return paIn;
 
 
 /***/ }),
-/* 150 */
+/* 148 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -19578,7 +19498,7 @@ return pl;
 
 
 /***/ }),
-/* 151 */
+/* 149 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -19644,7 +19564,7 @@ return ptBr;
 
 
 /***/ }),
-/* 152 */
+/* 150 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -19714,7 +19634,7 @@ return pt;
 
 
 /***/ }),
-/* 153 */
+/* 151 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -19794,7 +19714,7 @@ return ro;
 
 
 /***/ }),
-/* 154 */
+/* 152 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -19982,7 +19902,7 @@ return ru;
 
 
 /***/ }),
-/* 155 */
+/* 153 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -20048,7 +19968,7 @@ return se;
 
 
 /***/ }),
-/* 156 */
+/* 154 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -20124,7 +20044,7 @@ return si;
 
 
 /***/ }),
-/* 157 */
+/* 155 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -20279,7 +20199,7 @@ return sk;
 
 
 /***/ }),
-/* 158 */
+/* 156 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -20446,7 +20366,7 @@ return sl;
 
 
 /***/ }),
-/* 159 */
+/* 157 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -20521,7 +20441,7 @@ return sq;
 
 
 /***/ }),
-/* 160 */
+/* 158 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -20636,7 +20556,7 @@ return srCyrl;
 
 
 /***/ }),
-/* 161 */
+/* 159 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -20751,7 +20671,7 @@ return sr;
 
 
 /***/ }),
-/* 162 */
+/* 160 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -20845,7 +20765,7 @@ return ss;
 
 
 /***/ }),
-/* 163 */
+/* 161 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -20919,7 +20839,7 @@ return sv;
 
 
 /***/ }),
-/* 164 */
+/* 162 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -20983,7 +20903,7 @@ return sw;
 
 
 /***/ }),
-/* 165 */
+/* 163 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -21118,7 +21038,7 @@ return ta;
 
 
 /***/ }),
-/* 166 */
+/* 164 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -21212,7 +21132,7 @@ return te;
 
 
 /***/ }),
-/* 167 */
+/* 165 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -21285,7 +21205,7 @@ return tet;
 
 
 /***/ }),
-/* 168 */
+/* 166 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -21357,7 +21277,7 @@ return th;
 
 
 /***/ }),
-/* 169 */
+/* 167 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -21424,7 +21344,7 @@ return tlPh;
 
 
 /***/ }),
-/* 170 */
+/* 168 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -21549,7 +21469,7 @@ return tlh;
 
 
 /***/ }),
-/* 171 */
+/* 169 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -21644,7 +21564,7 @@ return tr;
 
 
 /***/ }),
-/* 172 */
+/* 170 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -21740,7 +21660,7 @@ return tzl;
 
 
 /***/ }),
-/* 173 */
+/* 171 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -21803,7 +21723,7 @@ return tzmLatn;
 
 
 /***/ }),
-/* 174 */
+/* 172 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -21866,7 +21786,7 @@ return tzm;
 
 
 /***/ }),
-/* 175 */
+/* 173 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -22017,7 +21937,7 @@ return uk;
 
 
 /***/ }),
-/* 176 */
+/* 174 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -22080,7 +22000,7 @@ return uz;
 
 
 /***/ }),
-/* 177 */
+/* 175 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -22164,7 +22084,7 @@ return vi;
 
 
 /***/ }),
-/* 178 */
+/* 176 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -22237,7 +22157,7 @@ return xPseudo;
 
 
 /***/ }),
-/* 179 */
+/* 177 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -22302,7 +22222,7 @@ return yo;
 
 
 /***/ }),
-/* 180 */
+/* 178 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -22434,7 +22354,7 @@ return zhCn;
 
 
 /***/ }),
-/* 181 */
+/* 179 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -22544,7 +22464,7 @@ return zhHk;
 
 
 /***/ }),
-/* 182 */
+/* 180 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -22653,7 +22573,7 @@ return zhTw;
 
 
 /***/ }),
-/* 183 */
+/* 181 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22758,7 +22678,7 @@ exports.stringify = function (obj, opts) {
 
 
 /***/ }),
-/* 184 */
+/* 182 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22880,7 +22800,7 @@ exports.default = MatchProvider;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ }),
-/* 185 */
+/* 183 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22959,7 +22879,7 @@ var matchPattern = function matchPattern(pattern, location, matchExactly, parent
 exports.default = matchPattern;
 
 /***/ }),
-/* 186 */
+/* 184 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22995,6 +22915,97 @@ exports.RecursiveTree = RecursiveTree;
 
 
 /***/ }),
+/* 185 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview <Description Missing>
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.2.0
+ */
+
+var __assign = (this && this.__assign) || Object.assign || function(t) {
+    for (var s, i = 1, n = arguments.length; i < n; i++) {
+        s = arguments[i];
+        for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+            t[p] = s[p];
+    }
+    return t;
+};
+const React = __webpack_require__(1);
+var EditableFieldComponent_1 = __webpack_require__(17);
+exports.EditableFieldComponent = EditableFieldComponent_1.EditableFieldComponent;
+const ComboDropdown_1 = __webpack_require__(10);
+function EditableComboDropdown(props) {
+    if (props.edit) {
+        return (React.createElement("div", null,
+            React.createElement(ComboDropdown_1.ComboDropdown, __assign({}, props.comboSettings, { value: props.value, setValue: props.onChange, allowNew: false, createNewValue: () => { } })),
+            React.createElement("button", null,
+                React.createElement("i", { className: 'fa fa-check', onClick: props.acceptChanges, "aria-hidden": 'true' })),
+            React.createElement("button", null,
+                React.createElement("i", { className: 'fa fa-times', "aria-hidden": 'true', onClick: props.cancelChanges }))));
+    }
+    else {
+        return (React.createElement("div", null,
+            props.value !== null && props.value.key.length > 0 ? props.value.key
+                : (React.createElement("em", null, "No value")),
+            React.createElement("sup", null,
+                React.createElement("i", { className: 'fa fa-pencil-square-o', title: 'Edit', "aria-hidden": 'true', onClick: props.setEdit }))));
+    }
+}
+exports.EditableComboDropdown = EditableComboDropdown;
+;
+
+
+/***/ }),
+/* 186 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview Sidebar for editor
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.2.0
+ */
+
+const React = __webpack_require__(1);
+var EditableFieldComponent_1 = __webpack_require__(17);
+exports.EditableFieldComponent = EditableFieldComponent_1.EditableFieldComponent;
+const mousetrap = __webpack_require__(25);
+exports.EditableParagraph = (props) => {
+    let keyBoardShortcuts;
+    const bindKeyboard = (val) => {
+        if (val !== null) {
+            val.focus();
+            keyBoardShortcuts = new mousetrap(val);
+            keyBoardShortcuts.bind('ctrl+return', props.acceptChanges);
+            keyBoardShortcuts.bind('escape', props.cancelChanges);
+        }
+        else {
+            keyBoardShortcuts.unbind('ctrl+return');
+        }
+    };
+    if (!props.edit) {
+        return (React.createElement("div", { onClick: props.setEdit, className: 'editable-paragraph-box' },
+            React.createElement("p", null,
+                props.value === null || props.value.length > 0 ? props.value
+                    : (React.createElement("em", null, "No value")),
+                React.createElement("sup", null,
+                    React.createElement("i", { className: 'fa fa-pencil-square-o', title: 'Edit', "aria-hidden": 'true' })))));
+    }
+    else {
+        return (React.createElement("div", null,
+            React.createElement("textarea", { value: props.value, ref: bindKeyboard, onChange: (e) => props.onChange(e.target.value), style: { width: '100%', height: '6em' } }),
+            React.createElement("button", { onClick: props.acceptChanges },
+                React.createElement("i", { className: 'fa fa-check', "aria-hidden": 'true' })),
+            React.createElement("button", { onClick: props.cancelChanges },
+                React.createElement("i", { className: 'fa fa-times', "aria-hidden": 'true' }))));
+    }
+};
+
+
+/***/ }),
 /* 187 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -23008,14 +23019,17 @@ exports.RecursiveTree = RecursiveTree;
 const React = __webpack_require__(1);
 const ComboDropdown_1 = __webpack_require__(10);
 const lodash_1 = __webpack_require__(6);
+class PredicateRangeComboDropdown extends ComboDropdown_1.ComboDropdown {
+}
+exports.PredicateRangeComboDropdown = PredicateRangeComboDropdown;
 class PredicateDescription extends React.Component {
     constructor() {
         super();
         this.state = {
             editingDomain: false,
             editingRange: false,
-            rangeValue: { key: '', value: '' },
-            domainValue: { key: '', value: '' }
+            rangeValue: { key: '', value: null },
+            domainValue: { key: '', value: null }
         };
     }
     componentWillMount() {
@@ -23060,7 +23074,7 @@ class PredicateDescription extends React.Component {
             React.createElement("div", { className: 'typing' },
                 React.createElement("div", { className: 'domain' }, this.props.mode === 'editAll' || this.state.editingDomain ? (React.createElement("div", null,
                     React.createElement("label", { className: 'small' }, "Domain"),
-                    React.createElement(ComboDropdown_1.ComboDropdown, { options: this.props.domainOptions, typeName: 'entity type', allowNew: false, value: this.state.domainValue, setValue: domainChanged, createNewValue: lodash_1.noop }),
+                    React.createElement(ComboDropdown_1.NumberComboDropdown, { options: this.props.domainOptions, typeName: 'entity type', allowNew: false, value: this.state.domainValue, setValue: domainChanged, createNewValue: lodash_1.noop }),
                     this.props.mode === 'editSingle' ? (React.createElement("div", null,
                         React.createElement("button", { onClick: this.acceptDomainChanges.bind(this) },
                             React.createElement("i", { className: 'fa fa-check', "aria-hidden": 'true' })),
@@ -23073,7 +23087,7 @@ class PredicateDescription extends React.Component {
                     React.createElement("i", { className: 'fa fa-long-arrow-right', "aria-hidden": 'true' })),
                 React.createElement("div", { className: 'range' }, this.props.mode === 'editAll' || this.state.editingRange ? (React.createElement("div", null,
                     React.createElement("label", { className: 'small' }, "Range"),
-                    React.createElement(ComboDropdown_1.ComboDropdown, { options: this.props.rangeOptions, typeName: 'entity type', allowNew: false, value: this.state.rangeValue, setValue: rangeChanged, createNewValue: lodash_1.noop }),
+                    React.createElement(PredicateRangeComboDropdown, { options: this.props.rangeOptions, typeName: 'entity type', allowNew: false, value: this.state.rangeValue, setValue: rangeChanged, createNewValue: lodash_1.noop }),
                     this.props.mode === 'editSingle' ? (React.createElement("div", null,
                         React.createElement("button", { onClick: this.acceptRangeChanges.bind(this) },
                             React.createElement("i", { className: 'fa fa-check', "aria-hidden": 'true' })),
@@ -23273,7 +23287,7 @@ module.exports = g;
  */
 
 const falcon_core_1 = __webpack_require__(5);
-const queryString = __webpack_require__(183);
+const queryString = __webpack_require__(181);
 const lodash_1 = __webpack_require__(6);
 const Exceptions_1 = __webpack_require__(339);
 var ApiService_1 = __webpack_require__(4);
@@ -23686,9 +23700,9 @@ var _createTransitionManager = __webpack_require__(41);
 
 var _createTransitionManager2 = _interopRequireDefault(_createTransitionManager);
 
-var _ExecutionEnvironment = __webpack_require__(59);
+var _ExecutionEnvironment = __webpack_require__(57);
 
-var _DOMUtils = __webpack_require__(58);
+var _DOMUtils = __webpack_require__(56);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -24004,9 +24018,9 @@ var _createTransitionManager = __webpack_require__(41);
 
 var _createTransitionManager2 = _interopRequireDefault(_createTransitionManager);
 
-var _ExecutionEnvironment = __webpack_require__(59);
+var _ExecutionEnvironment = __webpack_require__(57);
 
-var _DOMUtils = __webpack_require__(58);
+var _DOMUtils = __webpack_require__(56);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -24799,9 +24813,9 @@ module.exports = arrayFilter;
 var baseTimes = __webpack_require__(240),
     isArguments = __webpack_require__(48),
     isArray = __webpack_require__(9),
-    isBuffer = __webpack_require__(72),
+    isBuffer = __webpack_require__(70),
     isIndex = __webpack_require__(45),
-    isTypedArray = __webpack_require__(74);
+    isTypedArray = __webpack_require__(72);
 
 /** Used for built-in method references. */
 var objectProto = Object.prototype;
@@ -24930,7 +24944,7 @@ module.exports = baseFindIndex;
 /* 220 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var arrayPush = __webpack_require__(62),
+var arrayPush = __webpack_require__(60),
     isFlattenable = __webpack_require__(264);
 
 /**
@@ -25018,7 +25032,7 @@ module.exports = baseForOwn;
 /* 223 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var arrayPush = __webpack_require__(62),
+var arrayPush = __webpack_require__(60),
     isArray = __webpack_require__(9);
 
 /**
@@ -25087,14 +25101,14 @@ module.exports = baseIsArguments;
 /* 226 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var Stack = __webpack_require__(60),
-    equalArrays = __webpack_require__(67),
+var Stack = __webpack_require__(58),
+    equalArrays = __webpack_require__(65),
     equalByTag = __webpack_require__(250),
     equalObjects = __webpack_require__(251),
     getTag = __webpack_require__(256),
     isArray = __webpack_require__(9),
-    isBuffer = __webpack_require__(72),
-    isTypedArray = __webpack_require__(74);
+    isBuffer = __webpack_require__(70),
+    isTypedArray = __webpack_require__(72);
 
 /** Used to compose bitmasks for value comparisons. */
 var COMPARE_PARTIAL_FLAG = 1;
@@ -25176,8 +25190,8 @@ module.exports = baseIsEqualDeep;
 /* 227 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var Stack = __webpack_require__(60),
-    baseIsEqual = __webpack_require__(64);
+var Stack = __webpack_require__(58),
+    baseIsEqual = __webpack_require__(62);
 
 /** Used to compose bitmasks for value comparisons. */
 var COMPARE_PARTIAL_FLAG = 1,
@@ -25244,10 +25258,10 @@ module.exports = baseIsMatch;
 /* 228 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var isFunction = __webpack_require__(73),
+var isFunction = __webpack_require__(71),
     isMasked = __webpack_require__(267),
     isObject = __webpack_require__(22),
-    toSource = __webpack_require__(71);
+    toSource = __webpack_require__(69);
 
 /**
  * Used to match `RegExp`
@@ -25429,7 +25443,7 @@ module.exports = baseMap;
 
 var baseIsMatch = __webpack_require__(227),
     getMatchData = __webpack_require__(253),
-    matchesStrictComparable = __webpack_require__(70);
+    matchesStrictComparable = __webpack_require__(68);
 
 /**
  * The base implementation of `_.matches` which doesn't clone `source`.
@@ -25455,12 +25469,12 @@ module.exports = baseMatches;
 /* 233 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseIsEqual = __webpack_require__(64),
+var baseIsEqual = __webpack_require__(62),
     get = __webpack_require__(300),
     hasIn = __webpack_require__(301),
     isKey = __webpack_require__(46),
-    isStrictComparable = __webpack_require__(69),
-    matchesStrictComparable = __webpack_require__(70),
+    isStrictComparable = __webpack_require__(67),
+    matchesStrictComparable = __webpack_require__(68),
     toKey = __webpack_require__(33);
 
 /** Used to compose bitmasks for value comparisons. */
@@ -25494,11 +25508,11 @@ module.exports = baseMatchesProperty;
 /* 234 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var arrayMap = __webpack_require__(61),
+var arrayMap = __webpack_require__(59),
     baseIteratee = __webpack_require__(44),
     baseMap = __webpack_require__(231),
     baseSortBy = __webpack_require__(239),
-    baseUnary = __webpack_require__(65),
+    baseUnary = __webpack_require__(63),
     compareMultiple = __webpack_require__(244),
     identity = __webpack_require__(34);
 
@@ -25554,7 +25568,7 @@ module.exports = baseProperty;
 /* 236 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseGet = __webpack_require__(63);
+var baseGet = __webpack_require__(61);
 
 /**
  * A specialized version of `baseProperty` which supports deep paths.
@@ -25681,7 +25695,7 @@ module.exports = baseTimes;
 /***/ (function(module, exports, __webpack_require__) {
 
 var Symbol = __webpack_require__(19),
-    arrayMap = __webpack_require__(61),
+    arrayMap = __webpack_require__(59),
     isArray = __webpack_require__(9),
     isSymbol = __webpack_require__(24);
 
@@ -25971,7 +25985,7 @@ module.exports = defineProperty;
 var Symbol = __webpack_require__(19),
     Uint8Array = __webpack_require__(212),
     eq = __webpack_require__(47),
-    equalArrays = __webpack_require__(67),
+    equalArrays = __webpack_require__(65),
     mapToArray = __webpack_require__(279),
     setToArray = __webpack_require__(288);
 
@@ -26203,7 +26217,7 @@ module.exports = getAllKeys;
 /* 253 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var isStrictComparable = __webpack_require__(69),
+var isStrictComparable = __webpack_require__(67),
     keys = __webpack_require__(35);
 
 /**
@@ -26327,7 +26341,7 @@ var DataView = __webpack_require__(207),
     Set = __webpack_require__(210),
     WeakMap = __webpack_require__(213),
     baseGetTag = __webpack_require__(20),
-    toSource = __webpack_require__(71);
+    toSource = __webpack_require__(69);
 
 /** `Object#toString` result references. */
 var mapTag = '[object Map]',
@@ -26404,7 +26418,7 @@ module.exports = getValue;
 /* 258 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var castPath = __webpack_require__(66),
+var castPath = __webpack_require__(64),
     isArguments = __webpack_require__(48),
     isArray = __webpack_require__(9),
     isIndex = __webpack_require__(45),
@@ -27050,7 +27064,7 @@ module.exports = nativeKeys;
 /* 282 */
 /***/ (function(module, exports, __webpack_require__) {
 
-/* WEBPACK VAR INJECTION */(function(module) {var freeGlobal = __webpack_require__(68);
+/* WEBPACK VAR INJECTION */(function(module) {var freeGlobal = __webpack_require__(66);
 
 /** Detect free variable `exports`. */
 var freeExports = typeof exports == 'object' && exports && !exports.nodeType && exports;
@@ -27073,7 +27087,7 @@ var nodeUtil = (function() {
 
 module.exports = nodeUtil;
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(57)(module)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(55)(module)))
 
 /***/ }),
 /* 283 */
@@ -27602,7 +27616,7 @@ module.exports = findIndex;
 /* 300 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseGet = __webpack_require__(63);
+var baseGet = __webpack_require__(61);
 
 /**
  * Gets the value at `path` of `object`. If the resolved value is
@@ -30192,222 +30206,222 @@ value:function(e){this.props.willAppear(e)}},{key:"componentWillLeave",value:fun
 /***/ (function(module, exports, __webpack_require__) {
 
 var map = {
-	"./af": 75,
-	"./af.js": 75,
-	"./ar": 81,
-	"./ar-dz": 76,
-	"./ar-dz.js": 76,
-	"./ar-ly": 77,
-	"./ar-ly.js": 77,
-	"./ar-ma": 78,
-	"./ar-ma.js": 78,
-	"./ar-sa": 79,
-	"./ar-sa.js": 79,
-	"./ar-tn": 80,
-	"./ar-tn.js": 80,
-	"./ar.js": 81,
-	"./az": 82,
-	"./az.js": 82,
-	"./be": 83,
-	"./be.js": 83,
-	"./bg": 84,
-	"./bg.js": 84,
-	"./bn": 85,
-	"./bn.js": 85,
-	"./bo": 86,
-	"./bo.js": 86,
-	"./br": 87,
-	"./br.js": 87,
-	"./bs": 88,
-	"./bs.js": 88,
-	"./ca": 89,
-	"./ca.js": 89,
-	"./cs": 90,
-	"./cs.js": 90,
-	"./cv": 91,
-	"./cv.js": 91,
-	"./cy": 92,
-	"./cy.js": 92,
-	"./da": 93,
-	"./da.js": 93,
-	"./de": 95,
-	"./de-at": 94,
-	"./de-at.js": 94,
-	"./de.js": 95,
-	"./dv": 96,
-	"./dv.js": 96,
-	"./el": 97,
-	"./el.js": 97,
-	"./en-au": 98,
-	"./en-au.js": 98,
-	"./en-ca": 99,
-	"./en-ca.js": 99,
-	"./en-gb": 100,
-	"./en-gb.js": 100,
-	"./en-ie": 101,
-	"./en-ie.js": 101,
-	"./en-nz": 102,
-	"./en-nz.js": 102,
-	"./eo": 103,
-	"./eo.js": 103,
-	"./es": 105,
-	"./es-do": 104,
-	"./es-do.js": 104,
-	"./es.js": 105,
-	"./et": 106,
-	"./et.js": 106,
-	"./eu": 107,
-	"./eu.js": 107,
-	"./fa": 108,
-	"./fa.js": 108,
-	"./fi": 109,
-	"./fi.js": 109,
-	"./fo": 110,
-	"./fo.js": 110,
-	"./fr": 113,
-	"./fr-ca": 111,
-	"./fr-ca.js": 111,
-	"./fr-ch": 112,
-	"./fr-ch.js": 112,
-	"./fr.js": 113,
-	"./fy": 114,
-	"./fy.js": 114,
-	"./gd": 115,
-	"./gd.js": 115,
-	"./gl": 116,
-	"./gl.js": 116,
-	"./he": 117,
-	"./he.js": 117,
-	"./hi": 118,
-	"./hi.js": 118,
-	"./hr": 119,
-	"./hr.js": 119,
-	"./hu": 120,
-	"./hu.js": 120,
-	"./hy-am": 121,
-	"./hy-am.js": 121,
-	"./id": 122,
-	"./id.js": 122,
-	"./is": 123,
-	"./is.js": 123,
-	"./it": 124,
-	"./it.js": 124,
-	"./ja": 125,
-	"./ja.js": 125,
-	"./jv": 126,
-	"./jv.js": 126,
-	"./ka": 127,
-	"./ka.js": 127,
-	"./kk": 128,
-	"./kk.js": 128,
-	"./km": 129,
-	"./km.js": 129,
-	"./ko": 130,
-	"./ko.js": 130,
-	"./ky": 131,
-	"./ky.js": 131,
-	"./lb": 132,
-	"./lb.js": 132,
-	"./lo": 133,
-	"./lo.js": 133,
-	"./lt": 134,
-	"./lt.js": 134,
-	"./lv": 135,
-	"./lv.js": 135,
-	"./me": 136,
-	"./me.js": 136,
-	"./mi": 137,
-	"./mi.js": 137,
-	"./mk": 138,
-	"./mk.js": 138,
-	"./ml": 139,
-	"./ml.js": 139,
-	"./mr": 140,
-	"./mr.js": 140,
-	"./ms": 142,
-	"./ms-my": 141,
-	"./ms-my.js": 141,
-	"./ms.js": 142,
-	"./my": 143,
-	"./my.js": 143,
-	"./nb": 144,
-	"./nb.js": 144,
-	"./ne": 145,
-	"./ne.js": 145,
-	"./nl": 147,
-	"./nl-be": 146,
-	"./nl-be.js": 146,
-	"./nl.js": 147,
-	"./nn": 148,
-	"./nn.js": 148,
-	"./pa-in": 149,
-	"./pa-in.js": 149,
-	"./pl": 150,
-	"./pl.js": 150,
-	"./pt": 152,
-	"./pt-br": 151,
-	"./pt-br.js": 151,
-	"./pt.js": 152,
-	"./ro": 153,
-	"./ro.js": 153,
-	"./ru": 154,
-	"./ru.js": 154,
-	"./se": 155,
-	"./se.js": 155,
-	"./si": 156,
-	"./si.js": 156,
-	"./sk": 157,
-	"./sk.js": 157,
-	"./sl": 158,
-	"./sl.js": 158,
-	"./sq": 159,
-	"./sq.js": 159,
-	"./sr": 161,
-	"./sr-cyrl": 160,
-	"./sr-cyrl.js": 160,
-	"./sr.js": 161,
-	"./ss": 162,
-	"./ss.js": 162,
-	"./sv": 163,
-	"./sv.js": 163,
-	"./sw": 164,
-	"./sw.js": 164,
-	"./ta": 165,
-	"./ta.js": 165,
-	"./te": 166,
-	"./te.js": 166,
-	"./tet": 167,
-	"./tet.js": 167,
-	"./th": 168,
-	"./th.js": 168,
-	"./tl-ph": 169,
-	"./tl-ph.js": 169,
-	"./tlh": 170,
-	"./tlh.js": 170,
-	"./tr": 171,
-	"./tr.js": 171,
-	"./tzl": 172,
-	"./tzl.js": 172,
-	"./tzm": 174,
-	"./tzm-latn": 173,
-	"./tzm-latn.js": 173,
-	"./tzm.js": 174,
-	"./uk": 175,
-	"./uk.js": 175,
-	"./uz": 176,
-	"./uz.js": 176,
-	"./vi": 177,
-	"./vi.js": 177,
-	"./x-pseudo": 178,
-	"./x-pseudo.js": 178,
-	"./yo": 179,
-	"./yo.js": 179,
-	"./zh-cn": 180,
-	"./zh-cn.js": 180,
-	"./zh-hk": 181,
-	"./zh-hk.js": 181,
-	"./zh-tw": 182,
-	"./zh-tw.js": 182
+	"./af": 73,
+	"./af.js": 73,
+	"./ar": 79,
+	"./ar-dz": 74,
+	"./ar-dz.js": 74,
+	"./ar-ly": 75,
+	"./ar-ly.js": 75,
+	"./ar-ma": 76,
+	"./ar-ma.js": 76,
+	"./ar-sa": 77,
+	"./ar-sa.js": 77,
+	"./ar-tn": 78,
+	"./ar-tn.js": 78,
+	"./ar.js": 79,
+	"./az": 80,
+	"./az.js": 80,
+	"./be": 81,
+	"./be.js": 81,
+	"./bg": 82,
+	"./bg.js": 82,
+	"./bn": 83,
+	"./bn.js": 83,
+	"./bo": 84,
+	"./bo.js": 84,
+	"./br": 85,
+	"./br.js": 85,
+	"./bs": 86,
+	"./bs.js": 86,
+	"./ca": 87,
+	"./ca.js": 87,
+	"./cs": 88,
+	"./cs.js": 88,
+	"./cv": 89,
+	"./cv.js": 89,
+	"./cy": 90,
+	"./cy.js": 90,
+	"./da": 91,
+	"./da.js": 91,
+	"./de": 93,
+	"./de-at": 92,
+	"./de-at.js": 92,
+	"./de.js": 93,
+	"./dv": 94,
+	"./dv.js": 94,
+	"./el": 95,
+	"./el.js": 95,
+	"./en-au": 96,
+	"./en-au.js": 96,
+	"./en-ca": 97,
+	"./en-ca.js": 97,
+	"./en-gb": 98,
+	"./en-gb.js": 98,
+	"./en-ie": 99,
+	"./en-ie.js": 99,
+	"./en-nz": 100,
+	"./en-nz.js": 100,
+	"./eo": 101,
+	"./eo.js": 101,
+	"./es": 103,
+	"./es-do": 102,
+	"./es-do.js": 102,
+	"./es.js": 103,
+	"./et": 104,
+	"./et.js": 104,
+	"./eu": 105,
+	"./eu.js": 105,
+	"./fa": 106,
+	"./fa.js": 106,
+	"./fi": 107,
+	"./fi.js": 107,
+	"./fo": 108,
+	"./fo.js": 108,
+	"./fr": 111,
+	"./fr-ca": 109,
+	"./fr-ca.js": 109,
+	"./fr-ch": 110,
+	"./fr-ch.js": 110,
+	"./fr.js": 111,
+	"./fy": 112,
+	"./fy.js": 112,
+	"./gd": 113,
+	"./gd.js": 113,
+	"./gl": 114,
+	"./gl.js": 114,
+	"./he": 115,
+	"./he.js": 115,
+	"./hi": 116,
+	"./hi.js": 116,
+	"./hr": 117,
+	"./hr.js": 117,
+	"./hu": 118,
+	"./hu.js": 118,
+	"./hy-am": 119,
+	"./hy-am.js": 119,
+	"./id": 120,
+	"./id.js": 120,
+	"./is": 121,
+	"./is.js": 121,
+	"./it": 122,
+	"./it.js": 122,
+	"./ja": 123,
+	"./ja.js": 123,
+	"./jv": 124,
+	"./jv.js": 124,
+	"./ka": 125,
+	"./ka.js": 125,
+	"./kk": 126,
+	"./kk.js": 126,
+	"./km": 127,
+	"./km.js": 127,
+	"./ko": 128,
+	"./ko.js": 128,
+	"./ky": 129,
+	"./ky.js": 129,
+	"./lb": 130,
+	"./lb.js": 130,
+	"./lo": 131,
+	"./lo.js": 131,
+	"./lt": 132,
+	"./lt.js": 132,
+	"./lv": 133,
+	"./lv.js": 133,
+	"./me": 134,
+	"./me.js": 134,
+	"./mi": 135,
+	"./mi.js": 135,
+	"./mk": 136,
+	"./mk.js": 136,
+	"./ml": 137,
+	"./ml.js": 137,
+	"./mr": 138,
+	"./mr.js": 138,
+	"./ms": 140,
+	"./ms-my": 139,
+	"./ms-my.js": 139,
+	"./ms.js": 140,
+	"./my": 141,
+	"./my.js": 141,
+	"./nb": 142,
+	"./nb.js": 142,
+	"./ne": 143,
+	"./ne.js": 143,
+	"./nl": 145,
+	"./nl-be": 144,
+	"./nl-be.js": 144,
+	"./nl.js": 145,
+	"./nn": 146,
+	"./nn.js": 146,
+	"./pa-in": 147,
+	"./pa-in.js": 147,
+	"./pl": 148,
+	"./pl.js": 148,
+	"./pt": 150,
+	"./pt-br": 149,
+	"./pt-br.js": 149,
+	"./pt.js": 150,
+	"./ro": 151,
+	"./ro.js": 151,
+	"./ru": 152,
+	"./ru.js": 152,
+	"./se": 153,
+	"./se.js": 153,
+	"./si": 154,
+	"./si.js": 154,
+	"./sk": 155,
+	"./sk.js": 155,
+	"./sl": 156,
+	"./sl.js": 156,
+	"./sq": 157,
+	"./sq.js": 157,
+	"./sr": 159,
+	"./sr-cyrl": 158,
+	"./sr-cyrl.js": 158,
+	"./sr.js": 159,
+	"./ss": 160,
+	"./ss.js": 160,
+	"./sv": 161,
+	"./sv.js": 161,
+	"./sw": 162,
+	"./sw.js": 162,
+	"./ta": 163,
+	"./ta.js": 163,
+	"./te": 164,
+	"./te.js": 164,
+	"./tet": 165,
+	"./tet.js": 165,
+	"./th": 166,
+	"./th.js": 166,
+	"./tl-ph": 167,
+	"./tl-ph.js": 167,
+	"./tlh": 168,
+	"./tlh.js": 168,
+	"./tr": 169,
+	"./tr.js": 169,
+	"./tzl": 170,
+	"./tzl.js": 170,
+	"./tzm": 172,
+	"./tzm-latn": 171,
+	"./tzm-latn.js": 171,
+	"./tzm.js": 172,
+	"./uk": 173,
+	"./uk.js": 173,
+	"./uz": 174,
+	"./uz.js": 174,
+	"./vi": 175,
+	"./vi.js": 175,
+	"./x-pseudo": 176,
+	"./x-pseudo.js": 176,
+	"./yo": 177,
+	"./yo.js": 177,
+	"./zh-cn": 178,
+	"./zh-cn.js": 178,
+	"./zh-hk": 179,
+	"./zh-hk.js": 179,
+	"./zh-tw": 180,
+	"./zh-tw.js": 180
 };
 function webpackContext(req) {
 	return __webpack_require__(webpackContextResolve(req));
@@ -31658,11 +31672,11 @@ var _react = __webpack_require__(1);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _MatchProvider = __webpack_require__(184);
+var _MatchProvider = __webpack_require__(182);
 
 var _MatchProvider2 = _interopRequireDefault(_MatchProvider);
 
-var _matchPattern = __webpack_require__(185);
+var _matchPattern = __webpack_require__(183);
 
 var _matchPattern2 = _interopRequireDefault(_matchPattern);
 
@@ -33794,6 +33808,9 @@ let Workspace = class Workspace extends React.Component {
             return (React.createElement(Loading_1.Loading, null));
         }
         if (this.props.list) {
+            if (this.props.name === undefined) {
+                throw new Error('A list view must have a name');
+            }
             return (React.createElement(workspace_1.ObjectListWorkspace, { name: this.props.name, query: this.props.location.query, listType: this.props.workspace }));
         }
         let workspaceComponent = workspace_1.EmptyWorkspace;
@@ -33861,13 +33878,13 @@ const ComboDropdown_1 = __webpack_require__(10);
 const lodash_1 = __webpack_require__(6);
 exports.EntityFieldEditor = (props) => {
     // build the options list
-    const options = props.entities.map((entity) => ({ key: entity.label, value: entity.uid !== null ? lodash_1.toString(entity.uid) : null }));
+    const options = props.entities.map((entity) => ({ key: entity.label, value: entity.uid !== null ? entity.uid : null }));
     // find the default option to display
-    let selectedOption = options.find((opt) => opt.value !== null && parseInt(opt.value) === props.value);
+    let selectedOption = options.find((opt) => opt.value !== null && opt.value === props.value);
     if (selectedOption === undefined) {
-        selectedOption = { key: '', value: '' };
+        selectedOption = { key: '', value: null };
     }
-    return (React.createElement(ComboDropdown_1.ComboDropdown, { options: options, typeName: 'entity type', allowNew: false, value: selectedOption, setValue: (val) => val !== null && val.value !== null ? props.onChange(parseInt(val.value)) : props.onChange(null), createNewValue: lodash_1.noop }));
+    return (React.createElement(ComboDropdown_1.NumberComboDropdown, { options: options, typeName: 'entity type', allowNew: false, value: selectedOption, setValue: (val) => val !== null && val.value !== null ? props.onChange(val.value) : props.onChange(null), createNewValue: lodash_1.noop }));
 };
 
 
@@ -33961,11 +33978,8 @@ class RecordPredicate extends React.Component {
                         React.createElement("th", { className: 'record-row-item score' }, "Score"),
                         React.createElement("th", { className: 'record-row-item score' }, "Period"),
                         React.createElement("th", { className: 'record-row-item buttons' }, "Actions"))),
-                React.createElement("tbody", null, this.props.records.map((record) => (React.createElement(RecordEditableFieldComponent, { key: `row-${record.uid}`, value: record, onChange: this.recordChanged.bind(this), onDelete: this.deleteRecord.bind(this), component: RecordRow_1.RecordRow, additionalProps: {
-                        dimension: 'predicates',
-                        sources: this.props.sources,
-                        entities: this.state.potentialValues
-                    } })))))));
+                React.createElement("tbody", null, this.props.records.map((record) => (React.createElement(RecordEditableFieldComponent, { key: `row-${record.uid}`, value: record, onChange: this.recordChanged.bind(this), onDelete: this.deleteRecord.bind(this) },
+                    React.createElement(RecordRow_1.RecordRow, { dimension: 'predicates', sources: this.props.sources, entities: this.state.potentialValues }))))))));
     }
 }
 exports.RecordPredicate = RecordPredicate;
@@ -33992,8 +34006,7 @@ const EntityFieldEditor_1 = __webpack_require__(345);
 const DateFieldEditor_1 = __webpack_require__(344);
 const IntegerFieldEditor_1 = __webpack_require__(346);
 const AddTabButton_1 = __webpack_require__(7);
-const formatDate_1 = __webpack_require__(56);
-const lodash_1 = __webpack_require__(6);
+const formatDate_1 = __webpack_require__(54);
 const mobx_react_1 = __webpack_require__(2);
 const recordEditor = (props, record) => {
     switch (record.valueType) {
@@ -34049,9 +34062,9 @@ exports.RecordRow = mobx_react_1.inject('dataStore', 'modalStore')(mobx_react_1.
         throw new Error('Should not be null!!');
     }
     const currentSource = recordValue.source === null ? undefined :
-        props.sources.find((source) => source.uid === parseInt(recordValue.source));
+        props.sources.find((source) => source.uid === recordValue.source);
     const dropDownValue = {
-        key: '', value: recordValue.source === null ? null : lodash_1.toString(recordValue.source)
+        key: '', value: recordValue.source === null ? null : recordValue.source
     };
     if (currentSource !== undefined) {
         dropDownValue.key = currentSource.label;
@@ -34061,7 +34074,7 @@ exports.RecordRow = mobx_react_1.inject('dataStore', 'modalStore')(mobx_react_1.
             React.createElement("td", { className: 'record-row-item uid' }, recordValue.uid),
             recordValue.valueType !== 'source' ? (React.createElement("td", { className: 'record-row-item' }, recordEditor(props, recordValue))) : null,
             React.createElement("td", { className: 'record-row-item' },
-                React.createElement(ComboDropdown_1.ComboDropdown, { options: props.sources.map((source) => ({ key: source.label, value: source.uid !== null ? lodash_1.toString(source.uid) : null })), typeName: 'source', value: dropDownValue, setValue: (combo) => props.onChange(Object.assign(recordValue, { source: combo === null ? combo : combo.value })), createNewValue: () => createNewSource('') })),
+                React.createElement(ComboDropdown_1.NumberComboDropdown, { options: props.sources.map((source) => ({ key: source.label, value: source.uid !== null ? source.uid : null })), typeName: 'source', value: dropDownValue, setValue: (combo) => props.onChange(Object.assign(recordValue, { source: combo === null ? combo : combo.value })), createNewValue: () => createNewSource('') })),
             React.createElement("td", { className: 'record-row-item score' },
                 React.createElement(ScorePicker_1.ScorePicker, { value: recordValue.score, readOnly: false, onChange: (score) => props.onChange(Object.assign(recordValue, { score })) })),
             React.createElement("td", { className: 'record-row-item period' },
@@ -34080,7 +34093,7 @@ exports.RecordRow = mobx_react_1.inject('dataStore', 'modalStore')(mobx_react_1.
             recordValue.valueType !== 'source' ? (React.createElement("td", { className: 'record-row-item' }, formatValue(props, recordValue))) : null,
             React.createElement("td", { className: 'record-row-item' },
                 dropDownValue.key,
-                dropDownValue.key.length > 0 && dropDownValue.value !== null ? (React.createElement(AddTabButton_1.AddTabButton, { uid: parseInt(dropDownValue.value), tabType: 'source' })) : null),
+                dropDownValue.key.length > 0 && dropDownValue.value !== null ? (React.createElement(AddTabButton_1.AddTabButton, { uid: dropDownValue.value, tabType: 'source' })) : null),
             React.createElement("td", { className: 'record-row-item score' },
                 React.createElement(ScorePicker_1.ScorePicker, { value: recordValue.score, readOnly: true })),
             React.createElement("td", { className: 'record-row-item period' }, formatDate_1.formatDate(recordValue.period)),
@@ -34119,7 +34132,7 @@ const falcon_core_1 = __webpack_require__(5);
 const EditableFieldComponent_1 = __webpack_require__(17);
 const SearchBar_1 = __webpack_require__(39);
 const RecordPredicate_1 = __webpack_require__(347);
-const findParentTree_1 = __webpack_require__(55);
+const findParentTree_1 = __webpack_require__(53);
 const mobx_react_1 = __webpack_require__(2);
 class RecordEditableFieldComponent extends EditableFieldComponent_1.EditableFieldComponent {
 }
@@ -34229,7 +34242,7 @@ exports.StringFieldEditor = (props) => {
 const React = __webpack_require__(1);
 const moment = __webpack_require__(0);
 const lodash_1 = __webpack_require__(6);
-const formatDate_1 = __webpack_require__(56);
+const formatDate_1 = __webpack_require__(54);
 class DatePickerDropdown extends React.Component {
     constructor() {
         super();
@@ -34445,7 +34458,7 @@ let ConflictResolution = class ConflictResolution extends React.Component {
         super();
         this.state = {
             label: '',
-            entityType: { key: '', value: '' },
+            entityType: { key: '', value: null },
             allEntityTypes: []
         };
     }
@@ -34554,7 +34567,7 @@ let CreateEntity = class CreateEntity extends React.Component {
         super();
         this.state = {
             label: '',
-            entityType: { key: '', value: '' },
+            entityType: { key: '', value: null },
             allEntityTypes: []
         };
     }
@@ -34570,18 +34583,21 @@ let CreateEntity = class CreateEntity extends React.Component {
                     throw new Error('found entity type with null uid');
                 }
                 this.setState({
-                    entityType: { key: initialType.label, value: initialType.uid.toString() }
+                    entityType: { key: initialType.label, value: initialType.uid }
                 });
             }
             this.setState({ allEntityTypes });
         });
     }
     createEntity() {
+        if (this.state.entityType === null) {
+            throw new Error('Cannot create entity with null type');
+        }
         this.props.dataStore.postItem(falcon_core_1.Entity, ApiService_1.AppUrls.entity, falcon_core_1.Serializer.fromJson(falcon_core_1.Entity, {
             label: this.state.label,
             entityType: this.state.entityType.value
         }), {})
-            .then(this.props.complete);
+            .then((a) => this.props.complete(a[0].toString()));
     }
     render() {
         return (React.createElement(Overlay_1.Overlay, null,
@@ -34590,7 +34606,7 @@ let CreateEntity = class CreateEntity extends React.Component {
             React.createElement("input", { type: 'text', value: this.state.label, ref: (a) => { if (a !== null)
                     a.focus(); }, name: 'new-entity-name', className: 'gap', onChange: (e) => this.setState({ label: e.target.value }) }),
             React.createElement("label", { className: 'small' }, "Type"),
-            React.createElement(ComboDropdown_1.ComboDropdown, { options: this.state.allEntityTypes.map((t) => ({ key: t.label, value: t.uid.toString() })), typeName: 'entity type', value: this.state.entityType, setValue: (entityType) => this.setState({ entityType }), createNewValue: lodash_1.noop, allowNew: false }),
+            React.createElement(ComboDropdown_1.NumberComboDropdown, { options: this.state.allEntityTypes.map((t) => ({ key: t.label, value: t.uid })), typeName: 'entity type', value: this.state.entityType, setValue: (entityType) => this.setState({ entityType }), createNewValue: lodash_1.noop, allowNew: false }),
             React.createElement("button", { name: 'cancel-modal', onClick: () => this.props.cancel(), className: 'pull-left' }, "Cancel"),
             React.createElement("button", { name: 'create-entity', onClick: this.createEntity.bind(this), className: 'pull-right' }, "Create Entity")));
     }
@@ -34704,14 +34720,14 @@ let CreatePredicate = class CreatePredicate extends React.Component {
         super();
         this.state = {
             label: '',
-            domain: { key: '', value: '' },
-            range: { key: '', value: '' },
+            domain: { key: '', value: null },
+            range: { key: '', value: null },
             domainOptions: [],
             rangeOptions: []
         };
     }
     componentWillMount() {
-        this.setState({ name: this.props.initialName });
+        this.setState({ label: this.props.initialName });
     }
     componentDidMount() {
         if (this.props.initialDomain !== undefined) {
@@ -34721,14 +34737,12 @@ let CreatePredicate = class CreatePredicate extends React.Component {
                     throw new Error('Unexpected null uid');
                 }
                 this.setState({
-                    domain: { key: result.label, value: result.uid.toString() },
+                    domain: { key: result.label, value: result.uid },
                     domainOptions: [
-                        { key: result.label, value: result.uid.toString() }
-                    ].concat(result.parents.map((entityType) => {
-                        if (entityType.uid === null) {
-                            throw new Error('Unexpected null uid');
-                        }
-                        return { key: entityType.label, value: entityType.uid.toString() };
+                        { key: result.label, value: result.uid }
+                    ].concat(result.parents.map((entityTypeId) => {
+                        const parentEntityType = this.props.dataStore.dataStore.all.entity_type.value.find((e) => e.uid === entityTypeId);
+                        return { key: parentEntityType.label, value: entityTypeId };
                     }))
                 });
             });
@@ -34738,13 +34752,15 @@ let CreatePredicate = class CreatePredicate extends React.Component {
             if (entityType.uid === null) {
                 throw new Error('Unexpected null uid');
             }
-            return { key: entityType.label, value: entityType.uid.toString() };
+            return { key: entityType.label, value: entityType.uid };
         });
+        const entityTypeMap2 = entityTypeMap.map((e) => ({ key: e.key, value: { isReference: true, value: e.value.toString() } }));
+        const literalTypesMap = literalTypes_1.literalTypes.map((lit) => ({ key: lit.label, value: { isReference: false, value: lit.value } }));
         if (this.props.initialDomain === undefined) {
             this.setState({ domainOptions: entityTypeMap });
         }
         this.setState({
-            rangeOptions: literalTypes_1.literalTypes.map((lit) => ({ key: lit.label, value: lit.value, meta: 'literal' })).concat(entityTypeMap)
+            rangeOptions: literalTypesMap.concat(entityTypeMap2)
         });
     }
     create() {
@@ -34752,7 +34768,7 @@ let CreatePredicate = class CreatePredicate extends React.Component {
             label: this.state.label,
             domain: this.state.domain.value,
             range: this.state.range.value,
-            rangeIsReference: this.state.range.meta !== 'literal'
+            rangeIsReference: this.state.range.value === null ? false : this.state.range.value.isReference
         });
         this.props.dataStore.postItem(falcon_core_1.Predicate, ApiService_1.AppUrls.predicate, newPredicate, {})
             .then((result) => {
@@ -34766,8 +34782,11 @@ let CreatePredicate = class CreatePredicate extends React.Component {
                 React.createElement("i", { className: 'fa fa-plus', "aria-hidden": 'true' }),
                 " Create Property"),
             React.createElement("label", { className: 'small' }, "Name"),
-            React.createElement("input", { type: 'text', className: 'gap', ref: (a) => { if (a !== null)
-                    a.focus(); }, value: this.state.label, onChange: (e) => this.setState({ label: e.target.value }) }),
+            React.createElement("input", { type: 'text', className: 'gap', ref: (a) => {
+                    if (a !== null) {
+                        a.focus();
+                    }
+                }, value: this.state.label, onChange: (e) => this.setState({ label: e.target.value }) }),
             React.createElement(PredicateDescription_1.PredicateDescription, { domain: this.state.domain, range: this.state.range, domainChanged: (s) => this.setState({ domain: s }), rangeChanged: (s) => this.setState({ range: s }), domainOptions: this.state.domainOptions, rangeOptions: this.state.rangeOptions, mode: 'editAll' }),
             React.createElement("div", { className: 'modal-toolbar' },
                 React.createElement("button", { onClick: this.props.cancel, className: 'pull-left' }, "Cancel"),
@@ -34826,6 +34845,9 @@ let CreatePresetRecord = CreatePresetRecord_1 = class CreatePresetRecord extends
             name: 'entity',
             complete: (data) => {
                 const isMentioned = this.props.dataStore.dataStore.all.predicate.value.find((pred) => pred.label === 'is mentioned');
+                if (isMentioned === undefined) {
+                    throw new Error('Is mentioned predicate is missing, it should be loaded by default');
+                }
                 this.props.dataStore.postItem(falcon_core_1.Record, ApiService_1.AppUrls.record, falcon_core_1.Serializer.fromJson(falcon_core_1.Record, {
                     predicate: isMentioned.uid,
                     entity: data[0],
@@ -34889,7 +34911,7 @@ let CreateRecord = class CreateRecord extends React.Component {
     constructor() {
         super();
         this.state = {
-            comboValue: { key: '', value: '' },
+            comboValue: { key: '', value: null },
             searchValue: ''
         };
     }
@@ -34927,7 +34949,7 @@ let CreateRecord = class CreateRecord extends React.Component {
     render() {
         return (React.createElement(Overlay_1.Overlay, null,
             React.createElement("h2", null, "Create Record"),
-            React.createElement(ComboDropdown_1.ComboDropdown, { ref: 'comboDropDown', options: this.props.options, typeName: 'predicate', value: this.state.comboValue, setValue: this.setComboValue.bind(this), createNewValue: this.createNewPredicate.bind(this), updateSearchString: (s) => this.setState({ searchValue: s }) })));
+            React.createElement(ComboDropdown_1.NumberComboDropdown, { ref: 'comboDropDown', options: this.props.options, typeName: 'predicate', value: this.state.comboValue, setValue: this.setComboValue.bind(this), createNewValue: this.createNewPredicate.bind(this), updateSearchString: (s) => this.setState({ searchValue: s }) })));
     }
 };
 CreateRecord = __decorate([
@@ -35115,7 +35137,7 @@ const lev = __webpack_require__(206);
 const ComboDropdown_1 = __webpack_require__(10);
 const lodash_1 = __webpack_require__(6);
 const AddTabButton_1 = __webpack_require__(7);
-const formatDate_1 = __webpack_require__(56);
+const formatDate_1 = __webpack_require__(54);
 const mobx_react_1 = __webpack_require__(2);
 const sortIcons = {
     'none': 'fa fa-sort',
@@ -35124,7 +35146,7 @@ const sortIcons = {
 };
 const customColumns = (predicates, columns, updateColumnParams, rotateSort) => {
     return [0, 1, 2].map((id) => {
-        const comboValue = { key: '', value: '' };
+        const comboValue = { key: '', value: null };
         if (columns[id].predicate !== -1) {
             const thisPred = predicates.find((pred) => pred.uid == columns[id].predicate);
             if (thisPred !== undefined) {
@@ -35135,7 +35157,7 @@ const customColumns = (predicates, columns, updateColumnParams, rotateSort) => {
         return (React.createElement("td", { key: `col-${id}` },
             React.createElement("div", { className: 'list-combo-header' },
                 React.createElement("div", { className: 'combo-wrapper' },
-                    React.createElement(ComboDropdown_1.ComboDropdown, { value: comboValue, typeName: 'predicate', allowNew: false, setValue: (value) => updateColumnParams(id, 'p', value === null ? null : value.value), options: predicates.map((pred) => ({ key: pred.label, value: pred.uid.toString() })), createNewValue: lodash_1.noop, compact: true })),
+                    React.createElement(ComboDropdown_1.NumberComboDropdown, { value: comboValue, typeName: 'predicate', allowNew: false, setValue: (value) => updateColumnParams(id, 'p', value === null ? null : value.value), options: predicates.map((pred) => ({ key: pred.label, value: pred.uid.toString() })), createNewValue: lodash_1.noop, additionalClasses: ['compact'] })),
                 React.createElement("div", { className: 'order-wrapper' },
                     React.createElement("i", { className: sortIcons[columns[id].sort], onClick: () => rotateSort(id) })))));
     });
@@ -35152,7 +35174,8 @@ let EntityList = class EntityList extends React.Component {
                 { predicate: -1, sort: 'none', filterType: 'any', invertFilter: false, filterValue: '' },
                 { predicate: -1, sort: 'none', filterType: 'any', invertFilter: false, filterValue: '' }
             ],
-            entityType: { key: 'Any', value: 0 }
+            entityType: { key: 'Any', value: 0 },
+            queryData: {}
         };
     }
     componentDidMount() {
@@ -35329,7 +35352,7 @@ let EntityList = class EntityList extends React.Component {
                             React.createElement("td", null),
                             React.createElement("td", null),
                             React.createElement("td", null,
-                                React.createElement(ComboDropdown_1.ComboDropdown, { value: this.state.entityType, typeName: 'entity type', allowNew: false, setValue: (entityType) => this.setState({ entityType }), options: entityTypeOptions, createNewValue: lodash_1.noop, compact: true })),
+                                React.createElement(ComboDropdown_1.NumberComboDropdown, { value: this.state.entityType, typeName: 'entity type', allowNew: false, setValue: (entityType) => this.setState({ entityType }), options: entityTypeOptions, createNewValue: lodash_1.noop, additionalClasses: ['compact'] })),
                             this.state.columns.map((col, id) => (React.createElement("td", { key: `col-${id}` },
                                 React.createElement("div", { className: 'flex-fill' },
                                     React.createElement("div", null,
@@ -35384,7 +35407,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 const React = __webpack_require__(1);
 const AddTabButton_1 = __webpack_require__(7);
 const SearchBar_1 = __webpack_require__(39);
-const RecursiveTree_1 = __webpack_require__(186);
+const RecursiveTree_1 = __webpack_require__(184);
 const mobx_react_1 = __webpack_require__(2);
 class EntityRecursiveTree extends RecursiveTree_1.RecursiveTree {
 }
@@ -35520,6 +35543,9 @@ let PredicateList = class PredicateList extends React.Component {
                         const rangeType = predicate.rangeIsReference ?
                             this.props.dataStore.dataStore.all.entity_type.value.find((t) => t.uid === predicate.range) :
                             predicate.range;
+                        if (predicate.uid === null) {
+                            throw new Error('Found predicate with null uid');
+                        }
                         return (React.createElement("tr", { key: `predicate-${predicate.uid}` },
                             React.createElement("td", null,
                                 predicate.uid,
@@ -35564,7 +35590,9 @@ const React = __webpack_require__(1);
 const AddTabButton_1 = __webpack_require__(7);
 const mobx_react_1 = __webpack_require__(2);
 const SearchBar_1 = __webpack_require__(39);
-const RecursiveTree_1 = __webpack_require__(186);
+const RecursiveTree_1 = __webpack_require__(184);
+class SourceRecursiveTree extends RecursiveTree_1.RecursiveTree {
+}
 let SourceList = class SourceList extends React.Component {
     constructor() {
         super();
@@ -35604,6 +35632,9 @@ let SourceList = class SourceList extends React.Component {
                             React.createElement("td", null, "Name"),
                             React.createElement("td", null, "Parent"))),
                     React.createElement("tbody", null, this.props.dataStore.dataStore.all.source.value.filter(this.state.filterFunc).map((source) => {
+                        if (source.uid === null) {
+                            throw new Error('Encountered source with null uid');
+                        }
                         return (React.createElement("tr", { key: `source-${source.uid}` },
                             React.createElement("td", null,
                                 source.uid,
@@ -35612,7 +35643,7 @@ let SourceList = class SourceList extends React.Component {
                             React.createElement("td", null, source.label),
                             React.createElement("td", null, source.parent)));
                     })))) : (React.createElement("div", { className: 'tree-root' },
-                    React.createElement(RecursiveTree_1.RecursiveTree, { data: this.props.dataStore.dataStore.all.source.value, tabType: 'source', parentId: null, dataStore: this.props.dataStore }))))));
+                    React.createElement(SourceRecursiveTree, { data: this.props.dataStore.dataStore.all.source.value, tabType: 'source', parentId: null, dataStore: this.props.dataStore }))))));
     }
 };
 SourceList = __decorate([
@@ -35637,20 +35668,19 @@ exports.SourceList = SourceList;
 const React = __webpack_require__(1);
 const ComboDropdown_1 = __webpack_require__(10);
 const ApiService_1 = __webpack_require__(4);
-const lodash_1 = __webpack_require__(6);
 exports.SearchBox = (props, context) => {
-    const entities = props.dataStore.dataStore.all.entity.value.map((entity) => ({ key: entity.label, value: lodash_1.toString(entity.uid), meta: { itemType: ApiService_1.AppUrls.entity } }));
-    const entityTypes = props.dataStore.dataStore.all.entity_type.value.map((entityType) => ({ key: entityType.label, value: lodash_1.toString(entityType.uid), meta: { itemType: ApiService_1.AppUrls.entity_type } }));
-    const predicates = props.dataStore.dataStore.all.predicate.value.map((predicate) => ({ key: predicate.label, value: lodash_1.toString(predicate.uid), meta: { itemType: ApiService_1.AppUrls.predicate } }));
-    const sources = props.dataStore.dataStore.all.source.value.map((source) => ({ key: source.label, value: lodash_1.toString(source.uid), meta: { itemType: ApiService_1.AppUrls.source } }));
+    const entities = props.dataStore.dataStore.all.entity.value.map((entity) => ({ key: entity.label, value: `${ApiService_1.AppUrls.entity}/${entity.uid}` }));
+    const entityTypes = props.dataStore.dataStore.all.entity_type.value.map((entityType) => ({ key: entityType.label, value: `${ApiService_1.AppUrls.entity_type}/${entityType.uid}` }));
+    const predicates = props.dataStore.dataStore.all.predicate.value.map((predicate) => ({ key: predicate.label, value: `${ApiService_1.AppUrls.predicate}/${predicate.uid}` }));
+    const sources = props.dataStore.dataStore.all.source.value.map((source) => ({ key: source.label, value: `${ApiService_1.AppUrls.source}/${source.uid}` }));
     const all = entities.concat(entityTypes, predicates, sources);
     return (React.createElement("span", null,
         React.createElement("div", { className: 'input-addon-formgroup' },
             React.createElement("span", { className: 'input-addon-icon' },
                 React.createElement("i", { className: 'fa fa-search fa-fw' })),
-            React.createElement(ComboDropdown_1.ComboDropdown, { value: { key: '', value: '' }, setValue: (val) => {
+            React.createElement(ComboDropdown_1.StringComboDropdown, { value: { key: '', value: null }, setValue: (val) => {
                     if (val !== null) {
-                        context.router.transitionTo(`/edit/${val.meta.itemType}/${val.value}`);
+                        context.router.transitionTo(`/edit/${val.value}`);
                     }
                 }, typeName: 'all', options: all, allowNew: false, createNewValue: () => { } }))));
 };
@@ -35712,14 +35742,12 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 const React = __webpack_require__(1);
 const ApiService_1 = __webpack_require__(4);
 const falcon_core_1 = __webpack_require__(5);
-const findParentTree_1 = __webpack_require__(55);
+const findParentTree_1 = __webpack_require__(53);
 const EditableHeader_1 = __webpack_require__(27);
 const EntityWorkspaceCoreView_1 = __webpack_require__(373);
 const EntityWorkspaceReferenceView_1 = __webpack_require__(374);
 const mobx_react_1 = __webpack_require__(2);
 class StringEditableFieldComponent extends EditableHeader_1.EditableFieldComponent {
-}
-class ComboEditableFieldComponent extends EditableHeader_1.EditableFieldComponent {
 }
 // What can I do?
 // Entity Operations
@@ -35741,8 +35769,6 @@ let EntityEditorWorkspace = class EntityEditorWorkspace extends React.Component 
     constructor(props, context) {
         super();
         this.state = {
-            comboValue: { key: 'test', value: '' },
-            comboSearchValue: '',
             tab: 0
         };
     }
@@ -35793,6 +35819,9 @@ let EntityEditorWorkspace = class EntityEditorWorkspace extends React.Component 
         const entityTypeParents = findParentTree_1.findParentTree(entity.entityType, this.props.dataStore.dataStore.all.entity_type.value);
         const predicates = this.props.dataStore.dataStore.all.predicate
             .value.filter((pred) => entityTypeParents.indexOf(pred.domain) !== -1);
+        if (entityType === undefined) {
+            throw new Error('Encountered undefined entity type!');
+        }
         const modalDef = {
             name: 'record',
             complete: (data) => {
@@ -35879,13 +35908,13 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 const React = __webpack_require__(1);
-const SameAsEditor_1 = __webpack_require__(54);
+const SameAsEditor_1 = __webpack_require__(52);
 const ApiService_1 = __webpack_require__(4);
 const falcon_core_1 = __webpack_require__(5);
 const AddTabButton_1 = __webpack_require__(7);
 const EditableHeader_1 = __webpack_require__(27);
-const EditableParagraph_1 = __webpack_require__(53);
-const EditableComboDropdown_1 = __webpack_require__(52);
+const EditableParagraph_1 = __webpack_require__(186);
+const EditableComboDropdown_1 = __webpack_require__(185);
 const mobx_react_1 = __webpack_require__(2);
 class StringEditableFieldComponent extends EditableHeader_1.EditableFieldComponent {
 }
@@ -35972,16 +36001,20 @@ let EntityTypeWorkspace = class EntityTypeWorkspace extends React.Component {
             React.createElement("header", { className: 'editor-header entity_type' },
                 React.createElement("div", { className: 'primary-toolbar' },
                     React.createElement("div", { className: 'main-toolbar' },
-                        React.createElement("div", { className: 'bread-crumbs' }, entityType.parents.map((parent, i) => (React.createElement("span", { key: `breadcrumb-${parent.uid}` },
-                            React.createElement("span", null,
-                                "  ",
-                                parent.label,
-                                " ",
-                                React.createElement(AddTabButton_1.AddTabButton, { tabType: 'entity_type', uid: parent.uid }),
-                                " "),
-                            React.createElement("i", { className: 'fa fa-angle-right' }))))),
+                        React.createElement("div", { className: 'bread-crumbs' }, entityType.parents.map((parent, i) => {
+                            const parentEntityType = this.props.dataStore.dataStore.all.entity_type.value.find((e) => e.uid === parent);
+                            return (React.createElement("span", { key: `breadcrumb-${parent}` },
+                                React.createElement("span", null,
+                                    "  ",
+                                    parentEntityType.label,
+                                    " ",
+                                    React.createElement(AddTabButton_1.AddTabButton, { tabType: 'entity_type', uid: parent }),
+                                    " "),
+                                React.createElement("i", { className: 'fa fa-angle-right' })));
+                        })),
                         React.createElement("i", { className: 'fa fa-tag item-icon' }),
-                        React.createElement(StringEditableFieldComponent, { value: entityType.label, component: EditableHeader_1.EditableHeader, onChange: (value) => this.update({ 'label': value }) })),
+                        React.createElement(StringEditableFieldComponent, { value: entityType.label, onChange: (value) => this.update({ 'label': value }) },
+                            React.createElement(EditableHeader_1.EditableHeader, null))),
                     React.createElement("div", { className: 'sub-toolbar' },
                         React.createElement("i", { className: 'fa fa-plus add button', "aria-hidden": 'true', onClick: this.createEntity.bind(this) }),
                         React.createElement("i", { className: 'fa fa-trash delete button', "aria-hidden": 'true', onClick: this.del.bind(this) }),
@@ -35992,24 +36025,33 @@ let EntityTypeWorkspace = class EntityTypeWorkspace extends React.Component {
             React.createElement("section", { className: 'editor-body' },
                 React.createElement("div", { className: 'edit-group' },
                     React.createElement("label", { className: 'small' }, "Parent"),
-                    React.createElement(ComboEditableFieldComponent, { value: entityType.parent === null ? null : { key: parentName, value: entityType.parent }, component: EditableComboDropdown_1.EditableComboDropdown, onChange: (value) => this.update({ 'parent': value === null ? null : value.value }), additionalProps: { comboSettings: {
+                    React.createElement(ComboEditableFieldComponent, { value: entityType.parent === null ? { key: '', value: null } : { key: parentName, value: entityType.parent }, onChange: (value) => this.update({ 'parent': value === null ? null : value.value }) },
+                        React.createElement(EditableComboDropdown_1.EditableComboDropdown, { comboSettings: {
                                 options: potentialParents.map((par) => ({ key: par.label, value: par.uid })),
                                 typeName: 'EntityType'
-                            } } }),
+                            } })),
                     entityType.parent !== null ? (React.createElement(AddTabButton_1.AddTabButton, { tabType: 'entity_type', uid: entityType.parent })) : null),
                 React.createElement("div", { className: 'edit-group' },
                     React.createElement("label", { className: 'small' }, "Description"),
-                    React.createElement(StringEditableFieldComponent, { value: entityType.description, component: EditableParagraph_1.EditableParagraph, onChange: (value) => this.update({ 'description': value }) })),
+                    React.createElement(StringEditableFieldComponent, { value: entityType.description, onChange: (value) => this.update({ 'description': value }) },
+                        React.createElement(EditableParagraph_1.EditableParagraph, null))),
                 React.createElement("div", { className: 'edit-group' },
-                    React.createElement(StringEditableFieldComponent, { value: entityType.sameAs, component: SameAsEditor_1.SameAsEditor, onChange: (value) => this.update({ 'sameAs': value }) })),
+                    React.createElement(StringEditableFieldComponent, { value: entityType.sameAs, onChange: (value) => this.update({ 'sameAs': value }) },
+                        React.createElement(SameAsEditor_1.SameAsEditor, null))),
                 React.createElement("div", null,
                     React.createElement("h4", null, "Direct Children"),
                     React.createElement("ul", null, entityType.children
                         .map((child) => this.props.dataStore.dataStore.all.entity_type.value.find((et) => et.uid === child))
-                        .map((childEt) => (React.createElement("li", { key: `dc-${childEt.label}` },
-                        childEt.label,
-                        " ",
-                        React.createElement(AddTabButton_1.AddTabButton, { tabType: 'entity_type', uid: childEt.uid })))))))));
+                        .map((childEt) => {
+                        if (childEt === undefined) {
+                            return null;
+                        }
+                        //TODO: REMOVE !
+                        return (React.createElement("li", { key: `dc-${childEt.label}` },
+                            childEt.label,
+                            " ",
+                            React.createElement(AddTabButton_1.AddTabButton, { tabType: 'entity_type', uid: childEt.uid })));
+                    }))))));
     }
 };
 EntityTypeWorkspace.contextTypes = {
@@ -36075,11 +36117,11 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 const React = __webpack_require__(1);
 const react_router_1 = __webpack_require__(11);
-const SameAsEditor_1 = __webpack_require__(54);
+const SameAsEditor_1 = __webpack_require__(52);
 const ApiService_1 = __webpack_require__(4);
 const falcon_core_1 = __webpack_require__(5);
 const EditableHeader_1 = __webpack_require__(27);
-const EditableParagraph_1 = __webpack_require__(53);
+const EditableParagraph_1 = __webpack_require__(186);
 const PredicateDescription_1 = __webpack_require__(187);
 const literalTypes_1 = __webpack_require__(189);
 const mobx_react_1 = __webpack_require__(2);
@@ -36163,10 +36205,13 @@ let PredicateEditorWorkspace = class PredicateEditorWorkspace extends React.Comp
         if (currentDomainEntityType !== undefined) {
             currentDomainEntityTypeName = currentDomainEntityType.label;
         }
-        const domain = { key: currentDomainEntityTypeName, value: predicate.domain.toString() };
-        const range = { key: '', value: predicate.range.toString() };
+        const domain = { key: currentDomainEntityTypeName, value: predicate.domain };
+        const range = { key: '', value: {
+                isReference: predicate.rangeIsReference,
+                value: predicate.range
+            } };
         if (predicate.rangeIsReference) {
-            const currentRangeEntityType = entityTypes.find((t) => t.uid == predicate.range);
+            const currentRangeEntityType = entityTypes.find((t) => t.uid === predicate.range);
             if (currentRangeEntityType !== undefined) {
                 range.key = currentRangeEntityType.label;
             }
@@ -36181,15 +36226,17 @@ let PredicateEditorWorkspace = class PredicateEditorWorkspace extends React.Comp
             if (t.uid === null) {
                 throw new Error('Encountered entity type with no id!');
             }
-            return { key: t.label, value: t.uid.toString() };
+            return { key: t.label, value: t.uid };
         });
-        const literalTypeOptions = literalTypes_1.literalTypes.map((t) => ({ key: t.label, value: t.value, meta: 'literal' }));
+        const literalTypeOptions = literalTypes_1.literalTypes.map((t) => ({ key: t.label, value: { value: t.label, isReference: false } }));
+        const entityTypeMap2 = entityTypeOptions.map((e) => ({ key: e.key, value: { isReference: true, value: e.value.toString() } }));
         return (React.createElement("div", { className: 'workspace-editor' },
             React.createElement("header", { className: 'editor-header predicate' },
                 React.createElement("div", { className: 'primary-toolbar' },
                     React.createElement("div", { className: 'main-toolbar' },
                         React.createElement("i", { className: 'fa fa-long-arrow-right item-icon' }),
-                        React.createElement(StringEditableFieldComponent, { value: predicate.label, component: EditableHeader_1.EditableHeader, onChange: (value) => this.updatePredicate('label', value) })),
+                        React.createElement(StringEditableFieldComponent, { value: predicate.label, onChange: (value) => this.updatePredicate('label', value) },
+                            React.createElement(EditableHeader_1.EditableHeader, null))),
                     React.createElement("div", { className: 'sub-toolbar' },
                         React.createElement("i", { className: 'fa fa-trash delete button', "aria-hidden": 'true', onClick: this.del.bind(this) }),
                         React.createElement("i", { className: 'fa fa-clone button', "aria-hidden": 'true', onClick: this.copy.bind(this) }))),
@@ -36204,12 +36251,14 @@ let PredicateEditorWorkspace = class PredicateEditorWorkspace extends React.Comp
                         predicate.uses)),
                 React.createElement("div", { className: 'edit-group' },
                     React.createElement("label", { className: 'small' }, "Description"),
-                    React.createElement(StringEditableFieldComponent, { value: predicate.description, component: EditableParagraph_1.EditableParagraph, onChange: (value) => this.updatePredicate('description', value) })),
+                    React.createElement(StringEditableFieldComponent, { value: predicate.description, onChange: (value) => this.updatePredicate('description', value) },
+                        React.createElement(EditableParagraph_1.EditableParagraph, null))),
                 React.createElement("div", { className: 'edit-group' },
                     React.createElement("label", { className: 'small' }, "Typing"),
-                    React.createElement(PredicateDescription_1.PredicateDescription, { domain: domain, range: range, domainChanged: (value) => this.updatePredicate('domain', value.value), rangeChanged: (value) => this.updatePredicate('range', value.value, value.meta !== 'literal'), mode: 'editSingle', domainOptions: entityTypeOptions, rangeOptions: literalTypeOptions.concat(entityTypeOptions) })),
+                    React.createElement(PredicateDescription_1.PredicateDescription, { domain: domain, range: range, domainChanged: (value) => this.updatePredicate('domain', value.value), rangeChanged: (value) => this.updatePredicate('range', value.value.value, value.value.isReference), mode: 'editSingle', domainOptions: entityTypeOptions, rangeOptions: literalTypeOptions.concat(entityTypeMap2) })),
                 React.createElement("div", null,
-                    React.createElement(StringEditableFieldComponent, { value: predicate.sameAs, component: SameAsEditor_1.SameAsEditor, onChange: (value) => this.updatePredicate('sameAs', value) })))));
+                    React.createElement(StringEditableFieldComponent, { value: predicate.sameAs, onChange: (value) => this.updatePredicate('sameAs', value) },
+                        React.createElement(SameAsEditor_1.SameAsEditor, null))))));
     }
 };
 PredicateEditorWorkspace.contextTypes = {
@@ -36244,12 +36293,10 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 const React = __webpack_require__(1);
-const SameAsEditor_1 = __webpack_require__(54);
+const SameAsEditor_1 = __webpack_require__(52);
 const ApiService_1 = __webpack_require__(4);
 const falcon_core_1 = __webpack_require__(5);
 const EditableHeader_1 = __webpack_require__(27);
-const EditableParagraph_1 = __webpack_require__(53);
-const EditableComboDropdown_1 = __webpack_require__(52);
 const lodash_1 = __webpack_require__(6);
 const mobx_react_1 = __webpack_require__(2);
 const AddTabButton_1 = __webpack_require__(7);
@@ -36423,13 +36470,14 @@ let SourceEditorWorkspace = class SourceEditorWorkspace extends React.Component 
             React.createElement("section", { className: 'editor-body' },
                 React.createElement("div", { className: 'edit-group' },
                     React.createElement("label", { className: 'small' }, "Parent"),
-                    React.createElement(ComboEditableFieldComponent, { value: { key: parentName, value: source.parent }, component: EditableComboDropdown_1.EditableComboDropdown, onChange: (value) => this.updateSource('parent', value.value), additionalProps: { comboSettings: {
+                    React.createElement(ComboEditableFieldComponent, { value: { key: parentName, value: source.parent }, component: EditableComboDropdown_1.EditableComboDropdown, onChange: (value) => this.updateSource('parent', value === null ? null : value.value), additionalProps: { comboSettings: {
                                 options: potentialParents.map((par) => ({ key: par.label, value: par.uid })),
                                 typeName: 'Source'
                             } } }),
                     source.parent !== null ? (React.createElement(AddTabButton_1.AddTabButton, { tabType: 'source', uid: source.parent })) : null),
                 React.createElement("div", { className: 'edit-group' },
-                    React.createElement(StringEditableFieldComponent, { value: source.sameAs, component: SameAsEditor_1.SameAsEditor, onChange: (value) => this.updateSource('sameAs', value) })),
+                    React.createElement(StringEditableFieldComponent, { value: source.sameAs, onChange: (value) => this.updateSource('sameAs', value) },
+                        React.createElement(SameAsEditor_1.SameAsEditor, null))),
                 this.props.dataStore.dataStore.all.dublinCore.value.elements.map((element) => {
                     const values = source.metaData.hasOwnProperty(element.label) ?
                         source.metaData[element.label].values : [{ source: this.props.id, value: '' }];
@@ -36485,9 +36533,9 @@ const ApiService_1 = __webpack_require__(4);
 const falcon_core_1 = __webpack_require__(5);
 const lodash_1 = __webpack_require__(6);
 const AddTabButton_1 = __webpack_require__(7);
-const findParentTree_1 = __webpack_require__(55);
+const findParentTree_1 = __webpack_require__(53);
 const EditableHeader_1 = __webpack_require__(27);
-const EditableComboDropdown_1 = __webpack_require__(52);
+const EditableComboDropdown_1 = __webpack_require__(185);
 class StringEditableFieldComponent extends EditableHeader_1.EditableFieldComponent {
 }
 class ComboEditableFieldComponent extends EditableHeader_1.EditableFieldComponent {
@@ -36512,7 +36560,7 @@ class EntityWorkspaceCoreView extends React.Component {
     constructor(props, context) {
         super();
         this.state = {
-            comboValue: { key: 'test', value: '' },
+            comboValue: { key: 'test', value: null },
             comboSearchValue: ''
         };
     }
@@ -36522,6 +36570,9 @@ class EntityWorkspaceCoreView extends React.Component {
     render() {
         const entity = this.props.dataStore.dataStore.tabs.entity[this.props.id].value.entity;
         const entityType = this.props.dataStore.dataStore.all.entity_type.value.find((t) => t.uid === entity.entityType);
+        if (entityType === undefined || entityType.uid === null) {
+            throw new Error('Encountered undefined entity type or entity type with null id');
+        }
         const potentialParents = this.props.dataStore.dataStore.all.entity.value;
         const entityTypeParents = findParentTree_1.findParentTree(entity.entityType, this.props.dataStore.dataStore.all.entity_type.value);
         const predicates = this.props.dataStore.dataStore.all.predicate
@@ -36546,10 +36597,11 @@ class EntityWorkspaceCoreView extends React.Component {
                         React.createElement(AddTabButton_1.AddTabButton, { uid: entityType.uid, tabType: 'entity_type' }))),
                 React.createElement("div", { style: { flex: 1 } },
                     React.createElement("label", { className: 'small' }, "Parent"),
-                    React.createElement(ComboEditableFieldComponent, { value: { key: parentName, value: entity.parent }, component: EditableComboDropdown_1.EditableComboDropdown, onChange: (value) => this.update({ 'parent': value.value }), additionalProps: { comboSettings: {
+                    React.createElement(ComboEditableFieldComponent, { value: { key: parentName, value: entity.parent }, onChange: (value) => this.update({ 'parent': value === null ? null : value.value }) },
+                        React.createElement(EditableComboDropdown_1.EditableComboDropdown, { comboSettings: {
                                 options: potentialParents.map((par) => ({ key: par.label, value: par.uid })),
                                 typeName: 'Entity'
-                            } } }),
+                            } })),
                     entity.parent !== null ? (React.createElement(AddTabButton_1.AddTabButton, { tabType: 'entity', uid: entity.parent })) : null)),
             React.createElement("div", { className: 'edit-group' },
                 React.createElement(RecordsEditor_1.RecordsEditor, { dimension: 'predicates', entityExists: true, id: this.props.id, records: records, onChange: () => { }, predicates: predicates, sources: sources, entityTypeId: entityType.uid }))));
@@ -37028,7 +37080,7 @@ class ModalStore {
         };
         switch (this.modalQueue[0].name) {
             case 'predicate':
-                return (React.createElement(CreatePredicate_1.CreatePredicate, __assign({}, sharedProps, { initialName: this.modalQueue[0].settings['initialName'] })));
+                return (React.createElement(CreatePredicate_1.CreatePredicate, __assign({}, sharedProps, { initialName: this.modalQueue[0].settings['initialName'], initialDomain: this.modalQueue[0].settings['initialDomain'] })));
             case 'record':
                 return (React.createElement(CreateRecord_1.CreateRecord, __assign({}, sharedProps, { entityType: this.modalQueue[0].settings['entityType'], entityUid: this.modalQueue[0].settings['entityUid'], options: this.modalQueue[0].settings['options'] })));
             case 'preset_record':

@@ -9,36 +9,35 @@ import * as lunr from 'lunr';
 
 import { findIndex, noop } from 'lodash';
 
-export interface ComboDropdownOption {
+export interface ComboDropdownOption<T> {
     key: string;
-    value: string | null;
-    meta?: any;
+    value: T | null;
 }
 
-export interface ComboDropdownProps {
-    options: ComboDropdownOption[];
+export interface ComboDropdownProps<T> {
+    options: ComboDropdownOption<T>[];
     typeName: string;
-    value: ComboDropdownOption | null;
-    setValue: (s: ComboDropdownOption | null) => void;
+    value: ComboDropdownOption<T> | null;
+    setValue: (s: ComboDropdownOption<T> | null) => void;
     createNewValue: (s: string) => void;
     updateSearchString?: (s: string) => void;
     allowNew?: boolean;
-    compact?: boolean;
+    additionalClasses?: string[];
 }
 
-interface ComboDropdownState {
+interface ComboDropdownState<T> {
     searchString: string;
     showingDropDown: boolean;
-    filteredOptions: ComboDropdownOption[];
+    filteredOptions: ComboDropdownOption<T>[];
     highlightedIndex: null | number;
     dropDownHeight: number;
 }
 
-export class ComboDropdown<T> extends React.Component<ComboDropdownProps, ComboDropdownState> {
+export class ComboDropdown<T> extends React.Component<ComboDropdownProps<T>, ComboDropdownState<T>> {
 
-    public static defaultProps : Partial<ComboDropdownProps> = {
+    public static defaultProps = {
        allowNew: true,
-       compact: false,
+       additionalClasses: [],
        updateSearchString: noop
     };
 
@@ -74,7 +73,7 @@ export class ComboDropdown<T> extends React.Component<ComboDropdownProps, ComboD
         });
     }
 
-    public componentWillReceiveProps(newProps: ComboDropdownProps) {
+    public componentWillReceiveProps(newProps: ComboDropdownProps<T>) {
 
         let filterString = '';
 
@@ -109,7 +108,7 @@ export class ComboDropdown<T> extends React.Component<ComboDropdownProps, ComboD
         });
     }
 
-    public changeSearchString(event : React.FormEvent) {
+    public changeSearchString(event : React.FormEvent<HTMLInputElement>) {
         this.setState({
             searchString: (event.target as HTMLInputElement).value,
             showingDropDown: true},
@@ -127,7 +126,7 @@ export class ComboDropdown<T> extends React.Component<ComboDropdownProps, ComboD
         }
     }
 
-    public updateFilter(filter: string, props: ComboDropdownProps) {
+    public updateFilter(filter: string, props: ComboDropdownProps<T>) {
 
         let filtered : any[] = [];
 
@@ -161,7 +160,7 @@ export class ComboDropdown<T> extends React.Component<ComboDropdownProps, ComboD
         this.props.createNewValue(option);
     }
 
-    public selectOption(option: ComboDropdownOption) {
+    public selectOption(option: ComboDropdownOption<T>) {
         this.props.setValue(option);
         this.ignoreBlur = false;
         this.recalculateHeight = true;
@@ -253,7 +252,7 @@ export class ComboDropdown<T> extends React.Component<ComboDropdownProps, ComboD
   public render() {
 
        return (
-        <div className={this.props.compact ? 'compact combo-dropdown' : 'combo-dropdown'}>
+        <div className={'combo-dropdown ' + this.props.additionalClasses!.join(' ')}>
                 <div>
                     <input type='text'
                         ref={ComboDropdown.comboDropdownInputBoxRef}
@@ -301,3 +300,5 @@ export class ComboDropdown<T> extends React.Component<ComboDropdownProps, ComboD
     }
 }
 
+export class NumberComboDropdown extends ComboDropdown<number> {}
+export class StringComboDropdown extends ComboDropdown<number> {}
