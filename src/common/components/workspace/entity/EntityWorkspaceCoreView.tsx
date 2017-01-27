@@ -74,7 +74,7 @@ export class EntityWorkspaceCoreView extends React.Component<EntityWorkspaceCore
 
     public render() {
 
-        const entity = this.props.dataStore!.dataStore.tabs.entity.get('entity-' + this.props.id).value.entity;
+        const entity = this.props.dataStore!.dataStore.tabs.entity[this.props.id].value.entity;
 
         const entityType = this.props.dataStore!.dataStore.all.entity_type.value.find((t) => t.uid === entity.entityType);
         const potentialParents = this.props.dataStore!.dataStore.all.entity.value;
@@ -84,7 +84,7 @@ export class EntityWorkspaceCoreView extends React.Component<EntityWorkspaceCore
             .value.filter((pred) => entityTypeParents.indexOf(pred.domain) !== -1);
 
         const sources = this.props.dataStore!.dataStore.all.source.value;
-        const records = groupBy(this.props.dataStore!.dataStore.tabs.entity.get('entity-' + this.props.id).value.records, 'predicate');
+        const records = groupBy(this.props.dataStore!.dataStore.tabs.entity[this.props.id].value.records, 'predicate');
 
 
         const options = predicates.map((pred) => ({ key: pred.label, value: pred.uid, meta: pred}));

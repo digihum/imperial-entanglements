@@ -70,7 +70,7 @@ export class RecordsEditor extends React.Component<RecordsEditorProps, RecordsEd
 
 	public createNewRecord() {
 
-        const entity = this.props.dataStore!.dataStore.tabs.entity.get('entity-' + this.props.id).value.entity;
+        const entity = this.props.dataStore!.dataStore.tabs.entity[this.props.id].value.entity;
 
         const entityType = this.props.dataStore!.dataStore.all.entity_type.value.find((t) => t.uid === entity.entityType);
 

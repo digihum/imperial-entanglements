@@ -5652,7 +5652,7 @@ const React = __webpack_require__(1);
 const mobx_react_1 = __webpack_require__(2);
 exports.AddTabButton = mobx_react_1.inject('dataStore')(mobx_react_1.observer((props, context) => {
     if (props.dataStore.dataStore.tabs[props.tabType] !== undefined
-        && props.dataStore.dataStore.tabs[props.tabType].has(`${props.tabType}-${props.uid}`)) {
+        && props.uid in props.dataStore.dataStore.tabs[props.tabType]) {
         return (React.createElement("i", { className: 'fa fa-folder-open-o add button', title: 'Open item', onClick: () => context.router.transitionTo(`/edit/${props.tabType}/${props.uid}`) }, " "));
     }
     return (React.createElement("i", { className: 'icon-list-add add button', title: 'Add to list', onClick: () => props.dataStore.createTab(props.tabType, props.uid, 'item', props.data) }));
@@ -39124,7 +39124,7 @@ let RecordsEditor = class RecordsEditor extends React.Component {
         });
     }
     createNewRecord() {
-        const entity = this.props.dataStore.dataStore.tabs.entity.get('entity-' + this.props.id).value.entity;
+        const entity = this.props.dataStore.dataStore.tabs.entity[this.props.id].value.entity;
         const entityType = this.props.dataStore.dataStore.all.entity_type.value.find((t) => t.uid === entity.entityType);
         const entityTypeParents = findParentTree_1.findParentTree(entity.entityType, this.props.dataStore.dataStore.all.entity_type.value);
         const predicates = this.props.dataStore.dataStore.all.predicate
@@ -40772,7 +40772,7 @@ let EntityEditorWorkspace = class EntityEditorWorkspace extends React.Component 
         });
     }
     createNewRecord() {
-        const entity = this.props.dataStore.dataStore.tabs.entity.get('entity-' + this.props.id).value.entity;
+        const entity = this.props.dataStore.dataStore.tabs.entity[this.props.id].value.entity;
         const entityType = this.props.dataStore.dataStore.all.entity_type.value.find((t) => t.uid === entity.entityType);
         const entityTypeParents = findParentTree_1.findParentTree(entity.entityType, this.props.dataStore.dataStore.all.entity_type.value);
         const predicates = this.props.dataStore.dataStore.all.predicate
@@ -40798,14 +40798,14 @@ let EntityEditorWorkspace = class EntityEditorWorkspace extends React.Component 
         this.props.dataStore.patchItem(falcon_core_1.Entity, ApiService_1.AppUrls.entity, this.props.id, data);
     }
     clone() {
-        const entity = this.props.dataStore.dataStore.tabs.entity.get('entity-' + this.props.id).value.entity;
+        const entity = this.props.dataStore.dataStore.tabs.entity[this.props.id].value.entity;
         this.props.dataStore.postItem(falcon_core_1.Entity, ApiService_1.AppUrls.entity, falcon_core_1.Serializer.fromJson(falcon_core_1.Entity, {
             label: 'Copy of ' + entity.label,
             entityType: entity.entityType
         }), { clone: this.props.id }).then(([id]) => this.props.dataStore.createTab('entity', id, 'item'));
     }
     render() {
-        const entity = this.props.dataStore.dataStore.tabs.entity.get('entity-' + this.props.id).value.entity;
+        const entity = this.props.dataStore.dataStore.tabs.entity[this.props.id].value.entity;
         const potentialParents = this.props.dataStore.dataStore.all.entity.value;
         let parentName = '';
         if (potentialParents !== null && entity.parent !== undefined) {
@@ -40881,12 +40881,12 @@ let EntityTypeWorkspace = class EntityTypeWorkspace extends React.Component {
         this.state = {};
     }
     update(data) {
-        const entityType = this.props.dataStore.dataStore.tabs.entity_type.get('entity_type-' + this.props.id).value;
+        const entityType = this.props.dataStore.dataStore.tabs.entity_type[this.props.id].value;
         this.props.dataStore.patchItem(falcon_core_1.EntityType, ApiService_1.AppUrls.entity_type, this.props.id, data)
             .then(() => this.setState({ entityType: Object.assign({}, entityType, data) }));
     }
     copy() {
-        const entityType = this.props.dataStore.dataStore.tabs.entity_type.get('entity_type-' + this.props.id).value;
+        const entityType = this.props.dataStore.dataStore.tabs.entity_type[this.props.id].value;
         const newEntityType = falcon_core_1.Serializer.fromJson(falcon_core_1.EntityType, Object.assign({}, falcon_core_1.Serializer.toJson(entityType), { name: 'Copy of ' + entityType.label }));
         this.props.dataStore.postItem(falcon_core_1.EntityType, ApiService_1.AppUrls.entity_type, newEntityType, {})
             .then(([id]) => {
@@ -40943,7 +40943,7 @@ let EntityTypeWorkspace = class EntityTypeWorkspace extends React.Component {
         this.props.modalStore.addModal(a);
     }
     render() {
-        const entityType = this.props.dataStore.dataStore.tabs.entity_type.get('entity_type-' + this.props.id).value;
+        const entityType = this.props.dataStore.dataStore.tabs.entity_type[this.props.id].value;
         const potentialParents = this.props.dataStore.dataStore.all.entity_type.value;
         let parentName = '';
         if (potentialParents !== null && entityType.parent !== undefined) {
@@ -41084,7 +41084,7 @@ let PredicateEditorWorkspace = class PredicateEditorWorkspace extends React.Comp
         };
     }
     updatePredicate(field, value, rangeIsReferenceOverride = null) {
-        const predicate = this.props.dataStore.dataStore.tabs.predicate.get('predicate-' + this.props.id).value;
+        const predicate = this.props.dataStore.dataStore.tabs.predicate[this.props.id].value;
         if (predicate === null) {
             console.warn('Tried to edit unready predicate');
             return;
@@ -41097,7 +41097,7 @@ let PredicateEditorWorkspace = class PredicateEditorWorkspace extends React.Comp
         });
     }
     copy() {
-        const predicate = this.props.dataStore.dataStore.tabs.predicate.get('predicate-' + this.props.id).value;
+        const predicate = this.props.dataStore.dataStore.tabs.predicate[this.props.id].value;
         const newPredicate = falcon_core_1.Serializer.fromJson(falcon_core_1.Predicate, Object.assign({}, falcon_core_1.Serializer.toJson(predicate), { name: 'Copy of ' + predicate.label }));
         this.props.dataStore.postItem(falcon_core_1.Predicate, ApiService_1.AppUrls.predicate, newPredicate, {})
             .then(([id]) => {
@@ -41140,7 +41140,7 @@ let PredicateEditorWorkspace = class PredicateEditorWorkspace extends React.Comp
         });
     }
     render() {
-        const predicate = this.props.dataStore.dataStore.tabs.predicate.get('predicate-' + this.props.id).value;
+        const predicate = this.props.dataStore.dataStore.tabs.predicate[this.props.id].value;
         const entityTypes = this.props.dataStore.dataStore.all.entity_type.value;
         const currentDomainEntityType = entityTypes.find((t) => t.uid == predicate.domain);
         let currentDomainEntityTypeName = '';
@@ -41262,20 +41262,20 @@ let SourceEditorWorkspace = class SourceEditorWorkspace extends React.Component 
         this.loadData(newProps);
     }
     loadData(props) {
-        const source = props.dataStore.dataStore.tabs.source.get('source-' + this.props.id).value.source;
+        const source = props.dataStore.dataStore.tabs.source[this.props.id].value.source;
         this.setState({
             metaData: lodash_1.keyBy(source.metaData, 'name')
         });
     }
     updateSource(field, value) {
-        const source = this.props.dataStore.dataStore.tabs.source.get('source-' + this.props.id).value.source;
+        const source = this.props.dataStore.dataStore.tabs.source[this.props.id].value.source;
         if (source.uid === null) {
             throw new Error('source uid should not be null');
         }
         this.props.dataStore.patchItem(falcon_core_1.Source, ApiService_1.AppUrls.source, source.uid, { [field]: value });
     }
     updateSourceElement(element, value) {
-        const source = this.props.dataStore.dataStore.tabs.source.get('source-' + this.props.id).value.source;
+        const source = this.props.dataStore.dataStore.tabs.source[this.props.id].value.source;
         if (element.uid === null) {
             throw new Error('source element uid should not be null');
         }
@@ -41338,7 +41338,7 @@ let SourceEditorWorkspace = class SourceEditorWorkspace extends React.Component 
         });
     }
     createChild() {
-        const source = this.props.dataStore.dataStore.tabs.source.get('source-' + this.props.id).value.source;
+        const source = this.props.dataStore.dataStore.tabs.source[this.props.id].value.source;
         const newSource = falcon_core_1.Serializer.fromJson(falcon_core_1.Source, Object.assign({}, falcon_core_1.Serializer.toJson(source), { label: 'Child of ' + source.label, parent: this.props.id }));
         this.props.dataStore.postItem(falcon_core_1.Source, ApiService_1.AppUrls.source, newSource, {})
             .then(([id]) => {
@@ -41354,13 +41354,13 @@ let SourceEditorWorkspace = class SourceEditorWorkspace extends React.Component 
             },
             cancel: () => { },
             settings: {
-                source: this.props.dataStore.dataStore.tabs.source.get('source-' + this.props.id).value.source
+                source: this.props.dataStore.dataStore.tabs.source[this.props.id].value.source
             }
         };
         this.props.modalStore.addModal(a);
     }
     render() {
-        const source = this.props.dataStore.dataStore.tabs.source.get('source-' + this.props.id).value.source;
+        const source = this.props.dataStore.dataStore.tabs.source[this.props.id].value.source;
         const potentialParents = this.props.dataStore.dataStore.all.source.value;
         let parentName = '';
         if (potentialParents !== null && source.parent !== undefined) {
@@ -41504,14 +41504,14 @@ class EntityWorkspaceCoreView extends React.Component {
         this.props.dataStore.patchItem(falcon_core_1.Entity, ApiService_1.AppUrls.entity, this.props.id, data);
     }
     render() {
-        const entity = this.props.dataStore.dataStore.tabs.entity.get('entity-' + this.props.id).value.entity;
+        const entity = this.props.dataStore.dataStore.tabs.entity[this.props.id].value.entity;
         const entityType = this.props.dataStore.dataStore.all.entity_type.value.find((t) => t.uid === entity.entityType);
         const potentialParents = this.props.dataStore.dataStore.all.entity.value;
         const entityTypeParents = findParentTree_1.findParentTree(entity.entityType, this.props.dataStore.dataStore.all.entity_type.value);
         const predicates = this.props.dataStore.dataStore.all.predicate
             .value.filter((pred) => entityTypeParents.indexOf(pred.domain) !== -1);
         const sources = this.props.dataStore.dataStore.all.source.value;
-        const records = lodash_1.groupBy(this.props.dataStore.dataStore.tabs.entity.get('entity-' + this.props.id).value.records, 'predicate');
+        const records = lodash_1.groupBy(this.props.dataStore.dataStore.tabs.entity[this.props.id].value.records, 'predicate');
         const options = predicates.map((pred) => ({ key: pred.label, value: pred.uid, meta: pred }));
         let parentName = '';
         if (potentialParents !== null && entity.parent !== undefined) {
@@ -41595,7 +41595,7 @@ class EntityWorkspaceReferenceView extends React.Component {
                     React.createElement("tr", null,
                         React.createElement("th", null, "Entity"),
                         React.createElement("th", null, "Property"))),
-                React.createElement("tbody", null, this.props.dataStore.dataStore.tabs.entity.get('entity-' + this.props.id).value.referenceRecords.map((record) => {
+                React.createElement("tbody", null, this.props.dataStore.dataStore.tabs.entity[this.props.id].value.referenceRecords.map((record) => {
                     return (React.createElement("tr", { key: `record-${record.uid}` },
                         React.createElement("td", null,
                             this.props.dataStore.dataStore.all.entity.value.find((entity) => entity.uid === record.entity).label,
@@ -41925,7 +41925,6 @@ exports.DataController = DataController;
  * @version 0.2.0
  */
 
-const immutable_1 = __webpack_require__(60);
 const falcon_core_1 = __webpack_require__(5);
 exports.emptyDataStore = {
     all: {
@@ -41937,20 +41936,13 @@ exports.emptyDataStore = {
     },
     records: [],
     tabs: {
-        entity: immutable_1.Map(),
-        entity_type: immutable_1.Map(),
-        predicate: immutable_1.Map(),
-        source: immutable_1.Map()
+        entity: {},
+        entity_type: {},
+        predicate: {},
+        source: {}
     },
     lockedSource: null
 };
-exports.emptyTabs = [
-    { entity: immutable_1.Map() },
-    { entity_type: immutable_1.Map() },
-    { predicate: immutable_1.Map() },
-    { source: immutable_1.Map()
-    }
-];
 
 
 /***/ }),
