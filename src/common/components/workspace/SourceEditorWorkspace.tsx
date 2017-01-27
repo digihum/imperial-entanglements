@@ -74,7 +74,7 @@ export class SourceEditorWorkspace extends React.Component<SourceEditorProps, So
 
     public loadData(props: SourceEditorProps) {
 
-        const source = props.dataStore!.dataStore.tabs.source.get('source-' + this.props.id).value.source;
+        const source = props.dataStore!.dataStore.tabs.source[this.props.id].value.source;
 
         this.setState({
             metaData: keyBy(source.metaData, 'name')
@@ -83,7 +83,7 @@ export class SourceEditorWorkspace extends React.Component<SourceEditorProps, So
 
     public updateSource(field: string, value: string) {
 
-      const source = this.props.dataStore!.dataStore.tabs.source.get('source-' + this.props.id).value.source;
+      const source = this.props.dataStore!.dataStore.tabs.source[this.props.id].value.source;
 
       if (source.uid === null) {
         throw new Error('source uid should not be null');
@@ -94,7 +94,7 @@ export class SourceEditorWorkspace extends React.Component<SourceEditorProps, So
 
     public updateSourceElement(element: Element, value: string | null) {
 
-        const source = this.props.dataStore!.dataStore.tabs.source.get('source-' + this.props.id).value.source;
+        const source = this.props.dataStore!.dataStore.tabs.source[this.props.id].value.source;
 
 
         if (element.uid === null) {
@@ -172,7 +172,7 @@ export class SourceEditorWorkspace extends React.Component<SourceEditorProps, So
 
     public createChild() {
 
-        const source = this.props.dataStore!.dataStore.tabs.source.get('source-' + this.props.id).value.source;
+        const source = this.props.dataStore!.dataStore.tabs.source[this.props.id].value.source;
 
         const newSource = Serializer.fromJson(Source,
             Object.assign({}, Serializer.toJson(source), { label: 'Child of ' + source.label, parent: this.props.id }));
@@ -192,7 +192,7 @@ export class SourceEditorWorkspace extends React.Component<SourceEditorProps, So
             },
             cancel: () => { },
             settings: {
-                source: this.props.dataStore!.dataStore.tabs.source.get('source-' + this.props.id).value.source
+                source: this.props.dataStore!.dataStore.tabs.source[this.props.id].value.source
             }
         };
 
@@ -201,7 +201,7 @@ export class SourceEditorWorkspace extends React.Component<SourceEditorProps, So
 
     public render() {
 
-        const source = this.props.dataStore!.dataStore.tabs.source.get('source-' + this.props.id).value.source;
+        const source = this.props.dataStore!.dataStore.tabs.source[this.props.id].value.source;
         const potentialParents = this.props.dataStore!.dataStore.all.source.value;
 
         let parentName = '';

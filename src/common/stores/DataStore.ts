@@ -4,13 +4,16 @@
  * @version 0.2.0
  */
 
-import { Map } from 'immutable';
 import { Predicate, EntityType, Entity, Record, Source, SourceElement, ElementSet } from '@digihum/falcon-core';
 import * as moment from 'moment';
 
 export interface DataStoreEntry<T> {
     value: T;
     lastUpdate: moment.Moment | null;
+}
+
+interface TabMap<T> {
+  [uid: number]: DataStoreEntry<T>;
 }
 
 export interface DataStore {
@@ -26,20 +29,20 @@ export interface DataStore {
 
   tabs: {
 
-    entity: Map<string, DataStoreEntry<{
+    entity: TabMap<{
       entity: Entity;
       records: Record[];
       referenceRecords: Record[];
-    }>>;
+    }>;
 
-    entity_type: Map<string, DataStoreEntry<EntityType>>;
+    entity_type: TabMap<EntityType>;
 
-    predicate: Map<string, DataStoreEntry<Predicate>>;
+    predicate: TabMap<Predicate>;
 
-    source: Map<string, DataStoreEntry<{
+    source: TabMap<{
       source: Source;
       elements: SourceElement;
-    }>>;
+    }>;
 
   };
 
@@ -59,35 +62,11 @@ export const emptyDataStore : DataStore = {
   records: [],
 
   tabs: {
-    entity: Map<string, DataStoreEntry<{
-      entity: Entity;
-      records: Record[];
-      referenceRecords: Record[];
-    }>>(),
-
-    entity_type: Map<string, DataStoreEntry<EntityType>>(),
-    predicate: Map<string, DataStoreEntry<Predicate>>(),
-
-    source: Map<string, DataStoreEntry<{
-      source: Source;
-      elements: SourceElement;
-    }>>()
+    entity: {},
+    entity_type: {},
+    predicate: {},
+    source: {}
   },
 
   lockedSource: null
 };
-
-export const emptyTabs = [
-    {entity: Map<string, DataStoreEntry<{
-      entity: Entity;
-      records: Record[];
-    }>>()},
-
-    {entity_type: Map<string, DataStoreEntry<EntityType>>()},
-    {predicate: Map<string, DataStoreEntry<Predicate>>()},
-
-    {source: Map<string, DataStoreEntry<{
-      source: Source;
-      elements: SourceElement;
-    }>>()
-  }];

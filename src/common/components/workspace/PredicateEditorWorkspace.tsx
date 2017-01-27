@@ -62,7 +62,7 @@ export class PredicateEditorWorkspace extends React.Component<PredicateEditorPro
 
     public updatePredicate(field: string, value: string, rangeIsReferenceOverride: boolean | null = null) {
 
-        const predicate = this.props.dataStore!.dataStore.tabs.predicate.get('predicate-' + this.props.id).value;
+        const predicate = this.props.dataStore!.dataStore.tabs.predicate[this.props.id].value;
 
         if (predicate === null) {
             console.warn('Tried to edit unready predicate');
@@ -81,7 +81,7 @@ export class PredicateEditorWorkspace extends React.Component<PredicateEditorPro
 
     public copy() {
 
-        const predicate = this.props.dataStore!.dataStore.tabs.predicate.get('predicate-' + this.props.id).value;
+        const predicate = this.props.dataStore!.dataStore.tabs.predicate[this.props.id].value;
 
         const newPredicate = Serializer.fromJson(Predicate,
             Object.assign({}, Serializer.toJson(predicate), { name: 'Copy of ' + predicate.label}));
@@ -135,7 +135,7 @@ export class PredicateEditorWorkspace extends React.Component<PredicateEditorPro
 
     public render() {
 
-        const predicate = this.props.dataStore!.dataStore.tabs.predicate.get('predicate-' + this.props.id).value;
+        const predicate = this.props.dataStore!.dataStore.tabs.predicate[this.props.id].value;
         const entityTypes = this.props.dataStore!.dataStore.all.entity_type.value;
 
         const currentDomainEntityType = entityTypes.find((t) => t.uid == predicate.domain);

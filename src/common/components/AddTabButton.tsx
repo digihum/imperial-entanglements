@@ -24,7 +24,7 @@ export const AddTabButton : React.ClassicComponentClass<AddTabButtonProps> = inj
     (props: AddTabButtonProps, context: any) => {
 
         if (props.dataStore!.dataStore.tabs[props.tabType] !== undefined
-                && props.dataStore!.dataStore.tabs[props.tabType].has(`${props.tabType}-${props.uid}`)) {
+                && props.uid in props.dataStore!.dataStore.tabs[props.tabType]) {
             return (<i className='fa fa-folder-open-o add button'
                 title='Open item'
                 onClick={() => context.router.transitionTo(`/edit/${props.tabType}/${props.uid}`)}> </i>);

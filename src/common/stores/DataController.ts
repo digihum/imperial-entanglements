@@ -6,10 +6,9 @@
 
 import { FalconItem, Entity, Record, Source, Predicate, EntityType, SourceElement, ElementSet } from '@digihum/falcon-core';
 import { ApiService, AppUrls } from '../ApiService';
-import { DataStore, emptyTabs, emptyDataStore } from './DataStore';
+import { DataStore, emptyDataStore } from './DataStore';
 import { Tab } from '../components/Sidebar';
 
-import { Map } from 'immutable';
 import { arrayMove } from 'react-sortable-hoc';
 
 import { TrackedFalconItem, CompositeKey } from '@digihum/falcon-core';
@@ -57,15 +56,21 @@ export class DataController implements ApiService {
       }
     }
 
-    this.entitySearchColumns = [other['col1p'], other['col2p'], other['col3p']].filter((a) => a !== undefined);
+    if (other !== null) {
+      this.entitySearchColumns = [other['col1p'], other['col2p'], other['col3p']].filter((a) => a !== undefined);
+    } else {
+      this.entitySearchColumns = [];
+    }
 
     return true;
   }
 
-  private loadTabData(tab: Tab) : Promise<any> {
+  private async loadTabData(tab: Tab) : Promise<any> {
+
     if (tab.tabClass !== 'item') {
-      return Promise.resolve(new Entity());
+      return new Entity();
     }
+
     switch (tab.tabType) {
         case 'entity':
             return Promise.all([
@@ -105,7 +110,7 @@ export class DataController implements ApiService {
         Promise.all(groupedTabs[tabType].map((tab) =>
           this.loadTabData(tab)
           .then((value) => {
-            return { [`${tab.tabType}-${tab.uid}`]: { value, lastUpdate: moment() }};
+            return { [parseInt(tab.uid)]: { value, lastUpdate: moment() }};
           })
           .catch((err) => {
             this.tabs = this.tabs.filter((tab2: Tab) => tab2 !== tab);
@@ -115,7 +120,7 @@ export class DataController implements ApiService {
           })
         ))
         .then((tabData) => {
-          return { [tabType]: Map(Object.assign({}, ...tabData)) };
+          return { [tabType]: Object.assign({}, ...tabData) };
         })
       )
     );
@@ -240,5 +245,13 @@ export class DataController implements ApiService {
   @action public reorderTabs(data: {newIndex: number, oldIndex: number}) {
     this.tabs = arrayMove(this.tabs, data.oldIndex, data.newIndex);
     this.saveTabs();
+  }
+
+  // thinking
+  public entity(uid: number) : Entity {
+    if (!(uid in this.dataStore.tabs.entity)) {
+      throw new Error('Not loaded!');
+    }
+    return this.dataStore.tabs.entity[uid].value.value.entity;
   }
 }

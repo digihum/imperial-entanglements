@@ -130,7 +130,7 @@ export class EntityEditorWorkspace extends React.Component<EntityEditorProps, En
 
     public createNewRecord() {
 
-        const entity = this.props.dataStore!.dataStore.tabs.entity.get('entity-' + this.props.id).value.entity;
+        const entity = this.props.dataStore!.dataStore.tabs.entity[this.props.id].value.entity;
 
         const entityType = this.props.dataStore!.dataStore.all.entity_type.value.find((t) => t.uid === entity.entityType);
 
@@ -163,7 +163,7 @@ export class EntityEditorWorkspace extends React.Component<EntityEditorProps, En
 
     public clone() {
 
-      const entity = this.props.dataStore!.dataStore.tabs.entity.get('entity-' + this.props.id).value.entity;
+      const entity = this.props.dataStore!.dataStore.tabs.entity[this.props.id].value.entity;
 
       this.props.dataStore!.postItem(Entity, AppUrls.entity,
           Serializer.fromJson(Entity, {
@@ -174,7 +174,7 @@ export class EntityEditorWorkspace extends React.Component<EntityEditorProps, En
 
     public render() {
 
-        const entity = this.props.dataStore!.dataStore.tabs.entity.get('entity-' + this.props.id).value.entity;
+        const entity = this.props.dataStore!.dataStore.tabs.entity[this.props.id].value.entity;
         const potentialParents = this.props.dataStore!.dataStore.all.entity.value;
 
         let parentName = '';

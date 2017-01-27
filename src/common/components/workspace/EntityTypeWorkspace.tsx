@@ -53,7 +53,7 @@ export class EntityTypeWorkspace extends React.Component<EntityTypeWorkspaceProp
     }
 
     public update(data: any) {
-        const entityType = this.props.dataStore!.dataStore.tabs.entity_type.get('entity_type-' + this.props.id).value;
+        const entityType = this.props.dataStore!.dataStore.tabs.entity_type[this.props.id].value;
         this.props.dataStore!.patchItem(EntityType, AppUrls.entity_type, this.props.id, data)
         .then(() => this.setState({ entityType: Object.assign({}, entityType, data)}));
     }
@@ -61,7 +61,7 @@ export class EntityTypeWorkspace extends React.Component<EntityTypeWorkspaceProp
 
     public copy() {
 
-        const entityType = this.props.dataStore!.dataStore.tabs.entity_type.get('entity_type-' + this.props.id).value;
+        const entityType = this.props.dataStore!.dataStore.tabs.entity_type[this.props.id].value;
 
         const newEntityType = Serializer.fromJson(EntityType,
             Object.assign({}, Serializer.toJson(entityType), { name: 'Copy of ' + entityType.label}));
@@ -129,7 +129,7 @@ export class EntityTypeWorkspace extends React.Component<EntityTypeWorkspaceProp
 
     public render() {
 
-        const entityType = this.props.dataStore!.dataStore.tabs.entity_type.get('entity_type-' + this.props.id).value;
+        const entityType = this.props.dataStore!.dataStore.tabs.entity_type[this.props.id].value;
         const potentialParents = this.props.dataStore!.dataStore.all.entity_type.value;
 
 
