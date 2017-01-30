@@ -12,7 +12,6 @@ import { SourceList } from '../object_list/SourceList';
 import { EntityTypeList } from '../object_list/EntityTypeList';
 
 interface ObjectListWorkspaceProps {
-    name: string;
     listType: string;
     query: any;
 }

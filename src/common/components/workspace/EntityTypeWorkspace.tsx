@@ -141,6 +141,8 @@ export class EntityTypeWorkspace extends React.Component<EntityTypeWorkspaceProp
             }
         }
 
+        const potentialParentOptions : ComboDropdownOption<number>[] = potentialParents.map((par) => ({ key: par.label, value: par.uid}));
+
         return (
             <div className='workspace-editor'>
 
@@ -203,7 +205,7 @@ export class EntityTypeWorkspace extends React.Component<EntityTypeWorkspaceProp
                             onChange={(value) => this.update({'parent': value === null ? null : value.value})} >
                             <EditableComboDropdown
                               comboSettings={{
-                               options: potentialParents.map((par) => ({ key: par.label, value: par.uid})),
+                               options: potentialParentOptions,
                                 typeName: 'EntityType'
                               }}
                             />

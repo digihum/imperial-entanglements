@@ -174,7 +174,7 @@ export const RecordRow = inject('dataStore', 'modalStore')(observer((props: Reco
             </td>
             <td className='record-row-item buttons'>
                 <button><i className='fa fa-pencil-square-o' title='Edit' onClick={props.setEdit} aria-hidden='true'></i></button>
-                <button><i className='fa fa-trash' aria-hidden='true' onClick={props.onDelete!}></i></button>
+                <button><i className='fa fa-trash' aria-hidden='true' onClick={() => props.onDelete!(props.value!)}></i></button>
             </td>
         </tr>
         );

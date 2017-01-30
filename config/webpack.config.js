@@ -12,6 +12,14 @@ const typescriptLoaderConfig = {
     ]
 };
 
+function isVendor(module, count) {
+  const userRequest = module.userRequest;
+
+  // You can perform other similar checks here too.
+  // Now we check just node_modules.
+  return userRequest && userRequest.indexOf('node_modules') >= 0;
+}
+
 const resolve = {
     extensions: ['.js', '.ts', '.tsx'],
     modules: ["node_modules", "src"],
@@ -51,7 +59,7 @@ var frontendConfig = {
     entry: './src/client/app.frontend',
     output: {  
         path: path.join(__dirname, '..', 'dist', 'server', 'static'),                 // output folder
-        filename: './app.frontend.dist.js',    // file name
+        filename: './[name].dist.js',    // file name
     },
     resolve: resolve,
     module: {
@@ -62,7 +70,13 @@ var frontendConfig = {
         "react": "React",
         "react-dom": "ReactDOM",
         "lodash": "_"
-    }
+    },
+    plugins: [
+        new webpack.optimize.CommonsChunkPlugin({
+            name: 'vendor',
+            minChunks: isVendor,
+        })
+    ]
 }
 
 var backendConfig = {

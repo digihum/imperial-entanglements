@@ -1,146 +1,13 @@
-/******/ (function(modules) { // webpackBootstrap
-/******/ 	// The module cache
-/******/ 	var installedModules = {};
-/******/
-/******/ 	// The require function
-/******/ 	function __webpack_require__(moduleId) {
-/******/
-/******/ 		// Check if module is in cache
-/******/ 		if(installedModules[moduleId])
-/******/ 			return installedModules[moduleId].exports;
-/******/
-/******/ 		// Create a new module (and put it into the cache)
-/******/ 		var module = installedModules[moduleId] = {
-/******/ 			i: moduleId,
-/******/ 			l: false,
-/******/ 			exports: {}
-/******/ 		};
-/******/
-/******/ 		// Execute the module function
-/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
-/******/
-/******/ 		// Flag the module as loaded
-/******/ 		module.l = true;
-/******/
-/******/ 		// Return the exports of the module
-/******/ 		return module.exports;
-/******/ 	}
-/******/
-/******/
-/******/ 	// expose the modules object (__webpack_modules__)
-/******/ 	__webpack_require__.m = modules;
-/******/
-/******/ 	// expose the module cache
-/******/ 	__webpack_require__.c = installedModules;
-/******/
-/******/ 	// identity function for calling harmony imports with the correct context
-/******/ 	__webpack_require__.i = function(value) { return value; };
-/******/
-/******/ 	// define getter function for harmony exports
-/******/ 	__webpack_require__.d = function(exports, name, getter) {
-/******/ 		if(!__webpack_require__.o(exports, name)) {
-/******/ 			Object.defineProperty(exports, name, {
-/******/ 				configurable: false,
-/******/ 				enumerable: true,
-/******/ 				get: getter
-/******/ 			});
-/******/ 		}
-/******/ 	};
-/******/
-/******/ 	// getDefaultExport function for compatibility with non-harmony modules
-/******/ 	__webpack_require__.n = function(module) {
-/******/ 		var getter = module && module.__esModule ?
-/******/ 			function getDefault() { return module['default']; } :
-/******/ 			function getModuleExports() { return module; };
-/******/ 		__webpack_require__.d(getter, 'a', getter);
-/******/ 		return getter;
-/******/ 	};
-/******/
-/******/ 	// Object.prototype.hasOwnProperty.call
-/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
-/******/
-/******/ 	// __webpack_public_path__
-/******/ 	__webpack_require__.p = "";
-/******/
-/******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 108);
-/******/ })
-/************************************************************************/
-/******/ ([
-/* 0 */
+webpackJsonp([0],{
+
+/***/ 1:
 /***/ (function(module, exports) {
 
-module.exports = require("react");
+module.exports = React;
 
 /***/ }),
-/* 1 */
-/***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-/**
- * @fileOverview Collated list of data models
- * @author <a href='mailto:tim.hollies@warwick.ac.uk'>Tim Hollies</a>
- * @version 0.0.1
- */
-
-var Element_1 = __webpack_require__(37);
-exports.Element = Element_1.Element;
-var ElementSet_1 = __webpack_require__(38);
-exports.ElementSet = ElementSet_1.ElementSet;
-var SourceElement_1 = __webpack_require__(45);
-exports.SourceElement = SourceElement_1.SourceElement;
-var Entity_1 = __webpack_require__(39);
-exports.Entity = Entity_1.Entity;
-var EntityType_1 = __webpack_require__(40);
-exports.EntityType = EntityType_1.EntityType;
-var Predicate_1 = __webpack_require__(41);
-exports.Predicate = Predicate_1.Predicate;
-var Record_1 = __webpack_require__(42);
-exports.Record = Record_1.Record;
-var Source_1 = __webpack_require__(44);
-exports.Source = Source_1.Source;
-var Serializer_1 = __webpack_require__(43);
-exports.Serializer = Serializer_1.Serializer;
-//# sourceMappingURL=index.js.map
-
-/***/ }),
-/* 2 */
-/***/ (function(module, exports) {
-
-module.exports = require("mobx-react");
-
-/***/ }),
-/* 3 */
-/***/ (function(module, exports) {
-
-module.exports = require("lodash");
-
-/***/ }),
-/* 4 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview <Description Missing>
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.2.0
- */
-
-const itemTypes_1 = __webpack_require__(21);
-exports.AppUrls = {
-    element_set: itemTypes_1.itemTypes.element_set.machineName,
-    record: itemTypes_1.itemTypes.record.machineName,
-    entity: itemTypes_1.itemTypes.entity.machineName,
-    entity_type: itemTypes_1.itemTypes.entity_type.machineName,
-    predicate: itemTypes_1.itemTypes.predicate.machineName,
-    source: itemTypes_1.itemTypes.source.machineName,
-    source_element: itemTypes_1.itemTypes.source_element.machineName,
-    element: 'element'
-};
-
-
-/***/ }),
-/* 5 */
+/***/ 10:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -150,169 +17,9 @@ exports.AppUrls = {
  * @version 0.2.0
  */
 
-const React = __webpack_require__(0);
-const mobx_react_1 = __webpack_require__(2);
-exports.AddTabButton = mobx_react_1.inject('dataStore')(mobx_react_1.observer((props, context) => {
-    if (props.dataStore.dataStore.tabs[props.tabType] !== undefined
-        && props.uid in props.dataStore.dataStore.tabs[props.tabType]) {
-        return (React.createElement("i", { className: 'fa fa-folder-open-o add button', title: 'Open item', onClick: () => context.router.transitionTo(`/edit/${props.tabType}/${props.uid}`) }, " "));
-    }
-    return (React.createElement("i", { className: 'icon-list-add add button', title: 'Add to list', onClick: () => props.dataStore.createTab(props.tabType, props.uid, 'item', props.data) }));
-}));
-exports.AddTabButton.wrappedComponent.contextTypes = {
-    router: React.PropTypes.object.isRequired
-};
-
-
-/***/ }),
-/* 6 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview Abstract interface for sources
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.2.0
- */
-
-class UnprocessableEntity extends Error {
-    constructor(message, data) {
-        super(message);
-        this.code = 422;
-        this.data = data;
-    }
-}
-exports.UnprocessableEntity = UnprocessableEntity;
-class KeyNotFoundException extends Error {
-    constructor(message = 'Could not find the given key') {
-        super(message);
-        this.code = 404;
-    }
-}
-exports.KeyNotFoundException = KeyNotFoundException;
-class ReadOnlyResourceException extends Error {
-    constructor(message = 'Attempt to update a readonly resource') {
-        super(message);
-        this.code = 400;
-    }
-}
-exports.ReadOnlyResourceException = ReadOnlyResourceException;
-class CollectionNotFoundException extends Error {
-    constructor(message = 'Could not find the given collection') {
-        super(message);
-        this.data = message;
-    }
-}
-exports.CollectionNotFoundException = CollectionNotFoundException;
-class OperationNotPermittedException extends Error {
-    constructor(data) {
-        super(data.message);
-        this.code = 422;
-        this.data = data;
-    }
-}
-exports.OperationNotPermittedException = OperationNotPermittedException;
-class InvalidUpdateException extends Error {
-    constructor(message) {
-        super(message);
-        this.code = 400;
-    }
-}
-exports.InvalidUpdateException = InvalidUpdateException;
-class DatabaseIntegrityError extends Error {
-    constructor(message = `A database integrity constraint has been broken - your change has not been
- submitted. This is likely due to a change which violates the property types model; please check the types of
- what you are trying to do. Please also contact the Digital Humanities team, this error should not occur.`) {
-        super(message);
-        this.code = 500;
-    }
-}
-exports.DatabaseIntegrityError = DatabaseIntegrityError;
-exports.Exceptions = {
-    UnprocessableEntity,
-    KeyNotFoundException,
-    CollectionNotFoundException,
-    OperationNotPermittedException,
-    DatabaseIntegrityError,
-    InvalidUpdateException,
-    ReadOnlyResourceException
-};
-
-
-/***/ }),
-/* 7 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview Generic controller containing logic common to most controller classes
- * @author <a href='mailto:tim.hollies@warwick.ac.uk'>Tim Hollies</a>
- * @version 0.2.0
- */
-
-const Exceptions_1 = __webpack_require__(6);
-class GenericController {
-    constructor(db, table, readTable) {
-        this.db = db;
-        this.tableName = table;
-        this.readTableName = readTable === undefined ? table : readTable;
-    }
-    getItemJson(obj, uid) {
-        if (typeof (uid) !== 'number') {
-            throw new Error('Expected single column identifier');
-        }
-        return this.db.loadItem(this.readTableName, uid)
-            .then((data) => this.fromSchema(data));
-    }
-    getCollectionJson(obj, params = {}) {
-        return this.db.loadCollection(this.readTableName, params)
-            .then((data) => data.map((datum) => this.fromSchema(datum)));
-    }
-    postItem(obj, data, params) {
-        return this.db.createItem(this.tableName, this.toSchema(data));
-    }
-    putItem(obj, uid, data) {
-        if (typeof (uid) !== 'number') {
-            throw new Error('Expected single column identifier');
-        }
-        return this.db.updateItem(this.tableName, this.toSchema(data));
-    }
-    patchItem(obj, uid, data) {
-        if (typeof (uid) !== 'number') {
-            throw new Error('Expected single column identifier');
-        }
-        if (data.uid !== undefined) {
-            throw new Exceptions_1.InvalidUpdateException('Cannot patch uid');
-        }
-        return this.db.loadItem(this.tableName, uid)
-            .then((originalData) => {
-            return this.db.updateItem(this.tableName, this.toSchema(Object.assign(this.fromSchema(originalData), data)));
-        });
-    }
-    deleteItem(obj, uid) {
-        if (typeof (uid) !== 'number') {
-            throw new Error('Expected single column identifier');
-        }
-        return this.db.deleteItem(this.tableName, uid);
-    }
-}
-exports.GenericController = GenericController;
-
-
-/***/ }),
-/* 8 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview Sidebar for editor
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.2.0
- */
-
-const React = __webpack_require__(0);
-const lunr = __webpack_require__(106);
-const lodash_1 = __webpack_require__(3);
+const React = __webpack_require__(1);
+const lunr = __webpack_require__(311);
+const lodash_1 = __webpack_require__(6);
 class ComboDropdown extends React.Component {
     constructor() {
         super();
@@ -529,13 +236,8 @@ exports.StringComboDropdown = StringComboDropdown;
 
 
 /***/ }),
-/* 9 */
-/***/ (function(module, exports) {
 
-module.exports = require("react-router");
-
-/***/ }),
-/* 10 */
+/***/ 15:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -545,7 +247,7 @@ module.exports = require("react-router");
  * @version 0.2.0
  */
 
-const React = __webpack_require__(0);
+const React = __webpack_require__(1);
 class Overlay extends React.Component {
     render() {
         return (React.createElement("div", { className: 'full-page-overlay' },
@@ -557,7 +259,8 @@ exports.Overlay = Overlay;
 
 
 /***/ }),
-/* 11 */
+
+/***/ 17:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -567,7 +270,7 @@ exports.Overlay = Overlay;
  * @version 0.2.0
  */
 
-const React = __webpack_require__(0);
+const React = __webpack_require__(1);
 class EditableFieldComponent extends React.Component {
     constructor() {
         super();
@@ -614,7 +317,15 @@ exports.EditableFieldComponent = EditableFieldComponent;
 
 
 /***/ }),
-/* 12 */
+
+/***/ 18:
+/***/ (function(module, exports) {
+
+module.exports = ReactDOM;
+
+/***/ }),
+
+/***/ 185:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -624,773 +335,8 @@ exports.EditableFieldComponent = EditableFieldComponent;
  * @version 0.2.0
  */
 
-const React = __webpack_require__(0);
-var EditableFieldComponent_1 = __webpack_require__(11);
-exports.EditableFieldComponent = EditableFieldComponent_1.EditableFieldComponent;
-exports.EditableHeader = (props) => {
-    if (!props.edit || props.value == null) {
-        return (React.createElement("h2", null,
-            props.value,
-            React.createElement("sup", null,
-                React.createElement("i", { className: 'fa fa-pencil-square-o', title: 'Edit', "aria-hidden": 'true', onClick: props.setEdit }))));
-    }
-    else {
-        return (React.createElement("span", null,
-            React.createElement("input", { type: 'text', value: props.value, className: 'text-edit-header', onChange: (e) => props.onChange(e.target.value) }),
-            React.createElement("button", { onClick: props.acceptChanges },
-                React.createElement("i", { className: 'fa fa-check', "aria-hidden": 'true' })),
-            React.createElement("button", { onClick: props.cancelChanges },
-                React.createElement("i", { className: 'fa fa-times', "aria-hidden": 'true' }))));
-    }
-};
-
-
-/***/ }),
-/* 13 */
-/***/ (function(module, exports) {
-
-module.exports = require("mousetrap");
-
-/***/ }),
-/* 14 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview Sidebar for editor
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.2.0
- */
-
-const React = __webpack_require__(0);
-exports.SearchBar = (props) => {
-    const filterFunc = (s) => {
-        return (a) => {
-            if (s.length === 0) {
-                return true;
-            }
-            return props.getValue(a).toLowerCase().indexOf(s.toLowerCase()) !== -1;
-        };
-    };
-    return (React.createElement("div", null,
-        React.createElement("div", { className: 'input-addon-formgroup' },
-            React.createElement("span", { className: 'input-addon-icon' },
-                React.createElement("i", { className: 'fa fa-search fa-fw' })),
-            React.createElement("input", { type: 'text', className: 'form-control with-addon', onChange: (e) => props.setFilterFunc(filterFunc(e.target.value)) }))));
-};
-
-
-/***/ }),
-/* 15 */
-/***/ (function(module, exports) {
-
-module.exports = require("moment");
-
-/***/ }),
-/* 16 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview Controller for records
- * @author <a href='mailto:tim.hollies@warwick.ac.uk'>Tim Hollies</a>
- * @version 0.2.0
- */
-
-const falcon_core_1 = __webpack_require__(1);
-const GenericController_1 = __webpack_require__(7);
-const Exceptions_1 = __webpack_require__(6);
-const lodash_1 = __webpack_require__(3);
-class RecordController extends GenericController_1.GenericController {
-    constructor(db) {
-        super(db, 'records');
-    }
-    static toSchema(data) {
-        const schemaOutput = lodash_1.omit(falcon_core_1.Serializer.toJson(data), 'value', 'valueType', 'creationTimestamp', 'label', 'lastmodifiedTimestamp');
-        schemaOutput.value_type = data.valueType;
-        if (data.valueType !== undefined && data.valueType !== 'source') {
-            schemaOutput['value_' + data.valueType] = data.value;
-        }
-        return Object.assign({}, schemaOutput, {
-            creation_timestamp: data.creationTimestamp,
-            lastmodified_timestamp: data.lastmodifiedTimestamp
-        });
-    }
-    static fromSchema(data) {
-        data.valueType = data.value_type;
-        switch (data.value_type) {
-            case 'entity':
-                data.value = data.value_entity;
-                break;
-            case 'string':
-                data.value = data.value_string;
-                break;
-            case 'date':
-                data.value = data.value_date;
-                break;
-            case 'integer':
-                data.value = data.value_integer;
-                break;
-            case 'point':
-                data.value = data.value_point;
-                break;
-            case 'region':
-                data.value = data.value_region;
-                break;
-            case 'source':
-                data.value = data.source;
-                break;
-            default:
-                data.value = null;
-        }
-        return Object.assign(Object.create(falcon_core_1.Record.prototype), data);
-    }
-    toSchema(data) {
-        return RecordController.toSchema(data);
-    }
-    fromSchema(data) {
-        return RecordController.fromSchema(data);
-    }
-    postItem(obj, data, params) {
-        // predicate domain must equal value_type
-        return this.db.select('predicates', ['range_type']).where({ uid: data.predicate })
-            .then(([predicate]) => {
-            if (data.valueType === predicate.range_type) {
-                //TODO: still need to check entity type constraints
-                return super.postItem(obj, data, params);
-            }
-            throw new Exceptions_1.OperationNotPermittedException({
-                message: 'Attempted to add a record with an incorrect type!',
-                data: Promise.resolve({})
-            });
-        });
-    }
-    putItem(obj, uid, data) {
-        //TODO: what happens if we only update the value - and do not send the valueType again?
-        return this.db.select('predicates', ['range_type']).where({ uid: data.predicate })
-            .then(([predicate]) => {
-            if (data.valueType === predicate.range_type) {
-                //TODO: still need to check entity type constraints
-                return super.putItem(obj, uid, data);
-            }
-            throw new Exceptions_1.OperationNotPermittedException({
-                message: 'Attempted to add a record with an incorrect type!',
-                data: Promise.resolve({})
-            });
-        });
-    }
-    patchItem(obj, uid, data) {
-        return this.db.select('predicates', ['range_type']).where({ uid: data.predicate })
-            .then(([predicate]) => {
-            if (data.valueType === predicate.range_type) {
-                //TODO: still need to check entity type constraints
-                return super.patchItem(obj, uid, data);
-            }
-            throw new Exceptions_1.OperationNotPermittedException({
-                message: 'Attempted to add a record with an incorrect type!',
-                data: Promise.resolve({})
-            });
-        });
-    }
-}
-exports.RecordController = RecordController;
-
-
-/***/ }),
-/* 17 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview <Description Missing>
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.2.0
- */
-
-var __assign = (this && this.__assign) || Object.assign || function(t) {
-    for (var s, i = 1, n = arguments.length; i < n; i++) {
-        s = arguments[i];
-        for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
-            t[p] = s[p];
-    }
-    return t;
-};
-const React = __webpack_require__(0);
-var EditableFieldComponent_1 = __webpack_require__(11);
-exports.EditableFieldComponent = EditableFieldComponent_1.EditableFieldComponent;
-const ComboDropdown_1 = __webpack_require__(8);
-function EditableComboDropdown(props) {
-    if (props.edit) {
-        return (React.createElement("div", null,
-            React.createElement(ComboDropdown_1.NumberComboDropdown, __assign({}, props.comboSettings, { value: props.value, setValue: props.onChange, allowNew: false, createNewValue: () => { } })),
-            React.createElement("button", null,
-                React.createElement("i", { className: 'fa fa-check', onClick: props.acceptChanges, "aria-hidden": 'true' })),
-            React.createElement("button", null,
-                React.createElement("i", { className: 'fa fa-times', "aria-hidden": 'true', onClick: props.cancelChanges }))));
-    }
-    else {
-        return (React.createElement("div", null,
-            props.value !== null && props.value.key.length > 0 ? props.value.key
-                : (React.createElement("em", null, "No value")),
-            React.createElement("sup", null,
-                React.createElement("i", { className: 'fa fa-pencil-square-o', title: 'Edit', "aria-hidden": 'true', onClick: props.setEdit }))));
-    }
-}
-exports.EditableComboDropdown = EditableComboDropdown;
-;
-
-
-/***/ }),
-/* 18 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview Sidebar for editor
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.2.0
- */
-
-const React = __webpack_require__(0);
-const mousetrap = __webpack_require__(13);
-class SameAsEditor extends React.Component {
-    constructor(props) {
-        super();
-        this.state = {
-            temporaryValue: '',
-            urls: props.value === null || props.value.length === 0 ? [] : props.value.split(',')
-        };
-    }
-    componentWillReceiveProps(props) {
-        this.setState({
-            temporaryValue: '',
-            urls: props.value === null || props.value.length === 0 ? [] : props.value.split(',')
-        });
-    }
-    addItemToList() {
-        if (this.state.temporaryValue.length === 0) {
-            return;
-        }
-        this.setState({ urls: this.state.urls.concat([this.state.temporaryValue]), temporaryValue: '' }, () => this.props.onChange(this.state.urls.join(',')));
-    }
-    removeItemFromList(itemId) {
-        this.setState({
-            urls: this.state.urls.filter((val, i) => i !== itemId)
-        }, () => this.props.onChange(this.state.urls.join(',')));
-    }
-    setupKeyboardShortcuts(val) {
-        if (val !== null) {
-            val.focus();
-            this.keyboardShortcuts = new mousetrap(val);
-            this.keyboardShortcuts.bind('return', this.addItemToList.bind(this));
-            this.keyboardShortcuts.bind('escape', this.props.cancelChanges);
-            this.keyboardShortcuts.bind('ctrl+s', (e) => {
-                if (e.preventDefault) {
-                    e.preventDefault();
-                }
-                else {
-                    // internet explorer
-                    e.returnValue = false;
-                }
-                this.props.acceptChanges();
-            });
-        }
-        else {
-            this.keyboardShortcuts.unbind('return');
-            this.keyboardShortcuts.unbind('escape');
-            this.keyboardShortcuts.unbind('ctrl+s');
-        }
-    }
-    render() {
-        return (React.createElement("div", { className: 'same-as-box' },
-            React.createElement("label", { className: 'small' },
-                "Same As ",
-                !this.props.edit ? (React.createElement("sup", null,
-                    React.createElement("i", { className: 'fa fa-pencil-square-o', title: 'Edit', "aria-hidden": 'true', onClick: this.props.setEdit }))) : null),
-            this.props.edit ? (React.createElement("div", { className: 'edit-group' },
-                React.createElement("button", { onClick: this.props.acceptChanges },
-                    React.createElement("i", { className: 'fa fa-check', "aria-hidden": 'true' })),
-                React.createElement("button", { onClick: this.props.cancelChanges },
-                    React.createElement("i", { className: 'fa fa-times', "aria-hidden": 'true' })),
-                React.createElement("div", { className: 'input-addon-formgroup' },
-                    React.createElement("input", { type: 'text', value: this.state.temporaryValue, ref: this.setupKeyboardShortcuts.bind(this), onChange: (e) => this.setState({ temporaryValue: e.target.value }), className: 'form-control with-addon' }),
-                    React.createElement("span", { className: 'input-addon-icon right button', onClick: this.addItemToList.bind(this) },
-                        React.createElement("i", { className: 'fa fa-plus' }))))) : null,
-            React.createElement("ul", { className: 'same-as-list' }, this.state.urls.map((url, i) => (React.createElement("li", { key: `li-${url}` },
-                React.createElement("a", { target: '_blank', href: url }, url),
-                " ",
-                this.props.edit ? (React.createElement("i", { className: 'fa fa-times close-button', onClick: this.removeItemFromList.bind(this, i) })) : null))))));
-    }
-}
-exports.SameAsEditor = SameAsEditor;
-
-
-/***/ }),
-/* 19 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview <Description Missing>
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.2.0
- */
-
-exports.findParentTree = (uid, data, ancestors = []) => {
-    const current = data.find((datum) => datum.uid === uid);
-    if (current === undefined) {
-        console.warn('Couldn\'t find parent');
-        return ancestors;
-    }
-    else {
-        if (current.parent === null || current.uid === null) {
-            if (current.uid === null) {
-                console.warn('Found entity will null uid');
-                return ancestors;
-            }
-            else {
-                return ancestors.concat([current.uid]);
-            }
-        }
-        else {
-            return exports.findParentTree(current.parent, data, ancestors.concat([current.uid]));
-        }
-    }
-};
-
-
-/***/ }),
-/* 20 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview <Description Missing>
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.2.0
- */
-
-const moment = __webpack_require__(15);
-exports.formatDate = (str) => {
-    if (str === null || str.length === 0) {
-        return '';
-    }
-    const modifier = {
-        '=': '',
-        '>': 'After ',
-        '<': 'Before '
-    }[str[0]];
-    const year = str.substr(1, 4);
-    const rawMonth = parseInt(str.substr(5, 2)) - 1;
-    const month = rawMonth === -1 || isNaN(rawMonth) ? 'Unknown' : moment.months()[rawMonth];
-    const rawDay = parseInt(str.substr(7, 2));
-    const day = rawDay > 0 ? rawDay : '';
-    return `${modifier} ${day} ${month} ${year}`;
-};
-
-
-/***/ }),
-/* 21 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview <Description Missing>
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.2.0
- */
-
-const falcon_core_1 = __webpack_require__(1);
-const simpleKey = (raw) => {
-    return parseInt(raw[0]);
-};
-exports.itemTypes = {
-    element_set: {
-        machineName: 'element_set',
-        name: 'Element Set',
-        plural: 'Element Sets',
-        workspace: '',
-        buildKey: simpleKey,
-        item: falcon_core_1.ElementSet
-    },
-    element: {
-        machineName: 'element',
-        name: 'Element',
-        plural: 'Elements',
-        workspace: '',
-        buildKey: simpleKey,
-        item: falcon_core_1.Element
-    },
-    record: {
-        machineName: 'record',
-        name: 'Record',
-        plural: 'Records',
-        workspace: '',
-        buildKey: simpleKey,
-        item: falcon_core_1.Record
-    },
-    entity: {
-        machineName: 'entity',
-        name: 'Entity',
-        plural: 'Entities',
-        workspace: 'entity',
-        buildKey: simpleKey,
-        item: falcon_core_1.Entity
-    },
-    entity_type: {
-        machineName: 'entity_type',
-        name: 'Entity Type',
-        plural: 'Entity Types',
-        workspace: 'entity_type',
-        buildKey: simpleKey,
-        item: falcon_core_1.EntityType
-    },
-    predicate: {
-        machineName: 'predicate',
-        name: 'Property',
-        plural: 'Properties',
-        workspace: 'predicate',
-        buildKey: simpleKey,
-        item: falcon_core_1.Predicate
-    },
-    source: {
-        machineName: 'source',
-        name: 'Source',
-        plural: 'Sources',
-        workspace: 'source',
-        buildKey: simpleKey,
-        item: falcon_core_1.Source
-    },
-    source_element: {
-        machineName: 'source_element',
-        name: 'Source Element',
-        plural: 'Source Elements',
-        workspace: '',
-        buildKey: (raw) => ({
-            order: ['source', 'element'],
-            values: {
-                source: parseInt(raw[0]),
-                element: parseInt(raw[1])
-            }
-        }),
-        item: falcon_core_1.SourceElement
-    }
-};
-
-
-/***/ }),
-/* 22 */
-/***/ (function(module, exports) {
-
-module.exports = require("graphql");
-
-/***/ }),
-/* 23 */
-/***/ (function(module, exports) {
-
-module.exports = require("react-sortable-hoc");
-
-/***/ }),
-/* 24 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview Controller for entities
- * @author <a href='mailto:tim.hollies@warwick.ac.uk'>Tim Hollies</a>
- * @version 0.2.0
- */
-
-var __assign = (this && this.__assign) || Object.assign || function(t) {
-    for (var s, i = 1, n = arguments.length; i < n; i++) {
-        s = arguments[i];
-        for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
-            t[p] = s[p];
-    }
-    return t;
-};
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
-const falcon_core_1 = __webpack_require__(1);
-const GenericController_1 = __webpack_require__(7);
-const Exceptions_1 = __webpack_require__(6);
-const lodash_1 = __webpack_require__(3);
-class EntityController extends GenericController_1.GenericController {
-    constructor(db) {
-        super(db, 'entities');
-    }
-    static fromSchema(data) {
-        return Object.assign(Object.create(falcon_core_1.Entity.prototype), {
-            entityType: data.type,
-            uid: data.uid,
-            label: data.label,
-            parent: data.parent
-        });
-    }
-    static toSchema(data) {
-        const allowedKeys = new Set(['uid', 'label', 'entityType', 'parent', 'creator', 'creationTimestamp', 'lastmodifiedTimestamp']);
-        const extraKeys = Object.keys(data).filter((a) => !allowedKeys.has(a));
-        if (extraKeys.length > 0) {
-            throw new Exceptions_1.InvalidUpdateException('Unknown keys: ' + extraKeys.join(', '));
-        }
-        return Object.assign(lodash_1.omit(falcon_core_1.Serializer.toJson(data), 'entityType', 'creationTimestamp', 'lastmodifiedTimestamp'), {
-            type: data.entityType,
-            creation_timestamp: data.creationTimestamp,
-            lastmodified_timestamp: data.lastmodifiedTimestamp
-        });
-    }
-    fromSchema(data) {
-        return EntityController.fromSchema(data);
-    }
-    toSchema(data) {
-        return EntityController.toSchema(data);
-    }
-    getCollectionJson(obj, params = {}) {
-        const _super = name => super[name];
-        return __awaiter(this, void 0, void 0, function* () {
-            if (params.type !== undefined) {
-                const ancestorTypes = yield this.db.getChildrenOf(lodash_1.isArray(params.type) ? params.type[0] : params.type, 'entity_types');
-                return this.db.select('entities')
-                    .whereIn('type', ancestorTypes)
-                    .then((rawEntities) => rawEntities.map((entity) => this.fromSchema(entity)));
-            }
-            else {
-                return _super("getCollectionJson").call(this, obj, params);
-            }
-        });
-    }
-    postItem(obj, data, params) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const result = yield this.db.createItem(this.tableName, this.toSchema(data));
-            if (params.clone !== undefined) {
-                const recordsToClone = yield this.db.query()('records').where({ entity: params.clone })
-                    .then((records) => records.map((record) => (__assign({}, record, { entity: result[0], uid: undefined }))));
-                yield this.db.query()('records').insert(recordsToClone).then(() => { });
-            }
-            return result;
-        });
-    }
-    deleteItem(obj, uid) {
-        return __awaiter(this, void 0, void 0, function* () {
-            // check if this entity is the parent of another entity or if it has any relationships
-            // pointing towards it.
-            const [entities, records] = yield Promise.all([
-                this.db.select(this.tableName).where('parent', '=', uid),
-                this.db.select('records').where('value_entity', '=', uid)
-            ]);
-            if (entities.length + records.length === 0) {
-                return this.db.deleteItem(this.tableName, uid);
-            }
-            else {
-                throw new Exceptions_1.OperationNotPermittedException({
-                    message: 'The operation could not be completed as the entity is referenced in other sources',
-                    data: Promise.resolve({
-                        entity: entities,
-                        record: records
-                    })
-                });
-            }
-        });
-    }
-}
-exports.EntityController = EntityController;
-
-
-/***/ }),
-/* 25 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview Controller for predicates
- * @author <a href='mailto:tim.hollies@warwick.ac.uk'>Tim Hollies</a>
- * @version 0.2.0
- */
-
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
-const falcon_core_1 = __webpack_require__(1);
-const GenericController_1 = __webpack_require__(7);
-const Exceptions_1 = __webpack_require__(6);
-const RecordController_1 = __webpack_require__(16);
-const lodash_1 = __webpack_require__(3);
-class PredicateController extends GenericController_1.GenericController {
-    constructor(db) {
-        super(db, 'predicates', 'predicate_complete');
-    }
-    static toSchema(data) {
-        const allowedKeys = new Set(['uid', 'uses', 'label', 'domain', 'range',
-            'description', 'rangeIsReference', 'sameAs', 'creator', 'creationTimestamp', 'lastmodifiedTimestamp']);
-        const extraKeys = Object.keys(data).filter((a) => !allowedKeys.has(a));
-        if (extraKeys.length > 0) {
-            throw new Exceptions_1.InvalidUpdateException('Unknown keys: ' + extraKeys.join(', '));
-        }
-        const out = Object.assign(lodash_1.omit(falcon_core_1.Serializer.toJson(data), 'range', 'rangeIsReference', 'sameAs', 'creationTimestamp', 'lastmodifiedTimestamp', 'uses'), {
-            same_as: data.sameAs,
-            range_type: data.rangeIsReference ? 'entity' : data.range,
-            creation_timestamp: data.creationTimestamp,
-            lastmodified_timestamp: data.lastmodifiedTimestamp
-        });
-        if (data.rangeIsReference) {
-            out['range_ref'] = data.range;
-        }
-        else {
-            out['range_ref'] = null;
-        }
-        return out;
-    }
-    static fromSchema(data) {
-        if (data.range_type === 'entity') {
-            data.range = data.range_ref;
-            data.rangeIsReference = true;
-        }
-        else {
-            data.range = data.range_type;
-            data.rangeIsReference = false;
-        }
-        if (data.uses === null) {
-            data.uses = 0;
-        }
-        return Object.assign(Object.create(falcon_core_1.Predicate.prototype), {
-            'uid': data.uid,
-            'sameAs': data.same_as,
-            'label': data.label,
-            'lastmodifiedTimestamp': data.lastmodified_timestamp,
-            'creationTimestamp': data.creation_timestamp,
-            'rangeIsReference': data.rangeIsReference,
-            'range': data.range,
-            'domain': data.domain,
-            'uses': data.uses,
-            'description': data.description
-        });
-    }
-    toSchema(data) {
-        return PredicateController.toSchema(data);
-    }
-    fromSchema(data) {
-        return PredicateController.fromSchema(data);
-    }
-    getCollectionJson(obj, params = {}) {
-        const _super = name => super[name];
-        return __awaiter(this, void 0, void 0, function* () {
-            if (params.domain !== undefined) {
-                //TODO: this check should be unecessery
-                const ancestorIds = yield this.db.getAncestorsOf(lodash_1.isArray(params.domain) ? params.domain[0] : params.domain, 'entity_types');
-                return this.db.select(this.readTableName).whereIn('domain', ancestorIds.concat([params.domain[0]]))
-                    .then((results) => results.map((result) => this.fromSchema(result)));
-            }
-            else {
-                return _super("getCollectionJson").call(this, obj, params);
-            }
-        });
-    }
-    putItem(obj, uid, data) {
-        if (typeof (uid) !== 'number') {
-            throw new Error('Expected single column identifier');
-        }
-        return this.db.updateItem(this.tableName, falcon_core_1.Serializer.toJson(data));
-    }
-    // public patchItem(obj: { new(): Predicate; }, uid: number, data: Predicate) : Promise<boolean> {
-    //     if (data.domain !== undefined) {
-    //         return this.db.select('records', ['entities.type as entityType'])
-    //             .distinct()
-    //             .where({ predicate: uid })
-    //             .innerJoin('entities', 'records.entity', 'entities.uid')
-    //         .then((records) => {
-    //             if (records.length > 0) {
-    //                 return this.db.getChildrenOf(data.domain, 'entity_types')
-    //                 .then((res) => {
-    //                     records.map((e) => e.entityType)
-    //                     .forEach((e) => {
-    //                         if (res.indexOf(e) === -1) {
-    //                             throw new OperationNotPermittedException({
-    //                                 message: 'The operation could not be completed as it would invalidate predicate relationships',
-    //                                 data: Promise.resolve({})
-    //                             });
-    //                         }
-    //                     });
-    //                 }).then(() => super.patchItem(obj, uid, data));
-    //             }
-    //             return super.patchItem(obj, uid, data);
-    //         });
-    //     }
-    //     //TODO: fix range enforcement
-    //     if (data.range !== undefined) {
-    //         return this.db.select('records')
-    //             .where({ predicate: uid })
-    //         .then((records) => {
-    //             if (records.length > 0) {
-    //                 if (data.rangeIsReference === false) {
-    //                     throw new OperationNotPermittedException({
-    //                         message: 'The operation could not be completed as it would invalidate predicate relationships',
-    //                         data: Promise.resolve({})
-    //                     });
-    //                 }
-    //                 return this.db.getChildrenOf(parseInt(data.range as string), 'entity_types')
-    //                 .then((res) => {
-    //                     records.map((e) => e.value_entity)
-    //                     .forEach((e) => {
-    //                         if (res.indexOf(e) === -1) {
-    //                             throw new OperationNotPermittedException({
-    //                                 message: 'The operation could not be completed as it would invalidate predicate relationships',
-    //                                 data: Promise.resolve({})
-    //                             });
-    //                         }
-    //                     });
-    //                 }).then(() => super.patchItem(obj, uid, data));
-    //             }
-    //             return super.patchItem(obj, uid, data);
-    //         });
-    //     }
-    //     return super.patchItem(obj, uid, data);
-    // }
-    deleteItem(obj, uid) {
-        return __awaiter(this, void 0, void 0, function* () {
-            // check if this entity is the parent of another entity or if it has any relationships
-            // pointing towards it.
-            const records = yield this.db.loadCollection('records', { predicate: uid });
-            if (records.length === 0) {
-                return this.db.deleteItem(this.tableName, uid);
-            }
-            else {
-                throw new Exceptions_1.OperationNotPermittedException({
-                    message: 'The operation could not be completed as the predicate is used by other records',
-                    data: Promise.resolve({
-                        record: records.map((record) => RecordController_1.RecordController.fromSchema(record))
-                    })
-                });
-            }
-        });
-    }
-}
-exports.PredicateController = PredicateController;
-
-
-/***/ }),
-/* 26 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview Sidebar for editor
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.2.0
- */
-
-const React = __webpack_require__(0);
-const AddTabButton_1 = __webpack_require__(5);
+const React = __webpack_require__(1);
+const AddTabButton_1 = __webpack_require__(7);
 class RecursiveTree extends React.Component {
     constructor() {
         super();
@@ -1415,7 +361,8 @@ exports.RecursiveTree = RecursiveTree;
 
 
 /***/ }),
-/* 27 */
+
+/***/ 186:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1425,10 +372,10 @@ exports.RecursiveTree = RecursiveTree;
  * @version 0.2.0
  */
 
-const React = __webpack_require__(0);
-var EditableFieldComponent_1 = __webpack_require__(11);
+const React = __webpack_require__(1);
+var EditableFieldComponent_1 = __webpack_require__(17);
 exports.EditableFieldComponent = EditableFieldComponent_1.EditableFieldComponent;
-const mousetrap = __webpack_require__(13);
+const mousetrap = __webpack_require__(25);
 exports.EditableParagraph = (props) => {
     let keyBoardShortcuts;
     const bindKeyboard = (val) => {
@@ -1462,7 +409,8 @@ exports.EditableParagraph = (props) => {
 
 
 /***/ }),
-/* 28 */
+
+/***/ 187:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1472,9 +420,9 @@ exports.EditableParagraph = (props) => {
  * @version 0.2.0
  */
 
-const React = __webpack_require__(0);
-const ComboDropdown_1 = __webpack_require__(8);
-const lodash_1 = __webpack_require__(3);
+const React = __webpack_require__(1);
+const ComboDropdown_1 = __webpack_require__(10);
+const lodash_1 = __webpack_require__(6);
 class PredicateRangeComboDropdown extends ComboDropdown_1.ComboDropdown {
 }
 exports.PredicateRangeComboDropdown = PredicateRangeComboDropdown;
@@ -1558,7 +506,98 @@ exports.PredicateDescription = PredicateDescription;
 
 
 /***/ }),
-/* 29 */
+
+/***/ 188:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview <Description Missing>
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.2.0
+ */
+
+const falcon_core_1 = __webpack_require__(5);
+const simpleKey = (raw) => {
+    return parseInt(raw[0]);
+};
+exports.itemTypes = {
+    element_set: {
+        machineName: 'element_set',
+        name: 'Element Set',
+        plural: 'Element Sets',
+        workspace: '',
+        buildKey: simpleKey,
+        item: falcon_core_1.ElementSet
+    },
+    element: {
+        machineName: 'element',
+        name: 'Element',
+        plural: 'Elements',
+        workspace: '',
+        buildKey: simpleKey,
+        item: falcon_core_1.Element
+    },
+    record: {
+        machineName: 'record',
+        name: 'Record',
+        plural: 'Records',
+        workspace: '',
+        buildKey: simpleKey,
+        item: falcon_core_1.Record
+    },
+    entity: {
+        machineName: 'entity',
+        name: 'Entity',
+        plural: 'Entities',
+        workspace: 'entity',
+        buildKey: simpleKey,
+        item: falcon_core_1.Entity
+    },
+    entity_type: {
+        machineName: 'entity_type',
+        name: 'Entity Type',
+        plural: 'Entity Types',
+        workspace: 'entity_type',
+        buildKey: simpleKey,
+        item: falcon_core_1.EntityType
+    },
+    predicate: {
+        machineName: 'predicate',
+        name: 'Property',
+        plural: 'Properties',
+        workspace: 'predicate',
+        buildKey: simpleKey,
+        item: falcon_core_1.Predicate
+    },
+    source: {
+        machineName: 'source',
+        name: 'Source',
+        plural: 'Sources',
+        workspace: 'source',
+        buildKey: simpleKey,
+        item: falcon_core_1.Source
+    },
+    source_element: {
+        machineName: 'source_element',
+        name: 'Source Element',
+        plural: 'Source Elements',
+        workspace: '',
+        buildKey: (raw) => ({
+            order: ['source', 'element'],
+            values: {
+                source: parseInt(raw[0]),
+                element: parseInt(raw[1])
+            }
+        }),
+        item: falcon_core_1.SourceElement
+    }
+};
+
+
+/***/ }),
+
+/***/ 189:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1579,7 +618,8 @@ exports.literalTypes = [
 
 
 /***/ }),
-/* 30 */
+
+/***/ 190:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1589,8 +629,8 @@ exports.literalTypes = [
  * @version 0.2.0
  */
 
-const React = __webpack_require__(0);
-const react_router_1 = __webpack_require__(9);
+const React = __webpack_require__(1);
+const react_router_1 = __webpack_require__(11);
 exports.StatsGrid = (props) => {
     return (React.createElement("section", { className: 'stats-grid' },
         React.createElement(react_router_1.Link, { to: '/edit/entity' },
@@ -1616,13 +656,8 @@ exports.StatsGrid = (props) => {
 
 
 /***/ }),
-/* 31 */
-/***/ (function(module, exports) {
 
-module.exports = require("mobx");
-
-/***/ }),
-/* 32 */
+/***/ 192:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1632,199 +667,117 @@ module.exports = require("mobx");
  * @version 0.2.0
  */
 
-const Knex = __webpack_require__(104);
-const lodash_1 = __webpack_require__(3);
-const Exceptions_1 = __webpack_require__(6);
-class Database {
-    constructor(config) {
-        this.knex = Knex(config);
-        this.dbType = config.client;
+const falcon_core_1 = __webpack_require__(5);
+const queryString = __webpack_require__(182);
+const lodash_1 = __webpack_require__(6);
+const Exceptions_1 = __webpack_require__(339);
+var ApiService_1 = __webpack_require__(4);
+exports.AppUrls = ApiService_1.AppUrls;
+function handleErrors(response) {
+    if (!response.ok) {
+        if (response.status === 422) {
+            throw new Exceptions_1.UnprocessableEntity(response.statusText, response.json().then((result) => result.data));
+        }
+        // showToast.dispatch('Something went wrong ;(', response.statusText);
+        if (response.status === 404) {
+            throw new Exceptions_1.KeyNotFoundException(JSON.stringify({
+                statusText: response.statusText,
+                status: response.status
+            }));
+        }
     }
-    query() {
-        return this.knex;
+    return response;
+}
+class ClientApiService {
+    getItem(obj, baseUrl, uid) {
+        const endURL = lodash_1.isObject(uid) ?
+            uid.order.map((key) => uid.values[key]).join('/')
+            : uid.toString();
+        return fetch(`/api/v1/${baseUrl}/${endURL}`)
+            .then(handleErrors)
+            .then((response) => response.json())
+            .then((data) => falcon_core_1.Serializer.fromJson(obj, data));
     }
-    select(tableName, options = '*') {
-        return this.knex.select().from(tableName);
+    getCollection(obj, baseUrl, params) {
+        return fetch(`/api/v1/${baseUrl}?` + queryString.stringify(params))
+            .then(handleErrors)
+            .then((response) => response.json())
+            .then((data) => data.map((datum) => falcon_core_1.Serializer.fromJson(obj, datum)));
     }
-    loadItem(a, uid) {
-        const query = this.knex.select()
-            .from(a)
-            .where({ uid: uid })
-            .first();
-        return query.then((result) => result === undefined ? Promise.reject(new Exceptions_1.KeyNotFoundException()) : result);
-    }
-    loadCollection(a, params) {
-        let query = this.knex.select()
-            .from(a);
-        Object.keys(params).forEach((param) => {
-            query = query.whereIn(param, params[param]);
-        });
-        return query.then((results) => results === undefined ? Promise.reject(new Exceptions_1.KeyNotFoundException()) : results);
-    }
-    createItem(tableName, data) {
-        // throw warning if called with uid
-        // validate that everything else has been sent
-        const withoutUid = lodash_1.omit(data, ['uid']);
-        return this.knex.transaction((trx) => {
-            return this.knex(tableName).transacting(trx).insert(withoutUid, 'uid').returning('uid')
-                .then((results) => {
-                return this.checkIntegrity(trx)
-                    .then((valid) => {
-                    if (!valid) {
-                        throw new Exceptions_1.DatabaseIntegrityError();
-                    }
-                    return results;
-                });
-            });
-        });
-    }
-    updateItem(tableName, data) {
-        // assert - must have uid
-        // validation?
-        return this.knex.transaction((trx) => {
-            return this.knex(tableName).transacting(trx)
-                .where({ 'uid': data.uid })
-                .update(data)
-                .then((results) => {
-                return this.checkIntegrity(trx)
-                    .then((valid) => {
-                    if (!valid) {
-                        throw new Exceptions_1.DatabaseIntegrityError();
-                    }
-                    return results;
-                });
-            });
+    postItem(obj, baseUrl, data, params) {
+        return fetch(`/api/v1/${baseUrl}?` + queryString.stringify(params), {
+            method: 'POST',
+            body: JSON.stringify(data),
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            credentials: 'same-origin'
+        })
+            .then(handleErrors)
+            .then((response) => {
+            return response.json();
+        }).then((data) => {
+            return Promise.resolve(data);
         });
     }
-    deleteItem(tableName, uid) {
-        return this.knex.transaction((trx) => {
-            return this.knex(tableName).transacting(trx)
-                .where({ uid })
-                .del()
-                .then((results) => {
-                return this.checkIntegrity(trx)
-                    .then((valid) => {
-                    if (!valid) {
-                        throw new Exceptions_1.DatabaseIntegrityError();
-                    }
-                    return results;
-                });
-            });
-        });
+    putItem(obj, baseUrl, uid, data) {
+        const endURL = lodash_1.isObject(uid) ?
+            uid.order.map((key) => uid.values[key]).join('/')
+            : uid.toString();
+        return fetch(`/api/v1/${baseUrl}/${endURL}`, {
+            method: 'PUT',
+            body: JSON.stringify(data),
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            credentials: 'same-origin'
+        })
+            .then(handleErrors);
     }
-    getAncestorsOf(uid, tableName) {
-        return this.knex.raw(`
-            WITH RECURSIVE parent_of(uid, parent) AS  (SELECT uid, parent FROM ${tableName}),
-                ancestor(uid) AS (
-                SELECT parent FROM parent_of WHERE uid=${uid}
-                UNION ALL
-                SELECT parent FROM parent_of JOIN ancestor USING(uid) )
-				SELECT * from ancestor`)
-            .then((result) => {
-            if (this.dbType === 'pg') {
-                result = result.rows;
-            }
-            return result.filter((a) => a.uid !== null).map((a) => a.uid);
-        });
+    patchItem(obj, baseUrl, uid, data) {
+        const endURL = lodash_1.isObject(uid) ?
+            uid.order.map((key) => uid.values[key]).join('/')
+            : uid.toString();
+        return fetch(`/api/v1/${baseUrl}/${endURL}`, {
+            method: 'PATCH',
+            body: JSON.stringify(data),
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            credentials: 'same-origin'
+        })
+            .then(handleErrors);
     }
-    getChildrenOf(uid, tableName) {
-        return this.knex.raw(`
-            WITH RECURSIVE parent_of(uid, parent) AS  (SELECT uid, parent FROM ${tableName}),
-                ancestor(parent) AS (
-                SELECT uid FROM parent_of WHERE uid=${uid}
-                UNION ALL
-                SELECT uid FROM parent_of JOIN ancestor USING(parent) )
-				SELECT * from ancestor`)
-            .then((result) => {
-            if (this.dbType === 'pg') {
-                result = result.rows;
-            }
-            return result.filter((a) => a.parent !== null).map((a) => a.parent);
-        });
+    delItem(obj, baseUrl, uid) {
+        const endURL = lodash_1.isObject(uid) ?
+            uid.order.map((key) => uid.values[key]).join('/')
+            : uid.toString();
+        return fetch(`/api/v1/${baseUrl}/${endURL}`, {
+            method: 'DELETE',
+            credentials: 'same-origin'
+        })
+            .then(handleErrors);
     }
-    checkIntegrity(trx) {
-        const toInt = this.dbType === 'pg' ? '::int' : '';
-        return Promise.all([
-            this.knex.transacting(trx).select(this.knex.raw(`SUM((records.value_type != predicates.range_type)${toInt}) AS valid`))
-                .from('records')
-                .innerJoin('predicates', 'records.predicate', 'predicates.uid'),
-            this.knex.transacting(trx).select(this.knex.raw(`
-                SUM((
-
-                entities.type not in (
-                    WITH RECURSIVE parent_of(uid, parent) AS  (SELECT uid, parent FROM entity_types),
-                                ancestor(parent) AS (
-                                SELECT uid FROM parent_of WHERE uid=predicates.range_ref
-                                UNION ALL
-                                SELECT uid FROM parent_of JOIN ancestor USING(parent) )
-                                SELECT * from ancestor
-                )
-
-                )${toInt}) as valid
-            `))
-                .from('records')
-                .innerJoin('predicates', 'records.predicate', 'predicates.uid')
-                .innerJoin('entities', 'entities.uid', 'records.value_entity')
-                .where('records.value_type', '=', 'entity'),
-            this.knex.transacting(trx).select(this.knex.raw(`
-               SUM((
-
-                entities.type not in (
-                    WITH RECURSIVE parent_of(uid, parent) AS  (SELECT uid, parent FROM entity_types),
-                                ancestor(parent) AS (
-                                SELECT uid FROM parent_of WHERE uid=predicates.domain
-                                UNION ALL
-                                SELECT uid FROM parent_of JOIN ancestor USING(parent) )
-                                SELECT * from ancestor
-                )
-
-                )${toInt}) as valid
-            `))
-                .from('records')
-                .innerJoin('predicates', 'records.predicate', 'predicates.uid')
-                .innerJoin('entities', 'entities.uid', 'records.entity')
-        ]).then(([[a], [b], [c]]) => {
-            return (parseInt(a.valid === null ? 0 : a.valid) +
-                parseInt(b.valid === null ? 0 : b.valid) +
-                parseInt(c.valid === null ? 0 : c.valid) === 0);
-        });
+    query(graphQLQueryString) {
+        return fetch('/api/v1/query?query=' + graphQLQueryString)
+            .then(handleErrors)
+            .then((response) => response.json());
+    }
+    getStats() {
+        return fetch('/admin/stats', { credentials: 'same-origin' })
+            .then(handleErrors)
+            .then((response) => response.json());
     }
 }
-exports.Database = Database;
+exports.ClientApiService = ClientApiService;
 
 
 /***/ }),
-/* 33 */
-/***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-
-/**
- * @fileOverview Abstract interface for sources
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.2.0
- */
-const itemTypes_1 = __webpack_require__(21);
-const ServerApiService_1 = __webpack_require__(48);
-const QueryEngine_1 = __webpack_require__(47);
-const controllers_1 = __webpack_require__(54);
-exports.wrapDatabase = (db, fakeCreator) => {
-    const routes = new Map([
-        [itemTypes_1.itemTypes.element_set.machineName, new controllers_1.ElementSetController(db)],
-        [itemTypes_1.itemTypes.record.machineName, new controllers_1.RecordController(db)],
-        [itemTypes_1.itemTypes.entity_type.machineName, new controllers_1.EntityTypeController(db)],
-        [itemTypes_1.itemTypes.entity.machineName, new controllers_1.EntityController(db)],
-        [itemTypes_1.itemTypes.predicate.machineName, new controllers_1.PredicateController(db)],
-        [itemTypes_1.itemTypes.source.machineName, new controllers_1.SourceController(db)],
-        [itemTypes_1.itemTypes.element.machineName, new controllers_1.ElementController(db)],
-        [itemTypes_1.itemTypes.source_element.machineName, new controllers_1.SourceElementController(db)]
-    ]);
-    return new ServerApiService_1.ServerApiService(db, routes, new QueryEngine_1.QueryEngine(db), fakeCreator);
-};
-
-
-/***/ }),
-/* 34 */
+/***/ 193:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1843,19 +796,19 @@ var __assign = (this && this.__assign) || Object.assign || function(t) {
     return t;
 };
 //https://react-router.now.sh/Match
-const React = __webpack_require__(0);
-const react_router_1 = __webpack_require__(9);
-const RouteNotFound_1 = __webpack_require__(101);
+const React = __webpack_require__(1);
+const react_router_1 = __webpack_require__(11);
+const RouteNotFound_1 = __webpack_require__(383);
 const ApiService_1 = __webpack_require__(4);
-const itemTypes_1 = __webpack_require__(21);
-const Admin_1 = __webpack_require__(97);
-const AdminApp_1 = __webpack_require__(46);
-const User_1 = __webpack_require__(102);
-const UserManagement_1 = __webpack_require__(103);
-const AppDownload_1 = __webpack_require__(98);
-const DatabaseUpload_1 = __webpack_require__(99);
-const react_router_2 = __webpack_require__(9);
-const ObjectEditor_1 = __webpack_require__(100);
+const itemTypes_1 = __webpack_require__(188);
+const Admin_1 = __webpack_require__(379);
+const AdminApp_1 = __webpack_require__(338);
+const User_1 = __webpack_require__(384);
+const UserManagement_1 = __webpack_require__(385);
+const AppDownload_1 = __webpack_require__(380);
+const DatabaseUpload_1 = __webpack_require__(381);
+const react_router_2 = __webpack_require__(11);
+const ObjectEditor_1 = __webpack_require__(382);
 class FalconApp extends React.Component {
     constructor(props) {
         super();
@@ -1911,919 +864,8 @@ exports.FalconApp = FalconApp;
 
 
 /***/ }),
-/* 35 */
-/***/ (function(module, exports) {
 
-module.exports = require("electron");
-
-/***/ }),
-/* 36 */
-/***/ (function(module, exports) {
-
-module.exports = require("react-dom");
-
-/***/ }),
-/* 37 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview Abstract interface for sources
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.0.1
- */
-
-class Element {
-    constructor() {
-        this.itemType = 'element';
-    }
-}
-exports.Element = Element;
-//# sourceMappingURL=Element.js.map
-
-
-/***/ }),
-/* 38 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview Abstract interface for sources
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.0.1
- */
-
-class ElementSet {
-    constructor() {
-        this.itemType = 'element_set';
-    }
-}
-exports.ElementSet = ElementSet;
-//# sourceMappingURL=ElementSet.js.map
-
-/***/ }),
-/* 39 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview Abstract interface for entities
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.0.1
- */
-
-class Entity {
-    constructor() {
-        this.itemType = 'entity';
-    }
-}
-exports.Entity = Entity;
-//# sourceMappingURL=Entity.js.map
-
-/***/ }),
-/* 40 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview Abstract interface for entity type
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.0.1
- */
-
-class EntityType {
-    constructor() {
-        this.itemType = 'entity_type';
-    }
-}
-exports.EntityType = EntityType;
-//# sourceMappingURL=EntityType.js.map
-
-/***/ }),
-/* 41 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview Abstract interface for locations
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.0.1
- */
-
-class Predicate {
-    constructor() {
-        this.itemType = 'predicate';
-    }
-}
-exports.Predicate = Predicate;
-//# sourceMappingURL=Predicate.js.map
-
-/***/ }),
-/* 42 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview Abstract interface for entities
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.0.1
- */
-
-class Record {
-    constructor() {
-        this.itemType = 'record';
-        this.label = '';
-        //calculated
-        this.valueType = null;
-    }
-}
-exports.Record = Record;
-// Each value type will have it's own editor control :/
-// entity = dropdown selector
-// string = text editor
-// date = date picker
-// integer = numberic picker
-// spatial point = lat/lng or point picker (opens new tab. creates new resource)
-// spatial region = choose from a list or create new (opens new tab, creates new resource)
-// score - star picker
-// source - entity picker (with slight modification)
-// value - custom (see above)
-// entity - entity picker (with slight modification)
-//# sourceMappingURL=Record.js.map
-
-/***/ }),
-/* 43 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview Abstract interface for entities
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.0.1
- */
-
-exports.fromJson = function (obj, data) {
-    return Object.assign(Object.create(obj.prototype), data);
-};
-exports.toJson = function (data) {
-    return JSON.parse(JSON.stringify(data));
-};
-exports.Serializer = {
-    fromJson: exports.fromJson, toJson: exports.toJson
-};
-//# sourceMappingURL=Serializer.js.map
-
-/***/ }),
-/* 44 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview Abstract interface for sources
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.0.1
- */
-
-class Source {
-    constructor() {
-        this.itemType = 'source';
-    }
-}
-exports.Source = Source;
-//# sourceMappingURL=Source.js.map
-
-/***/ }),
-/* 45 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview Abstract interface for sources
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.0.1
- */
-
-class SourceElement {
-    constructor() {
-        this.itemType = 'source_element';
-        this.label = '';
-    }
-}
-exports.SourceElement = SourceElement;
-//# sourceMappingURL=SourceElement.js.map
-
-/***/ }),
-/* 46 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview <Description Missing>
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.2.0
- */
-
-const React = __webpack_require__(0);
-const StatsGrid_1 = __webpack_require__(30);
-exports.AdminApp = (props) => (React.createElement("div", { className: 'page' },
-    React.createElement("section", null,
-        React.createElement("h1", null, "VRE App"),
-        props.stats !== null ? (React.createElement(StatsGrid_1.StatsGrid, { stats: props.stats })) : null)));
-
-
-/***/ }),
-/* 47 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview Query processor
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.2.0
- */
-
-const graphql_1 = __webpack_require__(22);
-const entityQLType_1 = __webpack_require__(55);
-const predicateQLType_1 = __webpack_require__(56);
-class QueryEngine {
-    constructor(db) {
-        const entityType = entityQLType_1.entityQLType(db, predicateQLType_1.predicateQLType(db));
-        // Define the Query type
-        const queryType = new graphql_1.GraphQLObjectType({
-            name: 'Query',
-            fields: {
-                entity: {
-                    type: new graphql_1.GraphQLList(entityType),
-                    // `args` describes the arguments that the `user` query accepts
-                    args: {
-                        uid: { type: graphql_1.GraphQLString }
-                    },
-                    resolve: (_, { uid }) => {
-                        if (uid === undefined) {
-                            return db.query()('entities');
-                        }
-                        return db.query()('entities').where({ uid });
-                    }
-                }
-            }
-        });
-        this.schema = new graphql_1.GraphQLSchema({
-            query: queryType
-        });
-    }
-    runQuery(query) {
-        return graphql_1.graphql(this.schema, query);
-    }
-}
-exports.QueryEngine = QueryEngine;
-
-
-/***/ }),
-/* 48 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview Abstract interface for sources
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.2.0
- */
-
-const Exceptions_1 = __webpack_require__(6);
-const moment = __webpack_require__(15);
-var ApiService_1 = __webpack_require__(4);
-exports.AppUrls = ApiService_1.AppUrls;
-const GeneralStatisticsController_1 = __webpack_require__(57);
-class ServerApiService {
-    constructor(db, routesMap, queryEngine, fakeCreator) {
-        this.controllerMap = routesMap;
-        this.queryEngine = queryEngine;
-        this.fakeCreator = fakeCreator;
-        this.db = db;
-    }
-    getItem(obj, baseUrl, uid) {
-        const controller = this.controllerMap.get(baseUrl);
-        if (controller === undefined) {
-            return Promise.reject(new Exceptions_1.CollectionNotFoundException('Controller not found'));
-        }
-        return controller.getItemJson(obj, uid);
-    }
-    getCollection(obj, baseUrl, params) {
-        const controller = this.controllerMap.get(baseUrl);
-        if (controller === undefined) {
-            return Promise.reject(new Exceptions_1.CollectionNotFoundException('Controller not found'));
-        }
-        return controller.getCollectionJson(obj, params);
-    }
-    postItem(obj, baseUrl, data, params) {
-        const controller = this.controllerMap.get(baseUrl);
-        if (controller === undefined) {
-            return Promise.reject(new Exceptions_1.CollectionNotFoundException('Controller not found'));
-        }
-        return controller.postItem(obj, Object.assign(data, {
-            creationTimestamp: moment().toISOString(),
-            lastmodifiedTimestamp: moment().toISOString(),
-            creator: this.fakeCreator ? 0 : data.creator
-        }), params);
-    }
-    putItem(obj, baseUrl, uid, data) {
-        const controller = this.controllerMap.get(baseUrl);
-        if (controller === undefined) {
-            return Promise.reject(new Exceptions_1.CollectionNotFoundException('Controller not found'));
-        }
-        return controller.putItem(obj, uid, Object.assign(data, {
-            lastmodifiedTimestamp: moment().toISOString()
-        }));
-    }
-    patchItem(obj, baseUrl, uid, data) {
-        const controller = this.controllerMap.get(baseUrl);
-        if (controller === undefined) {
-            return Promise.reject(new Exceptions_1.CollectionNotFoundException('Controller not found'));
-        }
-        return controller.patchItem(obj, uid, Object.assign(data, {
-            lastmodifiedTimestamp: moment().toISOString()
-        }));
-    }
-    delItem(obj, baseUrl, uid) {
-        const controller = this.controllerMap.get(baseUrl);
-        if (controller === undefined) {
-            return Promise.reject(new Exceptions_1.CollectionNotFoundException('Controller not found'));
-        }
-        return controller.deleteItem(obj, uid);
-    }
-    query(graphQLQuery) {
-        return Promise.resolve({});
-    }
-    getStats() {
-        return GeneralStatisticsController_1.GeneralStatisticsController(this.db.query());
-    }
-}
-exports.ServerApiService = ServerApiService;
-
-
-/***/ }),
-/* 49 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview Controller for elements
- * @author <a href='mailto:tim.hollies@warwick.ac.uk'>Tim Hollies</a>
- * @version 0.2.0
- */
-
-const falcon_core_1 = __webpack_require__(1);
-const GenericController_1 = __webpack_require__(7);
-class ElementController extends GenericController_1.GenericController {
-    constructor(db) {
-        super(db, 'elements');
-    }
-    toSchema(data) {
-        return falcon_core_1.Serializer.toJson(data);
-    }
-    fromSchema(data) {
-        return Object.assign(Object.create(falcon_core_1.Element.prototype), data);
-    }
-}
-exports.ElementController = ElementController;
-
-
-/***/ }),
-/* 50 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview Controller for element sets
- * @author <a href='mailto:tim.hollies@warwick.ac.uk'>Tim Hollies</a>
- * @version 0.2.0
- */
-
-var __assign = (this && this.__assign) || Object.assign || function(t) {
-    for (var s, i = 1, n = arguments.length; i < n; i++) {
-        s = arguments[i];
-        for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
-            t[p] = s[p];
-    }
-    return t;
-};
-const falcon_core_1 = __webpack_require__(1);
-const GenericController_1 = __webpack_require__(7);
-const lodash_1 = __webpack_require__(3);
-class ElementSetController extends GenericController_1.GenericController {
-    constructor(db) {
-        super(db, 'element_sets');
-    }
-    static toSchema(data) {
-        return lodash_1.omit(falcon_core_1.Serializer.toJson(data), 'elements');
-    }
-    static fromSchema(data) {
-        return __assign({}, Object.create(falcon_core_1.ElementSet.prototype), data);
-        // return Object.assign(Object.create(ElementSet.prototype), data);
-    }
-    toSchema(data) {
-        return ElementSetController.toSchema(data);
-    }
-    fromSchema(data) {
-        return ElementSetController.fromSchema(data);
-    }
-    getItemJson(obj, uid) {
-        return super.getItemJson(obj, uid)
-            .then((elementSet) => {
-            if (elementSet.uid === null) {
-                throw new Error('could not find source');
-            }
-            return this.db.select('elements')
-                .where({ 'element_set': elementSet.uid })
-                .then((elements) => {
-                elementSet.elements = elements;
-                return elementSet;
-            });
-        });
-    }
-}
-exports.ElementSetController = ElementSetController;
-
-
-/***/ }),
-/* 51 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview Controller for entity types
- * @author <a href='mailto:tim.hollies@warwick.ac.uk'>Tim Hollies</a>
- * @version 0.2.0
- */
-
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
-const falcon_core_1 = __webpack_require__(1);
-const GenericController_1 = __webpack_require__(7);
-const PredicateController_1 = __webpack_require__(25);
-const EntityController_1 = __webpack_require__(24);
-const Exceptions_1 = __webpack_require__(6);
-const lodash_1 = __webpack_require__(3);
-class EntityTypeController extends GenericController_1.GenericController {
-    constructor(db) {
-        super(db, 'entity_types');
-    }
-    toSchema(data) {
-        return Object.assign(lodash_1.omit(falcon_core_1.Serializer.toJson(data), 'sameAs', 'parents', 'children', 'creationTimestamp', 'lastmodifiedTimestamp'), {
-            same_as: data.sameAs,
-            creation_timestamp: data.creationTimestamp,
-            lastmodified_timestamp: data.lastmodifiedTimestamp
-        });
-    }
-    fromSchema(data) {
-        return Object.assign(Object.create(falcon_core_1.EntityType.prototype), Object.assign(data, {
-            'sameAs': data.same_as
-        }));
-    }
-    getItemJson(obj, uid) {
-        return super.getItemJson(obj, uid)
-            .then((result) => {
-            return Promise.all([
-                this.db.getAncestorsOf(uid, 'entity_types'),
-                this.db.select('entity_types', ['uid']).where({ parent: uid })
-            ])
-                .then(([parents, children]) => {
-                result.parents = parents;
-                result.children = children.map((child) => child.uid);
-                return result;
-            });
-        });
-    }
-    deleteItem(obj, uid) {
-        return __awaiter(this, void 0, void 0, function* () {
-            // check if this entity is the parent of another entity or if it has any relationships
-            // pointing towards it.
-            const [entityTypes, entities, predicates] = yield Promise.all([
-                this.db.select(this.tableName).where('parent', '=', uid),
-                this.db.select('entities').where('type', '=', uid),
-                this.db.select('predicates').where('domain', '=', uid).orWhere('range_ref', '=', uid)
-            ]);
-            if (entities.length + entityTypes.length + predicates.length === 0) {
-                return this.db.deleteItem(this.tableName, uid);
-            }
-            else {
-                throw new Exceptions_1.OperationNotPermittedException({
-                    message: 'The operation could not be completed as the entity is referenced in other sources',
-                    data: Promise.resolve({
-                        entityType: entityTypes.map((entityType) => EntityController_1.EntityController.fromSchema(entityType)),
-                        entity: entities.map((entity) => EntityController_1.EntityController.fromSchema(entity)),
-                        predicate: predicates.map((predicate) => PredicateController_1.PredicateController.fromSchema(predicate))
-                    })
-                });
-            }
-        });
-    }
-}
-exports.EntityTypeController = EntityTypeController;
-
-
-/***/ }),
-/* 52 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview Controller for sources
- * @author <a href='mailto:tim.hollies@warwick.ac.uk'>Tim Hollies</a>
- * @version 0.2.0
- */
-
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
-const falcon_core_1 = __webpack_require__(1);
-const GenericController_1 = __webpack_require__(7);
-const Exceptions_1 = __webpack_require__(6);
-const RecordController_1 = __webpack_require__(16);
-const lodash_1 = __webpack_require__(3);
-class SourceController extends GenericController_1.GenericController {
-    constructor(db) {
-        super(db, 'sources');
-    }
-    toSchema(data) {
-        const allowedKeys = new Set(['uid', 'label', 'parent', 'sameAs', 'readonly', 'creator', 'creationTimestamp', 'lastmodifiedTimestamp']);
-        const extraKeys = Object.keys(data).filter((a) => !allowedKeys.has(a));
-        if (extraKeys.length > 0) {
-            throw new Exceptions_1.InvalidUpdateException('Unknown keys: ' + extraKeys.join(', '));
-        }
-        return Object.assign({}, lodash_1.omit(falcon_core_1.Serializer.toJson(data), 'metaData', 'sameAs', 'parents', 'children', 'creationTimestamp', 'lastmodifiedTimestamp'), {
-            same_as: data.sameAs,
-            creation_timestamp: data.creationTimestamp,
-            lastmodified_timestamp: data.lastmodifiedTimestamp
-        });
-    }
-    fromSchema(data) {
-        return Object.assign(Object.create(falcon_core_1.Source.prototype), Object.assign(lodash_1.omit(data, 'same_as', 'creation_timestamp', 'lastmodified_timestamp'), {
-            'sameAs': data.same_as,
-            'creationTimestamp': data.creation_timestamp,
-            'lastmodifiedTimestamp': data.lastmodified_timestamp
-        }));
-    }
-    // override the getItemJson and getCollectionJson functions to also get information about the
-    // metadata associated with the retrieved source
-    getMetadata(fields, sourceId) {
-        return this.db.getAncestorsOf(sourceId, 'sources')
-            .then((parents) => {
-            parents = [sourceId].concat(parents);
-            return Promise.all(parents.map((parent) => this.db.query().select(fields)
-                .from('source_elements')
-                .innerJoin('elements', function () { this.on('source_elements.element', '=', 'elements.uid'); })
-                .innerJoin('element_sets', function () { this.on('element_sets.uid', '=', 'elements.element_set'); })
-                .where({ 'source_elements.source': parent }))).then((results) => {
-                const a = lodash_1.groupBy(lodash_1.flatten(results), 'label');
-                return Object.keys(a).reduce((prev, cur) => {
-                    const meta = lodash_1.omit(a[cur][0], 'source', 'value');
-                    meta['values'] = a[cur]
-                        .map((val) => ({ source: val.source, value: val.value, uid: val.uid }))
-                        .sort((a, b) => parents.indexOf(a.source) - parents.indexOf(b.source));
-                    return Object.assign(prev, { [cur]: meta });
-                }, {});
-            });
-        });
-    }
-    getItemJson(obj, uid) {
-        return super.getItemJson(obj, uid)
-            .then((source) => {
-            if (source.uid === null) {
-                throw new Error('could not find source');
-            }
-            return Promise.all([
-                this.getMetadata([
-                    'source_elements.source as source',
-                    'elements.label',
-                    'source_elements.value',
-                    'elements.description',
-                    'element_sets.label as element_set',
-                    'elements.comment',
-                    'elements.uri',
-                    'elements.uid as element_uid'
-                ], source.uid),
-                this.db.query().select('uid').from('sources').where({ parent: uid }),
-                this.db.getAncestorsOf(uid, 'sources')
-            ])
-                .then(([sourceElements, children, parents]) => {
-                source.metaData = sourceElements;
-                source.children = children.map((child) => child.uid).filter((child) => child !== null);
-                source.parents = parents;
-                return source;
-            });
-        });
-    }
-    getCollectionJson(obj, params = {}) {
-        return super.getCollectionJson(obj, params)
-            .then((sources) => {
-            return Promise.all(sources.map((source) => {
-                if (source.uid === null) {
-                    throw new Error('could not find source');
-                }
-                return this.getMetadata([
-                    'elements.label',
-                    'source_elements.value'
-                ], source.uid)
-                    .then((sourceElements) => {
-                    source.metaData = sourceElements;
-                    return source;
-                });
-            }));
-        });
-    }
-    //TODO should find every child source, not just the direct children
-    deleteItem(obj, uid) {
-        return __awaiter(this, void 0, void 0, function* () {
-            // check if this entity is the parent of another entity or if it has any relationships
-            // pointing towards it.
-            const [records, sources] = yield Promise.all([
-                this.db.loadCollection('records', { source: uid }),
-                this.db.loadCollection('sources', { parent: uid })
-            ]);
-            if (records.length + sources.length === 0) {
-                return this.db.deleteItem(this.tableName, uid);
-            }
-            else {
-                throw new Exceptions_1.OperationNotPermittedException({
-                    message: 'The operation could not be completed as the source is used by other records',
-                    data: Promise.resolve({
-                        record: records.map((record) => RecordController_1.RecordController.fromSchema(record)),
-                        source: sources.map((source) => this.fromSchema(source))
-                    })
-                });
-            }
-        });
-    }
-}
-exports.SourceController = SourceController;
-
-
-/***/ }),
-/* 53 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview Controller for source elements
- * @author <a href='mailto:tim.hollies@warwick.ac.uk'>Tim Hollies</a>
- * @version 0.2.0
- */
-
-const falcon_core_1 = __webpack_require__(1);
-const GenericController_1 = __webpack_require__(7);
-const Exceptions_1 = __webpack_require__(6);
-const lodash_1 = __webpack_require__(3);
-class SourceElementController extends GenericController_1.GenericController {
-    constructor(db) {
-        super(db, 'source_elements');
-    }
-    toSchema(data) {
-        return Object.assign(lodash_1.omit(falcon_core_1.Serializer.toJson(data), 'creationTimestamp', 'lastmodifiedTimestamp', 'uid', 'label'), {
-            creation_timestamp: data.creationTimestamp,
-            lastmodified_timestamp: data.lastmodifiedTimestamp,
-            // TODO: check these exist
-            source: data.uid.values['source'],
-            element: data.uid.values['element']
-        });
-    }
-    fromSchema(data) {
-        return Object.assign(Object.create(falcon_core_1.SourceElement.prototype), Object.assign(data, {
-            uid: {
-                order: ['source', 'element'],
-                values: {
-                    source: data.source,
-                    element: data.element
-                }
-            }
-        }));
-    }
-    getItemJson(obj, uid) {
-        return this.db.query().select()
-            .from(this.tableName)
-            .where(uid.values)
-            .first()
-            .then((result) => result === undefined ? Promise.reject(new Exceptions_1.KeyNotFoundException()) : result)
-            .then((data) => this.fromSchema(data));
-    }
-    putItem(obj, uid, data) {
-        return this.db.query()(this.tableName)
-            .where(uid.values)
-            .update(this.toSchema(data));
-    }
-    patchItem(obj, uid, data) {
-        const schemaData = this.toSchema(data);
-        const keys = Object.keys(schemaData);
-        const updateObject = {};
-        for (let i = 0; i < keys.length; i += 1) {
-            if (schemaData[keys[i]] !== undefined) {
-                updateObject[keys[i]] = schemaData[keys[i]];
-            }
-        }
-        return this.db.query()(this.tableName)
-            .where(uid.values)
-            .update(updateObject)
-            .then(() => true)
-            .catch((err) => { throw new Error(err); });
-    }
-    deleteItem(obj, uid) {
-        return this.db.query()(this.tableName)
-            .where(uid.values)
-            .del();
-    }
-}
-exports.SourceElementController = SourceElementController;
-
-
-/***/ }),
-/* 54 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview Collated list of controllers
- * @author <a href='mailto:tim.hollies@warwick.ac.uk'>Tim Hollies</a>
- * @version 0.2.0
- */
-
-var ElementSetController_1 = __webpack_require__(50);
-exports.ElementSetController = ElementSetController_1.ElementSetController;
-var EntityController_1 = __webpack_require__(24);
-exports.EntityController = EntityController_1.EntityController;
-var EntityTypeController_1 = __webpack_require__(51);
-exports.EntityTypeController = EntityTypeController_1.EntityTypeController;
-var PredicateController_1 = __webpack_require__(25);
-exports.PredicateController = PredicateController_1.PredicateController;
-var RecordController_1 = __webpack_require__(16);
-exports.RecordController = RecordController_1.RecordController;
-var SourceController_1 = __webpack_require__(52);
-exports.SourceController = SourceController_1.SourceController;
-var ElementController_1 = __webpack_require__(49);
-exports.ElementController = ElementController_1.ElementController;
-var SourceElementController_1 = __webpack_require__(53);
-exports.SourceElementController = SourceElementController_1.SourceElementController;
-
-
-/***/ }),
-/* 55 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview Query processor
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.2.0
- */
-
-const graphql_1 = __webpack_require__(22);
-exports.entityQLType = (db, predicateType) => {
-    return new graphql_1.GraphQLObjectType({
-        name: 'Entity',
-        fields: {
-            uid: {
-                type: graphql_1.GraphQLString,
-                resolve: (parent, {}) => {
-                    return parent.uid;
-                }
-            },
-            label: {
-                type: graphql_1.GraphQLString,
-                resolve: (parent, {}) => {
-                    return parent.label;
-                }
-            },
-            type: {
-                type: graphql_1.GraphQLString,
-                resolve: (parent, {}) => {
-                    return db.query()('entity_types').where({ uid: parent.type }).first().then((data) => data.label);
-                }
-            },
-            predicate: {
-                type: predicateType,
-                args: {
-                    name: { type: graphql_1.GraphQLString },
-                    uid: { type: graphql_1.GraphQLString }
-                },
-                resolve: (entity, { name, uid }) => {
-                    if (name !== undefined) {
-                        return db.query()('predicates').where({ name }).first().then((predicate) => ({ predicate, entity }));
-                    }
-                    if (uid !== undefined) {
-                        return db.query()('predicates').where({ uid }).first().then((predicate) => ({ predicate, entity }));
-                    }
-                }
-            },
-            predicates: {
-                type: new graphql_1.GraphQLList(predicateType),
-                args: {
-                    names: { type: new graphql_1.GraphQLList(graphql_1.GraphQLString) },
-                    uids: { type: new graphql_1.GraphQLList(graphql_1.GraphQLString) }
-                },
-                resolve: (entity, { names, uids }) => {
-                    if (names !== undefined) {
-                        return db.query()('predicates')
-                            .whereIn('name', names)
-                            .then((predicates) => predicates.map((predicate) => ({ predicate, entity })));
-                    }
-                    if (uids !== undefined) {
-                        return db.query()('predicates')
-                            .whereIn('uid', uids)
-                            .then((predicates) => predicates.map((predicate) => ({ predicate, entity })));
-                    }
-                }
-            }
-        }
-    });
-};
-
-
-/***/ }),
-/* 56 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview Query processor
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.2.0
- */
-
-const graphql_1 = __webpack_require__(22);
-exports.predicateQLType = (db) => {
-    return new graphql_1.GraphQLObjectType({
-        name: 'Predicate',
-        fields: {
-            uid: {
-                type: graphql_1.GraphQLString,
-                resolve: ({ predicate }, {}) => {
-                    return predicate.uid;
-                }
-            },
-            name: {
-                type: graphql_1.GraphQLString,
-                resolve: ({ predicate }, {}) => {
-                    return predicate.label;
-                }
-            },
-            values: {
-                type: new graphql_1.GraphQLList(graphql_1.GraphQLString),
-                resolve: ({ entity, predicate }, {}) => {
-                    return db.query()('records')
-                        .select('value_string')
-                        .where({ entity: entity.uid, predicate: predicate.uid })
-                        .then((results) => results.map((result) => result.value_string));
-                }
-            }
-        }
-    });
-};
-
-
-/***/ }),
-/* 57 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview Map of URIs to controllers
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.2.0
- */
-
-exports.GeneralStatisticsController = (db) => {
-    const countVarName = db.client.config.client === 'pg' ? 'count' : 'count(*)';
-    return Promise.all([
-        db('entities').count(),
-        db('entity_types').count(),
-        db('sources').count(),
-        db('records').count(),
-        db('predicates').count()
-    ]).then(([[entityCount], [entityTypeCount], [sourceCount], [recordCount], [predicateCount]]) => {
-        const statistics = {
-            entity: entityCount[countVarName],
-            entityType: entityTypeCount[countVarName],
-            source: sourceCount[countVarName],
-            record: recordCount[countVarName],
-            predicate: predicateCount[countVarName]
-        };
-        return statistics;
-    });
-};
-
-
-/***/ }),
-/* 58 */
+/***/ 27:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2833,7 +875,376 @@ exports.GeneralStatisticsController = (db) => {
  * @version 0.2.0
  */
 
-const React = __webpack_require__(0);
+const React = __webpack_require__(1);
+var EditableFieldComponent_1 = __webpack_require__(17);
+exports.EditableFieldComponent = EditableFieldComponent_1.EditableFieldComponent;
+exports.EditableHeader = (props) => {
+    if (!props.edit || props.value == null) {
+        return (React.createElement("h2", null,
+            props.value,
+            React.createElement("sup", null,
+                React.createElement("i", { className: 'fa fa-pencil-square-o', title: 'Edit', "aria-hidden": 'true', onClick: props.setEdit }))));
+    }
+    else {
+        return (React.createElement("span", null,
+            React.createElement("input", { type: 'text', value: props.value, className: 'text-edit-header', onChange: (e) => props.onChange(e.target.value) }),
+            React.createElement("button", { onClick: props.acceptChanges },
+                React.createElement("i", { className: 'fa fa-check', "aria-hidden": 'true' })),
+            React.createElement("button", { onClick: props.cancelChanges },
+                React.createElement("i", { className: 'fa fa-times', "aria-hidden": 'true' }))));
+    }
+};
+
+
+/***/ }),
+
+/***/ 313:
+/***/ (function(module, exports, __webpack_require__) {
+
+var map = {
+	"./af": 74,
+	"./af.js": 74,
+	"./ar": 80,
+	"./ar-dz": 75,
+	"./ar-dz.js": 75,
+	"./ar-ly": 76,
+	"./ar-ly.js": 76,
+	"./ar-ma": 77,
+	"./ar-ma.js": 77,
+	"./ar-sa": 78,
+	"./ar-sa.js": 78,
+	"./ar-tn": 79,
+	"./ar-tn.js": 79,
+	"./ar.js": 80,
+	"./az": 81,
+	"./az.js": 81,
+	"./be": 82,
+	"./be.js": 82,
+	"./bg": 83,
+	"./bg.js": 83,
+	"./bn": 84,
+	"./bn.js": 84,
+	"./bo": 85,
+	"./bo.js": 85,
+	"./br": 86,
+	"./br.js": 86,
+	"./bs": 87,
+	"./bs.js": 87,
+	"./ca": 88,
+	"./ca.js": 88,
+	"./cs": 89,
+	"./cs.js": 89,
+	"./cv": 90,
+	"./cv.js": 90,
+	"./cy": 91,
+	"./cy.js": 91,
+	"./da": 92,
+	"./da.js": 92,
+	"./de": 94,
+	"./de-at": 93,
+	"./de-at.js": 93,
+	"./de.js": 94,
+	"./dv": 95,
+	"./dv.js": 95,
+	"./el": 96,
+	"./el.js": 96,
+	"./en-au": 97,
+	"./en-au.js": 97,
+	"./en-ca": 98,
+	"./en-ca.js": 98,
+	"./en-gb": 99,
+	"./en-gb.js": 99,
+	"./en-ie": 100,
+	"./en-ie.js": 100,
+	"./en-nz": 101,
+	"./en-nz.js": 101,
+	"./eo": 102,
+	"./eo.js": 102,
+	"./es": 104,
+	"./es-do": 103,
+	"./es-do.js": 103,
+	"./es.js": 104,
+	"./et": 105,
+	"./et.js": 105,
+	"./eu": 106,
+	"./eu.js": 106,
+	"./fa": 107,
+	"./fa.js": 107,
+	"./fi": 108,
+	"./fi.js": 108,
+	"./fo": 109,
+	"./fo.js": 109,
+	"./fr": 112,
+	"./fr-ca": 110,
+	"./fr-ca.js": 110,
+	"./fr-ch": 111,
+	"./fr-ch.js": 111,
+	"./fr.js": 112,
+	"./fy": 113,
+	"./fy.js": 113,
+	"./gd": 114,
+	"./gd.js": 114,
+	"./gl": 115,
+	"./gl.js": 115,
+	"./he": 116,
+	"./he.js": 116,
+	"./hi": 117,
+	"./hi.js": 117,
+	"./hr": 118,
+	"./hr.js": 118,
+	"./hu": 119,
+	"./hu.js": 119,
+	"./hy-am": 120,
+	"./hy-am.js": 120,
+	"./id": 121,
+	"./id.js": 121,
+	"./is": 122,
+	"./is.js": 122,
+	"./it": 123,
+	"./it.js": 123,
+	"./ja": 124,
+	"./ja.js": 124,
+	"./jv": 125,
+	"./jv.js": 125,
+	"./ka": 126,
+	"./ka.js": 126,
+	"./kk": 127,
+	"./kk.js": 127,
+	"./km": 128,
+	"./km.js": 128,
+	"./ko": 129,
+	"./ko.js": 129,
+	"./ky": 130,
+	"./ky.js": 130,
+	"./lb": 131,
+	"./lb.js": 131,
+	"./lo": 132,
+	"./lo.js": 132,
+	"./lt": 133,
+	"./lt.js": 133,
+	"./lv": 134,
+	"./lv.js": 134,
+	"./me": 135,
+	"./me.js": 135,
+	"./mi": 136,
+	"./mi.js": 136,
+	"./mk": 137,
+	"./mk.js": 137,
+	"./ml": 138,
+	"./ml.js": 138,
+	"./mr": 139,
+	"./mr.js": 139,
+	"./ms": 141,
+	"./ms-my": 140,
+	"./ms-my.js": 140,
+	"./ms.js": 141,
+	"./my": 142,
+	"./my.js": 142,
+	"./nb": 143,
+	"./nb.js": 143,
+	"./ne": 144,
+	"./ne.js": 144,
+	"./nl": 146,
+	"./nl-be": 145,
+	"./nl-be.js": 145,
+	"./nl.js": 146,
+	"./nn": 147,
+	"./nn.js": 147,
+	"./pa-in": 148,
+	"./pa-in.js": 148,
+	"./pl": 149,
+	"./pl.js": 149,
+	"./pt": 151,
+	"./pt-br": 150,
+	"./pt-br.js": 150,
+	"./pt.js": 151,
+	"./ro": 152,
+	"./ro.js": 152,
+	"./ru": 153,
+	"./ru.js": 153,
+	"./se": 154,
+	"./se.js": 154,
+	"./si": 155,
+	"./si.js": 155,
+	"./sk": 156,
+	"./sk.js": 156,
+	"./sl": 157,
+	"./sl.js": 157,
+	"./sq": 158,
+	"./sq.js": 158,
+	"./sr": 160,
+	"./sr-cyrl": 159,
+	"./sr-cyrl.js": 159,
+	"./sr.js": 160,
+	"./ss": 161,
+	"./ss.js": 161,
+	"./sv": 162,
+	"./sv.js": 162,
+	"./sw": 163,
+	"./sw.js": 163,
+	"./ta": 164,
+	"./ta.js": 164,
+	"./te": 165,
+	"./te.js": 165,
+	"./tet": 166,
+	"./tet.js": 166,
+	"./th": 167,
+	"./th.js": 167,
+	"./tl-ph": 168,
+	"./tl-ph.js": 168,
+	"./tlh": 169,
+	"./tlh.js": 169,
+	"./tr": 170,
+	"./tr.js": 170,
+	"./tzl": 171,
+	"./tzl.js": 171,
+	"./tzm": 173,
+	"./tzm-latn": 172,
+	"./tzm-latn.js": 172,
+	"./tzm.js": 173,
+	"./uk": 174,
+	"./uk.js": 174,
+	"./uz": 175,
+	"./uz.js": 175,
+	"./vi": 176,
+	"./vi.js": 176,
+	"./x-pseudo": 177,
+	"./x-pseudo.js": 177,
+	"./yo": 178,
+	"./yo.js": 178,
+	"./zh-cn": 179,
+	"./zh-cn.js": 179,
+	"./zh-hk": 180,
+	"./zh-hk.js": 180,
+	"./zh-tw": 181,
+	"./zh-tw.js": 181
+};
+function webpackContext(req) {
+	return __webpack_require__(webpackContextResolve(req));
+};
+function webpackContextResolve(req) {
+	var id = map[req];
+	if(!(id + 1)) // check for number
+		throw new Error("Cannot find module '" + req + "'.");
+	return id;
+};
+webpackContext.keys = function webpackContextKeys() {
+	return Object.keys(map);
+};
+webpackContext.resolve = webpackContextResolve;
+module.exports = webpackContext;
+webpackContext.id = 313;
+
+
+/***/ }),
+
+/***/ 338:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview <Description Missing>
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.2.0
+ */
+
+const React = __webpack_require__(1);
+const StatsGrid_1 = __webpack_require__(190);
+exports.AdminApp = (props) => (React.createElement("div", { className: 'page' },
+    React.createElement("section", null,
+        React.createElement("h1", null, "VRE App"),
+        props.stats !== null ? (React.createElement(StatsGrid_1.StatsGrid, { stats: props.stats })) : null)));
+
+
+/***/ }),
+
+/***/ 339:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview Abstract interface for sources
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.2.0
+ */
+
+class UnprocessableEntity extends Error {
+    constructor(message, data) {
+        super(message);
+        this.code = 422;
+        this.data = data;
+    }
+}
+exports.UnprocessableEntity = UnprocessableEntity;
+class KeyNotFoundException extends Error {
+    constructor(message = 'Could not find the given key') {
+        super(message);
+        this.code = 404;
+    }
+}
+exports.KeyNotFoundException = KeyNotFoundException;
+class ReadOnlyResourceException extends Error {
+    constructor(message = 'Attempt to update a readonly resource') {
+        super(message);
+        this.code = 400;
+    }
+}
+exports.ReadOnlyResourceException = ReadOnlyResourceException;
+class CollectionNotFoundException extends Error {
+    constructor(message = 'Could not find the given collection') {
+        super(message);
+        this.data = message;
+    }
+}
+exports.CollectionNotFoundException = CollectionNotFoundException;
+class OperationNotPermittedException extends Error {
+    constructor(data) {
+        super(data.message);
+        this.code = 422;
+        this.data = data;
+    }
+}
+exports.OperationNotPermittedException = OperationNotPermittedException;
+class InvalidUpdateException extends Error {
+    constructor(message) {
+        super(message);
+        this.code = 400;
+    }
+}
+exports.InvalidUpdateException = InvalidUpdateException;
+class DatabaseIntegrityError extends Error {
+    constructor(message = `A database integrity constraint has been broken - your change has not been
+ submitted. This is likely due to a change which violates the property types model; please check the types of
+ what you are trying to do. Please also contact the Digital Humanities team, this error should not occur.`) {
+        super(message);
+        this.code = 500;
+    }
+}
+exports.DatabaseIntegrityError = DatabaseIntegrityError;
+exports.Exceptions = {
+    UnprocessableEntity,
+    KeyNotFoundException,
+    CollectionNotFoundException,
+    OperationNotPermittedException,
+    DatabaseIntegrityError,
+    InvalidUpdateException,
+    ReadOnlyResourceException
+};
+
+
+/***/ }),
+
+/***/ 340:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview Sidebar for editor
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.2.0
+ */
+
+const React = __webpack_require__(1);
 exports.Loading = (props) => {
     return (React.createElement("div", { className: 'loader-wrapper' },
         React.createElement("div", { className: 'loader' })));
@@ -2841,7 +1252,8 @@ exports.Loading = (props) => {
 
 
 /***/ }),
-/* 59 */
+
+/***/ 341:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2860,12 +1272,12 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-const React = __webpack_require__(0);
-const SearchBox_1 = __webpack_require__(83);
+const React = __webpack_require__(1);
+const SearchBox_1 = __webpack_require__(365);
 const ApiService_1 = __webpack_require__(4);
-const react_router_1 = __webpack_require__(9);
-const lodash_1 = __webpack_require__(3);
-const react_sortable_hoc_1 = __webpack_require__(23);
+const react_router_1 = __webpack_require__(11);
+const lodash_1 = __webpack_require__(6);
+const react_sortable_hoc_1 = __webpack_require__(51);
 const mobx_react_1 = __webpack_require__(2);
 const Handle = react_sortable_hoc_1.SortableHandle((props) => (React.createElement("div", { className: 'badge-container' },
     React.createElement("div", { className: 'badge ' + props.tabType },
@@ -2963,7 +1375,8 @@ exports.Sidebar = Sidebar;
 
 
 /***/ }),
-/* 60 */
+
+/***/ 342:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2973,7 +1386,7 @@ exports.Sidebar = Sidebar;
  * @version 0.2.0
  */
 
-const React = __webpack_require__(0);
+const React = __webpack_require__(1);
 class Toast extends React.Component {
     constructor() {
         super();
@@ -3004,7 +1417,8 @@ exports.Toast = Toast;
 
 
 /***/ }),
-/* 61 */
+
+/***/ 343:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3023,10 +1437,10 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-const React = __webpack_require__(0);
-const Loading_1 = __webpack_require__(58);
+const React = __webpack_require__(1);
+const Loading_1 = __webpack_require__(340);
 const mobx_react_1 = __webpack_require__(2);
-const workspace_1 = __webpack_require__(93);
+const workspace_1 = __webpack_require__(375);
 let Workspace = class Workspace extends React.Component {
     constructor() {
         super();
@@ -3072,7 +1486,8 @@ exports.Workspace = Workspace;
 
 
 /***/ }),
-/* 62 */
+
+/***/ 344:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3082,8 +1497,8 @@ exports.Workspace = Workspace;
  * @version 0.2.0
  */
 
-const React = __webpack_require__(0);
-const DatePickerDropdown_1 = __webpack_require__(69);
+const React = __webpack_require__(1);
+const DatePickerDropdown_1 = __webpack_require__(351);
 exports.DateFieldEditor = (props) => {
     return (React.createElement("div", { className: 'date-selector' },
         React.createElement(DatePickerDropdown_1.DatePickerDropdown, { value: props.value, setValue: props.onChange })));
@@ -3091,7 +1506,8 @@ exports.DateFieldEditor = (props) => {
 
 
 /***/ }),
-/* 63 */
+
+/***/ 345:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3101,9 +1517,9 @@ exports.DateFieldEditor = (props) => {
  * @version 0.2.0
  */
 
-const React = __webpack_require__(0);
-const ComboDropdown_1 = __webpack_require__(8);
-const lodash_1 = __webpack_require__(3);
+const React = __webpack_require__(1);
+const ComboDropdown_1 = __webpack_require__(10);
+const lodash_1 = __webpack_require__(6);
 exports.EntityFieldEditor = (props) => {
     // build the options list
     const options = props.entities.map((entity) => ({ key: entity.label, value: entity.uid !== null ? entity.uid : null }));
@@ -3117,7 +1533,8 @@ exports.EntityFieldEditor = (props) => {
 
 
 /***/ }),
-/* 64 */
+
+/***/ 346:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3127,7 +1544,7 @@ exports.EntityFieldEditor = (props) => {
  * @version 0.2.0
  */
 
-const React = __webpack_require__(0);
+const React = __webpack_require__(1);
 exports.IntegerFieldEditor = (props) => {
     const integerFieldChangeHandler = (e) => props.onChange(e.target.value);
     return (React.createElement("input", { type: 'number', value: props.value, onChange: integerFieldChangeHandler }));
@@ -3135,7 +1552,8 @@ exports.IntegerFieldEditor = (props) => {
 
 
 /***/ }),
-/* 65 */
+
+/***/ 347:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3145,12 +1563,12 @@ exports.IntegerFieldEditor = (props) => {
  * @version 0.2.0
  */
 
-const React = __webpack_require__(0);
+const React = __webpack_require__(1);
 const ApiService_1 = __webpack_require__(4);
-const falcon_core_1 = __webpack_require__(1);
-const EditableFieldComponent_1 = __webpack_require__(11);
-const RecordRow_1 = __webpack_require__(66);
-const AddTabButton_1 = __webpack_require__(5);
+const falcon_core_1 = __webpack_require__(5);
+const EditableFieldComponent_1 = __webpack_require__(17);
+const RecordRow_1 = __webpack_require__(348);
+const AddTabButton_1 = __webpack_require__(7);
 class RecordEditableFieldComponent extends EditableFieldComponent_1.EditableFieldComponent {
 }
 class RecordPredicate extends React.Component {
@@ -3214,7 +1632,8 @@ exports.RecordPredicate = RecordPredicate;
 
 
 /***/ }),
-/* 66 */
+
+/***/ 348:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3224,17 +1643,17 @@ exports.RecordPredicate = RecordPredicate;
  * @version 0.2.0
  */
 
-const React = __webpack_require__(0);
-var EditableFieldComponent_1 = __webpack_require__(11);
+const React = __webpack_require__(1);
+var EditableFieldComponent_1 = __webpack_require__(17);
 exports.EditableFieldComponent = EditableFieldComponent_1.EditableFieldComponent;
-const ScorePicker_1 = __webpack_require__(70);
-const ComboDropdown_1 = __webpack_require__(8);
-const StringFieldEditor_1 = __webpack_require__(68);
-const EntityFieldEditor_1 = __webpack_require__(63);
-const DateFieldEditor_1 = __webpack_require__(62);
-const IntegerFieldEditor_1 = __webpack_require__(64);
-const AddTabButton_1 = __webpack_require__(5);
-const formatDate_1 = __webpack_require__(20);
+const ScorePicker_1 = __webpack_require__(352);
+const ComboDropdown_1 = __webpack_require__(10);
+const StringFieldEditor_1 = __webpack_require__(350);
+const EntityFieldEditor_1 = __webpack_require__(345);
+const DateFieldEditor_1 = __webpack_require__(344);
+const IntegerFieldEditor_1 = __webpack_require__(346);
+const AddTabButton_1 = __webpack_require__(7);
+const formatDate_1 = __webpack_require__(55);
 const mobx_react_1 = __webpack_require__(2);
 const recordEditor = (props, record) => {
     switch (record.valueType) {
@@ -3335,7 +1754,8 @@ exports.RecordRow = mobx_react_1.inject('dataStore', 'modalStore')(mobx_react_1.
 
 
 /***/ }),
-/* 67 */
+
+/***/ 349:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3354,13 +1774,13 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-const React = __webpack_require__(0);
+const React = __webpack_require__(1);
 const ApiService_1 = __webpack_require__(4);
-const falcon_core_1 = __webpack_require__(1);
-const EditableFieldComponent_1 = __webpack_require__(11);
-const SearchBar_1 = __webpack_require__(14);
-const RecordPredicate_1 = __webpack_require__(65);
-const findParentTree_1 = __webpack_require__(19);
+const falcon_core_1 = __webpack_require__(5);
+const EditableFieldComponent_1 = __webpack_require__(17);
+const SearchBar_1 = __webpack_require__(39);
+const RecordPredicate_1 = __webpack_require__(347);
+const findParentTree_1 = __webpack_require__(54);
 const mobx_react_1 = __webpack_require__(2);
 class RecordEditableFieldComponent extends EditableFieldComponent_1.EditableFieldComponent {
 }
@@ -3440,7 +1860,8 @@ exports.RecordsEditor = RecordsEditor;
 
 
 /***/ }),
-/* 68 */
+
+/***/ 350:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3450,14 +1871,15 @@ exports.RecordsEditor = RecordsEditor;
  * @version 0.2.0
  */
 
-const React = __webpack_require__(0);
+const React = __webpack_require__(1);
 exports.StringFieldEditor = (props) => {
     return (React.createElement("input", { type: 'text', value: props.value, onChange: (e) => props.onChange(e.target.value) }));
 };
 
 
 /***/ }),
-/* 69 */
+
+/***/ 351:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3467,10 +1889,10 @@ exports.StringFieldEditor = (props) => {
  * @version 0.2.0
  */
 
-const React = __webpack_require__(0);
-const moment = __webpack_require__(15);
-const lodash_1 = __webpack_require__(3);
-const formatDate_1 = __webpack_require__(20);
+const React = __webpack_require__(1);
+const moment = __webpack_require__(0);
+const lodash_1 = __webpack_require__(6);
+const formatDate_1 = __webpack_require__(55);
 class DatePickerDropdown extends React.Component {
     constructor() {
         super();
@@ -3630,7 +2052,8 @@ exports.DatePickerDropdown = DatePickerDropdown;
 
 
 /***/ }),
-/* 70 */
+
+/***/ 352:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3640,8 +2063,8 @@ exports.DatePickerDropdown = DatePickerDropdown;
  * @version 0.2.0
  */
 
-const React = __webpack_require__(0);
-const lodash_1 = __webpack_require__(3);
+const React = __webpack_require__(1);
+const lodash_1 = __webpack_require__(6);
 exports.ScorePicker = (props) => {
     const values = [1, 2, 3, 4, 5];
     if (props.readOnly) {
@@ -3659,7 +2082,8 @@ exports.ScorePicker = (props) => {
 
 
 /***/ }),
-/* 71 */
+
+/***/ 353:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3678,8 +2102,8 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-const React = __webpack_require__(0);
-const Overlay_1 = __webpack_require__(10);
+const React = __webpack_require__(1);
+const Overlay_1 = __webpack_require__(15);
 const mobx_react_1 = __webpack_require__(2);
 let ConflictResolution = class ConflictResolution extends React.Component {
     constructor() {
@@ -3764,7 +2188,8 @@ exports.ConflictResolution = ConflictResolution;
 
 
 /***/ }),
-/* 72 */
+
+/***/ 354:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3783,12 +2208,12 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-const React = __webpack_require__(0);
-const Overlay_1 = __webpack_require__(10);
-const falcon_core_1 = __webpack_require__(1);
+const React = __webpack_require__(1);
+const Overlay_1 = __webpack_require__(15);
+const falcon_core_1 = __webpack_require__(5);
 const ApiService_1 = __webpack_require__(4);
-const ComboDropdown_1 = __webpack_require__(8);
-const lodash_1 = __webpack_require__(3);
+const ComboDropdown_1 = __webpack_require__(10);
+const lodash_1 = __webpack_require__(6);
 const mobx_react_1 = __webpack_require__(2);
 let CreateEntity = class CreateEntity extends React.Component {
     constructor() {
@@ -3849,7 +2274,8 @@ exports.CreateEntity = CreateEntity;
 
 
 /***/ }),
-/* 73 */
+
+/***/ 355:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3868,12 +2294,12 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-const React = __webpack_require__(0);
-const Overlay_1 = __webpack_require__(10);
-const falcon_core_1 = __webpack_require__(1);
+const React = __webpack_require__(1);
+const Overlay_1 = __webpack_require__(15);
+const falcon_core_1 = __webpack_require__(5);
 const ApiService_1 = __webpack_require__(4);
 const mobx_react_1 = __webpack_require__(2);
-const mousetrap = __webpack_require__(13);
+const mousetrap = __webpack_require__(25);
 let CreateEntityType = class CreateEntityType extends React.Component {
     constructor() {
         super();
@@ -3917,7 +2343,8 @@ exports.CreateEntityType = CreateEntityType;
 
 
 /***/ }),
-/* 74 */
+
+/***/ 356:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3936,11 +2363,11 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-const React = __webpack_require__(0);
-const Overlay_1 = __webpack_require__(10);
-const PredicateDescription_1 = __webpack_require__(28);
-const falcon_core_1 = __webpack_require__(1);
-const literalTypes_1 = __webpack_require__(29);
+const React = __webpack_require__(1);
+const Overlay_1 = __webpack_require__(15);
+const PredicateDescription_1 = __webpack_require__(187);
+const falcon_core_1 = __webpack_require__(5);
+const literalTypes_1 = __webpack_require__(189);
 const ApiService_1 = __webpack_require__(4);
 const mobx_react_1 = __webpack_require__(2);
 let CreatePredicate = class CreatePredicate extends React.Component {
@@ -4031,7 +2458,8 @@ exports.CreatePredicate = CreatePredicate;
 
 
 /***/ }),
-/* 75 */
+
+/***/ 357:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4050,8 +2478,8 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-const React = __webpack_require__(0);
-const falcon_core_1 = __webpack_require__(1);
+const React = __webpack_require__(1);
+const falcon_core_1 = __webpack_require__(5);
 const ApiService_1 = __webpack_require__(4);
 const mobx_react_1 = __webpack_require__(2);
 let CreatePresetRecord = CreatePresetRecord_1 = class CreatePresetRecord extends React.Component {
@@ -4110,7 +2538,8 @@ var CreatePresetRecord_1;
 
 
 /***/ }),
-/* 76 */
+
+/***/ 358:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4129,11 +2558,11 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-const React = __webpack_require__(0);
-const Overlay_1 = __webpack_require__(10);
-const falcon_core_1 = __webpack_require__(1);
+const React = __webpack_require__(1);
+const Overlay_1 = __webpack_require__(15);
+const falcon_core_1 = __webpack_require__(5);
 const ApiService_1 = __webpack_require__(4);
-const ComboDropdown_1 = __webpack_require__(8);
+const ComboDropdown_1 = __webpack_require__(10);
 const mobx_react_1 = __webpack_require__(2);
 let CreateRecord = class CreateRecord extends React.Component {
     constructor() {
@@ -4190,7 +2619,8 @@ exports.CreateRecord = CreateRecord;
 
 
 /***/ }),
-/* 77 */
+
+/***/ 359:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4209,12 +2639,12 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-const React = __webpack_require__(0);
-const Overlay_1 = __webpack_require__(10);
-const falcon_core_1 = __webpack_require__(1);
+const React = __webpack_require__(1);
+const Overlay_1 = __webpack_require__(15);
+const falcon_core_1 = __webpack_require__(5);
 const ApiService_1 = __webpack_require__(4);
 const mobx_react_1 = __webpack_require__(2);
-const mousetrap = __webpack_require__(13);
+const mousetrap = __webpack_require__(25);
 let CreateSource = class CreateSource extends React.Component {
     constructor() {
         super();
@@ -4264,7 +2694,8 @@ exports.CreateSource = CreateSource;
 
 
 /***/ }),
-/* 78 */
+
+/***/ 360:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4283,10 +2714,10 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-const React = __webpack_require__(0);
-const Overlay_1 = __webpack_require__(10);
+const React = __webpack_require__(1);
+const Overlay_1 = __webpack_require__(15);
 const mobx_react_1 = __webpack_require__(2);
-const mousetrap = __webpack_require__(13);
+const mousetrap = __webpack_require__(25);
 let CreateTabSet = class CreateTabSet extends React.Component {
     constructor() {
         super();
@@ -4341,7 +2772,8 @@ exports.CreateTabSet = CreateTabSet;
 
 
 /***/ }),
-/* 79 */
+
+/***/ 361:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4360,12 +2792,12 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-const React = __webpack_require__(0);
-const lev = __webpack_require__(105);
-const ComboDropdown_1 = __webpack_require__(8);
-const lodash_1 = __webpack_require__(3);
-const AddTabButton_1 = __webpack_require__(5);
-const formatDate_1 = __webpack_require__(20);
+const React = __webpack_require__(1);
+const lev = __webpack_require__(206);
+const ComboDropdown_1 = __webpack_require__(10);
+const lodash_1 = __webpack_require__(6);
+const AddTabButton_1 = __webpack_require__(7);
+const formatDate_1 = __webpack_require__(55);
 const mobx_react_1 = __webpack_require__(2);
 const sortIcons = {
     'none': 'fa fa-sort',
@@ -4613,7 +3045,8 @@ exports.EntityList = EntityList;
 
 
 /***/ }),
-/* 80 */
+
+/***/ 362:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4632,10 +3065,10 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-const React = __webpack_require__(0);
-const AddTabButton_1 = __webpack_require__(5);
-const SearchBar_1 = __webpack_require__(14);
-const RecursiveTree_1 = __webpack_require__(26);
+const React = __webpack_require__(1);
+const AddTabButton_1 = __webpack_require__(7);
+const SearchBar_1 = __webpack_require__(39);
+const RecursiveTree_1 = __webpack_require__(185);
 const mobx_react_1 = __webpack_require__(2);
 class EntityRecursiveTree extends RecursiveTree_1.RecursiveTree {
 }
@@ -4703,7 +3136,8 @@ exports.EntityTypeList = EntityTypeList;
 
 
 /***/ }),
-/* 81 */
+
+/***/ 363:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4722,10 +3156,10 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-const React = __webpack_require__(0);
-const AddTabButton_1 = __webpack_require__(5);
+const React = __webpack_require__(1);
+const AddTabButton_1 = __webpack_require__(7);
 const mobx_react_1 = __webpack_require__(2);
-const SearchBar_1 = __webpack_require__(14);
+const SearchBar_1 = __webpack_require__(39);
 let PredicateList = class PredicateList extends React.Component {
     constructor() {
         super();
@@ -4795,7 +3229,8 @@ exports.PredicateList = PredicateList;
 
 
 /***/ }),
-/* 82 */
+
+/***/ 364:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4814,11 +3249,11 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-const React = __webpack_require__(0);
-const AddTabButton_1 = __webpack_require__(5);
+const React = __webpack_require__(1);
+const AddTabButton_1 = __webpack_require__(7);
 const mobx_react_1 = __webpack_require__(2);
-const SearchBar_1 = __webpack_require__(14);
-const RecursiveTree_1 = __webpack_require__(26);
+const SearchBar_1 = __webpack_require__(39);
+const RecursiveTree_1 = __webpack_require__(185);
 class SourceRecursiveTree extends RecursiveTree_1.RecursiveTree {
 }
 let SourceList = class SourceList extends React.Component {
@@ -4883,7 +3318,8 @@ exports.SourceList = SourceList;
 
 
 /***/ }),
-/* 83 */
+
+/***/ 365:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4893,8 +3329,8 @@ exports.SourceList = SourceList;
  * @version 0.2.0
  */
 
-const React = __webpack_require__(0);
-const ComboDropdown_1 = __webpack_require__(8);
+const React = __webpack_require__(1);
+const ComboDropdown_1 = __webpack_require__(10);
 const ApiService_1 = __webpack_require__(4);
 exports.SearchBox = (props, context) => {
     const entities = props.dataStore.dataStore.all.entity.value.map((entity) => ({ key: entity.label, value: `${ApiService_1.AppUrls.entity}/${entity.uid}` }));
@@ -4916,7 +3352,8 @@ exports.SearchBox.contextTypes = { router: React.PropTypes.object.isRequired };
 
 
 /***/ }),
-/* 84 */
+
+/***/ 366:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4926,13 +3363,14 @@ exports.SearchBox.contextTypes = { router: React.PropTypes.object.isRequired };
  * @version 0.2.0
  */
 
-const React = __webpack_require__(0);
+const React = __webpack_require__(1);
 exports.AdvancedSearchWorkspace = (props) => (React.createElement("div", { className: 'workspace-editor' },
     React.createElement("h2", null, "Advanced Search")));
 
 
 /***/ }),
-/* 85 */
+
+/***/ 367:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4942,13 +3380,14 @@ exports.AdvancedSearchWorkspace = (props) => (React.createElement("div", { class
  * @version 0.2.0
  */
 
-const React = __webpack_require__(0);
+const React = __webpack_require__(1);
 exports.EmptyWorkspace = () => (React.createElement("div", { className: 'workspace-editor' },
     React.createElement("h2", null, "There is nothing here")));
 
 
 /***/ }),
-/* 86 */
+
+/***/ 368:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4967,13 +3406,13 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-const React = __webpack_require__(0);
+const React = __webpack_require__(1);
 const ApiService_1 = __webpack_require__(4);
-const falcon_core_1 = __webpack_require__(1);
-const findParentTree_1 = __webpack_require__(19);
-const EditableHeader_1 = __webpack_require__(12);
-const EntityWorkspaceCoreView_1 = __webpack_require__(91);
-const EntityWorkspaceReferenceView_1 = __webpack_require__(92);
+const falcon_core_1 = __webpack_require__(5);
+const findParentTree_1 = __webpack_require__(54);
+const EditableHeader_1 = __webpack_require__(27);
+const EntityWorkspaceCoreView_1 = __webpack_require__(373);
+const EntityWorkspaceReferenceView_1 = __webpack_require__(374);
 const mobx_react_1 = __webpack_require__(2);
 class StringEditableFieldComponent extends EditableHeader_1.EditableFieldComponent {
 }
@@ -5116,7 +3555,8 @@ exports.EntityEditorWorkspace = EntityEditorWorkspace;
 
 
 /***/ }),
-/* 87 */
+
+/***/ 369:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5135,14 +3575,14 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-const React = __webpack_require__(0);
-const SameAsEditor_1 = __webpack_require__(18);
+const React = __webpack_require__(1);
+const SameAsEditor_1 = __webpack_require__(53);
 const ApiService_1 = __webpack_require__(4);
-const falcon_core_1 = __webpack_require__(1);
-const AddTabButton_1 = __webpack_require__(5);
-const EditableHeader_1 = __webpack_require__(12);
-const EditableParagraph_1 = __webpack_require__(27);
-const EditableComboDropdown_1 = __webpack_require__(17);
+const falcon_core_1 = __webpack_require__(5);
+const AddTabButton_1 = __webpack_require__(7);
+const EditableHeader_1 = __webpack_require__(27);
+const EditableParagraph_1 = __webpack_require__(186);
+const EditableComboDropdown_1 = __webpack_require__(52);
 const mobx_react_1 = __webpack_require__(2);
 class StringEditableFieldComponent extends EditableHeader_1.EditableFieldComponent {
 }
@@ -5295,7 +3735,8 @@ exports.EntityTypeWorkspace = EntityTypeWorkspace;
 
 
 /***/ }),
-/* 88 */
+
+/***/ 370:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5305,11 +3746,11 @@ exports.EntityTypeWorkspace = EntityTypeWorkspace;
  * @version 0.2.0
  */
 
-const React = __webpack_require__(0);
-const EntityList_1 = __webpack_require__(79);
-const PredicateList_1 = __webpack_require__(81);
-const SourceList_1 = __webpack_require__(82);
-const EntityTypeList_1 = __webpack_require__(80);
+const React = __webpack_require__(1);
+const EntityList_1 = __webpack_require__(361);
+const PredicateList_1 = __webpack_require__(363);
+const SourceList_1 = __webpack_require__(364);
+const EntityTypeList_1 = __webpack_require__(362);
 exports.ObjectListWorkspace = (props) => (React.createElement("div", { className: 'workspace-editor object-list' }, (() => {
     switch (props.listType) {
         case 'entity':
@@ -5325,7 +3766,8 @@ exports.ObjectListWorkspace = (props) => (React.createElement("div", { className
 
 
 /***/ }),
-/* 89 */
+
+/***/ 371:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5344,15 +3786,15 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-const React = __webpack_require__(0);
-const react_router_1 = __webpack_require__(9);
-const SameAsEditor_1 = __webpack_require__(18);
+const React = __webpack_require__(1);
+const react_router_1 = __webpack_require__(11);
+const SameAsEditor_1 = __webpack_require__(53);
 const ApiService_1 = __webpack_require__(4);
-const falcon_core_1 = __webpack_require__(1);
-const EditableHeader_1 = __webpack_require__(12);
-const EditableParagraph_1 = __webpack_require__(27);
-const PredicateDescription_1 = __webpack_require__(28);
-const literalTypes_1 = __webpack_require__(29);
+const falcon_core_1 = __webpack_require__(5);
+const EditableHeader_1 = __webpack_require__(27);
+const EditableParagraph_1 = __webpack_require__(186);
+const PredicateDescription_1 = __webpack_require__(187);
+const literalTypes_1 = __webpack_require__(189);
 const mobx_react_1 = __webpack_require__(2);
 class StringEditableFieldComponent extends EditableHeader_1.EditableFieldComponent {
 }
@@ -5502,7 +3944,8 @@ exports.PredicateEditorWorkspace = PredicateEditorWorkspace;
 
 
 /***/ }),
-/* 90 */
+
+/***/ 372:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5521,15 +3964,15 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-const React = __webpack_require__(0);
-const SameAsEditor_1 = __webpack_require__(18);
+const React = __webpack_require__(1);
+const SameAsEditor_1 = __webpack_require__(53);
 const ApiService_1 = __webpack_require__(4);
-const falcon_core_1 = __webpack_require__(1);
-const EditableHeader_1 = __webpack_require__(12);
-const EditableComboDropdown_1 = __webpack_require__(17);
-const lodash_1 = __webpack_require__(3);
+const falcon_core_1 = __webpack_require__(5);
+const EditableHeader_1 = __webpack_require__(27);
+const EditableComboDropdown_1 = __webpack_require__(52);
+const lodash_1 = __webpack_require__(6);
 const mobx_react_1 = __webpack_require__(2);
-const AddTabButton_1 = __webpack_require__(5);
+const AddTabButton_1 = __webpack_require__(7);
 class StringEditableFieldComponent extends EditableHeader_1.EditableFieldComponent {
 }
 class ComboEditableFieldComponent extends EditableHeader_1.EditableFieldComponent {
@@ -5748,7 +4191,8 @@ exports.SourceEditorWorkspace = SourceEditorWorkspace;
 
 
 /***/ }),
-/* 91 */
+
+/***/ 373:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5758,15 +4202,15 @@ exports.SourceEditorWorkspace = SourceEditorWorkspace;
  * @version 0.2.0
  */
 
-const React = __webpack_require__(0);
-const RecordsEditor_1 = __webpack_require__(67);
+const React = __webpack_require__(1);
+const RecordsEditor_1 = __webpack_require__(349);
 const ApiService_1 = __webpack_require__(4);
-const falcon_core_1 = __webpack_require__(1);
-const lodash_1 = __webpack_require__(3);
-const AddTabButton_1 = __webpack_require__(5);
-const findParentTree_1 = __webpack_require__(19);
-const EditableHeader_1 = __webpack_require__(12);
-const EditableComboDropdown_1 = __webpack_require__(17);
+const falcon_core_1 = __webpack_require__(5);
+const lodash_1 = __webpack_require__(6);
+const AddTabButton_1 = __webpack_require__(7);
+const findParentTree_1 = __webpack_require__(54);
+const EditableHeader_1 = __webpack_require__(27);
+const EditableComboDropdown_1 = __webpack_require__(52);
 class StringEditableFieldComponent extends EditableHeader_1.EditableFieldComponent {
 }
 class ComboEditableFieldComponent extends EditableHeader_1.EditableFieldComponent {
@@ -5845,7 +4289,8 @@ exports.EntityWorkspaceCoreView = EntityWorkspaceCoreView;
 
 
 /***/ }),
-/* 92 */
+
+/***/ 374:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5855,10 +4300,10 @@ exports.EntityWorkspaceCoreView = EntityWorkspaceCoreView;
  * @version 0.2.0
  */
 
-const React = __webpack_require__(0);
+const React = __webpack_require__(1);
 const ApiService_1 = __webpack_require__(4);
-const falcon_core_1 = __webpack_require__(1);
-const AddTabButton_1 = __webpack_require__(5);
+const falcon_core_1 = __webpack_require__(5);
+const AddTabButton_1 = __webpack_require__(7);
 // What can I do?
 // Entity Operations
 // - Delete the entity
@@ -5914,7 +4359,8 @@ exports.EntityWorkspaceReferenceView = EntityWorkspaceReferenceView;
 
 
 /***/ }),
-/* 93 */
+
+/***/ 375:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5924,24 +4370,25 @@ exports.EntityWorkspaceReferenceView = EntityWorkspaceReferenceView;
  * @version 0.2.0
  */
 
-var EmptyWorkspace_1 = __webpack_require__(85);
+var EmptyWorkspace_1 = __webpack_require__(367);
 exports.EmptyWorkspace = EmptyWorkspace_1.EmptyWorkspace;
-var EntityEditorWorkspace_1 = __webpack_require__(86);
+var EntityEditorWorkspace_1 = __webpack_require__(368);
 exports.EntityEditorWorkspace = EntityEditorWorkspace_1.EntityEditorWorkspace;
-var EntityTypeWorkspace_1 = __webpack_require__(87);
+var EntityTypeWorkspace_1 = __webpack_require__(369);
 exports.EntityTypeWorkspace = EntityTypeWorkspace_1.EntityTypeWorkspace;
-var SourceEditorWorkspace_1 = __webpack_require__(90);
+var SourceEditorWorkspace_1 = __webpack_require__(372);
 exports.SourceEditorWorkspace = SourceEditorWorkspace_1.SourceEditorWorkspace;
-var PredicateEditorWorkspace_1 = __webpack_require__(89);
+var PredicateEditorWorkspace_1 = __webpack_require__(371);
 exports.PredicateEditorWorkspace = PredicateEditorWorkspace_1.PredicateEditorWorkspace;
-var AdvancedSearchWorkspace_1 = __webpack_require__(84);
+var AdvancedSearchWorkspace_1 = __webpack_require__(366);
 exports.AdvancedSearchWorkspace = AdvancedSearchWorkspace_1.AdvancedSearchWorkspace;
-var ObjectListWorkspace_1 = __webpack_require__(88);
+var ObjectListWorkspace_1 = __webpack_require__(370);
 exports.ObjectListWorkspace = ObjectListWorkspace_1.ObjectListWorkspace;
 
 
 /***/ }),
-/* 94 */
+
+/***/ 376:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5968,13 +4415,13 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-const falcon_core_1 = __webpack_require__(1);
+const falcon_core_1 = __webpack_require__(5);
 const ApiService_1 = __webpack_require__(4);
-const DataStore_1 = __webpack_require__(95);
-const react_sortable_hoc_1 = __webpack_require__(23);
-const mobx_1 = __webpack_require__(31);
-const lodash_1 = __webpack_require__(3);
-const moment = __webpack_require__(15);
+const DataStore_1 = __webpack_require__(377);
+const react_sortable_hoc_1 = __webpack_require__(51);
+const mobx_1 = __webpack_require__(36);
+const lodash_1 = __webpack_require__(6);
+const moment = __webpack_require__(0);
 class DataController {
     constructor(api) {
         this.api = api;
@@ -6227,7 +4674,8 @@ exports.DataController = DataController;
 
 
 /***/ }),
-/* 95 */
+
+/***/ 377:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6237,7 +4685,7 @@ exports.DataController = DataController;
  * @version 0.2.0
  */
 
-const falcon_core_1 = __webpack_require__(1);
+const falcon_core_1 = __webpack_require__(5);
 exports.emptyDataStore = {
     all: {
         entity: { value: [], lastUpdate: null },
@@ -6258,7 +4706,8 @@ exports.emptyDataStore = {
 
 
 /***/ }),
-/* 96 */
+
+/***/ 378:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6285,17 +4734,17 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-const React = __webpack_require__(0);
-const lodash_1 = __webpack_require__(3);
-const CreatePredicate_1 = __webpack_require__(74);
-const CreateRecord_1 = __webpack_require__(76);
-const CreatePresetRecord_1 = __webpack_require__(75);
-const CreateSource_1 = __webpack_require__(77);
-const CreateEntity_1 = __webpack_require__(72);
-const CreateEntityType_1 = __webpack_require__(73);
-const ConflictResolution_1 = __webpack_require__(71);
-const CreateTabSet_1 = __webpack_require__(78);
-const mobx_1 = __webpack_require__(31);
+const React = __webpack_require__(1);
+const lodash_1 = __webpack_require__(6);
+const CreatePredicate_1 = __webpack_require__(356);
+const CreateRecord_1 = __webpack_require__(358);
+const CreatePresetRecord_1 = __webpack_require__(357);
+const CreateSource_1 = __webpack_require__(359);
+const CreateEntity_1 = __webpack_require__(354);
+const CreateEntityType_1 = __webpack_require__(355);
+const ConflictResolution_1 = __webpack_require__(353);
+const CreateTabSet_1 = __webpack_require__(360);
+const mobx_1 = __webpack_require__(36);
 class ModalStore {
     constructor() {
         this.modalQueue = [];
@@ -6380,7 +4829,8 @@ exports.ModalStore = ModalStore;
 
 
 /***/ }),
-/* 97 */
+
+/***/ 379:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6390,9 +4840,9 @@ exports.ModalStore = ModalStore;
  * @version 0.2.0
  */
 
-const React = __webpack_require__(0);
-const react_router_1 = __webpack_require__(9);
-const StatsGrid_1 = __webpack_require__(30);
+const React = __webpack_require__(1);
+const react_router_1 = __webpack_require__(11);
+const StatsGrid_1 = __webpack_require__(190);
 const setTabList = (data, router) => {
     window.localStorage.setItem('open_tabs', JSON.stringify(data));
     router.transitionTo('/edit/empty');
@@ -6439,7 +4889,8 @@ exports.Admin.contextTypes = {
 
 
 /***/ }),
-/* 98 */
+
+/***/ 380:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6449,7 +4900,7 @@ exports.Admin.contextTypes = {
  * @version 0.2.0
  */
 
-const React = __webpack_require__(0);
+const React = __webpack_require__(1);
 exports.AppDownload = (props) => (React.createElement("div", { className: 'page' },
     React.createElement("section", null,
         React.createElement("h1", null, "App Download"),
@@ -6470,7 +4921,8 @@ exports.AppDownload = (props) => (React.createElement("div", { className: 'page'
 
 
 /***/ }),
-/* 99 */
+
+/***/ 381:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6480,7 +4932,7 @@ exports.AppDownload = (props) => (React.createElement("div", { className: 'page'
  * @version 0.2.0
  */
 
-const React = __webpack_require__(0);
+const React = __webpack_require__(1);
 exports.DatabaseUpload = (props) => (React.createElement("div", { className: 'page' },
     React.createElement("section", null,
         React.createElement("h1", null, "This is the database upload page"),
@@ -6489,7 +4941,8 @@ exports.DatabaseUpload = (props) => (React.createElement("div", { className: 'pa
 
 
 /***/ }),
-/* 100 */
+
+/***/ 382:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6499,14 +4952,14 @@ exports.DatabaseUpload = (props) => (React.createElement("div", { className: 'pa
  * @version 0.2.0
  */
 
-const React = __webpack_require__(0);
-const Sidebar_1 = __webpack_require__(59);
-const Workspace_1 = __webpack_require__(61);
-const Toast_1 = __webpack_require__(60);
-const DataController_1 = __webpack_require__(94);
-const ModalStore_1 = __webpack_require__(96);
-const react_sortable_hoc_1 = __webpack_require__(23);
-const mobx_react_devtools_1 = __webpack_require__(107);
+const React = __webpack_require__(1);
+const Sidebar_1 = __webpack_require__(341);
+const Workspace_1 = __webpack_require__(343);
+const Toast_1 = __webpack_require__(342);
+const DataController_1 = __webpack_require__(376);
+const ModalStore_1 = __webpack_require__(378);
+const react_sortable_hoc_1 = __webpack_require__(51);
+const mobx_react_devtools_1 = __webpack_require__(312);
 const mobx_react_1 = __webpack_require__(2);
 const ObjectEditorCore = react_sortable_hoc_1.SortableContainer((props) => {
     return (React.createElement("span", { className: 'flex-fill' },
@@ -6595,7 +5048,8 @@ exports.ObjectEditor = ObjectEditor;
 
 
 /***/ }),
-/* 101 */
+
+/***/ 383:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6605,7 +5059,7 @@ exports.ObjectEditor = ObjectEditor;
  * @version 0.2.0
  */
 
-const React = __webpack_require__(0);
+const React = __webpack_require__(1);
 exports.RouteNotFound = (props) => (React.createElement("section", null,
     React.createElement("h1", null,
         "The page at ",
@@ -6614,7 +5068,8 @@ exports.RouteNotFound = (props) => (React.createElement("section", null,
 
 
 /***/ }),
-/* 102 */
+
+/***/ 384:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6624,14 +5079,15 @@ exports.RouteNotFound = (props) => (React.createElement("section", null,
  * @version 0.2.0
  */
 
-const React = __webpack_require__(0);
+const React = __webpack_require__(1);
 exports.User = (props) => (React.createElement("div", { className: 'page' },
     React.createElement("section", null,
         React.createElement("h1", null, "This is the user page"))));
 
 
 /***/ }),
-/* 103 */
+
+/***/ 385:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6641,38 +5097,15 @@ exports.User = (props) => (React.createElement("div", { className: 'page' },
  * @version 0.2.0
  */
 
-const React = __webpack_require__(0);
+const React = __webpack_require__(1);
 exports.UserManagement = (props) => (React.createElement("div", { className: 'page' },
     React.createElement("section", null,
         React.createElement("h1", null, "This is the user management page"))));
 
 
 /***/ }),
-/* 104 */
-/***/ (function(module, exports) {
 
-module.exports = require("knex");
-
-/***/ }),
-/* 105 */
-/***/ (function(module, exports) {
-
-module.exports = require("levenshtein");
-
-/***/ }),
-/* 106 */
-/***/ (function(module, exports) {
-
-module.exports = require("lunr");
-
-/***/ }),
-/* 107 */
-/***/ (function(module, exports) {
-
-module.exports = require("mobx-react-devtools");
-
-/***/ }),
-/* 108 */
+/***/ 387:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6682,48 +5115,308 @@ module.exports = require("mobx-react-devtools");
  * @version 0.2.0
  */
 
-const react_dom_1 = __webpack_require__(36);
-const react_1 = __webpack_require__(0);
-const FalconApp_1 = __webpack_require__(34);
-const Database_1 = __webpack_require__(32);
-const wrapDatabase_1 = __webpack_require__(33);
-const react_router_1 = __webpack_require__(9);
-const electron = __webpack_require__(35);
-const databaseFile = electron.remote.dialog.showOpenDialog({ properties: ['openFile'], filters: [
-        { name: 'Database Files', extensions: ['sqlite'] }
-    ] });
-if (databaseFile !== undefined) {
-    electron.remote.getCurrentWindow().setTitle(`Imperial Entanglements (${databaseFile[0]})`);
-    const db = new Database_1.Database({
-        client: 'sqlite3',
-        useNullAsDefault: true,
-        connection: {
-            filename: databaseFile[0]
-        },
-        pool: {
-            afterCreate: (conn, cb) => {
-                conn.run('PRAGMA foreign_keys = ON', cb);
+const react_dom_1 = __webpack_require__(18);
+const react_1 = __webpack_require__(1);
+const FalconApp_1 = __webpack_require__(193);
+const ClientApiService_1 = __webpack_require__(192);
+const react_router_1 = __webpack_require__(11);
+document.addEventListener('DOMContentLoaded', (event) => {
+    react_dom_1.render(react_1.createElement(FalconApp_1.FalconApp, {
+        api: new ClientApiService_1.ClientApiService(),
+        router: react_router_1.BrowserRouter,
+        routerSettings: {},
+        environment: 'website',
+        connected: true
+    }), document.getElementById('main'));
+});
+
+
+/***/ }),
+
+/***/ 39:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview Sidebar for editor
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.2.0
+ */
+
+const React = __webpack_require__(1);
+exports.SearchBar = (props) => {
+    const filterFunc = (s) => {
+        return (a) => {
+            if (s.length === 0) {
+                return true;
+            }
+            return props.getValue(a).toLowerCase().indexOf(s.toLowerCase()) !== -1;
+        };
+    };
+    return (React.createElement("div", null,
+        React.createElement("div", { className: 'input-addon-formgroup' },
+            React.createElement("span", { className: 'input-addon-icon' },
+                React.createElement("i", { className: 'fa fa-search fa-fw' })),
+            React.createElement("input", { type: 'text', className: 'form-control with-addon', onChange: (e) => props.setFilterFunc(filterFunc(e.target.value)) }))));
+};
+
+
+/***/ }),
+
+/***/ 4:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview <Description Missing>
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.2.0
+ */
+
+const itemTypes_1 = __webpack_require__(188);
+exports.AppUrls = {
+    element_set: itemTypes_1.itemTypes.element_set.machineName,
+    record: itemTypes_1.itemTypes.record.machineName,
+    entity: itemTypes_1.itemTypes.entity.machineName,
+    entity_type: itemTypes_1.itemTypes.entity_type.machineName,
+    predicate: itemTypes_1.itemTypes.predicate.machineName,
+    source: itemTypes_1.itemTypes.source.machineName,
+    source_element: itemTypes_1.itemTypes.source_element.machineName,
+    element: 'element'
+};
+
+
+/***/ }),
+
+/***/ 52:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview <Description Missing>
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.2.0
+ */
+
+var __assign = (this && this.__assign) || Object.assign || function(t) {
+    for (var s, i = 1, n = arguments.length; i < n; i++) {
+        s = arguments[i];
+        for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+            t[p] = s[p];
+    }
+    return t;
+};
+const React = __webpack_require__(1);
+var EditableFieldComponent_1 = __webpack_require__(17);
+exports.EditableFieldComponent = EditableFieldComponent_1.EditableFieldComponent;
+const ComboDropdown_1 = __webpack_require__(10);
+function EditableComboDropdown(props) {
+    if (props.edit) {
+        return (React.createElement("div", null,
+            React.createElement(ComboDropdown_1.NumberComboDropdown, __assign({}, props.comboSettings, { value: props.value, setValue: props.onChange, allowNew: false, createNewValue: () => { } })),
+            React.createElement("button", null,
+                React.createElement("i", { className: 'fa fa-check', onClick: props.acceptChanges, "aria-hidden": 'true' })),
+            React.createElement("button", null,
+                React.createElement("i", { className: 'fa fa-times', "aria-hidden": 'true', onClick: props.cancelChanges }))));
+    }
+    else {
+        return (React.createElement("div", null,
+            props.value !== null && props.value.key.length > 0 ? props.value.key
+                : (React.createElement("em", null, "No value")),
+            React.createElement("sup", null,
+                React.createElement("i", { className: 'fa fa-pencil-square-o', title: 'Edit', "aria-hidden": 'true', onClick: props.setEdit }))));
+    }
+}
+exports.EditableComboDropdown = EditableComboDropdown;
+;
+
+
+/***/ }),
+
+/***/ 53:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview Sidebar for editor
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.2.0
+ */
+
+const React = __webpack_require__(1);
+const mousetrap = __webpack_require__(25);
+class SameAsEditor extends React.Component {
+    constructor(props) {
+        super();
+        this.state = {
+            temporaryValue: '',
+            urls: props.value === null || props.value.length === 0 ? [] : props.value.split(',')
+        };
+    }
+    componentWillReceiveProps(props) {
+        this.setState({
+            temporaryValue: '',
+            urls: props.value === null || props.value.length === 0 ? [] : props.value.split(',')
+        });
+    }
+    addItemToList() {
+        if (this.state.temporaryValue.length === 0) {
+            return;
+        }
+        this.setState({ urls: this.state.urls.concat([this.state.temporaryValue]), temporaryValue: '' }, () => this.props.onChange(this.state.urls.join(',')));
+    }
+    removeItemFromList(itemId) {
+        this.setState({
+            urls: this.state.urls.filter((val, i) => i !== itemId)
+        }, () => this.props.onChange(this.state.urls.join(',')));
+    }
+    setupKeyboardShortcuts(val) {
+        if (val !== null) {
+            val.focus();
+            this.keyboardShortcuts = new mousetrap(val);
+            this.keyboardShortcuts.bind('return', this.addItemToList.bind(this));
+            this.keyboardShortcuts.bind('escape', this.props.cancelChanges);
+            this.keyboardShortcuts.bind('ctrl+s', (e) => {
+                if (e.preventDefault) {
+                    e.preventDefault();
+                }
+                else {
+                    // internet explorer
+                    e.returnValue = false;
+                }
+                this.props.acceptChanges();
+            });
+        }
+        else {
+            this.keyboardShortcuts.unbind('return');
+            this.keyboardShortcuts.unbind('escape');
+            this.keyboardShortcuts.unbind('ctrl+s');
+        }
+    }
+    render() {
+        return (React.createElement("div", { className: 'same-as-box' },
+            React.createElement("label", { className: 'small' },
+                "Same As ",
+                !this.props.edit ? (React.createElement("sup", null,
+                    React.createElement("i", { className: 'fa fa-pencil-square-o', title: 'Edit', "aria-hidden": 'true', onClick: this.props.setEdit }))) : null),
+            this.props.edit ? (React.createElement("div", { className: 'edit-group' },
+                React.createElement("button", { onClick: this.props.acceptChanges },
+                    React.createElement("i", { className: 'fa fa-check', "aria-hidden": 'true' })),
+                React.createElement("button", { onClick: this.props.cancelChanges },
+                    React.createElement("i", { className: 'fa fa-times', "aria-hidden": 'true' })),
+                React.createElement("div", { className: 'input-addon-formgroup' },
+                    React.createElement("input", { type: 'text', value: this.state.temporaryValue, ref: this.setupKeyboardShortcuts.bind(this), onChange: (e) => this.setState({ temporaryValue: e.target.value }), className: 'form-control with-addon' }),
+                    React.createElement("span", { className: 'input-addon-icon right button', onClick: this.addItemToList.bind(this) },
+                        React.createElement("i", { className: 'fa fa-plus' }))))) : null,
+            React.createElement("ul", { className: 'same-as-list' }, this.state.urls.map((url, i) => (React.createElement("li", { key: `li-${url}` },
+                React.createElement("a", { target: '_blank', href: url }, url),
+                " ",
+                this.props.edit ? (React.createElement("i", { className: 'fa fa-times close-button', onClick: this.removeItemFromList.bind(this, i) })) : null))))));
+    }
+}
+exports.SameAsEditor = SameAsEditor;
+
+
+/***/ }),
+
+/***/ 54:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview <Description Missing>
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.2.0
+ */
+
+exports.findParentTree = (uid, data, ancestors = []) => {
+    const current = data.find((datum) => datum.uid === uid);
+    if (current === undefined) {
+        console.warn('Couldn\'t find parent');
+        return ancestors;
+    }
+    else {
+        if (current.parent === null || current.uid === null) {
+            if (current.uid === null) {
+                console.warn('Found entity will null uid');
+                return ancestors;
+            }
+            else {
+                return ancestors.concat([current.uid]);
             }
         }
-    });
-    document.addEventListener('DOMContentLoaded', (event) => {
-        react_dom_1.render(react_1.createElement(FalconApp_1.FalconApp, {
-            api: wrapDatabase_1.wrapDatabase(db, true),
-            environment: 'app',
-            connected: false,
-            router: react_router_1.MemoryRouter,
-            routerSettings: {
-                initialEntries: ['/'],
-                initialIndex: 0
-            }
-        }), document.getElementById('falcon-container'));
-    });
-}
-else {
-    electron.remote.app.quit();
-}
+        else {
+            return exports.findParentTree(current.parent, data, ancestors.concat([current.uid]));
+        }
+    }
+};
+
+
+/***/ }),
+
+/***/ 55:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview <Description Missing>
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.2.0
+ */
+
+const moment = __webpack_require__(0);
+exports.formatDate = (str) => {
+    if (str === null || str.length === 0) {
+        return '';
+    }
+    const modifier = {
+        '=': '',
+        '>': 'After ',
+        '<': 'Before '
+    }[str[0]];
+    const year = str.substr(1, 4);
+    const rawMonth = parseInt(str.substr(5, 2)) - 1;
+    const month = rawMonth === -1 || isNaN(rawMonth) ? 'Unknown' : moment.months()[rawMonth];
+    const rawDay = parseInt(str.substr(7, 2));
+    const day = rawDay > 0 ? rawDay : '';
+    return `${modifier} ${day} ${month} ${year}`;
+};
+
+
+/***/ }),
+
+/***/ 6:
+/***/ (function(module, exports) {
+
+module.exports = _;
+
+/***/ }),
+
+/***/ 7:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview Sidebar for editor
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.2.0
+ */
+
+const React = __webpack_require__(1);
+const mobx_react_1 = __webpack_require__(2);
+exports.AddTabButton = mobx_react_1.inject('dataStore')(mobx_react_1.observer((props, context) => {
+    if (props.dataStore.dataStore.tabs[props.tabType] !== undefined
+        && props.uid in props.dataStore.dataStore.tabs[props.tabType]) {
+        return (React.createElement("i", { className: 'fa fa-folder-open-o add button', title: 'Open item', onClick: () => context.router.transitionTo(`/edit/${props.tabType}/${props.uid}`) }, " "));
+    }
+    return (React.createElement("i", { className: 'icon-list-add add button', title: 'Add to list', onClick: () => props.dataStore.createTab(props.tabType, props.uid, 'item', props.data) }));
+}));
+exports.AddTabButton.wrappedComponent.contextTypes = {
+    router: React.PropTypes.object.isRequired
+};
 
 
 /***/ })
-/******/ ]);
-//# sourceMappingURL=app.electron.dist.js.map
+
+},[387]);
+//# sourceMappingURL=main.dist.js.map

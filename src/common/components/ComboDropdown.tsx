@@ -301,4 +301,4 @@ export class ComboDropdown<T> extends React.Component<ComboDropdownProps<T>, Com
 }
 
 export class NumberComboDropdown extends ComboDropdown<number> {}
-export class StringComboDropdown extends ComboDropdown<number> {}
+export class StringComboDropdown extends ComboDropdown<string> {}

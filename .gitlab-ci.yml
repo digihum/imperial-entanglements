@@ -9,7 +9,7 @@ run_tests:
   - npm install
 
   # build typescript
-  - npm run webpack || true
+  - npm run webpack
 
   - npm run gulp
   

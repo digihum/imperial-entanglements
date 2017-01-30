@@ -1,6 +1,39 @@
 /******/ (function(modules) { // webpackBootstrap
+/******/ 	// install a JSONP callback for chunk loading
+/******/ 	var parentJsonpFunction = window["webpackJsonp"];
+/******/ 	window["webpackJsonp"] = function webpackJsonpCallback(chunkIds, moreModules, executeModules) {
+/******/ 		// add "moreModules" to the modules object,
+/******/ 		// then flag all "chunkIds" as loaded and fire callback
+/******/ 		var moduleId, chunkId, i = 0, resolves = [], result;
+/******/ 		for(;i < chunkIds.length; i++) {
+/******/ 			chunkId = chunkIds[i];
+/******/ 			if(installedChunks[chunkId])
+/******/ 				resolves.push(installedChunks[chunkId][0]);
+/******/ 			installedChunks[chunkId] = 0;
+/******/ 		}
+/******/ 		for(moduleId in moreModules) {
+/******/ 			if(Object.prototype.hasOwnProperty.call(moreModules, moduleId)) {
+/******/ 				modules[moduleId] = moreModules[moduleId];
+/******/ 			}
+/******/ 		}
+/******/ 		if(parentJsonpFunction) parentJsonpFunction(chunkIds, moreModules, executeModules);
+/******/ 		while(resolves.length)
+/******/ 			resolves.shift()();
+/******/ 		if(executeModules) {
+/******/ 			for(i=0; i < executeModules.length; i++) {
+/******/ 				result = __webpack_require__(__webpack_require__.s = executeModules[i]);
+/******/ 			}
+/******/ 		}
+/******/ 		return result;
+/******/ 	};
+/******/
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
+/******/
+/******/ 	// objects to store loaded and loading chunks
+/******/ 	var installedChunks = {
+/******/ 		1: 0
+/******/ 	};
 /******/
 /******/ 	// The require function
 /******/ 	function __webpack_require__(moduleId) {
@@ -26,6 +59,49 @@
 /******/ 		return module.exports;
 /******/ 	}
 /******/
+/******/ 	// This file contains only the entry chunk.
+/******/ 	// The chunk loading function for additional chunks
+/******/ 	__webpack_require__.e = function requireEnsure(chunkId) {
+/******/ 		if(installedChunks[chunkId] === 0)
+/******/ 			return Promise.resolve();
+/******/
+/******/ 		// an Promise means "currently loading".
+/******/ 		if(installedChunks[chunkId]) {
+/******/ 			return installedChunks[chunkId][2];
+/******/ 		}
+/******/ 		// start chunk loading
+/******/ 		var head = document.getElementsByTagName('head')[0];
+/******/ 		var script = document.createElement('script');
+/******/ 		script.type = 'text/javascript';
+/******/ 		script.charset = 'utf-8';
+/******/ 		script.async = true;
+/******/ 		script.timeout = 120000;
+/******/
+/******/ 		if (__webpack_require__.nc) {
+/******/ 			script.setAttribute("nonce", __webpack_require__.nc);
+/******/ 		}
+/******/ 		script.src = __webpack_require__.p + "./" + chunkId + ".dist.js";
+/******/ 		var timeout = setTimeout(onScriptComplete, 120000);
+/******/ 		script.onerror = script.onload = onScriptComplete;
+/******/ 		function onScriptComplete() {
+/******/ 			// avoid mem leaks in IE.
+/******/ 			script.onerror = script.onload = null;
+/******/ 			clearTimeout(timeout);
+/******/ 			var chunk = installedChunks[chunkId];
+/******/ 			if(chunk !== 0) {
+/******/ 				if(chunk) chunk[1](new Error('Loading chunk ' + chunkId + ' failed.'));
+/******/ 				installedChunks[chunkId] = undefined;
+/******/ 			}
+/******/ 		};
+/******/
+/******/ 		var promise = new Promise(function(resolve, reject) {
+/******/ 			installedChunks[chunkId] = [resolve, reject];
+/******/ 		});
+/******/ 		installedChunks[chunkId][2] = promise;
+/******/
+/******/ 		head.appendChild(script);
+/******/ 		return promise;
+/******/ 	};
 /******/
 /******/ 	// expose the modules object (__webpack_modules__)
 /******/ 	__webpack_require__.m = modules;
@@ -62,8 +138,8 @@
 /******/ 	// __webpack_public_path__
 /******/ 	__webpack_require__.p = "";
 /******/
-/******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 387);
+/******/ 	// on error function for async loading
+/******/ 	__webpack_require__.oe = function(err) { console.error(err); throw err; };
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -4372,15 +4448,10 @@ return hooks;
 
 })));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(55)(module)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(56)(module)))
 
 /***/ }),
-/* 1 */
-/***/ (function(module, exports) {
-
-module.exports = React;
-
-/***/ }),
+/* 1 */,
 /* 2 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -5577,30 +5648,7 @@ process.umask = function() { return 0; };
 
 
 /***/ }),
-/* 4 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview <Description Missing>
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.2.0
- */
-
-const itemTypes_1 = __webpack_require__(188);
-exports.AppUrls = {
-    element_set: itemTypes_1.itemTypes.element_set.machineName,
-    record: itemTypes_1.itemTypes.record.machineName,
-    entity: itemTypes_1.itemTypes.entity.machineName,
-    entity_type: itemTypes_1.itemTypes.entity_type.machineName,
-    predicate: itemTypes_1.itemTypes.predicate.machineName,
-    source: itemTypes_1.itemTypes.source.machineName,
-    source_element: itemTypes_1.itemTypes.source_element.machineName,
-    element: 'element'
-};
-
-
-/***/ }),
+/* 4 */,
 /* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -5632,41 +5680,12 @@ exports.Serializer = Serializer_1.Serializer;
 //# sourceMappingURL=index.js.map
 
 /***/ }),
-/* 6 */
-/***/ (function(module, exports) {
-
-module.exports = _;
-
-/***/ }),
-/* 7 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview Sidebar for editor
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.2.0
- */
-
-const React = __webpack_require__(1);
-const mobx_react_1 = __webpack_require__(2);
-exports.AddTabButton = mobx_react_1.inject('dataStore')(mobx_react_1.observer((props, context) => {
-    if (props.dataStore.dataStore.tabs[props.tabType] !== undefined
-        && props.uid in props.dataStore.dataStore.tabs[props.tabType]) {
-        return (React.createElement("i", { className: 'fa fa-folder-open-o add button', title: 'Open item', onClick: () => context.router.transitionTo(`/edit/${props.tabType}/${props.uid}`) }, " "));
-    }
-    return (React.createElement("i", { className: 'icon-list-add add button', title: 'Add to list', onClick: () => props.dataStore.createTab(props.tabType, props.uid, 'item', props.data) }));
-}));
-exports.AddTabButton.wrappedComponent.contextTypes = {
-    router: React.PropTypes.object.isRequired
-};
-
-
-/***/ }),
+/* 6 */,
+/* 7 */,
 /* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var freeGlobal = __webpack_require__(66);
+var freeGlobal = __webpack_require__(67);
 
 /** Detect free variable `self`. */
 var freeSelf = typeof self == 'object' && self && self.Object === Object && self;
@@ -5710,235 +5729,7 @@ module.exports = isArray;
 
 
 /***/ }),
-/* 10 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview Sidebar for editor
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.2.0
- */
-
-const React = __webpack_require__(1);
-const lunr = __webpack_require__(311);
-const lodash_1 = __webpack_require__(6);
-class ComboDropdown extends React.Component {
-    constructor() {
-        super();
-        this.state = {
-            searchString: '',
-            showingDropDown: false,
-            filteredOptions: [],
-            highlightedIndex: null,
-            dropDownHeight: 0
-        };
-    }
-    componentWillMount() {
-        this.ignoreBlur = false;
-        this.ignoreClick = false;
-        this.recalculateHeight = true;
-        this.dropDownBoxElement = null;
-        this.setState({
-            filteredOptions: this.props.options,
-            searchString: this.props.value === null || this.props.value.key === null ? '' : this.props.value.key
-        });
-    }
-    componentWillReceiveProps(newProps) {
-        let filterString = '';
-        if (this.props.value === null) {
-            if (newProps.value === null) {
-                // change nothing
-                filterString = this.state.searchString;
-            }
-            else {
-                // set to newProps value
-                filterString = newProps.value.key;
-            }
-        }
-        else {
-            if (newProps.value === null) {
-                // set to ''
-                filterString = '';
-            }
-            else {
-                if (newProps.value === this.props.value) {
-                    // change nothing
-                    filterString = this.state.searchString;
-                }
-                else {
-                    // set to newProps value
-                    filterString = newProps.value.key;
-                }
-            }
-        }
-        //const filterString = newProps.value.key !== this.props.value.key ? newProps.value.key : this.state.searchString;
-        this.updateFilter(filterString, newProps);
-        this.setState({
-            searchString: filterString
-        });
-    }
-    changeSearchString(event) {
-        this.setState({
-            searchString: event.target.value,
-            showingDropDown: true
-        }, () => {
-            this.updateFilter(this.state.searchString, this.props);
-            if (this.props.updateSearchString !== undefined) {
-                this.props.updateSearchString(this.state.searchString);
-            }
-        });
-    }
-    updateSearchString(s) {
-        if (this.props.updateSearchString !== undefined) {
-            this.props.updateSearchString(s);
-        }
-    }
-    updateFilter(filter, props) {
-        let filtered = [];
-        if (filter.length > 0) {
-            const idx = lunr(function () {
-                this.field('key', { boost: 10 });
-            });
-            props.options.forEach((opt, i) => idx.add(Object.assign({}, opt, { id: i })));
-            const result = idx.search(filter);
-            for (let i = 0; i < result.length; i += 1) {
-                filtered.push(props.options[result[i].ref]);
-            }
-        }
-        else {
-            filtered = props.options;
-        }
-        if (this.dropDownBoxElement !== null) {
-            this.recalculateHeight = true;
-            this.calculateDropdownHeight(this.dropDownBoxElement);
-        }
-        this.setState({
-            filteredOptions: filtered
-        });
-    }
-    addNewAction(option) {
-        this.props.createNewValue(option);
-    }
-    selectOption(option) {
-        this.props.setValue(option);
-        this.ignoreBlur = false;
-        this.recalculateHeight = true;
-        this.setState({ showingDropDown: false, searchString: option.key });
-        this.updateSearchString(option.key);
-    }
-    handleInputBlur() {
-        if (!this.ignoreBlur) {
-            if (this.state.searchString.length === 0) {
-                this.setState({ searchString: '' });
-            }
-            else {
-                if (lodash_1.findIndex(this.props.options, (option) => option.key === this.state.searchString) === -1) {
-                    this.setState({ searchString: this.props.value === null ? '' : this.props.value.key }, () => {
-                        this.updateFilter(this.props.value === null ? '' : this.props.value.key, this.props);
-                    });
-                }
-            }
-            this.recalculateHeight = true;
-            this.setState({
-                showingDropDown: false
-            });
-        }
-    }
-    handleInputFocus() {
-        if (this.ignoreBlur) {
-            this.ignoreBlur = true;
-            return;
-        }
-        // We don't want `selectItemFromMouse` to trigger when
-        // the user clicks into the input to focus it, so set this
-        // flag to cancel out the logic in `handleInputClick`.
-        // The event order is:  MouseDown -> Focus -> MouseUp -> Click
-        this.ignoreClick = true;
-        this.setState({ showingDropDown: true });
-    }
-    handleInputClick() {
-        // Input will not be focused if it's disabled
-        if (this.isInputFocused() && this.state.showingDropDown === false) {
-            this.setState({ showingDropDown: true });
-        }
-        else {
-            if (this.state.highlightedIndex !== null && !this.ignoreClick) {
-                this.selectItemFromMouse(this.state.filteredOptions[this.state.highlightedIndex]);
-            }
-            else {
-                this.ignoreClick = false;
-            }
-        }
-    }
-    selectItemFromMouse(item) {
-        this.recalculateHeight = true;
-        this.setState({
-            showingDropDown: false,
-            highlightedIndex: null
-        }, () => {
-            this.props.setValue(item);
-            this.refs[ComboDropdown.comboDropdownInputBoxRef].focus();
-        });
-    }
-    isInputFocused() {
-        const el = this.refs[ComboDropdown.comboDropdownInputBoxRef];
-        return el.ownerDocument && (el === el.ownerDocument.activeElement);
-    }
-    clearSearchBox() {
-        this.props.setValue(null);
-        this.setState({ searchString: '' });
-        this.refs[ComboDropdown.comboDropdownInputBoxRef].focus();
-    }
-    calculateDropdownHeight(val) {
-        this.dropDownBoxElement = val;
-        if (val === null || !this.recalculateHeight) {
-            return;
-        }
-        else {
-            this.setState({
-                dropDownHeight: window.document.body.getBoundingClientRect().bottom - val.getBoundingClientRect().top - 32
-            });
-            this.recalculateHeight = false;
-        }
-    }
-    render() {
-        return (React.createElement("div", { className: 'combo-dropdown ' + this.props.additionalClasses.join(' ') },
-            React.createElement("div", null,
-                React.createElement("input", { type: 'text', ref: ComboDropdown.comboDropdownInputBoxRef, className: 'search-input', value: this.state.searchString, placeholder: 'Click here and start typing..', onBlur: this.handleInputBlur.bind(this), onFocus: this.handleInputFocus.bind(this), onChange: this.changeSearchString.bind(this), onClick: this.handleInputClick.bind(this) }),
-                this.state.searchString.length > 0 ? (React.createElement("i", { className: 'fa fa-times clear-button', onClick: this.clearSearchBox.bind(this) })) : null),
-            this.state.showingDropDown ? (React.createElement("div", { className: 'dropdown', style: { maxHeight: this.state.dropDownHeight, overflowY: 'auto' }, ref: this.calculateDropdownHeight.bind(this) },
-                React.createElement("ul", null,
-                    this.state.searchString.length === 0 && this.props.allowNew ? (React.createElement("li", { className: 'add', onMouseDown: () => this.ignoreBlur = true, onClick: () => this.addNewAction('') },
-                        React.createElement("i", { className: 'fa fa-plus', "aria-hidden": 'true' }),
-                        "Add new ",
-                        this.props.typeName)) : null,
-                    this.state.filteredOptions.map((opt, i) => (React.createElement("li", { key: `opt-${opt.key}-${i}`, onMouseDown: () => this.ignoreBlur = true, onClick: () => this.selectOption(opt) }, opt.key))),
-                    this.state.searchString.length > 0 && this.props.allowNew ? (React.createElement("li", { className: 'add', onMouseDown: () => this.ignoreBlur = true, onClick: () => this.addNewAction(this.state.searchString) },
-                        React.createElement("i", { className: 'fa fa-plus', "aria-hidden": 'true' }),
-                        "Add new ",
-                        this.props.typeName,
-                        ": '",
-                        this.state.searchString,
-                        "'")) : null))) : null));
-    }
-}
-ComboDropdown.defaultProps = {
-    allowNew: true,
-    additionalClasses: [],
-    updateSearchString: lodash_1.noop
-};
-ComboDropdown.comboDropdownInputBoxRef = 'comboDropDownInputBox';
-exports.ComboDropdown = ComboDropdown;
-class NumberComboDropdown extends ComboDropdown {
-}
-exports.NumberComboDropdown = NumberComboDropdown;
-class StringComboDropdown extends ComboDropdown {
-}
-exports.StringComboDropdown = StringComboDropdown;
-
-
-/***/ }),
+/* 10 */,
 /* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -5988,7 +5779,7 @@ var _StaticRouter2 = __webpack_require__(26);
 
 var _StaticRouter3 = _interopRequireDefault(_StaticRouter2);
 
-var _matchPattern2 = __webpack_require__(183);
+var _matchPattern2 = __webpack_require__(184);
 
 var _matchPattern3 = _interopRequireDefault(_matchPattern2);
 
@@ -6170,28 +5961,7 @@ var routerContext = exports.routerContext = _react.PropTypes.shape({
 });
 
 /***/ }),
-/* 15 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview Sidebar for editor
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.2.0
- */
-
-const React = __webpack_require__(1);
-class Overlay extends React.Component {
-    render() {
-        return (React.createElement("div", { className: 'full-page-overlay' },
-            React.createElement("div", { className: 'overlay-container' }, this.props.children)));
-    }
-}
-exports.Overlay = Overlay;
-;
-
-
-/***/ }),
+/* 15 */,
 /* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -6251,69 +6021,8 @@ var createPath = exports.createPath = function createPath(location) {
 };
 
 /***/ }),
-/* 17 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview Sidebar for editor
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.2.0
- */
-
-const React = __webpack_require__(1);
-class EditableFieldComponent extends React.Component {
-    constructor() {
-        super();
-        this.state = {
-            edit: false,
-            internalValue: null
-        };
-    }
-    componentWillMount() {
-        this.setState({ internalValue: this.props.value === undefined ? null : this.props.value });
-    }
-    componentWillReceiveProps(newProps) {
-        this.setState({ internalValue: newProps.value });
-    }
-    switchToEditState() {
-        this.setState({ edit: true, internalValue: this.props.value });
-    }
-    setInternalValue(internalValue) {
-        this.setState({ internalValue });
-    }
-    acceptChanges() {
-        this.props.onChange(this.state.internalValue);
-        this.setState({ edit: false });
-    }
-    cancelChanges() {
-        this.setState({ edit: false, internalValue: this.props.value });
-    }
-    render() {
-        return (React.createElement("span", null, React.Children.map(this.props.children, (child) => React.cloneElement(child, {
-            edit: this.state.edit,
-            value: this.state.internalValue,
-            onChange: this.setInternalValue.bind(this),
-            setEdit: this.switchToEditState.bind(this),
-            acceptChanges: this.acceptChanges.bind(this),
-            cancelChanges: this.cancelChanges.bind(this),
-            onDelete: (e) => this.props.onDelete !== undefined ? this.props.onDelete(this.props.value) : null
-        }))));
-    }
-}
-EditableFieldComponent.propTypes = {
-    children: React.PropTypes.element.isRequired
-};
-exports.EditableFieldComponent = EditableFieldComponent;
-
-
-/***/ }),
-/* 18 */
-/***/ (function(module, exports) {
-
-module.exports = ReactDOM;
-
-/***/ }),
+/* 17 */,
+/* 18 */,
 /* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -6363,7 +6072,7 @@ module.exports = baseGetTag;
 /* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var isFunction = __webpack_require__(71),
+var isFunction = __webpack_require__(72),
     isLength = __webpack_require__(49);
 
 /**
@@ -7563,9 +7272,9 @@ var _react = __webpack_require__(1);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _queryString = __webpack_require__(181);
+var _queryString = __webpack_require__(182);
 
-var _MatchProvider = __webpack_require__(182);
+var _MatchProvider = __webpack_require__(183);
 
 var _MatchProvider2 = _interopRequireDefault(_MatchProvider);
 
@@ -7707,38 +7416,7 @@ exports.default = StaticRouter;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ }),
-/* 27 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview Sidebar for editor
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.2.0
- */
-
-const React = __webpack_require__(1);
-var EditableFieldComponent_1 = __webpack_require__(17);
-exports.EditableFieldComponent = EditableFieldComponent_1.EditableFieldComponent;
-exports.EditableHeader = (props) => {
-    if (!props.edit || props.value == null) {
-        return (React.createElement("h2", null,
-            props.value,
-            React.createElement("sup", null,
-                React.createElement("i", { className: 'fa fa-pencil-square-o', title: 'Edit', "aria-hidden": 'true', onClick: props.setEdit }))));
-    }
-    else {
-        return (React.createElement("span", null,
-            React.createElement("input", { type: 'text', value: props.value, className: 'text-edit-header', onChange: (e) => props.onChange(e.target.value) }),
-            React.createElement("button", { onClick: props.acceptChanges },
-                React.createElement("i", { className: 'fa fa-check', "aria-hidden": 'true' })),
-            React.createElement("button", { onClick: props.cancelChanges },
-                React.createElement("i", { className: 'fa fa-times', "aria-hidden": 'true' }))));
-    }
-};
-
-
-/***/ }),
+/* 27 */,
 /* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -10892,35 +10570,7 @@ function provideDisplayName(prefix, Component) {
 }
 
 /***/ }),
-/* 39 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview Sidebar for editor
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.2.0
- */
-
-const React = __webpack_require__(1);
-exports.SearchBar = (props) => {
-    const filterFunc = (s) => {
-        return (a) => {
-            if (s.length === 0) {
-                return true;
-            }
-            return props.getValue(a).toLowerCase().indexOf(s.toLowerCase()) !== -1;
-        };
-    };
-    return (React.createElement("div", null,
-        React.createElement("div", { className: 'input-addon-formgroup' },
-            React.createElement("span", { className: 'input-addon-icon' },
-                React.createElement("i", { className: 'fa fa-search fa-fw' })),
-            React.createElement("input", { type: 'text', className: 'form-control with-addon', onChange: (e) => props.setFilterFunc(filterFunc(e.target.value)) }))));
-};
-
-
-/***/ }),
+/* 39 */,
 /* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -11490,156 +11140,11 @@ exports.sortableElement = _SortableElement3.default;
 exports.sortableHandle = _SortableHandle3.default;
 
 /***/ }),
-/* 52 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview Sidebar for editor
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.2.0
- */
-
-const React = __webpack_require__(1);
-const mousetrap = __webpack_require__(25);
-class SameAsEditor extends React.Component {
-    constructor(props) {
-        super();
-        this.state = {
-            temporaryValue: '',
-            urls: props.value === null || props.value.length === 0 ? [] : props.value.split(',')
-        };
-    }
-    componentWillReceiveProps(props) {
-        this.setState({
-            temporaryValue: '',
-            urls: props.value === null || props.value.length === 0 ? [] : props.value.split(',')
-        });
-    }
-    addItemToList() {
-        if (this.state.temporaryValue.length === 0) {
-            return;
-        }
-        this.setState({ urls: this.state.urls.concat([this.state.temporaryValue]), temporaryValue: '' }, () => this.props.onChange(this.state.urls.join(',')));
-    }
-    removeItemFromList(itemId) {
-        this.setState({
-            urls: this.state.urls.filter((val, i) => i !== itemId)
-        }, () => this.props.onChange(this.state.urls.join(',')));
-    }
-    setupKeyboardShortcuts(val) {
-        if (val !== null) {
-            val.focus();
-            this.keyboardShortcuts = new mousetrap(val);
-            this.keyboardShortcuts.bind('return', this.addItemToList.bind(this));
-            this.keyboardShortcuts.bind('escape', this.props.cancelChanges);
-            this.keyboardShortcuts.bind('ctrl+s', (e) => {
-                if (e.preventDefault) {
-                    e.preventDefault();
-                }
-                else {
-                    // internet explorer
-                    e.returnValue = false;
-                }
-                this.props.acceptChanges();
-            });
-        }
-        else {
-            this.keyboardShortcuts.unbind('return');
-            this.keyboardShortcuts.unbind('escape');
-            this.keyboardShortcuts.unbind('ctrl+s');
-        }
-    }
-    render() {
-        return (React.createElement("div", { className: 'same-as-box' },
-            React.createElement("label", { className: 'small' },
-                "Same As ",
-                !this.props.edit ? (React.createElement("sup", null,
-                    React.createElement("i", { className: 'fa fa-pencil-square-o', title: 'Edit', "aria-hidden": 'true', onClick: this.props.setEdit }))) : null),
-            this.props.edit ? (React.createElement("div", { className: 'edit-group' },
-                React.createElement("button", { onClick: this.props.acceptChanges },
-                    React.createElement("i", { className: 'fa fa-check', "aria-hidden": 'true' })),
-                React.createElement("button", { onClick: this.props.cancelChanges },
-                    React.createElement("i", { className: 'fa fa-times', "aria-hidden": 'true' })),
-                React.createElement("div", { className: 'input-addon-formgroup' },
-                    React.createElement("input", { type: 'text', value: this.state.temporaryValue, ref: this.setupKeyboardShortcuts.bind(this), onChange: (e) => this.setState({ temporaryValue: e.target.value }), className: 'form-control with-addon' }),
-                    React.createElement("span", { className: 'input-addon-icon right button', onClick: this.addItemToList.bind(this) },
-                        React.createElement("i", { className: 'fa fa-plus' }))))) : null,
-            React.createElement("ul", { className: 'same-as-list' }, this.state.urls.map((url, i) => (React.createElement("li", { key: `li-${url}` },
-                React.createElement("a", { target: '_blank', href: url }, url),
-                " ",
-                this.props.edit ? (React.createElement("i", { className: 'fa fa-times close-button', onClick: this.removeItemFromList.bind(this, i) })) : null))))));
-    }
-}
-exports.SameAsEditor = SameAsEditor;
-
-
-/***/ }),
-/* 53 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview <Description Missing>
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.2.0
- */
-
-exports.findParentTree = (uid, data, ancestors = []) => {
-    const current = data.find((datum) => datum.uid === uid);
-    if (current === undefined) {
-        console.warn('Couldn\'t find parent');
-        return ancestors;
-    }
-    else {
-        if (current.parent === null || current.uid === null) {
-            if (current.uid === null) {
-                console.warn('Found entity will null uid');
-                return ancestors;
-            }
-            else {
-                return ancestors.concat([current.uid]);
-            }
-        }
-        else {
-            return exports.findParentTree(current.parent, data, ancestors.concat([current.uid]));
-        }
-    }
-};
-
-
-/***/ }),
-/* 54 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview <Description Missing>
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.2.0
- */
-
-const moment = __webpack_require__(0);
-exports.formatDate = (str) => {
-    if (str === null || str.length === 0) {
-        return '';
-    }
-    const modifier = {
-        '=': '',
-        '>': 'After ',
-        '<': 'Before '
-    }[str[0]];
-    const year = str.substr(1, 4);
-    const rawMonth = parseInt(str.substr(5, 2)) - 1;
-    const month = rawMonth === -1 || isNaN(rawMonth) ? 'Unknown' : moment.months()[rawMonth];
-    const rawDay = parseInt(str.substr(7, 2));
-    const day = rawDay > 0 ? rawDay : '';
-    return `${modifier} ${day} ${month} ${year}`;
-};
-
-
-/***/ }),
-/* 55 */
+/* 52 */,
+/* 53 */,
+/* 54 */,
+/* 55 */,
+/* 56 */
 /***/ (function(module, exports) {
 
 module.exports = function(module) {
@@ -11667,7 +11172,7 @@ module.exports = function(module) {
 
 
 /***/ }),
-/* 56 */
+/* 57 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11726,7 +11231,7 @@ var isExtraneousPopstateEvent = exports.isExtraneousPopstateEvent = function isE
 };
 
 /***/ }),
-/* 57 */
+/* 58 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11736,7 +11241,7 @@ exports.__esModule = true;
 var canUseDOM = exports.canUseDOM = !!(typeof window !== 'undefined' && window.document && window.document.createElement);
 
 /***/ }),
-/* 58 */
+/* 59 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var ListCache = __webpack_require__(29),
@@ -11769,7 +11274,7 @@ module.exports = Stack;
 
 
 /***/ }),
-/* 59 */
+/* 60 */
 /***/ (function(module, exports) {
 
 /**
@@ -11796,7 +11301,7 @@ module.exports = arrayMap;
 
 
 /***/ }),
-/* 60 */
+/* 61 */
 /***/ (function(module, exports) {
 
 /**
@@ -11822,10 +11327,10 @@ module.exports = arrayPush;
 
 
 /***/ }),
-/* 61 */
+/* 62 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var castPath = __webpack_require__(64),
+var castPath = __webpack_require__(65),
     toKey = __webpack_require__(33);
 
 /**
@@ -11852,7 +11357,7 @@ module.exports = baseGet;
 
 
 /***/ }),
-/* 62 */
+/* 63 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var baseIsEqualDeep = __webpack_require__(226),
@@ -11886,7 +11391,7 @@ module.exports = baseIsEqual;
 
 
 /***/ }),
-/* 63 */
+/* 64 */
 /***/ (function(module, exports) {
 
 /**
@@ -11906,7 +11411,7 @@ module.exports = baseUnary;
 
 
 /***/ }),
-/* 64 */
+/* 65 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var isArray = __webpack_require__(9),
@@ -11933,7 +11438,7 @@ module.exports = castPath;
 
 
 /***/ }),
-/* 65 */
+/* 66 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var SetCache = __webpack_require__(211),
@@ -12022,7 +11527,7 @@ module.exports = equalArrays;
 
 
 /***/ }),
-/* 66 */
+/* 67 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global) {/** Detect free variable `global` from Node.js. */
@@ -12033,7 +11538,7 @@ module.exports = freeGlobal;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(191)))
 
 /***/ }),
-/* 67 */
+/* 68 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var isObject = __webpack_require__(22);
@@ -12054,7 +11559,7 @@ module.exports = isStrictComparable;
 
 
 /***/ }),
-/* 68 */
+/* 69 */
 /***/ (function(module, exports) {
 
 /**
@@ -12080,7 +11585,7 @@ module.exports = matchesStrictComparable;
 
 
 /***/ }),
-/* 69 */
+/* 70 */
 /***/ (function(module, exports) {
 
 /** Used for built-in method references. */
@@ -12112,7 +11617,7 @@ module.exports = toSource;
 
 
 /***/ }),
-/* 70 */
+/* 71 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(module) {var root = __webpack_require__(8),
@@ -12154,10 +11659,10 @@ var isBuffer = nativeIsBuffer || stubFalse;
 
 module.exports = isBuffer;
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(55)(module)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(56)(module)))
 
 /***/ }),
-/* 71 */
+/* 72 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var baseGetTag = __webpack_require__(20),
@@ -12200,11 +11705,11 @@ module.exports = isFunction;
 
 
 /***/ }),
-/* 72 */
+/* 73 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var baseIsTypedArray = __webpack_require__(229),
-    baseUnary = __webpack_require__(63),
+    baseUnary = __webpack_require__(64),
     nodeUtil = __webpack_require__(282);
 
 /* Node.js helper references. */
@@ -12233,7 +11738,7 @@ module.exports = isTypedArray;
 
 
 /***/ }),
-/* 73 */
+/* 74 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -12311,7 +11816,7 @@ return af;
 
 
 /***/ }),
-/* 74 */
+/* 75 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -12375,7 +11880,7 @@ return arDz;
 
 
 /***/ }),
-/* 75 */
+/* 76 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -12506,7 +12011,7 @@ return arLy;
 
 
 /***/ }),
-/* 76 */
+/* 77 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -12571,7 +12076,7 @@ return arMa;
 
 
 /***/ }),
-/* 77 */
+/* 78 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -12681,7 +12186,7 @@ return arSa;
 
 
 /***/ }),
-/* 78 */
+/* 79 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -12745,7 +12250,7 @@ return arTn;
 
 
 /***/ }),
-/* 79 */
+/* 80 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -12892,7 +12397,7 @@ return ar;
 
 
 /***/ }),
-/* 80 */
+/* 81 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -13002,7 +12507,7 @@ return az;
 
 
 /***/ }),
-/* 81 */
+/* 82 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -13141,7 +12646,7 @@ return be;
 
 
 /***/ }),
-/* 82 */
+/* 83 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -13236,7 +12741,7 @@ return bg;
 
 
 /***/ }),
-/* 83 */
+/* 84 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -13360,7 +12865,7 @@ return bn;
 
 
 /***/ }),
-/* 84 */
+/* 85 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -13484,7 +12989,7 @@ return bo;
 
 
 /***/ }),
-/* 85 */
+/* 86 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -13597,7 +13102,7 @@ return br;
 
 
 /***/ }),
-/* 86 */
+/* 87 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -13745,7 +13250,7 @@ return bs;
 
 
 /***/ }),
-/* 87 */
+/* 88 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -13831,7 +13336,7 @@ return ca;
 
 
 /***/ }),
-/* 88 */
+/* 89 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -14008,7 +13513,7 @@ return cs;
 
 
 /***/ }),
-/* 89 */
+/* 90 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -14076,7 +13581,7 @@ return cv;
 
 
 /***/ }),
-/* 90 */
+/* 91 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -14162,7 +13667,7 @@ return cy;
 
 
 /***/ }),
-/* 91 */
+/* 92 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -14227,7 +13732,7 @@ return da;
 
 
 /***/ }),
-/* 92 */
+/* 93 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -14311,7 +13816,7 @@ return deAt;
 
 
 /***/ }),
-/* 93 */
+/* 94 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -14394,7 +13899,7 @@ return de;
 
 
 /***/ }),
-/* 94 */
+/* 95 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -14499,7 +14004,7 @@ return dv;
 
 
 /***/ }),
-/* 95 */
+/* 96 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -14602,7 +14107,7 @@ return el;
 
 
 /***/ }),
-/* 96 */
+/* 97 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -14674,7 +14179,7 @@ return enAu;
 
 
 /***/ }),
-/* 97 */
+/* 98 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -14742,7 +14247,7 @@ return enCa;
 
 
 /***/ }),
-/* 98 */
+/* 99 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -14814,7 +14319,7 @@ return enGb;
 
 
 /***/ }),
-/* 99 */
+/* 100 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -14886,7 +14391,7 @@ return enIe;
 
 
 /***/ }),
-/* 100 */
+/* 101 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -14958,7 +14463,7 @@ return enNz;
 
 
 /***/ }),
-/* 101 */
+/* 102 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -15036,7 +14541,7 @@ return eo;
 
 
 /***/ }),
-/* 102 */
+/* 103 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -15121,7 +14626,7 @@ return esDo;
 
 
 /***/ }),
-/* 103 */
+/* 104 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -15207,7 +14712,7 @@ return es;
 
 
 /***/ }),
-/* 104 */
+/* 105 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -15292,7 +14797,7 @@ return et;
 
 
 /***/ }),
-/* 105 */
+/* 106 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -15363,7 +14868,7 @@ return eu;
 
 
 /***/ }),
-/* 106 */
+/* 107 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -15475,7 +14980,7 @@ return fa;
 
 
 /***/ }),
-/* 107 */
+/* 108 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -15587,7 +15092,7 @@ return fi;
 
 
 /***/ }),
-/* 108 */
+/* 109 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -15652,7 +15157,7 @@ return fo;
 
 
 /***/ }),
-/* 109 */
+/* 110 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -15717,7 +15222,7 @@ return frCa;
 
 
 /***/ }),
-/* 110 */
+/* 111 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -15786,7 +15291,7 @@ return frCh;
 
 
 /***/ }),
-/* 111 */
+/* 112 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -15855,7 +15360,7 @@ return fr;
 
 
 /***/ }),
-/* 112 */
+/* 113 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -15933,7 +15438,7 @@ return fy;
 
 
 /***/ }),
-/* 113 */
+/* 114 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -16014,7 +15519,7 @@ return gd;
 
 
 /***/ }),
-/* 114 */
+/* 115 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -16096,7 +15601,7 @@ return gl;
 
 
 /***/ }),
-/* 115 */
+/* 116 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -16200,7 +15705,7 @@ return he;
 
 
 /***/ }),
-/* 116 */
+/* 117 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -16329,7 +15834,7 @@ return hi;
 
 
 /***/ }),
-/* 117 */
+/* 118 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -16479,7 +15984,7 @@ return hr;
 
 
 /***/ }),
-/* 118 */
+/* 119 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -16593,7 +16098,7 @@ return hu;
 
 
 /***/ }),
-/* 119 */
+/* 120 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -16693,7 +16198,7 @@ return hyAm;
 
 
 /***/ }),
-/* 120 */
+/* 121 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -16781,7 +16286,7 @@ return id;
 
 
 /***/ }),
-/* 121 */
+/* 122 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -16913,7 +16418,7 @@ return is;
 
 
 /***/ }),
-/* 122 */
+/* 123 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -16988,7 +16493,7 @@ return it;
 
 
 /***/ }),
-/* 123 */
+/* 124 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -17069,7 +16574,7 @@ return ja;
 
 
 /***/ }),
-/* 124 */
+/* 125 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -17157,7 +16662,7 @@ return jv;
 
 
 /***/ }),
-/* 125 */
+/* 126 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -17251,7 +16756,7 @@ return ka;
 
 
 /***/ }),
-/* 126 */
+/* 127 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -17343,7 +16848,7 @@ return kk;
 
 
 /***/ }),
-/* 127 */
+/* 128 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -17406,7 +16911,7 @@ return km;
 
 
 /***/ }),
-/* 128 */
+/* 129 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -17476,7 +16981,7 @@ return ko;
 
 
 /***/ }),
-/* 129 */
+/* 130 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -17569,7 +17074,7 @@ return ky;
 
 
 /***/ }),
-/* 130 */
+/* 131 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -17711,7 +17216,7 @@ return lb;
 
 
 /***/ }),
-/* 131 */
+/* 132 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -17786,7 +17291,7 @@ return lo;
 
 
 /***/ }),
-/* 132 */
+/* 133 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -17908,7 +17413,7 @@ return lt;
 
 
 /***/ }),
-/* 133 */
+/* 134 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -18010,7 +17515,7 @@ return lv;
 
 
 /***/ }),
-/* 134 */
+/* 135 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -18126,7 +17631,7 @@ return me;
 
 
 /***/ }),
-/* 135 */
+/* 136 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -18195,7 +17700,7 @@ return mi;
 
 
 /***/ }),
-/* 136 */
+/* 137 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -18290,7 +17795,7 @@ return mk;
 
 
 /***/ }),
-/* 137 */
+/* 138 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -18376,7 +17881,7 @@ return ml;
 
 
 /***/ }),
-/* 138 */
+/* 139 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -18540,7 +18045,7 @@ return mr;
 
 
 /***/ }),
-/* 139 */
+/* 140 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -18628,7 +18133,7 @@ return msMy;
 
 
 /***/ }),
-/* 140 */
+/* 141 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -18715,7 +18220,7 @@ return ms;
 
 
 /***/ }),
-/* 141 */
+/* 142 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -18816,7 +18321,7 @@ return my;
 
 
 /***/ }),
-/* 142 */
+/* 143 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -18884,7 +18389,7 @@ return nb;
 
 
 /***/ }),
-/* 143 */
+/* 144 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -19012,7 +18517,7 @@ return ne;
 
 
 /***/ }),
-/* 144 */
+/* 145 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -19103,7 +18608,7 @@ return nlBe;
 
 
 /***/ }),
-/* 145 */
+/* 146 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -19194,7 +18699,7 @@ return nl;
 
 
 /***/ }),
-/* 146 */
+/* 147 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -19259,7 +18764,7 @@ return nn;
 
 
 /***/ }),
-/* 147 */
+/* 148 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -19388,7 +18893,7 @@ return paIn;
 
 
 /***/ }),
-/* 148 */
+/* 149 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -19498,7 +19003,7 @@ return pl;
 
 
 /***/ }),
-/* 149 */
+/* 150 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -19564,7 +19069,7 @@ return ptBr;
 
 
 /***/ }),
-/* 150 */
+/* 151 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -19634,7 +19139,7 @@ return pt;
 
 
 /***/ }),
-/* 151 */
+/* 152 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -19714,7 +19219,7 @@ return ro;
 
 
 /***/ }),
-/* 152 */
+/* 153 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -19902,7 +19407,7 @@ return ru;
 
 
 /***/ }),
-/* 153 */
+/* 154 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -19968,7 +19473,7 @@ return se;
 
 
 /***/ }),
-/* 154 */
+/* 155 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -20044,7 +19549,7 @@ return si;
 
 
 /***/ }),
-/* 155 */
+/* 156 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -20199,7 +19704,7 @@ return sk;
 
 
 /***/ }),
-/* 156 */
+/* 157 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -20366,7 +19871,7 @@ return sl;
 
 
 /***/ }),
-/* 157 */
+/* 158 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -20441,7 +19946,7 @@ return sq;
 
 
 /***/ }),
-/* 158 */
+/* 159 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -20556,7 +20061,7 @@ return srCyrl;
 
 
 /***/ }),
-/* 159 */
+/* 160 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -20671,7 +20176,7 @@ return sr;
 
 
 /***/ }),
-/* 160 */
+/* 161 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -20765,7 +20270,7 @@ return ss;
 
 
 /***/ }),
-/* 161 */
+/* 162 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -20839,7 +20344,7 @@ return sv;
 
 
 /***/ }),
-/* 162 */
+/* 163 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -20903,7 +20408,7 @@ return sw;
 
 
 /***/ }),
-/* 163 */
+/* 164 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -21038,7 +20543,7 @@ return ta;
 
 
 /***/ }),
-/* 164 */
+/* 165 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -21132,7 +20637,7 @@ return te;
 
 
 /***/ }),
-/* 165 */
+/* 166 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -21205,7 +20710,7 @@ return tet;
 
 
 /***/ }),
-/* 166 */
+/* 167 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -21277,7 +20782,7 @@ return th;
 
 
 /***/ }),
-/* 167 */
+/* 168 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -21344,7 +20849,7 @@ return tlPh;
 
 
 /***/ }),
-/* 168 */
+/* 169 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -21469,7 +20974,7 @@ return tlh;
 
 
 /***/ }),
-/* 169 */
+/* 170 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -21564,7 +21069,7 @@ return tr;
 
 
 /***/ }),
-/* 170 */
+/* 171 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -21660,7 +21165,7 @@ return tzl;
 
 
 /***/ }),
-/* 171 */
+/* 172 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -21723,7 +21228,7 @@ return tzmLatn;
 
 
 /***/ }),
-/* 172 */
+/* 173 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -21786,7 +21291,7 @@ return tzm;
 
 
 /***/ }),
-/* 173 */
+/* 174 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -21937,7 +21442,7 @@ return uk;
 
 
 /***/ }),
-/* 174 */
+/* 175 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -22000,7 +21505,7 @@ return uz;
 
 
 /***/ }),
-/* 175 */
+/* 176 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -22084,7 +21589,7 @@ return vi;
 
 
 /***/ }),
-/* 176 */
+/* 177 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -22157,7 +21662,7 @@ return xPseudo;
 
 
 /***/ }),
-/* 177 */
+/* 178 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -22222,7 +21727,7 @@ return yo;
 
 
 /***/ }),
-/* 178 */
+/* 179 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -22354,7 +21859,7 @@ return zhCn;
 
 
 /***/ }),
-/* 179 */
+/* 180 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -22464,7 +21969,7 @@ return zhHk;
 
 
 /***/ }),
-/* 180 */
+/* 181 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //! moment.js locale configuration
@@ -22573,7 +22078,7 @@ return zhTw;
 
 
 /***/ }),
-/* 181 */
+/* 182 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22678,7 +22183,7 @@ exports.stringify = function (obj, opts) {
 
 
 /***/ }),
-/* 182 */
+/* 183 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22800,7 +22305,7 @@ exports.default = MatchProvider;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ }),
-/* 183 */
+/* 184 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22879,376 +22384,12 @@ var matchPattern = function matchPattern(pattern, location, matchExactly, parent
 exports.default = matchPattern;
 
 /***/ }),
-/* 184 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview Sidebar for editor
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.2.0
- */
-
-const React = __webpack_require__(1);
-const AddTabButton_1 = __webpack_require__(7);
-class RecursiveTree extends React.Component {
-    constructor() {
-        super();
-        this.state = { collapsed: false };
-    }
-    render() {
-        const filtered = this.props.data.filter((datum) => datum.parent === this.props.parentId);
-        if (filtered.length === 0) {
-            return null;
-        }
-        return (React.createElement("div", null, filtered.map((item) => (React.createElement("div", { key: item.label },
-            React.createElement("div", { className: 'tree-label', onClick: () => this.setState({ collapsed: !this.state.collapsed }) },
-                "- ",
-                item.label,
-                " ",
-                React.createElement(AddTabButton_1.AddTabButton, { uid: item.uid, tabType: this.props.tabType })),
-            !this.state.collapsed ? (React.createElement("div", { className: 'tree-children' },
-                React.createElement(RecursiveTree, { dataStore: this.props.dataStore, data: this.props.data, tabType: this.props.tabType, parentId: item.uid }))) : null)))));
-    }
-}
-exports.RecursiveTree = RecursiveTree;
-
-
-/***/ }),
-/* 185 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview <Description Missing>
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.2.0
- */
-
-var __assign = (this && this.__assign) || Object.assign || function(t) {
-    for (var s, i = 1, n = arguments.length; i < n; i++) {
-        s = arguments[i];
-        for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
-            t[p] = s[p];
-    }
-    return t;
-};
-const React = __webpack_require__(1);
-var EditableFieldComponent_1 = __webpack_require__(17);
-exports.EditableFieldComponent = EditableFieldComponent_1.EditableFieldComponent;
-const ComboDropdown_1 = __webpack_require__(10);
-function EditableComboDropdown(props) {
-    if (props.edit) {
-        return (React.createElement("div", null,
-            React.createElement(ComboDropdown_1.ComboDropdown, __assign({}, props.comboSettings, { value: props.value, setValue: props.onChange, allowNew: false, createNewValue: () => { } })),
-            React.createElement("button", null,
-                React.createElement("i", { className: 'fa fa-check', onClick: props.acceptChanges, "aria-hidden": 'true' })),
-            React.createElement("button", null,
-                React.createElement("i", { className: 'fa fa-times', "aria-hidden": 'true', onClick: props.cancelChanges }))));
-    }
-    else {
-        return (React.createElement("div", null,
-            props.value !== null && props.value.key.length > 0 ? props.value.key
-                : (React.createElement("em", null, "No value")),
-            React.createElement("sup", null,
-                React.createElement("i", { className: 'fa fa-pencil-square-o', title: 'Edit', "aria-hidden": 'true', onClick: props.setEdit }))));
-    }
-}
-exports.EditableComboDropdown = EditableComboDropdown;
-;
-
-
-/***/ }),
-/* 186 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview Sidebar for editor
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.2.0
- */
-
-const React = __webpack_require__(1);
-var EditableFieldComponent_1 = __webpack_require__(17);
-exports.EditableFieldComponent = EditableFieldComponent_1.EditableFieldComponent;
-const mousetrap = __webpack_require__(25);
-exports.EditableParagraph = (props) => {
-    let keyBoardShortcuts;
-    const bindKeyboard = (val) => {
-        if (val !== null) {
-            val.focus();
-            keyBoardShortcuts = new mousetrap(val);
-            keyBoardShortcuts.bind('ctrl+return', props.acceptChanges);
-            keyBoardShortcuts.bind('escape', props.cancelChanges);
-        }
-        else {
-            keyBoardShortcuts.unbind('ctrl+return');
-        }
-    };
-    if (!props.edit) {
-        return (React.createElement("div", { onClick: props.setEdit, className: 'editable-paragraph-box' },
-            React.createElement("p", null,
-                props.value === null || props.value.length > 0 ? props.value
-                    : (React.createElement("em", null, "No value")),
-                React.createElement("sup", null,
-                    React.createElement("i", { className: 'fa fa-pencil-square-o', title: 'Edit', "aria-hidden": 'true' })))));
-    }
-    else {
-        return (React.createElement("div", null,
-            React.createElement("textarea", { value: props.value, ref: bindKeyboard, onChange: (e) => props.onChange(e.target.value), style: { width: '100%', height: '6em' } }),
-            React.createElement("button", { onClick: props.acceptChanges },
-                React.createElement("i", { className: 'fa fa-check', "aria-hidden": 'true' })),
-            React.createElement("button", { onClick: props.cancelChanges },
-                React.createElement("i", { className: 'fa fa-times', "aria-hidden": 'true' }))));
-    }
-};
-
-
-/***/ }),
-/* 187 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview Sidebar for editor
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.2.0
- */
-
-const React = __webpack_require__(1);
-const ComboDropdown_1 = __webpack_require__(10);
-const lodash_1 = __webpack_require__(6);
-class PredicateRangeComboDropdown extends ComboDropdown_1.ComboDropdown {
-}
-exports.PredicateRangeComboDropdown = PredicateRangeComboDropdown;
-class PredicateDescription extends React.Component {
-    constructor() {
-        super();
-        this.state = {
-            editingDomain: false,
-            editingRange: false,
-            rangeValue: { key: '', value: null },
-            domainValue: { key: '', value: null }
-        };
-    }
-    componentWillMount() {
-        this.setState({
-            rangeValue: this.props.range,
-            domainValue: this.props.domain
-        });
-    }
-    componentWillReceiveProps(newProps) {
-        this.setState({
-            rangeValue: newProps.range,
-            domainValue: newProps.domain
-        });
-    }
-    acceptDomainChanges() {
-        this.props.domainChanged(this.state.domainValue);
-        this.setState({ editingDomain: false });
-    }
-    cancelDomainChanges() {
-        this.setState({ editingDomain: false, domainValue: this.props.domain });
-    }
-    acceptRangeChanges() {
-        this.props.rangeChanged(this.state.rangeValue);
-        this.setState({ editingRange: false });
-    }
-    cancelRangeChanges() {
-        this.setState({ editingDomain: false, rangeValue: this.props.range });
-    }
-    //  <label className='small'>Property Class</label>
-    //   <section className='class'>
-    //     <input type='radio' name='property-class' value='ObjectProperty' /> Object Property <small>Links to another entity</small><br/>
-    //     <input type='radio' name='property-class' value='DataTypeProperty' /> Data Type Property <small>Links to some data, like text or a date</small><br/>
-    //     <input type='radio' name='property-class' value='SourceProperty' /> Source Property <small>Links to a source</small><br/>
-    //   </section>
-    //   <label className='small'>Typing</label>
-    render() {
-        const domainChanged = this.props.mode === 'editAll' ?
-            this.props.domainChanged : (c) => this.setState({ domainValue: c });
-        const rangeChanged = this.props.mode === 'editAll' ?
-            this.props.rangeChanged : (c) => this.setState({ rangeValue: c });
-        return (React.createElement("div", { className: 'predicate-function-description' },
-            React.createElement("div", { className: 'typing' },
-                React.createElement("div", { className: 'domain' }, this.props.mode === 'editAll' || this.state.editingDomain ? (React.createElement("div", null,
-                    React.createElement("label", { className: 'small' }, "Domain"),
-                    React.createElement(ComboDropdown_1.NumberComboDropdown, { options: this.props.domainOptions, typeName: 'entity type', allowNew: false, value: this.state.domainValue, setValue: domainChanged, createNewValue: lodash_1.noop }),
-                    this.props.mode === 'editSingle' ? (React.createElement("div", null,
-                        React.createElement("button", { onClick: this.acceptDomainChanges.bind(this) },
-                            React.createElement("i", { className: 'fa fa-check', "aria-hidden": 'true' })),
-                        React.createElement("button", { onClick: this.cancelDomainChanges.bind(this) },
-                            React.createElement("i", { className: 'fa fa-times', "aria-hidden": 'true' })))) : null)) : (React.createElement("div", null,
-                    this.props.domain.key,
-                    " ",
-                    React.createElement("i", { className: 'fa fa-pencil-square-o', title: 'Edit', "aria-hidden": 'true', onClick: () => this.setState({ editingDomain: true }) })))),
-                React.createElement("div", { className: 'arrow' },
-                    React.createElement("i", { className: 'fa fa-long-arrow-right', "aria-hidden": 'true' })),
-                React.createElement("div", { className: 'range' }, this.props.mode === 'editAll' || this.state.editingRange ? (React.createElement("div", null,
-                    React.createElement("label", { className: 'small' }, "Range"),
-                    React.createElement(PredicateRangeComboDropdown, { options: this.props.rangeOptions, typeName: 'entity type', allowNew: false, value: this.state.rangeValue, setValue: rangeChanged, createNewValue: lodash_1.noop }),
-                    this.props.mode === 'editSingle' ? (React.createElement("div", null,
-                        React.createElement("button", { onClick: this.acceptRangeChanges.bind(this) },
-                            React.createElement("i", { className: 'fa fa-check', "aria-hidden": 'true' })),
-                        React.createElement("button", { onClick: this.cancelRangeChanges.bind(this) },
-                            React.createElement("i", { className: 'fa fa-times', "aria-hidden": 'true' })))) : null)) : (React.createElement("div", null,
-                    this.props.range.key,
-                    " ",
-                    React.createElement("i", { className: 'fa fa-pencil-square-o', title: 'Edit', "aria-hidden": 'true', onClick: () => this.setState({ editingRange: true }) })))))));
-    }
-}
-exports.PredicateDescription = PredicateDescription;
-
-
-/***/ }),
-/* 188 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview <Description Missing>
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.2.0
- */
-
-const falcon_core_1 = __webpack_require__(5);
-const simpleKey = (raw) => {
-    return parseInt(raw[0]);
-};
-exports.itemTypes = {
-    element_set: {
-        machineName: 'element_set',
-        name: 'Element Set',
-        plural: 'Element Sets',
-        workspace: '',
-        buildKey: simpleKey,
-        item: falcon_core_1.ElementSet
-    },
-    element: {
-        machineName: 'element',
-        name: 'Element',
-        plural: 'Elements',
-        workspace: '',
-        buildKey: simpleKey,
-        item: falcon_core_1.Element
-    },
-    record: {
-        machineName: 'record',
-        name: 'Record',
-        plural: 'Records',
-        workspace: '',
-        buildKey: simpleKey,
-        item: falcon_core_1.Record
-    },
-    entity: {
-        machineName: 'entity',
-        name: 'Entity',
-        plural: 'Entities',
-        workspace: 'entity',
-        buildKey: simpleKey,
-        item: falcon_core_1.Entity
-    },
-    entity_type: {
-        machineName: 'entity_type',
-        name: 'Entity Type',
-        plural: 'Entity Types',
-        workspace: 'entity_type',
-        buildKey: simpleKey,
-        item: falcon_core_1.EntityType
-    },
-    predicate: {
-        machineName: 'predicate',
-        name: 'Property',
-        plural: 'Properties',
-        workspace: 'predicate',
-        buildKey: simpleKey,
-        item: falcon_core_1.Predicate
-    },
-    source: {
-        machineName: 'source',
-        name: 'Source',
-        plural: 'Sources',
-        workspace: 'source',
-        buildKey: simpleKey,
-        item: falcon_core_1.Source
-    },
-    source_element: {
-        machineName: 'source_element',
-        name: 'Source Element',
-        plural: 'Source Elements',
-        workspace: '',
-        buildKey: (raw) => ({
-            order: ['source', 'element'],
-            values: {
-                source: parseInt(raw[0]),
-                element: parseInt(raw[1])
-            }
-        }),
-        item: falcon_core_1.SourceElement
-    }
-};
-
-
-/***/ }),
-/* 189 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview <Description Missing>
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.2.0
- */
-
-exports.literalTypes = [
-    { label: 'text', value: 'string', url: '', description: 'some text' },
-    { label: 'number', value: 'integer', url: '', description: 'a number' },
-    { label: 'date', value: 'date', url: '', description: 'a date' },
-    // { name: 'point', value: 'point', url: '', description: 'a point on a map '},
-    // { name: 'region', value: 'region', url: '', description: 'a region on a map'},
-    { label: 'source', value: 'source', url: '', description: 'a source in the database' }
-];
-
-
-/***/ }),
-/* 190 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview Sidebar for editor
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.2.0
- */
-
-const React = __webpack_require__(1);
-const react_router_1 = __webpack_require__(11);
-exports.StatsGrid = (props) => {
-    return (React.createElement("section", { className: 'stats-grid' },
-        React.createElement(react_router_1.Link, { to: '/edit/entity' },
-            React.createElement("div", { className: 'entity' },
-                React.createElement("span", { className: 'item-name' }, "Entities"),
-                React.createElement("span", { className: 'item-count' }, props.stats.entity))),
-        React.createElement(react_router_1.Link, { to: '/edit/entity_type' },
-            React.createElement("div", { className: 'entity_type' },
-                React.createElement("span", { className: 'item-name' }, "Entity Types"),
-                React.createElement("span", { className: 'item-count' }, props.stats.entityType))),
-        React.createElement(react_router_1.Link, { to: '/edit/source' },
-            React.createElement("div", { className: 'source' },
-                React.createElement("span", { className: 'item-name' }, "Sources"),
-                React.createElement("span", { className: 'item-count' }, props.stats.source))),
-        React.createElement(react_router_1.Link, { to: '/edit/predicate' },
-            React.createElement("div", { className: 'predicate' },
-                React.createElement("span", { className: 'item-name' }, "Properties"),
-                React.createElement("span", { className: 'item-count' }, props.stats.predicate))),
-        React.createElement("div", { className: 'record' },
-            React.createElement("span", { className: 'item-name' }, "Records"),
-            React.createElement("span", { className: 'item-count' }, props.stats.record))));
-};
-
-
-/***/ }),
+/* 185 */,
+/* 186 */,
+/* 187 */,
+/* 188 */,
+/* 189 */,
+/* 190 */,
 /* 191 */
 /***/ (function(module, exports) {
 
@@ -23276,212 +22417,8 @@ module.exports = g;
 
 
 /***/ }),
-/* 192 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview Abstract interface for sources
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.2.0
- */
-
-const falcon_core_1 = __webpack_require__(5);
-const queryString = __webpack_require__(181);
-const lodash_1 = __webpack_require__(6);
-const Exceptions_1 = __webpack_require__(339);
-var ApiService_1 = __webpack_require__(4);
-exports.AppUrls = ApiService_1.AppUrls;
-function handleErrors(response) {
-    if (!response.ok) {
-        if (response.status === 422) {
-            throw new Exceptions_1.UnprocessableEntity(response.statusText, response.json().then((result) => result.data));
-        }
-        // showToast.dispatch('Something went wrong ;(', response.statusText);
-        if (response.status === 404) {
-            throw new Exceptions_1.KeyNotFoundException(JSON.stringify({
-                statusText: response.statusText,
-                status: response.status
-            }));
-        }
-    }
-    return response;
-}
-class ClientApiService {
-    getItem(obj, baseUrl, uid) {
-        const endURL = lodash_1.isObject(uid) ?
-            uid.order.map((key) => uid.values[key]).join('/')
-            : uid.toString();
-        return fetch(`/api/v1/${baseUrl}/${endURL}`)
-            .then(handleErrors)
-            .then((response) => response.json())
-            .then((data) => falcon_core_1.Serializer.fromJson(obj, data));
-    }
-    getCollection(obj, baseUrl, params) {
-        return fetch(`/api/v1/${baseUrl}?` + queryString.stringify(params))
-            .then(handleErrors)
-            .then((response) => response.json())
-            .then((data) => data.map((datum) => falcon_core_1.Serializer.fromJson(obj, datum)));
-    }
-    postItem(obj, baseUrl, data, params) {
-        return fetch(`/api/v1/${baseUrl}?` + queryString.stringify(params), {
-            method: 'POST',
-            body: JSON.stringify(data),
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            credentials: 'same-origin'
-        })
-            .then(handleErrors)
-            .then((response) => {
-            return response.json();
-        }).then((data) => {
-            return Promise.resolve(data);
-        });
-    }
-    putItem(obj, baseUrl, uid, data) {
-        const endURL = lodash_1.isObject(uid) ?
-            uid.order.map((key) => uid.values[key]).join('/')
-            : uid.toString();
-        return fetch(`/api/v1/${baseUrl}/${endURL}`, {
-            method: 'PUT',
-            body: JSON.stringify(data),
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            credentials: 'same-origin'
-        })
-            .then(handleErrors);
-    }
-    patchItem(obj, baseUrl, uid, data) {
-        const endURL = lodash_1.isObject(uid) ?
-            uid.order.map((key) => uid.values[key]).join('/')
-            : uid.toString();
-        return fetch(`/api/v1/${baseUrl}/${endURL}`, {
-            method: 'PATCH',
-            body: JSON.stringify(data),
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            credentials: 'same-origin'
-        })
-            .then(handleErrors);
-    }
-    delItem(obj, baseUrl, uid) {
-        const endURL = lodash_1.isObject(uid) ?
-            uid.order.map((key) => uid.values[key]).join('/')
-            : uid.toString();
-        return fetch(`/api/v1/${baseUrl}/${endURL}`, {
-            method: 'DELETE',
-            credentials: 'same-origin'
-        })
-            .then(handleErrors);
-    }
-    query(graphQLQueryString) {
-        return fetch('/api/v1/query?query=' + graphQLQueryString)
-            .then(handleErrors)
-            .then((response) => response.json());
-    }
-    getStats() {
-        return fetch('/admin/stats', { credentials: 'same-origin' })
-            .then(handleErrors)
-            .then((response) => response.json());
-    }
-}
-exports.ClientApiService = ClientApiService;
-
-
-/***/ }),
-/* 193 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview <Description Missing>
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.2.0
- */
-
-var __assign = (this && this.__assign) || Object.assign || function(t) {
-    for (var s, i = 1, n = arguments.length; i < n; i++) {
-        s = arguments[i];
-        for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
-            t[p] = s[p];
-    }
-    return t;
-};
-//https://react-router.now.sh/Match
-const React = __webpack_require__(1);
-const react_router_1 = __webpack_require__(11);
-const RouteNotFound_1 = __webpack_require__(383);
-const ApiService_1 = __webpack_require__(4);
-const itemTypes_1 = __webpack_require__(188);
-const Admin_1 = __webpack_require__(379);
-const AdminApp_1 = __webpack_require__(338);
-const User_1 = __webpack_require__(384);
-const UserManagement_1 = __webpack_require__(385);
-const AppDownload_1 = __webpack_require__(380);
-const DatabaseUpload_1 = __webpack_require__(381);
-const react_router_2 = __webpack_require__(11);
-const ObjectEditor_1 = __webpack_require__(382);
-class FalconApp extends React.Component {
-    constructor(props) {
-        super();
-        this.state = {
-            user: '',
-            stats: null,
-            tabsets: []
-        };
-    }
-    componentDidMount() {
-        if (this.props.environment === 'website' && window !== undefined) {
-            fetch('/admin/currentuser', { credentials: 'same-origin' })
-                .then((response) => response.json())
-                .then((userData) => this.setState({ user: userData.username }));
-            fetch('/admin/tabset', { credentials: 'same-origin' })
-                .then((response) => response.json())
-                .then((tabsets) => this.setState({ tabsets }));
-        }
-        this.props.api.getStats()
-            .then((stats) => {
-            this.setState({ stats });
-        });
-    }
-    render() {
-        return (React.createElement("div", { id: 'main', className: 'flex-fill' },
-            React.createElement(this.props.router, __assign({}, this.props.routerSettings, { className: 'flex-fill', basename: '/admin' }),
-                React.createElement("div", { className: 'flex-fill', style: { flexDirection: 'column' } },
-                    React.createElement("div", { className: 'header' },
-                        React.createElement(react_router_2.Link, { to: '/', className: 'logo-link' },
-                            React.createElement("div", { className: 'logo' }, "VRE")),
-                        React.createElement(react_router_2.Link, { to: '/', className: 'header-link' }, "Home"),
-                        React.createElement(react_router_2.Link, { accessKey: 's', to: '/edit/' + ApiService_1.AppUrls.source, className: 'header-link source' }, itemTypes_1.itemTypes.source.plural),
-                        React.createElement(react_router_2.Link, { accessKey: 'e', to: '/edit/' + ApiService_1.AppUrls.entity, className: 'header-link entity' }, itemTypes_1.itemTypes.entity.plural),
-                        React.createElement(react_router_2.Link, { accessKey: 'p', to: '/edit/' + ApiService_1.AppUrls.predicate, className: 'header-link predicate' }, itemTypes_1.itemTypes.predicate.plural),
-                        React.createElement(react_router_2.Link, { accessKey: 't', to: '/edit/' + ApiService_1.AppUrls.entity_type, className: 'header-link entity_type' }, itemTypes_1.itemTypes.entity_type.plural),
-                        this.props.environment === 'website' ? (React.createElement("div", { className: 'right-header' },
-                            React.createElement(react_router_2.Link, { to: '/user', className: 'header-link' },
-                                React.createElement("span", { className: 'current-user' }, this.state.user)),
-                            React.createElement("a", { href: '/admin/logout', className: 'header-link' }, "Logout"),
-                            React.createElement("a", { href: '/', className: 'header-link' },
-                                React.createElement("i", { className: 'fa fa-external-link' })))) : null),
-                    this.props.environment === 'website' ? (React.createElement(react_router_1.Match, { exactly: true, pattern: '/', render: (matchprops) => (React.createElement(Admin_1.Admin, __assign({}, matchprops, { stats: this.state.stats, tabsets: this.state.tabsets }))) })) : (React.createElement(react_router_1.Match, { exactly: true, pattern: '/', render: (matchprops) => (React.createElement(AdminApp_1.AdminApp, __assign({}, matchprops, { stats: this.state.stats }))) })),
-                    React.createElement(react_router_1.Match, { exactly: true, pattern: '/user', component: User_1.User }),
-                    React.createElement(react_router_1.Match, { exactly: true, pattern: '/users', component: UserManagement_1.UserManagement }),
-                    React.createElement(react_router_1.Match, { exactly: true, pattern: '/app', component: AppDownload_1.AppDownload }),
-                    React.createElement(react_router_1.Match, { exactly: true, pattern: '/upload', component: DatabaseUpload_1.DatabaseUpload }),
-                    React.createElement(react_router_1.Match, { exactly: true, pattern: '/search', render: (matchprops) => (React.createElement(ObjectEditor_1.ObjectEditor, __assign({ api: this.props.api }, matchprops, { workspace: 'search' }))) }),
-                    React.createElement(react_router_1.Match, { pattern: '/edit/:workspace', render: (matchprops) => (React.createElement(ObjectEditor_1.ObjectEditor, __assign({ api: this.props.api }, matchprops, { workspace: matchprops.params.workspace === 'property' ? 'predicate' : matchprops.params.workspace }))) }),
-                    React.createElement(react_router_1.Miss, { component: RouteNotFound_1.RouteNotFound })))));
-    }
-}
-exports.FalconApp = FalconApp;
-
-
-/***/ }),
+/* 192 */,
+/* 193 */,
 /* 194 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -23700,9 +22637,9 @@ var _createTransitionManager = __webpack_require__(41);
 
 var _createTransitionManager2 = _interopRequireDefault(_createTransitionManager);
 
-var _ExecutionEnvironment = __webpack_require__(57);
+var _ExecutionEnvironment = __webpack_require__(58);
 
-var _DOMUtils = __webpack_require__(56);
+var _DOMUtils = __webpack_require__(57);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -24018,9 +22955,9 @@ var _createTransitionManager = __webpack_require__(41);
 
 var _createTransitionManager2 = _interopRequireDefault(_createTransitionManager);
 
-var _ExecutionEnvironment = __webpack_require__(57);
+var _ExecutionEnvironment = __webpack_require__(58);
 
-var _DOMUtils = __webpack_require__(56);
+var _DOMUtils = __webpack_require__(57);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -24813,9 +23750,9 @@ module.exports = arrayFilter;
 var baseTimes = __webpack_require__(240),
     isArguments = __webpack_require__(48),
     isArray = __webpack_require__(9),
-    isBuffer = __webpack_require__(70),
+    isBuffer = __webpack_require__(71),
     isIndex = __webpack_require__(45),
-    isTypedArray = __webpack_require__(72);
+    isTypedArray = __webpack_require__(73);
 
 /** Used for built-in method references. */
 var objectProto = Object.prototype;
@@ -24944,7 +23881,7 @@ module.exports = baseFindIndex;
 /* 220 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var arrayPush = __webpack_require__(60),
+var arrayPush = __webpack_require__(61),
     isFlattenable = __webpack_require__(264);
 
 /**
@@ -25032,7 +23969,7 @@ module.exports = baseForOwn;
 /* 223 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var arrayPush = __webpack_require__(60),
+var arrayPush = __webpack_require__(61),
     isArray = __webpack_require__(9);
 
 /**
@@ -25101,14 +24038,14 @@ module.exports = baseIsArguments;
 /* 226 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var Stack = __webpack_require__(58),
-    equalArrays = __webpack_require__(65),
+var Stack = __webpack_require__(59),
+    equalArrays = __webpack_require__(66),
     equalByTag = __webpack_require__(250),
     equalObjects = __webpack_require__(251),
     getTag = __webpack_require__(256),
     isArray = __webpack_require__(9),
-    isBuffer = __webpack_require__(70),
-    isTypedArray = __webpack_require__(72);
+    isBuffer = __webpack_require__(71),
+    isTypedArray = __webpack_require__(73);
 
 /** Used to compose bitmasks for value comparisons. */
 var COMPARE_PARTIAL_FLAG = 1;
@@ -25190,8 +24127,8 @@ module.exports = baseIsEqualDeep;
 /* 227 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var Stack = __webpack_require__(58),
-    baseIsEqual = __webpack_require__(62);
+var Stack = __webpack_require__(59),
+    baseIsEqual = __webpack_require__(63);
 
 /** Used to compose bitmasks for value comparisons. */
 var COMPARE_PARTIAL_FLAG = 1,
@@ -25258,10 +24195,10 @@ module.exports = baseIsMatch;
 /* 228 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var isFunction = __webpack_require__(71),
+var isFunction = __webpack_require__(72),
     isMasked = __webpack_require__(267),
     isObject = __webpack_require__(22),
-    toSource = __webpack_require__(69);
+    toSource = __webpack_require__(70);
 
 /**
  * Used to match `RegExp`
@@ -25443,7 +24380,7 @@ module.exports = baseMap;
 
 var baseIsMatch = __webpack_require__(227),
     getMatchData = __webpack_require__(253),
-    matchesStrictComparable = __webpack_require__(68);
+    matchesStrictComparable = __webpack_require__(69);
 
 /**
  * The base implementation of `_.matches` which doesn't clone `source`.
@@ -25469,12 +24406,12 @@ module.exports = baseMatches;
 /* 233 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseIsEqual = __webpack_require__(62),
+var baseIsEqual = __webpack_require__(63),
     get = __webpack_require__(300),
     hasIn = __webpack_require__(301),
     isKey = __webpack_require__(46),
-    isStrictComparable = __webpack_require__(67),
-    matchesStrictComparable = __webpack_require__(68),
+    isStrictComparable = __webpack_require__(68),
+    matchesStrictComparable = __webpack_require__(69),
     toKey = __webpack_require__(33);
 
 /** Used to compose bitmasks for value comparisons. */
@@ -25508,11 +24445,11 @@ module.exports = baseMatchesProperty;
 /* 234 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var arrayMap = __webpack_require__(59),
+var arrayMap = __webpack_require__(60),
     baseIteratee = __webpack_require__(44),
     baseMap = __webpack_require__(231),
     baseSortBy = __webpack_require__(239),
-    baseUnary = __webpack_require__(63),
+    baseUnary = __webpack_require__(64),
     compareMultiple = __webpack_require__(244),
     identity = __webpack_require__(34);
 
@@ -25568,7 +24505,7 @@ module.exports = baseProperty;
 /* 236 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseGet = __webpack_require__(61);
+var baseGet = __webpack_require__(62);
 
 /**
  * A specialized version of `baseProperty` which supports deep paths.
@@ -25695,7 +24632,7 @@ module.exports = baseTimes;
 /***/ (function(module, exports, __webpack_require__) {
 
 var Symbol = __webpack_require__(19),
-    arrayMap = __webpack_require__(59),
+    arrayMap = __webpack_require__(60),
     isArray = __webpack_require__(9),
     isSymbol = __webpack_require__(24);
 
@@ -25985,7 +24922,7 @@ module.exports = defineProperty;
 var Symbol = __webpack_require__(19),
     Uint8Array = __webpack_require__(212),
     eq = __webpack_require__(47),
-    equalArrays = __webpack_require__(65),
+    equalArrays = __webpack_require__(66),
     mapToArray = __webpack_require__(279),
     setToArray = __webpack_require__(288);
 
@@ -26217,7 +25154,7 @@ module.exports = getAllKeys;
 /* 253 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var isStrictComparable = __webpack_require__(67),
+var isStrictComparable = __webpack_require__(68),
     keys = __webpack_require__(35);
 
 /**
@@ -26341,7 +25278,7 @@ var DataView = __webpack_require__(207),
     Set = __webpack_require__(210),
     WeakMap = __webpack_require__(213),
     baseGetTag = __webpack_require__(20),
-    toSource = __webpack_require__(69);
+    toSource = __webpack_require__(70);
 
 /** `Object#toString` result references. */
 var mapTag = '[object Map]',
@@ -26418,7 +25355,7 @@ module.exports = getValue;
 /* 258 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var castPath = __webpack_require__(64),
+var castPath = __webpack_require__(65),
     isArguments = __webpack_require__(48),
     isArray = __webpack_require__(9),
     isIndex = __webpack_require__(45),
@@ -27064,7 +26001,7 @@ module.exports = nativeKeys;
 /* 282 */
 /***/ (function(module, exports, __webpack_require__) {
 
-/* WEBPACK VAR INJECTION */(function(module) {var freeGlobal = __webpack_require__(66);
+/* WEBPACK VAR INJECTION */(function(module) {var freeGlobal = __webpack_require__(67);
 
 /** Detect free variable `exports`. */
 var freeExports = typeof exports == 'object' && exports && !exports.nodeType && exports;
@@ -27087,7 +26024,7 @@ var nodeUtil = (function() {
 
 module.exports = nodeUtil;
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(55)(module)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(56)(module)))
 
 /***/ }),
 /* 283 */
@@ -27616,7 +26553,7 @@ module.exports = findIndex;
 /* 300 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseGet = __webpack_require__(61);
+var baseGet = __webpack_require__(62);
 
 /**
  * Gets the value at `path` of `object`. If the resolved value is
@@ -30202,245 +29139,7 @@ lunr.TokenStore.prototype.toJSON = function () {
 value:function(e){this.props.willAppear(e)}},{key:"componentWillLeave",value:function(){this.props.willLeave()}},{key:"render",value:function(){return this.props.children}}]),t}(s.Component);f.propTypes={willAppear:s.PropTypes["function"],willLeave:s.PropTypes["function"]},f.defaultProps={willAppear:function(){},willLeave:function(){}};var g=function(e){function t(){return i(this,t),a(this,Object.getPrototypeOf(t).apply(this,arguments))}return u(t,e),l(t,[{key:"renderBox",value:function(e){switch(e.type){case"rendering":var t=p.rendering[e.renderInfo.cost]||{};return c["default"].createElement("div",{key:e.id,ref:function(t){return setTimeout(function(){t&&(t.style.opacity=0)},e.lifeTime-500)},style:Object.assign({},p.box,p.rendering,t,{left:e.x,top:e.y,width:e.width,height:e.height})},c["default"].createElement("span",{style:Object.assign({},p.text,t.text)},e.renderInfo.count,"x | ",e.renderInfo.renderTime," / ",e.renderInfo.totalTime," ms"));case"hover":return c["default"].createElement("div",{key:e.id,style:Object.assign({},p.box,p.hover,{left:e.x,top:e.y,width:e.width,height:e.height})});default:throw new Error}}},{key:"render",value:function(){var e=this,t=this.props.boxes;return c["default"].createElement("div",null,t.map(function(t){return e.renderBox(t)}))}}]),t}(s.Component);g.propTypes={boxes:s.PropTypes.arrayOf(s.PropTypes.shape({type:s.PropTypes.oneOf(["rendering","hover"]).isRequired,x:s.PropTypes.number.isRequired,y:s.PropTypes.number.isRequired,width:s.PropTypes.number.isRequired,height:s.PropTypes.number.isRequired,renderInfo:s.PropTypes.shape({count:s.PropTypes.number.isRequired,renderTime:s.PropTypes.number.isRequired,totalTime:s.PropTypes.number.isRequired,cost:s.PropTypes.oneOf(["cheap","acceptable","expensive"]).isRequired}),lifeTime:s.PropTypes.number.isRequired})).isRequired},t["default"]=g},function(e,t){"use strict";Object.defineProperty(t,"__esModule",{value:!0});t.box={display:"block",position:"fixed",zIndex:"64998",minWidth:"60px",outline:"3px solid",pointerEvents:"none",transition:"opacity 500ms ease-in"},t.text={fontFamily:"verdana, sans-serif",padding:"0 4px 2px",color:"rgba(0, 0, 0, 0.6)",fontSize:"10px",lineHeight:"12px",pointerEvents:"none","float":"right",borderBottomRightRadius:"2px",maxWidth:"100%",maxHeight:"100%",overflow:"hidden",whiteSpace:"nowrap",textOverflow:"ellipsis"},t.rendering={cheap:{outlineColor:"rgba(182, 218, 146, 0.75)",text:{backgroundColor:"rgba(182, 218, 146, 0.75)"}},acceptable:{outlineColor:"rgba(228, 195, 66, 0.85)",text:{backgroundColor:"rgba(228, 195, 66, 0.85)"}},expensive:{outlineColor:"rgba(228, 171, 171, 0.95)",text:{backgroundColor:"rgba(228, 171, 171, 0.95)"}}},t.hover={outlineColor:"rgba(128, 128, 255, 0.5)"}},function(e,t,n){"use strict";function o(e){if(e&&e.__esModule)return e;var t={};if(null!=e)for(var n in e)Object.prototype.hasOwnProperty.call(e,n)&&(t[n]=e[n]);return t["default"]=e,t}function r(e){return e&&e.__esModule?e:{"default":e}}function i(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}function a(e,t){if(!e)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return!t||"object"!=typeof t&&"function"!=typeof t?e:t}function u(e,t){if("function"!=typeof t&&null!==t)throw new TypeError("Super expression must either be null or a function, not "+typeof t);e.prototype=Object.create(t&&t.prototype,{constructor:{value:e,enumerable:!1,writable:!0,configurable:!0}}),t&&(Object.setPrototypeOf?Object.setPrototypeOf(e,t):e.__proto__=t)}Object.defineProperty(t,"__esModule",{value:!0});var l=function(){function e(e,t){for(var n=0;n<t.length;n++){var o=t[n];o.enumerable=o.enumerable||!1,o.configurable=!0,"value"in o&&(o.writable=!0),Object.defineProperty(e,o.key,o)}}return function(t,n,o){return n&&e(t.prototype,n),o&&e(t,o),t}}(),s=n(2),c=r(s),d=n(25),p=r(d),f=n(3),g=n(27),h=o(g),b=function(e){function t(){var e,n,o,r;i(this,t);for(var u=arguments.length,l=Array(u),s=0;u>s;s++)l[s]=arguments[s];return n=o=a(this,(e=Object.getPrototypeOf(t)).call.apply(e,[this].concat(l))),o.handleUpdate=function(){return o.setState({})},o.handleClose=function(){return(0,f.setGlobalState)({dependencyTree:void 0})},r=n,a(o,r)}return u(t,e),l(t,[{key:"componentDidMount",value:function(){f.eventEmitter.on("update",this.handleUpdate)}},{key:"componentWillUnmount",value:function(){f.eventEmitter.removeListener("update",this.handleUpdate)}},{key:"renderTreeItem",value:function(e,t,n){var o=e.name,r=e.dependencies,i=this;return c["default"].createElement("div",{style:h.item,key:o},c["default"].createElement("span",{style:Object.assign({},h.box,n&&h.box.root)},o),r&&c["default"].createElement("div",{style:h.tree},r.map(function(e,t){return i.renderTreeItem(e,t==r.length-1)})),!n&&c["default"].createElement("span",{style:h.itemHorisontalDash}),!n&&c["default"].createElement("span",{style:Object.assign({},h.itemVericalStick,t&&h.itemVericalStick["short"])}))}},{key:"render",value:function(){var e=(0,f.getGlobalState)(),t=e.dependencyTree;return c["default"].createElement(p["default"],{onOverlayClick:this.handleClose},t&&c["default"].createElement("div",{style:h.graph},c["default"].createElement("span",{style:h.close,onClick:this.handleClose},"×"),c["default"].createElement("div",{style:h.tree},this.renderTreeItem(t,!0,!0))))}}]),t}(s.Component);t["default"]=b},function(e,t,n){"use strict";function o(e){if(e&&e.__esModule)return e;var t={};if(null!=e)for(var n in e)Object.prototype.hasOwnProperty.call(e,n)&&(t[n]=e[n]);return t["default"]=e,t}function r(e){return e&&e.__esModule?e:{"default":e}}function i(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}function a(e,t){if(!e)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return!t||"object"!=typeof t&&"function"!=typeof t?e:t}function u(e,t){if("function"!=typeof t&&null!==t)throw new TypeError("Super expression must either be null or a function, not "+typeof t);e.prototype=Object.create(t&&t.prototype,{constructor:{value:e,enumerable:!1,writable:!0,configurable:!0}}),t&&(Object.setPrototypeOf?Object.setPrototypeOf(e,t):e.__proto__=t)}Object.defineProperty(t,"__esModule",{value:!0});var l=function(){function e(e,t){for(var n=0;n<t.length;n++){var o=t[n];o.enumerable=o.enumerable||!1,o.configurable=!0,"value"in o&&(o.writable=!0),Object.defineProperty(e,o.key,o)}}return function(t,n,o){return n&&e(t.prototype,n),o&&e(t,o),t}}(),s=n(2),c=r(s),d=n(26),p=o(d),f=function(e){function t(){var e,n,o,r;i(this,t);for(var u=arguments.length,l=Array(u),s=0;u>s;s++)l[s]=arguments[s];return n=o=a(this,(e=Object.getPrototypeOf(t)).call.apply(e,[this].concat(l))),o.stopPropogation=function(e){return e.stopPropagation()},r=n,a(o,r)}return u(t,e),l(t,[{key:"componentDidUpdate",value:function(e){var t=document.body.parentNode;if(e.children&&!this.props.children)this.rightOffset=0,t.style.borderRight=null,t.style.overflow=null;else if(!e.children&&this.props.children){var n=t.offsetWidth;t.style.overflow="hidden";var o=t.offsetWidth,r=Math.max(0,o-n);t.style.borderRight=r+"px solid transparent"}}},{key:"render",value:function(){var e=this.props,t=e.children,n=e.onOverlayClick;return t?c["default"].createElement("div",{style:p.overlay,onClick:n},c["default"].createElement("div",{key:"content",style:p.modal,onClick:this.stopPropogation},t)):null}}]),t}(s.Component);f.propTypes={children:s.PropTypes.node,onOverlayClick:s.PropTypes.func.isRequired},t["default"]=f},function(e,t){"use strict";Object.defineProperty(t,"__esModule",{value:!0});t.overlay={position:"fixed",top:0,right:0,bottom:0,left:0,zIndex:66e3,overflow:"auto",WebkitOverflowScrolling:"touch",outline:0,backgroundColor:"rgba(40, 40, 50, 0.5)",transformOrigin:"50% 25%"},t.modal={position:"relative",width:"auto",margin:"5% 10%",zIndex:1060}},function(e,t){"use strict";Object.defineProperty(t,"__esModule",{value:!0});t.graph={background:"white",padding:"40px"},t.close={color:"rgba(0, 0, 0, 0.2)",fontSize:"36px",position:"absolute",top:"5px",right:"5px",width:"40px",height:"40px",lineHeight:"34px",textAlign:"center",cursor:"pointer",":hover":{color:"rgba(0, 0, 0, 0.5)"}},t.tree={position:"relative",paddingLeft:"25px"},t.item={position:"relative"},t.box={padding:"4px 10px",background:"rgba(0, 0, 0, 0.05)",display:"inline-block",marginBottom:"8px",color:"#000",root:{fontSize:"15px",fontWeight:"bold",padding:"6px 13px"}},t.itemHorisontalDash={position:"absolute",left:"-12px",borderTop:"1px solid rgba(0, 0, 0, 0.2)",top:"14px",width:"12px",height:"0"},t.itemVericalStick={position:"absolute",left:"-12px",borderLeft:"1px solid rgba(0, 0, 0, 0.2)",height:"100%",width:0,top:"-8px","short":{height:"23px"}}},function(e,t){"use strict";function n(e,t){if(void 0===e||null===e)throw new TypeError("Cannot convert first argument to object");for(var n=Object(e),o=1;o<arguments.length;o++){var r=arguments[o];if(void 0!==r&&null!==r)for(var i=Object.keys(Object(r)),a=0,u=i.length;u>a;a++){var l=i[a],s=Object.getOwnPropertyDescriptor(r,l);void 0!==s&&s.enumerable&&(n[l]=r[l])}}return n}function o(){Object.assign||Object.defineProperty(Object,"assign",{enumerable:!1,configurable:!0,writable:!0,value:n})}e.exports={assign:n,polyfill:o}}])});
 
 /***/ }),
-/* 313 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var map = {
-	"./af": 73,
-	"./af.js": 73,
-	"./ar": 79,
-	"./ar-dz": 74,
-	"./ar-dz.js": 74,
-	"./ar-ly": 75,
-	"./ar-ly.js": 75,
-	"./ar-ma": 76,
-	"./ar-ma.js": 76,
-	"./ar-sa": 77,
-	"./ar-sa.js": 77,
-	"./ar-tn": 78,
-	"./ar-tn.js": 78,
-	"./ar.js": 79,
-	"./az": 80,
-	"./az.js": 80,
-	"./be": 81,
-	"./be.js": 81,
-	"./bg": 82,
-	"./bg.js": 82,
-	"./bn": 83,
-	"./bn.js": 83,
-	"./bo": 84,
-	"./bo.js": 84,
-	"./br": 85,
-	"./br.js": 85,
-	"./bs": 86,
-	"./bs.js": 86,
-	"./ca": 87,
-	"./ca.js": 87,
-	"./cs": 88,
-	"./cs.js": 88,
-	"./cv": 89,
-	"./cv.js": 89,
-	"./cy": 90,
-	"./cy.js": 90,
-	"./da": 91,
-	"./da.js": 91,
-	"./de": 93,
-	"./de-at": 92,
-	"./de-at.js": 92,
-	"./de.js": 93,
-	"./dv": 94,
-	"./dv.js": 94,
-	"./el": 95,
-	"./el.js": 95,
-	"./en-au": 96,
-	"./en-au.js": 96,
-	"./en-ca": 97,
-	"./en-ca.js": 97,
-	"./en-gb": 98,
-	"./en-gb.js": 98,
-	"./en-ie": 99,
-	"./en-ie.js": 99,
-	"./en-nz": 100,
-	"./en-nz.js": 100,
-	"./eo": 101,
-	"./eo.js": 101,
-	"./es": 103,
-	"./es-do": 102,
-	"./es-do.js": 102,
-	"./es.js": 103,
-	"./et": 104,
-	"./et.js": 104,
-	"./eu": 105,
-	"./eu.js": 105,
-	"./fa": 106,
-	"./fa.js": 106,
-	"./fi": 107,
-	"./fi.js": 107,
-	"./fo": 108,
-	"./fo.js": 108,
-	"./fr": 111,
-	"./fr-ca": 109,
-	"./fr-ca.js": 109,
-	"./fr-ch": 110,
-	"./fr-ch.js": 110,
-	"./fr.js": 111,
-	"./fy": 112,
-	"./fy.js": 112,
-	"./gd": 113,
-	"./gd.js": 113,
-	"./gl": 114,
-	"./gl.js": 114,
-	"./he": 115,
-	"./he.js": 115,
-	"./hi": 116,
-	"./hi.js": 116,
-	"./hr": 117,
-	"./hr.js": 117,
-	"./hu": 118,
-	"./hu.js": 118,
-	"./hy-am": 119,
-	"./hy-am.js": 119,
-	"./id": 120,
-	"./id.js": 120,
-	"./is": 121,
-	"./is.js": 121,
-	"./it": 122,
-	"./it.js": 122,
-	"./ja": 123,
-	"./ja.js": 123,
-	"./jv": 124,
-	"./jv.js": 124,
-	"./ka": 125,
-	"./ka.js": 125,
-	"./kk": 126,
-	"./kk.js": 126,
-	"./km": 127,
-	"./km.js": 127,
-	"./ko": 128,
-	"./ko.js": 128,
-	"./ky": 129,
-	"./ky.js": 129,
-	"./lb": 130,
-	"./lb.js": 130,
-	"./lo": 131,
-	"./lo.js": 131,
-	"./lt": 132,
-	"./lt.js": 132,
-	"./lv": 133,
-	"./lv.js": 133,
-	"./me": 134,
-	"./me.js": 134,
-	"./mi": 135,
-	"./mi.js": 135,
-	"./mk": 136,
-	"./mk.js": 136,
-	"./ml": 137,
-	"./ml.js": 137,
-	"./mr": 138,
-	"./mr.js": 138,
-	"./ms": 140,
-	"./ms-my": 139,
-	"./ms-my.js": 139,
-	"./ms.js": 140,
-	"./my": 141,
-	"./my.js": 141,
-	"./nb": 142,
-	"./nb.js": 142,
-	"./ne": 143,
-	"./ne.js": 143,
-	"./nl": 145,
-	"./nl-be": 144,
-	"./nl-be.js": 144,
-	"./nl.js": 145,
-	"./nn": 146,
-	"./nn.js": 146,
-	"./pa-in": 147,
-	"./pa-in.js": 147,
-	"./pl": 148,
-	"./pl.js": 148,
-	"./pt": 150,
-	"./pt-br": 149,
-	"./pt-br.js": 149,
-	"./pt.js": 150,
-	"./ro": 151,
-	"./ro.js": 151,
-	"./ru": 152,
-	"./ru.js": 152,
-	"./se": 153,
-	"./se.js": 153,
-	"./si": 154,
-	"./si.js": 154,
-	"./sk": 155,
-	"./sk.js": 155,
-	"./sl": 156,
-	"./sl.js": 156,
-	"./sq": 157,
-	"./sq.js": 157,
-	"./sr": 159,
-	"./sr-cyrl": 158,
-	"./sr-cyrl.js": 158,
-	"./sr.js": 159,
-	"./ss": 160,
-	"./ss.js": 160,
-	"./sv": 161,
-	"./sv.js": 161,
-	"./sw": 162,
-	"./sw.js": 162,
-	"./ta": 163,
-	"./ta.js": 163,
-	"./te": 164,
-	"./te.js": 164,
-	"./tet": 165,
-	"./tet.js": 165,
-	"./th": 166,
-	"./th.js": 166,
-	"./tl-ph": 167,
-	"./tl-ph.js": 167,
-	"./tlh": 168,
-	"./tlh.js": 168,
-	"./tr": 169,
-	"./tr.js": 169,
-	"./tzl": 170,
-	"./tzl.js": 170,
-	"./tzm": 172,
-	"./tzm-latn": 171,
-	"./tzm-latn.js": 171,
-	"./tzm.js": 172,
-	"./uk": 173,
-	"./uk.js": 173,
-	"./uz": 174,
-	"./uz.js": 174,
-	"./vi": 175,
-	"./vi.js": 175,
-	"./x-pseudo": 176,
-	"./x-pseudo.js": 176,
-	"./yo": 177,
-	"./yo.js": 177,
-	"./zh-cn": 178,
-	"./zh-cn.js": 178,
-	"./zh-hk": 179,
-	"./zh-hk.js": 179,
-	"./zh-tw": 180,
-	"./zh-tw.js": 180
-};
-function webpackContext(req) {
-	return __webpack_require__(webpackContextResolve(req));
-};
-function webpackContextResolve(req) {
-	var id = map[req];
-	if(!(id + 1)) // check for number
-		throw new Error("Cannot find module '" + req + "'.");
-	return id;
-};
-webpackContext.keys = function webpackContextKeys() {
-	return Object.keys(map);
-};
-webpackContext.resolve = webpackContextResolve;
-module.exports = webpackContext;
-webpackContext.id = 313;
-
-
-/***/ }),
+/* 313 */,
 /* 314 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -31672,11 +30371,11 @@ var _react = __webpack_require__(1);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _MatchProvider = __webpack_require__(182);
+var _MatchProvider = __webpack_require__(183);
 
 var _MatchProvider2 = _interopRequireDefault(_MatchProvider);
 
-var _matchPattern = __webpack_require__(183);
+var _matchPattern = __webpack_require__(184);
 
 var _matchPattern2 = _interopRequireDefault(_matchPattern);
 
@@ -33498,3925 +32197,54 @@ module.exports = function (str) {
 
 
 /***/ }),
-/* 338 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview <Description Missing>
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.2.0
- */
-
-const React = __webpack_require__(1);
-const StatsGrid_1 = __webpack_require__(190);
-exports.AdminApp = (props) => (React.createElement("div", { className: 'page' },
-    React.createElement("section", null,
-        React.createElement("h1", null, "VRE App"),
-        props.stats !== null ? (React.createElement(StatsGrid_1.StatsGrid, { stats: props.stats })) : null)));
-
-
-/***/ }),
-/* 339 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview Abstract interface for sources
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.2.0
- */
-
-class UnprocessableEntity extends Error {
-    constructor(message, data) {
-        super(message);
-        this.code = 422;
-        this.data = data;
-    }
-}
-exports.UnprocessableEntity = UnprocessableEntity;
-class KeyNotFoundException extends Error {
-    constructor(message = 'Could not find the given key') {
-        super(message);
-        this.code = 404;
-    }
-}
-exports.KeyNotFoundException = KeyNotFoundException;
-class ReadOnlyResourceException extends Error {
-    constructor(message = 'Attempt to update a readonly resource') {
-        super(message);
-        this.code = 400;
-    }
-}
-exports.ReadOnlyResourceException = ReadOnlyResourceException;
-class CollectionNotFoundException extends Error {
-    constructor(message = 'Could not find the given collection') {
-        super(message);
-        this.data = message;
-    }
-}
-exports.CollectionNotFoundException = CollectionNotFoundException;
-class OperationNotPermittedException extends Error {
-    constructor(data) {
-        super(data.message);
-        this.code = 422;
-        this.data = data;
-    }
-}
-exports.OperationNotPermittedException = OperationNotPermittedException;
-class InvalidUpdateException extends Error {
-    constructor(message) {
-        super(message);
-        this.code = 400;
-    }
-}
-exports.InvalidUpdateException = InvalidUpdateException;
-class DatabaseIntegrityError extends Error {
-    constructor(message = `A database integrity constraint has been broken - your change has not been
- submitted. This is likely due to a change which violates the property types model; please check the types of
- what you are trying to do. Please also contact the Digital Humanities team, this error should not occur.`) {
-        super(message);
-        this.code = 500;
-    }
-}
-exports.DatabaseIntegrityError = DatabaseIntegrityError;
-exports.Exceptions = {
-    UnprocessableEntity,
-    KeyNotFoundException,
-    CollectionNotFoundException,
-    OperationNotPermittedException,
-    DatabaseIntegrityError,
-    InvalidUpdateException,
-    ReadOnlyResourceException
-};
-
-
-/***/ }),
-/* 340 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview Sidebar for editor
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.2.0
- */
-
-const React = __webpack_require__(1);
-exports.Loading = (props) => {
-    return (React.createElement("div", { className: 'loader-wrapper' },
-        React.createElement("div", { className: 'loader' })));
-};
-
-
-/***/ }),
-/* 341 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview Sidebar for editor
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.2.0
- */
-
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-const React = __webpack_require__(1);
-const SearchBox_1 = __webpack_require__(365);
-const ApiService_1 = __webpack_require__(4);
-const react_router_1 = __webpack_require__(11);
-const lodash_1 = __webpack_require__(6);
-const react_sortable_hoc_1 = __webpack_require__(51);
-const mobx_react_1 = __webpack_require__(2);
-const Handle = react_sortable_hoc_1.SortableHandle((props) => (React.createElement("div", { className: 'badge-container' },
-    React.createElement("div", { className: 'badge ' + props.tabType },
-        React.createElement("span", null, props.tabType[0].toUpperCase())))));
-const onCloseTab = (e, tabType, uid, dataStore) => {
-    dataStore.closeTab(tabType, uid);
-    e.stopPropagation();
-    e.preventDefault();
-    e.nativeEvent.stopImmediatePropagation();
-};
-const Card = react_sortable_hoc_1.SortableElement(mobx_react_1.observer((props) => (React.createElement("li", { key: `${props.url}` },
-    React.createElement("div", { className: ((currentTab) => {
-            const classes = ['sidebar-card', props.tab.tabClass];
-            if (currentTab) {
-                classes.push('current');
-            }
-            if (props.compact) {
-                classes.push('compact');
-            }
-            return classes.join(' ');
-        })(props.currentTab) },
-        React.createElement(Handle, { tabType: props.tab.tabType, index: props.index }),
-        React.createElement("div", { className: 'description' },
-            React.createElement(react_router_1.Link, { to: props.url },
-                React.createElement("span", { className: 'entity-name' }, props.title),
-                props.compact ? null : lodash_1.isObject(props.subtitle) ? (React.createElement("ul", null, Object.keys(props.subtitle).map((sub, i) => (React.createElement("li", { key: `tab-${props.index}-${i}` },
-                    sub,
-                    ":",
-                    lodash_1.isObject(props.subtitle[sub]) ? (React.createElement("span", null,
-                        React.createElement("ul", null, Object.keys(props.subtitle[sub]).map((subSub, j) => (React.createElement("li", { key: `tab-${props.index}-${i}-${j}` },
-                            subSub,
-                            ": ",
-                            props.subtitle[sub][subSub])))))) : null))))) : (React.createElement("span", { className: 'entity-type' }, props.subtitle)))),
-        React.createElement("span", { className: 'lock-button' }, props.tab.tabType === 'source' ? (props.dataStore.defaultSource === props.tab.uid ?
-            (React.createElement("i", { onClick: () => props.dataStore.defaultSource = null, className: 'fa fa-lock' })) :
-            (React.createElement("i", { onClick: () => props.dataStore.defaultSource = props.tab.uid, className: 'fa fa-unlock' }))) : null),
-        !props.currentTab ? (React.createElement("span", { className: 'close-button' },
-            React.createElement("i", { className: 'fa fa-times', onClick: (e) => onCloseTab(e, props.tab.tabType, props.tab.uid, props.dataStore) }))) : null)))));
-const CardList = mobx_react_1.observer((props) => {
-    return (React.createElement("ul", { className: 'card-list' }, props.dataStore.tabs.map((tab, index) => {
-        // TODO: shouldn't be ==
-        const item = props.dataStore.dataStore.all[tab.tabType].value
-            .find((item) => item.uid == tab.uid);
-        let url = null;
-        if (tab.tabClass === 'item') {
-            url = `/edit/${ApiService_1.AppUrls[tab.tabType]}/${tab.uid}`;
-        }
-        else {
-            if (tab.tabClass === 'view') {
-                url = {
-                    pathname: `/edit/${ApiService_1.AppUrls[tab.tabType]}`,
-                    query: tab.query
-                };
-            }
-        }
-        const subtitle = tab.tabClass === 'item' ?
-            lodash_1.capitalize(ApiService_1.AppUrls[tab.tabType]).replace('_', ' ') + ' ' + tab.uid
-            : tab.data;
-        const title = item === undefined ? `${tab.tabType} list` : item.label;
-        const currentTab = !props.list && tab.tabType === props.workspace && tab.uid == props.id;
-        return (React.createElement(Card, { key: `tab-${tab.tabType}-${tab.tabClass}-${tab.uid}-${tab.query}`, currentTab: currentTab, url: url, tab: tab, title: title, subtitle: subtitle, index: index, dataStore: props.dataStore, compact: props.compact }));
-    })));
-});
-let Sidebar = class Sidebar extends React.Component {
-    constructor() {
-        super();
-        this.state = {
-            searchString: '',
-            compactMode: false
-        };
-    }
-    render() {
-        return (React.createElement("section", { id: 'sidebar' },
-            React.createElement(SearchBox_1.SearchBox, { searchString: this.state.searchString, dataStore: this.props.dataStore, onChange: (evt) => this.setState({ searchString: evt.currentTarget.value }) }),
-            React.createElement("div", { className: 'sidebar-toolbar' },
-                React.createElement("button", { onClick: () => this.props.dataStore.clearAllTabs() },
-                    React.createElement("i", { className: 'fa fa-trash' }),
-                    " Clear All"),
-                React.createElement("button", { onClick: () => this.props.modalStore.addModal({ name: 'createTabSet', cancel: lodash_1.noop, complete: lodash_1.noop, settings: {} }) },
-                    React.createElement("i", { className: 'fa fa-floppy-o' }),
-                    " Save"),
-                React.createElement("button", { onClick: () => this.setState({ compactMode: !this.state.compactMode }) },
-                    React.createElement("i", { className: 'fa fa-compress' }),
-                    " Compact")),
-            React.createElement("div", { className: 'card-list-container' },
-                React.createElement(CardList, { dataStore: this.props.dataStore, list: this.props.list, workspace: this.props.workspace, id: this.props.id, compact: this.state.compactMode }))));
-    }
-};
-Sidebar = __decorate([
-    mobx_react_1.inject('dataStore', 'modalStore'),
-    mobx_react_1.observer,
-    __metadata("design:paramtypes", [])
-], Sidebar);
-exports.Sidebar = Sidebar;
-
-
-/***/ }),
-/* 342 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview Toast controller
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.2.0
- */
-
-const React = __webpack_require__(1);
-class Toast extends React.Component {
-    constructor() {
-        super();
-        this.state = {
-            toasts: [],
-            nextId: 0
-        };
-    }
-    addToast(title, message, level = 'warning', lifeTime = 3000) {
-        const id = this.state.nextId;
-        this.setState({
-            toasts: this.state.toasts.concat([{ title, message, level, lifeTime, id }]),
-            nextId: id + 1
-        });
-        setTimeout(() => {
-            this.setState({
-                toasts: this.state.toasts.filter((toast) => toast.id !== id)
-            });
-        }, lifeTime);
-    }
-    render() {
-        return (React.createElement("span", null, this.state.toasts.map((toast, i) => (React.createElement("div", { key: `toast-${toast.id}`, style: { bottom: (1 + 7 * i) + 'em' }, className: `toast ${toast.level}` },
-            React.createElement("div", { className: 'title' }, toast.title),
-            React.createElement("div", { className: 'message' }, toast.message))))));
-    }
-}
-exports.Toast = Toast;
-
-
-/***/ }),
-/* 343 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview Sidebar for editor
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.2.0
- */
-
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-const React = __webpack_require__(1);
-const Loading_1 = __webpack_require__(340);
-const mobx_react_1 = __webpack_require__(2);
-const workspace_1 = __webpack_require__(375);
-let Workspace = class Workspace extends React.Component {
-    constructor() {
-        super();
-        this.state = {
-            searchString: ''
-        };
-    }
-    render() {
-        if (this.props.loading) {
-            return (React.createElement(Loading_1.Loading, null));
-        }
-        if (this.props.list) {
-            if (this.props.name === undefined) {
-                throw new Error('A list view must have a name');
-            }
-            return (React.createElement(workspace_1.ObjectListWorkspace, { name: this.props.name, query: this.props.location.query, listType: this.props.workspace }));
-        }
-        let workspaceComponent = workspace_1.EmptyWorkspace;
-        switch (this.props.workspace) {
-            case 'entity':
-                workspaceComponent = workspace_1.EntityEditorWorkspace;
-                break;
-            case 'predicate':
-                workspaceComponent = workspace_1.PredicateEditorWorkspace;
-                break;
-            case 'source':
-                workspaceComponent = workspace_1.SourceEditorWorkspace;
-                break;
-            case 'entity_type':
-                workspaceComponent = workspace_1.EntityTypeWorkspace;
-                break;
-            case 'search':
-                workspaceComponent = workspace_1.AdvancedSearchWorkspace;
-                break;
-        }
-        return (React.createElement("div", { className: 'flex-fill workspace-outer-wrapper' },
-            React.createElement("div", { className: 'workspace-inner-wrapper flex-fill' }, React.createElement(workspaceComponent, { id: this.props.id }))));
-    }
-};
-Workspace = __decorate([
-    mobx_react_1.inject('dataStore'),
-    mobx_react_1.observer,
-    __metadata("design:paramtypes", [])
-], Workspace);
-exports.Workspace = Workspace;
-
-
-/***/ }),
-/* 344 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview <Description Missing>
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.2.0
- */
-
-const React = __webpack_require__(1);
-const DatePickerDropdown_1 = __webpack_require__(351);
-exports.DateFieldEditor = (props) => {
-    return (React.createElement("div", { className: 'date-selector' },
-        React.createElement(DatePickerDropdown_1.DatePickerDropdown, { value: props.value, setValue: props.onChange })));
-};
-
-
-/***/ }),
-/* 345 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview Entity Field Editor - select box for entities
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.2.0
- */
-
-const React = __webpack_require__(1);
-const ComboDropdown_1 = __webpack_require__(10);
-const lodash_1 = __webpack_require__(6);
-exports.EntityFieldEditor = (props) => {
-    // build the options list
-    const options = props.entities.map((entity) => ({ key: entity.label, value: entity.uid !== null ? entity.uid : null }));
-    // find the default option to display
-    let selectedOption = options.find((opt) => opt.value !== null && opt.value === props.value);
-    if (selectedOption === undefined) {
-        selectedOption = { key: '', value: null };
-    }
-    return (React.createElement(ComboDropdown_1.NumberComboDropdown, { options: options, typeName: 'entity type', allowNew: false, value: selectedOption, setValue: (val) => val !== null && val.value !== null ? props.onChange(val.value) : props.onChange(null), createNewValue: lodash_1.noop }));
-};
-
-
-/***/ }),
-/* 346 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview <Description Missing>
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.2.0
- */
-
-const React = __webpack_require__(1);
-exports.IntegerFieldEditor = (props) => {
-    const integerFieldChangeHandler = (e) => props.onChange(e.target.value);
-    return (React.createElement("input", { type: 'number', value: props.value, onChange: integerFieldChangeHandler }));
-};
-
-
-/***/ }),
-/* 347 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview <Description Missing>
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.2.0
- */
-
-const React = __webpack_require__(1);
-const ApiService_1 = __webpack_require__(4);
-const falcon_core_1 = __webpack_require__(5);
-const EditableFieldComponent_1 = __webpack_require__(17);
-const RecordRow_1 = __webpack_require__(348);
-const AddTabButton_1 = __webpack_require__(7);
-class RecordEditableFieldComponent extends EditableFieldComponent_1.EditableFieldComponent {
-}
-class RecordPredicate extends React.Component {
-    constructor() {
-        super();
-        this.state = {
-            potentialValues: []
-        };
-    }
-    componentDidMount() {
-        if (this.props.predicate.rangeIsReference) {
-            this.props.dataStore.getCollection(falcon_core_1.Entity, ApiService_1.AppUrls.entity, { type: this.props.predicate.range })
-                .then((potentialValues) => this.setState({ potentialValues }));
-        }
-    }
-    createNewRecord() {
-        this.props.dataStore.postItem(falcon_core_1.Record, ApiService_1.AppUrls.record, falcon_core_1.Serializer.fromJson(falcon_core_1.Record, {
-            predicate: this.props.predicate.uid,
-            entity: this.props.entity_id,
-            valueType: this.props.predicate.rangeIsReference ? 'entity' : this.props.predicate.range,
-            score: 3,
-            source: this.props.dataStore.defaultSource
-        }), {});
-    }
-    deleteRecord(record) {
-        if (record.uid === null) {
-            throw new Error('Trying to delete a record with null id');
-        }
-        this.props.dataStore.delItem(falcon_core_1.Record, ApiService_1.AppUrls.record, record.uid)
-            .then(() => {
-            this.props.onChange();
-        });
-    }
-    recordChanged(record) {
-        this.props.dataStore.putItem(falcon_core_1.Record, ApiService_1.AppUrls.record, this.props.entity_id, falcon_core_1.Serializer.toJson(record));
-    }
-    render() {
-        if (this.props.predicate.uid === null) {
-            throw new Error('Expected uid to be a number, it was null');
-        }
-        return (React.createElement("section", null,
-            React.createElement("h5", { className: 'section-header' },
-                this.props.predicate.label,
-                " ",
-                React.createElement("i", { className: 'fa fa-plus-circle add button', "aria-hidden": 'true', onClick: this.createNewRecord.bind(this), title: `Add new ${this.props.predicate.label} record` }),
-                React.createElement(AddTabButton_1.AddTabButton, { uid: this.props.predicate.uid, tabType: 'predicate' })),
-            React.createElement("table", { className: 'record-editing-table' },
-                React.createElement("thead", null,
-                    React.createElement("tr", { className: 'record-row title' },
-                        React.createElement("th", { className: 'record-row-item uid' }, "ID"),
-                        this.props.predicate.range !== 'source' ? (React.createElement("th", { className: 'record-row-item' }, "Value")) : null,
-                        React.createElement("th", { className: 'record-row-item' }, "Source"),
-                        React.createElement("th", { className: 'record-row-item score' }, "Score"),
-                        React.createElement("th", { className: 'record-row-item score' }, "Period"),
-                        React.createElement("th", { className: 'record-row-item buttons' }, "Actions"))),
-                React.createElement("tbody", null, this.props.records.map((record) => (React.createElement(RecordEditableFieldComponent, { key: `row-${record.uid}`, value: record, onChange: this.recordChanged.bind(this), onDelete: this.deleteRecord.bind(this) },
-                    React.createElement(RecordRow_1.RecordRow, { dimension: 'predicates', sources: this.props.sources, entities: this.state.potentialValues }))))))));
-    }
-}
-exports.RecordPredicate = RecordPredicate;
-
-
-/***/ }),
-/* 348 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview <Description Missing>
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.2.0
- */
-
-const React = __webpack_require__(1);
-var EditableFieldComponent_1 = __webpack_require__(17);
-exports.EditableFieldComponent = EditableFieldComponent_1.EditableFieldComponent;
-const ScorePicker_1 = __webpack_require__(352);
-const ComboDropdown_1 = __webpack_require__(10);
-const StringFieldEditor_1 = __webpack_require__(350);
-const EntityFieldEditor_1 = __webpack_require__(345);
-const DateFieldEditor_1 = __webpack_require__(344);
-const IntegerFieldEditor_1 = __webpack_require__(346);
-const AddTabButton_1 = __webpack_require__(7);
-const formatDate_1 = __webpack_require__(54);
-const mobx_react_1 = __webpack_require__(2);
-const recordEditor = (props, record) => {
-    switch (record.valueType) {
-        case 'string':
-            return (React.createElement(StringFieldEditor_1.StringFieldEditor, { value: record.value || '', onChange: (value) => props.onChange(Object.assign(record, { value })) }));
-        case 'date':
-            return (React.createElement(DateFieldEditor_1.DateFieldEditor, { value: record.value || '', onChange: (value) => props.onChange(Object.assign(record, { value })) }));
-        case 'integer':
-            return (React.createElement(IntegerFieldEditor_1.IntegerFieldEditor, { value: record.value || '', onChange: (value) => props.onChange(Object.assign(record, { value })) }));
-        case 'entity':
-            return (React.createElement(EntityFieldEditor_1.EntityFieldEditor, { value: record.value === null ? 0 : parseInt(record.value), onChange: (value) => props.onChange(Object.assign(record, { value })), entities: props.entities }));
-        default:
-            return (React.createElement("div", null, "Missing editor"));
-    }
-};
-const formatValue = (props, record) => {
-    if (record.valueType === 'entity') {
-        const entity = props.entities.find((entity) => entity.uid == record.value);
-        if (entity !== undefined) {
-            if (entity.uid === null) {
-                throw Error('Unexpected null ID on entity');
-            }
-            return (React.createElement("span", null,
-                entity.label,
-                " ",
-                React.createElement(AddTabButton_1.AddTabButton, { uid: entity.uid, tabType: 'entity' })));
-        }
-        else {
-            return (React.createElement("em", null, "Missing Entity"));
-        }
-    }
-    if (record.valueType === 'date') {
-        return (React.createElement("span", null, formatDate_1.formatDate(record.value)));
-    }
-    return (React.createElement("span", null, record.value));
-};
-exports.RecordRow = mobx_react_1.inject('dataStore', 'modalStore')(mobx_react_1.observer((props) => {
-    const createNewSource = (initialValue) => {
-        const a = {
-            name: 'source',
-            complete: () => {
-                // TODO : Automatically reload sources
-            },
-            cancel: () => { console.log('cancel'); },
-            settings: {
-                initialValue
-            }
-        };
-        props.modalStore.addModal(a);
-    };
-    const recordValue = props.value;
-    if (recordValue === null) {
-        throw new Error('Should not be null!!');
-    }
-    const currentSource = recordValue.source === null ? undefined :
-        props.sources.find((source) => source.uid === recordValue.source);
-    const dropDownValue = {
-        key: '', value: recordValue.source === null ? null : recordValue.source
-    };
-    if (currentSource !== undefined) {
-        dropDownValue.key = currentSource.label;
-    }
-    if (props.edit) {
-        return (React.createElement("tr", { className: 'record-row' },
-            React.createElement("td", { className: 'record-row-item uid' }, recordValue.uid),
-            recordValue.valueType !== 'source' ? (React.createElement("td", { className: 'record-row-item' }, recordEditor(props, recordValue))) : null,
-            React.createElement("td", { className: 'record-row-item' },
-                React.createElement(ComboDropdown_1.NumberComboDropdown, { options: props.sources.map((source) => ({ key: source.label, value: source.uid !== null ? source.uid : null })), typeName: 'source', value: dropDownValue, setValue: (combo) => props.onChange(Object.assign(recordValue, { source: combo === null ? combo : combo.value })), createNewValue: () => createNewSource('') })),
-            React.createElement("td", { className: 'record-row-item score' },
-                React.createElement(ScorePicker_1.ScorePicker, { value: recordValue.score, readOnly: false, onChange: (score) => props.onChange(Object.assign(recordValue, { score })) })),
-            React.createElement("td", { className: 'record-row-item period' },
-                React.createElement(DateFieldEditor_1.DateFieldEditor, { value: recordValue.period || '', onChange: (period) => props.onChange(Object.assign(recordValue, { period })) })),
-            React.createElement("td", { className: 'record-row-item buttons' },
-                React.createElement("button", null,
-                    React.createElement("i", { className: 'fa fa-check', onClick: props.acceptChanges, "aria-hidden": 'true' })),
-                React.createElement("button", null,
-                    React.createElement("i", { className: 'fa fa-times', "aria-hidden": 'true', onClick: props.cancelChanges })))));
-    }
-    else {
-        return (React.createElement("tr", { className: 'record-row' },
-            React.createElement("td", { className: 'record-row-item uid' },
-                "#",
-                recordValue.uid),
-            recordValue.valueType !== 'source' ? (React.createElement("td", { className: 'record-row-item' }, formatValue(props, recordValue))) : null,
-            React.createElement("td", { className: 'record-row-item' },
-                dropDownValue.key,
-                dropDownValue.key.length > 0 && dropDownValue.value !== null ? (React.createElement(AddTabButton_1.AddTabButton, { uid: dropDownValue.value, tabType: 'source' })) : null),
-            React.createElement("td", { className: 'record-row-item score' },
-                React.createElement(ScorePicker_1.ScorePicker, { value: recordValue.score, readOnly: true })),
-            React.createElement("td", { className: 'record-row-item period' }, formatDate_1.formatDate(recordValue.period)),
-            React.createElement("td", { className: 'record-row-item buttons' },
-                React.createElement("button", null,
-                    React.createElement("i", { className: 'fa fa-pencil-square-o', title: 'Edit', onClick: props.setEdit, "aria-hidden": 'true' })),
-                React.createElement("button", null,
-                    React.createElement("i", { className: 'fa fa-trash', "aria-hidden": 'true', onClick: props.onDelete })))));
-    }
-}));
-
-
-/***/ }),
-/* 349 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview <Description Missing>
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.2.0
- */
-
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-const React = __webpack_require__(1);
-const ApiService_1 = __webpack_require__(4);
-const falcon_core_1 = __webpack_require__(5);
-const EditableFieldComponent_1 = __webpack_require__(17);
-const SearchBar_1 = __webpack_require__(39);
-const RecordPredicate_1 = __webpack_require__(347);
-const findParentTree_1 = __webpack_require__(53);
-const mobx_react_1 = __webpack_require__(2);
-class RecordEditableFieldComponent extends EditableFieldComponent_1.EditableFieldComponent {
-}
-let RecordsEditor = class RecordsEditor extends React.Component {
-    constructor() {
-        super();
-        this.state = {
-            filterFunc: () => true
-        };
-    }
-    deleteRecord(record) {
-        if (record.uid === null) {
-            throw new Error('Trying to delete a record with null id');
-        }
-        this.props.dataStore.delItem(falcon_core_1.Record, ApiService_1.AppUrls.record, record.uid)
-            .then(() => {
-            this.props.onChange();
-        });
-    }
-    createNewRecord() {
-        const entity = this.props.dataStore.dataStore.tabs.entity[this.props.id].value.entity;
-        const entityType = this.props.dataStore.dataStore.all.entity_type.value.find((t) => t.uid === entity.entityType);
-        const entityTypeParents = findParentTree_1.findParentTree(entity.entityType, this.props.dataStore.dataStore.all.entity_type.value);
-        const predicates = this.props.dataStore.dataStore.all.predicate
-            .value.filter((pred) => entityTypeParents.indexOf(pred.domain) !== -1);
-        const modalDef = {
-            name: 'record',
-            complete: (data) => {
-                console.log('Records editor called complete');
-                //this.loadData(this.props);
-            },
-            cancel: () => {
-                console.log('Records editor called cancel');
-            },
-            settings: {
-                options: predicates.map((pred) => ({ key: pred.label, value: pred.uid, meta: pred })),
-                entityUid: this.props.id,
-                entityType: this.props.entityTypeId
-            }
-        };
-        this.props.modalStore.addModal(modalDef);
-    }
-    render() {
-        const predicates = this.props.predicates;
-        return (React.createElement("div", null,
-            React.createElement("div", null,
-                React.createElement("div", null,
-                    React.createElement("label", { className: 'small' }, "Records"),
-                    React.createElement("div", { style: { display: 'flex' } },
-                        React.createElement("div", { style: { flex: '1' } },
-                            React.createElement(SearchBar_1.SearchBar, { getValue: (p) => p.label, setFilterFunc: (filterFunc) => this.setState({ filterFunc }) })),
-                        React.createElement("div", { style: { padding: '0.1em 0.4em', fontSize: '2em' } },
-                            React.createElement("i", { className: 'fa fa-plus-circle add button', "aria-hidden": 'true', onClick: this.createNewRecord.bind(this), title: 'Add new record' }))),
-                    React.createElement("div", null, Object.keys(this.props.records).map((section) => {
-                        const currentPredicate = predicates.find((pred) => {
-                            if (pred.uid === null) {
-                                throw new Error('encountered predicate with null id');
-                            }
-                            return pred.uid.toString() === section;
-                        });
-                        if (currentPredicate === undefined) {
-                            throw new Error('Could not find predicate');
-                        }
-                        if (!this.state.filterFunc(currentPredicate)) {
-                            return null;
-                        }
-                        return (React.createElement(RecordPredicate_1.RecordPredicate, { key: `section-${section}`, entity_id: this.props.id, dataStore: this.props.dataStore, dimension: 'predicate', records: this.props.records[section], predicate: currentPredicate, sources: this.props.sources, onChange: this.props.onChange }));
-                    }))))));
-    }
-};
-RecordsEditor = __decorate([
-    mobx_react_1.inject('dataStore', 'modalStore'),
-    mobx_react_1.observer,
-    __metadata("design:paramtypes", [])
-], RecordsEditor);
-exports.RecordsEditor = RecordsEditor;
-
-
-/***/ }),
-/* 350 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview <Description Missing>
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.2.0
- */
-
-const React = __webpack_require__(1);
-exports.StringFieldEditor = (props) => {
-    return (React.createElement("input", { type: 'text', value: props.value, onChange: (e) => props.onChange(e.target.value) }));
-};
-
-
-/***/ }),
-/* 351 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview Sidebar for editor
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.2.0
- */
-
-const React = __webpack_require__(1);
-const moment = __webpack_require__(0);
-const lodash_1 = __webpack_require__(6);
-const formatDate_1 = __webpack_require__(54);
-class DatePickerDropdown extends React.Component {
-    constructor() {
-        super();
-        //TODO: should be false
-        this.state = {
-            showingDropDown: false
-        };
-        if (document !== undefined) {
-            this.boundWindowClick = () => {
-                if (!this.ignoreGlobalClick) {
-                    this.setState({
-                        showingDropDown: false
-                    });
-                }
-                else {
-                    this.ignoreGlobalClick = false;
-                }
-            };
-            document.body.addEventListener('click', this.boundWindowClick);
-        }
-    }
-    componentWillMount() {
-        this.ignoreBlur = false;
-        this.ignoreClick = false;
-        this.ignoreGlobalClick = false;
-    }
-    componentWillUnmount() {
-        document.body.removeEventListener('click', this.boundWindowClick);
-    }
-    componentWillReceiveProps(newProps) {
-        // this.updateFilter(newProps.value.key !== this.props.value.key ? newProps.value.key : this.state.searchString, newProps);
-        // this.setState({
-        //     searchString: newProps.value.key !== this.props.value.key ? newProps.value.key : this.state.searchString,
-        //     selected: newProps.value,
-        //     options: newProps.options
-        // });
-    }
-    //should be false
-    handleInputBlur() {
-        if (!this.ignoreBlur) {
-            this.setState({
-                showingDropDown: false
-            });
-        }
-        else {
-            this.ignoreBlur = false;
-        }
-    }
-    handleInputFocus() {
-        if (this.ignoreBlur) {
-            this.ignoreBlur = true;
-            return;
-        }
-        // We don't want `selectItemFromMouse` to trigger when
-        // the user clicks into the input to focus it, so set this
-        // flag to cancel out the logic in `handleInputClick`.
-        // The event order is:  MouseDown -> Focus -> MouseUp -> Click
-        this.ignoreClick = true;
-        this.setState({ showingDropDown: true });
-    }
-    handleInputClick() {
-        // Input will not be focused if it's disabled
-        if (this.isInputFocused() && this.state.showingDropDown === false) {
-            this.setState({ showingDropDown: true });
-        }
-        else {
-            //  if (this.state.highlightedIndex !== null && !this.ignoreClick) {
-            //      this.selectItemFromMouse(this.state.filteredOptions[this.state.highlightedIndex]);
-            //  } else {
-            this.ignoreClick = false;
-        }
-    }
-    selectItemFromMouse(item) {
-        this.setState({
-            showingDropDown: false
-        }, () => {
-            this.props.setValue(item);
-        });
-    }
-    isInputFocused() {
-        const el = this.refs[DatePickerDropdown.datePickerDropDownInputBoxRef];
-        return el.ownerDocument && (el === el.ownerDocument.activeElement);
-    }
-    onDropdownClick() {
-        this.ignoreBlur = true;
-        this.ignoreGlobalClick = true;
-        console.log('clicked');
-    }
-    rangeTypeChanged(rangeType) {
-        this.props.setValue(rangeType + this.props.value.substr(1));
-    }
-    yearChanged(e) {
-        const base = this.props.value.length === 9 ? this.props.value : '=XXXX0000';
-        let yearVal = e.currentTarget.value.substr(0, 4).replace(/[^0-9]/g, '');
-        for (let i = yearVal.length; i < 4; i += 1) {
-            yearVal += 'X';
-        }
-        this.props.setValue(base.substr(0, 1) + yearVal + base.substr(5));
-    }
-    monthChanged(e) {
-        this.ignoreGlobalClick = true;
-        const base = this.props.value.length === 9 ? this.props.value : '=XXXX0000';
-        const monthVal = e.currentTarget.value.substr(0, 2);
-        this.props.setValue(base.substr(0, 5) + monthVal + base.substr(7));
-    }
-    dayChanged(e) {
-        const base = this.props.value.length === 9 ? this.props.value : '=XXXX0000';
-        let dayVal = e.currentTarget.value.substr(0, 2).replace(/[^0-9]/g, '');
-        dayVal = lodash_1.padStart(dayVal, 2, '0');
-        this.props.setValue(base.substr(0, 7) + dayVal);
-    }
-    render() {
-        let rangeOption = this.props.value.substr(0, 1);
-        if (['<', '>', '='].indexOf(rangeOption) === -1) {
-            rangeOption = '=';
-        }
-        const rangeOptionClassName = (val) => {
-            if (val === rangeOption) {
-                return 'range-option selected';
-            }
-            else {
-                return 'range-option';
-            }
-        };
-        const year = this.props.value.substr(1, 4).replace(/X/g, '');
-        const month = this.props.value.substr(5, 2);
-        const day = this.props.value[7] === '0' ? this.props.value[8] === '0' ?
-            ''
-            : this.props.value.substr(8, 1)
-            : this.props.value.substr(7, 2);
-        const displayValue = formatDate_1.formatDate(this.props.value);
-        return (React.createElement("div", { className: 'combo-dropdown' },
-            React.createElement("div", null,
-                React.createElement("input", { type: 'text', readOnly: true, ref: DatePickerDropdown.datePickerDropDownInputBoxRef, className: 'search-input', value: displayValue, onBlur: this.handleInputBlur.bind(this), onFocus: this.handleInputFocus.bind(this), onClick: this.handleInputClick.bind(this) })),
-            this.state.showingDropDown ? (React.createElement("div", { className: 'dropdown' },
-                React.createElement("div", { className: 'date-picker-dropdown', onMouseDown: this.onDropdownClick.bind(this) },
-                    React.createElement("section", { className: 'range-type' },
-                        React.createElement("div", { className: rangeOptionClassName('<'), onClick: () => this.rangeTypeChanged('<') }, "Before"),
-                        React.createElement("div", { className: rangeOptionClassName('='), onClick: () => this.rangeTypeChanged('=') }, "Exactly"),
-                        React.createElement("div", { className: rangeOptionClassName('>'), onClick: () => this.rangeTypeChanged('>') }, "After")),
-                    React.createElement("section", { className: 'date-select' },
-                        React.createElement("div", { className: 'date-selector day' },
-                            React.createElement("label", { className: 'small' }, "Day"),
-                            React.createElement("input", { type: 'text', maxLength: 2, value: day, onChange: this.dayChanged.bind(this) })),
-                        React.createElement("div", { className: 'date-selector month' },
-                            React.createElement("label", { className: 'small' }, "Month"),
-                            React.createElement("select", { onChange: this.monthChanged.bind(this), value: month },
-                                React.createElement("option", { value: '00' }, "Unknown"),
-                                moment.months().map((month, i) => (React.createElement("option", { key: `option-${month}`, value: lodash_1.padStart((i + 1).toString(), 2, '0') }, month))))),
-                        React.createElement("div", { className: 'date-selector year' },
-                            React.createElement("label", { className: 'small' }, "Year"),
-                            React.createElement("input", { type: 'text', maxLength: 4, value: year, onChange: this.yearChanged.bind(this) })))))) : null));
-    }
-}
-DatePickerDropdown.datePickerDropDownInputBoxRef = 'datePickerDropDownInputBox';
-exports.DatePickerDropdown = DatePickerDropdown;
-
-
-/***/ }),
-/* 352 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview Sidebar for editor
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.2.0
- */
-
-const React = __webpack_require__(1);
-const lodash_1 = __webpack_require__(6);
-exports.ScorePicker = (props) => {
-    const values = [1, 2, 3, 4, 5];
-    if (props.readOnly) {
-        return (React.createElement("span", { className: 'score-picker' }, values.map((val) => (React.createElement("i", { key: val, className: 'fa fa-star' + (val > props.value ? '-o' : ''), "aria-hidden": 'true' })))));
-    }
-    else {
-        return (React.createElement("span", { className: 'score-picker editing' }, lodash_1.reverse(values).map((val) => (React.createElement("i", { key: val, className: 'fa fa-star' + (val > props.value ? '-o' : ''), onClick: () => {
-                if (props.onChange === undefined) {
-                    throw new Error('An onChange handler is required');
-                }
-                props.onChange(val);
-            }, "aria-hidden": 'true' })))));
-    }
-};
-
-
-/***/ }),
-/* 353 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview Sidebar for editor
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.2.0
- */
-
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-const React = __webpack_require__(1);
-const Overlay_1 = __webpack_require__(15);
-const mobx_react_1 = __webpack_require__(2);
-let ConflictResolution = class ConflictResolution extends React.Component {
-    constructor() {
-        super();
-        this.state = {
-            label: '',
-            entityType: { key: '', value: null },
-            allEntityTypes: []
-        };
-    }
-    render() {
-        return (React.createElement(Overlay_1.Overlay, null,
-            React.createElement("h2", null,
-                React.createElement("i", { className: 'fa fa-exclamation-triangle warning' }),
-                " Conflict: ",
-                this.props.message),
-            this.props.conflictingItems.record !== undefined && this.props.conflictingItems.record.length > 0 ? (React.createElement("span", null,
-                React.createElement("p", null, "The following records conflict with your request change:"),
-                React.createElement("table", { className: 'table' },
-                    React.createElement("thead", null,
-                        React.createElement("tr", null,
-                            React.createElement("th", null, "Entity"),
-                            React.createElement("th", null, "Predicate"),
-                            React.createElement("th", null, "Value"))),
-                    React.createElement("tbody", null, this.props.conflictingItems.record.map((record) => {
-                        const entityName = this.props.dataStore.dataStore.all.entity.value
-                            .find((entity) => entity.uid == record.entity).label;
-                        const predicateName = this.props.dataStore.dataStore.all.predicate.value
-                            .find((predicate) => predicate.uid == record.predicate).label;
-                        return (React.createElement("tr", { key: `row-${record.uid}` },
-                            React.createElement("td", null, entityName),
-                            React.createElement("td", null, predicateName),
-                            React.createElement("td", null, record.value)));
-                    }))))) : null,
-            this.props.conflictingItems.entity !== undefined && this.props.conflictingItems.entity.length > 0 ? (React.createElement("span", null,
-                React.createElement("p", null, "The following entities conflict with your request change:"),
-                React.createElement("table", { className: 'table' },
-                    React.createElement("thead", null,
-                        React.createElement("tr", null,
-                            React.createElement("th", null, "Entity"))),
-                    React.createElement("tbody", null, this.props.conflictingItems.entity.map((entity) => {
-                        return (React.createElement("tr", { key: `row-${entity.uid}` },
-                            React.createElement("td", null, entity.label)));
-                    }))))) : null,
-            this.props.conflictingItems.entityType !== undefined && this.props.conflictingItems.entityType.length > 0 ? (React.createElement("span", null,
-                React.createElement("p", null, "The following entity types conflict with your request change:"),
-                React.createElement("table", { className: 'table' },
-                    React.createElement("thead", null,
-                        React.createElement("tr", null,
-                            React.createElement("th", null, "Entity Type"))),
-                    React.createElement("tbody", null, this.props.conflictingItems.entityType.map((entityType) => {
-                        return (React.createElement("tr", { key: `row-${entityType.uid}` },
-                            React.createElement("td", null, entityType.label)));
-                    }))))) : null,
-            this.props.conflictingItems.source !== undefined && this.props.conflictingItems.source.length > 0 ? (React.createElement("span", null,
-                React.createElement("p", null, "The following sources conflict with your request change:"),
-                React.createElement("table", { className: 'table' },
-                    React.createElement("thead", null,
-                        React.createElement("tr", null,
-                            React.createElement("th", null, "Sources"))),
-                    React.createElement("tbody", null, this.props.conflictingItems.source.map((source) => {
-                        return (React.createElement("tr", { key: `row-${source.uid}` },
-                            React.createElement("td", null, source.label)));
-                    }))))) : null,
-            React.createElement("div", { className: 'block-buttons' },
-                React.createElement("button", { onClick: () => this.props.cancel() }, "Cancel"),
-                React.createElement("button", { onClick: () => this.props.complete('addToWorkspace') },
-                    React.createElement("i", { className: 'icon-list-add' }),
-                    "Cancel and add conflicting records to workspace"),
-                React.createElement("button", { onClick: () => this.props.complete('deleteAll') },
-                    React.createElement("i", { className: 'fa fa-trash' }),
-                    " Continue and delete all conflicting records"))));
-    }
-};
-ConflictResolution = __decorate([
-    mobx_react_1.inject('dataStore'),
-    mobx_react_1.observer,
-    __metadata("design:paramtypes", [])
-], ConflictResolution);
-exports.ConflictResolution = ConflictResolution;
-;
-
-
-/***/ }),
-/* 354 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview Sidebar for editor
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.2.0
- */
-
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-const React = __webpack_require__(1);
-const Overlay_1 = __webpack_require__(15);
-const falcon_core_1 = __webpack_require__(5);
-const ApiService_1 = __webpack_require__(4);
-const ComboDropdown_1 = __webpack_require__(10);
-const lodash_1 = __webpack_require__(6);
-const mobx_react_1 = __webpack_require__(2);
-let CreateEntity = class CreateEntity extends React.Component {
-    constructor() {
-        super();
-        this.state = {
-            label: '',
-            entityType: { key: '', value: null },
-            allEntityTypes: []
-        };
-    }
-    componentWillMount() {
-        this.props.dataStore.getCollection(falcon_core_1.EntityType, ApiService_1.AppUrls.entity_type, {})
-            .then((allEntityTypes) => {
-            if (this.props.initialType !== undefined) {
-                const initialType = allEntityTypes.find((et) => et.uid === this.props.initialType);
-                if (initialType === undefined) {
-                    throw new Error('Invalid initial type');
-                }
-                if (initialType.uid === null) {
-                    throw new Error('found entity type with null uid');
-                }
-                this.setState({
-                    entityType: { key: initialType.label, value: initialType.uid }
-                });
-            }
-            this.setState({ allEntityTypes });
-        });
-    }
-    createEntity() {
-        if (this.state.entityType === null) {
-            throw new Error('Cannot create entity with null type');
-        }
-        this.props.dataStore.postItem(falcon_core_1.Entity, ApiService_1.AppUrls.entity, falcon_core_1.Serializer.fromJson(falcon_core_1.Entity, {
-            label: this.state.label,
-            entityType: this.state.entityType.value
-        }), {})
-            .then((a) => this.props.complete(a[0].toString()));
-    }
-    render() {
-        return (React.createElement(Overlay_1.Overlay, null,
-            React.createElement("h2", null, "Create Entity"),
-            React.createElement("label", { className: 'small' }, "Label"),
-            React.createElement("input", { type: 'text', value: this.state.label, ref: (a) => { if (a !== null)
-                    a.focus(); }, name: 'new-entity-name', className: 'gap', onChange: (e) => this.setState({ label: e.target.value }) }),
-            React.createElement("label", { className: 'small' }, "Type"),
-            React.createElement(ComboDropdown_1.NumberComboDropdown, { options: this.state.allEntityTypes.map((t) => ({ key: t.label, value: t.uid })), typeName: 'entity type', value: this.state.entityType, setValue: (entityType) => this.setState({ entityType }), createNewValue: lodash_1.noop, allowNew: false }),
-            React.createElement("button", { name: 'cancel-modal', onClick: () => this.props.cancel(), className: 'pull-left' }, "Cancel"),
-            React.createElement("button", { name: 'create-entity', onClick: this.createEntity.bind(this), className: 'pull-right' }, "Create Entity")));
-    }
-};
-CreateEntity = __decorate([
-    mobx_react_1.inject('dataStore'),
-    mobx_react_1.observer,
-    __metadata("design:paramtypes", [])
-], CreateEntity);
-exports.CreateEntity = CreateEntity;
-;
-
-
-/***/ }),
-/* 355 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview Sidebar for editor
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.2.0
- */
-
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-const React = __webpack_require__(1);
-const Overlay_1 = __webpack_require__(15);
-const falcon_core_1 = __webpack_require__(5);
-const ApiService_1 = __webpack_require__(4);
-const mobx_react_1 = __webpack_require__(2);
-const mousetrap = __webpack_require__(25);
-let CreateEntityType = class CreateEntityType extends React.Component {
-    constructor() {
-        super();
-        this.state = {
-            internalValue: ''
-        };
-    }
-    createEntityType() {
-        this.props.dataStore.postItem(falcon_core_1.EntityType, ApiService_1.AppUrls.entity_type, falcon_core_1.Serializer.fromJson(falcon_core_1.EntityType, {
-            label: this.state.internalValue
-        }), {})
-            .then(this.props.complete);
-    }
-    inputRef(val) {
-        if (val !== null) {
-            val.focus();
-            this.keyboardShortcuts = new mousetrap(val);
-            this.keyboardShortcuts.bind('return', this.createEntityType.bind(this));
-            this.keyboardShortcuts.bind('escape', this.props.cancel);
-        }
-        else {
-            this.keyboardShortcuts.unbind('return');
-        }
-    }
-    render() {
-        return (React.createElement(Overlay_1.Overlay, null,
-            React.createElement("h2", null, "Create Entity Type"),
-            React.createElement("label", { className: 'small' }, "Name"),
-            React.createElement("input", { type: 'text', value: this.state.internalValue, ref: this.inputRef.bind(this), onChange: (e) => this.setState({ internalValue: e.target.value }) }),
-            React.createElement("button", { onClick: () => this.props.cancel(), className: 'pull-left' }, "Cancel"),
-            React.createElement("button", { onClick: this.createEntityType.bind(this), className: 'pull-right' }, "Create Entity Type")));
-    }
-};
-CreateEntityType = __decorate([
-    mobx_react_1.inject('dataStore'),
-    mobx_react_1.observer,
-    __metadata("design:paramtypes", [])
-], CreateEntityType);
-exports.CreateEntityType = CreateEntityType;
-;
-
-
-/***/ }),
-/* 356 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview Sidebar for editor
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.2.0
- */
-
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-const React = __webpack_require__(1);
-const Overlay_1 = __webpack_require__(15);
-const PredicateDescription_1 = __webpack_require__(187);
-const falcon_core_1 = __webpack_require__(5);
-const literalTypes_1 = __webpack_require__(189);
-const ApiService_1 = __webpack_require__(4);
-const mobx_react_1 = __webpack_require__(2);
-let CreatePredicate = class CreatePredicate extends React.Component {
-    constructor() {
-        super();
-        this.state = {
-            label: '',
-            domain: { key: '', value: null },
-            range: { key: '', value: null },
-            domainOptions: [],
-            rangeOptions: []
-        };
-    }
-    componentWillMount() {
-        this.setState({ label: this.props.initialName });
-    }
-    componentDidMount() {
-        if (this.props.initialDomain !== undefined) {
-            this.props.dataStore.getItem(falcon_core_1.EntityType, ApiService_1.AppUrls.entity_type, this.props.initialDomain)
-                .then((result) => {
-                if (result.uid === null) {
-                    throw new Error('Unexpected null uid');
-                }
-                this.setState({
-                    domain: { key: result.label, value: result.uid },
-                    domainOptions: [
-                        { key: result.label, value: result.uid }
-                    ].concat(result.parents.map((entityTypeId) => {
-                        const parentEntityType = this.props.dataStore.dataStore.all.entity_type.value.find((e) => e.uid === entityTypeId);
-                        return { key: parentEntityType.label, value: entityTypeId };
-                    }))
-                });
-            });
-        }
-        const results = this.props.dataStore.dataStore.all.entity_type.value;
-        const entityTypeMap = results.map((entityType) => {
-            if (entityType.uid === null) {
-                throw new Error('Unexpected null uid');
-            }
-            return { key: entityType.label, value: entityType.uid };
-        });
-        const entityTypeMap2 = entityTypeMap.map((e) => ({ key: e.key, value: { isReference: true, value: e.value.toString() } }));
-        const literalTypesMap = literalTypes_1.literalTypes.map((lit) => ({ key: lit.label, value: { isReference: false, value: lit.value } }));
-        if (this.props.initialDomain === undefined) {
-            this.setState({ domainOptions: entityTypeMap });
-        }
-        this.setState({
-            rangeOptions: literalTypesMap.concat(entityTypeMap2)
-        });
-    }
-    create() {
-        const newPredicate = falcon_core_1.Serializer.fromJson(falcon_core_1.Predicate, {
-            label: this.state.label,
-            domain: this.state.domain.value,
-            range: this.state.range.value,
-            rangeIsReference: this.state.range.value === null ? false : this.state.range.value.isReference
-        });
-        this.props.dataStore.postItem(falcon_core_1.Predicate, ApiService_1.AppUrls.predicate, newPredicate, {})
-            .then((result) => {
-            newPredicate.uid = result[0];
-            this.props.complete(newPredicate);
-        });
-    }
-    render() {
-        return (React.createElement(Overlay_1.Overlay, null,
-            React.createElement("h2", null,
-                React.createElement("i", { className: 'fa fa-plus', "aria-hidden": 'true' }),
-                " Create Property"),
-            React.createElement("label", { className: 'small' }, "Name"),
-            React.createElement("input", { type: 'text', className: 'gap', ref: (a) => {
-                    if (a !== null) {
-                        a.focus();
-                    }
-                }, value: this.state.label, onChange: (e) => this.setState({ label: e.target.value }) }),
-            React.createElement(PredicateDescription_1.PredicateDescription, { domain: this.state.domain, range: this.state.range, domainChanged: (s) => this.setState({ domain: s }), rangeChanged: (s) => this.setState({ range: s }), domainOptions: this.state.domainOptions, rangeOptions: this.state.rangeOptions, mode: 'editAll' }),
-            React.createElement("div", { className: 'modal-toolbar' },
-                React.createElement("button", { onClick: this.props.cancel, className: 'pull-left' }, "Cancel"),
-                React.createElement("button", { onClick: this.create.bind(this), className: 'pull-right' }, "Create Property"))));
-    }
-};
-CreatePredicate = __decorate([
-    mobx_react_1.inject('dataStore'),
-    mobx_react_1.observer,
-    __metadata("design:paramtypes", [])
-], CreatePredicate);
-exports.CreatePredicate = CreatePredicate;
-;
-
-
-/***/ }),
-/* 357 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview Sidebar for editor
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.2.0
- */
-
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-const React = __webpack_require__(1);
-const falcon_core_1 = __webpack_require__(5);
-const ApiService_1 = __webpack_require__(4);
-const mobx_react_1 = __webpack_require__(2);
-let CreatePresetRecord = CreatePresetRecord_1 = class CreatePresetRecord extends React.Component {
-    constructor() {
-        super();
-        this.state = {};
-    }
-    componentDidMount() {
-        if (CreatePresetRecord_1.openEntityDialog) {
-            CreatePresetRecord_1.openEntityDialog = false;
-            this.createNewEntity();
-        }
-        else {
-            CreatePresetRecord_1.openEntityDialog = true;
-        }
-    }
-    createNewEntity() {
-        const modalDef = {
-            name: 'entity',
-            complete: (data) => {
-                const isMentioned = this.props.dataStore.dataStore.all.predicate.value.find((pred) => pred.label === 'is mentioned');
-                if (isMentioned === undefined) {
-                    throw new Error('Is mentioned predicate is missing, it should be loaded by default');
-                }
-                this.props.dataStore.postItem(falcon_core_1.Record, ApiService_1.AppUrls.record, falcon_core_1.Serializer.fromJson(falcon_core_1.Record, {
-                    predicate: isMentioned.uid,
-                    entity: data[0],
-                    valueType: 'source',
-                    source: this.props.source.uid,
-                    score: 3
-                }), {})
-                    .then((result) => {
-                    this.props.complete(result);
-                })
-                    .catch(this.props.cancel);
-            },
-            cancel: () => {
-            },
-            settings: {}
-        };
-        this.props.modalStore.addModal(modalDef);
-    }
-    render() {
-        return null;
-    }
-};
-CreatePresetRecord.openEntityDialog = true;
-CreatePresetRecord = CreatePresetRecord_1 = __decorate([
-    mobx_react_1.inject('dataStore', 'modalStore'),
-    mobx_react_1.observer,
-    __metadata("design:paramtypes", [])
-], CreatePresetRecord);
-exports.CreatePresetRecord = CreatePresetRecord;
-;
-var CreatePresetRecord_1;
-
-
-/***/ }),
-/* 358 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview Sidebar for editor
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.2.0
- */
-
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-const React = __webpack_require__(1);
-const Overlay_1 = __webpack_require__(15);
-const falcon_core_1 = __webpack_require__(5);
-const ApiService_1 = __webpack_require__(4);
-const ComboDropdown_1 = __webpack_require__(10);
-const mobx_react_1 = __webpack_require__(2);
-let CreateRecord = class CreateRecord extends React.Component {
-    constructor() {
-        super();
-        this.state = {
-            comboValue: { key: '', value: null },
-            searchValue: ''
-        };
-    }
-    componentDidMount() {
-        this.refs['comboDropDown'].refs['comboDropDownInputBox'].focus();
-    }
-    createNewPredicate() {
-        const modalDef = {
-            name: 'predicate',
-            complete: (data) => {
-                console.log('Predicate editor called complete');
-                this.setComboValue({ key: data.label, value: data.uid === null ? null : data.uid.toString(), meta: data });
-            },
-            cancel: () => {
-                console.log('Predicate editor called cancel');
-            },
-            settings: {
-                initialName: this.state.searchValue,
-                initialDomain: this.props.entityType
-            }
-        };
-        this.props.modalStore.addModal(modalDef);
-    }
-    setComboValue(opt) {
-        this.props.dataStore.postItem(falcon_core_1.Record, ApiService_1.AppUrls.record, falcon_core_1.Serializer.fromJson(falcon_core_1.Record, {
-            predicate: opt.meta.uid,
-            entity: this.props.entityUid,
-            valueType: opt.meta.rangeIsReference ? 'entity' : opt.meta.range,
-            score: 3,
-            source: this.props.dataStore.defaultSource
-        }), {})
-            .then((result) => this.props.complete(result))
-            .catch(this.props.cancel);
-    }
-    render() {
-        return (React.createElement(Overlay_1.Overlay, null,
-            React.createElement("h2", null, "Create Record"),
-            React.createElement(ComboDropdown_1.NumberComboDropdown, { ref: 'comboDropDown', options: this.props.options, typeName: 'predicate', value: this.state.comboValue, setValue: this.setComboValue.bind(this), createNewValue: this.createNewPredicate.bind(this), updateSearchString: (s) => this.setState({ searchValue: s }) })));
-    }
-};
-CreateRecord = __decorate([
-    mobx_react_1.inject('modalStore', 'dataStore'),
-    mobx_react_1.observer,
-    __metadata("design:paramtypes", [])
-], CreateRecord);
-exports.CreateRecord = CreateRecord;
-;
-
-
-/***/ }),
-/* 359 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview Sidebar for editor
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.2.0
- */
-
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-const React = __webpack_require__(1);
-const Overlay_1 = __webpack_require__(15);
-const falcon_core_1 = __webpack_require__(5);
-const ApiService_1 = __webpack_require__(4);
-const mobx_react_1 = __webpack_require__(2);
-const mousetrap = __webpack_require__(25);
-let CreateSource = class CreateSource extends React.Component {
-    constructor() {
-        super();
-        this.state = {
-            internalValue: ''
-        };
-    }
-    componentWillMount() {
-        this.setState({ internalValue: this.props.initialValue });
-    }
-    createSource() {
-        this.props.dataStore.postItem(falcon_core_1.Source, ApiService_1.AppUrls.source, falcon_core_1.Serializer.fromJson(falcon_core_1.Source, {
-            label: this.state.internalValue
-        }), {})
-            .then(this.props.complete);
-    }
-    inputRef(val) {
-        if (val !== null) {
-            val.focus();
-            this.keyboardShortcuts = new mousetrap(val);
-            this.keyboardShortcuts.bind('return', this.createSource.bind(this));
-            this.keyboardShortcuts.bind('escape', this.props.cancel);
-        }
-        else {
-            this.keyboardShortcuts.unbind('return');
-            this.keyboardShortcuts.unbind('escape');
-        }
-    }
-    render() {
-        return (React.createElement(Overlay_1.Overlay, null,
-            React.createElement("h2", null, "Create Source"),
-            React.createElement("label", { className: 'small' }, "Name"),
-            React.createElement("input", { type: 'text', value: this.state.internalValue, ref: this.inputRef.bind(this), onChange: (e) => this.setState({ internalValue: e.target.value }) }),
-            React.createElement("button", { onClick: () => this.props.cancel(), className: 'pull-left' }, "Cancel"),
-            React.createElement("button", { onClick: this.createSource.bind(this), className: 'pull-right' }, "Create Source")));
-    }
-};
-CreateSource.defaultProps = {
-    initialValue: ''
-};
-CreateSource = __decorate([
-    mobx_react_1.inject('dataStore'),
-    mobx_react_1.observer,
-    __metadata("design:paramtypes", [])
-], CreateSource);
-exports.CreateSource = CreateSource;
-
-
-/***/ }),
-/* 360 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview Sidebar for editor
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.2.0
- */
-
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-const React = __webpack_require__(1);
-const Overlay_1 = __webpack_require__(15);
-const mobx_react_1 = __webpack_require__(2);
-const mousetrap = __webpack_require__(25);
-let CreateTabSet = class CreateTabSet extends React.Component {
-    constructor() {
-        super();
-        this.state = {
-            internalValue: ''
-        };
-    }
-    createTabSet() {
-        return fetch('/admin/tabset', {
-            method: 'POST',
-            body: JSON.stringify({
-                name: this.state.internalValue,
-                tabs: this.props.dataStore.tabs
-            }),
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            credentials: 'same-origin'
-        })
-            .then((response) => {
-            return response.json();
-        }).then(() => this.props.complete(''));
-    }
-    inputRef(val) {
-        if (val !== null) {
-            val.focus();
-            this.keyboardShortcuts = new mousetrap(val);
-            this.keyboardShortcuts.bind('return', this.createTabSet.bind(this));
-            this.keyboardShortcuts.bind('escape', this.props.cancel);
-        }
-        else {
-            this.keyboardShortcuts.unbind('return');
-        }
-    }
-    render() {
-        return (React.createElement(Overlay_1.Overlay, null,
-            React.createElement("h2", null, "Save Tab Set"),
-            React.createElement("label", { className: 'small' }, "Name"),
-            React.createElement("input", { type: 'text', value: this.state.internalValue, ref: this.inputRef.bind(this), onChange: (e) => this.setState({ internalValue: e.target.value }) }),
-            React.createElement("button", { onClick: () => this.props.cancel(), className: 'pull-left' }, "Cancel"),
-            React.createElement("button", { onClick: this.createTabSet.bind(this), className: 'pull-right' }, "Create Tab Set")));
-    }
-};
-CreateTabSet = __decorate([
-    mobx_react_1.inject('dataStore'),
-    mobx_react_1.observer,
-    __metadata("design:paramtypes", [])
-], CreateTabSet);
-exports.CreateTabSet = CreateTabSet;
-;
-
-
-/***/ }),
-/* 361 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview Sidebar for editor
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.2.0
- */
-
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-const React = __webpack_require__(1);
-const lev = __webpack_require__(206);
-const ComboDropdown_1 = __webpack_require__(10);
-const lodash_1 = __webpack_require__(6);
-const AddTabButton_1 = __webpack_require__(7);
-const formatDate_1 = __webpack_require__(54);
-const mobx_react_1 = __webpack_require__(2);
-const sortIcons = {
-    'none': 'fa fa-sort',
-    'asc': 'fa fa-sort-asc',
-    'desc': 'fa fa-sort-desc'
-};
-const customColumns = (predicates, columns, updateColumnParams, rotateSort) => {
-    return [0, 1, 2].map((id) => {
-        const comboValue = { key: '', value: null };
-        if (columns[id].predicate !== -1) {
-            const thisPred = predicates.find((pred) => pred.uid == columns[id].predicate);
-            if (thisPred !== undefined) {
-                comboValue.key = thisPred.label;
-            }
-            comboValue.value = columns[id].predicate;
-        }
-        return (React.createElement("td", { key: `col-${id}` },
-            React.createElement("div", { className: 'list-combo-header' },
-                React.createElement("div", { className: 'combo-wrapper' },
-                    React.createElement(ComboDropdown_1.NumberComboDropdown, { value: comboValue, typeName: 'predicate', allowNew: false, setValue: (value) => updateColumnParams(id, 'p', value === null ? null : value.value), options: predicates.map((pred) => ({ key: pred.label, value: pred.uid.toString() })), createNewValue: lodash_1.noop, additionalClasses: ['compact'] })),
-                React.createElement("div", { className: 'order-wrapper' },
-                    React.createElement("i", { className: sortIcons[columns[id].sort], onClick: () => rotateSort(id) })))));
-    });
-};
-let EntityList = class EntityList extends React.Component {
-    constructor(props) {
-        super();
-        this.state = {
-            entities: [],
-            entityTypes: [],
-            predicates: [],
-            columns: [
-                { predicate: -1, sort: 'none', filterType: 'any', invertFilter: false, filterValue: '' },
-                { predicate: -1, sort: 'none', filterType: 'any', invertFilter: false, filterValue: '' },
-                { predicate: -1, sort: 'none', filterType: 'any', invertFilter: false, filterValue: '' }
-            ],
-            entityType: { key: 'Any', value: 0 },
-            queryData: {}
-        };
-    }
-    componentDidMount() {
-        this.update(this.props);
-    }
-    componentWillReceiveProps(newProps) {
-        this.update(newProps);
-    }
-    update(props) {
-        const queryStringOptions = props.query;
-        const columns = lodash_1.cloneDeep(this.state.columns);
-        if (queryStringOptions !== null) {
-            for (let i = 1; i < 4; i += 1) {
-                columns[i - 1].predicate = queryStringOptions[`col${i}p`] || null;
-                columns[i - 1].sort = queryStringOptions[`col${i}s`] || null;
-                columns[i - 1].filterType = queryStringOptions[`col${i}f`] || '';
-                columns[i - 1].filterValue = queryStringOptions[`col${i}v`] || '';
-                columns[i - 1].invertFilter = queryStringOptions[`col${i}i`] || null;
-            }
-        }
-        this.setState({
-            columns,
-            queryData: queryStringOptions === null ? {} : queryStringOptions
-        });
-    }
-    addNew() {
-        const a = {
-            name: 'entity',
-            complete: () => {
-            },
-            cancel: () => { console.log('cancel'); },
-            settings: {
-                initialName: ''
-            }
-        };
-        this.props.modalStore.addModal(a);
-    }
-    updateColumnParams(colId, key, value) {
-        this.context.router.transitionTo({
-            pathname: '/edit/entity',
-            query: Object.assign(this.state.queryData, { [`col${colId + 1}${key}`]: value })
-        });
-    }
-    rotateSort(colId) {
-        const columns = lodash_1.cloneDeep(this.state.columns);
-        switch (columns[colId].sort) {
-            case 'none':
-                columns[colId].sort = 'asc';
-                break;
-            case 'asc':
-                columns[colId].sort = 'desc';
-                break;
-            case 'desc':
-                columns[colId].sort = 'none';
-        }
-        this.setState({
-            columns
-        });
-    }
-    addViewTab() {
-        const tabData = {};
-        const mapping = [
-            { key: 'p', display: 'Predicate', mod: (data) => this.props.dataStore.dataStore.all.predicate.value.find((pred) => pred.uid == data).label },
-            { key: 's', display: 'Sort', mod: (data) => data },
-            { key: 'f', display: 'filterType', mod: (data) => data },
-            { key: 'v', display: 'filterValue', mod: (data) => data },
-            { key: 'i', display: 'invertFilter', mod: (data) => data }
-        ];
-        for (let i = 1; i < 4; i += 1) {
-            for (let j = 0; j < mapping.length; j += 1) {
-                if (this.state.queryData[`col${i}${mapping[j].key}`] !== undefined) {
-                    if (tabData[`Column ${i}`] === undefined) {
-                        tabData[`Column ${i}`] = {};
-                    }
-                    tabData[`Column ${i}`][mapping[j].display] = mapping[j].mod(this.state.queryData[`col${i}${mapping[j].key}`]);
-                }
-            }
-        }
-        this.props.dataStore.createTab('entity', Date.now(), 'view', tabData, this.props.query);
-    }
-    render() {
-        const entities = this.props.dataStore.dataStore.all.entity.value;
-        const predicates = this.props.dataStore.dataStore.all.predicate.value;
-        const entityTypes = this.props.dataStore.dataStore.all.entity_type.value;
-        const entityTypeOptions = entityTypes.map((entityType) => ({ key: entityType.label, value: entityType.uid }));
-        const tableData = entities.map((entity) => {
-            const entityType = entityTypes.find((t) => t.uid === entity.entityType);
-            const entityData = this.props.dataStore.dataStore.records.filter((res) => res.entity === entity.uid);
-            return {
-                uid: entity.uid,
-                label: entity.label,
-                entityType,
-                columns: this.state.columns.map((col) => {
-                    let value = '';
-                    if (entityData !== undefined && col.predicate !== -1) {
-                        const predicateData = entityData
-                            .filter((record) => record.predicate == col.predicate);
-                        if (predicateData !== undefined) {
-                            value = predicateData.map((pred) => {
-                                if (pred.valueType === 'date') {
-                                    return formatDate_1.formatDate(pred.value);
-                                }
-                                if (pred.valueType === 'source') {
-                                    if (pred.value === null) {
-                                        return 'Not set';
-                                    }
-                                    return this.props.dataStore.dataStore.all.source.value.find((source) => source.uid === pred.value).label;
-                                }
-                                if (pred.valueType === 'entity') {
-                                    if (pred.value === null) {
-                                        return 'Not set';
-                                    }
-                                    return this.props.dataStore.dataStore.all.entity.value.find((entity) => entity.uid === pred.value).label;
-                                }
-                                return pred.value;
-                            }).join(', ');
-                        }
-                        return value;
-                    }
-                })
-            };
-        })
-            .filter((row) => {
-            let keepRow = true;
-            this.state.columns.forEach((col, i) => {
-                if (col.filterType === 'contains' && col.filterValue.length > 0 && col.predicate !== null) {
-                    if (row.columns[i].toLowerCase().indexOf(col.filterValue.toLowerCase()) === -1) {
-                        keepRow = false;
-                    }
-                }
-                if (col.filterType === 'exists' && col.predicate !== null) {
-                    if (row.columns[i].length === 0) {
-                        keepRow = false;
-                    }
-                }
-                if (col.filterType === 'similar' && col.predicate !== null && col.filterValue.length > 0) {
-                    if (new lev(row.columns[i], col.filterValue).distance >= col.filterValue.length + 2) {
-                        keepRow = false;
-                    }
-                }
-            });
-            return keepRow;
-        })
-            .sort((row1, row2) => {
-            let score = 0;
-            this.state.columns.forEach((col, i) => {
-                if (col.sort !== 'none' && row1.columns[i] !== row2.columns[i]) {
-                    score += (row1.columns[i] > row2.columns[i] ? 1 : -1) * (Math.pow(10, 3 - i)) * (col.sort === 'asc' ? -1 : 1);
-                }
-            });
-            return score;
-        });
-        return (React.createElement("div", { className: 'workspace-editor' },
-            React.createElement("header", { className: 'editor-header entity' },
-                React.createElement("div", { className: 'primary-toolbar' },
-                    React.createElement("div", { className: 'main-toolbar' },
-                        React.createElement("h2", null,
-                            "All Entities ",
-                            React.createElement("i", { className: 'fa fa-plus-circle add button', title: 'Add new entity', "aria-hidden": 'true', onClick: this.addNew.bind(this) }))),
-                    React.createElement("div", { className: 'sub-toolbar' },
-                        React.createElement("i", { className: 'fa fa-folder-open-o', "aria-hidden": 'true', onClick: this.addViewTab.bind(this) }))),
-                React.createElement("div", { className: 'secondary-toolbar' },
-                    React.createElement("div", { className: 'tab-bar' },
-                        React.createElement("div", { className: 'entity selected' }, "LIST")))),
-            React.createElement("section", { className: 'editor-body' },
-                React.createElement("table", { className: 'table' },
-                    React.createElement("thead", null,
-                        React.createElement("tr", null,
-                            React.createElement("td", null, "#"),
-                            React.createElement("td", null, "Label"),
-                            React.createElement("td", null, "Type"),
-                            customColumns(predicates, this.state.columns, this.updateColumnParams.bind(this), this.rotateSort.bind(this))),
-                        React.createElement("tr", null,
-                            React.createElement("td", null),
-                            React.createElement("td", null),
-                            React.createElement("td", null,
-                                React.createElement(ComboDropdown_1.NumberComboDropdown, { value: this.state.entityType, typeName: 'entity type', allowNew: false, setValue: (entityType) => this.setState({ entityType }), options: entityTypeOptions, createNewValue: lodash_1.noop, additionalClasses: ['compact'] })),
-                            this.state.columns.map((col, id) => (React.createElement("td", { key: `col-${id}` },
-                                React.createElement("div", { className: 'flex-fill' },
-                                    React.createElement("div", null,
-                                        React.createElement("select", { value: col.filterType, className: 'padded', onChange: (e) => this.updateColumnParams(id, 'f', e.target.value) },
-                                            React.createElement("option", { value: 'any' }, "Any"),
-                                            React.createElement("option", { value: 'exists' }, "Exists"),
-                                            React.createElement("option", { value: 'contains' }, "Contains"),
-                                            React.createElement("option", { value: 'similar' }, "Similar"))),
-                                    React.createElement("div", null,
-                                        React.createElement("input", { type: 'text', disabled: col.filterType === 'any' || col.filterType === 'exists', onChange: (e) => this.updateColumnParams(id, 'v', e.target.value), value: col.filterValue })))))))),
-                    React.createElement("tbody", null, tableData.map((row) => (React.createElement("tr", { key: `entity-${row.uid}` },
-                        React.createElement("td", null, row.uid),
-                        React.createElement("td", null,
-                            row.label,
-                            " ",
-                            React.createElement(AddTabButton_1.AddTabButton, { uid: row.uid, tabType: 'entity' })),
-                        React.createElement("td", null, row.entityType ? row.entityType.label : ''),
-                        [0, 1, 2].map((id) => (React.createElement("td", { key: `col-val-${id}` }, row.columns[id])))))))))));
-    }
-};
-EntityList.contextTypes = {
-    router: React.PropTypes.object.isRequired
-};
-EntityList = __decorate([
-    mobx_react_1.inject('dataStore', 'modalStore'),
-    mobx_react_1.observer,
-    __metadata("design:paramtypes", [Object])
-], EntityList);
-exports.EntityList = EntityList;
-
-
-/***/ }),
-/* 362 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview Sidebar for editor
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.2.0
- */
-
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-const React = __webpack_require__(1);
-const AddTabButton_1 = __webpack_require__(7);
-const SearchBar_1 = __webpack_require__(39);
-const RecursiveTree_1 = __webpack_require__(184);
-const mobx_react_1 = __webpack_require__(2);
-class EntityRecursiveTree extends RecursiveTree_1.RecursiveTree {
-}
-let EntityTypeList = class EntityTypeList extends React.Component {
-    constructor() {
-        super();
-        this.state = {
-            filterFunc: () => true,
-            mode: 'list'
-        };
-    }
-    addNew() {
-        const a = {
-            name: 'entity_type',
-            complete: () => {
-            },
-            cancel: () => { console.log('cancel'); },
-            settings: {}
-        };
-        this.props.modalStore.addModal(a);
-    }
-    render() {
-        return (React.createElement("div", { className: 'workspace-editor' },
-            React.createElement("header", { className: 'editor-header entity_type' },
-                React.createElement("div", { className: 'primary-toolbar' },
-                    React.createElement("div", { className: 'main-toolbar' },
-                        React.createElement("h2", null,
-                            "All Entity Types ",
-                            React.createElement("i", { className: 'fa fa-plus-circle add button', "aria-hidden": 'true', title: 'Add new entity type', onClick: this.addNew.bind(this) })))),
-                React.createElement("div", { className: 'secondary-toolbar' },
-                    React.createElement("div", { className: 'tab-bar' },
-                        React.createElement("div", { className: 'entity_type ' + (this.state.mode === 'list' ? 'selected' : ''), onClick: () => this.setState({ mode: 'list' }) }, "LIST"),
-                        React.createElement("div", { className: 'entity_type ' + (this.state.mode === 'tree' ? 'selected' : ''), onClick: () => this.setState({ mode: 'tree' }) }, "TREE")))),
-            React.createElement("section", { className: 'editor-body' },
-                React.createElement(SearchBar_1.SearchBar, { getValue: (a) => a.label, setFilterFunc: (f) => this.setState({ filterFunc: f }) }),
-                this.state.mode === 'list' ? (React.createElement("table", { className: 'table gap' },
-                    React.createElement("thead", null,
-                        React.createElement("tr", null,
-                            React.createElement("td", null, "#"),
-                            React.createElement("td", null, "Name"),
-                            React.createElement("td", null, "Parent"),
-                            React.createElement("td", null, "Description"))),
-                    React.createElement("tbody", null, this.props.dataStore.dataStore.all.entity_type.value.filter(this.state.filterFunc).map((entityType) => {
-                        if (entityType.uid === null) {
-                            throw new Error('Found entity with no id');
-                        }
-                        return (React.createElement("tr", { key: `entityType-${entityType.uid}` },
-                            React.createElement("td", null,
-                                entityType.uid,
-                                " ",
-                                React.createElement(AddTabButton_1.AddTabButton, { uid: entityType.uid, tabType: 'entity_type' })),
-                            React.createElement("td", null, entityType.label),
-                            React.createElement("td", null, entityType.parent),
-                            React.createElement("td", null, entityType.description)));
-                    })))) : (React.createElement("div", { className: 'tree-root' },
-                    React.createElement(EntityRecursiveTree, { data: this.props.dataStore.dataStore.all.entity_type.value, tabType: 'entity_type', parentId: null, dataStore: this.props.dataStore }))))));
-    }
-};
-EntityTypeList = __decorate([
-    mobx_react_1.inject('dataStore', 'modalStore'),
-    mobx_react_1.observer,
-    __metadata("design:paramtypes", [])
-], EntityTypeList);
-exports.EntityTypeList = EntityTypeList;
-
-
-/***/ }),
-/* 363 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview Sidebar for editor
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.2.0
- */
-
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-const React = __webpack_require__(1);
-const AddTabButton_1 = __webpack_require__(7);
-const mobx_react_1 = __webpack_require__(2);
-const SearchBar_1 = __webpack_require__(39);
-let PredicateList = class PredicateList extends React.Component {
-    constructor() {
-        super();
-        this.state = {
-            filterFunc: () => true
-        };
-    }
-    addNew() {
-        const a = {
-            name: 'predicate',
-            complete: () => {
-            },
-            cancel: () => { console.log('cancel'); },
-            settings: {
-                initialName: ''
-            }
-        };
-        this.props.modalStore.addModal(a);
-    }
-    render() {
-        return (React.createElement("div", { className: 'workspace-editor' },
-            React.createElement("header", { className: 'editor-header predicate' },
-                React.createElement("div", { className: 'primary-toolbar' },
-                    React.createElement("div", { className: 'main-toolbar' },
-                        React.createElement("h2", null,
-                            "All Properties ",
-                            React.createElement("i", { className: 'fa fa-plus-circle add button', title: 'Add new property', "aria-hidden": 'true', onClick: this.addNew.bind(this) })))),
-                React.createElement("div", { className: 'secondary-toolbar' },
-                    React.createElement("div", { className: 'tab-bar' },
-                        React.createElement("div", { className: 'predicate selected' }, "LIST")))),
-            React.createElement("section", { className: 'editor-body' },
-                React.createElement(SearchBar_1.SearchBar, { getValue: (a) => a.label, setFilterFunc: (f) => this.setState({ filterFunc: f }) }),
-                React.createElement("table", { className: 'table gap' },
-                    React.createElement("thead", null,
-                        React.createElement("tr", null,
-                            React.createElement("td", null, "#"),
-                            React.createElement("td", null, "Label"),
-                            React.createElement("td", null, "Domain"),
-                            React.createElement("td", null, "Range"),
-                            React.createElement("td", null, "Uses"))),
-                    React.createElement("tbody", null, this.props.dataStore.dataStore.all.predicate.value.filter(this.state.filterFunc).map((predicate) => {
-                        const entityType = this.props.dataStore.dataStore.all.entity_type.value.find((t) => t.uid === predicate.domain);
-                        const rangeType = predicate.rangeIsReference ?
-                            this.props.dataStore.dataStore.all.entity_type.value.find((t) => t.uid === predicate.range) :
-                            predicate.range;
-                        if (predicate.uid === null) {
-                            throw new Error('Found predicate with null uid');
-                        }
-                        return (React.createElement("tr", { key: `predicate-${predicate.uid}` },
-                            React.createElement("td", null,
-                                predicate.uid,
-                                " ",
-                                React.createElement(AddTabButton_1.AddTabButton, { uid: predicate.uid, tabType: 'predicate' })),
-                            React.createElement("td", null, predicate.label),
-                            React.createElement("td", null, entityType ? entityType.label : ''),
-                            React.createElement("td", null, predicate.rangeIsReference ? rangeType ? rangeType.label : '' : rangeType),
-                            React.createElement("td", null, predicate.uses)));
-                    }))))));
-    }
-};
-PredicateList = __decorate([
-    mobx_react_1.inject('dataStore', 'modalStore'),
-    mobx_react_1.observer,
-    __metadata("design:paramtypes", [])
-], PredicateList);
-exports.PredicateList = PredicateList;
-
-
-/***/ }),
-/* 364 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview Sidebar for editor
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.2.0
- */
-
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-const React = __webpack_require__(1);
-const AddTabButton_1 = __webpack_require__(7);
-const mobx_react_1 = __webpack_require__(2);
-const SearchBar_1 = __webpack_require__(39);
-const RecursiveTree_1 = __webpack_require__(184);
-class SourceRecursiveTree extends RecursiveTree_1.RecursiveTree {
-}
-let SourceList = class SourceList extends React.Component {
-    constructor() {
-        super();
-        this.state = {
-            filterFunc: () => true,
-            mode: 'list'
-        };
-    }
-    addNew() {
-        const a = {
-            name: 'source',
-            complete: () => {
-            },
-            cancel: () => { console.log('cancel'); },
-            settings: {}
-        };
-        this.props.modalStore.addModal(a);
-    }
-    render() {
-        return (React.createElement("div", { className: 'workspace-editor' },
-            React.createElement("header", { className: 'editor-header source' },
-                React.createElement("div", { className: 'primary-toolbar' },
-                    React.createElement("div", { className: 'main-toolbar' },
-                        React.createElement("h2", null,
-                            "All Sources ",
-                            React.createElement("i", { className: 'fa fa-plus-circle add button', "aria-hidden": 'true', title: 'Add new source', onClick: this.addNew.bind(this) })))),
-                React.createElement("div", { className: 'secondary-toolbar' },
-                    React.createElement("div", { className: 'tab-bar' },
-                        React.createElement("div", { className: 'source ' + (this.state.mode === 'list' ? 'selected' : ''), onClick: () => this.setState({ mode: 'list' }) }, "LIST"),
-                        React.createElement("div", { className: 'source ' + (this.state.mode === 'tree' ? 'selected' : ''), onClick: () => this.setState({ mode: 'tree' }) }, "TREE")))),
-            React.createElement("section", { className: 'editor-body' },
-                React.createElement(SearchBar_1.SearchBar, { getValue: (a) => a.label, setFilterFunc: (f) => this.setState({ filterFunc: f }) }),
-                this.state.mode === 'list' ? (React.createElement("table", { className: 'table gap' },
-                    React.createElement("thead", null,
-                        React.createElement("tr", null,
-                            React.createElement("td", null, "#"),
-                            React.createElement("td", null, "Name"),
-                            React.createElement("td", null, "Parent"))),
-                    React.createElement("tbody", null, this.props.dataStore.dataStore.all.source.value.filter(this.state.filterFunc).map((source) => {
-                        if (source.uid === null) {
-                            throw new Error('Encountered source with null uid');
-                        }
-                        return (React.createElement("tr", { key: `source-${source.uid}` },
-                            React.createElement("td", null,
-                                source.uid,
-                                " ",
-                                React.createElement(AddTabButton_1.AddTabButton, { uid: source.uid, tabType: 'source' })),
-                            React.createElement("td", null, source.label),
-                            React.createElement("td", null, source.parent)));
-                    })))) : (React.createElement("div", { className: 'tree-root' },
-                    React.createElement(SourceRecursiveTree, { data: this.props.dataStore.dataStore.all.source.value, tabType: 'source', parentId: null, dataStore: this.props.dataStore }))))));
-    }
-};
-SourceList = __decorate([
-    mobx_react_1.inject('dataStore', 'modalStore'),
-    mobx_react_1.observer,
-    __metadata("design:paramtypes", [])
-], SourceList);
-exports.SourceList = SourceList;
-
-
-/***/ }),
-/* 365 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview Searchboc for sidebar
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.2.0
- */
-
-const React = __webpack_require__(1);
-const ComboDropdown_1 = __webpack_require__(10);
-const ApiService_1 = __webpack_require__(4);
-exports.SearchBox = (props, context) => {
-    const entities = props.dataStore.dataStore.all.entity.value.map((entity) => ({ key: entity.label, value: `${ApiService_1.AppUrls.entity}/${entity.uid}` }));
-    const entityTypes = props.dataStore.dataStore.all.entity_type.value.map((entityType) => ({ key: entityType.label, value: `${ApiService_1.AppUrls.entity_type}/${entityType.uid}` }));
-    const predicates = props.dataStore.dataStore.all.predicate.value.map((predicate) => ({ key: predicate.label, value: `${ApiService_1.AppUrls.predicate}/${predicate.uid}` }));
-    const sources = props.dataStore.dataStore.all.source.value.map((source) => ({ key: source.label, value: `${ApiService_1.AppUrls.source}/${source.uid}` }));
-    const all = entities.concat(entityTypes, predicates, sources);
-    return (React.createElement("span", null,
-        React.createElement("div", { className: 'input-addon-formgroup' },
-            React.createElement("span", { className: 'input-addon-icon' },
-                React.createElement("i", { className: 'fa fa-search fa-fw' })),
-            React.createElement(ComboDropdown_1.StringComboDropdown, { value: { key: '', value: null }, setValue: (val) => {
-                    if (val !== null) {
-                        context.router.transitionTo(`/edit/${val.value}`);
-                    }
-                }, typeName: 'all', options: all, allowNew: false, createNewValue: () => { } }))));
-};
-exports.SearchBox.contextTypes = { router: React.PropTypes.object.isRequired };
-
-
-/***/ }),
-/* 366 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview Empty workspace for when nothing is open!
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.2.0
- */
-
-const React = __webpack_require__(1);
-exports.AdvancedSearchWorkspace = (props) => (React.createElement("div", { className: 'workspace-editor' },
-    React.createElement("h2", null, "Advanced Search")));
-
-
-/***/ }),
-/* 367 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview Empty workspace for when nothing is open!
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.2.0
- */
-
-const React = __webpack_require__(1);
-exports.EmptyWorkspace = () => (React.createElement("div", { className: 'workspace-editor' },
-    React.createElement("h2", null, "There is nothing here")));
-
-
-/***/ }),
-/* 368 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview Empty workspace for when nothing is open!
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.2.0
- */
-
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-const React = __webpack_require__(1);
-const ApiService_1 = __webpack_require__(4);
-const falcon_core_1 = __webpack_require__(5);
-const findParentTree_1 = __webpack_require__(53);
-const EditableHeader_1 = __webpack_require__(27);
-const EntityWorkspaceCoreView_1 = __webpack_require__(373);
-const EntityWorkspaceReferenceView_1 = __webpack_require__(374);
-const mobx_react_1 = __webpack_require__(2);
-class StringEditableFieldComponent extends EditableHeader_1.EditableFieldComponent {
-}
-// What can I do?
-// Entity Operations
-// - Delete the entity
-// - Merge the entity
-// - Split the entity
-// - Add 'same-as-ses' to the entity
-// Records
-// - Order records by type, source and date
-// - Add new records
-// - Adding a new predicate creates a new record with the
-//   entity set, the predicate set, the score set to 3, the period set to null, source set to null
-//   it also creates a blank entry in the records sub table based on the range of the predicate.
-// - New predicates must have a name. The domain is set to the current entitytype but can be changed
-//   to one of its parents. The range MUST be set.
-// Visualisations:
-// - Network graph of entity relationships
-let EntityEditorWorkspace = class EntityEditorWorkspace extends React.Component {
-    constructor(props, context) {
-        super();
-        this.state = {
-            tab: 0
-        };
-    }
-    del() {
-        this.props.dataStore.delItem(falcon_core_1.Entity, ApiService_1.AppUrls.entity, this.props.id)
-            .then(() => {
-            this.props.dataStore.closeTab('entity', this.props.id);
-            this.context.router.transitionTo('/edit/notfound');
-        })
-            .catch((e) => {
-            if (e.code === 404) {
-                this.context.router.transitionTo('/edit/notfound');
-            }
-            if (e.code === 422) {
-                e.data.then((data) => {
-                    const conflictResolutionModal = {
-                        name: 'conflict_resolution',
-                        cancel: () => { },
-                        complete: (result) => {
-                            if (result === 'addToWorkspace') {
-                                data.record.forEach((datum) => {
-                                    this.props.dataStore.createTab('entity', datum.entity, 'item');
-                                });
-                                data.entity.forEach((datum) => {
-                                    this.props.dataStore.createTab('entity', datum.uid, 'item');
-                                });
-                            }
-                            if (result === 'deleteAll') {
-                                Promise.all(data.record.map((datum) => this.props.dataStore.delItem(falcon_core_1.Record, ApiService_1.AppUrls.record, datum.uid)))
-                                    .then(() => {
-                                    this.del();
-                                });
-                            }
-                        },
-                        settings: {
-                            conflictingItems: data,
-                            message: 'Deleting Entity'
-                        }
-                    };
-                    this.props.modalStore.addModal(conflictResolutionModal);
-                });
-            }
-        });
-    }
-    createNewRecord() {
-        const entity = this.props.dataStore.dataStore.tabs.entity[this.props.id].value.entity;
-        const entityType = this.props.dataStore.dataStore.all.entity_type.value.find((t) => t.uid === entity.entityType);
-        const entityTypeParents = findParentTree_1.findParentTree(entity.entityType, this.props.dataStore.dataStore.all.entity_type.value);
-        const predicates = this.props.dataStore.dataStore.all.predicate
-            .value.filter((pred) => entityTypeParents.indexOf(pred.domain) !== -1);
-        if (entityType === undefined) {
-            throw new Error('Encountered undefined entity type!');
-        }
-        const modalDef = {
-            name: 'record',
-            complete: (data) => {
-                console.log('Records editor called complete');
-                //this.loadData(this.props);
-            },
-            cancel: () => {
-                console.log('Records editor called cancel');
-            },
-            settings: {
-                options: predicates.map((pred) => ({ key: pred.label, value: pred.uid, meta: pred })),
-                entityUid: this.props.id,
-                entityType: entityType.uid
-            }
-        };
-        this.props.modalStore.addModal(modalDef);
-    }
-    update(data) {
-        this.props.dataStore.patchItem(falcon_core_1.Entity, ApiService_1.AppUrls.entity, this.props.id, data);
-    }
-    clone() {
-        const entity = this.props.dataStore.dataStore.tabs.entity[this.props.id].value.entity;
-        this.props.dataStore.postItem(falcon_core_1.Entity, ApiService_1.AppUrls.entity, falcon_core_1.Serializer.fromJson(falcon_core_1.Entity, {
-            label: 'Copy of ' + entity.label,
-            entityType: entity.entityType
-        }), { clone: this.props.id }).then(([id]) => this.props.dataStore.createTab('entity', id, 'item'));
-    }
-    render() {
-        const entity = this.props.dataStore.dataStore.tabs.entity[this.props.id].value.entity;
-        const potentialParents = this.props.dataStore.dataStore.all.entity.value;
-        let parentName = '';
-        if (potentialParents !== null && entity.parent !== undefined) {
-            const found = potentialParents.find((par) => par.uid === entity.parent);
-            if (found !== undefined) {
-                parentName = found.label;
-            }
-        }
-        return (React.createElement("div", { className: 'workspace-editor' },
-            React.createElement("header", { className: 'editor-header entity' },
-                React.createElement("div", { className: 'primary-toolbar' },
-                    React.createElement("div", { className: 'main-toolbar' },
-                        React.createElement("i", { className: 'fa fa-cube item-icon' }),
-                        React.createElement(StringEditableFieldComponent, { value: entity.label, component: EditableHeader_1.EditableHeader, onChange: (value) => this.update({ 'label': value }) })),
-                    React.createElement("div", { className: 'sub-toolbar' },
-                        React.createElement("i", { className: 'fa fa-trash delete button', "aria-hidden": 'true', onClick: this.del.bind(this) }),
-                        React.createElement("i", { className: 'fa fa-clone button', "aria-hidden": 'true', onClick: this.clone.bind(this) }))),
-                React.createElement("div", { className: 'secondary-toolbar' },
-                    React.createElement("div", { className: 'tab-bar' },
-                        React.createElement("div", { className: 'entity ' + (this.state.tab === 0 ? 'selected' : ''), onClick: () => this.setState({ tab: 0 }) }, "CORE"),
-                        React.createElement("div", { className: 'entity ' + (this.state.tab === 1 ? 'selected' : ''), onClick: () => this.setState({ tab: 1 }) }, "REFERENCED BY")))),
-            this.state.tab === 0 ? (React.createElement(EntityWorkspaceCoreView_1.EntityWorkspaceCoreView, { dataStore: this.props.dataStore, id: this.props.id })) : (React.createElement(EntityWorkspaceReferenceView_1.EntityWorkspaceReferenceView, { dataStore: this.props.dataStore, id: this.props.id }))));
-    }
-};
-EntityEditorWorkspace.contextTypes = {
-    router: React.PropTypes.object.isRequired,
-    manager: React.PropTypes.object.isRequired
-};
-EntityEditorWorkspace = __decorate([
-    mobx_react_1.inject('dataStore', 'modalStore'),
-    mobx_react_1.observer,
-    __metadata("design:paramtypes", [Object, Object])
-], EntityEditorWorkspace);
-exports.EntityEditorWorkspace = EntityEditorWorkspace;
-
-
-/***/ }),
-/* 369 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview Predicate editor workspace
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.2.0
- */
-
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-const React = __webpack_require__(1);
-const SameAsEditor_1 = __webpack_require__(52);
-const ApiService_1 = __webpack_require__(4);
-const falcon_core_1 = __webpack_require__(5);
-const AddTabButton_1 = __webpack_require__(7);
-const EditableHeader_1 = __webpack_require__(27);
-const EditableParagraph_1 = __webpack_require__(186);
-const EditableComboDropdown_1 = __webpack_require__(185);
-const mobx_react_1 = __webpack_require__(2);
-class StringEditableFieldComponent extends EditableHeader_1.EditableFieldComponent {
-}
-class ComboEditableFieldComponent extends EditableHeader_1.EditableFieldComponent {
-}
-let EntityTypeWorkspace = class EntityTypeWorkspace extends React.Component {
-    constructor() {
-        super();
-        this.state = {};
-    }
-    update(data) {
-        const entityType = this.props.dataStore.dataStore.tabs.entity_type[this.props.id].value;
-        this.props.dataStore.patchItem(falcon_core_1.EntityType, ApiService_1.AppUrls.entity_type, this.props.id, data)
-            .then(() => this.setState({ entityType: Object.assign({}, entityType, data) }));
-    }
-    copy() {
-        const entityType = this.props.dataStore.dataStore.tabs.entity_type[this.props.id].value;
-        const newEntityType = falcon_core_1.Serializer.fromJson(falcon_core_1.EntityType, Object.assign({}, falcon_core_1.Serializer.toJson(entityType), { name: 'Copy of ' + entityType.label }));
-        this.props.dataStore.postItem(falcon_core_1.EntityType, ApiService_1.AppUrls.entity_type, newEntityType, {})
-            .then(([id]) => {
-            this.props.dataStore.createTab('entity_type', id, 'item');
-        });
-    }
-    del() {
-        this.props.dataStore.delItem(falcon_core_1.EntityType, ApiService_1.AppUrls.entity_type, this.props.id)
-            .then(() => this.context.router.transitionTo('/edit/notfound'))
-            .catch((e) => {
-            if (e.code === 404) {
-                this.context.router.transitionTo('/edit/notfound');
-            }
-            if (e.code === 422) {
-                e.data.then((data) => {
-                    const conflictResolutionModal = {
-                        name: 'conflict_resolution',
-                        cancel: () => { },
-                        complete: (result) => {
-                            if (result === 'addToWorkspace') {
-                                data.entityType.forEach((datum) => {
-                                    this.props.dataStore.createTab('entity_type', datum.uid, 'item');
-                                });
-                                data.predicate.forEach((datum) => {
-                                    this.props.dataStore.createTab('predicate', datum.uid, 'item');
-                                });
-                                data.entity.forEach((datum) => {
-                                    this.props.dataStore.createTab('entity', datum.uid, 'item');
-                                });
-                            }
-                        },
-                        settings: {
-                            conflictingItems: data,
-                            message: 'Deleting Entity Type'
-                        }
-                    };
-                    this.props.modalStore.addModal(conflictResolutionModal);
-                });
-            }
-        });
-    }
-    createEntity() {
-        const a = {
-            name: 'entity',
-            complete: ([id]) => {
-                this.props.dataStore.createTab('entity', id, 'item');
-            },
-            cancel: () => { console.log('cancel'); },
-            settings: {
-                initialName: '',
-                initialType: this.props.id
-            }
-        };
-        this.props.modalStore.addModal(a);
-    }
-    render() {
-        const entityType = this.props.dataStore.dataStore.tabs.entity_type[this.props.id].value;
-        const potentialParents = this.props.dataStore.dataStore.all.entity_type.value;
-        let parentName = '';
-        if (potentialParents !== null && entityType.parent !== undefined) {
-            const found = potentialParents.find((par) => par.uid === entityType.parent);
-            if (found !== undefined) {
-                parentName = found.label;
-            }
-        }
-        return (React.createElement("div", { className: 'workspace-editor' },
-            React.createElement("header", { className: 'editor-header entity_type' },
-                React.createElement("div", { className: 'primary-toolbar' },
-                    React.createElement("div", { className: 'main-toolbar' },
-                        React.createElement("div", { className: 'bread-crumbs' }, entityType.parents.map((parent, i) => {
-                            const parentEntityType = this.props.dataStore.dataStore.all.entity_type.value.find((e) => e.uid === parent);
-                            return (React.createElement("span", { key: `breadcrumb-${parent}` },
-                                React.createElement("span", null,
-                                    "  ",
-                                    parentEntityType.label,
-                                    " ",
-                                    React.createElement(AddTabButton_1.AddTabButton, { tabType: 'entity_type', uid: parent }),
-                                    " "),
-                                React.createElement("i", { className: 'fa fa-angle-right' })));
-                        })),
-                        React.createElement("i", { className: 'fa fa-tag item-icon' }),
-                        React.createElement(StringEditableFieldComponent, { value: entityType.label, onChange: (value) => this.update({ 'label': value }) },
-                            React.createElement(EditableHeader_1.EditableHeader, null))),
-                    React.createElement("div", { className: 'sub-toolbar' },
-                        React.createElement("i", { className: 'fa fa-plus add button', "aria-hidden": 'true', onClick: this.createEntity.bind(this) }),
-                        React.createElement("i", { className: 'fa fa-trash delete button', "aria-hidden": 'true', onClick: this.del.bind(this) }),
-                        React.createElement("i", { className: 'fa fa-clone button', "aria-hidden": 'true', onClick: this.copy.bind(this) }))),
-                React.createElement("div", { className: 'secondary-toolbar' },
-                    React.createElement("div", { className: 'tab-bar' },
-                        React.createElement("div", { className: 'entity_type selected' }, "CORE")))),
-            React.createElement("section", { className: 'editor-body' },
-                React.createElement("div", { className: 'edit-group' },
-                    React.createElement("label", { className: 'small' }, "Parent"),
-                    React.createElement(ComboEditableFieldComponent, { value: entityType.parent === null ? { key: '', value: null } : { key: parentName, value: entityType.parent }, onChange: (value) => this.update({ 'parent': value === null ? null : value.value }) },
-                        React.createElement(EditableComboDropdown_1.EditableComboDropdown, { comboSettings: {
-                                options: potentialParents.map((par) => ({ key: par.label, value: par.uid })),
-                                typeName: 'EntityType'
-                            } })),
-                    entityType.parent !== null ? (React.createElement(AddTabButton_1.AddTabButton, { tabType: 'entity_type', uid: entityType.parent })) : null),
-                React.createElement("div", { className: 'edit-group' },
-                    React.createElement("label", { className: 'small' }, "Description"),
-                    React.createElement(StringEditableFieldComponent, { value: entityType.description, onChange: (value) => this.update({ 'description': value }) },
-                        React.createElement(EditableParagraph_1.EditableParagraph, null))),
-                React.createElement("div", { className: 'edit-group' },
-                    React.createElement(StringEditableFieldComponent, { value: entityType.sameAs, onChange: (value) => this.update({ 'sameAs': value }) },
-                        React.createElement(SameAsEditor_1.SameAsEditor, null))),
-                React.createElement("div", null,
-                    React.createElement("h4", null, "Direct Children"),
-                    React.createElement("ul", null, entityType.children
-                        .map((child) => this.props.dataStore.dataStore.all.entity_type.value.find((et) => et.uid === child))
-                        .map((childEt) => {
-                        if (childEt === undefined) {
-                            return null;
-                        }
-                        //TODO: REMOVE !
-                        return (React.createElement("li", { key: `dc-${childEt.label}` },
-                            childEt.label,
-                            " ",
-                            React.createElement(AddTabButton_1.AddTabButton, { tabType: 'entity_type', uid: childEt.uid })));
-                    }))))));
-    }
-};
-EntityTypeWorkspace.contextTypes = {
-    router: React.PropTypes.object.isRequired
-};
-EntityTypeWorkspace = __decorate([
-    mobx_react_1.inject('dataStore', 'modalStore'),
-    mobx_react_1.observer,
-    __metadata("design:paramtypes", [])
-], EntityTypeWorkspace);
-exports.EntityTypeWorkspace = EntityTypeWorkspace;
-
-
-/***/ }),
-/* 370 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview Empty workspace for when nothing is open!
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.2.0
- */
-
-const React = __webpack_require__(1);
-const EntityList_1 = __webpack_require__(361);
-const PredicateList_1 = __webpack_require__(363);
-const SourceList_1 = __webpack_require__(364);
-const EntityTypeList_1 = __webpack_require__(362);
-exports.ObjectListWorkspace = (props) => (React.createElement("div", { className: 'workspace-editor object-list' }, (() => {
-    switch (props.listType) {
-        case 'entity':
-            return (React.createElement(EntityList_1.EntityList, { query: props.query }));
-        case 'source':
-            return (React.createElement(SourceList_1.SourceList, null));
-        case 'predicate':
-            return (React.createElement(PredicateList_1.PredicateList, null));
-        case 'entity_type':
-            return (React.createElement(EntityTypeList_1.EntityTypeList, null));
-    }
-})()));
-
-
-/***/ }),
-/* 371 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview Predicate editor workspace
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.2.0
- */
-
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-const React = __webpack_require__(1);
-const react_router_1 = __webpack_require__(11);
-const SameAsEditor_1 = __webpack_require__(52);
-const ApiService_1 = __webpack_require__(4);
-const falcon_core_1 = __webpack_require__(5);
-const EditableHeader_1 = __webpack_require__(27);
-const EditableParagraph_1 = __webpack_require__(186);
-const PredicateDescription_1 = __webpack_require__(187);
-const literalTypes_1 = __webpack_require__(189);
-const mobx_react_1 = __webpack_require__(2);
-class StringEditableFieldComponent extends EditableHeader_1.EditableFieldComponent {
-}
-// - Should state the number of times this predicate is used
-// - Widening the domain or range always okay
-// - Narrowing should check for conflicts and return them
-// - Asks 'Delete conflicting records?'
-// - Strong check (double button press or type) to confirm
-// - Changing name/description/sameAs - absolutly fine
-// - Cannot change 'readonly'
-let PredicateEditorWorkspace = class PredicateEditorWorkspace extends React.Component {
-    constructor() {
-        super();
-        this.state = {
-            records: []
-        };
-    }
-    updatePredicate(field, value, rangeIsReferenceOverride = null) {
-        const predicate = this.props.dataStore.dataStore.tabs.predicate[this.props.id].value;
-        if (predicate === null) {
-            console.warn('Tried to edit unready predicate');
-            return;
-        }
-        const rangeIsReferenceVal = rangeIsReferenceOverride === null
-            ? predicate.rangeIsReference : rangeIsReferenceOverride;
-        this.props.dataStore.patchItem(falcon_core_1.Predicate, ApiService_1.AppUrls.predicate, predicate.uid, {
-            [field]: value,
-            rangeIsReference: rangeIsReferenceVal
-        });
-    }
-    copy() {
-        const predicate = this.props.dataStore.dataStore.tabs.predicate[this.props.id].value;
-        const newPredicate = falcon_core_1.Serializer.fromJson(falcon_core_1.Predicate, Object.assign({}, falcon_core_1.Serializer.toJson(predicate), { name: 'Copy of ' + predicate.label }));
-        this.props.dataStore.postItem(falcon_core_1.Predicate, ApiService_1.AppUrls.predicate, newPredicate, {})
-            .then(([id]) => {
-            this.props.dataStore.createTab('predicate', id, 'item');
-        });
-    }
-    del() {
-        this.props.dataStore.delItem(falcon_core_1.Predicate, ApiService_1.AppUrls.predicate, this.props.id)
-            .then(() => this.context.router.transitionTo('/edit/notfound'))
-            .catch((e) => {
-            if (e.code === 404) {
-                this.context.router.transitionTo('/edit/notfound');
-            }
-            if (e.code === 422) {
-                e.data.then((data) => {
-                    const conflictResolutionModal = {
-                        name: 'conflict_resolution',
-                        cancel: () => { },
-                        complete: (result) => {
-                            if (result === 'addToWorkspace') {
-                                data.forEach((datum) => {
-                                    this.props.dataStore.createTab('entity', datum.entity, 'item');
-                                });
-                            }
-                            if (result === 'deleteAll') {
-                                Promise.all(data.record.map((datum) => this.props.dataStore.delItem(falcon_core_1.Record, ApiService_1.AppUrls.record, datum.uid)))
-                                    .then(() => {
-                                    this.del();
-                                });
-                            }
-                        },
-                        settings: {
-                            conflictingItems: data,
-                            message: 'Deleting Predicate'
-                        }
-                    };
-                    this.props.modalStore.addModal(conflictResolutionModal);
-                });
-            }
-        });
-    }
-    render() {
-        const predicate = this.props.dataStore.dataStore.tabs.predicate[this.props.id].value;
-        const entityTypes = this.props.dataStore.dataStore.all.entity_type.value;
-        const currentDomainEntityType = entityTypes.find((t) => t.uid == predicate.domain);
-        let currentDomainEntityTypeName = '';
-        if (currentDomainEntityType !== undefined) {
-            currentDomainEntityTypeName = currentDomainEntityType.label;
-        }
-        const domain = { key: currentDomainEntityTypeName, value: predicate.domain };
-        const range = { key: '', value: {
-                isReference: predicate.rangeIsReference,
-                value: predicate.range
-            } };
-        if (predicate.rangeIsReference) {
-            const currentRangeEntityType = entityTypes.find((t) => t.uid === predicate.range);
-            if (currentRangeEntityType !== undefined) {
-                range.key = currentRangeEntityType.label;
-            }
-        }
-        else {
-            const literalType = literalTypes_1.literalTypes.find((t) => t.value === predicate.range);
-            if (literalType !== undefined) {
-                range.key = literalType.label;
-            }
-        }
-        const entityTypeOptions = entityTypes.map((t) => {
-            if (t.uid === null) {
-                throw new Error('Encountered entity type with no id!');
-            }
-            return { key: t.label, value: t.uid };
-        });
-        const literalTypeOptions = literalTypes_1.literalTypes.map((t) => ({ key: t.label, value: { value: t.label, isReference: false } }));
-        const entityTypeMap2 = entityTypeOptions.map((e) => ({ key: e.key, value: { isReference: true, value: e.value.toString() } }));
-        return (React.createElement("div", { className: 'workspace-editor' },
-            React.createElement("header", { className: 'editor-header predicate' },
-                React.createElement("div", { className: 'primary-toolbar' },
-                    React.createElement("div", { className: 'main-toolbar' },
-                        React.createElement("i", { className: 'fa fa-long-arrow-right item-icon' }),
-                        React.createElement(StringEditableFieldComponent, { value: predicate.label, onChange: (value) => this.updatePredicate('label', value) },
-                            React.createElement(EditableHeader_1.EditableHeader, null))),
-                    React.createElement("div", { className: 'sub-toolbar' },
-                        React.createElement("i", { className: 'fa fa-trash delete button', "aria-hidden": 'true', onClick: this.del.bind(this) }),
-                        React.createElement("i", { className: 'fa fa-clone button', "aria-hidden": 'true', onClick: this.copy.bind(this) }))),
-                React.createElement("div", { className: 'secondary-toolbar' },
-                    React.createElement("div", { className: 'tab-bar' },
-                        React.createElement("div", { className: 'predicate selected' }, "CORE"),
-                        React.createElement("div", { className: 'predicate' }, "SAME AS")))),
-            React.createElement("section", { className: 'editor-body' },
-                React.createElement("div", null,
-                    React.createElement(react_router_1.Link, { to: `/edit/entity?col1p=${this.props.id}&col1f=exists` },
-                        "Uses: ",
-                        predicate.uses)),
-                React.createElement("div", { className: 'edit-group' },
-                    React.createElement("label", { className: 'small' }, "Description"),
-                    React.createElement(StringEditableFieldComponent, { value: predicate.description, onChange: (value) => this.updatePredicate('description', value) },
-                        React.createElement(EditableParagraph_1.EditableParagraph, null))),
-                React.createElement("div", { className: 'edit-group' },
-                    React.createElement("label", { className: 'small' }, "Typing"),
-                    React.createElement(PredicateDescription_1.PredicateDescription, { domain: domain, range: range, domainChanged: (value) => this.updatePredicate('domain', value.value), rangeChanged: (value) => this.updatePredicate('range', value.value.value, value.value.isReference), mode: 'editSingle', domainOptions: entityTypeOptions, rangeOptions: literalTypeOptions.concat(entityTypeMap2) })),
-                React.createElement("div", null,
-                    React.createElement(StringEditableFieldComponent, { value: predicate.sameAs, onChange: (value) => this.updatePredicate('sameAs', value) },
-                        React.createElement(SameAsEditor_1.SameAsEditor, null))))));
-    }
-};
-PredicateEditorWorkspace.contextTypes = {
-    router: React.PropTypes.object.isRequired
-};
-PredicateEditorWorkspace = __decorate([
-    mobx_react_1.inject('dataStore', 'modalStore'),
-    mobx_react_1.observer,
-    __metadata("design:paramtypes", [])
-], PredicateEditorWorkspace);
-exports.PredicateEditorWorkspace = PredicateEditorWorkspace;
-
-
-/***/ }),
-/* 372 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview Predicate editor workspace
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.2.0
- */
-
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-const React = __webpack_require__(1);
-const SameAsEditor_1 = __webpack_require__(52);
-const ApiService_1 = __webpack_require__(4);
-const falcon_core_1 = __webpack_require__(5);
-const EditableHeader_1 = __webpack_require__(27);
-const lodash_1 = __webpack_require__(6);
-const mobx_react_1 = __webpack_require__(2);
-const AddTabButton_1 = __webpack_require__(7);
-class StringEditableFieldComponent extends EditableHeader_1.EditableFieldComponent {
-}
-class ComboEditableFieldComponent extends EditableHeader_1.EditableFieldComponent {
-}
-// - Should state the number of times this predicate is used
-// - Widening the domain or range always okay
-// - Narrowing should check for conflicts and return them
-// - Asks 'Delete conflicting records?'
-// - Strong check (double button press or type) to confirm
-// - Changing name/description/sameAs - absolutly fine
-// - Cannot change 'readonly'
-let SourceEditorWorkspace = class SourceEditorWorkspace extends React.Component {
-    constructor() {
-        super();
-        this.state = {
-            metaData: {}
-        };
-    }
-    componentDidMount() {
-        this.loadData(this.props);
-    }
-    componentWillReceiveProps(newProps) {
-        this.loadData(newProps);
-    }
-    loadData(props) {
-        const source = props.dataStore.dataStore.tabs.source[this.props.id].value.source;
-        this.setState({
-            metaData: lodash_1.keyBy(source.metaData, 'name')
-        });
-    }
-    updateSource(field, value) {
-        const source = this.props.dataStore.dataStore.tabs.source[this.props.id].value.source;
-        if (source.uid === null) {
-            throw new Error('source uid should not be null');
-        }
-        this.props.dataStore.patchItem(falcon_core_1.Source, ApiService_1.AppUrls.source, source.uid, { [field]: value });
-    }
-    updateSourceElement(element, value) {
-        const source = this.props.dataStore.dataStore.tabs.source[this.props.id].value.source;
-        if (element.uid === null) {
-            throw new Error('source element uid should not be null');
-        }
-        const compositeKey = {
-            order: ['source', 'element'],
-            values: {
-                source: this.props.id,
-                element: element.uid
-            }
-        };
-        if (source.metaData[element.label] !== undefined
-            && source.metaData[element.label].values.find((a) => a.source === this.props.id) !== undefined) {
-            this.props.dataStore.patchItem(falcon_core_1.SourceElement, ApiService_1.AppUrls.source_element, compositeKey, falcon_core_1.Serializer.fromJson(falcon_core_1.SourceElement, {
-                uid: compositeKey,
-                element: source.metaData[element.label].element_uid,
-                source: this.props.id,
-                value
-            }));
-        }
-        else {
-            this.props.dataStore.postItem(falcon_core_1.SourceElement, ApiService_1.AppUrls.source_element, falcon_core_1.Serializer.fromJson(falcon_core_1.SourceElement, {
-                uid: compositeKey,
-                value: value
-            }), {});
-        }
-    }
-    del() {
-        this.props.dataStore.delItem(falcon_core_1.Source, ApiService_1.AppUrls.source, this.props.id)
-            .then(() => this.context.router.transitionTo('/edit/notfound'))
-            .catch((e) => {
-            if (e.code === 404) {
-                this.context.router.transitionTo('/edit/notfound');
-            }
-            if (e.code === 422) {
-                e.data.then((data) => {
-                    const conflictResolutionModal = {
-                        name: 'conflict_resolution',
-                        cancel: () => { },
-                        complete: (result) => {
-                            if (result === 'addToWorkspace') {
-                                data.source.forEach((datum) => {
-                                    this.props.dataStore.createTab('source', datum.uid, 'item');
-                                });
-                            }
-                            if (result === 'deleteAll') {
-                                Promise.all(data.source.map((datum) => this.props.dataStore.delItem(falcon_core_1.Source, ApiService_1.AppUrls.source, datum.uid)))
-                                    .then(() => {
-                                    this.del();
-                                });
-                            }
-                        },
-                        settings: {
-                            conflictingItems: data,
-                            message: 'Deleting Source'
-                        }
-                    };
-                    this.props.modalStore.addModal(conflictResolutionModal);
-                });
-            }
-        });
-    }
-    createChild() {
-        const source = this.props.dataStore.dataStore.tabs.source[this.props.id].value.source;
-        const newSource = falcon_core_1.Serializer.fromJson(falcon_core_1.Source, Object.assign({}, falcon_core_1.Serializer.toJson(source), { label: 'Child of ' + source.label, parent: this.props.id }));
-        this.props.dataStore.postItem(falcon_core_1.Source, ApiService_1.AppUrls.source, newSource, {})
-            .then(([id]) => {
-            this.props.dataStore.createTab('source', id, 'item');
-        });
-    }
-    // create entity with 'mentioned in' already set to this source
-    createEntity() {
-        const a = {
-            name: 'preset_record',
-            complete: ([id]) => {
-                this.props.dataStore.createTab('entity', id, 'item');
-            },
-            cancel: () => { },
-            settings: {
-                source: this.props.dataStore.dataStore.tabs.source[this.props.id].value.source
-            }
-        };
-        this.props.modalStore.addModal(a);
-    }
-    render() {
-        const source = this.props.dataStore.dataStore.tabs.source[this.props.id].value.source;
-        const potentialParents = this.props.dataStore.dataStore.all.source.value;
-        let parentName = '';
-        if (potentialParents !== null && source.parent !== undefined) {
-            const found = potentialParents.find((par) => par.uid === source.parent);
-            if (found !== undefined) {
-                parentName = found.label;
-            }
-        }
-        return (React.createElement("div", { className: 'workspace-editor' },
-            React.createElement("header", { className: 'editor-header source' },
-                React.createElement("div", { className: 'primary-toolbar' },
-                    React.createElement("div", { className: 'main-toolbar' },
-                        React.createElement("div", { className: 'bread-crumbs' }, source.parents
-                            .slice()
-                            .reverse()
-                            .map((child) => this.props.dataStore.dataStore.all.source.value.find((et) => et.uid === child))
-                            .map((parent, i) => {
-                            if (parent === undefined) {
-                                throw new Error('Encountered undefined parent');
-                            }
-                            if (parent.uid === null) {
-                                throw new Error('Encountered parent with null uid');
-                            }
-                            return (React.createElement("span", { key: `breadcrumb-${parent.uid}` },
-                                React.createElement("span", null,
-                                    "  ",
-                                    parent.label,
-                                    " ",
-                                    React.createElement(AddTabButton_1.AddTabButton, { tabType: 'source', uid: parent.uid }),
-                                    " "),
-                                React.createElement("i", { className: 'fa fa-angle-right' })));
-                        })),
-                        React.createElement("i", { className: 'fa fa-sun-o item-icon' }),
-                        React.createElement(StringEditableFieldComponent, { value: source.label, component: EditableHeader_1.EditableHeader, onChange: (value) => this.updateSource('label', value) })),
-                    React.createElement("div", { className: 'sub-toolbar' },
-                        React.createElement("i", { className: 'fa fa-plus add button', "aria-hidden": 'true', onClick: this.createEntity.bind(this) }),
-                        React.createElement("i", { className: 'fa fa-trash delete button', "aria-hidden": 'true', onClick: () => this.del() }),
-                        React.createElement("i", { className: 'fa fa-arrow-circle-o-down button', "aria-hidden": 'true', onClick: this.createChild.bind(this) }))),
-                React.createElement("div", { className: 'secondary-toolbar' },
-                    React.createElement("div", { className: 'tab-bar' },
-                        React.createElement("div", { className: 'source selected' }, "DUBLIN CORE"),
-                        React.createElement("div", { className: 'source' }, "DETAILS"),
-                        React.createElement("div", { className: 'source' }, "MEDIA")))),
-            React.createElement("section", { className: 'editor-body' },
-                React.createElement("div", { className: 'edit-group' },
-                    React.createElement("label", { className: 'small' }, "Parent"),
-                    React.createElement(ComboEditableFieldComponent, { value: { key: parentName, value: source.parent }, component: EditableComboDropdown_1.EditableComboDropdown, onChange: (value) => this.updateSource('parent', value === null ? null : value.value), additionalProps: { comboSettings: {
-                                options: potentialParents.map((par) => ({ key: par.label, value: par.uid })),
-                                typeName: 'Source'
-                            } } }),
-                    source.parent !== null ? (React.createElement(AddTabButton_1.AddTabButton, { tabType: 'source', uid: source.parent })) : null),
-                React.createElement("div", { className: 'edit-group' },
-                    React.createElement(StringEditableFieldComponent, { value: source.sameAs, onChange: (value) => this.updateSource('sameAs', value) },
-                        React.createElement(SameAsEditor_1.SameAsEditor, null))),
-                this.props.dataStore.dataStore.all.dublinCore.value.elements.map((element) => {
-                    const values = source.metaData.hasOwnProperty(element.label) ?
-                        source.metaData[element.label].values : [{ source: this.props.id, value: '' }];
-                    const editableValue = values[0].source == this.props.id ? values[0].value : '';
-                    return (React.createElement("div", { key: `${element.label}-edit` },
-                        React.createElement("h5", { className: 'section-header' },
-                            element.label,
-                            " ",
-                            React.createElement("small", null,
-                                React.createElement("a", { href: element.uri }, element.uri))),
-                        React.createElement("p", { className: 'element-description' }, element.description),
-                        React.createElement("ul", null, values.map((value) => value.source != this.props.id ? (React.createElement("li", { key: `${element.uid}-${value.source}` },
-                            this.props.dataStore.dataStore.all.source.value.find((s) => s.uid === value.source).label,
-                            ": ",
-                            value.value)) : null)),
-                        React.createElement(StringEditableFieldComponent, { value: editableValue, component: EditableParagraph_1.EditableParagraph, onChange: (value) => this.updateSourceElement(element, value) })));
-                }),
-                React.createElement("div", null,
-                    React.createElement("h4", null, "Direct Children"),
-                    React.createElement("ul", null, source.children
-                        .map((child) => this.props.dataStore.dataStore.all.source.value.find((et) => et.uid === child))
-                        .map((childEt) => (React.createElement("li", { key: `dc-${childEt.uid}` },
-                        childEt.label,
-                        " ",
-                        React.createElement(AddTabButton_1.AddTabButton, { tabType: 'source', uid: childEt.uid })))))))));
-    }
-};
-SourceEditorWorkspace.contextTypes = {
-    router: React.PropTypes.object.isRequired
-};
-SourceEditorWorkspace = __decorate([
-    mobx_react_1.inject('dataStore', 'modalStore'),
-    mobx_react_1.observer,
-    __metadata("design:paramtypes", [])
-], SourceEditorWorkspace);
-exports.SourceEditorWorkspace = SourceEditorWorkspace;
-
-
-/***/ }),
-/* 373 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview Empty workspace for when nothing is open!
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.2.0
- */
-
-const React = __webpack_require__(1);
-const RecordsEditor_1 = __webpack_require__(349);
-const ApiService_1 = __webpack_require__(4);
-const falcon_core_1 = __webpack_require__(5);
-const lodash_1 = __webpack_require__(6);
-const AddTabButton_1 = __webpack_require__(7);
-const findParentTree_1 = __webpack_require__(53);
-const EditableHeader_1 = __webpack_require__(27);
-const EditableComboDropdown_1 = __webpack_require__(185);
-class StringEditableFieldComponent extends EditableHeader_1.EditableFieldComponent {
-}
-class ComboEditableFieldComponent extends EditableHeader_1.EditableFieldComponent {
-}
-// What can I do?
-// Entity Operations
-// - Delete the entity
-// - Merge the entity
-// - Split the entity
-// - Add 'same-as-ses' to the entity
-// Records
-// - Order records by type, source and date
-// - Add new records
-// - Adding a new predicate creates a new record with the
-//   entity set, the predicate set, the score set to 3, the period set to null, source set to null
-//   it also creates a blank entry in the records sub table based on the range of the predicate.
-// - New predicates must have a name. The domain is set to the current entitytype but can be changed
-//   to one of its parents. The range MUST be set.
-// Visualisations:
-// - Network graph of entity relationships
-class EntityWorkspaceCoreView extends React.Component {
-    constructor(props, context) {
-        super();
-        this.state = {
-            comboValue: { key: 'test', value: null },
-            comboSearchValue: ''
-        };
-    }
-    update(data) {
-        this.props.dataStore.patchItem(falcon_core_1.Entity, ApiService_1.AppUrls.entity, this.props.id, data);
-    }
-    render() {
-        const entity = this.props.dataStore.dataStore.tabs.entity[this.props.id].value.entity;
-        const entityType = this.props.dataStore.dataStore.all.entity_type.value.find((t) => t.uid === entity.entityType);
-        if (entityType === undefined || entityType.uid === null) {
-            throw new Error('Encountered undefined entity type or entity type with null id');
-        }
-        const potentialParents = this.props.dataStore.dataStore.all.entity.value;
-        const entityTypeParents = findParentTree_1.findParentTree(entity.entityType, this.props.dataStore.dataStore.all.entity_type.value);
-        const predicates = this.props.dataStore.dataStore.all.predicate
-            .value.filter((pred) => entityTypeParents.indexOf(pred.domain) !== -1);
-        const sources = this.props.dataStore.dataStore.all.source.value;
-        const records = lodash_1.groupBy(this.props.dataStore.dataStore.tabs.entity[this.props.id].value.records, 'predicate');
-        const options = predicates.map((pred) => ({ key: pred.label, value: pred.uid, meta: pred }));
-        let parentName = '';
-        if (potentialParents !== null && entity.parent !== undefined) {
-            const found = potentialParents.find((par) => par.uid === entity.parent);
-            if (found !== undefined) {
-                parentName = found.label;
-            }
-        }
-        return (React.createElement("section", { className: 'editor-body' },
-            React.createElement("div", { className: 'flex-fill' },
-                React.createElement("div", { className: 'flex-fill' },
-                    React.createElement("div", null,
-                        React.createElement("label", { className: 'small' }, "Type"),
-                        entityType.label,
-                        " ",
-                        React.createElement(AddTabButton_1.AddTabButton, { uid: entityType.uid, tabType: 'entity_type' }))),
-                React.createElement("div", { style: { flex: 1 } },
-                    React.createElement("label", { className: 'small' }, "Parent"),
-                    React.createElement(ComboEditableFieldComponent, { value: { key: parentName, value: entity.parent }, onChange: (value) => this.update({ 'parent': value === null ? null : value.value }) },
-                        React.createElement(EditableComboDropdown_1.EditableComboDropdown, { comboSettings: {
-                                options: potentialParents.map((par) => ({ key: par.label, value: par.uid })),
-                                typeName: 'Entity'
-                            } })),
-                    entity.parent !== null ? (React.createElement(AddTabButton_1.AddTabButton, { tabType: 'entity', uid: entity.parent })) : null)),
-            React.createElement("div", { className: 'edit-group' },
-                React.createElement(RecordsEditor_1.RecordsEditor, { dimension: 'predicates', entityExists: true, id: this.props.id, records: records, onChange: () => { }, predicates: predicates, sources: sources, entityTypeId: entityType.uid }))));
-    }
-}
-EntityWorkspaceCoreView.contextTypes = {
-    router: React.PropTypes.object.isRequired
-};
-exports.EntityWorkspaceCoreView = EntityWorkspaceCoreView;
-
-
-/***/ }),
-/* 374 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview Empty workspace for when nothing is open!
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.2.0
- */
-
-const React = __webpack_require__(1);
-const ApiService_1 = __webpack_require__(4);
-const falcon_core_1 = __webpack_require__(5);
-const AddTabButton_1 = __webpack_require__(7);
-// What can I do?
-// Entity Operations
-// - Delete the entity
-// - Merge the entity
-// - Split the entity
-// - Add 'same-as-ses' to the entity
-// Records
-// - Order records by type, source and date
-// - Add new records
-// - Adding a new predicate creates a new record with the
-//   entity set, the predicate set, the score set to 3, the period set to null, source set to null
-//   it also creates a blank entry in the records sub table based on the range of the predicate.
-// - New predicates must have a name. The domain is set to the current entitytype but can be changed
-//   to one of its parents. The range MUST be set.
-// Visualisations:
-// - Network graph of entity relationships
-class EntityWorkspaceReferenceView extends React.Component {
-    constructor(props, context) {
-        super();
-        this.state = {
-            comboValue: { key: 'test', value: '' },
-            comboSearchValue: ''
-        };
-    }
-    update(data) {
-        this.props.dataStore.patchItem(falcon_core_1.Entity, ApiService_1.AppUrls.entity, this.props.id, data);
-    }
-    render() {
-        return (React.createElement("section", { className: 'editor-body' },
-            React.createElement("h2", null, "References"),
-            React.createElement("table", { className: 'table' },
-                React.createElement("thead", null,
-                    React.createElement("tr", null,
-                        React.createElement("th", null, "Entity"),
-                        React.createElement("th", null, "Property"))),
-                React.createElement("tbody", null, this.props.dataStore.dataStore.tabs.entity[this.props.id].value.referenceRecords.map((record) => {
-                    return (React.createElement("tr", { key: `record-${record.uid}` },
-                        React.createElement("td", null,
-                            this.props.dataStore.dataStore.all.entity.value.find((entity) => entity.uid === record.entity).label,
-                            " ",
-                            React.createElement(AddTabButton_1.AddTabButton, { tabType: 'entity', uid: record.entity })),
-                        React.createElement("td", null,
-                            this.props.dataStore.dataStore.all.predicate.value.find((predicate) => predicate.uid === record.predicate).label,
-                            " ",
-                            React.createElement(AddTabButton_1.AddTabButton, { tabType: 'predicate', uid: record.predicate }))));
-                })))));
-    }
-}
-EntityWorkspaceReferenceView.contextTypes = {
-    router: React.PropTypes.object.isRequired
-};
-exports.EntityWorkspaceReferenceView = EntityWorkspaceReferenceView;
-
-
-/***/ }),
-/* 375 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview Unified export of workspaces
- * @author <a href="mailto:tim.hollies@warwick.ac.uk" />Tim Hollies</a>
- * @version 0.2.0
- */
-
-var EmptyWorkspace_1 = __webpack_require__(367);
-exports.EmptyWorkspace = EmptyWorkspace_1.EmptyWorkspace;
-var EntityEditorWorkspace_1 = __webpack_require__(368);
-exports.EntityEditorWorkspace = EntityEditorWorkspace_1.EntityEditorWorkspace;
-var EntityTypeWorkspace_1 = __webpack_require__(369);
-exports.EntityTypeWorkspace = EntityTypeWorkspace_1.EntityTypeWorkspace;
-var SourceEditorWorkspace_1 = __webpack_require__(372);
-exports.SourceEditorWorkspace = SourceEditorWorkspace_1.SourceEditorWorkspace;
-var PredicateEditorWorkspace_1 = __webpack_require__(371);
-exports.PredicateEditorWorkspace = PredicateEditorWorkspace_1.PredicateEditorWorkspace;
-var AdvancedSearchWorkspace_1 = __webpack_require__(366);
-exports.AdvancedSearchWorkspace = AdvancedSearchWorkspace_1.AdvancedSearchWorkspace;
-var ObjectListWorkspace_1 = __webpack_require__(370);
-exports.ObjectListWorkspace = ObjectListWorkspace_1.ObjectListWorkspace;
-
-
-/***/ }),
-/* 376 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview <Description Missing>
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.2.0
- */
-
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
-const falcon_core_1 = __webpack_require__(5);
-const ApiService_1 = __webpack_require__(4);
-const DataStore_1 = __webpack_require__(377);
-const react_sortable_hoc_1 = __webpack_require__(51);
-const mobx_1 = __webpack_require__(36);
-const lodash_1 = __webpack_require__(6);
-const moment = __webpack_require__(0);
-class DataController {
-    constructor(api) {
-        this.api = api;
-        this.dataStore = lodash_1.cloneDeep(DataStore_1.emptyDataStore);
-        this.tabs = [];
-        if (typeof window !== 'undefined') {
-            const tabString = window.localStorage.getItem('open_tabs');
-            if (tabString !== null) {
-                this.tabs = JSON.parse(tabString);
-            }
-        }
-    }
-    // checks that the page exists and adds it to tabs if necessery
-    enterPage(workspace, uid, other) {
-        if (!lodash_1.isNaN(uid)) {
-            if (lodash_1.find(this.tabs, (tab) => tab.tabType === workspace && tab.uid == uid) === undefined) {
-                this.tabs = this.tabs.concat([{ tabType: workspace, uid: uid, tabClass: 'item' }]);
-                return false;
-            }
-        }
-        if (other !== null) {
-            this.entitySearchColumns = [other['col1p'], other['col2p'], other['col3p']].filter((a) => a !== undefined);
-        }
-        else {
-            this.entitySearchColumns = [];
-        }
-        return true;
-    }
-    loadTabData(tab) {
-        return __awaiter(this, void 0, void 0, function* () {
-            if (tab.tabClass !== 'item') {
-                return new falcon_core_1.Entity();
-            }
-            switch (tab.tabType) {
-                case 'entity':
-                    return Promise.all([
-                        this.api.getItem(falcon_core_1.Entity, ApiService_1.AppUrls.entity, tab.uid),
-                        this.api.getCollection(falcon_core_1.Record, ApiService_1.AppUrls.record, { entity: tab.uid }),
-                        this.api.getCollection(falcon_core_1.Record, ApiService_1.AppUrls.record, { value_type: 'entity', value_entity: tab.uid })
-                    ]).then(([entity, records, referenceRecords]) => ({ entity, records, referenceRecords }));
-                case 'predicate':
-                    return this.api.getItem(falcon_core_1.Predicate, ApiService_1.AppUrls.predicate, tab.uid);
-                case 'entity_type':
-                    return this.api.getItem(falcon_core_1.EntityType, ApiService_1.AppUrls.entity_type, tab.uid);
-                case 'source':
-                    return Promise.all([
-                        this.api.getItem(falcon_core_1.Source, ApiService_1.AppUrls.source, tab.uid),
-                        this.api.getCollection(falcon_core_1.SourceElement, ApiService_1.AppUrls.source_element, { source: tab.uid })
-                    ]).then(([source, source_element]) => ({ source, source_element }));
-                default:
-                    throw new Error('Unexpected tab type requested');
-            }
-        });
-    }
-    /*
-    * Loads required data from the server
-    * @return Promise returning a boolean indicating whether the operation was succesful
-    */
-    update() {
-        return __awaiter(this, void 0, void 0, function* () {
-            // LOAD TABS
-            const groupedTabs = lodash_1.groupBy(this.tabs, 'tabType');
-            if (lodash_1.find(this.tabs, (tab) => tab.tabType === 'source' && tab.uid === this.defaultSource) === undefined) {
-                this.defaultSource = null;
-            }
-            const tabPromise = Promise.all(Object.keys(groupedTabs).map((tabType) => Promise.all(groupedTabs[tabType].map((tab) => this.loadTabData(tab)
-                .then((value) => {
-                return { [parseInt(tab.uid)]: { value, lastUpdate: moment() } };
-            })
-                .catch((err) => {
-                this.tabs = this.tabs.filter((tab2) => tab2 !== tab);
-                this.saveTabs();
-                // propogate the error
-                throw err;
-            })))
-                .then((tabData) => {
-                return { [tabType]: Object.assign({}, ...tabData) };
-            })));
-            // load lists of data commonly required by views
-            const allPromise = Promise.all([
-                this.api.getCollection(falcon_core_1.Predicate, ApiService_1.AppUrls.predicate, {}),
-                this.api.getCollection(falcon_core_1.Source, ApiService_1.AppUrls.source, {}),
-                this.api.getCollection(falcon_core_1.Entity, ApiService_1.AppUrls.entity, {}),
-                this.api.getCollection(falcon_core_1.EntityType, ApiService_1.AppUrls.entity_type, {}),
-                this.api.getItem(falcon_core_1.ElementSet, ApiService_1.AppUrls.element_set, 1)
-            ])
-                .then(([predicates, sources, entities, entityType, dublinCore]) => {
-                return {
-                    predicate: { value: predicates, lastUpdate: moment() },
-                    source: { value: sources, lastUpdate: moment() },
-                    entity: { value: entities, lastUpdate: moment() },
-                    entity_type: { value: entityType, lastUpdate: moment() },
-                    dublinCore: { value: dublinCore, lastUpdate: moment() }
-                };
-            });
-            return Promise.all([tabPromise, allPromise])
-                .then(mobx_1.action(([tabsArray, all]) => __awaiter(this, void 0, void 0, function* () {
-                const tabs = Object.assign({}, ...tabsArray);
-                this.dataStore.tabs = tabs;
-                this.dataStore.all = all;
-                if (this.entitySearchColumns.length > 0) {
-                    this.dataStore.records = yield this.getCollection(falcon_core_1.Record, ApiService_1.AppUrls.record, {
-                        predicate: this.entitySearchColumns,
-                        entity: this.dataStore.all.entity.value.map((entity) => entity.uid)
-                    });
-                }
-                return true;
-            })));
-        });
-    }
-    /*
-    *
-    *    API
-    *
-    */
-    getItem(obj, baseUrl, uid) {
-        return this.api.getItem.apply(this.api, arguments);
-    }
-    getCollection(obj, baseUrl, params) {
-        return this.api.getCollection.apply(this.api, arguments);
-    }
-    postItem(obj, baseUrl, data, params) {
-        return this.api.postItem.apply(this.api, arguments).then((result) => this.update().then(() => result));
-    }
-    putItem(obj, baseUrl, uid, data) {
-        return this.api.putItem.apply(this.api, arguments).then((result) => this.update().then(() => result));
-    }
-    //TODO: patch item takes a subset of an objects properties. This is currently being looked at in TS in the
-    //context of the 'setState' function in react
-    patchItem(obj, baseUrl, uid, data) {
-        return this.api.patchItem.apply(this.api, arguments).then((result) => this.update().then(() => result));
-    }
-    delItem(obj, baseUrl, uid) {
-        return this.api.delItem.apply(this.api, arguments).then((result) => this.update().then(() => result));
-    }
-    query(graphQLQuery) {
-        return this.api.query.apply(this.api, arguments);
-    }
-    getStats() {
-        return this.api.getStats.apply(this.api, arguments);
-    }
-    /*
-    *
-    *    TABS
-    *
-    */
-    createTab(tabType, uid, tabClass, data, query) {
-        // don't add a tab if it already exists
-        if (lodash_1.find(this.tabs, (tab) => tab.tabType === tabType && tab.uid == uid) === undefined) {
-            this.tabs.unshift({ tabType, uid, data, tabClass, query });
-            this.saveTabs();
-            this.update();
-        }
-    }
-    updateTab(tabType, uid, data) {
-        const tabs = lodash_1.cloneDeep(this.tabs);
-        const tabId = lodash_1.findIndex(tabs, (tab) => tab.tabType === tabType && tab.uid === uid);
-        if (tabId !== -1) {
-            tabs[tabId].data = data;
-            this.tabs = tabs;
-        }
-    }
-    closeTab(tabType, uid) {
-        this.tabs = this.tabs.filter((a) => a.tabType !== tabType || a.uid !== uid);
-        this.saveTabs();
-        this.update();
-    }
-    saveTabs() {
-        const tabsString = JSON.stringify(this.tabs);
-        window.localStorage.setItem('open_tabs', tabsString);
-    }
-    clearAllTabs() {
-        this.tabs = [];
-        this.saveTabs();
-        this.update();
-    }
-    reorderTabs(data) {
-        this.tabs = react_sortable_hoc_1.arrayMove(this.tabs, data.oldIndex, data.newIndex);
-        this.saveTabs();
-    }
-    // thinking
-    entity(uid) {
-        if (!(uid in this.dataStore.tabs.entity)) {
-            throw new Error('Not loaded!');
-        }
-        return this.dataStore.tabs.entity[uid].value.value.entity;
-    }
-}
-__decorate([
-    mobx_1.observable,
-    __metadata("design:type", Object)
-], DataController.prototype, "dataStore", void 0);
-__decorate([
-    mobx_1.observable,
-    __metadata("design:type", Array)
-], DataController.prototype, "tabs", void 0);
-__decorate([
-    mobx_1.observable,
-    __metadata("design:type", Number)
-], DataController.prototype, "defaultSource", void 0);
-__decorate([
-    mobx_1.action,
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, Number, Object]),
-    __metadata("design:returntype", Boolean)
-], DataController.prototype, "enterPage", null);
-__decorate([
-    mobx_1.action,
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
-    __metadata("design:returntype", Promise)
-], DataController.prototype, "update", null);
-__decorate([
-    mobx_1.action,
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, Number, String, Object, Object]),
-    __metadata("design:returntype", void 0)
-], DataController.prototype, "createTab", null);
-__decorate([
-    mobx_1.action,
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, Number, Object]),
-    __metadata("design:returntype", void 0)
-], DataController.prototype, "updateTab", null);
-__decorate([
-    mobx_1.action,
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, Number]),
-    __metadata("design:returntype", void 0)
-], DataController.prototype, "closeTab", null);
-__decorate([
-    mobx_1.action,
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
-    __metadata("design:returntype", void 0)
-], DataController.prototype, "saveTabs", null);
-__decorate([
-    mobx_1.action,
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
-    __metadata("design:returntype", void 0)
-], DataController.prototype, "clearAllTabs", null);
-__decorate([
-    mobx_1.action,
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
-    __metadata("design:returntype", void 0)
-], DataController.prototype, "reorderTabs", null);
-exports.DataController = DataController;
-
-
-/***/ }),
-/* 377 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview <Description Missing>
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.2.0
- */
-
-const falcon_core_1 = __webpack_require__(5);
-exports.emptyDataStore = {
-    all: {
-        entity: { value: [], lastUpdate: null },
-        entity_type: { value: [], lastUpdate: null },
-        predicate: { value: [], lastUpdate: null },
-        source: { value: [], lastUpdate: null },
-        dublinCore: { value: new falcon_core_1.ElementSet(), lastUpdate: null }
-    },
-    records: [],
-    tabs: {
-        entity: {},
-        entity_type: {},
-        predicate: {},
-        source: {}
-    },
-    lockedSource: null
-};
-
-
-/***/ }),
-/* 378 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview <Description Missing>
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.2.0
- */
-
-var __assign = (this && this.__assign) || Object.assign || function(t) {
-    for (var s, i = 1, n = arguments.length; i < n; i++) {
-        s = arguments[i];
-        for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
-            t[p] = s[p];
-    }
-    return t;
-};
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-const React = __webpack_require__(1);
-const lodash_1 = __webpack_require__(6);
-const CreatePredicate_1 = __webpack_require__(356);
-const CreateRecord_1 = __webpack_require__(358);
-const CreatePresetRecord_1 = __webpack_require__(357);
-const CreateSource_1 = __webpack_require__(359);
-const CreateEntity_1 = __webpack_require__(354);
-const CreateEntityType_1 = __webpack_require__(355);
-const ConflictResolution_1 = __webpack_require__(353);
-const CreateTabSet_1 = __webpack_require__(360);
-const mobx_1 = __webpack_require__(36);
-class ModalStore {
-    constructor() {
-        this.modalQueue = [];
-    }
-    // might be @computed?
-    get currentModal() {
-        if (this.modalQueue.length === 0) {
-            return null;
-        }
-        const sharedProps = {
-            complete: this.modalComplete.bind(this),
-            cancel: this.modalCancel.bind(this)
-        };
-        switch (this.modalQueue[0].name) {
-            case 'predicate':
-                return (React.createElement(CreatePredicate_1.CreatePredicate, __assign({}, sharedProps, { initialName: this.modalQueue[0].settings['initialName'], initialDomain: this.modalQueue[0].settings['initialDomain'] })));
-            case 'record':
-                return (React.createElement(CreateRecord_1.CreateRecord, __assign({}, sharedProps, { entityType: this.modalQueue[0].settings['entityType'], entityUid: this.modalQueue[0].settings['entityUid'], options: this.modalQueue[0].settings['options'] })));
-            case 'preset_record':
-                return (React.createElement(CreatePresetRecord_1.CreatePresetRecord, __assign({}, sharedProps, { source: this.modalQueue[0].settings['source'] })));
-            case 'source':
-                return (React.createElement(CreateSource_1.CreateSource, __assign({}, sharedProps, { initialValue: this.modalQueue[0].settings['initialName'] })));
-            case 'entity':
-                return (React.createElement(CreateEntity_1.CreateEntity, __assign({}, sharedProps, this.modalQueue[0].settings)));
-            case 'entity_type':
-                return (React.createElement(CreateEntityType_1.CreateEntityType, __assign({}, sharedProps, this.modalQueue[0].settings)));
-            case 'conflict_resolution':
-                return (React.createElement(ConflictResolution_1.ConflictResolution, __assign({}, sharedProps, { conflictingItems: this.modalQueue[0].settings['conflictingItems'], message: this.modalQueue[0].settings['message'] })));
-            case 'createTabSet':
-                return (React.createElement(CreateTabSet_1.CreateTabSet, __assign({}, sharedProps)));
-        }
-        return null;
-    }
-    addModal(def) {
-        this.modalQueue.unshift(def);
-    }
-    modalComplete(data) {
-        if (this.modalQueue.length === 0) {
-            throw new Error('Attempted to complete non-existent modal');
-        }
-        this.modalQueue[0].complete(data);
-        if (this.modalQueue.length > 0) {
-            this.modalQueue = lodash_1.tail(this.modalQueue);
-        }
-    }
-    modalCancel() {
-        if (this.modalQueue.length === 0) {
-            throw new Error('Attempted to cancel non-existent modal');
-        }
-        this.modalQueue[0].cancel();
-        this.modalQueue = [];
-    }
-}
-__decorate([
-    mobx_1.observable,
-    __metadata("design:type", Array)
-], ModalStore.prototype, "modalQueue", void 0);
-__decorate([
-    mobx_1.computed,
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [])
-], ModalStore.prototype, "currentModal", null);
-__decorate([
-    mobx_1.action,
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
-    __metadata("design:returntype", void 0)
-], ModalStore.prototype, "addModal", null);
-__decorate([
-    mobx_1.action,
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
-    __metadata("design:returntype", void 0)
-], ModalStore.prototype, "modalComplete", null);
-__decorate([
-    mobx_1.action,
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
-    __metadata("design:returntype", void 0)
-], ModalStore.prototype, "modalCancel", null);
-exports.ModalStore = ModalStore;
-
-
-/***/ }),
-/* 379 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview <Description Missing>
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.2.0
- */
-
-const React = __webpack_require__(1);
-const react_router_1 = __webpack_require__(11);
-const StatsGrid_1 = __webpack_require__(190);
-const setTabList = (data, router) => {
-    window.localStorage.setItem('open_tabs', JSON.stringify(data));
-    router.transitionTo('/edit/empty');
-};
-const deleteTabSet = (id) => {
-    fetch('/admin/tabset/' + id, {
-        method: 'DELETE',
-        credentials: 'same-origin'
-    });
-};
-exports.Admin = (props, context) => (React.createElement("div", { className: 'page' },
-    React.createElement("section", null,
-        React.createElement("h1", null, "Welcome to the admin pages"),
-        React.createElement("ul", { className: 'links-list' },
-            React.createElement("li", null,
-                React.createElement(react_router_1.Link, { to: '/users' },
-                    React.createElement("i", { className: 'fa fa-users' }),
-                    " Manage Users")),
-            React.createElement("li", null,
-                React.createElement(react_router_1.Link, { to: '/app' },
-                    React.createElement("i", { className: 'fa fa-download' }),
-                    " Download app")),
-            React.createElement("li", null,
-                React.createElement("a", { href: '/admin/snapshot' },
-                    React.createElement("i", { className: 'fa fa-cloud-download' }),
-                    " Download database snapshot")),
-            React.createElement("li", null,
-                React.createElement(react_router_1.Link, { to: '/upload' },
-                    React.createElement("i", { className: 'fa fa-cloud-upload' }),
-                    " Upload database file")))),
-    React.createElement("section", null,
-        React.createElement("h2", null, "Saved Tab Sets"),
-        React.createElement("ul", { className: 'links-list' }, props.tabsets.map((tabset) => {
-            return (React.createElement("li", { key: `tabset-${tabset.uid}` },
-                React.createElement("span", { className: 'a' },
-                    React.createElement("span", { onClick: () => setTabList(tabset.tabs, context.router) }, tabset.name),
-                    React.createElement("span", null,
-                        React.createElement("i", { className: 'fa fa-times', onClick: () => deleteTabSet(tabset.uid) })))));
-        }))),
-    props.stats !== null ? (React.createElement(StatsGrid_1.StatsGrid, { stats: props.stats })) : null));
-exports.Admin.contextTypes = {
-    router: React.PropTypes.object.isRequired
-};
-
-
-/***/ }),
-/* 380 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview <Description Missing>
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.2.0
- */
-
-const React = __webpack_require__(1);
-exports.AppDownload = (props) => (React.createElement("div", { className: 'page' },
-    React.createElement("section", null,
-        React.createElement("h1", null, "App Download"),
-        React.createElement("p", null, "Use this VRE without an internet connection! Simply download the app for your platform and then" + " " + "download a database snapshot from the main page. When you are ready, use the upload tool to merge" + " " + "your offline copy with the server."),
-        React.createElement("ul", { className: 'links-list' },
-            React.createElement("li", null,
-                React.createElement("a", { href: 'https://github.com/digihum/imperial-entanglements-app/raw/master/bin/imperial-entanglements%20Setup%200.1.1.exe' },
-                    React.createElement("i", { className: 'fa fa-windows' }),
-                    " Windows")),
-            React.createElement("li", null,
-                React.createElement("a", { href: 'https://github.com/digihum/imperial-entanglements-app/raw/master/bin/mac/imperial-entanglements-0.1.1.dmg' },
-                    React.createElement("i", { className: 'fa fa-apple' }),
-                    " Mac")),
-            React.createElement("li", null,
-                React.createElement("a", { href: 'https://github.com/digihum/imperial-entanglements-app/raw/master/bin/imperial-entanglements-0.1.1-x86_64.AppImage' },
-                    React.createElement("i", { className: 'fa fa-linux' }),
-                    " Linux"))))));
-
-
-/***/ }),
-/* 381 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview <Description Missing>
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.2.0
- */
-
-const React = __webpack_require__(1);
-exports.DatabaseUpload = (props) => (React.createElement("div", { className: 'page' },
-    React.createElement("section", null,
-        React.createElement("h1", null, "This is the database upload page"),
-        React.createElement("input", { type: 'file', id: 'input', accept: '.sqlite' }),
-        React.createElement("button", { onClick: () => { alert('Work in process'); } }, "Upload"))));
-
-
-/***/ }),
-/* 382 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview <Description Missing>
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.2.0
- */
-
-const React = __webpack_require__(1);
-const Sidebar_1 = __webpack_require__(341);
-const Workspace_1 = __webpack_require__(343);
-const Toast_1 = __webpack_require__(342);
-const DataController_1 = __webpack_require__(376);
-const ModalStore_1 = __webpack_require__(378);
-const react_sortable_hoc_1 = __webpack_require__(51);
-const mobx_react_devtools_1 = __webpack_require__(312);
-const mobx_react_1 = __webpack_require__(2);
-const ObjectEditorCore = react_sortable_hoc_1.SortableContainer((props) => {
-    return (React.createElement("span", { className: 'flex-fill' },
-        React.createElement(Sidebar_1.Sidebar, { list: props.list, id: props.id, workspace: props.workspace }),
-        React.createElement(Workspace_1.Workspace, { workspace: props.workspace, id: props.id, loading: props.loadingWheel, location: props.location, list: props.list }),
-        props.splitWorkspace ? (React.createElement(Workspace_1.Workspace, { workspace: props.workspace, id: props.id, loading: props.loadingWheel, location: props.location, list: props.list })) : null,
-        React.createElement("div", { className: 'split-workspace-button-container', onClick: props.toggleSplitWorkspace }, props.splitWorkspace ? (React.createElement("i", { className: 'fa fa-times', title: 'split' })) : (React.createElement("i", { className: 'fa fa-columns', title: 'split' })))));
-});
-const ModalWrapper = mobx_react_1.inject('modalStore')(mobx_react_1.observer((props) => (React.createElement("span", null, props.modalStore.currentModal))));
-class ObjectEditor extends React.Component {
-    constructor(props, context) {
-        super();
-        this.state = {
-            dataController: new DataController_1.DataController(props.api),
-            modalStore: new ModalStore_1.ModalStore(),
-            loadingWheel: true,
-            loading: true,
-            id: NaN,
-            list: false,
-            splitWorkspace: false
-        };
-    }
-    componentDidMount() {
-        this.reload(this.props, false, true);
-    }
-    componentWillUnmount() {
-        this.state.dataController.saveTabs();
-    }
-    componentWillReceiveProps(props) {
-        this.reload(props);
-    }
-    reload(props, force = false, initialLoad = false) {
-        const oldId = parseInt(this.props.location.pathname.substr(this.props.pathname.length + 1));
-        const newId = parseInt(props.location.pathname.substr(props.pathname.length + 1));
-        const workspaceChanged = props.workspace !== this.props.workspace;
-        const idChanged = isNaN(oldId) ? !isNaN(newId) : isNaN(newId) ? true : oldId !== newId;
-        const queryChanged = props.location.search !== this.props.location.search;
-        const newWorkspace = props.workspace;
-        // if there is not a tab for the current URL - create it
-        // if the url is invalid, relocate to /edit/notfound
-        if (['entity', 'source', 'predicate', 'entity_type', 'notfound'].indexOf(newWorkspace) === -1) {
-            this.context.router.transitionTo('/edit/notfound');
-        }
-        const alreadyLoaded = newWorkspace === 'notfound' || this.state.dataController.enterPage(newWorkspace, newId, this.props.location.query);
-        if (!initialLoad && this.state.loading && !force) {
-            this.setState({
-                id: newId,
-                list: props.location.pathname.substr(props.pathname.length + 1).length === 0
-            });
-        }
-        else {
-            this.setState({
-                id: newId,
-                list: props.location.pathname.substr(props.pathname.length + 1).length === 0,
-                loading: true,
-                loadingWheel: initialLoad || !alreadyLoaded
-            }, () => {
-                this.state.dataController.update()
-                    .then((dataStore) => {
-                    this.setState({
-                        loading: false,
-                        loadingWheel: false
-                    });
-                }).catch(() => {
-                    this.context.router.transitionTo('/edit/notfound');
-                });
-            });
-        }
-    }
-    render() {
-        return (React.createElement(mobx_react_1.Provider, { dataStore: this.state.dataController, modalStore: this.state.modalStore },
-            React.createElement("section", { id: 'entity-editor', className: 'flex-fill' },
-                React.createElement(mobx_react_devtools_1.default, null),
-                React.createElement("span", { className: 'header-colour ' + this.props.workspace }),
-                React.createElement("span", { className: 'flex-fill' },
-                    React.createElement(ObjectEditorCore, { id: this.state.id, workspace: this.props.workspace, useDragHandle: true, loadingWheel: this.state.loadingWheel, splitWorkspace: this.state.splitWorkspace, helperClass: 'card-being-dragged', toggleSplitWorkspace: () => this.setState({ splitWorkspace: !this.state.splitWorkspace }), list: this.state.list, location: this.props.location, onSortEnd: (change) => this.state.dataController.reorderTabs(change) }),
-                    React.createElement(Toast_1.Toast, null),
-                    React.createElement(ModalWrapper, null)),
-                React.createElement("span", { className: 'header-colour ' + this.props.workspace }))));
-    }
-}
-ObjectEditor.contextTypes = {
-    router: React.PropTypes.object.isRequired
-};
-exports.ObjectEditor = ObjectEditor;
-
-
-/***/ }),
-/* 383 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview <Description Missing>
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.2.0
- */
-
-const React = __webpack_require__(1);
-exports.RouteNotFound = (props) => (React.createElement("section", null,
-    React.createElement("h1", null,
-        "The page at ",
-        props.url,
-        " does not exist :(")));
-
-
-/***/ }),
-/* 384 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview <Description Missing>
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.2.0
- */
-
-const React = __webpack_require__(1);
-exports.User = (props) => (React.createElement("div", { className: 'page' },
-    React.createElement("section", null,
-        React.createElement("h1", null, "This is the user page"))));
-
-
-/***/ }),
-/* 385 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview <Description Missing>
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.2.0
- */
-
-const React = __webpack_require__(1);
-exports.UserManagement = (props) => (React.createElement("div", { className: 'page' },
-    React.createElement("section", null,
-        React.createElement("h1", null, "This is the user management page"))));
-
-
-/***/ }),
+/* 338 */,
+/* 339 */,
+/* 340 */,
+/* 341 */,
+/* 342 */,
+/* 343 */,
+/* 344 */,
+/* 345 */,
+/* 346 */,
+/* 347 */,
+/* 348 */,
+/* 349 */,
+/* 350 */,
+/* 351 */,
+/* 352 */,
+/* 353 */,
+/* 354 */,
+/* 355 */,
+/* 356 */,
+/* 357 */,
+/* 358 */,
+/* 359 */,
+/* 360 */,
+/* 361 */,
+/* 362 */,
+/* 363 */,
+/* 364 */,
+/* 365 */,
+/* 366 */,
+/* 367 */,
+/* 368 */,
+/* 369 */,
+/* 370 */,
+/* 371 */,
+/* 372 */,
+/* 373 */,
+/* 374 */,
+/* 375 */,
+/* 376 */,
+/* 377 */,
+/* 378 */,
+/* 379 */,
+/* 380 */,
+/* 381 */,
+/* 382 */,
+/* 383 */,
+/* 384 */,
+/* 385 */,
 /* 386 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -37466,33 +32294,6 @@ var valueEqual = function valueEqual(a, b) {
 
 exports.default = valueEqual;
 
-/***/ }),
-/* 387 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview Abstract interface for sources
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.2.0
- */
-
-const react_dom_1 = __webpack_require__(18);
-const react_1 = __webpack_require__(1);
-const FalconApp_1 = __webpack_require__(193);
-const ClientApiService_1 = __webpack_require__(192);
-const react_router_1 = __webpack_require__(11);
-document.addEventListener('DOMContentLoaded', (event) => {
-    react_dom_1.render(react_1.createElement(FalconApp_1.FalconApp, {
-        api: new ClientApiService_1.ClientApiService(),
-        router: react_router_1.BrowserRouter,
-        routerSettings: {},
-        environment: 'website',
-        connected: true
-    }), document.getElementById('main'));
-});
-
-
 /***/ })
 /******/ ]);
-//# sourceMappingURL=app.frontend.dist.js.map
+//# sourceMappingURL=vendor.dist.js.map

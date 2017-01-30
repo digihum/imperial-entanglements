@@ -284,19 +284,19 @@ exports.Serializer = Serializer_1.Serializer;
 /* 5 */
 /***/ (function(module, exports) {
 
-module.exports = require("lodash");
+module.exports = require("mobx-react");
 
 /***/ }),
 /* 6 */
 /***/ (function(module, exports) {
 
-module.exports = require("mobx-react");
+module.exports = require("object-assign");
 
 /***/ }),
 /* 7 */
 /***/ (function(module, exports) {
 
-module.exports = require("object-assign");
+module.exports = require("lodash");
 
 /***/ }),
 /* 8 */
@@ -342,7 +342,7 @@ exports.AppUrls = {
 var _prodInvariant = __webpack_require__(3);
 
 var DOMProperty = __webpack_require__(30);
-var ReactDOMComponentFlags = __webpack_require__(86);
+var ReactDOMComponentFlags = __webpack_require__(85);
 
 var invariant = __webpack_require__(1);
 
@@ -648,7 +648,7 @@ module.exports = { debugTool: debugTool };
  */
 
 const React = __webpack_require__(0);
-const mobx_react_1 = __webpack_require__(6);
+const mobx_react_1 = __webpack_require__(5);
 exports.AddTabButton = mobx_react_1.inject('dataStore')(mobx_react_1.observer((props, context) => {
     if (props.dataStore.dataStore.tabs[props.tabType] !== undefined
         && props.uid in props.dataStore.dataStore.tabs[props.tabType]) {
@@ -1018,9 +1018,9 @@ module.exports = ReactComponentTreeHook;
 
 
 var _prodInvariant = __webpack_require__(3),
-    _assign = __webpack_require__(7);
+    _assign = __webpack_require__(6);
 
-var CallbackQueue = __webpack_require__(84);
+var CallbackQueue = __webpack_require__(83);
 var PooledClass = __webpack_require__(21);
 var ReactFeatureFlags = __webpack_require__(176);
 var ReactReconciler = __webpack_require__(33);
@@ -1273,7 +1273,7 @@ module.exports = ReactUpdates;
 
 
 
-var _assign = __webpack_require__(7);
+var _assign = __webpack_require__(6);
 
 var PooledClass = __webpack_require__(21);
 
@@ -1713,7 +1713,7 @@ exports.GenericController = GenericController;
 
 const React = __webpack_require__(0);
 const lunr = __webpack_require__(300);
-const lodash_1 = __webpack_require__(5);
+const lodash_1 = __webpack_require__(7);
 class ComboDropdown extends React.Component {
     constructor() {
         super();
@@ -2063,7 +2063,7 @@ module.exports = PooledClass;
 
 
 
-var _assign = __webpack_require__(7);
+var _assign = __webpack_require__(6);
 
 var ReactCurrentOwner = __webpack_require__(18);
 
@@ -2071,7 +2071,7 @@ var warning = __webpack_require__(2);
 var canDefineProperty = __webpack_require__(66);
 var hasOwnProperty = Object.prototype.hasOwnProperty;
 
-var REACT_ELEMENT_TYPE = __webpack_require__(104);
+var REACT_ELEMENT_TYPE = __webpack_require__(103);
 
 var RESERVED_PROPS = {
   key: true,
@@ -2481,14 +2481,6 @@ module.exports = require("react-router");
  * @version 0.2.0
  */
 
-var __assign = (this && this.__assign) || Object.assign || function(t) {
-    for (var s, i = 1, n = arguments.length; i < n; i++) {
-        s = arguments[i];
-        for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
-            t[p] = s[p];
-    }
-    return t;
-};
 const React = __webpack_require__(0);
 class EditableFieldComponent extends React.Component {
     constructor() {
@@ -2518,16 +2510,21 @@ class EditableFieldComponent extends React.Component {
         this.setState({ edit: false, internalValue: this.props.value });
     }
     render() {
-        return React.cloneElement(this.props.children, { loggedIn: this.state.loggedIn });
+        return (React.createElement("span", null, React.Children.map(this.props.children, (child) => React.cloneElement(child, {
+            edit: this.state.edit,
+            value: this.state.internalValue,
+            onChange: this.setInternalValue.bind(this),
+            setEdit: this.switchToEditState.bind(this),
+            acceptChanges: this.acceptChanges.bind(this),
+            cancelChanges: this.cancelChanges.bind(this),
+            onDelete: (e) => this.props.onDelete !== undefined ? this.props.onDelete(this.props.value) : null
+        }))));
     }
-    return() { }
 }
 EditableFieldComponent.propTypes = {
     children: React.PropTypes.element.isRequired
 };
 exports.EditableFieldComponent = EditableFieldComponent;
-React.createElement(this.props.component, __assign({ edit: this.state.edit, value: this.state.internalValue, onChange: this.setInternalValue.bind(this), setEdit: this.switchToEditState.bind(this), acceptChanges: this.acceptChanges.bind(this), cancelChanges: this.cancelChanges.bind(this), onDelete: (e) => this.props.onDelete !== undefined ? this.props.onDelete(this.props.value) : null }, this.props.additionalProps));
-;
 
 
 /***/ }),
@@ -2576,7 +2573,7 @@ var DOMNamespaces = __webpack_require__(47);
 var setInnerHTML = __webpack_require__(61);
 
 var createMicrosoftUnsafeLocalFunction = __webpack_require__(56);
-var setTextContent = __webpack_require__(101);
+var setTextContent = __webpack_require__(100);
 
 var ELEMENT_NODE_TYPE = 1;
 var DOCUMENT_FRAGMENT_NODE_TYPE = 11;
@@ -2916,8 +2913,8 @@ var EventPluginRegistry = __webpack_require__(48);
 var EventPluginUtils = __webpack_require__(49);
 var ReactErrorUtils = __webpack_require__(54);
 
-var accumulateInto = __webpack_require__(96);
-var forEachAccumulated = __webpack_require__(97);
+var accumulateInto = __webpack_require__(95);
+var forEachAccumulated = __webpack_require__(96);
 var invariant = __webpack_require__(1);
 
 /**
@@ -3196,8 +3193,8 @@ module.exports = EventPluginHub;
 var EventPluginHub = __webpack_require__(31);
 var EventPluginUtils = __webpack_require__(49);
 
-var accumulateInto = __webpack_require__(96);
-var forEachAccumulated = __webpack_require__(97);
+var accumulateInto = __webpack_require__(95);
+var forEachAccumulated = __webpack_require__(96);
 var warning = __webpack_require__(2);
 
 var getListener = EventPluginHub.getListener;
@@ -3569,7 +3566,7 @@ module.exports = SyntheticUIEvent;
 
 
 
-var _assign = __webpack_require__(7);
+var _assign = __webpack_require__(6);
 
 var ReactChildren = __webpack_require__(217);
 var ReactComponent = __webpack_require__(63);
@@ -3588,7 +3585,7 @@ var createFactory = ReactElement.createFactory;
 var cloneElement = ReactElement.cloneElement;
 
 if (process.env.NODE_ENV !== 'production') {
-  var ReactElementValidator = __webpack_require__(105);
+  var ReactElementValidator = __webpack_require__(104);
   createElement = ReactElementValidator.createElement;
   createFactory = ReactElementValidator.createFactory;
   cloneElement = ReactElementValidator.cloneElement;
@@ -3708,7 +3705,7 @@ module.exports = require("mousetrap");
 
 
 var SyntheticUIEvent = __webpack_require__(34);
-var ViewportMetrics = __webpack_require__(95);
+var ViewportMetrics = __webpack_require__(94);
 
 var getEventModifierState = __webpack_require__(58);
 
@@ -4346,7 +4343,7 @@ var ReactInstrumentation = __webpack_require__(12);
 
 var createMicrosoftUnsafeLocalFunction = __webpack_require__(56);
 var setInnerHTML = __webpack_require__(61);
-var setTextContent = __webpack_require__(101);
+var setTextContent = __webpack_require__(100);
 
 function getNodeAfter(parentNode, node) {
   // Special case for text components, which return [open, close] comments
@@ -5152,7 +5149,7 @@ module.exports = KeyEscapeUtils;
 var _prodInvariant = __webpack_require__(3);
 
 var React = __webpack_require__(35);
-var ReactPropTypesSecret = __webpack_require__(92);
+var ReactPropTypesSecret = __webpack_require__(91);
 
 var invariant = __webpack_require__(1);
 var warning = __webpack_require__(2);
@@ -5289,11 +5286,11 @@ module.exports = LinkedValueUtils;
 
 
 
-var _assign = __webpack_require__(7);
+var _assign = __webpack_require__(6);
 
 var EventPluginRegistry = __webpack_require__(48);
 var ReactEventEmitterMixin = __webpack_require__(174);
-var ViewportMetrics = __webpack_require__(95);
+var ViewportMetrics = __webpack_require__(94);
 
 var getVendorPrefixedEventName = __webpack_require__(212);
 var isEventSupported = __webpack_require__(60);
@@ -6156,7 +6153,7 @@ module.exports = setInnerHTML;
 
 
 
-var _assign = __webpack_require__(7);
+var _assign = __webpack_require__(6);
 
 var emptyFunction = __webpack_require__(11);
 var warning = __webpack_require__(2);
@@ -6871,7 +6868,7 @@ module.exports = getIteratorFn;
 const falcon_core_1 = __webpack_require__(4);
 const GenericController_1 = __webpack_require__(19);
 const Exceptions_1 = __webpack_require__(17);
-const lodash_1 = __webpack_require__(5);
+const lodash_1 = __webpack_require__(7);
 class RecordController extends GenericController_1.GenericController {
     constructor(db) {
         super(db, 'records');
@@ -6993,7 +6990,7 @@ const ComboDropdown_1 = __webpack_require__(20);
 function EditableComboDropdown(props) {
     if (props.edit) {
         return (React.createElement("div", null,
-            React.createElement(ComboDropdown_1.ComboDropdown, __assign({}, props.comboSettings, { value: props.value, setValue: props.onChange, allowNew: false, createNewValue: () => { } })),
+            React.createElement(ComboDropdown_1.NumberComboDropdown, __assign({}, props.comboSettings, { value: props.value, setValue: props.onChange, allowNew: false, createNewValue: () => { } })),
             React.createElement("button", null,
                 React.createElement("i", { className: 'fa fa-check', onClick: props.acceptChanges, "aria-hidden": 'true' })),
             React.createElement("button", null,
@@ -7013,53 +7010,6 @@ exports.EditableComboDropdown = EditableComboDropdown;
 
 /***/ }),
 /* 70 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview Sidebar for editor
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.2.0
- */
-
-const React = __webpack_require__(0);
-var EditableFieldComponent_1 = __webpack_require__(27);
-exports.EditableFieldComponent = EditableFieldComponent_1.EditableFieldComponent;
-const mousetrap = __webpack_require__(38);
-exports.EditableParagraph = (props) => {
-    let keyBoardShortcuts;
-    const bindKeyboard = (val) => {
-        if (val !== null) {
-            val.focus();
-            keyBoardShortcuts = new mousetrap(val);
-            keyBoardShortcuts.bind('ctrl+return', props.acceptChanges);
-            keyBoardShortcuts.bind('escape', props.cancelChanges);
-        }
-        else {
-            keyBoardShortcuts.unbind('ctrl+return');
-        }
-    };
-    if (!props.edit) {
-        return (React.createElement("div", { onClick: props.setEdit, className: 'editable-paragraph-box' },
-            React.createElement("p", null,
-                props.value === null || props.value.length > 0 ? props.value
-                    : (React.createElement("em", null, "No value")),
-                React.createElement("sup", null,
-                    React.createElement("i", { className: 'fa fa-pencil-square-o', title: 'Edit', "aria-hidden": 'true' })))));
-    }
-    else {
-        return (React.createElement("div", null,
-            React.createElement("textarea", { value: props.value, ref: bindKeyboard, onChange: (e) => props.onChange(e.target.value), style: { width: '100%', height: '6em' } }),
-            React.createElement("button", { onClick: props.acceptChanges },
-                React.createElement("i", { className: 'fa fa-check', "aria-hidden": 'true' })),
-            React.createElement("button", { onClick: props.cancelChanges },
-                React.createElement("i", { className: 'fa fa-times', "aria-hidden": 'true' }))));
-    }
-};
-
-
-/***/ }),
-/* 71 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7144,7 +7094,7 @@ exports.SameAsEditor = SameAsEditor;
 
 
 /***/ }),
-/* 72 */
+/* 71 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7178,7 +7128,7 @@ exports.findParentTree = (uid, data, ancestors = []) => {
 
 
 /***/ }),
-/* 73 */
+/* 72 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7208,43 +7158,43 @@ exports.formatDate = (str) => {
 
 
 /***/ }),
-/* 74 */
+/* 73 */
 /***/ (function(module, exports) {
 
 module.exports = require("fs");
 
 /***/ }),
-/* 75 */
+/* 74 */
 /***/ (function(module, exports) {
 
 module.exports = require("graphql");
 
 /***/ }),
-/* 76 */
+/* 75 */
 /***/ (function(module, exports) {
 
 module.exports = require("inferno-create-element");
 
 /***/ }),
-/* 77 */
+/* 76 */
 /***/ (function(module, exports) {
 
 module.exports = require("koa-passport");
 
 /***/ }),
-/* 78 */
+/* 77 */
 /***/ (function(module, exports) {
 
 module.exports = require("koa-route");
 
 /***/ }),
-/* 79 */
+/* 78 */
 /***/ (function(module, exports) {
 
 module.exports = require("react-sortable-hoc");
 
 /***/ }),
-/* 80 */
+/* 79 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7333,7 +7283,7 @@ var EventListener = {
 module.exports = EventListener;
 
 /***/ }),
-/* 81 */
+/* 80 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7365,7 +7315,7 @@ function focusNode(node) {
 module.exports = focusNode;
 
 /***/ }),
-/* 82 */
+/* 81 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7405,7 +7355,7 @@ function getActiveElement() /*?DOMElement*/{
 module.exports = getActiveElement;
 
 /***/ }),
-/* 83 */
+/* 82 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7558,7 +7508,7 @@ var CSSProperty = {
 module.exports = CSSProperty;
 
 /***/ }),
-/* 84 */
+/* 83 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7682,7 +7632,7 @@ var CallbackQueue = function () {
 module.exports = PooledClass.addPoolingTo(CallbackQueue);
 
 /***/ }),
-/* 85 */
+/* 84 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7924,7 +7874,7 @@ var DOMPropertyOperations = {
 module.exports = DOMPropertyOperations;
 
 /***/ }),
-/* 86 */
+/* 85 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7947,7 +7897,7 @@ var ReactDOMComponentFlags = {
 module.exports = ReactDOMComponentFlags;
 
 /***/ }),
-/* 87 */
+/* 86 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7963,7 +7913,7 @@ module.exports = ReactDOMComponentFlags;
 
 
 
-var _assign = __webpack_require__(7);
+var _assign = __webpack_require__(6);
 
 var LinkedValueUtils = __webpack_require__(51);
 var ReactDOMComponentTree = __webpack_require__(9);
@@ -8152,7 +8102,7 @@ function _handleChange(event) {
 module.exports = ReactDOMSelect;
 
 /***/ }),
-/* 88 */
+/* 87 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8168,7 +8118,7 @@ module.exports = ReactDOMSelect;
 
 
 
-var _assign = __webpack_require__(7);
+var _assign = __webpack_require__(6);
 
 var ReactUpdates = __webpack_require__(15);
 var Transaction = __webpack_require__(40);
@@ -8225,7 +8175,7 @@ var ReactDefaultBatchingStrategy = {
 module.exports = ReactDefaultBatchingStrategy;
 
 /***/ }),
-/* 89 */
+/* 88 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8260,7 +8210,7 @@ ReactEmptyComponent.injection = ReactEmptyComponentInjection;
 module.exports = ReactEmptyComponent;
 
 /***/ }),
-/* 90 */
+/* 89 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8333,7 +8283,7 @@ var ReactHostComponent = {
 module.exports = ReactHostComponent;
 
 /***/ }),
-/* 91 */
+/* 90 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8352,8 +8302,8 @@ module.exports = ReactHostComponent;
 var ReactDOMSelection = __webpack_require__(166);
 
 var containsNode = __webpack_require__(132);
-var focusNode = __webpack_require__(81);
-var getActiveElement = __webpack_require__(82);
+var focusNode = __webpack_require__(80);
+var getActiveElement = __webpack_require__(81);
 
 function isInDocument(node) {
   return containsNode(document.documentElement, node);
@@ -8462,7 +8412,7 @@ var ReactInputSelection = {
 module.exports = ReactInputSelection;
 
 /***/ }),
-/* 92 */
+/* 91 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8484,7 +8434,7 @@ var ReactPropTypesSecret = 'SECRET_DO_NOT_PASS_THIS_OR_YOU_WILL_BE_FIRED';
 module.exports = ReactPropTypesSecret;
 
 /***/ }),
-/* 93 */
+/* 92 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8500,7 +8450,7 @@ module.exports = ReactPropTypesSecret;
 
 
 
-var _assign = __webpack_require__(7);
+var _assign = __webpack_require__(6);
 
 var PooledClass = __webpack_require__(21);
 var Transaction = __webpack_require__(40);
@@ -8579,7 +8529,7 @@ PooledClass.addPoolingTo(ReactServerRenderingTransaction);
 module.exports = ReactServerRenderingTransaction;
 
 /***/ }),
-/* 94 */
+/* 93 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8810,7 +8760,7 @@ var ReactUpdateQueue = {
 module.exports = ReactUpdateQueue;
 
 /***/ }),
-/* 95 */
+/* 94 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8842,7 +8792,7 @@ var ViewportMetrics = {
 module.exports = ViewportMetrics;
 
 /***/ }),
-/* 96 */
+/* 95 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8905,7 +8855,7 @@ function accumulateInto(current, next) {
 module.exports = accumulateInto;
 
 /***/ }),
-/* 97 */
+/* 96 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8941,7 +8891,7 @@ function forEachAccumulated(arr, cb, scope) {
 module.exports = forEachAccumulated;
 
 /***/ }),
-/* 98 */
+/* 97 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8979,7 +8929,7 @@ function getTextContentAccessor() {
 module.exports = getTextContentAccessor;
 
 /***/ }),
-/* 99 */
+/* 98 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8996,11 +8946,11 @@ module.exports = getTextContentAccessor;
 
 
 var _prodInvariant = __webpack_require__(3),
-    _assign = __webpack_require__(7);
+    _assign = __webpack_require__(6);
 
 var ReactCompositeComponent = __webpack_require__(159);
-var ReactEmptyComponent = __webpack_require__(89);
-var ReactHostComponent = __webpack_require__(90);
+var ReactEmptyComponent = __webpack_require__(88);
+var ReactHostComponent = __webpack_require__(89);
 
 var getNextDebugID = __webpack_require__(210);
 var invariant = __webpack_require__(1);
@@ -9112,7 +9062,7 @@ function instantiateReactComponent(node, shouldHaveDebugID) {
 module.exports = instantiateReactComponent;
 
 /***/ }),
-/* 100 */
+/* 99 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9168,7 +9118,7 @@ function isTextInputElement(elem) {
 module.exports = isTextInputElement;
 
 /***/ }),
-/* 101 */
+/* 100 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9225,7 +9175,7 @@ if (ExecutionEnvironment.canUseDOM) {
 module.exports = setTextContent;
 
 /***/ }),
-/* 102 */
+/* 101 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9272,7 +9222,7 @@ function shouldUpdateReactComponent(prevElement, nextElement) {
 module.exports = shouldUpdateReactComponent;
 
 /***/ }),
-/* 103 */
+/* 102 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9453,7 +9403,7 @@ function traverseAllChildren(children, callback, traverseContext) {
 module.exports = traverseAllChildren;
 
 /***/ }),
-/* 104 */
+/* 103 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9478,7 +9428,7 @@ var REACT_ELEMENT_TYPE = typeof Symbol === 'function' && Symbol['for'] && Symbol
 module.exports = REACT_ELEMENT_TYPE;
 
 /***/ }),
-/* 105 */
+/* 104 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9717,7 +9667,7 @@ var ReactElementValidator = {
 module.exports = ReactElementValidator;
 
 /***/ }),
-/* 106 */
+/* 105 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9739,7 +9689,7 @@ var ReactPropTypesSecret = 'SECRET_DO_NOT_PASS_THIS_OR_YOU_WILL_BE_FIRED';
 module.exports = ReactPropTypesSecret;
 
 /***/ }),
-/* 107 */
+/* 106 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9768,7 +9718,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 const falcon_core_1 = __webpack_require__(4);
 const GenericController_1 = __webpack_require__(19);
 const Exceptions_1 = __webpack_require__(17);
-const lodash_1 = __webpack_require__(5);
+const lodash_1 = __webpack_require__(7);
 class EntityController extends GenericController_1.GenericController {
     constructor(db) {
         super(db, 'entities');
@@ -9851,7 +9801,7 @@ exports.EntityController = EntityController;
 
 
 /***/ }),
-/* 108 */
+/* 107 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9873,7 +9823,7 @@ const falcon_core_1 = __webpack_require__(4);
 const GenericController_1 = __webpack_require__(19);
 const Exceptions_1 = __webpack_require__(17);
 const RecordController_1 = __webpack_require__(68);
-const lodash_1 = __webpack_require__(5);
+const lodash_1 = __webpack_require__(7);
 class PredicateController extends GenericController_1.GenericController {
     constructor(db) {
         super(db, 'predicates', 'predicate_complete');
@@ -10027,7 +9977,7 @@ exports.PredicateController = PredicateController;
 
 
 /***/ }),
-/* 109 */
+/* 108 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10057,7 +10007,7 @@ exports.wrapDatabase = (db, fakeCreator) => {
 
 
 /***/ }),
-/* 110 */
+/* 109 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10089,7 +10039,7 @@ exports.GeneralStatisticsController = (db) => {
 
 
 /***/ }),
-/* 111 */
+/* 110 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10125,6 +10075,53 @@ exports.RecursiveTree = RecursiveTree;
 
 
 /***/ }),
+/* 111 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview Sidebar for editor
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.2.0
+ */
+
+const React = __webpack_require__(0);
+var EditableFieldComponent_1 = __webpack_require__(27);
+exports.EditableFieldComponent = EditableFieldComponent_1.EditableFieldComponent;
+const mousetrap = __webpack_require__(38);
+exports.EditableParagraph = (props) => {
+    let keyBoardShortcuts;
+    const bindKeyboard = (val) => {
+        if (val !== null) {
+            val.focus();
+            keyBoardShortcuts = new mousetrap(val);
+            keyBoardShortcuts.bind('ctrl+return', props.acceptChanges);
+            keyBoardShortcuts.bind('escape', props.cancelChanges);
+        }
+        else {
+            keyBoardShortcuts.unbind('ctrl+return');
+        }
+    };
+    if (!props.edit) {
+        return (React.createElement("div", { onClick: props.setEdit, className: 'editable-paragraph-box' },
+            React.createElement("p", null,
+                props.value === null || props.value.length > 0 ? props.value
+                    : (React.createElement("em", null, "No value")),
+                React.createElement("sup", null,
+                    React.createElement("i", { className: 'fa fa-pencil-square-o', title: 'Edit', "aria-hidden": 'true' })))));
+    }
+    else {
+        return (React.createElement("div", null,
+            React.createElement("textarea", { value: props.value, ref: bindKeyboard, onChange: (e) => props.onChange(e.target.value), style: { width: '100%', height: '6em' } }),
+            React.createElement("button", { onClick: props.acceptChanges },
+                React.createElement("i", { className: 'fa fa-check', "aria-hidden": 'true' })),
+            React.createElement("button", { onClick: props.cancelChanges },
+                React.createElement("i", { className: 'fa fa-times', "aria-hidden": 'true' }))));
+    }
+};
+
+
+/***/ }),
 /* 112 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -10137,7 +10134,7 @@ exports.RecursiveTree = RecursiveTree;
 
 const React = __webpack_require__(0);
 const ComboDropdown_1 = __webpack_require__(20);
-const lodash_1 = __webpack_require__(5);
+const lodash_1 = __webpack_require__(7);
 class PredicateRangeComboDropdown extends ComboDropdown_1.ComboDropdown {
 }
 exports.PredicateRangeComboDropdown = PredicateRangeComboDropdown;
@@ -10328,12 +10325,12 @@ const koaLogger = __webpack_require__(296);
 const koaSession = __webpack_require__(298);
 // import * as koaConditionalGet from 'koa-conditional-get';
 // import * as koaEtags from 'koa-etag';
-const koaPassport = __webpack_require__(77);
+const koaPassport = __webpack_require__(76);
 const koaMount = __webpack_require__(297);
 const koaConvert = __webpack_require__(294);
 const Database_1 = __webpack_require__(235);
-const lodash_1 = __webpack_require__(5);
-const fs_1 = __webpack_require__(74);
+const lodash_1 = __webpack_require__(7);
+const fs_1 = __webpack_require__(73);
 const api_1 = __webpack_require__(288);
 const adminApp_1 = __webpack_require__(287);
 const user_1 = __webpack_require__(291);
@@ -11309,7 +11306,7 @@ module.exports = performanceNow;
 
 "use strict";
 
-const createElement = __webpack_require__(76);
+const createElement = __webpack_require__(75);
 const map_1 = __webpack_require__(145);
 exports.home = (createElement("section", { className: 'imperial-entanglements' },
     createElement("div", { className: 'timeline' }),
@@ -11323,7 +11320,7 @@ exports.home = (createElement("section", { className: 'imperial-entanglements' }
 
 "use strict";
 
-const createElement = __webpack_require__(76);
+const createElement = __webpack_require__(75);
 ;
 const setupLeafletMap = (mapNode) => {
     if (typeof window !== undefined) {
@@ -11364,7 +11361,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 const Koa = __webpack_require__(25);
 const koaStatic = __webpack_require__(117);
 const path = __webpack_require__(44);
-const createElement = __webpack_require__(76);
+const createElement = __webpack_require__(75);
 const inferno_server_1 = __webpack_require__(293);
 const home_1 = __webpack_require__(144);
 exports.server = new Koa();
@@ -11485,7 +11482,7 @@ module.exports = ARIADOMPropertyConfig;
 
 var ReactDOMComponentTree = __webpack_require__(9);
 
-var focusNode = __webpack_require__(81);
+var focusNode = __webpack_require__(80);
 
 var AutoFocusUtils = {
   focusDOMComponent: function () {
@@ -11902,7 +11899,7 @@ module.exports = BeforeInputEventPlugin;
 
 
 
-var CSSProperty = __webpack_require__(83);
+var CSSProperty = __webpack_require__(82);
 var ExecutionEnvironment = __webpack_require__(10);
 var ReactInstrumentation = __webpack_require__(12);
 
@@ -12125,7 +12122,7 @@ var SyntheticEvent = __webpack_require__(16);
 
 var getEventTarget = __webpack_require__(59);
 var isEventSupported = __webpack_require__(60);
-var isTextInputElement = __webpack_require__(100);
+var isTextInputElement = __webpack_require__(99);
 
 var eventTypes = {
   change: {
@@ -12631,11 +12628,11 @@ module.exports = EnterLeaveEventPlugin;
 
 
 
-var _assign = __webpack_require__(7);
+var _assign = __webpack_require__(6);
 
 var PooledClass = __webpack_require__(21);
 
-var getTextContentAccessor = __webpack_require__(98);
+var getTextContentAccessor = __webpack_require__(97);
 
 /**
  * This helper class stores information about text content of a target node,
@@ -12950,10 +12947,10 @@ module.exports = HTMLDOMPropertyConfig;
 
 var ReactReconciler = __webpack_require__(33);
 
-var instantiateReactComponent = __webpack_require__(99);
+var instantiateReactComponent = __webpack_require__(98);
 var KeyEscapeUtils = __webpack_require__(50);
-var shouldUpdateReactComponent = __webpack_require__(102);
-var traverseAllChildren = __webpack_require__(103);
+var shouldUpdateReactComponent = __webpack_require__(101);
+var traverseAllChildren = __webpack_require__(102);
 var warning = __webpack_require__(2);
 
 var ReactComponentTreeHook;
@@ -13143,7 +13140,7 @@ module.exports = ReactComponentBrowserEnvironment;
 
 
 var _prodInvariant = __webpack_require__(3),
-    _assign = __webpack_require__(7);
+    _assign = __webpack_require__(6);
 
 var React = __webpack_require__(35);
 var ReactComponentEnvironment = __webpack_require__(53);
@@ -13161,7 +13158,7 @@ if (process.env.NODE_ENV !== 'production') {
 var emptyObject = __webpack_require__(28);
 var invariant = __webpack_require__(1);
 var shallowEqual = __webpack_require__(45);
-var shouldUpdateReactComponent = __webpack_require__(102);
+var shouldUpdateReactComponent = __webpack_require__(101);
 var warning = __webpack_require__(2);
 
 var CompositeTypes = {
@@ -14052,26 +14049,26 @@ module.exports = ReactCompositeComponent;
 
 
 var _prodInvariant = __webpack_require__(3),
-    _assign = __webpack_require__(7);
+    _assign = __webpack_require__(6);
 
 var AutoFocusUtils = __webpack_require__(148);
 var CSSPropertyOperations = __webpack_require__(150);
 var DOMLazyTree = __webpack_require__(29);
 var DOMNamespaces = __webpack_require__(47);
 var DOMProperty = __webpack_require__(30);
-var DOMPropertyOperations = __webpack_require__(85);
+var DOMPropertyOperations = __webpack_require__(84);
 var EventPluginHub = __webpack_require__(31);
 var EventPluginRegistry = __webpack_require__(48);
 var ReactBrowserEventEmitter = __webpack_require__(52);
-var ReactDOMComponentFlags = __webpack_require__(86);
+var ReactDOMComponentFlags = __webpack_require__(85);
 var ReactDOMComponentTree = __webpack_require__(9);
 var ReactDOMInput = __webpack_require__(164);
 var ReactDOMOption = __webpack_require__(165);
-var ReactDOMSelect = __webpack_require__(87);
+var ReactDOMSelect = __webpack_require__(86);
 var ReactDOMTextarea = __webpack_require__(169);
 var ReactInstrumentation = __webpack_require__(12);
 var ReactMultiChild = __webpack_require__(181);
-var ReactServerRenderingTransaction = __webpack_require__(93);
+var ReactServerRenderingTransaction = __webpack_require__(92);
 
 var emptyFunction = __webpack_require__(11);
 var escapeTextContentForBrowser = __webpack_require__(41);
@@ -15093,7 +15090,7 @@ module.exports = ReactDOMContainerInfo;
 
 
 
-var _assign = __webpack_require__(7);
+var _assign = __webpack_require__(6);
 
 var DOMLazyTree = __webpack_require__(29);
 var ReactDOMComponentTree = __webpack_require__(9);
@@ -15198,9 +15195,9 @@ module.exports = ReactDOMIDOperations;
 
 
 var _prodInvariant = __webpack_require__(3),
-    _assign = __webpack_require__(7);
+    _assign = __webpack_require__(6);
 
-var DOMPropertyOperations = __webpack_require__(85);
+var DOMPropertyOperations = __webpack_require__(84);
 var LinkedValueUtils = __webpack_require__(51);
 var ReactDOMComponentTree = __webpack_require__(9);
 var ReactUpdates = __webpack_require__(15);
@@ -15480,11 +15477,11 @@ module.exports = ReactDOMInput;
 
 
 
-var _assign = __webpack_require__(7);
+var _assign = __webpack_require__(6);
 
 var React = __webpack_require__(35);
 var ReactDOMComponentTree = __webpack_require__(9);
-var ReactDOMSelect = __webpack_require__(87);
+var ReactDOMSelect = __webpack_require__(86);
 
 var warning = __webpack_require__(2);
 var didWarnInvalidOptionChildren = false;
@@ -15611,7 +15608,7 @@ module.exports = ReactDOMOption;
 var ExecutionEnvironment = __webpack_require__(10);
 
 var getNodeForCharacterOffset = __webpack_require__(211);
-var getTextContentAccessor = __webpack_require__(98);
+var getTextContentAccessor = __webpack_require__(97);
 
 /**
  * While `isCollapsed` is available on the Selection object and `collapsed`
@@ -15857,7 +15854,7 @@ module.exports = ReactDOMServer;
 
 
 var _prodInvariant = __webpack_require__(3),
-    _assign = __webpack_require__(7);
+    _assign = __webpack_require__(6);
 
 var DOMChildrenOperations = __webpack_require__(46);
 var DOMLazyTree = __webpack_require__(29);
@@ -16026,7 +16023,7 @@ module.exports = ReactDOMTextComponent;
 
 
 var _prodInvariant = __webpack_require__(3),
-    _assign = __webpack_require__(7);
+    _assign = __webpack_require__(6);
 
 var LinkedValueUtils = __webpack_require__(51);
 var ReactDOMComponentTree = __webpack_require__(9);
@@ -16709,7 +16706,7 @@ var ReactDOMComponentTree = __webpack_require__(9);
 var ReactDOMEmptyComponent = __webpack_require__(162);
 var ReactDOMTreeTraversal = __webpack_require__(170);
 var ReactDOMTextComponent = __webpack_require__(168);
-var ReactDefaultBatchingStrategy = __webpack_require__(88);
+var ReactDefaultBatchingStrategy = __webpack_require__(87);
 var ReactEventListener = __webpack_require__(175);
 var ReactInjection = __webpack_require__(178);
 var ReactReconcileTransaction = __webpack_require__(185);
@@ -16851,9 +16848,9 @@ module.exports = ReactEventEmitterMixin;
 
 
 
-var _assign = __webpack_require__(7);
+var _assign = __webpack_require__(6);
 
-var EventListener = __webpack_require__(80);
+var EventListener = __webpack_require__(79);
 var ExecutionEnvironment = __webpack_require__(10);
 var PooledClass = __webpack_require__(21);
 var ReactDOMComponentTree = __webpack_require__(9);
@@ -17081,9 +17078,9 @@ var DOMProperty = __webpack_require__(30);
 var EventPluginHub = __webpack_require__(31);
 var EventPluginUtils = __webpack_require__(49);
 var ReactComponentEnvironment = __webpack_require__(53);
-var ReactEmptyComponent = __webpack_require__(89);
+var ReactEmptyComponent = __webpack_require__(88);
 var ReactBrowserEventEmitter = __webpack_require__(52);
-var ReactHostComponent = __webpack_require__(90);
+var ReactHostComponent = __webpack_require__(89);
 var ReactUpdates = __webpack_require__(15);
 
 var ReactInjection = {
@@ -17842,15 +17839,15 @@ module.exports = ReactPropTypeLocationNames;
 
 
 
-var _assign = __webpack_require__(7);
+var _assign = __webpack_require__(6);
 
-var CallbackQueue = __webpack_require__(84);
+var CallbackQueue = __webpack_require__(83);
 var PooledClass = __webpack_require__(21);
 var ReactBrowserEventEmitter = __webpack_require__(52);
-var ReactInputSelection = __webpack_require__(91);
+var ReactInputSelection = __webpack_require__(90);
 var ReactInstrumentation = __webpack_require__(12);
 var Transaction = __webpack_require__(40);
-var ReactUpdateQueue = __webpack_require__(94);
+var ReactUpdateQueue = __webpack_require__(93);
 
 /**
  * Ensures that, when possible, the selection range (currently selected text
@@ -18149,16 +18146,16 @@ var _prodInvariant = __webpack_require__(3);
 
 var React = __webpack_require__(35);
 var ReactDOMContainerInfo = __webpack_require__(161);
-var ReactDefaultBatchingStrategy = __webpack_require__(88);
+var ReactDefaultBatchingStrategy = __webpack_require__(87);
 var ReactInstrumentation = __webpack_require__(12);
 var ReactMarkupChecksum = __webpack_require__(180);
 var ReactReconciler = __webpack_require__(33);
 var ReactServerBatchingStrategy = __webpack_require__(187);
-var ReactServerRenderingTransaction = __webpack_require__(93);
+var ReactServerRenderingTransaction = __webpack_require__(92);
 var ReactUpdates = __webpack_require__(15);
 
 var emptyObject = __webpack_require__(28);
-var instantiateReactComponent = __webpack_require__(99);
+var instantiateReactComponent = __webpack_require__(98);
 var invariant = __webpack_require__(1);
 
 var pendingTransactions = 0;
@@ -18244,7 +18241,7 @@ module.exports = {
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var ReactUpdateQueue = __webpack_require__(94);
+var ReactUpdateQueue = __webpack_require__(93);
 
 var warning = __webpack_require__(2);
 
@@ -18714,11 +18711,11 @@ module.exports = SVGDOMPropertyConfig;
 var EventPropagators = __webpack_require__(32);
 var ExecutionEnvironment = __webpack_require__(10);
 var ReactDOMComponentTree = __webpack_require__(9);
-var ReactInputSelection = __webpack_require__(91);
+var ReactInputSelection = __webpack_require__(90);
 var SyntheticEvent = __webpack_require__(16);
 
-var getActiveElement = __webpack_require__(82);
-var isTextInputElement = __webpack_require__(100);
+var getActiveElement = __webpack_require__(81);
+var isTextInputElement = __webpack_require__(99);
 var shallowEqual = __webpack_require__(45);
 
 var skipSelectionChangeEvent = ExecutionEnvironment.canUseDOM && 'documentMode' in document && document.documentMode <= 11;
@@ -18910,7 +18907,7 @@ module.exports = SelectEventPlugin;
 
 var _prodInvariant = __webpack_require__(3);
 
-var EventListener = __webpack_require__(80);
+var EventListener = __webpack_require__(79);
 var EventPropagators = __webpack_require__(32);
 var ReactDOMComponentTree = __webpack_require__(9);
 var SyntheticAnimationEvent = __webpack_require__(194);
@@ -19686,7 +19683,7 @@ module.exports = adler32;
 var _prodInvariant = __webpack_require__(3);
 
 var ReactPropTypeLocationNames = __webpack_require__(184);
-var ReactPropTypesSecret = __webpack_require__(92);
+var ReactPropTypesSecret = __webpack_require__(91);
 
 var invariant = __webpack_require__(1);
 var warning = __webpack_require__(2);
@@ -19775,7 +19772,7 @@ module.exports = checkReactTypeSpec;
 
 
 
-var CSSProperty = __webpack_require__(83);
+var CSSProperty = __webpack_require__(82);
 var warning = __webpack_require__(2);
 
 var isUnitlessNumber = CSSProperty.isUnitlessNumber;
@@ -19861,7 +19858,7 @@ module.exports = dangerousStyleValue;
 
 
 var KeyEscapeUtils = __webpack_require__(50);
-var traverseAllChildren = __webpack_require__(103);
+var traverseAllChildren = __webpack_require__(102);
 var warning = __webpack_require__(2);
 
 var ReactComponentTreeHook;
@@ -20723,7 +20720,7 @@ module.exports = ReactChildren;
 
 
 var _prodInvariant = __webpack_require__(23),
-    _assign = __webpack_require__(7);
+    _assign = __webpack_require__(6);
 
 var ReactComponent = __webpack_require__(63);
 var ReactElement = __webpack_require__(22);
@@ -21453,7 +21450,7 @@ var ReactElement = __webpack_require__(22);
  */
 var createDOMFactory = ReactElement.createFactory;
 if (process.env.NODE_ENV !== 'production') {
-  var ReactElementValidator = __webpack_require__(105);
+  var ReactElementValidator = __webpack_require__(104);
   createDOMFactory = ReactElementValidator.createFactory;
 }
 
@@ -21621,7 +21618,7 @@ module.exports = ReactDOMFactories;
 
 var ReactElement = __webpack_require__(22);
 var ReactPropTypeLocationNames = __webpack_require__(65);
-var ReactPropTypesSecret = __webpack_require__(106);
+var ReactPropTypesSecret = __webpack_require__(105);
 
 var emptyFunction = __webpack_require__(11);
 var getIteratorFn = __webpack_require__(67);
@@ -22058,7 +22055,7 @@ module.exports = ReactPropTypes;
 
 
 
-var _assign = __webpack_require__(7);
+var _assign = __webpack_require__(6);
 
 var ReactComponent = __webpack_require__(63);
 var ReactNoopUpdateQueue = __webpack_require__(64);
@@ -22127,7 +22124,7 @@ module.exports = '15.4.2';
 var _prodInvariant = __webpack_require__(23);
 
 var ReactPropTypeLocationNames = __webpack_require__(65);
-var ReactPropTypesSecret = __webpack_require__(106);
+var ReactPropTypesSecret = __webpack_require__(105);
 
 var invariant = __webpack_require__(1);
 var warning = __webpack_require__(2);
@@ -22262,7 +22259,7 @@ module.exports = onlyChild;
 var _prodInvariant = __webpack_require__(23);
 
 var ReactCurrentOwner = __webpack_require__(18);
-var REACT_ELEMENT_TYPE = __webpack_require__(104);
+var REACT_ELEMENT_TYPE = __webpack_require__(103);
 
 var getIteratorFn = __webpack_require__(67);
 var invariant = __webpack_require__(1);
@@ -22453,7 +22450,7 @@ exports.AdminApp = (props) => (React.createElement("div", { className: 'page' },
  * @version 0.2.0
  */
 
-const graphql_1 = __webpack_require__(75);
+const graphql_1 = __webpack_require__(74);
 const entityQLType_1 = __webpack_require__(236);
 const predicateQLType_1 = __webpack_require__(237);
 class QueryEngine {
@@ -22504,7 +22501,7 @@ const Exceptions_1 = __webpack_require__(17);
 const moment = __webpack_require__(37);
 var ApiService_1 = __webpack_require__(8);
 exports.AppUrls = ApiService_1.AppUrls;
-const GeneralStatisticsController_1 = __webpack_require__(110);
+const GeneralStatisticsController_1 = __webpack_require__(109);
 class ServerApiService {
     constructor(db, routesMap, queryEngine, fakeCreator) {
         this.controllerMap = routesMap;
@@ -22620,7 +22617,7 @@ var __assign = (this && this.__assign) || Object.assign || function(t) {
 };
 const falcon_core_1 = __webpack_require__(4);
 const GenericController_1 = __webpack_require__(19);
-const lodash_1 = __webpack_require__(5);
+const lodash_1 = __webpack_require__(7);
 class ElementSetController extends GenericController_1.GenericController {
     constructor(db) {
         super(db, 'element_sets');
@@ -22677,10 +22674,10 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 const falcon_core_1 = __webpack_require__(4);
 const GenericController_1 = __webpack_require__(19);
-const PredicateController_1 = __webpack_require__(108);
-const EntityController_1 = __webpack_require__(107);
+const PredicateController_1 = __webpack_require__(107);
+const EntityController_1 = __webpack_require__(106);
 const Exceptions_1 = __webpack_require__(17);
-const lodash_1 = __webpack_require__(5);
+const lodash_1 = __webpack_require__(7);
 class EntityTypeController extends GenericController_1.GenericController {
     constructor(db) {
         super(db, 'entity_types');
@@ -22762,7 +22759,7 @@ const falcon_core_1 = __webpack_require__(4);
 const GenericController_1 = __webpack_require__(19);
 const Exceptions_1 = __webpack_require__(17);
 const RecordController_1 = __webpack_require__(68);
-const lodash_1 = __webpack_require__(5);
+const lodash_1 = __webpack_require__(7);
 class SourceController extends GenericController_1.GenericController {
     constructor(db) {
         super(db, 'sources');
@@ -22895,7 +22892,7 @@ exports.SourceController = SourceController;
 const falcon_core_1 = __webpack_require__(4);
 const GenericController_1 = __webpack_require__(19);
 const Exceptions_1 = __webpack_require__(17);
-const lodash_1 = __webpack_require__(5);
+const lodash_1 = __webpack_require__(7);
 class SourceElementController extends GenericController_1.GenericController {
     constructor(db) {
         super(db, 'source_elements');
@@ -22970,11 +22967,11 @@ exports.SourceElementController = SourceElementController;
 
 var ElementSetController_1 = __webpack_require__(230);
 exports.ElementSetController = ElementSetController_1.ElementSetController;
-var EntityController_1 = __webpack_require__(107);
+var EntityController_1 = __webpack_require__(106);
 exports.EntityController = EntityController_1.EntityController;
 var EntityTypeController_1 = __webpack_require__(231);
 exports.EntityTypeController = EntityTypeController_1.EntityTypeController;
-var PredicateController_1 = __webpack_require__(108);
+var PredicateController_1 = __webpack_require__(107);
 exports.PredicateController = PredicateController_1.PredicateController;
 var RecordController_1 = __webpack_require__(68);
 exports.RecordController = RecordController_1.RecordController;
@@ -22998,7 +22995,7 @@ exports.SourceElementController = SourceElementController_1.SourceElementControl
  */
 
 const Knex = __webpack_require__(115);
-const lodash_1 = __webpack_require__(5);
+const lodash_1 = __webpack_require__(7);
 const Exceptions_1 = __webpack_require__(17);
 class Database {
     constructor(config) {
@@ -23169,7 +23166,7 @@ exports.Database = Database;
  * @version 0.2.0
  */
 
-const graphql_1 = __webpack_require__(75);
+const graphql_1 = __webpack_require__(74);
 exports.entityQLType = (db, predicateType) => {
     return new graphql_1.GraphQLObjectType({
         name: 'Entity',
@@ -23242,7 +23239,7 @@ exports.entityQLType = (db, predicateType) => {
  * @version 0.2.0
  */
 
-const graphql_1 = __webpack_require__(75);
+const graphql_1 = __webpack_require__(74);
 exports.predicateQLType = (db) => {
     return new graphql_1.GraphQLObjectType({
         name: 'Predicate',
@@ -23402,9 +23399,9 @@ const React = __webpack_require__(0);
 const SearchBox_1 = __webpack_require__(264);
 const ApiService_1 = __webpack_require__(8);
 const react_router_1 = __webpack_require__(26);
-const lodash_1 = __webpack_require__(5);
-const react_sortable_hoc_1 = __webpack_require__(79);
-const mobx_react_1 = __webpack_require__(6);
+const lodash_1 = __webpack_require__(7);
+const react_sortable_hoc_1 = __webpack_require__(78);
+const mobx_react_1 = __webpack_require__(5);
 const Handle = react_sortable_hoc_1.SortableHandle((props) => (React.createElement("div", { className: 'badge-container' },
     React.createElement("div", { className: 'badge ' + props.tabType },
         React.createElement("span", null, props.tabType[0].toUpperCase())))));
@@ -23563,7 +23560,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 const React = __webpack_require__(0);
 const Loading_1 = __webpack_require__(239);
-const mobx_react_1 = __webpack_require__(6);
+const mobx_react_1 = __webpack_require__(5);
 const workspace_1 = __webpack_require__(274);
 let Workspace = class Workspace extends React.Component {
     constructor() {
@@ -23577,7 +23574,7 @@ let Workspace = class Workspace extends React.Component {
             return (React.createElement(Loading_1.Loading, null));
         }
         if (this.props.list) {
-            return (React.createElement(workspace_1.ObjectListWorkspace, { name: this.props.name, query: this.props.location.query, listType: this.props.workspace }));
+            return (React.createElement(workspace_1.ObjectListWorkspace, { query: this.props.location.query, listType: this.props.workspace }));
         }
         let workspaceComponent = workspace_1.EmptyWorkspace;
         switch (this.props.workspace) {
@@ -23641,7 +23638,7 @@ exports.DateFieldEditor = (props) => {
 
 const React = __webpack_require__(0);
 const ComboDropdown_1 = __webpack_require__(20);
-const lodash_1 = __webpack_require__(5);
+const lodash_1 = __webpack_require__(7);
 exports.EntityFieldEditor = (props) => {
     // build the options list
     const options = props.entities.map((entity) => ({ key: entity.label, value: entity.uid !== null ? entity.uid : null }));
@@ -23744,11 +23741,8 @@ class RecordPredicate extends React.Component {
                         React.createElement("th", { className: 'record-row-item score' }, "Score"),
                         React.createElement("th", { className: 'record-row-item score' }, "Period"),
                         React.createElement("th", { className: 'record-row-item buttons' }, "Actions"))),
-                React.createElement("tbody", null, this.props.records.map((record) => (React.createElement(RecordEditableFieldComponent, { key: `row-${record.uid}`, value: record, onChange: this.recordChanged.bind(this), onDelete: this.deleteRecord.bind(this), component: RecordRow_1.RecordRow, additionalProps: {
-                        dimension: 'predicates',
-                        sources: this.props.sources,
-                        entities: this.state.potentialValues
-                    } })))))));
+                React.createElement("tbody", null, this.props.records.map((record) => (React.createElement(RecordEditableFieldComponent, { key: `row-${record.uid}`, value: record, onChange: this.recordChanged.bind(this), onDelete: this.deleteRecord.bind(this) },
+                    React.createElement(RecordRow_1.RecordRow, { dimension: 'predicates', sources: this.props.sources, entities: this.state.potentialValues }))))))));
     }
 }
 exports.RecordPredicate = RecordPredicate;
@@ -23775,8 +23769,8 @@ const EntityFieldEditor_1 = __webpack_require__(244);
 const DateFieldEditor_1 = __webpack_require__(243);
 const IntegerFieldEditor_1 = __webpack_require__(245);
 const AddTabButton_1 = __webpack_require__(13);
-const formatDate_1 = __webpack_require__(73);
-const mobx_react_1 = __webpack_require__(6);
+const formatDate_1 = __webpack_require__(72);
+const mobx_react_1 = __webpack_require__(5);
 const recordEditor = (props, record) => {
     switch (record.valueType) {
         case 'string':
@@ -23870,7 +23864,7 @@ exports.RecordRow = mobx_react_1.inject('dataStore', 'modalStore')(mobx_react_1.
                 React.createElement("button", null,
                     React.createElement("i", { className: 'fa fa-pencil-square-o', title: 'Edit', onClick: props.setEdit, "aria-hidden": 'true' })),
                 React.createElement("button", null,
-                    React.createElement("i", { className: 'fa fa-trash', "aria-hidden": 'true', onClick: props.onDelete })))));
+                    React.createElement("i", { className: 'fa fa-trash', "aria-hidden": 'true', onClick: () => props.onDelete(props.value) })))));
     }
 }));
 
@@ -23901,8 +23895,8 @@ const falcon_core_1 = __webpack_require__(4);
 const EditableFieldComponent_1 = __webpack_require__(27);
 const SearchBar_1 = __webpack_require__(42);
 const RecordPredicate_1 = __webpack_require__(246);
-const findParentTree_1 = __webpack_require__(72);
-const mobx_react_1 = __webpack_require__(6);
+const findParentTree_1 = __webpack_require__(71);
+const mobx_react_1 = __webpack_require__(5);
 class RecordEditableFieldComponent extends EditableFieldComponent_1.EditableFieldComponent {
 }
 let RecordsEditor = class RecordsEditor extends React.Component {
@@ -24010,8 +24004,8 @@ exports.StringFieldEditor = (props) => {
 
 const React = __webpack_require__(0);
 const moment = __webpack_require__(37);
-const lodash_1 = __webpack_require__(5);
-const formatDate_1 = __webpack_require__(73);
+const lodash_1 = __webpack_require__(7);
+const formatDate_1 = __webpack_require__(72);
 class DatePickerDropdown extends React.Component {
     constructor() {
         super();
@@ -24182,7 +24176,7 @@ exports.DatePickerDropdown = DatePickerDropdown;
  */
 
 const React = __webpack_require__(0);
-const lodash_1 = __webpack_require__(5);
+const lodash_1 = __webpack_require__(7);
 exports.ScorePicker = (props) => {
     const values = [1, 2, 3, 4, 5];
     if (props.readOnly) {
@@ -24221,13 +24215,13 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 const React = __webpack_require__(0);
 const Overlay_1 = __webpack_require__(24);
-const mobx_react_1 = __webpack_require__(6);
+const mobx_react_1 = __webpack_require__(5);
 let ConflictResolution = class ConflictResolution extends React.Component {
     constructor() {
         super();
         this.state = {
             label: '',
-            entityType: { key: '', value: '' },
+            entityType: { key: '', value: null },
             allEntityTypes: []
         };
     }
@@ -24329,14 +24323,14 @@ const Overlay_1 = __webpack_require__(24);
 const falcon_core_1 = __webpack_require__(4);
 const ApiService_1 = __webpack_require__(8);
 const ComboDropdown_1 = __webpack_require__(20);
-const lodash_1 = __webpack_require__(5);
-const mobx_react_1 = __webpack_require__(6);
+const lodash_1 = __webpack_require__(7);
+const mobx_react_1 = __webpack_require__(5);
 let CreateEntity = class CreateEntity extends React.Component {
     constructor() {
         super();
         this.state = {
             label: '',
-            entityType: { key: '', value: '' },
+            entityType: { key: '', value: null },
             allEntityTypes: []
         };
     }
@@ -24352,18 +24346,21 @@ let CreateEntity = class CreateEntity extends React.Component {
                     throw new Error('found entity type with null uid');
                 }
                 this.setState({
-                    entityType: { key: initialType.label, value: initialType.uid.toString() }
+                    entityType: { key: initialType.label, value: initialType.uid }
                 });
             }
             this.setState({ allEntityTypes });
         });
     }
     createEntity() {
+        if (this.state.entityType === null) {
+            throw new Error('Cannot create entity with null type');
+        }
         this.props.dataStore.postItem(falcon_core_1.Entity, ApiService_1.AppUrls.entity, falcon_core_1.Serializer.fromJson(falcon_core_1.Entity, {
             label: this.state.label,
             entityType: this.state.entityType.value
         }), {})
-            .then(this.props.complete);
+            .then((a) => this.props.complete(a[0].toString()));
     }
     render() {
         return (React.createElement(Overlay_1.Overlay, null,
@@ -24372,7 +24369,7 @@ let CreateEntity = class CreateEntity extends React.Component {
             React.createElement("input", { type: 'text', value: this.state.label, ref: (a) => { if (a !== null)
                     a.focus(); }, name: 'new-entity-name', className: 'gap', onChange: (e) => this.setState({ label: e.target.value }) }),
             React.createElement("label", { className: 'small' }, "Type"),
-            React.createElement(ComboDropdown_1.ComboDropdown, { options: this.state.allEntityTypes.map((t) => ({ key: t.label, value: t.uid.toString() })), typeName: 'entity type', value: this.state.entityType, setValue: (entityType) => this.setState({ entityType }), createNewValue: lodash_1.noop, allowNew: false }),
+            React.createElement(ComboDropdown_1.NumberComboDropdown, { options: this.state.allEntityTypes.map((t) => ({ key: t.label, value: t.uid })), typeName: 'entity type', value: this.state.entityType, setValue: (entityType) => this.setState({ entityType }), createNewValue: lodash_1.noop, allowNew: false }),
             React.createElement("button", { name: 'cancel-modal', onClick: () => this.props.cancel(), className: 'pull-left' }, "Cancel"),
             React.createElement("button", { name: 'create-entity', onClick: this.createEntity.bind(this), className: 'pull-right' }, "Create Entity")));
     }
@@ -24410,7 +24407,7 @@ const React = __webpack_require__(0);
 const Overlay_1 = __webpack_require__(24);
 const falcon_core_1 = __webpack_require__(4);
 const ApiService_1 = __webpack_require__(8);
-const mobx_react_1 = __webpack_require__(6);
+const mobx_react_1 = __webpack_require__(5);
 const mousetrap = __webpack_require__(38);
 let CreateEntityType = class CreateEntityType extends React.Component {
     constructor() {
@@ -24480,7 +24477,7 @@ const PredicateDescription_1 = __webpack_require__(112);
 const falcon_core_1 = __webpack_require__(4);
 const literalTypes_1 = __webpack_require__(113);
 const ApiService_1 = __webpack_require__(8);
-const mobx_react_1 = __webpack_require__(6);
+const mobx_react_1 = __webpack_require__(5);
 let CreatePredicate = class CreatePredicate extends React.Component {
     constructor() {
         super();
@@ -24591,7 +24588,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 const React = __webpack_require__(0);
 const falcon_core_1 = __webpack_require__(4);
 const ApiService_1 = __webpack_require__(8);
-const mobx_react_1 = __webpack_require__(6);
+const mobx_react_1 = __webpack_require__(5);
 let CreatePresetRecord = CreatePresetRecord_1 = class CreatePresetRecord extends React.Component {
     constructor() {
         super();
@@ -24611,6 +24608,9 @@ let CreatePresetRecord = CreatePresetRecord_1 = class CreatePresetRecord extends
             name: 'entity',
             complete: (data) => {
                 const isMentioned = this.props.dataStore.dataStore.all.predicate.value.find((pred) => pred.label === 'is mentioned');
+                if (isMentioned === undefined) {
+                    throw new Error('Is mentioned predicate is missing, it should be loaded by default');
+                }
                 this.props.dataStore.postItem(falcon_core_1.Record, ApiService_1.AppUrls.record, falcon_core_1.Serializer.fromJson(falcon_core_1.Record, {
                     predicate: isMentioned.uid,
                     entity: data[0],
@@ -24669,12 +24669,12 @@ const Overlay_1 = __webpack_require__(24);
 const falcon_core_1 = __webpack_require__(4);
 const ApiService_1 = __webpack_require__(8);
 const ComboDropdown_1 = __webpack_require__(20);
-const mobx_react_1 = __webpack_require__(6);
+const mobx_react_1 = __webpack_require__(5);
 let CreateRecord = class CreateRecord extends React.Component {
     constructor() {
         super();
         this.state = {
-            comboValue: { key: '', value: '' },
+            comboValue: { key: '', value: null },
             searchValue: ''
         };
     }
@@ -24712,7 +24712,7 @@ let CreateRecord = class CreateRecord extends React.Component {
     render() {
         return (React.createElement(Overlay_1.Overlay, null,
             React.createElement("h2", null, "Create Record"),
-            React.createElement(ComboDropdown_1.ComboDropdown, { ref: 'comboDropDown', options: this.props.options, typeName: 'predicate', value: this.state.comboValue, setValue: this.setComboValue.bind(this), createNewValue: this.createNewPredicate.bind(this), updateSearchString: (s) => this.setState({ searchValue: s }) })));
+            React.createElement(ComboDropdown_1.NumberComboDropdown, { ref: 'comboDropDown', options: this.props.options, typeName: 'predicate', value: this.state.comboValue, setValue: this.setComboValue.bind(this), createNewValue: this.createNewPredicate.bind(this), updateSearchString: (s) => this.setState({ searchValue: s }) })));
     }
 };
 CreateRecord = __decorate([
@@ -24748,7 +24748,7 @@ const React = __webpack_require__(0);
 const Overlay_1 = __webpack_require__(24);
 const falcon_core_1 = __webpack_require__(4);
 const ApiService_1 = __webpack_require__(8);
-const mobx_react_1 = __webpack_require__(6);
+const mobx_react_1 = __webpack_require__(5);
 const mousetrap = __webpack_require__(38);
 let CreateSource = class CreateSource extends React.Component {
     constructor() {
@@ -24820,7 +24820,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 const React = __webpack_require__(0);
 const Overlay_1 = __webpack_require__(24);
-const mobx_react_1 = __webpack_require__(6);
+const mobx_react_1 = __webpack_require__(5);
 const mousetrap = __webpack_require__(38);
 let CreateTabSet = class CreateTabSet extends React.Component {
     constructor() {
@@ -24898,10 +24898,10 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 const React = __webpack_require__(0);
 const lev = __webpack_require__(299);
 const ComboDropdown_1 = __webpack_require__(20);
-const lodash_1 = __webpack_require__(5);
+const lodash_1 = __webpack_require__(7);
 const AddTabButton_1 = __webpack_require__(13);
-const formatDate_1 = __webpack_require__(73);
-const mobx_react_1 = __webpack_require__(6);
+const formatDate_1 = __webpack_require__(72);
+const mobx_react_1 = __webpack_require__(5);
 const sortIcons = {
     'none': 'fa fa-sort',
     'asc': 'fa fa-sort-asc',
@@ -24909,7 +24909,7 @@ const sortIcons = {
 };
 const customColumns = (predicates, columns, updateColumnParams, rotateSort) => {
     return [0, 1, 2].map((id) => {
-        const comboValue = { key: '', value: '' };
+        const comboValue = { key: '', value: null };
         if (columns[id].predicate !== -1) {
             const thisPred = predicates.find((pred) => pred.uid == columns[id].predicate);
             if (thisPred !== undefined) {
@@ -24920,7 +24920,7 @@ const customColumns = (predicates, columns, updateColumnParams, rotateSort) => {
         return (React.createElement("td", { key: `col-${id}` },
             React.createElement("div", { className: 'list-combo-header' },
                 React.createElement("div", { className: 'combo-wrapper' },
-                    React.createElement(ComboDropdown_1.ComboDropdown, { value: comboValue, typeName: 'predicate', allowNew: false, setValue: (value) => updateColumnParams(id, 'p', value === null ? null : value.value), options: predicates.map((pred) => ({ key: pred.label, value: pred.uid.toString() })), createNewValue: lodash_1.noop, compact: true })),
+                    React.createElement(ComboDropdown_1.NumberComboDropdown, { value: comboValue, typeName: 'predicate', allowNew: false, setValue: (value) => updateColumnParams(id, 'p', value === null ? null : value.value), options: predicates.map((pred) => ({ key: pred.label, value: pred.uid.toString() })), createNewValue: lodash_1.noop, additionalClasses: ['compact'] })),
                 React.createElement("div", { className: 'order-wrapper' },
                     React.createElement("i", { className: sortIcons[columns[id].sort], onClick: () => rotateSort(id) })))));
     });
@@ -24937,7 +24937,8 @@ let EntityList = class EntityList extends React.Component {
                 { predicate: -1, sort: 'none', filterType: 'any', invertFilter: false, filterValue: '' },
                 { predicate: -1, sort: 'none', filterType: 'any', invertFilter: false, filterValue: '' }
             ],
-            entityType: { key: 'Any', value: 0 }
+            entityType: { key: 'Any', value: 0 },
+            queryData: {}
         };
     }
     componentDidMount() {
@@ -25114,7 +25115,7 @@ let EntityList = class EntityList extends React.Component {
                             React.createElement("td", null),
                             React.createElement("td", null),
                             React.createElement("td", null,
-                                React.createElement(ComboDropdown_1.ComboDropdown, { value: this.state.entityType, typeName: 'entity type', allowNew: false, setValue: (entityType) => this.setState({ entityType }), options: entityTypeOptions, createNewValue: lodash_1.noop, compact: true })),
+                                React.createElement(ComboDropdown_1.NumberComboDropdown, { value: this.state.entityType, typeName: 'entity type', allowNew: false, setValue: (entityType) => this.setState({ entityType }), options: entityTypeOptions, createNewValue: lodash_1.noop, additionalClasses: ['compact'] })),
                             this.state.columns.map((col, id) => (React.createElement("td", { key: `col-${id}` },
                                 React.createElement("div", { className: 'flex-fill' },
                                     React.createElement("div", null,
@@ -25169,8 +25170,8 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 const React = __webpack_require__(0);
 const AddTabButton_1 = __webpack_require__(13);
 const SearchBar_1 = __webpack_require__(42);
-const RecursiveTree_1 = __webpack_require__(111);
-const mobx_react_1 = __webpack_require__(6);
+const RecursiveTree_1 = __webpack_require__(110);
+const mobx_react_1 = __webpack_require__(5);
 class EntityRecursiveTree extends RecursiveTree_1.RecursiveTree {
 }
 let EntityTypeList = class EntityTypeList extends React.Component {
@@ -25258,7 +25259,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 const React = __webpack_require__(0);
 const AddTabButton_1 = __webpack_require__(13);
-const mobx_react_1 = __webpack_require__(6);
+const mobx_react_1 = __webpack_require__(5);
 const SearchBar_1 = __webpack_require__(42);
 let PredicateList = class PredicateList extends React.Component {
     constructor() {
@@ -25305,6 +25306,9 @@ let PredicateList = class PredicateList extends React.Component {
                         const rangeType = predicate.rangeIsReference ?
                             this.props.dataStore.dataStore.all.entity_type.value.find((t) => t.uid === predicate.range) :
                             predicate.range;
+                        if (predicate.uid === null) {
+                            throw new Error('Found predicate with null uid');
+                        }
                         return (React.createElement("tr", { key: `predicate-${predicate.uid}` },
                             React.createElement("td", null,
                                 predicate.uid,
@@ -25347,9 +25351,11 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 const React = __webpack_require__(0);
 const AddTabButton_1 = __webpack_require__(13);
-const mobx_react_1 = __webpack_require__(6);
+const mobx_react_1 = __webpack_require__(5);
 const SearchBar_1 = __webpack_require__(42);
-const RecursiveTree_1 = __webpack_require__(111);
+const RecursiveTree_1 = __webpack_require__(110);
+class SourceRecursiveTree extends RecursiveTree_1.RecursiveTree {
+}
 let SourceList = class SourceList extends React.Component {
     constructor() {
         super();
@@ -25389,6 +25395,9 @@ let SourceList = class SourceList extends React.Component {
                             React.createElement("td", null, "Name"),
                             React.createElement("td", null, "Parent"))),
                     React.createElement("tbody", null, this.props.dataStore.dataStore.all.source.value.filter(this.state.filterFunc).map((source) => {
+                        if (source.uid === null) {
+                            throw new Error('Encountered source with null uid');
+                        }
                         return (React.createElement("tr", { key: `source-${source.uid}` },
                             React.createElement("td", null,
                                 source.uid,
@@ -25397,7 +25406,7 @@ let SourceList = class SourceList extends React.Component {
                             React.createElement("td", null, source.label),
                             React.createElement("td", null, source.parent)));
                     })))) : (React.createElement("div", { className: 'tree-root' },
-                    React.createElement(RecursiveTree_1.RecursiveTree, { data: this.props.dataStore.dataStore.all.source.value, tabType: 'source', parentId: null, dataStore: this.props.dataStore }))))));
+                    React.createElement(SourceRecursiveTree, { data: this.props.dataStore.dataStore.all.source.value, tabType: 'source', parentId: null, dataStore: this.props.dataStore }))))));
     }
 };
 SourceList = __decorate([
@@ -25496,11 +25505,11 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 const React = __webpack_require__(0);
 const ApiService_1 = __webpack_require__(8);
 const falcon_core_1 = __webpack_require__(4);
-const findParentTree_1 = __webpack_require__(72);
+const findParentTree_1 = __webpack_require__(71);
 const EditableHeader_1 = __webpack_require__(36);
 const EntityWorkspaceCoreView_1 = __webpack_require__(272);
 const EntityWorkspaceReferenceView_1 = __webpack_require__(273);
-const mobx_react_1 = __webpack_require__(6);
+const mobx_react_1 = __webpack_require__(5);
 class StringEditableFieldComponent extends EditableHeader_1.EditableFieldComponent {
 }
 // What can I do?
@@ -25662,14 +25671,14 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 const React = __webpack_require__(0);
-const SameAsEditor_1 = __webpack_require__(71);
+const SameAsEditor_1 = __webpack_require__(70);
 const ApiService_1 = __webpack_require__(8);
 const falcon_core_1 = __webpack_require__(4);
 const AddTabButton_1 = __webpack_require__(13);
 const EditableHeader_1 = __webpack_require__(36);
-const EditableParagraph_1 = __webpack_require__(70);
+const EditableParagraph_1 = __webpack_require__(111);
 const EditableComboDropdown_1 = __webpack_require__(69);
-const mobx_react_1 = __webpack_require__(6);
+const mobx_react_1 = __webpack_require__(5);
 class StringEditableFieldComponent extends EditableHeader_1.EditableFieldComponent {
 }
 class ComboEditableFieldComponent extends EditableHeader_1.EditableFieldComponent {
@@ -25751,20 +25760,25 @@ let EntityTypeWorkspace = class EntityTypeWorkspace extends React.Component {
                 parentName = found.label;
             }
         }
+        const potentialParentOptions = potentialParents.map((par) => ({ key: par.label, value: par.uid }));
         return (React.createElement("div", { className: 'workspace-editor' },
             React.createElement("header", { className: 'editor-header entity_type' },
                 React.createElement("div", { className: 'primary-toolbar' },
                     React.createElement("div", { className: 'main-toolbar' },
-                        React.createElement("div", { className: 'bread-crumbs' }, entityType.parents.map((parent, i) => (React.createElement("span", { key: `breadcrumb-${parent.uid}` },
-                            React.createElement("span", null,
-                                "  ",
-                                parent.label,
-                                " ",
-                                React.createElement(AddTabButton_1.AddTabButton, { tabType: 'entity_type', uid: parent.uid }),
-                                " "),
-                            React.createElement("i", { className: 'fa fa-angle-right' }))))),
+                        React.createElement("div", { className: 'bread-crumbs' }, entityType.parents.map((parent, i) => {
+                            const parentEntityType = this.props.dataStore.dataStore.all.entity_type.value.find((e) => e.uid === parent);
+                            return (React.createElement("span", { key: `breadcrumb-${parent}` },
+                                React.createElement("span", null,
+                                    "  ",
+                                    parentEntityType.label,
+                                    " ",
+                                    React.createElement(AddTabButton_1.AddTabButton, { tabType: 'entity_type', uid: parent }),
+                                    " "),
+                                React.createElement("i", { className: 'fa fa-angle-right' })));
+                        })),
                         React.createElement("i", { className: 'fa fa-tag item-icon' }),
-                        React.createElement(StringEditableFieldComponent, { value: entityType.label, component: EditableHeader_1.EditableHeader, onChange: (value) => this.update({ 'label': value }) })),
+                        React.createElement(StringEditableFieldComponent, { value: entityType.label, onChange: (value) => this.update({ 'label': value }) },
+                            React.createElement(EditableHeader_1.EditableHeader, null))),
                     React.createElement("div", { className: 'sub-toolbar' },
                         React.createElement("i", { className: 'fa fa-plus add button', "aria-hidden": 'true', onClick: this.createEntity.bind(this) }),
                         React.createElement("i", { className: 'fa fa-trash delete button', "aria-hidden": 'true', onClick: this.del.bind(this) }),
@@ -25775,24 +25789,33 @@ let EntityTypeWorkspace = class EntityTypeWorkspace extends React.Component {
             React.createElement("section", { className: 'editor-body' },
                 React.createElement("div", { className: 'edit-group' },
                     React.createElement("label", { className: 'small' }, "Parent"),
-                    React.createElement(ComboEditableFieldComponent, { value: entityType.parent === null ? null : { key: parentName, value: entityType.parent }, component: EditableComboDropdown_1.EditableComboDropdown, onChange: (value) => this.update({ 'parent': value === null ? null : value.value }), additionalProps: { comboSettings: {
-                                options: potentialParents.map((par) => ({ key: par.label, value: par.uid })),
+                    React.createElement(ComboEditableFieldComponent, { value: entityType.parent === null ? { key: '', value: null } : { key: parentName, value: entityType.parent }, onChange: (value) => this.update({ 'parent': value === null ? null : value.value }) },
+                        React.createElement(EditableComboDropdown_1.EditableComboDropdown, { comboSettings: {
+                                options: potentialParentOptions,
                                 typeName: 'EntityType'
-                            } } }),
+                            } })),
                     entityType.parent !== null ? (React.createElement(AddTabButton_1.AddTabButton, { tabType: 'entity_type', uid: entityType.parent })) : null),
                 React.createElement("div", { className: 'edit-group' },
                     React.createElement("label", { className: 'small' }, "Description"),
-                    React.createElement(StringEditableFieldComponent, { value: entityType.description, component: EditableParagraph_1.EditableParagraph, onChange: (value) => this.update({ 'description': value }) })),
+                    React.createElement(StringEditableFieldComponent, { value: entityType.description, onChange: (value) => this.update({ 'description': value }) },
+                        React.createElement(EditableParagraph_1.EditableParagraph, null))),
                 React.createElement("div", { className: 'edit-group' },
-                    React.createElement(StringEditableFieldComponent, { value: entityType.sameAs, component: SameAsEditor_1.SameAsEditor, onChange: (value) => this.update({ 'sameAs': value }) })),
+                    React.createElement(StringEditableFieldComponent, { value: entityType.sameAs, onChange: (value) => this.update({ 'sameAs': value }) },
+                        React.createElement(SameAsEditor_1.SameAsEditor, null))),
                 React.createElement("div", null,
                     React.createElement("h4", null, "Direct Children"),
                     React.createElement("ul", null, entityType.children
                         .map((child) => this.props.dataStore.dataStore.all.entity_type.value.find((et) => et.uid === child))
-                        .map((childEt) => (React.createElement("li", { key: `dc-${childEt.label}` },
-                        childEt.label,
-                        " ",
-                        React.createElement(AddTabButton_1.AddTabButton, { tabType: 'entity_type', uid: childEt.uid })))))))));
+                        .map((childEt) => {
+                        if (childEt === undefined) {
+                            return null;
+                        }
+                        //TODO: REMOVE !
+                        return (React.createElement("li", { key: `dc-${childEt.label}` },
+                            childEt.label,
+                            " ",
+                            React.createElement(AddTabButton_1.AddTabButton, { tabType: 'entity_type', uid: childEt.uid })));
+                    }))))));
     }
 };
 EntityTypeWorkspace.contextTypes = {
@@ -25858,14 +25881,14 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 const React = __webpack_require__(0);
 const react_router_1 = __webpack_require__(26);
-const SameAsEditor_1 = __webpack_require__(71);
+const SameAsEditor_1 = __webpack_require__(70);
 const ApiService_1 = __webpack_require__(8);
 const falcon_core_1 = __webpack_require__(4);
 const EditableHeader_1 = __webpack_require__(36);
-const EditableParagraph_1 = __webpack_require__(70);
+const EditableParagraph_1 = __webpack_require__(111);
 const PredicateDescription_1 = __webpack_require__(112);
 const literalTypes_1 = __webpack_require__(113);
-const mobx_react_1 = __webpack_require__(6);
+const mobx_react_1 = __webpack_require__(5);
 class StringEditableFieldComponent extends EditableHeader_1.EditableFieldComponent {
 }
 // - Should state the number of times this predicate is used
@@ -25976,7 +25999,8 @@ let PredicateEditorWorkspace = class PredicateEditorWorkspace extends React.Comp
                 React.createElement("div", { className: 'primary-toolbar' },
                     React.createElement("div", { className: 'main-toolbar' },
                         React.createElement("i", { className: 'fa fa-long-arrow-right item-icon' }),
-                        React.createElement(StringEditableFieldComponent, { value: predicate.label, component: EditableHeader_1.EditableHeader, onChange: (value) => this.updatePredicate('label', value) })),
+                        React.createElement(StringEditableFieldComponent, { value: predicate.label, onChange: (value) => this.updatePredicate('label', value) },
+                            React.createElement(EditableHeader_1.EditableHeader, null))),
                     React.createElement("div", { className: 'sub-toolbar' },
                         React.createElement("i", { className: 'fa fa-trash delete button', "aria-hidden": 'true', onClick: this.del.bind(this) }),
                         React.createElement("i", { className: 'fa fa-clone button', "aria-hidden": 'true', onClick: this.copy.bind(this) }))),
@@ -25991,12 +26015,14 @@ let PredicateEditorWorkspace = class PredicateEditorWorkspace extends React.Comp
                         predicate.uses)),
                 React.createElement("div", { className: 'edit-group' },
                     React.createElement("label", { className: 'small' }, "Description"),
-                    React.createElement(StringEditableFieldComponent, { value: predicate.description, component: EditableParagraph_1.EditableParagraph, onChange: (value) => this.updatePredicate('description', value) })),
+                    React.createElement(StringEditableFieldComponent, { value: predicate.description, onChange: (value) => this.updatePredicate('description', value) },
+                        React.createElement(EditableParagraph_1.EditableParagraph, null))),
                 React.createElement("div", { className: 'edit-group' },
                     React.createElement("label", { className: 'small' }, "Typing"),
                     React.createElement(PredicateDescription_1.PredicateDescription, { domain: domain, range: range, domainChanged: (value) => this.updatePredicate('domain', value.value), rangeChanged: (value) => this.updatePredicate('range', value.value.value, value.value.isReference), mode: 'editSingle', domainOptions: entityTypeOptions, rangeOptions: literalTypeOptions.concat(entityTypeMap2) })),
                 React.createElement("div", null,
-                    React.createElement(StringEditableFieldComponent, { value: predicate.sameAs, component: SameAsEditor_1.SameAsEditor, onChange: (value) => this.updatePredicate('sameAs', value) })))));
+                    React.createElement(StringEditableFieldComponent, { value: predicate.sameAs, onChange: (value) => this.updatePredicate('sameAs', value) },
+                        React.createElement(SameAsEditor_1.SameAsEditor, null))))));
     }
 };
 PredicateEditorWorkspace.contextTypes = {
@@ -26031,14 +26057,13 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 const React = __webpack_require__(0);
-const SameAsEditor_1 = __webpack_require__(71);
+const SameAsEditor_1 = __webpack_require__(70);
 const ApiService_1 = __webpack_require__(8);
 const falcon_core_1 = __webpack_require__(4);
 const EditableHeader_1 = __webpack_require__(36);
-const EditableParagraph_1 = __webpack_require__(70);
 const EditableComboDropdown_1 = __webpack_require__(69);
-const lodash_1 = __webpack_require__(5);
-const mobx_react_1 = __webpack_require__(6);
+const lodash_1 = __webpack_require__(7);
+const mobx_react_1 = __webpack_require__(5);
 const AddTabButton_1 = __webpack_require__(13);
 class StringEditableFieldComponent extends EditableHeader_1.EditableFieldComponent {
 }
@@ -26210,13 +26235,15 @@ let SourceEditorWorkspace = class SourceEditorWorkspace extends React.Component 
             React.createElement("section", { className: 'editor-body' },
                 React.createElement("div", { className: 'edit-group' },
                     React.createElement("label", { className: 'small' }, "Parent"),
-                    React.createElement(ComboEditableFieldComponent, { value: { key: parentName, value: source.parent }, component: EditableComboDropdown_1.EditableComboDropdown, onChange: (value) => this.updateSource('parent', value === null ? null : value.value), additionalProps: { comboSettings: {
+                    React.createElement(ComboEditableFieldComponent, { value: { key: parentName, value: source.parent }, onChange: (value) => this.updateSource('parent', value === null ? null : value.value) },
+                        React.createElement(EditableComboDropdown_1.EditableComboDropdown, { comboSettings: {
                                 options: potentialParents.map((par) => ({ key: par.label, value: par.uid })),
                                 typeName: 'Source'
-                            } } }),
+                            } })),
                     source.parent !== null ? (React.createElement(AddTabButton_1.AddTabButton, { tabType: 'source', uid: source.parent })) : null),
                 React.createElement("div", { className: 'edit-group' },
-                    React.createElement(StringEditableFieldComponent, { value: source.sameAs, component: SameAsEditor_1.SameAsEditor, onChange: (value) => this.updateSource('sameAs', value) })),
+                    React.createElement(StringEditableFieldComponent, { value: source.sameAs, onChange: (value) => this.updateSource('sameAs', value) },
+                        React.createElement(SameAsEditor_1.SameAsEditor, null))),
                 this.props.dataStore.dataStore.all.dublinCore.value.elements.map((element) => {
                     const values = source.metaData.hasOwnProperty(element.label) ?
                         source.metaData[element.label].values : [{ source: this.props.id, value: '' }];
@@ -26270,9 +26297,9 @@ const React = __webpack_require__(0);
 const RecordsEditor_1 = __webpack_require__(248);
 const ApiService_1 = __webpack_require__(8);
 const falcon_core_1 = __webpack_require__(4);
-const lodash_1 = __webpack_require__(5);
+const lodash_1 = __webpack_require__(7);
 const AddTabButton_1 = __webpack_require__(13);
-const findParentTree_1 = __webpack_require__(72);
+const findParentTree_1 = __webpack_require__(71);
 const EditableHeader_1 = __webpack_require__(36);
 const EditableComboDropdown_1 = __webpack_require__(69);
 class StringEditableFieldComponent extends EditableHeader_1.EditableFieldComponent {
@@ -26299,7 +26326,7 @@ class EntityWorkspaceCoreView extends React.Component {
     constructor(props, context) {
         super();
         this.state = {
-            comboValue: { key: 'test', value: '' },
+            comboValue: { key: 'test', value: null },
             comboSearchValue: ''
         };
     }
@@ -26309,6 +26336,9 @@ class EntityWorkspaceCoreView extends React.Component {
     render() {
         const entity = this.props.dataStore.dataStore.tabs.entity[this.props.id].value.entity;
         const entityType = this.props.dataStore.dataStore.all.entity_type.value.find((t) => t.uid === entity.entityType);
+        if (entityType === undefined || entityType.uid === null) {
+            throw new Error('Encountered undefined entity type or entity type with null id');
+        }
         const potentialParents = this.props.dataStore.dataStore.all.entity.value;
         const entityTypeParents = findParentTree_1.findParentTree(entity.entityType, this.props.dataStore.dataStore.all.entity_type.value);
         const predicates = this.props.dataStore.dataStore.all.predicate
@@ -26333,10 +26363,11 @@ class EntityWorkspaceCoreView extends React.Component {
                         React.createElement(AddTabButton_1.AddTabButton, { uid: entityType.uid, tabType: 'entity_type' }))),
                 React.createElement("div", { style: { flex: 1 } },
                     React.createElement("label", { className: 'small' }, "Parent"),
-                    React.createElement(ComboEditableFieldComponent, { value: { key: parentName, value: entity.parent }, component: EditableComboDropdown_1.EditableComboDropdown, onChange: (value) => this.update({ 'parent': value.value }), additionalProps: { comboSettings: {
+                    React.createElement(ComboEditableFieldComponent, { value: { key: parentName, value: entity.parent }, onChange: (value) => this.update({ 'parent': value === null ? null : value.value }) },
+                        React.createElement(EditableComboDropdown_1.EditableComboDropdown, { comboSettings: {
                                 options: potentialParents.map((par) => ({ key: par.label, value: par.uid })),
                                 typeName: 'Entity'
-                            } } }),
+                            } })),
                     entity.parent !== null ? (React.createElement(AddTabButton_1.AddTabButton, { tabType: 'entity', uid: entity.parent })) : null)),
             React.createElement("div", { className: 'edit-group' },
                 React.createElement(RecordsEditor_1.RecordsEditor, { dimension: 'predicates', entityExists: true, id: this.props.id, records: records, onChange: () => { }, predicates: predicates, sources: sources, entityTypeId: entityType.uid }))));
@@ -26475,9 +26506,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 const falcon_core_1 = __webpack_require__(4);
 const ApiService_1 = __webpack_require__(8);
 const DataStore_1 = __webpack_require__(276);
-const react_sortable_hoc_1 = __webpack_require__(79);
+const react_sortable_hoc_1 = __webpack_require__(78);
 const mobx_1 = __webpack_require__(118);
-const lodash_1 = __webpack_require__(5);
+const lodash_1 = __webpack_require__(7);
 const moment = __webpack_require__(37);
 class DataController {
     constructor(api) {
@@ -26790,7 +26821,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 const React = __webpack_require__(0);
-const lodash_1 = __webpack_require__(5);
+const lodash_1 = __webpack_require__(7);
 const CreatePredicate_1 = __webpack_require__(255);
 const CreateRecord_1 = __webpack_require__(257);
 const CreatePresetRecord_1 = __webpack_require__(256);
@@ -27009,9 +27040,9 @@ const Workspace_1 = __webpack_require__(242);
 const Toast_1 = __webpack_require__(241);
 const DataController_1 = __webpack_require__(275);
 const ModalStore_1 = __webpack_require__(277);
-const react_sortable_hoc_1 = __webpack_require__(79);
+const react_sortable_hoc_1 = __webpack_require__(78);
 const mobx_react_devtools_1 = __webpack_require__(301);
-const mobx_react_1 = __webpack_require__(6);
+const mobx_react_1 = __webpack_require__(5);
 const ObjectEditorCore = react_sortable_hoc_1.SortableContainer((props) => {
     return (React.createElement("span", { className: 'flex-fill' },
         React.createElement(Sidebar_1.Sidebar, { list: props.list, id: props.id, workspace: props.workspace }),
@@ -27162,7 +27193,7 @@ exports.UserManagement = (props) => (React.createElement("div", { className: 'pa
  * @version 0.2.0
  */
 
-const passport = __webpack_require__(77);
+const passport = __webpack_require__(76);
 const passport_local_1 = __webpack_require__(302);
 const bcrypt_1 = __webpack_require__(292);
 exports.setupAuth = (db) => {
@@ -27205,7 +27236,7 @@ exports.Auth = {
  */
 
 const Knex = __webpack_require__(115);
-const fs = __webpack_require__(74);
+const fs = __webpack_require__(73);
 const path = __webpack_require__(44);
 class SqliteSnapshot {
     constructor(config) {
@@ -27265,12 +27296,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 const Koa = __webpack_require__(25);
-const fs_1 = __webpack_require__(74);
+const fs_1 = __webpack_require__(73);
 const FalconApp_1 = __webpack_require__(238);
 const server_1 = __webpack_require__(214);
 const react_1 = __webpack_require__(0);
 const react_router_1 = __webpack_require__(26);
-const wrapDatabase_1 = __webpack_require__(109);
+const wrapDatabase_1 = __webpack_require__(108);
 const path = __webpack_require__(44);
 exports.adminApp = (skeleton, db) => {
     const server = new Koa();
@@ -27321,10 +27352,10 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 // Vendor
 const Koa = __webpack_require__(25);
-const __ = __webpack_require__(78);
+const __ = __webpack_require__(77);
 const koaJSON = __webpack_require__(295);
 const koaBodyParser = __webpack_require__(116);
-const wrapDatabase_1 = __webpack_require__(109);
+const wrapDatabase_1 = __webpack_require__(108);
 const falcon_core_1 = __webpack_require__(4);
 const itemTypes_1 = __webpack_require__(43);
 exports.api = (db) => {
@@ -27459,8 +27490,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 const Koa = __webpack_require__(25);
-const __ = __webpack_require__(78);
-const GeneralStatisticsController_1 = __webpack_require__(110);
+const __ = __webpack_require__(77);
+const GeneralStatisticsController_1 = __webpack_require__(109);
 exports.stats = (db) => {
     const server = new Koa();
     server.use(__.get('/', (ctx) => __awaiter(this, void 0, void 0, function* () {
@@ -27499,8 +27530,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 // Vendor
 const Koa = __webpack_require__(25);
-const __ = __webpack_require__(78);
-const koaPassport = __webpack_require__(77);
+const __ = __webpack_require__(77);
+const koaPassport = __webpack_require__(76);
 exports.user = (db) => {
     const server = new Koa();
     server.use(__.post('/login', koaPassport.authenticate('local', {

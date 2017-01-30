@@ -6,23 +6,17 @@
 
 import * as React from 'react';
 
-import { RecordsEditor } from '../entity_editor/RecordsEditor';
 import { AppUrls } from '../../ApiService';
 
 import { Entity, Record, Serializer } from '@digihum/falcon-core';
 
-import { ComboDropdown, ComboDropdownOption } from '../ComboDropdown';
 import { ModalDefinition } from '../modal/ModalDefinition';
 
-import { Dictionary, groupBy } from 'lodash';
-
-import { AddTabButton } from '../AddTabButton';
 
 import { findParentTree } from '../../helper/findParentTree';
 
 
 import { EditableHeader, EditableFieldComponent } from '../fields/EditableHeader';
-import { EditableComboDropdown } from '../fields/EditableComboDropdown';
 
 import { DataController } from '../../stores/DataController';
 import { ModalStore } from '../../stores/ModalStore';

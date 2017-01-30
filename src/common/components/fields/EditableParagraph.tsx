@@ -50,7 +50,7 @@ export const EditableParagraph : React.StatelessComponent<EditableSubfieldProps<
                 <textarea
                     value={props.value!}
                     ref={bindKeyboard}
-                    onChange={(e) => props.onChange!((e.target as HTMLInputElement).value)}
+                    onChange={(e) => props.onChange!(e.target.value)}
                     style={{ width: '100%', height: '6em'}}></textarea>
                 <button onClick={props.acceptChanges}>
                     <i className='fa fa-check' aria-hidden='true'></i></button>

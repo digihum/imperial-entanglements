@@ -7,19 +7,22 @@
 import * as React from 'react';
 import { EditableSubfieldProps } from '../fields/EditableFieldComponent';
 export { EditableFieldComponent } from '../fields/EditableFieldComponent';
-import { ComboDropdown, ComboDropdownOption, ComboDropdownProps } from '../ComboDropdown';
+import { NumberComboDropdown, ComboDropdownOption } from '../ComboDropdown';
 
-interface EditableComboDropdownProps<T> extends EditableSubfieldProps<ComboDropdownOption<T>> {
-    comboSettings: ComboDropdownProps<T>;
+interface EditableComboDropdownProps extends EditableSubfieldProps<ComboDropdownOption<number>> {
+    comboSettings: {
+      options: ComboDropdownOption<number>[];
+      typeName: string;
+    };
 }
 
-export function EditableComboDropdown<T>(props: EditableComboDropdownProps<T>) {
+export function EditableComboDropdown(props: EditableComboDropdownProps) {
 
     if (props.edit) {
         return (<div>
-            <ComboDropdown {...props.comboSettings}
-                value={props.value}
-                setValue={props.onChange}
+            <NumberComboDropdown {...props.comboSettings}
+                value={props.value!}
+                setValue={props.onChange!}
                 allowNew={false}
                 createNewValue={() => {}} />
             <button><i className='fa fa-check' onClick={props.acceptChanges} aria-hidden='true'></i></button>
@@ -29,7 +32,7 @@ export function EditableComboDropdown<T>(props: EditableComboDropdownProps<T>) {
     } else {
         return (
             <div>
-                {props.value !== null && props.value.key.length > 0 ? props.value.key
+                {props.value !== null && props.value!.key.length > 0 ? props.value!.key
                 : (
                     <em>No value</em>
                 )}

@@ -277,12 +277,15 @@ export class SourceEditorWorkspace extends React.Component<SourceEditorProps, So
                         <label className='small'>Parent</label>
                         <ComboEditableFieldComponent
                             value={{key: parentName, value: source.parent}}
-                            component={EditableComboDropdown}
                             onChange={(value) => this.updateSource('parent', value === null ? null : value.value)}
-                            additionalProps={{ comboSettings: {
+                            >
+                            <EditableComboDropdown
+                              comboSettings={{
                                 options: potentialParents.map((par) => ({ key: par.label, value: par.uid})),
                                 typeName: 'Source'
-                            }}} />
+                              }}
+                            />
+                          </ComboEditableFieldComponent>
                             {source.parent !== null ? (<AddTabButton
                                 tabType='source'
                                 uid={source.parent} />) : null}
