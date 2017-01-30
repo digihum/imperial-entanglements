@@ -2,7 +2,7 @@
   "name": "imperial-entanglements",
   "version": "0.2.0",
   "description": "VRE for Imperial Entanglements project",
-  "main": "./build/app/index.js",
+  "main": "app.electron.index.dist.js",
   "scripts": {
     "start": "node dist/server/app.backend.dist.js",
     "dist": "build --x64",
@@ -27,43 +27,15 @@
     "type": "git",
     "url": "https://actechlab.warwick.ac.uk/u1572229/imperial-entanglements"
   },
-  "build": {
-    "appId": "Imperial Entanglements",
-    "mac": {
-      "category": "public.app-category.education"
-    },
-    "win": {
-      "iconUrl": "http://www.iconarchive.com/download/i43620/treetog/junior/folder-documents.ico"
-    }
-  },
-  "directories": {
-    "output": "./dist/bin",
-    "app": "./dist/app",
-    "buildResources": "./data/icons"
-  },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@digihum/falcon-core": "^0.8.0",
-    "@types/bcrypt": "0.0.30",
-    "@types/chai": "^3.4.34",
-    "@types/chai-http": "0.0.29",
-    "@types/dotenv": "^2.0.19",
-    "@types/electron": "^1.4.29",
-    "@types/graphql": "^0.8.2",
-    "@types/koa": "^2.0.35",
-    "@types/koa-passport": "^2.0.2",
-    "@types/mocha": "^2.2.33",
-    "@types/react-dom": "^0.14.19",
-    "@types/sqlite3": "^2.2.31",
-    "@types/whatwg-fetch": "0.0.32",
     "bcrypt": "^0.8.7",
     "dotenv": "^2.0.0",
     "etag": "^1.7.0",
     "font-awesome": "^4.7.0",
     "graphql": "^0.7.2",
     "immutable": "^3.8.1",
-    "imperial-entanglements-frontend": "git+ssh://git@actechlab.warwick.ac.uk:u1572229/imperial-entanglements-frontend.git",
     "knex": "^0.12.5",
     "koa": "^2.0.0-alpha.7",
     "koa-bodyparser": "^2.2.0",
@@ -83,6 +55,7 @@
     "lunr": "^0.7.1",
     "mobx": "^3.0.0",
     "mobx-react": "^4.1.0",
+    "mobx-react-devtools": "^4.2.11",
     "moment": "^2.15.2",
     "mousetrap": "^1.6.0",
     "normalize.css": "^5.0.0",
@@ -97,10 +70,6 @@
     "sqlite3": "^3.1.8"
   },
   "devDependencies": {
-    "@kadira/storybook": "^2.21.0",
-    "@types/chai-as-promised": "0.0.29",
-    "@types/node": "^6.0.57",
-    "@types/react": "^15.0.4",
     "awesome-typescript-loader": "^3.0.0-beta.17",
     "bourbon": "^4.2.7",
     "chai": "^3.5.0",
@@ -115,7 +84,6 @@
     "gulp": "^3.9.1",
     "gulp-nightwatch": "^0.3.2",
     "gulp-sass": "^2.3.2",
-    "mobx-react-devtools": "^4.2.11",
     "mocha": "^3.0.2",
     "neat": "^1.2.2",
     "nightwatch": "^0.9.8",

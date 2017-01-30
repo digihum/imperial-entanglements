@@ -190,8 +190,9 @@ export class EntityEditorWorkspace extends React.Component<EntityEditorProps, En
                         <i className='fa fa-cube item-icon'></i>
                         <StringEditableFieldComponent
                             value={entity.label}
-                            component={EditableHeader}
-                            onChange={(value) => this.update({ 'label': value })}  />
+                            onChange={(value) => this.update({ 'label': value })}>
+                            <EditableHeader />
+                        </StringEditableFieldComponent>
                     </div>
 
                     <div className='sub-toolbar'>

@@ -3531,7 +3531,8 @@ let EntityEditorWorkspace = class EntityEditorWorkspace extends React.Component 
                 React.createElement("div", { className: 'primary-toolbar' },
                     React.createElement("div", { className: 'main-toolbar' },
                         React.createElement("i", { className: 'fa fa-cube item-icon' }),
-                        React.createElement(StringEditableFieldComponent, { value: entity.label, component: EditableHeader_1.EditableHeader, onChange: (value) => this.update({ 'label': value }) })),
+                        React.createElement(StringEditableFieldComponent, { value: entity.label, onChange: (value) => this.update({ 'label': value }) },
+                            React.createElement(EditableHeader_1.EditableHeader, null))),
                     React.createElement("div", { className: 'sub-toolbar' },
                         React.createElement("i", { className: 'fa fa-trash delete button', "aria-hidden": 'true', onClick: this.del.bind(this) }),
                         React.createElement("i", { className: 'fa fa-clone button', "aria-hidden": 'true', onClick: this.clone.bind(this) }))),
@@ -3969,6 +3970,7 @@ const SameAsEditor_1 = __webpack_require__(53);
 const ApiService_1 = __webpack_require__(4);
 const falcon_core_1 = __webpack_require__(5);
 const EditableHeader_1 = __webpack_require__(27);
+const EditableParagraph_1 = __webpack_require__(186);
 const EditableComboDropdown_1 = __webpack_require__(52);
 const lodash_1 = __webpack_require__(6);
 const mobx_react_1 = __webpack_require__(2);
@@ -4130,7 +4132,8 @@ let SourceEditorWorkspace = class SourceEditorWorkspace extends React.Component 
                                 React.createElement("i", { className: 'fa fa-angle-right' })));
                         })),
                         React.createElement("i", { className: 'fa fa-sun-o item-icon' }),
-                        React.createElement(StringEditableFieldComponent, { value: source.label, component: EditableHeader_1.EditableHeader, onChange: (value) => this.updateSource('label', value) })),
+                        React.createElement(StringEditableFieldComponent, { value: source.label, onChange: (value) => this.updateSource('label', value) },
+                            React.createElement(EditableHeader_1.EditableHeader, null))),
                     React.createElement("div", { className: 'sub-toolbar' },
                         React.createElement("i", { className: 'fa fa-plus add button', "aria-hidden": 'true', onClick: this.createEntity.bind(this) }),
                         React.createElement("i", { className: 'fa fa-trash delete button', "aria-hidden": 'true', onClick: () => this.del() }),
@@ -4167,7 +4170,8 @@ let SourceEditorWorkspace = class SourceEditorWorkspace extends React.Component 
                             this.props.dataStore.dataStore.all.source.value.find((s) => s.uid === value.source).label,
                             ": ",
                             value.value)) : null)),
-                        React.createElement(StringEditableFieldComponent, { value: editableValue, component: EditableParagraph_1.EditableParagraph, onChange: (value) => this.updateSourceElement(element, value) })));
+                        React.createElement(StringEditableFieldComponent, { value: editableValue, onChange: (value) => this.updateSourceElement(element, value) },
+                            React.createElement(EditableParagraph_1.EditableParagraph, null))));
                 }),
                 React.createElement("div", null,
                     React.createElement("h4", null, "Direct Children"),

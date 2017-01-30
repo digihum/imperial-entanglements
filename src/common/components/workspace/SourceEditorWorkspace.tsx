@@ -241,8 +241,9 @@ export class SourceEditorWorkspace extends React.Component<SourceEditorProps, So
                         <i className='fa fa-sun-o item-icon'></i>
                         <StringEditableFieldComponent
                             value={source.label}
-                            component={EditableHeader}
-                            onChange={(value) => this.updateSource('label', value)}  />
+                            onChange={(value) => this.updateSource('label', value)}>
+                            <EditableHeader />
+                        </StringEditableFieldComponent>
                     </div>
                     <div className='sub-toolbar'>
                         <i
@@ -318,8 +319,9 @@ export class SourceEditorWorkspace extends React.Component<SourceEditorProps, So
                                 </ul>
                                 <StringEditableFieldComponent
                                     value={editableValue}
-                                    component={EditableParagraph}
-                                    onChange={(value) => this.updateSourceElement(element, value)}  />
+                                    onChange={(value) => this.updateSourceElement(element, value)}>
+                                    <EditableParagraph />
+                                </StringEditableFieldComponent>
                             </div>
                         );
                     })}
