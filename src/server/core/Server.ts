@@ -31,8 +31,6 @@ import { setupAuth } from './Auth';
 
 import { SqliteSnapshot } from './SqliteSnapshot';
 
-import { server as frontendApp } from 'imperial-entanglements-frontend/dist/server';
-
 import * as path from 'path';
 
 import * as _ from 'lodash';
@@ -73,8 +71,6 @@ export const Server = (databaseConfig: KnexConfig) : Koa => {
     admin.use(koaMount('/', adminApp(skeleton, db)));
 
     app.use(koaMount('/admin', admin));
-
-    app.use(koaMount('/', frontendApp));
 
     app.use(async (ctx: Koa.Context) => {
       ctx.body = '404';
