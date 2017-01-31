@@ -47,7 +47,8 @@ export const Server = (databaseConfig: KnexConfig) : Koa => {
 
     if (process.env.FORCE_HTTPS === 'yes') {
       app.use(enforceHttps({
-        trustProtoHeader: true
+        trustProtoHeader: true,
+        hostname: process.env.HOST_NAME
       }));
     }
 

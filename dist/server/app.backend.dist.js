@@ -10328,7 +10328,8 @@ exports.Server = (databaseConfig) => {
     app.use(koaConvert(koaBodyParser()));
     if (process.env.FORCE_HTTPS === 'yes') {
         app.use(enforceHttps({
-            trustProtoHeader: true
+            trustProtoHeader: true,
+            hostname: process.env.HOST_NAME
         }));
     }
     // Sessions
