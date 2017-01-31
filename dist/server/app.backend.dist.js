@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 298);
+/******/ 	return __webpack_require__(__webpack_require__.s = 299);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -27082,7 +27082,8 @@ exports.UserManagement = (props) => (React.createElement("div", { className: 'pa
  */
 
 const passport = __webpack_require__(75);
-const passport_local_1 = __webpack_require__(297);
+const passport_local_1 = __webpack_require__(298);
+const passport_ldapauth_1 = __webpack_require__(297);
 const bcrypt_1 = __webpack_require__(287);
 exports.setupAuth = (db) => {
     passport.serializeUser((user, done) => {
@@ -27093,19 +27094,35 @@ exports.setupAuth = (db) => {
             .select().where({ uid })
             .then(([user]) => done(null, user));
     });
-    passport.use(new passport_local_1.Strategy((username, password, done) => {
-        // retrieve user ...
-        return db.query()('users')
-            .select().where({ username })
-            .then(([user]) => bcrypt_1.compare(password, user.password, (err, res) => {
-            if (err) {
-                done(null, false);
-            }
-            else {
-                done(null, user);
-            }
+    if (process.env.AUTH_TYPE === 'local') {
+        passport.use(new passport_local_1.Strategy((username, password, done) => {
+            // retrieve user ...
+            return db.query()('users')
+                .select().where({ username })
+                .then(([user]) => bcrypt_1.compare(password, user.password, (err, res) => {
+                if (err) {
+                    done(null, false);
+                }
+                else {
+                    done(null, user);
+                }
+            }));
         }));
-    }));
+    }
+    if (process.env.AUTH_TYPE === 'ldap') {
+        passport.use(new passport_ldapauth_1.Strategy({
+            server: {
+                url: `${process.env.AUTH_LDAP_HOST}:{process.env.AUTH_LDAP_PORT}`,
+                bindDn: process.env.AUTH_LDAP_USERNAME,
+                bindCredentials: process.env.AUTH_LDAP_PASSWORD,
+                searchBase: process.env.AUTH_LDAP_BASEDN,
+                searchFilter: process.env.AUTH_LDAP_ACCOUNTFILTERFORMAT
+            }
+        }, (req, user, done) => {
+            console.log(req, user);
+            done(null, false);
+        }));
+    }
 };
 exports.Auth = {
     setupAuth: exports.setupAuth
@@ -27530,10 +27547,16 @@ module.exports = require("mobx-react-devtools");
 /* 297 */
 /***/ (function(module, exports) {
 
-module.exports = require("passport-local");
+module.exports = require("passport-ldapauth");
 
 /***/ }),
 /* 298 */
+/***/ (function(module, exports) {
+
+module.exports = require("passport-local");
+
+/***/ }),
+/* 299 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
