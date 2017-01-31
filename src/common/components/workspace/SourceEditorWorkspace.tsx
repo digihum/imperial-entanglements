@@ -12,12 +12,13 @@ import { AppUrls } from '../../ApiService';
 
 import { Source, Serializer, Element, SourceElement, Record } from '@digihum/falcon-core';
 
-import { EditableHeader, EditableFieldComponent } from '../fields/EditableHeader';
+import { EditableHeader } from '../fields/EditableHeader';
+import { EditableFieldHOC } from '../fields/EditableFieldComponent';
 import { EditableParagraph } from '../fields/EditableParagraph';
 import { EditableComboDropdown } from '../fields/EditableComboDropdown';
 import { ComboDropdownOption } from '../ComboDropdown';
 
-import { keyBy, Dictionary } from 'lodash';
+import { keyBy, Dictionary, omit } from 'lodash';
 
 import { inject, observer } from 'mobx-react';
 
@@ -28,8 +29,10 @@ import { AddTabButton } from '../AddTabButton';
 
 import { ModalDefinition } from '../modal/ModalDefinition';
 
-class StringEditableFieldComponent extends EditableFieldComponent<string> {}
-class ComboEditableFieldComponent extends EditableFieldComponent<ComboDropdownOption<number>> {}
+const HeaderEditableFieldComponent = EditableFieldHOC(EditableHeader);
+const ParagraphEditableFieldComponent = EditableFieldHOC(EditableParagraph);
+const SameAsEditableFieldComponent = EditableFieldHOC(SameAsEditor);
+const ComboEditableFieldComponent = EditableFieldHOC(EditableComboDropdown);
 
 interface SourceEditorProps {
     id: number;
@@ -175,7 +178,8 @@ export class SourceEditorWorkspace extends React.Component<SourceEditorProps, So
         const source = this.props.dataStore!.dataStore.tabs.source[this.props.id].value.source;
 
         const newSource = Serializer.fromJson(Source,
-            Object.assign({}, Serializer.toJson(source), { label: 'Child of ' + source.label, parent: this.props.id }));
+        omit(Object.assign({}, Serializer.toJson(source), { label: 'Child of ' + source.label, parent: this.props.id }),
+        'metaData', 'children', 'parents'));
 
         this.props.dataStore!.postItem(Source, AppUrls.source, newSource, {})
             .then(([id]) => {
@@ -239,11 +243,9 @@ export class SourceEditorWorkspace extends React.Component<SourceEditorProps, So
                                 )})}
                         </div>
                         <i className='fa fa-sun-o item-icon'></i>
-                        <StringEditableFieldComponent
+                        <EditableHeader
                             value={source.label}
-                            onChange={(value) => this.updateSource('label', value)}>
-                            <EditableHeader />
-                        </StringEditableFieldComponent>
+                            onChange={(value) => this.updateSource('label', value)} />
                     </div>
                     <div className='sub-toolbar'>
                         <i
@@ -266,8 +268,8 @@ export class SourceEditorWorkspace extends React.Component<SourceEditorProps, So
                   <div className='secondary-toolbar'>
                       <div className='tab-bar'>
                         <div className={'source selected'}>DUBLIN CORE</div>
-                        <div className={'source'}>DETAILS</div>
-                        <div className={'source'}>MEDIA</div>
+                        <div className={'source'} style={{display:'none'}}>DETAILS</div>
+                        <div className={'source'} style={{display:'none'}}>MEDIA</div>
                       </div>
                   </div>
                 </header>
@@ -279,25 +281,20 @@ export class SourceEditorWorkspace extends React.Component<SourceEditorProps, So
                         <ComboEditableFieldComponent
                             value={{key: parentName, value: source.parent}}
                             onChange={(value) => this.updateSource('parent', value === null ? null : value.value)}
-                            >
-                            <EditableComboDropdown
-                              comboSettings={{
+                                  comboSettings={{
                                 options: potentialParents.map((par) => ({ key: par.label, value: par.uid})),
                                 typeName: 'Source'
                               }}
                             />
-                          </ComboEditableFieldComponent>
                             {source.parent !== null ? (<AddTabButton
                                 tabType='source'
                                 uid={source.parent} />) : null}
                     </div>
 
                     <div className='edit-group'>
-                        <StringEditableFieldComponent
+                        <SameAsEditableFieldComponent
                             value={source.sameAs}
-                            onChange={(value) => this.updateSource('sameAs', value)}>
-                            <SameAsEditor />
-                        </StringEditableFieldComponent>
+                            onChange={(value) => this.updateSource('sameAs', value)} />
                     </div>
 
                     {this.props.dataStore!.dataStore.all.dublinCore.value.elements!.map((element) => {
@@ -317,11 +314,9 @@ export class SourceEditorWorkspace extends React.Component<SourceEditorProps, So
                                         }: {value.value}</li>
                                     ) : null)}
                                 </ul>
-                                <StringEditableFieldComponent
+                                <ParagraphEditableFieldComponent
                                     value={editableValue}
-                                    onChange={(value) => this.updateSourceElement(element, value)}>
-                                    <EditableParagraph />
-                                </StringEditableFieldComponent>
+                                    onChange={(value) => this.updateSourceElement(element, value)} />
                             </div>
                         );
                     })}

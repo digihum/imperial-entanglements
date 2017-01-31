@@ -11,7 +11,6 @@ import { DataController } from '../../stores/DataController';
 import { ModalStore } from '../../stores/ModalStore';
 
 import { Record, Predicate, Source } from '@digihum/falcon-core';
-import { EditableFieldComponent } from '../fields/EditableFieldComponent';
 
 import { SearchBar } from '../SearchBar';
 
@@ -24,8 +23,6 @@ import { ModalDefinition } from '../modal/ModalDefinition';
 import { groupBy, Dictionary } from 'lodash';
 
 import { inject, observer } from 'mobx-react';
-
-class RecordEditableFieldComponent extends EditableFieldComponent<Record> {}
 
 interface RecordsEditorProps {
   id: number;
@@ -88,7 +85,7 @@ export class RecordsEditor extends React.Component<RecordsEditorProps, RecordsEd
                 console.log('Records editor called cancel');
             },
             settings: {
-                options: predicates.map((pred) => ({ key: pred.label, value: pred.uid, meta: pred})),
+                options: predicates.map((pred) => ({ key: pred.label, value: pred})),
                 entityUid: this.props.id,
                 entityType: this.props.entityTypeId
             }

@@ -6,7 +6,6 @@
 
 import * as React from 'react';
 import { EditableSubfieldProps } from './EditableFieldComponent';
-export { EditableFieldComponent } from './EditableFieldComponent';
 
 import * as mousetrap from 'mousetrap';
 
@@ -48,7 +47,7 @@ export const EditableParagraph : React.StatelessComponent<EditableSubfieldProps<
         return (
             <div>
                 <textarea
-                    value={props.value!}
+                    value={props.value === null ? '' : props.value}
                     ref={bindKeyboard}
                     onChange={(e) => props.onChange!(e.target.value)}
                     style={{ width: '100%', height: '6em'}}></textarea>

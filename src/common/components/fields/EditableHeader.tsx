@@ -6,7 +6,6 @@
 
 import * as React from 'react';
 import { EditableSubfieldProps } from './EditableFieldComponent';
-export { EditableFieldComponent } from './EditableFieldComponent';
 
 export const EditableHeader : React.StatelessComponent<EditableSubfieldProps<string>>
     = (props: EditableSubfieldProps<string>) => {

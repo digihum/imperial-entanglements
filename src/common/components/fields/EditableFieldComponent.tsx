@@ -28,11 +28,11 @@ interface EditableFieldState<T> {
     internalValue: T | null;
 }
 
-export class EditableFieldComponent<T> extends React.Component<EditableFieldProps<T>, EditableFieldState<T>> {
-
-    public static propTypes = {
-      children: React.PropTypes.element.isRequired
-    };
+export function EditableFieldHOC<P, S, D>(
+  WrappedComponent: new() => React.Component<P & EditableSubfieldProps<D>, S> |
+  React.PureComponent<P & EditableSubfieldProps<D>, S>
+  ) {
+  return class EditableFieldComponent extends React.Component<EditableFieldProps<D>, EditableFieldState<D>> {
 
     constructor() {
         super();
@@ -46,7 +46,7 @@ export class EditableFieldComponent<T> extends React.Component<EditableFieldProp
       this.setState({internalValue: this.props.value === undefined ? null : this.props.value});
     }
 
-    public componentWillReceiveProps(newProps: EditableFieldProps<T>) {
+    public componentWillReceiveProps(newProps: EditableFieldProps<D>) {
         this.setState({internalValue: newProps.value});
     }
 
@@ -54,7 +54,7 @@ export class EditableFieldComponent<T> extends React.Component<EditableFieldProp
         this.setState({edit: true, internalValue: this.props.value});
     }
 
-    public setInternalValue(internalValue: T) {
+    public setInternalValue(internalValue: D) {
         this.setState({ internalValue });
     }
 
@@ -69,17 +69,17 @@ export class EditableFieldComponent<T> extends React.Component<EditableFieldProp
 
     public render() {
 
-      return (<span>
-        {React.Children.map(this.props.children, (child) => React.cloneElement(child as any, {
-          edit: this.state.edit,
-          value: this.state.internalValue,
-          onChange: this.setInternalValue.bind(this),
-          setEdit: this.switchToEditState.bind(this),
-          acceptChanges: this.acceptChanges.bind(this),
-          cancelChanges: this.cancelChanges.bind(this),
-          onDelete: (e) => this.props.onDelete !== undefined ? this.props.onDelete(this.props.value) : null
-        }))}
-        </span>
+      return (<WrappedComponent
+        {...this.props}
+         edit={this.state.edit}
+          value={this.state.internalValue}
+          onChange={this.setInternalValue.bind(this)}
+          setEdit={this.switchToEditState.bind(this)}
+          acceptChanges={this.acceptChanges.bind(this)}
+          cancelChanges={this.cancelChanges.bind(this)}
+          onDelete={(e) => this.props.onDelete !== undefined ? this.props.onDelete(this.props.value) : null}
+       />
       );
     }
+  };
 }

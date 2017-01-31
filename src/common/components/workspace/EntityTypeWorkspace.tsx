@@ -13,7 +13,8 @@ import { EntityType, Serializer } from '@digihum/falcon-core';
 
 import { AddTabButton } from '../AddTabButton';
 
-import { EditableHeader, EditableFieldComponent } from '../fields/EditableHeader';
+import { EditableHeader } from '../fields/EditableHeader';
+import { EditableFieldHOC } from '../fields/EditableFieldComponent';
 import { EditableParagraph } from '../fields/EditableParagraph';
 import { EditableComboDropdown } from '../fields/EditableComboDropdown';
 import { ComboDropdownOption } from '../ComboDropdown';
@@ -26,8 +27,10 @@ import { DataController } from '../../stores/DataController';
 import { ModalStore } from '../../stores/ModalStore';
 
 
-class StringEditableFieldComponent extends EditableFieldComponent<string> {}
-class ComboEditableFieldComponent extends EditableFieldComponent<ComboDropdownOption<number>> {}
+const HeaderEditableFieldComponent = EditableFieldHOC(EditableHeader);
+const ParagraphEditableFieldComponent = EditableFieldHOC(EditableParagraph);
+const SameAsEditableFieldComponent = EditableFieldHOC(SameAsEditor);
+const ComboEditableFieldComponent = EditableFieldHOC(EditableComboDropdown);
 
 interface EntityTypeWorkspaceProps {
     id: number;
@@ -64,7 +67,7 @@ export class EntityTypeWorkspace extends React.Component<EntityTypeWorkspaceProp
         const entityType = this.props.dataStore!.dataStore.tabs.entity_type[this.props.id].value;
 
         const newEntityType = Serializer.fromJson(EntityType,
-            Object.assign({}, Serializer.toJson(entityType), { name: 'Copy of ' + entityType.label}));
+            Object.assign({}, Serializer.toJson(entityType), { label: 'Copy of ' + entityType.label}));
 
         this.props.dataStore!.postItem(EntityType, AppUrls.entity_type, newEntityType, {})
             .then(([id]) => {
@@ -164,11 +167,9 @@ export class EntityTypeWorkspace extends React.Component<EntityTypeWorkspaceProp
                             )})}
                         </div>
                         <i className='fa fa-tag item-icon'></i>
-                        <StringEditableFieldComponent
+                        <HeaderEditableFieldComponent
                             value={entityType.label}
-                            onChange={(value) => this.update({'label': value})}>
-                            <EditableHeader />
-                        </StringEditableFieldComponent>
+                            onChange={(value) => this.update({'label': value})} />
                     </div>
                     <div className='sub-toolbar'>
                         <i
@@ -202,14 +203,12 @@ export class EntityTypeWorkspace extends React.Component<EntityTypeWorkspaceProp
                         <label className='small'>Parent</label>
                         <ComboEditableFieldComponent
                             value={entityType.parent === null ? {key: '', value: null} : {key: parentName, value: entityType.parent}}
-                            onChange={(value) => this.update({'parent': value === null ? null : value.value})} >
-                            <EditableComboDropdown
-                              comboSettings={{
+                            onChange={(value) => this.update({'parent': value === null ? null : value.value})}
+                             comboSettings={{
                                options: potentialParentOptions,
                                 typeName: 'EntityType'
                               }}
                             />
-                        </ComboEditableFieldComponent>
                         {entityType.parent !== null ? (<AddTabButton
                             tabType='entity_type'
                             uid={entityType.parent} />) : null}
@@ -217,19 +216,15 @@ export class EntityTypeWorkspace extends React.Component<EntityTypeWorkspaceProp
 
                     <div className='edit-group'>
                         <label className='small'>Description</label>
-                        <StringEditableFieldComponent
+                        <ParagraphEditableFieldComponent
                             value={entityType.description}
-                            onChange={(value) => this.update({'description': value})}>
-                            <EditableParagraph />
-                        </StringEditableFieldComponent>
+                            onChange={(value) => this.update({'description': value})} />
                     </div>
 
                     <div className='edit-group'>
-                        <StringEditableFieldComponent
+                        <SameAsEditableFieldComponent
                             value={entityType.sameAs}
-                            onChange={(value) => this.update({'sameAs': value})}>
-                            <SameAsEditor/>
-                        </StringEditableFieldComponent>
+                            onChange={(value) => this.update({'sameAs': value})} />
                     </div>
 
                     <div>

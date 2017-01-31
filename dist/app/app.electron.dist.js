@@ -126,7 +126,7 @@ module.exports = require("lodash");
  * @version 0.2.0
  */
 
-const itemTypes_1 = __webpack_require__(21);
+const itemTypes_1 = __webpack_require__(22);
 exports.AppUrls = {
     element_set: itemTypes_1.itemTypes.element_set.machineName,
     record: itemTypes_1.itemTypes.record.machineName,
@@ -567,92 +567,59 @@ exports.Overlay = Overlay;
  * @version 0.2.0
  */
 
-const React = __webpack_require__(0);
-class EditableFieldComponent extends React.Component {
-    constructor() {
-        super();
-        this.state = {
-            edit: false,
-            internalValue: null
-        };
+var __assign = (this && this.__assign) || Object.assign || function(t) {
+    for (var s, i = 1, n = arguments.length; i < n; i++) {
+        s = arguments[i];
+        for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+            t[p] = s[p];
     }
-    componentWillMount() {
-        this.setState({ internalValue: this.props.value === undefined ? null : this.props.value });
-    }
-    componentWillReceiveProps(newProps) {
-        this.setState({ internalValue: newProps.value });
-    }
-    switchToEditState() {
-        this.setState({ edit: true, internalValue: this.props.value });
-    }
-    setInternalValue(internalValue) {
-        this.setState({ internalValue });
-    }
-    acceptChanges() {
-        this.props.onChange(this.state.internalValue);
-        this.setState({ edit: false });
-    }
-    cancelChanges() {
-        this.setState({ edit: false, internalValue: this.props.value });
-    }
-    render() {
-        return (React.createElement("span", null, React.Children.map(this.props.children, (child) => React.cloneElement(child, {
-            edit: this.state.edit,
-            value: this.state.internalValue,
-            onChange: this.setInternalValue.bind(this),
-            setEdit: this.switchToEditState.bind(this),
-            acceptChanges: this.acceptChanges.bind(this),
-            cancelChanges: this.cancelChanges.bind(this),
-            onDelete: (e) => this.props.onDelete !== undefined ? this.props.onDelete(this.props.value) : null
-        }))));
-    }
-}
-EditableFieldComponent.propTypes = {
-    children: React.PropTypes.element.isRequired
+    return t;
 };
-exports.EditableFieldComponent = EditableFieldComponent;
+const React = __webpack_require__(0);
+function EditableFieldHOC(WrappedComponent) {
+    return class EditableFieldComponent extends React.Component {
+        constructor() {
+            super();
+            this.state = {
+                edit: false,
+                internalValue: null
+            };
+        }
+        componentWillMount() {
+            this.setState({ internalValue: this.props.value === undefined ? null : this.props.value });
+        }
+        componentWillReceiveProps(newProps) {
+            this.setState({ internalValue: newProps.value });
+        }
+        switchToEditState() {
+            this.setState({ edit: true, internalValue: this.props.value });
+        }
+        setInternalValue(internalValue) {
+            this.setState({ internalValue });
+        }
+        acceptChanges() {
+            this.props.onChange(this.state.internalValue);
+            this.setState({ edit: false });
+        }
+        cancelChanges() {
+            this.setState({ edit: false, internalValue: this.props.value });
+        }
+        render() {
+            return (React.createElement(WrappedComponent, __assign({}, this.props, { edit: this.state.edit, value: this.state.internalValue, onChange: this.setInternalValue.bind(this), setEdit: this.switchToEditState.bind(this), acceptChanges: this.acceptChanges.bind(this), cancelChanges: this.cancelChanges.bind(this), onDelete: (e) => this.props.onDelete !== undefined ? this.props.onDelete(this.props.value) : null })));
+        }
+    };
+}
+exports.EditableFieldHOC = EditableFieldHOC;
 
 
 /***/ }),
 /* 12 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview Sidebar for editor
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.2.0
- */
-
-const React = __webpack_require__(0);
-var EditableFieldComponent_1 = __webpack_require__(11);
-exports.EditableFieldComponent = EditableFieldComponent_1.EditableFieldComponent;
-exports.EditableHeader = (props) => {
-    if (!props.edit || props.value == null) {
-        return (React.createElement("h2", null,
-            props.value,
-            React.createElement("sup", null,
-                React.createElement("i", { className: 'fa fa-pencil-square-o', title: 'Edit', "aria-hidden": 'true', onClick: props.setEdit }))));
-    }
-    else {
-        return (React.createElement("span", null,
-            React.createElement("input", { type: 'text', value: props.value, className: 'text-edit-header', onChange: (e) => props.onChange(e.target.value) }),
-            React.createElement("button", { onClick: props.acceptChanges },
-                React.createElement("i", { className: 'fa fa-check', "aria-hidden": 'true' })),
-            React.createElement("button", { onClick: props.cancelChanges },
-                React.createElement("i", { className: 'fa fa-times', "aria-hidden": 'true' }))));
-    }
-};
-
-
-/***/ }),
-/* 13 */
 /***/ (function(module, exports) {
 
 module.exports = require("mousetrap");
 
 /***/ }),
-/* 14 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -677,6 +644,36 @@ exports.SearchBar = (props) => {
             React.createElement("span", { className: 'input-addon-icon' },
                 React.createElement("i", { className: 'fa fa-search fa-fw' })),
             React.createElement("input", { type: 'text', className: 'form-control with-addon', onChange: (e) => props.setFilterFunc(filterFunc(e.target.value)) }))));
+};
+
+
+/***/ }),
+/* 14 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview Sidebar for editor
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.2.0
+ */
+
+const React = __webpack_require__(0);
+exports.EditableHeader = (props) => {
+    if (!props.edit || props.value == null) {
+        return (React.createElement("h2", null,
+            props.value,
+            React.createElement("sup", null,
+                React.createElement("i", { className: 'fa fa-pencil-square-o', title: 'Edit', "aria-hidden": 'true', onClick: props.setEdit }))));
+    }
+    else {
+        return (React.createElement("span", null,
+            React.createElement("input", { type: 'text', value: props.value, className: 'text-edit-header', onChange: (e) => props.onChange(e.target.value) }),
+            React.createElement("button", { onClick: props.acceptChanges },
+                React.createElement("i", { className: 'fa fa-check', "aria-hidden": 'true' })),
+            React.createElement("button", { onClick: props.cancelChanges },
+                React.createElement("i", { className: 'fa fa-times', "aria-hidden": 'true' }))));
+    }
 };
 
 
@@ -816,17 +813,15 @@ var __assign = (this && this.__assign) || Object.assign || function(t) {
     return t;
 };
 const React = __webpack_require__(0);
-var EditableFieldComponent_1 = __webpack_require__(11);
-exports.EditableFieldComponent = EditableFieldComponent_1.EditableFieldComponent;
 const ComboDropdown_1 = __webpack_require__(8);
 function EditableComboDropdown(props) {
     if (props.edit) {
         return (React.createElement("div", null,
             React.createElement(ComboDropdown_1.NumberComboDropdown, __assign({}, props.comboSettings, { value: props.value, setValue: props.onChange, allowNew: false, createNewValue: () => { } })),
-            React.createElement("button", null,
-                React.createElement("i", { className: 'fa fa-check', onClick: props.acceptChanges, "aria-hidden": 'true' })),
-            React.createElement("button", null,
-                React.createElement("i", { className: 'fa fa-times', "aria-hidden": 'true', onClick: props.cancelChanges }))));
+            React.createElement("button", { onClick: props.acceptChanges },
+                React.createElement("i", { className: 'fa fa-check', "aria-hidden": 'true' })),
+            React.createElement("button", { onClick: props.cancelChanges },
+                React.createElement("i", { className: 'fa fa-times', "aria-hidden": 'true' }))));
     }
     else {
         return (React.createElement("div", null,
@@ -852,7 +847,52 @@ exports.EditableComboDropdown = EditableComboDropdown;
  */
 
 const React = __webpack_require__(0);
-const mousetrap = __webpack_require__(13);
+const mousetrap = __webpack_require__(12);
+exports.EditableParagraph = (props) => {
+    let keyBoardShortcuts;
+    const bindKeyboard = (val) => {
+        if (val !== null) {
+            val.focus();
+            keyBoardShortcuts = new mousetrap(val);
+            keyBoardShortcuts.bind('ctrl+return', props.acceptChanges);
+            keyBoardShortcuts.bind('escape', props.cancelChanges);
+        }
+        else {
+            keyBoardShortcuts.unbind('ctrl+return');
+        }
+    };
+    if (!props.edit) {
+        return (React.createElement("div", { onClick: props.setEdit, className: 'editable-paragraph-box' },
+            React.createElement("p", null,
+                props.value === null || props.value.length > 0 ? props.value
+                    : (React.createElement("em", null, "No value")),
+                React.createElement("sup", null,
+                    React.createElement("i", { className: 'fa fa-pencil-square-o', title: 'Edit', "aria-hidden": 'true' })))));
+    }
+    else {
+        return (React.createElement("div", null,
+            React.createElement("textarea", { value: props.value === null ? '' : props.value, ref: bindKeyboard, onChange: (e) => props.onChange(e.target.value), style: { width: '100%', height: '6em' } }),
+            React.createElement("button", { onClick: props.acceptChanges },
+                React.createElement("i", { className: 'fa fa-check', "aria-hidden": 'true' })),
+            React.createElement("button", { onClick: props.cancelChanges },
+                React.createElement("i", { className: 'fa fa-times', "aria-hidden": 'true' }))));
+    }
+};
+
+
+/***/ }),
+/* 19 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview Sidebar for editor
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.2.0
+ */
+
+const React = __webpack_require__(0);
+const mousetrap = __webpack_require__(12);
 class SameAsEditor extends React.Component {
     constructor(props) {
         super();
@@ -926,7 +966,7 @@ exports.SameAsEditor = SameAsEditor;
 
 
 /***/ }),
-/* 19 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -960,7 +1000,7 @@ exports.findParentTree = (uid, data, ancestors = []) => {
 
 
 /***/ }),
-/* 20 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -990,7 +1030,7 @@ exports.formatDate = (str) => {
 
 
 /***/ }),
-/* 21 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1079,19 +1119,19 @@ exports.itemTypes = {
 
 
 /***/ }),
-/* 22 */
+/* 23 */
 /***/ (function(module, exports) {
 
 module.exports = require("graphql");
 
 /***/ }),
-/* 23 */
+/* 24 */
 /***/ (function(module, exports) {
 
 module.exports = require("react-sortable-hoc");
 
 /***/ }),
-/* 24 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1203,7 +1243,7 @@ exports.EntityController = EntityController;
 
 
 /***/ }),
-/* 25 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1379,7 +1419,7 @@ exports.PredicateController = PredicateController;
 
 
 /***/ }),
-/* 26 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1412,53 +1452,6 @@ class RecursiveTree extends React.Component {
     }
 }
 exports.RecursiveTree = RecursiveTree;
-
-
-/***/ }),
-/* 27 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview Sidebar for editor
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.2.0
- */
-
-const React = __webpack_require__(0);
-var EditableFieldComponent_1 = __webpack_require__(11);
-exports.EditableFieldComponent = EditableFieldComponent_1.EditableFieldComponent;
-const mousetrap = __webpack_require__(13);
-exports.EditableParagraph = (props) => {
-    let keyBoardShortcuts;
-    const bindKeyboard = (val) => {
-        if (val !== null) {
-            val.focus();
-            keyBoardShortcuts = new mousetrap(val);
-            keyBoardShortcuts.bind('ctrl+return', props.acceptChanges);
-            keyBoardShortcuts.bind('escape', props.cancelChanges);
-        }
-        else {
-            keyBoardShortcuts.unbind('ctrl+return');
-        }
-    };
-    if (!props.edit) {
-        return (React.createElement("div", { onClick: props.setEdit, className: 'editable-paragraph-box' },
-            React.createElement("p", null,
-                props.value === null || props.value.length > 0 ? props.value
-                    : (React.createElement("em", null, "No value")),
-                React.createElement("sup", null,
-                    React.createElement("i", { className: 'fa fa-pencil-square-o', title: 'Edit', "aria-hidden": 'true' })))));
-    }
-    else {
-        return (React.createElement("div", null,
-            React.createElement("textarea", { value: props.value, ref: bindKeyboard, onChange: (e) => props.onChange(e.target.value), style: { width: '100%', height: '6em' } }),
-            React.createElement("button", { onClick: props.acceptChanges },
-                React.createElement("i", { className: 'fa fa-check', "aria-hidden": 'true' })),
-            React.createElement("button", { onClick: props.cancelChanges },
-                React.createElement("i", { className: 'fa fa-times', "aria-hidden": 'true' }))));
-    }
-};
 
 
 /***/ }),
@@ -1804,7 +1797,7 @@ exports.Database = Database;
  * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
  * @version 0.2.0
  */
-const itemTypes_1 = __webpack_require__(21);
+const itemTypes_1 = __webpack_require__(22);
 const ServerApiService_1 = __webpack_require__(48);
 const QueryEngine_1 = __webpack_require__(47);
 const controllers_1 = __webpack_require__(54);
@@ -1847,7 +1840,7 @@ const React = __webpack_require__(0);
 const react_router_1 = __webpack_require__(9);
 const RouteNotFound_1 = __webpack_require__(101);
 const ApiService_1 = __webpack_require__(4);
-const itemTypes_1 = __webpack_require__(21);
+const itemTypes_1 = __webpack_require__(22);
 const Admin_1 = __webpack_require__(97);
 const AdminApp_1 = __webpack_require__(46);
 const User_1 = __webpack_require__(102);
@@ -2142,7 +2135,7 @@ exports.AdminApp = (props) => (React.createElement("div", { className: 'page' },
  * @version 0.2.0
  */
 
-const graphql_1 = __webpack_require__(22);
+const graphql_1 = __webpack_require__(23);
 const entityQLType_1 = __webpack_require__(55);
 const predicateQLType_1 = __webpack_require__(56);
 class QueryEngine {
@@ -2366,8 +2359,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 const falcon_core_1 = __webpack_require__(1);
 const GenericController_1 = __webpack_require__(7);
-const PredicateController_1 = __webpack_require__(25);
-const EntityController_1 = __webpack_require__(24);
+const PredicateController_1 = __webpack_require__(26);
+const EntityController_1 = __webpack_require__(25);
 const Exceptions_1 = __webpack_require__(6);
 const lodash_1 = __webpack_require__(3);
 class EntityTypeController extends GenericController_1.GenericController {
@@ -2659,11 +2652,11 @@ exports.SourceElementController = SourceElementController;
 
 var ElementSetController_1 = __webpack_require__(50);
 exports.ElementSetController = ElementSetController_1.ElementSetController;
-var EntityController_1 = __webpack_require__(24);
+var EntityController_1 = __webpack_require__(25);
 exports.EntityController = EntityController_1.EntityController;
 var EntityTypeController_1 = __webpack_require__(51);
 exports.EntityTypeController = EntityTypeController_1.EntityTypeController;
-var PredicateController_1 = __webpack_require__(25);
+var PredicateController_1 = __webpack_require__(26);
 exports.PredicateController = PredicateController_1.PredicateController;
 var RecordController_1 = __webpack_require__(16);
 exports.RecordController = RecordController_1.RecordController;
@@ -2686,7 +2679,7 @@ exports.SourceElementController = SourceElementController_1.SourceElementControl
  * @version 0.2.0
  */
 
-const graphql_1 = __webpack_require__(22);
+const graphql_1 = __webpack_require__(23);
 exports.entityQLType = (db, predicateType) => {
     return new graphql_1.GraphQLObjectType({
         name: 'Entity',
@@ -2759,7 +2752,7 @@ exports.entityQLType = (db, predicateType) => {
  * @version 0.2.0
  */
 
-const graphql_1 = __webpack_require__(22);
+const graphql_1 = __webpack_require__(23);
 exports.predicateQLType = (db) => {
     return new graphql_1.GraphQLObjectType({
         name: 'Predicate',
@@ -2865,7 +2858,7 @@ const SearchBox_1 = __webpack_require__(83);
 const ApiService_1 = __webpack_require__(4);
 const react_router_1 = __webpack_require__(9);
 const lodash_1 = __webpack_require__(3);
-const react_sortable_hoc_1 = __webpack_require__(23);
+const react_sortable_hoc_1 = __webpack_require__(24);
 const mobx_react_1 = __webpack_require__(2);
 const Handle = react_sortable_hoc_1.SortableHandle((props) => (React.createElement("div", { className: 'badge-container' },
     React.createElement("div", { className: 'badge ' + props.tabType },
@@ -3151,8 +3144,7 @@ const falcon_core_1 = __webpack_require__(1);
 const EditableFieldComponent_1 = __webpack_require__(11);
 const RecordRow_1 = __webpack_require__(66);
 const AddTabButton_1 = __webpack_require__(5);
-class RecordEditableFieldComponent extends EditableFieldComponent_1.EditableFieldComponent {
-}
+const RecordEditableFieldComponent = EditableFieldComponent_1.EditableFieldHOC(RecordRow_1.RecordRow);
 class RecordPredicate extends React.Component {
     constructor() {
         super();
@@ -3206,8 +3198,7 @@ class RecordPredicate extends React.Component {
                         React.createElement("th", { className: 'record-row-item score' }, "Score"),
                         React.createElement("th", { className: 'record-row-item score' }, "Period"),
                         React.createElement("th", { className: 'record-row-item buttons' }, "Actions"))),
-                React.createElement("tbody", null, this.props.records.map((record) => (React.createElement(RecordEditableFieldComponent, { key: `row-${record.uid}`, value: record, onChange: this.recordChanged.bind(this), onDelete: this.deleteRecord.bind(this) },
-                    React.createElement(RecordRow_1.RecordRow, { dimension: 'predicates', sources: this.props.sources, entities: this.state.potentialValues }))))))));
+                React.createElement("tbody", null, this.props.records.map((record) => (React.createElement(RecordEditableFieldComponent, { key: `row-${record.uid}`, value: record, onChange: this.recordChanged.bind(this), onDelete: this.deleteRecord.bind(this), sources: this.props.sources, entities: this.state.potentialValues })))))));
     }
 }
 exports.RecordPredicate = RecordPredicate;
@@ -3225,8 +3216,6 @@ exports.RecordPredicate = RecordPredicate;
  */
 
 const React = __webpack_require__(0);
-var EditableFieldComponent_1 = __webpack_require__(11);
-exports.EditableFieldComponent = EditableFieldComponent_1.EditableFieldComponent;
 const ScorePicker_1 = __webpack_require__(70);
 const ComboDropdown_1 = __webpack_require__(8);
 const StringFieldEditor_1 = __webpack_require__(68);
@@ -3234,7 +3223,7 @@ const EntityFieldEditor_1 = __webpack_require__(63);
 const DateFieldEditor_1 = __webpack_require__(62);
 const IntegerFieldEditor_1 = __webpack_require__(64);
 const AddTabButton_1 = __webpack_require__(5);
-const formatDate_1 = __webpack_require__(20);
+const formatDate_1 = __webpack_require__(21);
 const mobx_react_1 = __webpack_require__(2);
 const recordEditor = (props, record) => {
     switch (record.valueType) {
@@ -3308,10 +3297,10 @@ exports.RecordRow = mobx_react_1.inject('dataStore', 'modalStore')(mobx_react_1.
             React.createElement("td", { className: 'record-row-item period' },
                 React.createElement(DateFieldEditor_1.DateFieldEditor, { value: recordValue.period || '', onChange: (period) => props.onChange(Object.assign(recordValue, { period })) })),
             React.createElement("td", { className: 'record-row-item buttons' },
-                React.createElement("button", null,
-                    React.createElement("i", { className: 'fa fa-check', onClick: props.acceptChanges, "aria-hidden": 'true' })),
-                React.createElement("button", null,
-                    React.createElement("i", { className: 'fa fa-times', "aria-hidden": 'true', onClick: props.cancelChanges })))));
+                React.createElement("button", { onClick: props.acceptChanges },
+                    React.createElement("i", { className: 'fa fa-check', "aria-hidden": 'true' })),
+                React.createElement("button", { onClick: props.cancelChanges },
+                    React.createElement("i", { className: 'fa fa-times', "aria-hidden": 'true' })))));
     }
     else {
         return (React.createElement("tr", { className: 'record-row' },
@@ -3326,10 +3315,10 @@ exports.RecordRow = mobx_react_1.inject('dataStore', 'modalStore')(mobx_react_1.
                 React.createElement(ScorePicker_1.ScorePicker, { value: recordValue.score, readOnly: true })),
             React.createElement("td", { className: 'record-row-item period' }, formatDate_1.formatDate(recordValue.period)),
             React.createElement("td", { className: 'record-row-item buttons' },
-                React.createElement("button", null,
-                    React.createElement("i", { className: 'fa fa-pencil-square-o', title: 'Edit', onClick: props.setEdit, "aria-hidden": 'true' })),
-                React.createElement("button", null,
-                    React.createElement("i", { className: 'fa fa-trash', "aria-hidden": 'true', onClick: () => props.onDelete(props.value) })))));
+                React.createElement("button", { onClick: props.setEdit },
+                    React.createElement("i", { className: 'fa fa-pencil-square-o', title: 'Edit', "aria-hidden": 'true' })),
+                React.createElement("button", { onClick: () => props.onDelete(props.value) },
+                    React.createElement("i", { className: 'fa fa-trash', "aria-hidden": 'true' })))));
     }
 }));
 
@@ -3357,13 +3346,10 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 const React = __webpack_require__(0);
 const ApiService_1 = __webpack_require__(4);
 const falcon_core_1 = __webpack_require__(1);
-const EditableFieldComponent_1 = __webpack_require__(11);
-const SearchBar_1 = __webpack_require__(14);
+const SearchBar_1 = __webpack_require__(13);
 const RecordPredicate_1 = __webpack_require__(65);
-const findParentTree_1 = __webpack_require__(19);
+const findParentTree_1 = __webpack_require__(20);
 const mobx_react_1 = __webpack_require__(2);
-class RecordEditableFieldComponent extends EditableFieldComponent_1.EditableFieldComponent {
-}
 let RecordsEditor = class RecordsEditor extends React.Component {
     constructor() {
         super();
@@ -3396,7 +3382,7 @@ let RecordsEditor = class RecordsEditor extends React.Component {
                 console.log('Records editor called cancel');
             },
             settings: {
-                options: predicates.map((pred) => ({ key: pred.label, value: pred.uid, meta: pred })),
+                options: predicates.map((pred) => ({ key: pred.label, value: pred })),
                 entityUid: this.props.id,
                 entityType: this.props.entityTypeId
             }
@@ -3470,7 +3456,7 @@ exports.StringFieldEditor = (props) => {
 const React = __webpack_require__(0);
 const moment = __webpack_require__(15);
 const lodash_1 = __webpack_require__(3);
-const formatDate_1 = __webpack_require__(20);
+const formatDate_1 = __webpack_require__(21);
 class DatePickerDropdown extends React.Component {
     constructor() {
         super();
@@ -3873,7 +3859,7 @@ const Overlay_1 = __webpack_require__(10);
 const falcon_core_1 = __webpack_require__(1);
 const ApiService_1 = __webpack_require__(4);
 const mobx_react_1 = __webpack_require__(2);
-const mousetrap = __webpack_require__(13);
+const mousetrap = __webpack_require__(12);
 let CreateEntityType = class CreateEntityType extends React.Component {
     constructor() {
         super();
@@ -3992,11 +3978,14 @@ let CreatePredicate = class CreatePredicate extends React.Component {
         });
     }
     create() {
+        if (this.state.range.value === null || this.state.domain.value === null) {
+            throw new Error('Domain and range must be set');
+        }
         const newPredicate = falcon_core_1.Serializer.fromJson(falcon_core_1.Predicate, {
             label: this.state.label,
             domain: this.state.domain.value,
-            range: this.state.range.value,
-            rangeIsReference: this.state.range.value === null ? false : this.state.range.value.isReference
+            range: this.state.range.value.value,
+            rangeIsReference: this.state.range.value.isReference
         });
         this.props.dataStore.postItem(falcon_core_1.Predicate, ApiService_1.AppUrls.predicate, newPredicate, {})
             .then((result) => {
@@ -4135,6 +4124,8 @@ const falcon_core_1 = __webpack_require__(1);
 const ApiService_1 = __webpack_require__(4);
 const ComboDropdown_1 = __webpack_require__(8);
 const mobx_react_1 = __webpack_require__(2);
+class PredicateComboDropdown extends ComboDropdown_1.ComboDropdown {
+}
 let CreateRecord = class CreateRecord extends React.Component {
     constructor() {
         super();
@@ -4151,7 +4142,7 @@ let CreateRecord = class CreateRecord extends React.Component {
             name: 'predicate',
             complete: (data) => {
                 console.log('Predicate editor called complete');
-                this.setComboValue({ key: data.label, value: data.uid === null ? null : data.uid.toString(), meta: data });
+                this.setComboValue({ key: data.label, value: data === null ? null : data });
             },
             cancel: () => {
                 console.log('Predicate editor called cancel');
@@ -4164,10 +4155,13 @@ let CreateRecord = class CreateRecord extends React.Component {
         this.props.modalStore.addModal(modalDef);
     }
     setComboValue(opt) {
+        if (opt.value === null) {
+            throw new Error('Value cannot be null');
+        }
         this.props.dataStore.postItem(falcon_core_1.Record, ApiService_1.AppUrls.record, falcon_core_1.Serializer.fromJson(falcon_core_1.Record, {
-            predicate: opt.meta.uid,
+            predicate: opt.value.uid,
             entity: this.props.entityUid,
-            valueType: opt.meta.rangeIsReference ? 'entity' : opt.meta.range,
+            valueType: opt.value.rangeIsReference ? 'entity' : opt.value.range,
             score: 3,
             source: this.props.dataStore.defaultSource
         }), {})
@@ -4177,7 +4171,7 @@ let CreateRecord = class CreateRecord extends React.Component {
     render() {
         return (React.createElement(Overlay_1.Overlay, null,
             React.createElement("h2", null, "Create Record"),
-            React.createElement(ComboDropdown_1.NumberComboDropdown, { ref: 'comboDropDown', options: this.props.options, typeName: 'predicate', value: this.state.comboValue, setValue: this.setComboValue.bind(this), createNewValue: this.createNewPredicate.bind(this), updateSearchString: (s) => this.setState({ searchValue: s }) })));
+            React.createElement(PredicateComboDropdown, { ref: 'comboDropDown', options: this.props.options, typeName: 'predicate', value: this.state.comboValue, setValue: this.setComboValue.bind(this), createNewValue: this.createNewPredicate.bind(this), updateSearchString: (s) => this.setState({ searchValue: s }) })));
     }
 };
 CreateRecord = __decorate([
@@ -4214,7 +4208,7 @@ const Overlay_1 = __webpack_require__(10);
 const falcon_core_1 = __webpack_require__(1);
 const ApiService_1 = __webpack_require__(4);
 const mobx_react_1 = __webpack_require__(2);
-const mousetrap = __webpack_require__(13);
+const mousetrap = __webpack_require__(12);
 let CreateSource = class CreateSource extends React.Component {
     constructor() {
         super();
@@ -4286,7 +4280,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 const React = __webpack_require__(0);
 const Overlay_1 = __webpack_require__(10);
 const mobx_react_1 = __webpack_require__(2);
-const mousetrap = __webpack_require__(13);
+const mousetrap = __webpack_require__(12);
 let CreateTabSet = class CreateTabSet extends React.Component {
     constructor() {
         super();
@@ -4365,7 +4359,7 @@ const lev = __webpack_require__(105);
 const ComboDropdown_1 = __webpack_require__(8);
 const lodash_1 = __webpack_require__(3);
 const AddTabButton_1 = __webpack_require__(5);
-const formatDate_1 = __webpack_require__(20);
+const formatDate_1 = __webpack_require__(21);
 const mobx_react_1 = __webpack_require__(2);
 const sortIcons = {
     'none': 'fa fa-sort',
@@ -4634,8 +4628,8 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 const React = __webpack_require__(0);
 const AddTabButton_1 = __webpack_require__(5);
-const SearchBar_1 = __webpack_require__(14);
-const RecursiveTree_1 = __webpack_require__(26);
+const SearchBar_1 = __webpack_require__(13);
+const RecursiveTree_1 = __webpack_require__(27);
 const mobx_react_1 = __webpack_require__(2);
 class EntityRecursiveTree extends RecursiveTree_1.RecursiveTree {
 }
@@ -4725,7 +4719,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 const React = __webpack_require__(0);
 const AddTabButton_1 = __webpack_require__(5);
 const mobx_react_1 = __webpack_require__(2);
-const SearchBar_1 = __webpack_require__(14);
+const SearchBar_1 = __webpack_require__(13);
 let PredicateList = class PredicateList extends React.Component {
     constructor() {
         super();
@@ -4817,8 +4811,8 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 const React = __webpack_require__(0);
 const AddTabButton_1 = __webpack_require__(5);
 const mobx_react_1 = __webpack_require__(2);
-const SearchBar_1 = __webpack_require__(14);
-const RecursiveTree_1 = __webpack_require__(26);
+const SearchBar_1 = __webpack_require__(13);
+const RecursiveTree_1 = __webpack_require__(27);
 class SourceRecursiveTree extends RecursiveTree_1.RecursiveTree {
 }
 let SourceList = class SourceList extends React.Component {
@@ -4970,13 +4964,13 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 const React = __webpack_require__(0);
 const ApiService_1 = __webpack_require__(4);
 const falcon_core_1 = __webpack_require__(1);
-const findParentTree_1 = __webpack_require__(19);
-const EditableHeader_1 = __webpack_require__(12);
+const findParentTree_1 = __webpack_require__(20);
+const EditableHeader_1 = __webpack_require__(14);
+const EditableFieldComponent_1 = __webpack_require__(11);
 const EntityWorkspaceCoreView_1 = __webpack_require__(91);
 const EntityWorkspaceReferenceView_1 = __webpack_require__(92);
 const mobx_react_1 = __webpack_require__(2);
-class StringEditableFieldComponent extends EditableHeader_1.EditableFieldComponent {
-}
+const HeaderEditableFieldComponent = EditableFieldComponent_1.EditableFieldHOC(EditableHeader_1.EditableHeader);
 // What can I do?
 // Entity Operations
 // - Delete the entity
@@ -5060,7 +5054,7 @@ let EntityEditorWorkspace = class EntityEditorWorkspace extends React.Component 
                 console.log('Records editor called cancel');
             },
             settings: {
-                options: predicates.map((pred) => ({ key: pred.label, value: pred.uid, meta: pred })),
+                options: predicates.map((pred) => ({ key: pred.label, value: pred })),
                 entityUid: this.props.id,
                 entityType: entityType.uid
             }
@@ -5092,8 +5086,7 @@ let EntityEditorWorkspace = class EntityEditorWorkspace extends React.Component 
                 React.createElement("div", { className: 'primary-toolbar' },
                     React.createElement("div", { className: 'main-toolbar' },
                         React.createElement("i", { className: 'fa fa-cube item-icon' }),
-                        React.createElement(StringEditableFieldComponent, { value: entity.label, onChange: (value) => this.update({ 'label': value }) },
-                            React.createElement(EditableHeader_1.EditableHeader, null))),
+                        React.createElement(HeaderEditableFieldComponent, { value: entity.label, onChange: (value) => this.update({ 'label': value }) })),
                     React.createElement("div", { className: 'sub-toolbar' },
                         React.createElement("i", { className: 'fa fa-trash delete button', "aria-hidden": 'true', onClick: this.del.bind(this) }),
                         React.createElement("i", { className: 'fa fa-clone button', "aria-hidden": 'true', onClick: this.clone.bind(this) }))),
@@ -5137,18 +5130,19 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 const React = __webpack_require__(0);
-const SameAsEditor_1 = __webpack_require__(18);
+const SameAsEditor_1 = __webpack_require__(19);
 const ApiService_1 = __webpack_require__(4);
 const falcon_core_1 = __webpack_require__(1);
 const AddTabButton_1 = __webpack_require__(5);
-const EditableHeader_1 = __webpack_require__(12);
-const EditableParagraph_1 = __webpack_require__(27);
+const EditableHeader_1 = __webpack_require__(14);
+const EditableFieldComponent_1 = __webpack_require__(11);
+const EditableParagraph_1 = __webpack_require__(18);
 const EditableComboDropdown_1 = __webpack_require__(17);
 const mobx_react_1 = __webpack_require__(2);
-class StringEditableFieldComponent extends EditableHeader_1.EditableFieldComponent {
-}
-class ComboEditableFieldComponent extends EditableHeader_1.EditableFieldComponent {
-}
+const HeaderEditableFieldComponent = EditableFieldComponent_1.EditableFieldHOC(EditableHeader_1.EditableHeader);
+const ParagraphEditableFieldComponent = EditableFieldComponent_1.EditableFieldHOC(EditableParagraph_1.EditableParagraph);
+const SameAsEditableFieldComponent = EditableFieldComponent_1.EditableFieldHOC(SameAsEditor_1.SameAsEditor);
+const ComboEditableFieldComponent = EditableFieldComponent_1.EditableFieldHOC(EditableComboDropdown_1.EditableComboDropdown);
 let EntityTypeWorkspace = class EntityTypeWorkspace extends React.Component {
     constructor() {
         super();
@@ -5161,7 +5155,7 @@ let EntityTypeWorkspace = class EntityTypeWorkspace extends React.Component {
     }
     copy() {
         const entityType = this.props.dataStore.dataStore.tabs.entity_type[this.props.id].value;
-        const newEntityType = falcon_core_1.Serializer.fromJson(falcon_core_1.EntityType, Object.assign({}, falcon_core_1.Serializer.toJson(entityType), { name: 'Copy of ' + entityType.label }));
+        const newEntityType = falcon_core_1.Serializer.fromJson(falcon_core_1.EntityType, Object.assign({}, falcon_core_1.Serializer.toJson(entityType), { label: 'Copy of ' + entityType.label }));
         this.props.dataStore.postItem(falcon_core_1.EntityType, ApiService_1.AppUrls.entity_type, newEntityType, {})
             .then(([id]) => {
             this.props.dataStore.createTab('entity_type', id, 'item');
@@ -5243,8 +5237,7 @@ let EntityTypeWorkspace = class EntityTypeWorkspace extends React.Component {
                                 React.createElement("i", { className: 'fa fa-angle-right' })));
                         })),
                         React.createElement("i", { className: 'fa fa-tag item-icon' }),
-                        React.createElement(StringEditableFieldComponent, { value: entityType.label, onChange: (value) => this.update({ 'label': value }) },
-                            React.createElement(EditableHeader_1.EditableHeader, null))),
+                        React.createElement(HeaderEditableFieldComponent, { value: entityType.label, onChange: (value) => this.update({ 'label': value }) })),
                     React.createElement("div", { className: 'sub-toolbar' },
                         React.createElement("i", { className: 'fa fa-plus add button', "aria-hidden": 'true', onClick: this.createEntity.bind(this) }),
                         React.createElement("i", { className: 'fa fa-trash delete button', "aria-hidden": 'true', onClick: this.del.bind(this) }),
@@ -5255,19 +5248,16 @@ let EntityTypeWorkspace = class EntityTypeWorkspace extends React.Component {
             React.createElement("section", { className: 'editor-body' },
                 React.createElement("div", { className: 'edit-group' },
                     React.createElement("label", { className: 'small' }, "Parent"),
-                    React.createElement(ComboEditableFieldComponent, { value: entityType.parent === null ? { key: '', value: null } : { key: parentName, value: entityType.parent }, onChange: (value) => this.update({ 'parent': value === null ? null : value.value }) },
-                        React.createElement(EditableComboDropdown_1.EditableComboDropdown, { comboSettings: {
-                                options: potentialParentOptions,
-                                typeName: 'EntityType'
-                            } })),
+                    React.createElement(ComboEditableFieldComponent, { value: entityType.parent === null ? { key: '', value: null } : { key: parentName, value: entityType.parent }, onChange: (value) => this.update({ 'parent': value === null ? null : value.value }), comboSettings: {
+                            options: potentialParentOptions,
+                            typeName: 'EntityType'
+                        } }),
                     entityType.parent !== null ? (React.createElement(AddTabButton_1.AddTabButton, { tabType: 'entity_type', uid: entityType.parent })) : null),
                 React.createElement("div", { className: 'edit-group' },
                     React.createElement("label", { className: 'small' }, "Description"),
-                    React.createElement(StringEditableFieldComponent, { value: entityType.description, onChange: (value) => this.update({ 'description': value }) },
-                        React.createElement(EditableParagraph_1.EditableParagraph, null))),
+                    React.createElement(ParagraphEditableFieldComponent, { value: entityType.description, onChange: (value) => this.update({ 'description': value }) })),
                 React.createElement("div", { className: 'edit-group' },
-                    React.createElement(StringEditableFieldComponent, { value: entityType.sameAs, onChange: (value) => this.update({ 'sameAs': value }) },
-                        React.createElement(SameAsEditor_1.SameAsEditor, null))),
+                    React.createElement(SameAsEditableFieldComponent, { value: entityType.sameAs, onChange: (value) => this.update({ 'sameAs': value }) })),
                 React.createElement("div", null,
                     React.createElement("h4", null, "Direct Children"),
                     React.createElement("ul", null, entityType.children
@@ -5347,16 +5337,18 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 const React = __webpack_require__(0);
 const react_router_1 = __webpack_require__(9);
-const SameAsEditor_1 = __webpack_require__(18);
+const SameAsEditor_1 = __webpack_require__(19);
 const ApiService_1 = __webpack_require__(4);
 const falcon_core_1 = __webpack_require__(1);
-const EditableHeader_1 = __webpack_require__(12);
-const EditableParagraph_1 = __webpack_require__(27);
+const EditableHeader_1 = __webpack_require__(14);
+const EditableFieldComponent_1 = __webpack_require__(11);
+const EditableParagraph_1 = __webpack_require__(18);
 const PredicateDescription_1 = __webpack_require__(28);
 const literalTypes_1 = __webpack_require__(29);
 const mobx_react_1 = __webpack_require__(2);
-class StringEditableFieldComponent extends EditableHeader_1.EditableFieldComponent {
-}
+const HeaderEditableFieldComponent = EditableFieldComponent_1.EditableFieldHOC(EditableHeader_1.EditableHeader);
+const ParagraphEditableFieldComponent = EditableFieldComponent_1.EditableFieldHOC(EditableParagraph_1.EditableParagraph);
+const SameAsEditableFieldComponent = EditableFieldComponent_1.EditableFieldHOC(SameAsEditor_1.SameAsEditor);
 // - Should state the number of times this predicate is used
 // - Widening the domain or range always okay
 // - Narrowing should check for conflicts and return them
@@ -5386,7 +5378,7 @@ let PredicateEditorWorkspace = class PredicateEditorWorkspace extends React.Comp
     }
     copy() {
         const predicate = this.props.dataStore.dataStore.tabs.predicate[this.props.id].value;
-        const newPredicate = falcon_core_1.Serializer.fromJson(falcon_core_1.Predicate, Object.assign({}, falcon_core_1.Serializer.toJson(predicate), { name: 'Copy of ' + predicate.label }));
+        const newPredicate = falcon_core_1.Serializer.fromJson(falcon_core_1.Predicate, Object.assign({}, falcon_core_1.Serializer.toJson(predicate), { label: 'Copy of ' + predicate.label }));
         this.props.dataStore.postItem(falcon_core_1.Predicate, ApiService_1.AppUrls.predicate, newPredicate, {})
             .then(([id]) => {
             this.props.dataStore.createTab('predicate', id, 'item');
@@ -5465,15 +5457,14 @@ let PredicateEditorWorkspace = class PredicateEditorWorkspace extends React.Comp
                 React.createElement("div", { className: 'primary-toolbar' },
                     React.createElement("div", { className: 'main-toolbar' },
                         React.createElement("i", { className: 'fa fa-long-arrow-right item-icon' }),
-                        React.createElement(StringEditableFieldComponent, { value: predicate.label, onChange: (value) => this.updatePredicate('label', value) },
-                            React.createElement(EditableHeader_1.EditableHeader, null))),
+                        React.createElement(HeaderEditableFieldComponent, { value: predicate.label, onChange: (value) => this.updatePredicate('label', value) })),
                     React.createElement("div", { className: 'sub-toolbar' },
                         React.createElement("i", { className: 'fa fa-trash delete button', "aria-hidden": 'true', onClick: this.del.bind(this) }),
                         React.createElement("i", { className: 'fa fa-clone button', "aria-hidden": 'true', onClick: this.copy.bind(this) }))),
                 React.createElement("div", { className: 'secondary-toolbar' },
                     React.createElement("div", { className: 'tab-bar' },
                         React.createElement("div", { className: 'predicate selected' }, "CORE"),
-                        React.createElement("div", { className: 'predicate' }, "SAME AS")))),
+                        React.createElement("div", { style: { display: 'none' }, className: 'predicate' }, "SAME AS")))),
             React.createElement("section", { className: 'editor-body' },
                 React.createElement("div", null,
                     React.createElement(react_router_1.Link, { to: `/edit/entity?col1p=${this.props.id}&col1f=exists` },
@@ -5481,14 +5472,12 @@ let PredicateEditorWorkspace = class PredicateEditorWorkspace extends React.Comp
                         predicate.uses)),
                 React.createElement("div", { className: 'edit-group' },
                     React.createElement("label", { className: 'small' }, "Description"),
-                    React.createElement(StringEditableFieldComponent, { value: predicate.description, onChange: (value) => this.updatePredicate('description', value) },
-                        React.createElement(EditableParagraph_1.EditableParagraph, null))),
+                    React.createElement(ParagraphEditableFieldComponent, { value: predicate.description, onChange: (value) => this.updatePredicate('description', value) })),
                 React.createElement("div", { className: 'edit-group' },
                     React.createElement("label", { className: 'small' }, "Typing"),
                     React.createElement(PredicateDescription_1.PredicateDescription, { domain: domain, range: range, domainChanged: (value) => this.updatePredicate('domain', value.value), rangeChanged: (value) => this.updatePredicate('range', value.value.value, value.value.isReference), mode: 'editSingle', domainOptions: entityTypeOptions, rangeOptions: literalTypeOptions.concat(entityTypeMap2) })),
                 React.createElement("div", null,
-                    React.createElement(StringEditableFieldComponent, { value: predicate.sameAs, onChange: (value) => this.updatePredicate('sameAs', value) },
-                        React.createElement(SameAsEditor_1.SameAsEditor, null))))));
+                    React.createElement(SameAsEditableFieldComponent, { value: predicate.sameAs, onChange: (value) => this.updatePredicate('sameAs', value) })))));
     }
 };
 PredicateEditorWorkspace.contextTypes = {
@@ -5523,19 +5512,20 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 const React = __webpack_require__(0);
-const SameAsEditor_1 = __webpack_require__(18);
+const SameAsEditor_1 = __webpack_require__(19);
 const ApiService_1 = __webpack_require__(4);
 const falcon_core_1 = __webpack_require__(1);
-const EditableHeader_1 = __webpack_require__(12);
-const EditableParagraph_1 = __webpack_require__(27);
+const EditableHeader_1 = __webpack_require__(14);
+const EditableFieldComponent_1 = __webpack_require__(11);
+const EditableParagraph_1 = __webpack_require__(18);
 const EditableComboDropdown_1 = __webpack_require__(17);
 const lodash_1 = __webpack_require__(3);
 const mobx_react_1 = __webpack_require__(2);
 const AddTabButton_1 = __webpack_require__(5);
-class StringEditableFieldComponent extends EditableHeader_1.EditableFieldComponent {
-}
-class ComboEditableFieldComponent extends EditableHeader_1.EditableFieldComponent {
-}
+const HeaderEditableFieldComponent = EditableFieldComponent_1.EditableFieldHOC(EditableHeader_1.EditableHeader);
+const ParagraphEditableFieldComponent = EditableFieldComponent_1.EditableFieldHOC(EditableParagraph_1.EditableParagraph);
+const SameAsEditableFieldComponent = EditableFieldComponent_1.EditableFieldHOC(SameAsEditor_1.SameAsEditor);
+const ComboEditableFieldComponent = EditableFieldComponent_1.EditableFieldHOC(EditableComboDropdown_1.EditableComboDropdown);
 // - Should state the number of times this predicate is used
 // - Widening the domain or range always okay
 // - Narrowing should check for conflicts and return them
@@ -5634,7 +5624,7 @@ let SourceEditorWorkspace = class SourceEditorWorkspace extends React.Component 
     }
     createChild() {
         const source = this.props.dataStore.dataStore.tabs.source[this.props.id].value.source;
-        const newSource = falcon_core_1.Serializer.fromJson(falcon_core_1.Source, Object.assign({}, falcon_core_1.Serializer.toJson(source), { label: 'Child of ' + source.label, parent: this.props.id }));
+        const newSource = falcon_core_1.Serializer.fromJson(falcon_core_1.Source, lodash_1.omit(Object.assign({}, falcon_core_1.Serializer.toJson(source), { label: 'Child of ' + source.label, parent: this.props.id }), 'metaData', 'children', 'parents'));
         this.props.dataStore.postItem(falcon_core_1.Source, ApiService_1.AppUrls.source, newSource, {})
             .then(([id]) => {
             this.props.dataStore.createTab('source', id, 'item');
@@ -5689,8 +5679,7 @@ let SourceEditorWorkspace = class SourceEditorWorkspace extends React.Component 
                                 React.createElement("i", { className: 'fa fa-angle-right' })));
                         })),
                         React.createElement("i", { className: 'fa fa-sun-o item-icon' }),
-                        React.createElement(StringEditableFieldComponent, { value: source.label, onChange: (value) => this.updateSource('label', value) },
-                            React.createElement(EditableHeader_1.EditableHeader, null))),
+                        React.createElement(EditableHeader_1.EditableHeader, { value: source.label, onChange: (value) => this.updateSource('label', value) })),
                     React.createElement("div", { className: 'sub-toolbar' },
                         React.createElement("i", { className: 'fa fa-plus add button', "aria-hidden": 'true', onClick: this.createEntity.bind(this) }),
                         React.createElement("i", { className: 'fa fa-trash delete button', "aria-hidden": 'true', onClick: () => this.del() }),
@@ -5698,20 +5687,18 @@ let SourceEditorWorkspace = class SourceEditorWorkspace extends React.Component 
                 React.createElement("div", { className: 'secondary-toolbar' },
                     React.createElement("div", { className: 'tab-bar' },
                         React.createElement("div", { className: 'source selected' }, "DUBLIN CORE"),
-                        React.createElement("div", { className: 'source' }, "DETAILS"),
-                        React.createElement("div", { className: 'source' }, "MEDIA")))),
+                        React.createElement("div", { className: 'source', style: { display: 'none' } }, "DETAILS"),
+                        React.createElement("div", { className: 'source', style: { display: 'none' } }, "MEDIA")))),
             React.createElement("section", { className: 'editor-body' },
                 React.createElement("div", { className: 'edit-group' },
                     React.createElement("label", { className: 'small' }, "Parent"),
-                    React.createElement(ComboEditableFieldComponent, { value: { key: parentName, value: source.parent }, onChange: (value) => this.updateSource('parent', value === null ? null : value.value) },
-                        React.createElement(EditableComboDropdown_1.EditableComboDropdown, { comboSettings: {
-                                options: potentialParents.map((par) => ({ key: par.label, value: par.uid })),
-                                typeName: 'Source'
-                            } })),
+                    React.createElement(ComboEditableFieldComponent, { value: { key: parentName, value: source.parent }, onChange: (value) => this.updateSource('parent', value === null ? null : value.value), comboSettings: {
+                            options: potentialParents.map((par) => ({ key: par.label, value: par.uid })),
+                            typeName: 'Source'
+                        } }),
                     source.parent !== null ? (React.createElement(AddTabButton_1.AddTabButton, { tabType: 'source', uid: source.parent })) : null),
                 React.createElement("div", { className: 'edit-group' },
-                    React.createElement(StringEditableFieldComponent, { value: source.sameAs, onChange: (value) => this.updateSource('sameAs', value) },
-                        React.createElement(SameAsEditor_1.SameAsEditor, null))),
+                    React.createElement(SameAsEditableFieldComponent, { value: source.sameAs, onChange: (value) => this.updateSource('sameAs', value) })),
                 this.props.dataStore.dataStore.all.dublinCore.value.elements.map((element) => {
                     const values = source.metaData.hasOwnProperty(element.label) ?
                         source.metaData[element.label].values : [{ source: this.props.id, value: '' }];
@@ -5727,8 +5714,7 @@ let SourceEditorWorkspace = class SourceEditorWorkspace extends React.Component 
                             this.props.dataStore.dataStore.all.source.value.find((s) => s.uid === value.source).label,
                             ": ",
                             value.value)) : null)),
-                        React.createElement(StringEditableFieldComponent, { value: editableValue, onChange: (value) => this.updateSourceElement(element, value) },
-                            React.createElement(EditableParagraph_1.EditableParagraph, null))));
+                        React.createElement(ParagraphEditableFieldComponent, { value: editableValue, onChange: (value) => this.updateSourceElement(element, value) })));
                 }),
                 React.createElement("div", null,
                     React.createElement("h4", null, "Direct Children"),
@@ -5768,13 +5754,10 @@ const ApiService_1 = __webpack_require__(4);
 const falcon_core_1 = __webpack_require__(1);
 const lodash_1 = __webpack_require__(3);
 const AddTabButton_1 = __webpack_require__(5);
-const findParentTree_1 = __webpack_require__(19);
-const EditableHeader_1 = __webpack_require__(12);
+const findParentTree_1 = __webpack_require__(20);
+const EditableFieldComponent_1 = __webpack_require__(11);
 const EditableComboDropdown_1 = __webpack_require__(17);
-class StringEditableFieldComponent extends EditableHeader_1.EditableFieldComponent {
-}
-class ComboEditableFieldComponent extends EditableHeader_1.EditableFieldComponent {
-}
+const ComboEditableFieldComponent = EditableFieldComponent_1.EditableFieldHOC(EditableComboDropdown_1.EditableComboDropdown);
 // What can I do?
 // Entity Operations
 // - Delete the entity
@@ -5832,11 +5815,10 @@ class EntityWorkspaceCoreView extends React.Component {
                         React.createElement(AddTabButton_1.AddTabButton, { uid: entityType.uid, tabType: 'entity_type' }))),
                 React.createElement("div", { style: { flex: 1 } },
                     React.createElement("label", { className: 'small' }, "Parent"),
-                    React.createElement(ComboEditableFieldComponent, { value: { key: parentName, value: entity.parent }, onChange: (value) => this.update({ 'parent': value === null ? null : value.value }) },
-                        React.createElement(EditableComboDropdown_1.EditableComboDropdown, { comboSettings: {
-                                options: potentialParents.map((par) => ({ key: par.label, value: par.uid })),
-                                typeName: 'Entity'
-                            } })),
+                    React.createElement(ComboEditableFieldComponent, { value: { key: parentName, value: entity.parent }, onChange: (value) => this.update({ 'parent': value === null ? null : value.value }), comboSettings: {
+                            options: potentialParents.map((par) => ({ key: par.label, value: par.uid })),
+                            typeName: 'Entity'
+                        } }),
                     entity.parent !== null ? (React.createElement(AddTabButton_1.AddTabButton, { tabType: 'entity', uid: entity.parent })) : null)),
             React.createElement("div", { className: 'edit-group' },
                 React.createElement(RecordsEditor_1.RecordsEditor, { dimension: 'predicates', entityExists: true, id: this.props.id, records: records, onChange: () => { }, predicates: predicates, sources: sources, entityTypeId: entityType.uid }))));
@@ -5975,7 +5957,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 const falcon_core_1 = __webpack_require__(1);
 const ApiService_1 = __webpack_require__(4);
 const DataStore_1 = __webpack_require__(95);
-const react_sortable_hoc_1 = __webpack_require__(23);
+const react_sortable_hoc_1 = __webpack_require__(24);
 const mobx_1 = __webpack_require__(31);
 const lodash_1 = __webpack_require__(3);
 const moment = __webpack_require__(15);
@@ -6509,7 +6491,7 @@ const Workspace_1 = __webpack_require__(61);
 const Toast_1 = __webpack_require__(60);
 const DataController_1 = __webpack_require__(94);
 const ModalStore_1 = __webpack_require__(96);
-const react_sortable_hoc_1 = __webpack_require__(23);
+const react_sortable_hoc_1 = __webpack_require__(24);
 const mobx_react_devtools_1 = __webpack_require__(107);
 const mobx_react_1 = __webpack_require__(2);
 const ObjectEditorCore = react_sortable_hoc_1.SortableContainer((props) => {
@@ -6517,7 +6499,7 @@ const ObjectEditorCore = react_sortable_hoc_1.SortableContainer((props) => {
         React.createElement(Sidebar_1.Sidebar, { list: props.list, id: props.id, workspace: props.workspace }),
         React.createElement(Workspace_1.Workspace, { workspace: props.workspace, id: props.id, loading: props.loadingWheel, location: props.location, list: props.list }),
         props.splitWorkspace ? (React.createElement(Workspace_1.Workspace, { workspace: props.workspace, id: props.id, loading: props.loadingWheel, location: props.location, list: props.list })) : null,
-        React.createElement("div", { className: 'split-workspace-button-container', onClick: props.toggleSplitWorkspace }, props.splitWorkspace ? (React.createElement("i", { className: 'fa fa-times', title: 'split' })) : (React.createElement("i", { className: 'fa fa-columns', title: 'split' })))));
+        React.createElement("div", { style: { display: 'none' }, className: 'split-workspace-button-container', onClick: props.toggleSplitWorkspace }, props.splitWorkspace ? (React.createElement("i", { className: 'fa fa-times', title: 'split' })) : (React.createElement("i", { className: 'fa fa-columns', title: 'split' })))));
 });
 const ModalWrapper = mobx_react_1.inject('modalStore')(mobx_react_1.observer((props) => (React.createElement("span", null, props.modalStore.currentModal))));
 class ObjectEditor extends React.Component {
@@ -6583,7 +6565,7 @@ class ObjectEditor extends React.Component {
     render() {
         return (React.createElement(mobx_react_1.Provider, { dataStore: this.state.dataController, modalStore: this.state.modalStore },
             React.createElement("section", { id: 'entity-editor', className: 'flex-fill' },
-                React.createElement(mobx_react_devtools_1.default, null),
+                process.env.NODE_ENV === 'dev' ? (React.createElement(mobx_react_devtools_1.default, null)) : null,
                 React.createElement("span", { className: 'header-colour ' + this.props.workspace }),
                 React.createElement("span", { className: 'flex-fill' },
                     React.createElement(ObjectEditorCore, { id: this.state.id, workspace: this.props.workspace, useDragHandle: true, loadingWheel: this.state.loadingWheel, splitWorkspace: this.state.splitWorkspace, helperClass: 'card-being-dragged', toggleSplitWorkspace: () => this.setState({ splitWorkspace: !this.state.splitWorkspace }), list: this.state.list, location: this.props.location, onSortEnd: (change) => this.state.dataController.reorderTabs(change) }),

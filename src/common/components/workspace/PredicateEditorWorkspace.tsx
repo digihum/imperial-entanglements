@@ -12,7 +12,8 @@ import { AppUrls } from '../../ApiService';
 
 import { Predicate, Serializer, Record } from '@digihum/falcon-core';
 
-import { EditableHeader, EditableFieldComponent } from '../fields/EditableHeader';
+import { EditableHeader } from '../fields/EditableHeader';
+import { EditableFieldHOC } from '../fields/EditableFieldComponent';
 import { EditableParagraph } from '../fields/EditableParagraph';
 import { PredicateDescription } from '../fields/PredicateDescription';
 import { ComboDropdownOption } from '../ComboDropdown';
@@ -26,7 +27,9 @@ import { inject, observer } from 'mobx-react';
 import { DataController } from '../../stores/DataController';
 import { ModalStore } from '../../stores/ModalStore';
 
-class StringEditableFieldComponent extends EditableFieldComponent<string> {}
+const HeaderEditableFieldComponent = EditableFieldHOC(EditableHeader);
+const ParagraphEditableFieldComponent = EditableFieldHOC(EditableParagraph);
+const SameAsEditableFieldComponent = EditableFieldHOC(SameAsEditor);
 
 interface PredicateEditorProps {
     id: number;
@@ -84,7 +87,7 @@ export class PredicateEditorWorkspace extends React.Component<PredicateEditorPro
         const predicate = this.props.dataStore!.dataStore.tabs.predicate[this.props.id].value;
 
         const newPredicate = Serializer.fromJson(Predicate,
-            Object.assign({}, Serializer.toJson(predicate), { name: 'Copy of ' + predicate.label}));
+            Object.assign({}, Serializer.toJson(predicate), { label: 'Copy of ' + predicate.label}));
 
         this.props.dataStore!.postItem(Predicate, AppUrls.predicate, newPredicate, {})
             .then(([id]) => {
@@ -187,11 +190,9 @@ export class PredicateEditorWorkspace extends React.Component<PredicateEditorPro
                   <div className='primary-toolbar'>
                     <div className='main-toolbar'>
                         <i className='fa fa-long-arrow-right item-icon'></i>
-                        <StringEditableFieldComponent
+                        <HeaderEditableFieldComponent
                             value={predicate.label}
-                            onChange={(value) => this.updatePredicate('label', value)}>
-                            <EditableHeader/>
-                        </StringEditableFieldComponent>
+                            onChange={(value) => this.updatePredicate('label', value)} />
                     </div>
                     <div className='sub-toolbar'>
                         <i
@@ -209,7 +210,7 @@ export class PredicateEditorWorkspace extends React.Component<PredicateEditorPro
                   <div className='secondary-toolbar'>
                       <div className='tab-bar'>
                         <div className={'predicate selected'}>CORE</div>
-                        <div className={'predicate'}>SAME AS</div>
+                        <div style={{display:'none'}} className={'predicate'}>SAME AS</div>
                       </div>
                   </div>
                 </header>
@@ -220,11 +221,9 @@ export class PredicateEditorWorkspace extends React.Component<PredicateEditorPro
 
                     <div className='edit-group'>
                         <label className='small'>Description</label>
-                        <StringEditableFieldComponent
+                        <ParagraphEditableFieldComponent
                             value={predicate.description!}
-                            onChange={(value) => this.updatePredicate('description', value)}>
-                            <EditableParagraph />
-                        </StringEditableFieldComponent>
+                            onChange={(value) => this.updatePredicate('description', value)} />
                     </div>
 
                     <div className='edit-group'>
@@ -241,11 +240,9 @@ export class PredicateEditorWorkspace extends React.Component<PredicateEditorPro
                     </div>
 
                     <div>
-                        <StringEditableFieldComponent
+                        <SameAsEditableFieldComponent
                             value={predicate.sameAs!}
-                            onChange={(value) => this.updatePredicate('sameAs', value)} >
-                            <SameAsEditor/>
-                        </StringEditableFieldComponent>
+                            onChange={(value) => this.updatePredicate('sameAs', value)} />
                     </div>
                 </section>
             </div>

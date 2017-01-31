@@ -97,11 +97,15 @@ export class CreatePredicate extends React.Component<CreatePredicateProps, Creat
 
     public create() {
 
+      if(this.state.range.value === null || this.state.domain.value === null) {
+        throw new Error('Domain and range must be set');
+      }
+
         const newPredicate = Serializer.fromJson(Predicate, {
             label: this.state.label,
             domain: this.state.domain.value,
-            range: this.state.range.value,
-            rangeIsReference: this.state.range.value === null ? false : this.state.range.value.isReference
+            range: this.state.range.value.value,
+            rangeIsReference: this.state.range.value.isReference
         });
 
         this.props.dataStore!.postItem(Predicate, AppUrls.predicate, newPredicate, {})

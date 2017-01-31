@@ -8,7 +8,6 @@ import * as React from 'react';
 
 import { Record, Source, Entity } from '@digihum/falcon-core';
 import { EditableSubfieldProps } from '../fields/EditableFieldComponent';
-export { EditableFieldComponent } from '../fields/EditableFieldComponent';
 import { ScorePicker } from '../fields/ScorePicker';
 import { NumberComboDropdown, ComboDropdownOption } from '../ComboDropdown';
 import { ModalDefinition } from '../modal/ModalDefinition';
@@ -146,8 +145,8 @@ export const RecordRow = inject('dataStore', 'modalStore')(observer((props: Reco
                     onChange={(period) => props.onChange!(Object.assign(recordValue, { period }))} />
             </td>
             <td className='record-row-item buttons'>
-                <button><i className='fa fa-check' onClick={props.acceptChanges} aria-hidden='true'></i></button>
-                <button><i className='fa fa-times' aria-hidden='true' onClick={props.cancelChanges}></i></button>
+                <button onClick={props.acceptChanges} ><i className='fa fa-check' aria-hidden='true'></i></button>
+                <button onClick={props.cancelChanges}><i className='fa fa-times' aria-hidden='true'></i></button>
             </td>
         </tr>);
     } else {
@@ -173,8 +172,8 @@ export const RecordRow = inject('dataStore', 'modalStore')(observer((props: Reco
                  {formatDate(recordValue.period)}
             </td>
             <td className='record-row-item buttons'>
-                <button><i className='fa fa-pencil-square-o' title='Edit' onClick={props.setEdit} aria-hidden='true'></i></button>
-                <button><i className='fa fa-trash' aria-hidden='true' onClick={() => props.onDelete!(props.value!)}></i></button>
+                <button onClick={props.setEdit}><i className='fa fa-pencil-square-o' title='Edit'  aria-hidden='true'></i></button>
+                <button  onClick={() => props.onDelete!(props.value!)}><i className='fa fa-trash' aria-hidden='true'></i></button>
             </td>
         </tr>
         );

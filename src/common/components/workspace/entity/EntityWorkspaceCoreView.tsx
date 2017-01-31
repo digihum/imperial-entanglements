@@ -20,13 +20,12 @@ import { AddTabButton } from '../../AddTabButton';
 import { findParentTree } from '../../../helper/findParentTree';
 
 
-import { EditableFieldComponent } from '../../fields/EditableHeader';
+import { EditableFieldHOC } from '../../fields/EditableFieldComponent';
 import { EditableComboDropdown } from '../../fields/EditableComboDropdown';
 
 import { DataController } from '../../../stores/DataController';
 
-class StringEditableFieldComponent extends EditableFieldComponent<string> {}
-class ComboEditableFieldComponent extends EditableFieldComponent<ComboDropdownOption<number>> {}
+const ComboEditableFieldComponent = EditableFieldHOC(EditableComboDropdown);
 
 interface EntityWorkspaceCoreViewProps {
     id: number;
@@ -117,12 +116,11 @@ export class EntityWorkspaceCoreView extends React.Component<EntityWorkspaceCore
                     <label className='small'>Parent</label>
                     <ComboEditableFieldComponent
                         value={{key: parentName, value: entity.parent}}
-                        onChange={(value) => this.update({'parent': value === null ? null : value.value})}>
-                        <EditableComboDropdown comboSettings={{
+                        onChange={(value) => this.update({'parent': value === null ? null : value.value})}
+                        comboSettings={{
                             options: potentialParents.map((par) => ({ key: par.label, value: par.uid})),
                             typeName: 'Entity'
                         }} />
-                    </ComboEditableFieldComponent>
                     {entity.parent !== null ? (<AddTabButton
                         tabType='entity'
                         uid={entity.parent} />) : null}

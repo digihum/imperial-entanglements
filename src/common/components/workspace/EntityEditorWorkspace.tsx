@@ -16,7 +16,8 @@ import { ModalDefinition } from '../modal/ModalDefinition';
 import { findParentTree } from '../../helper/findParentTree';
 
 
-import { EditableHeader, EditableFieldComponent } from '../fields/EditableHeader';
+import { EditableHeader } from '../fields/EditableHeader';
+import { EditableFieldHOC } from '../fields/EditableFieldComponent';
 
 import { DataController } from '../../stores/DataController';
 import { ModalStore } from '../../stores/ModalStore';
@@ -26,7 +27,7 @@ import { EntityWorkspaceReferenceView } from './entity/EntityWorkspaceReferenceV
 
 import { inject, observer } from 'mobx-react';
 
-class StringEditableFieldComponent extends EditableFieldComponent<string> {}
+const HeaderEditableFieldComponent = EditableFieldHOC(EditableHeader);
 
 interface EntityEditorProps {
     id: number;
@@ -144,7 +145,7 @@ export class EntityEditorWorkspace extends React.Component<EntityEditorProps, En
                 console.log('Records editor called cancel');
             },
             settings: {
-                options: predicates.map((pred) => ({ key: pred.label, value: pred.uid, meta: pred})),
+                options: predicates.map((pred) => ({ key: pred.label, value: pred })),
                 entityUid: this.props.id,
                 entityType: entityType.uid
             }
@@ -188,11 +189,9 @@ export class EntityEditorWorkspace extends React.Component<EntityEditorProps, En
                   <div className='primary-toolbar'>
                     <div className='main-toolbar'>
                         <i className='fa fa-cube item-icon'></i>
-                        <StringEditableFieldComponent
+                        <HeaderEditableFieldComponent
                             value={entity.label}
-                            onChange={(value) => this.update({ 'label': value })}>
-                            <EditableHeader />
-                        </StringEditableFieldComponent>
+                            onChange={(value) => this.update({ 'label': value })} />
                     </div>
 
                     <div className='sub-toolbar'>

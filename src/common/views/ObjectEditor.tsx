@@ -83,7 +83,7 @@ const ObjectEditorCore = SortableContainer((props: {
         list={props.list} />
     ) : null}
 
-    <div className='split-workspace-button-container'
+    <div style={{display:'none'}} className='split-workspace-button-container'
         onClick={props.toggleSplitWorkspace}>
       {props.splitWorkspace ? (
         <i className='fa fa-times' title='split'></i>
@@ -178,7 +178,7 @@ export class ObjectEditor extends React.Component<EntityEditorProps, EntityEdito
         return (
           <Provider dataStore={this.state.dataController} modalStore={this.state.modalStore}>
             <section id='entity-editor' className='flex-fill'>
-              <DevTools />
+              {process.env.NODE_ENV === 'dev' ? (<DevTools />) : null}
                 <span className={'header-colour ' + this.props.workspace}></span>
                     <span className='flex-fill'>
                       <ObjectEditorCore

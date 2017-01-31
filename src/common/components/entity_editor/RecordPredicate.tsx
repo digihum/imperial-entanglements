@@ -5,17 +5,17 @@
  */
 
 import * as React from 'react';
-import { ApiService, AppUrls } from '../../ApiService';
+import { AppUrls } from '../../ApiService';
 import { DataController } from '../../stores/DataController';
 
 import { Record, Predicate, Source, Entity, Serializer } from '@digihum/falcon-core';
-import { EditableFieldComponent } from '../fields/EditableFieldComponent';
+import { EditableFieldHOC } from '../fields/EditableFieldComponent';
 
 import { RecordRow } from './RecordRow';
 
 import { AddTabButton } from '../AddTabButton';
 
-class RecordEditableFieldComponent extends EditableFieldComponent<Record> {}
+const RecordEditableFieldComponent = EditableFieldHOC(RecordRow);
 
 interface RecordPredicateProps {
   entity_id: number;
@@ -109,11 +109,9 @@ export class RecordPredicate extends React.Component<RecordPredicateProps, Recor
                             key={`row-${record.uid}`}
                             value={record}
                             onChange={this.recordChanged.bind(this)}
-                            onDelete={this.deleteRecord.bind(this)}>
-                            <RecordRow dimension='predicates'
-                                sources={this.props.sources}
-                                entities={this.state.potentialValues} />
-                        </RecordEditableFieldComponent>
+                            onDelete={this.deleteRecord.bind(this)}
+                            sources={this.props.sources}
+                            entities={this.state.potentialValues} />
                     ))}
                 </tbody>
             </table>

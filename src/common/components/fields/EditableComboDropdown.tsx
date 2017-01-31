@@ -6,7 +6,6 @@
 
 import * as React from 'react';
 import { EditableSubfieldProps } from '../fields/EditableFieldComponent';
-export { EditableFieldComponent } from '../fields/EditableFieldComponent';
 import { NumberComboDropdown, ComboDropdownOption } from '../ComboDropdown';
 
 interface EditableComboDropdownProps extends EditableSubfieldProps<ComboDropdownOption<number>> {
@@ -25,8 +24,8 @@ export function EditableComboDropdown(props: EditableComboDropdownProps) {
                 setValue={props.onChange!}
                 allowNew={false}
                 createNewValue={() => {}} />
-            <button><i className='fa fa-check' onClick={props.acceptChanges} aria-hidden='true'></i></button>
-            <button><i className='fa fa-times' aria-hidden='true' onClick={props.cancelChanges}></i></button>
+            <button onClick={props.acceptChanges}><i className='fa fa-check' aria-hidden='true'></i></button>
+            <button onClick={props.cancelChanges}><i className='fa fa-times' aria-hidden='true'></i></button>
         </div>
         );
     } else {

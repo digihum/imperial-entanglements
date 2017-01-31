@@ -9,7 +9,7 @@ import * as React from 'react';
 import { Overlay } from '../Overlay';
 import { Record, Predicate, Serializer } from '@digihum/falcon-core';
 import { AppUrls } from '../../ApiService';
-import {NumberComboDropdown, ComboDropdownOption } from '../ComboDropdown';
+import {ComboDropdown, ComboDropdownOption } from '../ComboDropdown';
 
 import { ModalDefinition } from './ModalDefinition';
 
@@ -18,8 +18,10 @@ import { inject, observer } from 'mobx-react';
 
 import { ModalStore } from '../../stores/ModalStore';
 
+class PredicateComboDropdown extends ComboDropdown<Predicate> {}
+
 interface CreateRecordProps {
-    options: ComboDropdownOption<number>[];
+    options: ComboDropdownOption<Predicate>[];
     complete: (s: any) => void;
     cancel: () => void;
     entityUid: number;
@@ -29,7 +31,7 @@ interface CreateRecordProps {
 }
 
 interface CreateRecordState {
-    comboValue: ComboDropdownOption<number>;
+    comboValue: ComboDropdownOption<Predicate>;
     searchValue: string;
 }
 
@@ -54,7 +56,7 @@ export class CreateRecord extends React.Component<CreateRecordProps, CreateRecor
             name: 'predicate',
             complete: (data : Predicate) => {
                 console.log('Predicate editor called complete');
-                this.setComboValue({ key: data.label, value: data.uid === null ? null : data.uid.toString(), meta: data});
+                this.setComboValue({ key: data.label, value: data === null ? null : data});
             },
             cancel: () => {
                 console.log('Predicate editor called cancel');
@@ -68,24 +70,29 @@ export class CreateRecord extends React.Component<CreateRecordProps, CreateRecor
         this.props.modalStore!.addModal(modalDef);
     }
 
-    public setComboValue(opt: { key: string, value: string | null, meta: Predicate }) {
-        this.props.dataStore!.postItem(Record, AppUrls.record,
-            Serializer.fromJson(Record, {
-                predicate: opt.meta.uid,
-                entity: this.props.entityUid,
-                valueType: opt.meta.rangeIsReference ? 'entity' : opt.meta.range,
-                score: 3,
-                source: this.props.dataStore!.defaultSource
-            }), {})
-        .then((result) => this.props.complete(result))
-        .catch(this.props.cancel);
+    public setComboValue(opt: { key: string, value: Predicate | null}) {
+
+      if (opt.value === null) {
+        throw new Error('Value cannot be null');
+      }
+
+      this.props.dataStore!.postItem(Record, AppUrls.record,
+          Serializer.fromJson(Record, {
+              predicate: opt.value.uid,
+              entity: this.props.entityUid,
+              valueType: opt.value.rangeIsReference ? 'entity' : opt.value.range,
+              score: 3,
+              source: this.props.dataStore!.defaultSource
+          }), {})
+      .then((result) => this.props.complete(result))
+      .catch(this.props.cancel);
     }
 
     public render() {
         return (
         <Overlay>
             <h2>Create Record</h2>
-            <NumberComboDropdown
+            <PredicateComboDropdown
                 ref='comboDropDown'
                 options={this.props.options}
                 typeName='predicate'
