@@ -27109,7 +27109,7 @@ exports.setupAuth = (db) => {
             }));
         }));
     }
-    if (process.env.AUTH_TYPE === 'ldap') {
+    if (process.env.AUTH_TYPE === 'ldapauth') {
         passport.use(new passport_ldapauth_1.Strategy({
             server: {
                 url: `${process.env.AUTH_LDAP_HOST}:{process.env.AUTH_LDAP_PORT}`,
@@ -27439,7 +27439,7 @@ const __ = __webpack_require__(76);
 const koaPassport = __webpack_require__(75);
 exports.user = (db) => {
     const server = new Koa();
-    server.use(__.post('/login', koaPassport.authenticate('local', {
+    server.use(__.post('/login', koaPassport.authenticate(process.env.AUTH_TYPE, {
         successRedirect: '/admin',
         failureRedirect: '/login'
     })));

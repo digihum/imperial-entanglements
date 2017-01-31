@@ -37,7 +37,7 @@ export const setupAuth = (db: Database) => {
       }))}));
     }
 
-    if (process.env.AUTH_TYPE === 'ldap') {
+    if (process.env.AUTH_TYPE === 'ldapauth') {
       passport.use(new LdapStrategy({
         server: {
           url: `${process.env.AUTH_LDAP_HOST}:{process.env.AUTH_LDAP_PORT}`,

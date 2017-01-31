@@ -15,7 +15,7 @@ export const user = (db: Database) : Koa => {
 
     const server = new Koa();
 
-    server.use(__.post('/login', koaPassport.authenticate('local', {
+    server.use(__.post('/login', koaPassport.authenticate(process.env.AUTH_TYPE, {
         successRedirect: '/admin',
         failureRedirect: '/login'
     })));
