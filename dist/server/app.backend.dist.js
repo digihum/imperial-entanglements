@@ -27118,9 +27118,17 @@ exports.setupAuth = (db) => {
                 searchBase: process.env.AUTH_LDAP_BASEDN,
                 searchFilter: process.env.AUTH_LDAP_ACCOUNTFILTERFORMAT
             }
-        }, (req, user, done) => {
-            console.log(req, user);
-            done(null, false);
+        }, (user, done) => {
+            return db.query()('users')
+                .select().where({ username: user.name })
+                .then(([user]) => {
+                if (user) {
+                    done(null, user);
+                }
+                else {
+                    done(null, false);
+                }
+            });
         }));
     }
 };
@@ -27441,7 +27449,7 @@ exports.user = (db) => {
     const server = new Koa();
     server.use(__.post('/login', koaPassport.authenticate(process.env.AUTH_TYPE, {
         successRedirect: '/admin',
-        failureRedirect: '/login'
+        failureRedirect: '/admin/login'
     })));
     server.use(__.get('/logout', (ctx) => __awaiter(this, void 0, void 0, function* () {
         ctx.logout();

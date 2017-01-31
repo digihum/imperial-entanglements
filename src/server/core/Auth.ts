@@ -46,9 +46,17 @@ export const setupAuth = (db: Database) => {
           searchBase: process.env.AUTH_LDAP_BASEDN,
           searchFilter: process.env.AUTH_LDAP_ACCOUNTFILTERFORMAT
         }
-      }, (req, user, done) => {
-        console.log(req, user);
-      done(null, false);
+      }, (user, done) => {
+
+        return db.query()('users')
+        .select().where({username: user.name})
+        .then(([user]) => {
+            if (user) {
+                done(null, user);
+            } else {
+                done(null, false);
+            }
+      });
     }
 ));
     }

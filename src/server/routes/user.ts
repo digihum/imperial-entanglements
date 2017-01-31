@@ -17,7 +17,7 @@ export const user = (db: Database) : Koa => {
 
     server.use(__.post('/login', koaPassport.authenticate(process.env.AUTH_TYPE, {
         successRedirect: '/admin',
-        failureRedirect: '/login'
+        failureRedirect: '/admin/login'
     })));
 
     server.use(__.get('/logout', async (ctx: Koa.Context) => {
