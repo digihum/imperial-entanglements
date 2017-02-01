@@ -14,7 +14,6 @@ import * as koaSession from 'koa-session';
 import * as koaPassport from 'koa-passport';
 import * as koaMount from 'koa-mount';
 import * as koaConvert from 'koa-convert';
-import * as  enforceHttps from 'koa-sslify';
 
 import { Config as KnexConfig } from 'knex';
 import { Database } from '../../backend/data/Database';
@@ -44,13 +43,6 @@ export const Server = (databaseConfig: KnexConfig) : Koa => {
     //koaQs(app, 'strict');
 
     app.use(koaConvert(koaBodyParser()));
-
-    if (process.env.FORCE_HTTPS === 'yes') {
-      app.use(enforceHttps({
-        trustProtoHeader: true,
-        hostname: process.env.HOST_NAME
-      }));
-    }
 
     // Sessions
     app.keys = ['secret'];

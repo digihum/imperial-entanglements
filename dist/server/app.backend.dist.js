@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 300);
+/******/ 	return __webpack_require__(__webpack_require__.s = 299);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -1712,7 +1712,7 @@ exports.GenericController = GenericController;
  */
 
 const React = __webpack_require__(0);
-const lunr = __webpack_require__(296);
+const lunr = __webpack_require__(295);
 const lodash_1 = __webpack_require__(7);
 class ComboDropdown extends React.Component {
     constructor() {
@@ -10300,7 +10300,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 const Koa = __webpack_require__(27);
-const koaStatic = __webpack_require__(294);
+const koaStatic = __webpack_require__(293);
 const koaBodyParser = __webpack_require__(115);
 const koaLogger = __webpack_require__(290);
 const koaSession = __webpack_require__(292);
@@ -10309,7 +10309,6 @@ const koaSession = __webpack_require__(292);
 const koaPassport = __webpack_require__(75);
 const koaMount = __webpack_require__(291);
 const koaConvert = __webpack_require__(288);
-const enforceHttps = __webpack_require__(293);
 const Database_1 = __webpack_require__(230);
 const lodash_1 = __webpack_require__(7);
 const fs_1 = __webpack_require__(73);
@@ -10326,12 +10325,6 @@ exports.Server = (databaseConfig) => {
     app.use(koaConvert(koaLogger()));
     //koaQs(app, 'strict');
     app.use(koaConvert(koaBodyParser()));
-    if (process.env.FORCE_HTTPS === 'yes') {
-        app.use(enforceHttps({
-            trustProtoHeader: true,
-            hostname: process.env.HOST_NAME
-        }));
-    }
     // Sessions
     app.keys = ['secret'];
     app.use(koaConvert(koaSession(app)));
@@ -24799,7 +24792,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 const React = __webpack_require__(0);
-const lev = __webpack_require__(295);
+const lev = __webpack_require__(294);
 const ComboDropdown_1 = __webpack_require__(20);
 const lodash_1 = __webpack_require__(7);
 const AddTabButton_1 = __webpack_require__(13);
@@ -26936,7 +26929,7 @@ const Toast_1 = __webpack_require__(236);
 const DataController_1 = __webpack_require__(270);
 const ModalStore_1 = __webpack_require__(272);
 const react_sortable_hoc_1 = __webpack_require__(78);
-const mobx_react_devtools_1 = __webpack_require__(297);
+const mobx_react_devtools_1 = __webpack_require__(296);
 const mobx_react_1 = __webpack_require__(5);
 const ObjectEditorCore = react_sortable_hoc_1.SortableContainer((props) => {
     return (React.createElement("span", { className: 'flex-fill' },
@@ -27089,8 +27082,8 @@ exports.UserManagement = (props) => (React.createElement("div", { className: 'pa
  */
 
 const passport = __webpack_require__(75);
-const passport_local_1 = __webpack_require__(299);
-const passport_ldapauth_1 = __webpack_require__(298);
+const passport_local_1 = __webpack_require__(298);
+const passport_ldapauth_1 = __webpack_require__(297);
 const bcrypt_1 = __webpack_require__(287);
 exports.setupAuth = (db) => {
     passport.serializeUser((user, done) => {
@@ -27538,46 +27531,40 @@ module.exports = require("koa-session");
 /* 293 */
 /***/ (function(module, exports) {
 
-module.exports = require("koa-sslify");
+module.exports = require("koa-static");
 
 /***/ }),
 /* 294 */
 /***/ (function(module, exports) {
 
-module.exports = require("koa-static");
+module.exports = require("levenshtein");
 
 /***/ }),
 /* 295 */
 /***/ (function(module, exports) {
 
-module.exports = require("levenshtein");
+module.exports = require("lunr");
 
 /***/ }),
 /* 296 */
 /***/ (function(module, exports) {
 
-module.exports = require("lunr");
+module.exports = require("mobx-react-devtools");
 
 /***/ }),
 /* 297 */
 /***/ (function(module, exports) {
 
-module.exports = require("mobx-react-devtools");
+module.exports = require("passport-ldapauth");
 
 /***/ }),
 /* 298 */
 /***/ (function(module, exports) {
 
-module.exports = require("passport-ldapauth");
-
-/***/ }),
-/* 299 */
-/***/ (function(module, exports) {
-
 module.exports = require("passport-local");
 
 /***/ }),
-/* 300 */
+/* 299 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
