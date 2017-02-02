@@ -21,6 +21,8 @@ import { Serializer } from '@digihum/falcon-core';
 
 import { itemTypes } from '../../common/itemTypes';
 
+import * as winston from 'winston';
+
 export const api = (db: Database) : Koa => {
 
     const server = new Koa();
@@ -84,42 +86,58 @@ export const api = (db: Database) : Koa => {
 
 
     server.use(__.get('/:route', async (ctx : Koa.Context, route: string) => {
+
+
+
         const data = await serverApiContext
             .getCollection<any>(itemTypes[route].item, route, ctx.query);
 
         ctx.body = data.map((datum) => Serializer.toJson(datum));
+
     }));
 
     server.use(__.post('/:route', async (ctx : Koa.Context, route: string) => {
-        const data = await serverApiContext
-            .postItem<any>(itemTypes[route].item, route,
-              Serializer.fromJson(itemTypes[route].item, Object.assign(ctx.request.body, {
-                creator: ctx.req.user.uid
-            })), ctx.query);
+      const profileName = `Creating new ${route} at ${Date.now()}`;
+      winston.profile(profileName);
+      const data = await serverApiContext
+          .postItem<any>(itemTypes[route].item, route,
+            Serializer.fromJson(itemTypes[route].item, Object.assign(ctx.request.body, {
+              creator: ctx.req.user.uid
+          })), ctx.query);
 
-        ctx.body = data;
+      ctx.body = data;
+      winston.profile(profileName);
     }));
 
     server.use(__.put('/:route/:id+', async (ctx : Koa.Context, route: string, ...ids: string[]) => {
-        const data = await serverApiContext
-            .putItem<any>(itemTypes[route].item, route, itemTypes[route].buildKey(ids),
-            Serializer.fromJson(itemTypes[route].item, ctx.request.body));
+      const profileName = `Replacing new ${route} at ${Date.now()}`;
+      winston.profile(profileName);
+      const data = await serverApiContext
+          .putItem<any>(itemTypes[route].item, route, itemTypes[route].buildKey(ids),
+          Serializer.fromJson(itemTypes[route].item, ctx.request.body));
 
-        ctx.body = data;
+      ctx.body = data;
+      winston.profile(profileName);
     }));
 
     server.use(__.patch('/:route/:id+', async (ctx : Koa.Context, route: string, ...ids: string[]) => {
-        const data = await serverApiContext
-            .patchItem<any>(itemTypes[route].item, route, itemTypes[route].buildKey(ids), ctx.request.body);
+      const profileName = `Updating new ${route} at ${Date.now()}`;
+      winston.profile(profileName);
+      const data = await serverApiContext
+          .patchItem<any>(itemTypes[route].item, route, itemTypes[route].buildKey(ids), ctx.request.body);
 
-        ctx.body = data;
+      ctx.body = data;
+      winston.profile(profileName);
     }));
 
     server.use(__.del('/:route/:id+', async (ctx : Koa.Context, route: string, ...ids: string[]) => {
-        const data = await serverApiContext
-            .delItem<any>(itemTypes[route].item, route, itemTypes[route].buildKey(ids));
+      const profileName = `Replacing new ${route} at ${Date.now()}`;
+      winston.profile(profileName);
+      const data = await serverApiContext
+          .delItem<any>(itemTypes[route].item, route, itemTypes[route].buildKey(ids));
 
-        ctx.body = data;
+      ctx.body = data;
+      winston.profile(profileName);
     }));
 
     return server;

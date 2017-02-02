@@ -1086,6 +1086,7 @@ exports.AdminApp = (props) => (React.createElement("div", { className: 'page' },
  * @version 0.2.0
  */
 
+const winston = __webpack_require__(453);
 class UnprocessableEntity extends Error {
     constructor(message, data) {
         super(message);
@@ -1120,6 +1121,7 @@ class OperationNotPermittedException extends Error {
         super(data.message);
         this.code = 422;
         this.data = data;
+        winston.info('Invalid operation attempted: ' + data.message);
     }
 }
 exports.OperationNotPermittedException = OperationNotPermittedException;
@@ -1127,6 +1129,7 @@ class InvalidUpdateException extends Error {
     constructor(message) {
         super(message);
         this.code = 400;
+        winston.warn('Invalid update attempted: ' + message);
     }
 }
 exports.InvalidUpdateException = InvalidUpdateException;
@@ -1136,6 +1139,7 @@ class DatabaseIntegrityError extends Error {
  what you are trying to do. Please also contact the Digital Humanities team, this error should not occur.`) {
         super(message);
         this.code = 500;
+        winston.error('Database integrity check FAILED');
     }
 }
 exports.DatabaseIntegrityError = DatabaseIntegrityError;
@@ -5220,6 +5224,20 @@ exports.EditableParagraph = (props) => {
 
 /***/ }),
 
+/***/ 533:
+/***/ (function(module, exports) {
+
+function webpackEmptyContext(req) {
+	throw new Error("Cannot find module '" + req + "'.");
+}
+webpackEmptyContext.keys = function() { return []; };
+webpackEmptyContext.resolve = webpackEmptyContext;
+module.exports = webpackEmptyContext;
+webpackEmptyContext.id = 533;
+
+
+/***/ }),
+
 /***/ 54:
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -5306,6 +5324,20 @@ exports.SameAsEditor = SameAsEditor;
 
 /***/ }),
 
+/***/ 542:
+/***/ (function(module, exports) {
+
+function webpackEmptyContext(req) {
+	throw new Error("Cannot find module '" + req + "'.");
+}
+webpackEmptyContext.keys = function() { return []; };
+webpackEmptyContext.resolve = webpackEmptyContext;
+module.exports = webpackEmptyContext;
+webpackEmptyContext.id = 542;
+
+
+/***/ }),
+
 /***/ 55:
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -5338,6 +5370,20 @@ exports.findParentTree = (uid, data, ancestors = []) => {
     }
 };
 
+
+/***/ }),
+
+/***/ 552:
+/***/ (function(module, exports) {
+
+/* (ignored) */
+
+/***/ }),
+
+/***/ 553:
+/***/ (function(module, exports) {
+
+/* (ignored) */
 
 /***/ }),
 

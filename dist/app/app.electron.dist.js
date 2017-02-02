@@ -175,6 +175,7 @@ exports.AddTabButton.wrappedComponent.contextTypes = {
  * @version 0.2.0
  */
 
+const winston = __webpack_require__(109);
 class UnprocessableEntity extends Error {
     constructor(message, data) {
         super(message);
@@ -209,6 +210,7 @@ class OperationNotPermittedException extends Error {
         super(data.message);
         this.code = 422;
         this.data = data;
+        winston.info('Invalid operation attempted: ' + data.message);
     }
 }
 exports.OperationNotPermittedException = OperationNotPermittedException;
@@ -216,6 +218,7 @@ class InvalidUpdateException extends Error {
     constructor(message) {
         super(message);
         this.code = 400;
+        winston.warn('Invalid update attempted: ' + message);
     }
 }
 exports.InvalidUpdateException = InvalidUpdateException;
@@ -225,6 +228,7 @@ class DatabaseIntegrityError extends Error {
  what you are trying to do. Please also contact the Digital Humanities team, this error should not occur.`) {
         super(message);
         this.code = 500;
+        winston.error('Database integrity check FAILED');
     }
 }
 exports.DatabaseIntegrityError = DatabaseIntegrityError;
@@ -6709,6 +6713,12 @@ else {
     electron.remote.app.quit();
 }
 
+
+/***/ }),
+/* 109 */
+/***/ (function(module, exports) {
+
+module.exports = require("winston");
 
 /***/ })
 /******/ ]);

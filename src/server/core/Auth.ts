@@ -10,6 +10,8 @@ import { Strategy as LdapStrategy } from 'passport-ldapauth';
 
 import { hash, compare } from 'bcrypt';
 
+import * as winston from 'winston';
+
 import { Database } from '../../backend/data/Database';
 
 export const setupAuth = (db: Database) => {
@@ -32,7 +34,8 @@ export const setupAuth = (db: Database) => {
             if (err) {
                 done(null, false);
             } else {
-                done(null, user);
+              winston.info(username, ' logged in');
+              done(null, user);
             }
       }))}));
     }
@@ -52,9 +55,10 @@ export const setupAuth = (db: Database) => {
         .select().where({username: user.name})
         .then(([user]) => {
             if (user) {
-                done(null, user);
+              winston.info(user.name, ' logged in');
+              done(null, user);
             } else {
-                done(null, false);
+              done(null, false);
             }
       });
     }

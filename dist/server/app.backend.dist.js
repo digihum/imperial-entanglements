@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 299);
+/******/ 	return __webpack_require__(__webpack_require__.s = 300);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -1540,6 +1540,7 @@ function getPooledWarningPropertyDefinition(propName, getVal) {
  * @version 0.2.0
  */
 
+const winston = __webpack_require__(299);
 class UnprocessableEntity extends Error {
     constructor(message, data) {
         super(message);
@@ -1574,6 +1575,7 @@ class OperationNotPermittedException extends Error {
         super(data.message);
         this.code = 422;
         this.data = data;
+        winston.info('Invalid operation attempted: ' + data.message);
     }
 }
 exports.OperationNotPermittedException = OperationNotPermittedException;
@@ -1581,6 +1583,7 @@ class InvalidUpdateException extends Error {
     constructor(message) {
         super(message);
         this.code = 400;
+        winston.warn('Invalid update attempted: ' + message);
     }
 }
 exports.InvalidUpdateException = InvalidUpdateException;
@@ -1590,6 +1593,7 @@ class DatabaseIntegrityError extends Error {
  what you are trying to do. Please also contact the Digital Humanities team, this error should not occur.`) {
         super(message);
         this.code = 500;
+        winston.error('Database integrity check FAILED');
     }
 }
 exports.DatabaseIntegrityError = DatabaseIntegrityError;
@@ -27085,6 +27089,7 @@ const passport = __webpack_require__(75);
 const passport_local_1 = __webpack_require__(298);
 const passport_ldapauth_1 = __webpack_require__(297);
 const bcrypt_1 = __webpack_require__(287);
+const winston = __webpack_require__(299);
 exports.setupAuth = (db) => {
     passport.serializeUser((user, done) => {
         done(null, user.uid);
@@ -27104,6 +27109,7 @@ exports.setupAuth = (db) => {
                     done(null, false);
                 }
                 else {
+                    winston.info(username, ' logged in');
                     done(null, user);
                 }
             }));
@@ -27123,6 +27129,7 @@ exports.setupAuth = (db) => {
                 .select().where({ username: user.name })
                 .then(([user]) => {
                 if (user) {
+                    winston.info(user.name, ' logged in');
                     done(null, user);
                 }
                 else {
@@ -27271,6 +27278,7 @@ const koaBodyParser = __webpack_require__(115);
 const wrapDatabase_1 = __webpack_require__(108);
 const falcon_core_1 = __webpack_require__(4);
 const itemTypes_1 = __webpack_require__(43);
+const winston = __webpack_require__(299);
 exports.api = (db) => {
     const server = new Koa();
     server.use(koaJSON());
@@ -27330,26 +27338,38 @@ exports.api = (db) => {
         ctx.body = data.map((datum) => falcon_core_1.Serializer.toJson(datum));
     })));
     server.use(__.post('/:route', (ctx, route) => __awaiter(this, void 0, void 0, function* () {
+        const profileName = `Creating new ${route} at ${Date.now()}`;
+        winston.profile(profileName);
         const data = yield serverApiContext
             .postItem(itemTypes_1.itemTypes[route].item, route, falcon_core_1.Serializer.fromJson(itemTypes_1.itemTypes[route].item, Object.assign(ctx.request.body, {
             creator: ctx.req.user.uid
         })), ctx.query);
         ctx.body = data;
+        winston.profile(profileName);
     })));
     server.use(__.put('/:route/:id+', (ctx, route, ...ids) => __awaiter(this, void 0, void 0, function* () {
+        const profileName = `Replacing new ${route} at ${Date.now()}`;
+        winston.profile(profileName);
         const data = yield serverApiContext
             .putItem(itemTypes_1.itemTypes[route].item, route, itemTypes_1.itemTypes[route].buildKey(ids), falcon_core_1.Serializer.fromJson(itemTypes_1.itemTypes[route].item, ctx.request.body));
         ctx.body = data;
+        winston.profile(profileName);
     })));
     server.use(__.patch('/:route/:id+', (ctx, route, ...ids) => __awaiter(this, void 0, void 0, function* () {
+        const profileName = `Updating new ${route} at ${Date.now()}`;
+        winston.profile(profileName);
         const data = yield serverApiContext
             .patchItem(itemTypes_1.itemTypes[route].item, route, itemTypes_1.itemTypes[route].buildKey(ids), ctx.request.body);
         ctx.body = data;
+        winston.profile(profileName);
     })));
     server.use(__.del('/:route/:id+', (ctx, route, ...ids) => __awaiter(this, void 0, void 0, function* () {
+        const profileName = `Replacing new ${route} at ${Date.now()}`;
+        winston.profile(profileName);
         const data = yield serverApiContext
             .delItem(itemTypes_1.itemTypes[route].item, route, itemTypes_1.itemTypes[route].buildKey(ids));
         ctx.body = data;
+        winston.profile(profileName);
     })));
     return server;
 };
@@ -27565,6 +27585,12 @@ module.exports = require("passport-local");
 
 /***/ }),
 /* 299 */
+/***/ (function(module, exports) {
+
+module.exports = require("winston");
+
+/***/ }),
+/* 300 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
