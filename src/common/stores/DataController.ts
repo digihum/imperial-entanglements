@@ -15,7 +15,6 @@ import { TrackedFalconItem, CompositeKey } from '@digihum/falcon-core';
 
 import { observable, action } from 'mobx';
 
-
 import { cloneDeep, find, groupBy, findIndex, isNaN } from 'lodash';
 
 import * as moment from 'moment';
@@ -245,13 +244,5 @@ export class DataController implements ApiService {
   @action public reorderTabs(data: {newIndex: number, oldIndex: number}) {
     this.tabs = arrayMove(this.tabs, data.oldIndex, data.newIndex);
     this.saveTabs();
-  }
-
-  // thinking
-  public entity(uid: number) : Entity {
-    if (!(uid in this.dataStore.tabs.entity)) {
-      throw new Error('Not loaded!');
-    }
-    return this.dataStore.tabs.entity[uid].value.value.entity;
   }
 }

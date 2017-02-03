@@ -27,7 +27,6 @@ import { DataController } from '../../stores/DataController';
 import { ModalStore } from '../../stores/ModalStore';
 
 interface RecordRowProps extends EditableSubfieldProps<Record> {
-    dimension: string;
     sources: Source[];
     entities: Entity[];
     dataStore?: DataController;

@@ -181,8 +181,7 @@ export class Sidebar extends React.Component<SidebarProps, SidebarState> {
         return (
             <section id='sidebar'>
 
-                <SearchBox searchString={this.state.searchString} dataStore={this.props.dataStore!}
-                onChange={(evt) => this.setState({searchString: (evt.currentTarget as HTMLInputElement).value})} />
+                <SearchBox searchString={this.state.searchString} dataStore={this.props.dataStore!} />
 
                 <div className='sidebar-toolbar'>
                     <button onClick={() => this.props.dataStore!.clearAllTabs()}><i className='fa fa-trash'></i> Clear All</button>

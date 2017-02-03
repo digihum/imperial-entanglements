@@ -17,22 +17,23 @@ export interface EditableSubfieldProps<T> {
     onDelete?: (val: T) => void;
 }
 
+interface EditableFieldState<T> {
+    edit: boolean;
+    internalValue: T | null;
+}
+
 interface EditableFieldProps<T> {
     value: T;
     onChange: (s: T | null) => void;
     onDelete?: (val: T) => void;
 }
 
-interface EditableFieldState<T> {
-    edit: boolean;
-    internalValue: T | null;
-}
+type ReactStateless<T> = (props: T) => React.ReactElement<any> | null;
 
-export function EditableFieldHOC<P, S, D>(
-  WrappedComponent: new() => React.Component<P & EditableSubfieldProps<D>, S> |
-  React.PureComponent<P & EditableSubfieldProps<D>, S>
+export function EditableFieldHOC<D, P extends EditableSubfieldProps<D>>(
+  WrappedComponent: React.ComponentClass<P> | ReactStateless<P>
   ) {
-  return class EditableFieldComponent extends React.Component<EditableFieldProps<D>, EditableFieldState<D>> {
+  return class EditableFieldComponent extends React.Component<P & EditableFieldProps<D>, EditableFieldState<D>> {
 
     constructor() {
         super();

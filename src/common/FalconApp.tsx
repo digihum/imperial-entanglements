@@ -53,15 +53,15 @@ export class FalconApp extends React.Component<FalconAppProps, FalconAppState> {
         };
     }
 
-    public componentDidMount() {
+    public async componentDidMount() {
         if (this.props.environment === 'website' && window !== undefined) {
-            fetch('/currentuser', { credentials: 'same-origin' })
-                .then((response) => response.json())
-                .then((userData) => this.setState({ user: userData.username }));
+            const userData : any = await fetch('/currentuser', { credentials: 'same-origin' })
+                .then((response) => response.json());
 
-            fetch('/tabset', { credentials: 'same-origin' })
-                .then((response) => response.json())
-                .then((tabsets) => this.setState({ tabsets }));
+            const tabsets : any = await fetch('/tabsets', { credentials: 'same-origin' })
+                .then((response) => response.json());
+
+            this.setState({ user: userData.username, tabsets });
         }
 
         this.props.api.getStats()
