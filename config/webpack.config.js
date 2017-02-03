@@ -29,7 +29,7 @@ const loaderConfig = [
     },
 ];
 
-const dllPath = path.join(__dirname, '..', 'dist');
+const dllPath = path.join(__dirname, '..', 'dist', 'static');
 
 
 var nodeModules = {};
