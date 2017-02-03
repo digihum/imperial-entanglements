@@ -8,8 +8,10 @@ run_tests:
   # install dependencies
   - npm install
 
+  - npm run tsc || true
+
   # build typescript
-  - npm run webpack || true
+  - npm run webpack
 
   - npm run gulp
   
