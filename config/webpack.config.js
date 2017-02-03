@@ -2,16 +2,6 @@ var webpack = require('webpack');
 var path = require('path');
 var fs = require('fs');
 
-const typescriptLoaderConfig = {
-    silent: true, // don't show errors on build
-    visualStudioErrorFormat: true,
-    ignoreDiagnostics: [
-        2307,
-        2345, 
-        2339 // Property does not exist on type (thrown incorrectly by setState)
-    ]
-};
-
 function isVendor(module, count) {
   const userRequest = module.userRequest;
 
@@ -21,16 +11,11 @@ function isVendor(module, count) {
 }
 
 const resolve = {
-    extensions: ['.js', '.ts', '.tsx'],
-    modules: ["node_modules", "src"],
+    extensions: ['.js'],
+    modules: ["node_modules", "build"],
 };
 
 const loaderConfig = [
-    { 
-        test: /\.tsx?$/,
-        use: ['ts-loader?' + JSON.stringify(typescriptLoaderConfig)],
-        include: path.join(__dirname, '..', 'src')
-    },
     { 
         test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/, 
         use: ["url-loader?limit=10000&mimetype=application/font-woff"],
@@ -44,6 +29,8 @@ const loaderConfig = [
     },
 ];
 
+const dllPath = path.join(__dirname, '..', 'dist');
+
 
 var nodeModules = {};
 fs.readdirSync('node_modules')
@@ -56,9 +43,9 @@ fs.readdirSync('node_modules')
 
 var frontendConfig = {
     devtool: 'source-map',
-    entry: './src/client/app.frontend',
+    entry: './build/client/app.frontend',
     output: {  
-        path: path.join(__dirname, '..', 'dist', 'server', 'static'),                 // output folder
+        path: path.join(__dirname, '..', 'dist', 'static'),                 // output folder
         filename: './[name].dist.js',    // file name
     },
     resolve: resolve,
@@ -75,30 +62,29 @@ var frontendConfig = {
         new webpack.optimize.CommonsChunkPlugin({
             name: 'vendor',
             minChunks: isVendor,
+        }),
+        new webpack.DllReferencePlugin({
+            context: process.cwd(),
+            manifest: require(path.join(dllPath, 'mobx-manifest.json'))
+        }),
+        new webpack.DllReferencePlugin({
+            context: process.cwd(),
+            manifest: require(path.join(dllPath, 'utility-manifest.json'))
+        }),
+        new webpack.DllReferencePlugin({
+            context: process.cwd(),
+            manifest: require(path.join(dllPath, 'ui-manifest.json'))
+        }),
+        new webpack.DllReferencePlugin({
+            context: process.cwd(),
+            manifest: require(path.join(dllPath, 'react-manifest.json'))
         })
     ]
 }
 
-var backendConfig = {
-    devtool: 'source-map',
-    entry: './src/server/index',
-    output: {  
-        path: 'dist/server',                 // output folder
-        filename: 'app.backend.dist.js',    // file name
-        devtoolModuleFilenameTemplate: "file://[absolute-resource-path]",
-        devtoolFallbackModuleFilenameTemplate: "file://[absolute-resource-path]?[hash]"
-    },
-    resolve: resolve,
-    module: {
-        rules: loaderConfig
-    },
-    target: 'node',
-    externals: nodeModules
-}
-
 var electronConfig = {
     devtool: 'source-map',
-    entry: './src/app/app.electron',
+    entry: './build/app/app.electron',
     output: {  
         path: 'dist/app',                 // output folder
         filename: 'app.electron.dist.js'     // file name
@@ -111,23 +97,4 @@ var electronConfig = {
     externals: nodeModules
 }
 
-var electronAppConfig = {
-    devtool: 'source-map',
-    entry: './src/app/index',
-    output: {  
-        path: 'dist/app',                 // output folder
-        filename: 'app.electron.index.dist.js'     // file name
-    },
-    resolve: resolve,
-    node: {
-        __dirname: false,
-        __filename: false
-    },
-    module:  {
-        rules: loaderConfig
-    },
-    target: 'electron',    
-    externals: nodeModules
-}
-
-module.exports = [frontendConfig, backendConfig, electronConfig, electronAppConfig];
+module.exports = [frontendConfig, electronConfig];

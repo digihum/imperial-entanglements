@@ -50,7 +50,6 @@ export const setupAuth = (db: Database) => {
           searchFilter: process.env.AUTH_LDAP_ACCOUNTFILTERFORMAT
         }
       }, (user, done) => {
-
         return db.query()('users')
         .select().where({username: user.name})
         .then(([user]) => {

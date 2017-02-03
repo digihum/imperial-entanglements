@@ -58,7 +58,7 @@ export class FalconApp extends React.Component<FalconAppProps, FalconAppState> {
             const userData : any = await fetch('/currentuser', { credentials: 'same-origin' })
                 .then((response) => response.json());
 
-            const tabsets : any = await fetch('/tabsets', { credentials: 'same-origin' })
+            const tabsets : any = await fetch('/tabset', { credentials: 'same-origin' })
                 .then((response) => response.json());
 
             this.setState({ user: userData.username, tabsets });

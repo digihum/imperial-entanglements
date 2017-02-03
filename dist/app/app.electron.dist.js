@@ -83,23 +83,23 @@ module.exports = require("react");
  * @version 0.0.1
  */
 
-var Element_1 = __webpack_require__(37);
+var Element_1 = __webpack_require__(95);
 exports.Element = Element_1.Element;
-var ElementSet_1 = __webpack_require__(38);
+var ElementSet_1 = __webpack_require__(96);
 exports.ElementSet = ElementSet_1.ElementSet;
-var SourceElement_1 = __webpack_require__(45);
+var SourceElement_1 = __webpack_require__(103);
 exports.SourceElement = SourceElement_1.SourceElement;
-var Entity_1 = __webpack_require__(39);
+var Entity_1 = __webpack_require__(97);
 exports.Entity = Entity_1.Entity;
-var EntityType_1 = __webpack_require__(40);
+var EntityType_1 = __webpack_require__(98);
 exports.EntityType = EntityType_1.EntityType;
-var Predicate_1 = __webpack_require__(41);
+var Predicate_1 = __webpack_require__(99);
 exports.Predicate = Predicate_1.Predicate;
-var Record_1 = __webpack_require__(42);
+var Record_1 = __webpack_require__(100);
 exports.Record = Record_1.Record;
-var Source_1 = __webpack_require__(44);
+var Source_1 = __webpack_require__(102);
 exports.Source = Source_1.Source;
-var Serializer_1 = __webpack_require__(43);
+var Serializer_1 = __webpack_require__(101);
 exports.Serializer = Serializer_1.Serializer;
 //# sourceMappingURL=index.js.map
 
@@ -137,7 +137,7 @@ exports.AppUrls = {
     source_element: itemTypes_1.itemTypes.source_element.machineName,
     element: 'element'
 };
-
+//# sourceMappingURL=ApiService.js.map
 
 /***/ }),
 /* 5 */
@@ -162,7 +162,7 @@ exports.AddTabButton = mobx_react_1.inject('dataStore')(mobx_react_1.observer((p
 exports.AddTabButton.wrappedComponent.contextTypes = {
     router: React.PropTypes.object.isRequired
 };
-
+//# sourceMappingURL=AddTabButton.js.map
 
 /***/ }),
 /* 6 */
@@ -237,7 +237,7 @@ exports.Exceptions = {
     InvalidUpdateException,
     ReadOnlyResourceException
 };
-
+//# sourceMappingURL=Exceptions.js.map
 
 /***/ }),
 /* 7 */
@@ -297,7 +297,7 @@ class GenericController {
     }
 }
 exports.GenericController = GenericController;
-
+//# sourceMappingURL=GenericController.js.map
 
 /***/ }),
 /* 8 */
@@ -526,7 +526,7 @@ exports.NumberComboDropdown = NumberComboDropdown;
 class StringComboDropdown extends ComboDropdown {
 }
 exports.StringComboDropdown = StringComboDropdown;
-
+//# sourceMappingURL=ComboDropdown.js.map
 
 /***/ }),
 /* 9 */
@@ -554,7 +554,7 @@ class Overlay extends React.Component {
 }
 exports.Overlay = Overlay;
 ;
-
+//# sourceMappingURL=Overlay.js.map
 
 /***/ }),
 /* 11 */
@@ -610,7 +610,7 @@ function EditableFieldHOC(WrappedComponent) {
     };
 }
 exports.EditableFieldHOC = EditableFieldHOC;
-
+//# sourceMappingURL=EditableFieldComponent.js.map
 
 /***/ }),
 /* 12 */
@@ -645,7 +645,7 @@ exports.SearchBar = (props) => {
                 React.createElement("i", { className: 'fa fa-search fa-fw' })),
             React.createElement("input", { type: 'text', className: 'form-control with-addon', onChange: (e) => props.setFilterFunc(filterFunc(e.target.value)) }))));
 };
-
+//# sourceMappingURL=SearchBar.js.map
 
 /***/ }),
 /* 14 */
@@ -675,7 +675,7 @@ exports.EditableHeader = (props) => {
                 React.createElement("i", { className: 'fa fa-times', "aria-hidden": 'true' }))));
     }
 };
-
+//# sourceMappingURL=EditableHeader.js.map
 
 /***/ }),
 /* 15 */
@@ -791,7 +791,7 @@ class RecordController extends GenericController_1.GenericController {
     }
 }
 exports.RecordController = RecordController;
-
+//# sourceMappingURL=RecordController.js.map
 
 /***/ }),
 /* 17 */
@@ -833,7 +833,7 @@ function EditableComboDropdown(props) {
 }
 exports.EditableComboDropdown = EditableComboDropdown;
 ;
-
+//# sourceMappingURL=EditableComboDropdown.js.map
 
 /***/ }),
 /* 18 */
@@ -878,7 +878,7 @@ exports.EditableParagraph = (props) => {
                 React.createElement("i", { className: 'fa fa-times', "aria-hidden": 'true' }))));
     }
 };
-
+//# sourceMappingURL=EditableParagraph.js.map
 
 /***/ }),
 /* 19 */
@@ -963,7 +963,7 @@ class SameAsEditor extends React.Component {
     }
 }
 exports.SameAsEditor = SameAsEditor;
-
+//# sourceMappingURL=SameAsEditor.js.map
 
 /***/ }),
 /* 20 */
@@ -997,7 +997,7 @@ exports.findParentTree = (uid, data, ancestors = []) => {
         }
     }
 };
-
+//# sourceMappingURL=findParentTree.js.map
 
 /***/ }),
 /* 21 */
@@ -1027,7 +1027,7 @@ exports.formatDate = (str) => {
     const day = rawDay > 0 ? rawDay : '';
     return `${modifier} ${day} ${month} ${year}`;
 };
-
+//# sourceMappingURL=formatDate.js.map
 
 /***/ }),
 /* 22 */
@@ -1116,7 +1116,7 @@ exports.itemTypes = {
         item: falcon_core_1.SourceElement
     }
 };
-
+//# sourceMappingURL=itemTypes.js.map
 
 /***/ }),
 /* 23 */
@@ -1240,7 +1240,7 @@ class EntityController extends GenericController_1.GenericController {
     }
 }
 exports.EntityController = EntityController;
-
+//# sourceMappingURL=EntityController.js.map
 
 /***/ }),
 /* 26 */
@@ -1416,7 +1416,7 @@ class PredicateController extends GenericController_1.GenericController {
     }
 }
 exports.PredicateController = PredicateController;
-
+//# sourceMappingURL=PredicateController.js.map
 
 /***/ }),
 /* 27 */
@@ -1452,7 +1452,7 @@ class RecursiveTree extends React.Component {
     }
 }
 exports.RecursiveTree = RecursiveTree;
-
+//# sourceMappingURL=RecursiveTree.js.map
 
 /***/ }),
 /* 28 */
@@ -1548,7 +1548,7 @@ class PredicateDescription extends React.Component {
     }
 }
 exports.PredicateDescription = PredicateDescription;
-
+//# sourceMappingURL=PredicateDescription.js.map
 
 /***/ }),
 /* 29 */
@@ -1569,7 +1569,7 @@ exports.literalTypes = [
     // { name: 'region', value: 'region', url: '', description: 'a region on a map'},
     { label: 'source', value: 'source', url: '', description: 'a source in the database' }
 ];
-
+//# sourceMappingURL=literalTypes.js.map
 
 /***/ }),
 /* 30 */
@@ -1606,7 +1606,7 @@ exports.StatsGrid = (props) => {
             React.createElement("span", { className: 'item-name' }, "Records"),
             React.createElement("span", { className: 'item-count' }, props.stats.record))));
 };
-
+//# sourceMappingURL=StatsGrid.js.map
 
 /***/ }),
 /* 31 */
@@ -1784,7 +1784,7 @@ class Database {
     }
 }
 exports.Database = Database;
-
+//# sourceMappingURL=Database.js.map
 
 /***/ }),
 /* 33 */
@@ -1798,9 +1798,9 @@ exports.Database = Database;
  * @version 0.2.0
  */
 const itemTypes_1 = __webpack_require__(22);
-const ServerApiService_1 = __webpack_require__(48);
-const QueryEngine_1 = __webpack_require__(47);
-const controllers_1 = __webpack_require__(54);
+const ServerApiService_1 = __webpack_require__(39);
+const QueryEngine_1 = __webpack_require__(38);
+const controllers_1 = __webpack_require__(45);
 exports.wrapDatabase = (db, fakeCreator) => {
     const routes = new Map([
         [itemTypes_1.itemTypes.element_set.machineName, new controllers_1.ElementSetController(db)],
@@ -1814,7 +1814,7 @@ exports.wrapDatabase = (db, fakeCreator) => {
     ]);
     return new ServerApiService_1.ServerApiService(db, routes, new QueryEngine_1.QueryEngine(db), fakeCreator);
 };
-
+//# sourceMappingURL=wrapDatabase.js.map
 
 /***/ }),
 /* 34 */
@@ -1835,20 +1835,28 @@ var __assign = (this && this.__assign) || Object.assign || function(t) {
     }
     return t;
 };
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 //https://react-router.now.sh/Match
 const React = __webpack_require__(0);
 const react_router_1 = __webpack_require__(9);
-const RouteNotFound_1 = __webpack_require__(101);
+const RouteNotFound_1 = __webpack_require__(92);
 const ApiService_1 = __webpack_require__(4);
 const itemTypes_1 = __webpack_require__(22);
-const Admin_1 = __webpack_require__(97);
-const AdminApp_1 = __webpack_require__(46);
-const User_1 = __webpack_require__(102);
-const UserManagement_1 = __webpack_require__(103);
-const AppDownload_1 = __webpack_require__(98);
-const DatabaseUpload_1 = __webpack_require__(99);
+const Admin_1 = __webpack_require__(88);
+const AdminApp_1 = __webpack_require__(37);
+const User_1 = __webpack_require__(93);
+const UserManagement_1 = __webpack_require__(94);
+const AppDownload_1 = __webpack_require__(89);
+const DatabaseUpload_1 = __webpack_require__(90);
 const react_router_2 = __webpack_require__(9);
-const ObjectEditor_1 = __webpack_require__(100);
+const ObjectEditor_1 = __webpack_require__(91);
 class FalconApp extends React.Component {
     constructor(props) {
         super();
@@ -1859,17 +1867,18 @@ class FalconApp extends React.Component {
         };
     }
     componentDidMount() {
-        if (this.props.environment === 'website' && window !== undefined) {
-            fetch('/currentuser', { credentials: 'same-origin' })
-                .then((response) => response.json())
-                .then((userData) => this.setState({ user: userData.username }));
-            fetch('/tabset', { credentials: 'same-origin' })
-                .then((response) => response.json())
-                .then((tabsets) => this.setState({ tabsets }));
-        }
-        this.props.api.getStats()
-            .then((stats) => {
-            this.setState({ stats });
+        return __awaiter(this, void 0, void 0, function* () {
+            if (this.props.environment === 'website' && window !== undefined) {
+                const userData = yield fetch('/currentuser', { credentials: 'same-origin' })
+                    .then((response) => response.json());
+                const tabsets = yield fetch('/tabset', { credentials: 'same-origin' })
+                    .then((response) => response.json());
+                this.setState({ user: userData.username, tabsets });
+            }
+            this.props.api.getStats()
+                .then((stats) => {
+                this.setState({ stats });
+            });
         });
     }
     render() {
@@ -1901,7 +1910,7 @@ class FalconApp extends React.Component {
     }
 }
 exports.FalconApp = FalconApp;
-
+//# sourceMappingURL=FalconApp.js.map
 
 /***/ }),
 /* 35 */
@@ -1921,196 +1930,6 @@ module.exports = require("react-dom");
 
 "use strict";
 /**
- * @fileOverview Abstract interface for sources
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.0.1
- */
-
-class Element {
-    constructor() {
-        this.itemType = 'element';
-    }
-}
-exports.Element = Element;
-//# sourceMappingURL=Element.js.map
-
-
-/***/ }),
-/* 38 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview Abstract interface for sources
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.0.1
- */
-
-class ElementSet {
-    constructor() {
-        this.itemType = 'element_set';
-    }
-}
-exports.ElementSet = ElementSet;
-//# sourceMappingURL=ElementSet.js.map
-
-/***/ }),
-/* 39 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview Abstract interface for entities
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.0.1
- */
-
-class Entity {
-    constructor() {
-        this.itemType = 'entity';
-    }
-}
-exports.Entity = Entity;
-//# sourceMappingURL=Entity.js.map
-
-/***/ }),
-/* 40 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview Abstract interface for entity type
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.0.1
- */
-
-class EntityType {
-    constructor() {
-        this.itemType = 'entity_type';
-    }
-}
-exports.EntityType = EntityType;
-//# sourceMappingURL=EntityType.js.map
-
-/***/ }),
-/* 41 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview Abstract interface for locations
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.0.1
- */
-
-class Predicate {
-    constructor() {
-        this.itemType = 'predicate';
-    }
-}
-exports.Predicate = Predicate;
-//# sourceMappingURL=Predicate.js.map
-
-/***/ }),
-/* 42 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview Abstract interface for entities
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.0.1
- */
-
-class Record {
-    constructor() {
-        this.itemType = 'record';
-        this.label = '';
-        //calculated
-        this.valueType = null;
-    }
-}
-exports.Record = Record;
-// Each value type will have it's own editor control :/
-// entity = dropdown selector
-// string = text editor
-// date = date picker
-// integer = numberic picker
-// spatial point = lat/lng or point picker (opens new tab. creates new resource)
-// spatial region = choose from a list or create new (opens new tab, creates new resource)
-// score - star picker
-// source - entity picker (with slight modification)
-// value - custom (see above)
-// entity - entity picker (with slight modification)
-//# sourceMappingURL=Record.js.map
-
-/***/ }),
-/* 43 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview Abstract interface for entities
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.0.1
- */
-
-exports.fromJson = function (obj, data) {
-    return Object.assign(Object.create(obj.prototype), data);
-};
-exports.toJson = function (data) {
-    return JSON.parse(JSON.stringify(data));
-};
-exports.Serializer = {
-    fromJson: exports.fromJson, toJson: exports.toJson
-};
-//# sourceMappingURL=Serializer.js.map
-
-/***/ }),
-/* 44 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview Abstract interface for sources
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.0.1
- */
-
-class Source {
-    constructor() {
-        this.itemType = 'source';
-    }
-}
-exports.Source = Source;
-//# sourceMappingURL=Source.js.map
-
-/***/ }),
-/* 45 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview Abstract interface for sources
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.0.1
- */
-
-class SourceElement {
-    constructor() {
-        this.itemType = 'source_element';
-        this.label = '';
-    }
-}
-exports.SourceElement = SourceElement;
-//# sourceMappingURL=SourceElement.js.map
-
-/***/ }),
-/* 46 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
  * @fileOverview <Description Missing>
  * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
  * @version 0.2.0
@@ -2122,10 +1941,10 @@ exports.AdminApp = (props) => (React.createElement("div", { className: 'page' },
     React.createElement("section", null,
         React.createElement("h1", null, "VRE App"),
         props.stats !== null ? (React.createElement(StatsGrid_1.StatsGrid, { stats: props.stats })) : null)));
-
+//# sourceMappingURL=AdminApp.js.map
 
 /***/ }),
-/* 47 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2136,8 +1955,8 @@ exports.AdminApp = (props) => (React.createElement("div", { className: 'page' },
  */
 
 const graphql_1 = __webpack_require__(23);
-const entityQLType_1 = __webpack_require__(55);
-const predicateQLType_1 = __webpack_require__(56);
+const entityQLType_1 = __webpack_require__(46);
+const predicateQLType_1 = __webpack_require__(47);
 class QueryEngine {
     constructor(db) {
         const entityType = entityQLType_1.entityQLType(db, predicateQLType_1.predicateQLType(db));
@@ -2169,10 +1988,10 @@ class QueryEngine {
     }
 }
 exports.QueryEngine = QueryEngine;
-
+//# sourceMappingURL=QueryEngine.js.map
 
 /***/ }),
-/* 48 */
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2186,7 +2005,7 @@ const Exceptions_1 = __webpack_require__(6);
 const moment = __webpack_require__(15);
 var ApiService_1 = __webpack_require__(4);
 exports.AppUrls = ApiService_1.AppUrls;
-const GeneralStatisticsController_1 = __webpack_require__(57);
+const GeneralStatisticsController_1 = __webpack_require__(48);
 class ServerApiService {
     constructor(db, routesMap, queryEngine, fakeCreator) {
         this.controllerMap = routesMap;
@@ -2252,10 +2071,10 @@ class ServerApiService {
     }
 }
 exports.ServerApiService = ServerApiService;
-
+//# sourceMappingURL=ServerApiService.js.map
 
 /***/ }),
-/* 49 */
+/* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2279,10 +2098,10 @@ class ElementController extends GenericController_1.GenericController {
     }
 }
 exports.ElementController = ElementController;
-
+//# sourceMappingURL=ElementController.js.map
 
 /***/ }),
-/* 50 */
+/* 41 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2336,10 +2155,10 @@ class ElementSetController extends GenericController_1.GenericController {
     }
 }
 exports.ElementSetController = ElementSetController;
-
+//# sourceMappingURL=ElementSetController.js.map
 
 /***/ }),
-/* 51 */
+/* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2419,10 +2238,10 @@ class EntityTypeController extends GenericController_1.GenericController {
     }
 }
 exports.EntityTypeController = EntityTypeController;
-
+//# sourceMappingURL=EntityTypeController.js.map
 
 /***/ }),
-/* 52 */
+/* 43 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2561,10 +2380,10 @@ class SourceController extends GenericController_1.GenericController {
     }
 }
 exports.SourceController = SourceController;
-
+//# sourceMappingURL=SourceController.js.map
 
 /***/ }),
-/* 53 */
+/* 44 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2637,10 +2456,10 @@ class SourceElementController extends GenericController_1.GenericController {
     }
 }
 exports.SourceElementController = SourceElementController;
-
+//# sourceMappingURL=SourceElementController.js.map
 
 /***/ }),
-/* 54 */
+/* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2650,26 +2469,26 @@ exports.SourceElementController = SourceElementController;
  * @version 0.2.0
  */
 
-var ElementSetController_1 = __webpack_require__(50);
+var ElementSetController_1 = __webpack_require__(41);
 exports.ElementSetController = ElementSetController_1.ElementSetController;
 var EntityController_1 = __webpack_require__(25);
 exports.EntityController = EntityController_1.EntityController;
-var EntityTypeController_1 = __webpack_require__(51);
+var EntityTypeController_1 = __webpack_require__(42);
 exports.EntityTypeController = EntityTypeController_1.EntityTypeController;
 var PredicateController_1 = __webpack_require__(26);
 exports.PredicateController = PredicateController_1.PredicateController;
 var RecordController_1 = __webpack_require__(16);
 exports.RecordController = RecordController_1.RecordController;
-var SourceController_1 = __webpack_require__(52);
+var SourceController_1 = __webpack_require__(43);
 exports.SourceController = SourceController_1.SourceController;
-var ElementController_1 = __webpack_require__(49);
+var ElementController_1 = __webpack_require__(40);
 exports.ElementController = ElementController_1.ElementController;
-var SourceElementController_1 = __webpack_require__(53);
+var SourceElementController_1 = __webpack_require__(44);
 exports.SourceElementController = SourceElementController_1.SourceElementController;
-
+//# sourceMappingURL=controllers.js.map
 
 /***/ }),
-/* 55 */
+/* 46 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2739,10 +2558,10 @@ exports.entityQLType = (db, predicateType) => {
         }
     });
 };
-
+//# sourceMappingURL=entityQLType.js.map
 
 /***/ }),
-/* 56 */
+/* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2781,10 +2600,10 @@ exports.predicateQLType = (db) => {
         }
     });
 };
-
+//# sourceMappingURL=predicateQLType.js.map
 
 /***/ }),
-/* 57 */
+/* 48 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2813,10 +2632,10 @@ exports.GeneralStatisticsController = (db) => {
         return statistics;
     });
 };
-
+//# sourceMappingURL=GeneralStatisticsController.js.map
 
 /***/ }),
-/* 58 */
+/* 49 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2831,10 +2650,10 @@ exports.Loading = (props) => {
     return (React.createElement("div", { className: 'loader-wrapper' },
         React.createElement("div", { className: 'loader' })));
 };
-
+//# sourceMappingURL=Loading.js.map
 
 /***/ }),
-/* 59 */
+/* 50 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2854,7 +2673,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 const React = __webpack_require__(0);
-const SearchBox_1 = __webpack_require__(83);
+const SearchBox_1 = __webpack_require__(74);
 const ApiService_1 = __webpack_require__(4);
 const react_router_1 = __webpack_require__(9);
 const lodash_1 = __webpack_require__(3);
@@ -2932,7 +2751,7 @@ let Sidebar = class Sidebar extends React.Component {
     }
     render() {
         return (React.createElement("section", { id: 'sidebar' },
-            React.createElement(SearchBox_1.SearchBox, { searchString: this.state.searchString, dataStore: this.props.dataStore, onChange: (evt) => this.setState({ searchString: evt.currentTarget.value }) }),
+            React.createElement(SearchBox_1.SearchBox, { searchString: this.state.searchString, dataStore: this.props.dataStore }),
             React.createElement("div", { className: 'sidebar-toolbar' },
                 React.createElement("button", { onClick: () => this.props.dataStore.clearAllTabs() },
                     React.createElement("i", { className: 'fa fa-trash' }),
@@ -2953,10 +2772,10 @@ Sidebar = __decorate([
     __metadata("design:paramtypes", [])
 ], Sidebar);
 exports.Sidebar = Sidebar;
-
+//# sourceMappingURL=Sidebar.js.map
 
 /***/ }),
-/* 60 */
+/* 51 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2994,10 +2813,10 @@ class Toast extends React.Component {
     }
 }
 exports.Toast = Toast;
-
+//# sourceMappingURL=Toast.js.map
 
 /***/ }),
-/* 61 */
+/* 52 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3017,9 +2836,9 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 const React = __webpack_require__(0);
-const Loading_1 = __webpack_require__(58);
+const Loading_1 = __webpack_require__(49);
 const mobx_react_1 = __webpack_require__(2);
-const workspace_1 = __webpack_require__(93);
+const workspace_1 = __webpack_require__(84);
 let Workspace = class Workspace extends React.Component {
     constructor() {
         super();
@@ -3062,10 +2881,10 @@ Workspace = __decorate([
     __metadata("design:paramtypes", [])
 ], Workspace);
 exports.Workspace = Workspace;
-
+//# sourceMappingURL=Workspace.js.map
 
 /***/ }),
-/* 62 */
+/* 53 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3076,15 +2895,15 @@ exports.Workspace = Workspace;
  */
 
 const React = __webpack_require__(0);
-const DatePickerDropdown_1 = __webpack_require__(69);
+const DatePickerDropdown_1 = __webpack_require__(60);
 exports.DateFieldEditor = (props) => {
     return (React.createElement("div", { className: 'date-selector' },
         React.createElement(DatePickerDropdown_1.DatePickerDropdown, { value: props.value, setValue: props.onChange })));
 };
-
+//# sourceMappingURL=DateFieldEditor.js.map
 
 /***/ }),
-/* 63 */
+/* 54 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3107,10 +2926,10 @@ exports.EntityFieldEditor = (props) => {
     }
     return (React.createElement(ComboDropdown_1.NumberComboDropdown, { options: options, typeName: 'entity type', allowNew: false, value: selectedOption, setValue: (val) => val !== null && val.value !== null ? props.onChange(val.value) : props.onChange(null), createNewValue: lodash_1.noop }));
 };
-
+//# sourceMappingURL=EntityFieldEditor.js.map
 
 /***/ }),
-/* 64 */
+/* 55 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3125,10 +2944,10 @@ exports.IntegerFieldEditor = (props) => {
     const integerFieldChangeHandler = (e) => props.onChange(e.target.value);
     return (React.createElement("input", { type: 'number', value: props.value, onChange: integerFieldChangeHandler }));
 };
-
+//# sourceMappingURL=IntegerFieldEditor.js.map
 
 /***/ }),
-/* 65 */
+/* 56 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3142,7 +2961,7 @@ const React = __webpack_require__(0);
 const ApiService_1 = __webpack_require__(4);
 const falcon_core_1 = __webpack_require__(1);
 const EditableFieldComponent_1 = __webpack_require__(11);
-const RecordRow_1 = __webpack_require__(66);
+const RecordRow_1 = __webpack_require__(57);
 const AddTabButton_1 = __webpack_require__(5);
 const RecordEditableFieldComponent = EditableFieldComponent_1.EditableFieldHOC(RecordRow_1.RecordRow);
 class RecordPredicate extends React.Component {
@@ -3202,10 +3021,10 @@ class RecordPredicate extends React.Component {
     }
 }
 exports.RecordPredicate = RecordPredicate;
-
+//# sourceMappingURL=RecordPredicate.js.map
 
 /***/ }),
-/* 66 */
+/* 57 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3216,12 +3035,12 @@ exports.RecordPredicate = RecordPredicate;
  */
 
 const React = __webpack_require__(0);
-const ScorePicker_1 = __webpack_require__(70);
+const ScorePicker_1 = __webpack_require__(61);
 const ComboDropdown_1 = __webpack_require__(8);
-const StringFieldEditor_1 = __webpack_require__(68);
-const EntityFieldEditor_1 = __webpack_require__(63);
-const DateFieldEditor_1 = __webpack_require__(62);
-const IntegerFieldEditor_1 = __webpack_require__(64);
+const StringFieldEditor_1 = __webpack_require__(59);
+const EntityFieldEditor_1 = __webpack_require__(54);
+const DateFieldEditor_1 = __webpack_require__(53);
+const IntegerFieldEditor_1 = __webpack_require__(55);
 const AddTabButton_1 = __webpack_require__(5);
 const formatDate_1 = __webpack_require__(21);
 const mobx_react_1 = __webpack_require__(2);
@@ -3321,10 +3140,10 @@ exports.RecordRow = mobx_react_1.inject('dataStore', 'modalStore')(mobx_react_1.
                     React.createElement("i", { className: 'fa fa-trash', "aria-hidden": 'true' })))));
     }
 }));
-
+//# sourceMappingURL=RecordRow.js.map
 
 /***/ }),
-/* 67 */
+/* 58 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3347,7 +3166,7 @@ const React = __webpack_require__(0);
 const ApiService_1 = __webpack_require__(4);
 const falcon_core_1 = __webpack_require__(1);
 const SearchBar_1 = __webpack_require__(13);
-const RecordPredicate_1 = __webpack_require__(65);
+const RecordPredicate_1 = __webpack_require__(56);
 const findParentTree_1 = __webpack_require__(20);
 const mobx_react_1 = __webpack_require__(2);
 let RecordsEditor = class RecordsEditor extends React.Component {
@@ -3423,10 +3242,10 @@ RecordsEditor = __decorate([
     __metadata("design:paramtypes", [])
 ], RecordsEditor);
 exports.RecordsEditor = RecordsEditor;
-
+//# sourceMappingURL=RecordsEditor.js.map
 
 /***/ }),
-/* 68 */
+/* 59 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3440,10 +3259,10 @@ const React = __webpack_require__(0);
 exports.StringFieldEditor = (props) => {
     return (React.createElement("input", { type: 'text', value: props.value, onChange: (e) => props.onChange(e.target.value) }));
 };
-
+//# sourceMappingURL=StringFieldEditor.js.map
 
 /***/ }),
-/* 69 */
+/* 60 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3613,10 +3432,10 @@ class DatePickerDropdown extends React.Component {
 }
 DatePickerDropdown.datePickerDropDownInputBoxRef = 'datePickerDropDownInputBox';
 exports.DatePickerDropdown = DatePickerDropdown;
-
+//# sourceMappingURL=DatePickerDropdown.js.map
 
 /***/ }),
-/* 70 */
+/* 61 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3642,10 +3461,10 @@ exports.ScorePicker = (props) => {
             }, "aria-hidden": 'true' })))));
     }
 };
-
+//# sourceMappingURL=ScorePicker.js.map
 
 /***/ }),
-/* 71 */
+/* 62 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3747,10 +3566,10 @@ ConflictResolution = __decorate([
 ], ConflictResolution);
 exports.ConflictResolution = ConflictResolution;
 ;
-
+//# sourceMappingURL=ConflictResolution.js.map
 
 /***/ }),
-/* 72 */
+/* 63 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3832,10 +3651,10 @@ CreateEntity = __decorate([
 ], CreateEntity);
 exports.CreateEntity = CreateEntity;
 ;
-
+//# sourceMappingURL=CreateEntity.js.map
 
 /***/ }),
-/* 73 */
+/* 64 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3900,10 +3719,10 @@ CreateEntityType = __decorate([
 ], CreateEntityType);
 exports.CreateEntityType = CreateEntityType;
 ;
-
+//# sourceMappingURL=CreateEntityType.js.map
 
 /***/ }),
-/* 74 */
+/* 65 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4017,10 +3836,10 @@ CreatePredicate = __decorate([
 ], CreatePredicate);
 exports.CreatePredicate = CreatePredicate;
 ;
-
+//# sourceMappingURL=CreatePredicate.js.map
 
 /***/ }),
-/* 75 */
+/* 66 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4096,10 +3915,10 @@ CreatePresetRecord = CreatePresetRecord_1 = __decorate([
 exports.CreatePresetRecord = CreatePresetRecord;
 ;
 var CreatePresetRecord_1;
-
+//# sourceMappingURL=CreatePresetRecord.js.map
 
 /***/ }),
-/* 76 */
+/* 67 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4181,10 +4000,10 @@ CreateRecord = __decorate([
 ], CreateRecord);
 exports.CreateRecord = CreateRecord;
 ;
-
+//# sourceMappingURL=CreateRecord.js.map
 
 /***/ }),
-/* 77 */
+/* 68 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4255,10 +4074,10 @@ CreateSource = __decorate([
     __metadata("design:paramtypes", [])
 ], CreateSource);
 exports.CreateSource = CreateSource;
-
+//# sourceMappingURL=CreateSource.js.map
 
 /***/ }),
-/* 78 */
+/* 69 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4332,10 +4151,10 @@ CreateTabSet = __decorate([
 ], CreateTabSet);
 exports.CreateTabSet = CreateTabSet;
 ;
-
+//# sourceMappingURL=CreateTabSet.js.map
 
 /***/ }),
-/* 79 */
+/* 70 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4604,10 +4423,10 @@ EntityList = __decorate([
     __metadata("design:paramtypes", [Object])
 ], EntityList);
 exports.EntityList = EntityList;
-
+//# sourceMappingURL=EntityList.js.map
 
 /***/ }),
-/* 80 */
+/* 71 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4694,10 +4513,10 @@ EntityTypeList = __decorate([
     __metadata("design:paramtypes", [])
 ], EntityTypeList);
 exports.EntityTypeList = EntityTypeList;
-
+//# sourceMappingURL=EntityTypeList.js.map
 
 /***/ }),
-/* 81 */
+/* 72 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4786,10 +4605,10 @@ PredicateList = __decorate([
     __metadata("design:paramtypes", [])
 ], PredicateList);
 exports.PredicateList = PredicateList;
-
+//# sourceMappingURL=PredicateList.js.map
 
 /***/ }),
-/* 82 */
+/* 73 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4874,10 +4693,10 @@ SourceList = __decorate([
     __metadata("design:paramtypes", [])
 ], SourceList);
 exports.SourceList = SourceList;
-
+//# sourceMappingURL=SourceList.js.map
 
 /***/ }),
-/* 83 */
+/* 74 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4907,10 +4726,10 @@ exports.SearchBox = (props, context) => {
                 }, typeName: 'all', options: all, allowNew: false, createNewValue: () => { } }))));
 };
 exports.SearchBox.contextTypes = { router: React.PropTypes.object.isRequired };
-
+//# sourceMappingURL=SearchBox.js.map
 
 /***/ }),
-/* 84 */
+/* 75 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4923,10 +4742,10 @@ exports.SearchBox.contextTypes = { router: React.PropTypes.object.isRequired };
 const React = __webpack_require__(0);
 exports.AdvancedSearchWorkspace = (props) => (React.createElement("div", { className: 'workspace-editor' },
     React.createElement("h2", null, "Advanced Search")));
-
+//# sourceMappingURL=AdvancedSearchWorkspace.js.map
 
 /***/ }),
-/* 85 */
+/* 76 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4939,10 +4758,10 @@ exports.AdvancedSearchWorkspace = (props) => (React.createElement("div", { class
 const React = __webpack_require__(0);
 exports.EmptyWorkspace = () => (React.createElement("div", { className: 'workspace-editor' },
     React.createElement("h2", null, "There is nothing here")));
-
+//# sourceMappingURL=EmptyWorkspace.js.map
 
 /***/ }),
-/* 86 */
+/* 77 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4967,8 +4786,8 @@ const falcon_core_1 = __webpack_require__(1);
 const findParentTree_1 = __webpack_require__(20);
 const EditableHeader_1 = __webpack_require__(14);
 const EditableFieldComponent_1 = __webpack_require__(11);
-const EntityWorkspaceCoreView_1 = __webpack_require__(91);
-const EntityWorkspaceReferenceView_1 = __webpack_require__(92);
+const EntityWorkspaceCoreView_1 = __webpack_require__(82);
+const EntityWorkspaceReferenceView_1 = __webpack_require__(83);
 const mobx_react_1 = __webpack_require__(2);
 const HeaderEditableFieldComponent = EditableFieldComponent_1.EditableFieldHOC(EditableHeader_1.EditableHeader);
 // What can I do?
@@ -5107,10 +4926,10 @@ EntityEditorWorkspace = __decorate([
     __metadata("design:paramtypes", [Object, Object])
 ], EntityEditorWorkspace);
 exports.EntityEditorWorkspace = EntityEditorWorkspace;
-
+//# sourceMappingURL=EntityEditorWorkspace.js.map
 
 /***/ }),
-/* 87 */
+/* 78 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5283,10 +5102,10 @@ EntityTypeWorkspace = __decorate([
     __metadata("design:paramtypes", [])
 ], EntityTypeWorkspace);
 exports.EntityTypeWorkspace = EntityTypeWorkspace;
-
+//# sourceMappingURL=EntityTypeWorkspace.js.map
 
 /***/ }),
-/* 88 */
+/* 79 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5297,10 +5116,10 @@ exports.EntityTypeWorkspace = EntityTypeWorkspace;
  */
 
 const React = __webpack_require__(0);
-const EntityList_1 = __webpack_require__(79);
-const PredicateList_1 = __webpack_require__(81);
-const SourceList_1 = __webpack_require__(82);
-const EntityTypeList_1 = __webpack_require__(80);
+const EntityList_1 = __webpack_require__(70);
+const PredicateList_1 = __webpack_require__(72);
+const SourceList_1 = __webpack_require__(73);
+const EntityTypeList_1 = __webpack_require__(71);
 exports.ObjectListWorkspace = (props) => (React.createElement("div", { className: 'workspace-editor object-list' }, (() => {
     switch (props.listType) {
         case 'entity':
@@ -5313,10 +5132,10 @@ exports.ObjectListWorkspace = (props) => (React.createElement("div", { className
             return (React.createElement(EntityTypeList_1.EntityTypeList, null));
     }
 })()));
-
+//# sourceMappingURL=ObjectListWorkspace.js.map
 
 /***/ }),
-/* 89 */
+/* 80 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5489,10 +5308,10 @@ PredicateEditorWorkspace = __decorate([
     __metadata("design:paramtypes", [])
 ], PredicateEditorWorkspace);
 exports.PredicateEditorWorkspace = PredicateEditorWorkspace;
-
+//# sourceMappingURL=PredicateEditorWorkspace.js.map
 
 /***/ }),
-/* 90 */
+/* 81 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5735,10 +5554,10 @@ SourceEditorWorkspace = __decorate([
     __metadata("design:paramtypes", [])
 ], SourceEditorWorkspace);
 exports.SourceEditorWorkspace = SourceEditorWorkspace;
-
+//# sourceMappingURL=SourceEditorWorkspace.js.map
 
 /***/ }),
-/* 91 */
+/* 82 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5749,7 +5568,7 @@ exports.SourceEditorWorkspace = SourceEditorWorkspace;
  */
 
 const React = __webpack_require__(0);
-const RecordsEditor_1 = __webpack_require__(67);
+const RecordsEditor_1 = __webpack_require__(58);
 const ApiService_1 = __webpack_require__(4);
 const falcon_core_1 = __webpack_require__(1);
 const lodash_1 = __webpack_require__(3);
@@ -5828,10 +5647,10 @@ EntityWorkspaceCoreView.contextTypes = {
     router: React.PropTypes.object.isRequired
 };
 exports.EntityWorkspaceCoreView = EntityWorkspaceCoreView;
-
+//# sourceMappingURL=EntityWorkspaceCoreView.js.map
 
 /***/ }),
-/* 92 */
+/* 83 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5897,10 +5716,10 @@ EntityWorkspaceReferenceView.contextTypes = {
     router: React.PropTypes.object.isRequired
 };
 exports.EntityWorkspaceReferenceView = EntityWorkspaceReferenceView;
-
+//# sourceMappingURL=EntityWorkspaceReferenceView.js.map
 
 /***/ }),
-/* 93 */
+/* 84 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5910,24 +5729,24 @@ exports.EntityWorkspaceReferenceView = EntityWorkspaceReferenceView;
  * @version 0.2.0
  */
 
-var EmptyWorkspace_1 = __webpack_require__(85);
+var EmptyWorkspace_1 = __webpack_require__(76);
 exports.EmptyWorkspace = EmptyWorkspace_1.EmptyWorkspace;
-var EntityEditorWorkspace_1 = __webpack_require__(86);
+var EntityEditorWorkspace_1 = __webpack_require__(77);
 exports.EntityEditorWorkspace = EntityEditorWorkspace_1.EntityEditorWorkspace;
-var EntityTypeWorkspace_1 = __webpack_require__(87);
+var EntityTypeWorkspace_1 = __webpack_require__(78);
 exports.EntityTypeWorkspace = EntityTypeWorkspace_1.EntityTypeWorkspace;
-var SourceEditorWorkspace_1 = __webpack_require__(90);
+var SourceEditorWorkspace_1 = __webpack_require__(81);
 exports.SourceEditorWorkspace = SourceEditorWorkspace_1.SourceEditorWorkspace;
-var PredicateEditorWorkspace_1 = __webpack_require__(89);
+var PredicateEditorWorkspace_1 = __webpack_require__(80);
 exports.PredicateEditorWorkspace = PredicateEditorWorkspace_1.PredicateEditorWorkspace;
-var AdvancedSearchWorkspace_1 = __webpack_require__(84);
+var AdvancedSearchWorkspace_1 = __webpack_require__(75);
 exports.AdvancedSearchWorkspace = AdvancedSearchWorkspace_1.AdvancedSearchWorkspace;
-var ObjectListWorkspace_1 = __webpack_require__(88);
+var ObjectListWorkspace_1 = __webpack_require__(79);
 exports.ObjectListWorkspace = ObjectListWorkspace_1.ObjectListWorkspace;
-
+//# sourceMappingURL=workspace.js.map
 
 /***/ }),
-/* 94 */
+/* 85 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5956,7 +5775,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 const falcon_core_1 = __webpack_require__(1);
 const ApiService_1 = __webpack_require__(4);
-const DataStore_1 = __webpack_require__(95);
+const DataStore_1 = __webpack_require__(86);
 const react_sortable_hoc_1 = __webpack_require__(24);
 const mobx_1 = __webpack_require__(31);
 const lodash_1 = __webpack_require__(3);
@@ -6141,13 +5960,6 @@ class DataController {
         this.tabs = react_sortable_hoc_1.arrayMove(this.tabs, data.oldIndex, data.newIndex);
         this.saveTabs();
     }
-    // thinking
-    entity(uid) {
-        if (!(uid in this.dataStore.tabs.entity)) {
-            throw new Error('Not loaded!');
-        }
-        return this.dataStore.tabs.entity[uid].value.value.entity;
-    }
 }
 __decorate([
     mobx_1.observable,
@@ -6210,10 +6022,10 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], DataController.prototype, "reorderTabs", null);
 exports.DataController = DataController;
-
+//# sourceMappingURL=DataController.js.map
 
 /***/ }),
-/* 95 */
+/* 86 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6241,10 +6053,10 @@ exports.emptyDataStore = {
     },
     lockedSource: null
 };
-
+//# sourceMappingURL=DataStore.js.map
 
 /***/ }),
-/* 96 */
+/* 87 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6273,14 +6085,14 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 const React = __webpack_require__(0);
 const lodash_1 = __webpack_require__(3);
-const CreatePredicate_1 = __webpack_require__(74);
-const CreateRecord_1 = __webpack_require__(76);
-const CreatePresetRecord_1 = __webpack_require__(75);
-const CreateSource_1 = __webpack_require__(77);
-const CreateEntity_1 = __webpack_require__(72);
-const CreateEntityType_1 = __webpack_require__(73);
-const ConflictResolution_1 = __webpack_require__(71);
-const CreateTabSet_1 = __webpack_require__(78);
+const CreatePredicate_1 = __webpack_require__(65);
+const CreateRecord_1 = __webpack_require__(67);
+const CreatePresetRecord_1 = __webpack_require__(66);
+const CreateSource_1 = __webpack_require__(68);
+const CreateEntity_1 = __webpack_require__(63);
+const CreateEntityType_1 = __webpack_require__(64);
+const ConflictResolution_1 = __webpack_require__(62);
+const CreateTabSet_1 = __webpack_require__(69);
 const mobx_1 = __webpack_require__(31);
 class ModalStore {
     constructor() {
@@ -6363,10 +6175,10 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], ModalStore.prototype, "modalCancel", null);
 exports.ModalStore = ModalStore;
-
+//# sourceMappingURL=ModalStore.js.map
 
 /***/ }),
-/* 97 */
+/* 88 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6422,10 +6234,10 @@ exports.Admin = (props, context) => (React.createElement("div", { className: 'pa
 exports.Admin.contextTypes = {
     router: React.PropTypes.object.isRequired
 };
-
+//# sourceMappingURL=Admin.js.map
 
 /***/ }),
-/* 98 */
+/* 89 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6453,10 +6265,10 @@ exports.AppDownload = (props) => (React.createElement("div", { className: 'page'
                 React.createElement("a", { href: 'https://github.com/digihum/imperial-entanglements-app/raw/master/bin/imperial-entanglements-0.1.1-x86_64.AppImage' },
                     React.createElement("i", { className: 'fa fa-linux' }),
                     " Linux"))))));
-
+//# sourceMappingURL=AppDownload.js.map
 
 /***/ }),
-/* 99 */
+/* 90 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6472,10 +6284,10 @@ exports.DatabaseUpload = (props) => (React.createElement("div", { className: 'pa
         React.createElement("h1", null, "This is the database upload page"),
         React.createElement("input", { type: 'file', id: 'input', accept: '.sqlite' }),
         React.createElement("button", { onClick: () => { alert('Work in process'); } }, "Upload"))));
-
+//# sourceMappingURL=DatabaseUpload.js.map
 
 /***/ }),
-/* 100 */
+/* 91 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6486,11 +6298,11 @@ exports.DatabaseUpload = (props) => (React.createElement("div", { className: 'pa
  */
 
 const React = __webpack_require__(0);
-const Sidebar_1 = __webpack_require__(59);
-const Workspace_1 = __webpack_require__(61);
-const Toast_1 = __webpack_require__(60);
-const DataController_1 = __webpack_require__(94);
-const ModalStore_1 = __webpack_require__(96);
+const Sidebar_1 = __webpack_require__(50);
+const Workspace_1 = __webpack_require__(52);
+const Toast_1 = __webpack_require__(51);
+const DataController_1 = __webpack_require__(85);
+const ModalStore_1 = __webpack_require__(87);
 const react_sortable_hoc_1 = __webpack_require__(24);
 const mobx_react_devtools_1 = __webpack_require__(107);
 const mobx_react_1 = __webpack_require__(2);
@@ -6578,10 +6390,10 @@ ObjectEditor.contextTypes = {
     router: React.PropTypes.object.isRequired
 };
 exports.ObjectEditor = ObjectEditor;
-
+//# sourceMappingURL=ObjectEditor.js.map
 
 /***/ }),
-/* 101 */
+/* 92 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6597,10 +6409,10 @@ exports.RouteNotFound = (props) => (React.createElement("section", null,
         "The page at ",
         props.url,
         " does not exist :(")));
-
+//# sourceMappingURL=RouteNotFound.js.map
 
 /***/ }),
-/* 102 */
+/* 93 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6614,10 +6426,10 @@ const React = __webpack_require__(0);
 exports.User = (props) => (React.createElement("div", { className: 'page' },
     React.createElement("section", null,
         React.createElement("h1", null, "This is the user page"))));
-
+//# sourceMappingURL=User.js.map
 
 /***/ }),
-/* 103 */
+/* 94 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6631,7 +6443,197 @@ const React = __webpack_require__(0);
 exports.UserManagement = (props) => (React.createElement("div", { className: 'page' },
     React.createElement("section", null,
         React.createElement("h1", null, "This is the user management page"))));
+//# sourceMappingURL=UserManagement.js.map
 
+/***/ }),
+/* 95 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview Abstract interface for sources
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.0.1
+ */
+
+class Element {
+    constructor() {
+        this.itemType = 'element';
+    }
+}
+exports.Element = Element;
+//# sourceMappingURL=Element.js.map
+
+
+/***/ }),
+/* 96 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview Abstract interface for sources
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.0.1
+ */
+
+class ElementSet {
+    constructor() {
+        this.itemType = 'element_set';
+    }
+}
+exports.ElementSet = ElementSet;
+//# sourceMappingURL=ElementSet.js.map
+
+/***/ }),
+/* 97 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview Abstract interface for entities
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.0.1
+ */
+
+class Entity {
+    constructor() {
+        this.itemType = 'entity';
+    }
+}
+exports.Entity = Entity;
+//# sourceMappingURL=Entity.js.map
+
+/***/ }),
+/* 98 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview Abstract interface for entity type
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.0.1
+ */
+
+class EntityType {
+    constructor() {
+        this.itemType = 'entity_type';
+    }
+}
+exports.EntityType = EntityType;
+//# sourceMappingURL=EntityType.js.map
+
+/***/ }),
+/* 99 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview Abstract interface for locations
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.0.1
+ */
+
+class Predicate {
+    constructor() {
+        this.itemType = 'predicate';
+    }
+}
+exports.Predicate = Predicate;
+//# sourceMappingURL=Predicate.js.map
+
+/***/ }),
+/* 100 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview Abstract interface for entities
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.0.1
+ */
+
+class Record {
+    constructor() {
+        this.itemType = 'record';
+        this.label = '';
+        //calculated
+        this.valueType = null;
+    }
+}
+exports.Record = Record;
+// Each value type will have it's own editor control :/
+// entity = dropdown selector
+// string = text editor
+// date = date picker
+// integer = numberic picker
+// spatial point = lat/lng or point picker (opens new tab. creates new resource)
+// spatial region = choose from a list or create new (opens new tab, creates new resource)
+// score - star picker
+// source - entity picker (with slight modification)
+// value - custom (see above)
+// entity - entity picker (with slight modification)
+//# sourceMappingURL=Record.js.map
+
+/***/ }),
+/* 101 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview Abstract interface for entities
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.0.1
+ */
+
+exports.fromJson = function (obj, data) {
+    return Object.assign(Object.create(obj.prototype), data);
+};
+exports.toJson = function (data) {
+    return JSON.parse(JSON.stringify(data));
+};
+exports.Serializer = {
+    fromJson: exports.fromJson, toJson: exports.toJson
+};
+//# sourceMappingURL=Serializer.js.map
+
+/***/ }),
+/* 102 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview Abstract interface for sources
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.0.1
+ */
+
+class Source {
+    constructor() {
+        this.itemType = 'source';
+    }
+}
+exports.Source = Source;
+//# sourceMappingURL=Source.js.map
+
+/***/ }),
+/* 103 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview Abstract interface for sources
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.0.1
+ */
+
+class SourceElement {
+    constructor() {
+        this.itemType = 'source_element';
+        this.label = '';
+    }
+}
+exports.SourceElement = SourceElement;
+//# sourceMappingURL=SourceElement.js.map
 
 /***/ }),
 /* 104 */
@@ -6708,7 +6710,7 @@ if (databaseFile !== undefined) {
 else {
     electron.remote.app.quit();
 }
-
+//# sourceMappingURL=app.electron.js.map
 
 /***/ })
 /******/ ]);

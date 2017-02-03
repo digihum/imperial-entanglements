@@ -1,0 +1,9 @@
+{
+  "name": "ui_lib",
+  "content": {
+    "./node_modules/mousetrap/mousetrap.js": {
+      "id": 346,
+      "meta": {}
+    }
+  }
+}

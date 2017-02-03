@@ -4,6 +4,25 @@
         {
             "type": "node",
             "request": "launch",
+            "name": "nodemon",
+            "cwd": "${workspaceRoot}",
+            "runtimeExecutable": "nodemon",
+            "runtimeArgs": [
+                "--debug=5858"
+            ],
+            "program": "${workspaceRoot}/src/server/index.ts",
+            "restart": true,
+            "port": 5858,
+            "sourceMaps": true,
+            "console": "integratedTerminal",
+            "internalConsoleOptions": "neverOpen",
+            "outFiles": [
+                "${workspaceRoot}/build/**/*.js"
+            ]
+        },
+        {
+            "type": "node",
+            "request": "launch",
             "name": "Launch Migrate",
             "program": "${workspaceRoot}/data/migrate.js",
             "cwd": "${workspaceRoot}"
@@ -27,7 +46,7 @@
             "console": "integratedTerminal",
             "sourceMaps": true,
             "outFiles": [
-                "${workspaceRoot}/dist/server/app.backend.dist.js"
+                "${workspaceRoot}/build/**/*.js"
             ]
         },
         {

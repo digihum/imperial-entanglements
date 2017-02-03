@@ -11,7 +11,7 @@ gulp.task('sass', function () {
             'node_modules'
 		]    	
     }).on('error', sass.logError))
-    .pipe(gulp.dest('./dist/server/static'))
+    .pipe(gulp.dest('./dist/static'))
     .pipe(gulp.dest('./dist/app'));
 });
  
@@ -24,14 +24,11 @@ gulp.task('copy', function() {
       gulp.src('src/app/index.html')
       .pipe(gulp.dest('dist/app')),
 
-      gulp.src('src/common/*.html')
-      .pipe(gulp.dest('dist/server')),
-
       gulp.src('src/favicon.ico')
-      .pipe(gulp.dest('dist/server/static')),
+      .pipe(gulp.dest('dist/static')),
 
       gulp.src('src/client/font/**/*', { base: 'src/client/font'})
-      .pipe(gulp.dest('dist/server/static/font')) 
+      .pipe(gulp.dest('dist/static/font')) 
       .pipe(gulp.dest('dist/app/font'))    
     ];
 });

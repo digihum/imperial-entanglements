@@ -51,9 +51,7 @@ export const Server = (databaseConfig: KnexConfig) : Koa => {
     app.use(koaPassport.initialize());
     app.use(koaPassport.session());
 
-    app.use(koaStatic(path.join(process.cwd(), 'dist', 'server', 'static')));
-
-    const skeleton = template(readFileSync(path.join(process.cwd(), 'dist', 'server', 'index.html'), 'utf8'));
+    app.use(koaStatic(path.join(process.cwd(), 'dist', 'static')));
 
     const db = new Database(databaseConfig);
     const snapshotter = new SqliteSnapshot(databaseConfig);
@@ -62,12 +60,11 @@ export const Server = (databaseConfig: KnexConfig) : Koa => {
 
     app.use(koaMount('/api/v1', api(db)));
 
-
     app.use(koaMount('/', user(db)));
 
     app.use(koaMount('/snapshot', snapshot(snapshotter)));
     app.use(koaMount('/stats', stats(db)));
-    app.use(koaMount('/', adminApp(skeleton, db)));
+    app.use(koaMount('/', adminApp(db)));
 
     app.use(async (ctx: Koa.Context) => {
       ctx.body = '404';

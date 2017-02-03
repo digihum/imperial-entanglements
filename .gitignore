@@ -5,8 +5,8 @@ public/js
 # Generated
 .sass-cache
 .vscode/chrome
-build
 bin
+build/**/*.js.map
 
 # Modules
 node_modules
