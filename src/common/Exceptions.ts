@@ -4,8 +4,6 @@
  * @version 0.2.0
  */
 
-import * as winston from 'winston';
-
 export class UnprocessableEntity extends Error {
 
     public data: Promise<any> | undefined;
@@ -49,7 +47,6 @@ export class OperationNotPermittedException extends Error {
     constructor(data: { message: string, data: any}) {
         super(data.message);
         this.data = data;
-        winston.info('Invalid operation attempted: ' + data.message);
     }
 }
 
@@ -59,7 +56,6 @@ export class InvalidUpdateException extends Error {
 
   constructor(message: string) {
       super(message);
-      winston.warn('Invalid update attempted: ' + message);
   }
 }
 
@@ -71,7 +67,6 @@ export class DatabaseIntegrityError extends Error {
  submitted. This is likely due to a change which violates the property types model; please check the types of
  what you are trying to do. Please also contact the Digital Humanities team, this error should not occur.`) {
         super(message);
-        winston.error('Database integrity check FAILED');
     }
 }
 
