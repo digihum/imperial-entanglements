@@ -11,6 +11,7 @@
     "nightwatch": "nightwatch --config ./config/nightwatch.conf.js",
     "migrate": "knex migrate:latest",
     "seed": "knex seed:run",
+    "tsc": "tsc",
     "webpack": "webpack  --config ./config/webpack.config.js",
     "vendor": "webpack  --config ./config/vendor.webpack.config.js",
     "webpack:watch": "webpack --config ./config/webpack.config.js --watch",
