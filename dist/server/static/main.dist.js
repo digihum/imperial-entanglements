@@ -8,13 +8,6 @@ module.exports = React;
 /***/ }),
 
 /***/ 10:
-/***/ (function(module, exports) {
-
-module.exports = _;
-
-/***/ }),
-
-/***/ 11:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25,34 +18,8 @@ module.exports = _;
  */
 
 const React = __webpack_require__(1);
-const mobx_react_1 = __webpack_require__(5);
-exports.AddTabButton = mobx_react_1.inject('dataStore')(mobx_react_1.observer((props, context) => {
-    if (props.dataStore.dataStore.tabs[props.tabType] !== undefined
-        && props.uid in props.dataStore.dataStore.tabs[props.tabType]) {
-        return (React.createElement("i", { className: 'fa fa-folder-open-o add button', title: 'Open item', onClick: () => context.router.transitionTo(`/edit/${props.tabType}/${props.uid}`) }, " "));
-    }
-    return (React.createElement("i", { className: 'icon-list-add add button', title: 'Add to list', onClick: () => props.dataStore.createTab(props.tabType, props.uid, 'item', props.data) }));
-}));
-exports.AddTabButton.wrappedComponent.contextTypes = {
-    router: React.PropTypes.object.isRequired
-};
-
-
-/***/ }),
-
-/***/ 16:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview Sidebar for editor
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.2.0
- */
-
-const React = __webpack_require__(1);
-const lunr = __webpack_require__(430);
-const lodash_1 = __webpack_require__(10);
+const lunr = __webpack_require__(311);
+const lodash_1 = __webpack_require__(6);
 class ComboDropdown extends React.Component {
     constructor() {
         super();
@@ -270,7 +237,7 @@ exports.StringComboDropdown = StringComboDropdown;
 
 /***/ }),
 
-/***/ 23:
+/***/ 15:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -293,7 +260,71 @@ exports.Overlay = Overlay;
 
 /***/ }),
 
-/***/ 252:
+/***/ 17:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview Sidebar for editor
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.2.0
+ */
+
+var __assign = (this && this.__assign) || Object.assign || function(t) {
+    for (var s, i = 1, n = arguments.length; i < n; i++) {
+        s = arguments[i];
+        for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+            t[p] = s[p];
+    }
+    return t;
+};
+const React = __webpack_require__(1);
+function EditableFieldHOC(WrappedComponent) {
+    return class EditableFieldComponent extends React.Component {
+        constructor() {
+            super();
+            this.state = {
+                edit: false,
+                internalValue: null
+            };
+        }
+        componentWillMount() {
+            this.setState({ internalValue: this.props.value === undefined ? null : this.props.value });
+        }
+        componentWillReceiveProps(newProps) {
+            this.setState({ internalValue: newProps.value });
+        }
+        switchToEditState() {
+            this.setState({ edit: true, internalValue: this.props.value });
+        }
+        setInternalValue(internalValue) {
+            this.setState({ internalValue });
+        }
+        acceptChanges() {
+            this.props.onChange(this.state.internalValue);
+            this.setState({ edit: false });
+        }
+        cancelChanges() {
+            this.setState({ edit: false, internalValue: this.props.value });
+        }
+        render() {
+            return (React.createElement(WrappedComponent, __assign({}, this.props, { edit: this.state.edit, value: this.state.internalValue, onChange: this.setInternalValue.bind(this), setEdit: this.switchToEditState.bind(this), acceptChanges: this.acceptChanges.bind(this), cancelChanges: this.cancelChanges.bind(this), onDelete: (e) => this.props.onDelete !== undefined ? this.props.onDelete(this.props.value) : null })));
+        }
+    };
+}
+exports.EditableFieldHOC = EditableFieldHOC;
+
+
+/***/ }),
+
+/***/ 18:
+/***/ (function(module, exports) {
+
+module.exports = ReactDOM;
+
+/***/ }),
+
+/***/ 186:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -304,7 +335,7 @@ exports.Overlay = Overlay;
  */
 
 const React = __webpack_require__(1);
-const AddTabButton_1 = __webpack_require__(11);
+const AddTabButton_1 = __webpack_require__(7);
 class RecursiveTree extends React.Component {
     constructor() {
         super();
@@ -330,7 +361,7 @@ exports.RecursiveTree = RecursiveTree;
 
 /***/ }),
 
-/***/ 253:
+/***/ 187:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -341,8 +372,8 @@ exports.RecursiveTree = RecursiveTree;
  */
 
 const React = __webpack_require__(1);
-const ComboDropdown_1 = __webpack_require__(16);
-const lodash_1 = __webpack_require__(10);
+const ComboDropdown_1 = __webpack_require__(10);
+const lodash_1 = __webpack_require__(6);
 class PredicateRangeComboDropdown extends ComboDropdown_1.ComboDropdown {
 }
 exports.PredicateRangeComboDropdown = PredicateRangeComboDropdown;
@@ -427,7 +458,7 @@ exports.PredicateDescription = PredicateDescription;
 
 /***/ }),
 
-/***/ 254:
+/***/ 188:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -437,7 +468,7 @@ exports.PredicateDescription = PredicateDescription;
  * @version 0.2.0
  */
 
-const falcon_core_1 = __webpack_require__(8);
+const falcon_core_1 = __webpack_require__(5);
 const simpleKey = (raw) => {
     return parseInt(raw[0]);
 };
@@ -517,7 +548,7 @@ exports.itemTypes = {
 
 /***/ }),
 
-/***/ 255:
+/***/ 189:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -539,7 +570,7 @@ exports.literalTypes = [
 
 /***/ }),
 
-/***/ 256:
+/***/ 190:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -550,7 +581,7 @@ exports.literalTypes = [
  */
 
 const React = __webpack_require__(1);
-const react_router_1 = __webpack_require__(17);
+const react_router_1 = __webpack_require__(11);
 exports.StatsGrid = (props) => {
     return (React.createElement("section", { className: 'stats-grid' },
         React.createElement(react_router_1.Link, { to: '/edit/entity' },
@@ -577,7 +608,7 @@ exports.StatsGrid = (props) => {
 
 /***/ }),
 
-/***/ 259:
+/***/ 192:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -587,11 +618,11 @@ exports.StatsGrid = (props) => {
  * @version 0.2.0
  */
 
-const falcon_core_1 = __webpack_require__(8);
-const queryString = __webpack_require__(244);
-const lodash_1 = __webpack_require__(10);
-const Exceptions_1 = __webpack_require__(481);
-var ApiService_1 = __webpack_require__(7);
+const falcon_core_1 = __webpack_require__(5);
+const queryString = __webpack_require__(183);
+const lodash_1 = __webpack_require__(6);
+const Exceptions_1 = __webpack_require__(339);
+var ApiService_1 = __webpack_require__(4);
 exports.AppUrls = ApiService_1.AppUrls;
 function handleErrors(response) {
     if (!response.ok) {
@@ -687,7 +718,7 @@ class ClientApiService {
             .then((response) => response.json());
     }
     getStats() {
-        return fetch('/admin/stats', { credentials: 'same-origin' })
+        return fetch('/stats', { credentials: 'same-origin' })
             .then(handleErrors)
             .then((response) => response.json());
     }
@@ -697,7 +728,7 @@ exports.ClientApiService = ClientApiService;
 
 /***/ }),
 
-/***/ 260:
+/***/ 193:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -717,18 +748,18 @@ var __assign = (this && this.__assign) || Object.assign || function(t) {
 };
 //https://react-router.now.sh/Match
 const React = __webpack_require__(1);
-const react_router_1 = __webpack_require__(17);
-const RouteNotFound_1 = __webpack_require__(525);
-const ApiService_1 = __webpack_require__(7);
-const itemTypes_1 = __webpack_require__(254);
-const Admin_1 = __webpack_require__(521);
-const AdminApp_1 = __webpack_require__(480);
-const User_1 = __webpack_require__(526);
-const UserManagement_1 = __webpack_require__(527);
-const AppDownload_1 = __webpack_require__(522);
-const DatabaseUpload_1 = __webpack_require__(523);
-const react_router_2 = __webpack_require__(17);
-const ObjectEditor_1 = __webpack_require__(524);
+const react_router_1 = __webpack_require__(11);
+const RouteNotFound_1 = __webpack_require__(383);
+const ApiService_1 = __webpack_require__(4);
+const itemTypes_1 = __webpack_require__(188);
+const Admin_1 = __webpack_require__(379);
+const AdminApp_1 = __webpack_require__(338);
+const User_1 = __webpack_require__(384);
+const UserManagement_1 = __webpack_require__(385);
+const AppDownload_1 = __webpack_require__(380);
+const DatabaseUpload_1 = __webpack_require__(381);
+const react_router_2 = __webpack_require__(11);
+const ObjectEditor_1 = __webpack_require__(382);
 class FalconApp extends React.Component {
     constructor(props) {
         super();
@@ -740,10 +771,10 @@ class FalconApp extends React.Component {
     }
     componentDidMount() {
         if (this.props.environment === 'website' && window !== undefined) {
-            fetch('/admin/currentuser', { credentials: 'same-origin' })
+            fetch('/currentuser', { credentials: 'same-origin' })
                 .then((response) => response.json())
                 .then((userData) => this.setState({ user: userData.username }));
-            fetch('/admin/tabset', { credentials: 'same-origin' })
+            fetch('/tabset', { credentials: 'same-origin' })
                 .then((response) => response.json())
                 .then((tabsets) => this.setState({ tabsets }));
         }
@@ -754,7 +785,7 @@ class FalconApp extends React.Component {
     }
     render() {
         return (React.createElement("div", { id: 'main', className: 'flex-fill' },
-            React.createElement(this.props.router, __assign({}, this.props.routerSettings, { className: 'flex-fill', basename: '/admin' }),
+            React.createElement(this.props.router, __assign({}, this.props.routerSettings, { className: 'flex-fill', basename: 'http://localhost:8080' }),
                 React.createElement("div", { className: 'flex-fill', style: { flexDirection: 'column' } },
                     React.createElement("div", { className: 'header' },
                         React.createElement(react_router_2.Link, { to: '/', className: 'logo-link' },
@@ -767,7 +798,7 @@ class FalconApp extends React.Component {
                         this.props.environment === 'website' ? (React.createElement("div", { className: 'right-header' },
                             React.createElement(react_router_2.Link, { to: '/user', className: 'header-link' },
                                 React.createElement("span", { className: 'current-user' }, this.state.user)),
-                            React.createElement("a", { href: '/admin/logout', className: 'header-link' }, "Logout"),
+                            React.createElement("a", { href: '/logout', className: 'header-link' }, "Logout"),
                             React.createElement("a", { href: '/', className: 'header-link' },
                                 React.createElement("i", { className: 'fa fa-external-link' })))) : null),
                     this.props.environment === 'website' ? (React.createElement(react_router_1.Match, { exactly: true, pattern: '/', render: (matchprops) => (React.createElement(Admin_1.Admin, __assign({}, matchprops, { stats: this.state.stats, tabsets: this.state.tabsets }))) })) : (React.createElement(react_router_1.Match, { exactly: true, pattern: '/', render: (matchprops) => (React.createElement(AdminApp_1.AdminApp, __assign({}, matchprops, { stats: this.state.stats }))) })),
@@ -785,290 +816,226 @@ exports.FalconApp = FalconApp;
 
 /***/ }),
 
-/***/ 29:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview Sidebar for editor
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.2.0
- */
-
-var __assign = (this && this.__assign) || Object.assign || function(t) {
-    for (var s, i = 1, n = arguments.length; i < n; i++) {
-        s = arguments[i];
-        for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
-            t[p] = s[p];
-    }
-    return t;
-};
-const React = __webpack_require__(1);
-function EditableFieldHOC(WrappedComponent) {
-    return class EditableFieldComponent extends React.Component {
-        constructor() {
-            super();
-            this.state = {
-                edit: false,
-                internalValue: null
-            };
-        }
-        componentWillMount() {
-            this.setState({ internalValue: this.props.value === undefined ? null : this.props.value });
-        }
-        componentWillReceiveProps(newProps) {
-            this.setState({ internalValue: newProps.value });
-        }
-        switchToEditState() {
-            this.setState({ edit: true, internalValue: this.props.value });
-        }
-        setInternalValue(internalValue) {
-            this.setState({ internalValue });
-        }
-        acceptChanges() {
-            this.props.onChange(this.state.internalValue);
-            this.setState({ edit: false });
-        }
-        cancelChanges() {
-            this.setState({ edit: false, internalValue: this.props.value });
-        }
-        render() {
-            return (React.createElement(WrappedComponent, __assign({}, this.props, { edit: this.state.edit, value: this.state.internalValue, onChange: this.setInternalValue.bind(this), setEdit: this.switchToEditState.bind(this), acceptChanges: this.acceptChanges.bind(this), cancelChanges: this.cancelChanges.bind(this), onDelete: (e) => this.props.onDelete !== undefined ? this.props.onDelete(this.props.value) : null })));
-        }
-    };
-}
-exports.EditableFieldHOC = EditableFieldHOC;
-
-
-/***/ }),
-
-/***/ 31:
-/***/ (function(module, exports) {
-
-module.exports = ReactDOM;
-
-/***/ }),
-
-/***/ 432:
+/***/ 313:
 /***/ (function(module, exports, __webpack_require__) {
 
 var map = {
-	"./af": 131,
-	"./af.js": 131,
-	"./ar": 137,
-	"./ar-dz": 132,
-	"./ar-dz.js": 132,
-	"./ar-ly": 133,
-	"./ar-ly.js": 133,
-	"./ar-ma": 134,
-	"./ar-ma.js": 134,
-	"./ar-sa": 135,
-	"./ar-sa.js": 135,
-	"./ar-tn": 136,
-	"./ar-tn.js": 136,
-	"./ar.js": 137,
-	"./az": 138,
-	"./az.js": 138,
-	"./be": 139,
-	"./be.js": 139,
-	"./bg": 140,
-	"./bg.js": 140,
-	"./bn": 141,
-	"./bn.js": 141,
-	"./bo": 142,
-	"./bo.js": 142,
-	"./br": 143,
-	"./br.js": 143,
-	"./bs": 144,
-	"./bs.js": 144,
-	"./ca": 145,
-	"./ca.js": 145,
-	"./cs": 146,
-	"./cs.js": 146,
-	"./cv": 147,
-	"./cv.js": 147,
-	"./cy": 148,
-	"./cy.js": 148,
-	"./da": 149,
-	"./da.js": 149,
-	"./de": 151,
-	"./de-at": 150,
-	"./de-at.js": 150,
-	"./de.js": 151,
-	"./dv": 152,
-	"./dv.js": 152,
-	"./el": 153,
-	"./el.js": 153,
-	"./en-au": 154,
-	"./en-au.js": 154,
-	"./en-ca": 155,
-	"./en-ca.js": 155,
-	"./en-gb": 156,
-	"./en-gb.js": 156,
-	"./en-ie": 157,
-	"./en-ie.js": 157,
-	"./en-nz": 158,
-	"./en-nz.js": 158,
-	"./eo": 159,
-	"./eo.js": 159,
-	"./es": 161,
-	"./es-do": 160,
-	"./es-do.js": 160,
-	"./es.js": 161,
-	"./et": 162,
-	"./et.js": 162,
-	"./eu": 163,
-	"./eu.js": 163,
-	"./fa": 164,
-	"./fa.js": 164,
-	"./fi": 165,
-	"./fi.js": 165,
-	"./fo": 166,
-	"./fo.js": 166,
-	"./fr": 169,
-	"./fr-ca": 167,
-	"./fr-ca.js": 167,
-	"./fr-ch": 168,
-	"./fr-ch.js": 168,
-	"./fr.js": 169,
-	"./fy": 170,
-	"./fy.js": 170,
-	"./gd": 171,
-	"./gd.js": 171,
-	"./gl": 172,
-	"./gl.js": 172,
-	"./he": 173,
-	"./he.js": 173,
-	"./hi": 174,
-	"./hi.js": 174,
-	"./hr": 175,
-	"./hr.js": 175,
-	"./hu": 176,
-	"./hu.js": 176,
-	"./hy-am": 177,
-	"./hy-am.js": 177,
-	"./id": 178,
-	"./id.js": 178,
-	"./is": 179,
-	"./is.js": 179,
-	"./it": 180,
-	"./it.js": 180,
-	"./ja": 181,
-	"./ja.js": 181,
-	"./jv": 182,
-	"./jv.js": 182,
-	"./ka": 183,
-	"./ka.js": 183,
-	"./kk": 184,
-	"./kk.js": 184,
-	"./km": 185,
-	"./km.js": 185,
-	"./ko": 186,
-	"./ko.js": 186,
-	"./ky": 187,
-	"./ky.js": 187,
-	"./lb": 188,
-	"./lb.js": 188,
-	"./lo": 189,
-	"./lo.js": 189,
-	"./lt": 190,
-	"./lt.js": 190,
-	"./lv": 191,
-	"./lv.js": 191,
-	"./me": 192,
-	"./me.js": 192,
-	"./mi": 193,
-	"./mi.js": 193,
-	"./mk": 194,
-	"./mk.js": 194,
-	"./ml": 195,
-	"./ml.js": 195,
-	"./mr": 196,
-	"./mr.js": 196,
-	"./ms": 198,
-	"./ms-my": 197,
-	"./ms-my.js": 197,
-	"./ms.js": 198,
-	"./my": 199,
-	"./my.js": 199,
-	"./nb": 200,
-	"./nb.js": 200,
-	"./ne": 201,
-	"./ne.js": 201,
-	"./nl": 203,
-	"./nl-be": 202,
-	"./nl-be.js": 202,
-	"./nl.js": 203,
-	"./nn": 204,
-	"./nn.js": 204,
-	"./pa-in": 205,
-	"./pa-in.js": 205,
-	"./pl": 206,
-	"./pl.js": 206,
-	"./pt": 208,
-	"./pt-br": 207,
-	"./pt-br.js": 207,
-	"./pt.js": 208,
-	"./ro": 209,
-	"./ro.js": 209,
-	"./ru": 210,
-	"./ru.js": 210,
-	"./se": 211,
-	"./se.js": 211,
-	"./si": 212,
-	"./si.js": 212,
-	"./sk": 213,
-	"./sk.js": 213,
-	"./sl": 214,
-	"./sl.js": 214,
-	"./sq": 215,
-	"./sq.js": 215,
-	"./sr": 217,
-	"./sr-cyrl": 216,
-	"./sr-cyrl.js": 216,
-	"./sr.js": 217,
-	"./ss": 218,
-	"./ss.js": 218,
-	"./sv": 219,
-	"./sv.js": 219,
-	"./sw": 220,
-	"./sw.js": 220,
-	"./ta": 221,
-	"./ta.js": 221,
-	"./te": 222,
-	"./te.js": 222,
-	"./tet": 223,
-	"./tet.js": 223,
-	"./th": 224,
-	"./th.js": 224,
-	"./tl-ph": 225,
-	"./tl-ph.js": 225,
-	"./tlh": 226,
-	"./tlh.js": 226,
-	"./tr": 227,
-	"./tr.js": 227,
-	"./tzl": 228,
-	"./tzl.js": 228,
-	"./tzm": 230,
-	"./tzm-latn": 229,
-	"./tzm-latn.js": 229,
-	"./tzm.js": 230,
-	"./uk": 231,
-	"./uk.js": 231,
-	"./uz": 232,
-	"./uz.js": 232,
-	"./vi": 233,
-	"./vi.js": 233,
-	"./x-pseudo": 234,
-	"./x-pseudo.js": 234,
-	"./yo": 235,
-	"./yo.js": 235,
-	"./zh-cn": 236,
-	"./zh-cn.js": 236,
-	"./zh-hk": 237,
-	"./zh-hk.js": 237,
-	"./zh-tw": 238,
-	"./zh-tw.js": 238
+	"./af": 75,
+	"./af.js": 75,
+	"./ar": 81,
+	"./ar-dz": 76,
+	"./ar-dz.js": 76,
+	"./ar-ly": 77,
+	"./ar-ly.js": 77,
+	"./ar-ma": 78,
+	"./ar-ma.js": 78,
+	"./ar-sa": 79,
+	"./ar-sa.js": 79,
+	"./ar-tn": 80,
+	"./ar-tn.js": 80,
+	"./ar.js": 81,
+	"./az": 82,
+	"./az.js": 82,
+	"./be": 83,
+	"./be.js": 83,
+	"./bg": 84,
+	"./bg.js": 84,
+	"./bn": 85,
+	"./bn.js": 85,
+	"./bo": 86,
+	"./bo.js": 86,
+	"./br": 87,
+	"./br.js": 87,
+	"./bs": 88,
+	"./bs.js": 88,
+	"./ca": 89,
+	"./ca.js": 89,
+	"./cs": 90,
+	"./cs.js": 90,
+	"./cv": 91,
+	"./cv.js": 91,
+	"./cy": 92,
+	"./cy.js": 92,
+	"./da": 93,
+	"./da.js": 93,
+	"./de": 95,
+	"./de-at": 94,
+	"./de-at.js": 94,
+	"./de.js": 95,
+	"./dv": 96,
+	"./dv.js": 96,
+	"./el": 97,
+	"./el.js": 97,
+	"./en-au": 98,
+	"./en-au.js": 98,
+	"./en-ca": 99,
+	"./en-ca.js": 99,
+	"./en-gb": 100,
+	"./en-gb.js": 100,
+	"./en-ie": 101,
+	"./en-ie.js": 101,
+	"./en-nz": 102,
+	"./en-nz.js": 102,
+	"./eo": 103,
+	"./eo.js": 103,
+	"./es": 105,
+	"./es-do": 104,
+	"./es-do.js": 104,
+	"./es.js": 105,
+	"./et": 106,
+	"./et.js": 106,
+	"./eu": 107,
+	"./eu.js": 107,
+	"./fa": 108,
+	"./fa.js": 108,
+	"./fi": 109,
+	"./fi.js": 109,
+	"./fo": 110,
+	"./fo.js": 110,
+	"./fr": 113,
+	"./fr-ca": 111,
+	"./fr-ca.js": 111,
+	"./fr-ch": 112,
+	"./fr-ch.js": 112,
+	"./fr.js": 113,
+	"./fy": 114,
+	"./fy.js": 114,
+	"./gd": 115,
+	"./gd.js": 115,
+	"./gl": 116,
+	"./gl.js": 116,
+	"./he": 117,
+	"./he.js": 117,
+	"./hi": 118,
+	"./hi.js": 118,
+	"./hr": 119,
+	"./hr.js": 119,
+	"./hu": 120,
+	"./hu.js": 120,
+	"./hy-am": 121,
+	"./hy-am.js": 121,
+	"./id": 122,
+	"./id.js": 122,
+	"./is": 123,
+	"./is.js": 123,
+	"./it": 124,
+	"./it.js": 124,
+	"./ja": 125,
+	"./ja.js": 125,
+	"./jv": 126,
+	"./jv.js": 126,
+	"./ka": 127,
+	"./ka.js": 127,
+	"./kk": 128,
+	"./kk.js": 128,
+	"./km": 129,
+	"./km.js": 129,
+	"./ko": 130,
+	"./ko.js": 130,
+	"./ky": 131,
+	"./ky.js": 131,
+	"./lb": 132,
+	"./lb.js": 132,
+	"./lo": 133,
+	"./lo.js": 133,
+	"./lt": 134,
+	"./lt.js": 134,
+	"./lv": 135,
+	"./lv.js": 135,
+	"./me": 136,
+	"./me.js": 136,
+	"./mi": 137,
+	"./mi.js": 137,
+	"./mk": 138,
+	"./mk.js": 138,
+	"./ml": 139,
+	"./ml.js": 139,
+	"./mr": 140,
+	"./mr.js": 140,
+	"./ms": 142,
+	"./ms-my": 141,
+	"./ms-my.js": 141,
+	"./ms.js": 142,
+	"./my": 143,
+	"./my.js": 143,
+	"./nb": 144,
+	"./nb.js": 144,
+	"./ne": 145,
+	"./ne.js": 145,
+	"./nl": 147,
+	"./nl-be": 146,
+	"./nl-be.js": 146,
+	"./nl.js": 147,
+	"./nn": 148,
+	"./nn.js": 148,
+	"./pa-in": 149,
+	"./pa-in.js": 149,
+	"./pl": 150,
+	"./pl.js": 150,
+	"./pt": 152,
+	"./pt-br": 151,
+	"./pt-br.js": 151,
+	"./pt.js": 152,
+	"./ro": 153,
+	"./ro.js": 153,
+	"./ru": 154,
+	"./ru.js": 154,
+	"./se": 155,
+	"./se.js": 155,
+	"./si": 156,
+	"./si.js": 156,
+	"./sk": 157,
+	"./sk.js": 157,
+	"./sl": 158,
+	"./sl.js": 158,
+	"./sq": 159,
+	"./sq.js": 159,
+	"./sr": 161,
+	"./sr-cyrl": 160,
+	"./sr-cyrl.js": 160,
+	"./sr.js": 161,
+	"./ss": 162,
+	"./ss.js": 162,
+	"./sv": 163,
+	"./sv.js": 163,
+	"./sw": 164,
+	"./sw.js": 164,
+	"./ta": 165,
+	"./ta.js": 165,
+	"./te": 166,
+	"./te.js": 166,
+	"./tet": 167,
+	"./tet.js": 167,
+	"./th": 168,
+	"./th.js": 168,
+	"./tl-ph": 169,
+	"./tl-ph.js": 169,
+	"./tlh": 170,
+	"./tlh.js": 170,
+	"./tr": 171,
+	"./tr.js": 171,
+	"./tzl": 172,
+	"./tzl.js": 172,
+	"./tzm": 174,
+	"./tzm-latn": 173,
+	"./tzm-latn.js": 173,
+	"./tzm.js": 174,
+	"./uk": 175,
+	"./uk.js": 175,
+	"./uz": 176,
+	"./uz.js": 176,
+	"./vi": 177,
+	"./vi.js": 177,
+	"./x-pseudo": 178,
+	"./x-pseudo.js": 178,
+	"./yo": 179,
+	"./yo.js": 179,
+	"./zh-cn": 180,
+	"./zh-cn.js": 180,
+	"./zh-hk": 181,
+	"./zh-hk.js": 181,
+	"./zh-tw": 182,
+	"./zh-tw.js": 182
 };
 function webpackContext(req) {
 	return __webpack_require__(webpackContextResolve(req));
@@ -1084,12 +1051,12 @@ webpackContext.keys = function webpackContextKeys() {
 };
 webpackContext.resolve = webpackContextResolve;
 module.exports = webpackContext;
-webpackContext.id = 432;
+webpackContext.id = 313;
 
 
 /***/ }),
 
-/***/ 480:
+/***/ 338:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1100,7 +1067,7 @@ webpackContext.id = 432;
  */
 
 const React = __webpack_require__(1);
-const StatsGrid_1 = __webpack_require__(256);
+const StatsGrid_1 = __webpack_require__(190);
 exports.AdminApp = (props) => (React.createElement("div", { className: 'page' },
     React.createElement("section", null,
         React.createElement("h1", null, "VRE App"),
@@ -1109,7 +1076,7 @@ exports.AdminApp = (props) => (React.createElement("div", { className: 'page' },
 
 /***/ }),
 
-/***/ 481:
+/***/ 339:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1185,7 +1152,7 @@ exports.Exceptions = {
 
 /***/ }),
 
-/***/ 482:
+/***/ 340:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1204,7 +1171,7 @@ exports.Loading = (props) => {
 
 /***/ }),
 
-/***/ 483:
+/***/ 341:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1224,12 +1191,12 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 const React = __webpack_require__(1);
-const SearchBox_1 = __webpack_require__(507);
-const ApiService_1 = __webpack_require__(7);
-const react_router_1 = __webpack_require__(17);
-const lodash_1 = __webpack_require__(10);
-const react_sortable_hoc_1 = __webpack_require__(85);
-const mobx_react_1 = __webpack_require__(5);
+const SearchBox_1 = __webpack_require__(365);
+const ApiService_1 = __webpack_require__(4);
+const react_router_1 = __webpack_require__(11);
+const lodash_1 = __webpack_require__(6);
+const react_sortable_hoc_1 = __webpack_require__(51);
+const mobx_react_1 = __webpack_require__(2);
 const Handle = react_sortable_hoc_1.SortableHandle((props) => (React.createElement("div", { className: 'badge-container' },
     React.createElement("div", { className: 'badge ' + props.tabType },
         React.createElement("span", null, props.tabType[0].toUpperCase())))));
@@ -1327,7 +1294,7 @@ exports.Sidebar = Sidebar;
 
 /***/ }),
 
-/***/ 484:
+/***/ 342:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1369,7 +1336,7 @@ exports.Toast = Toast;
 
 /***/ }),
 
-/***/ 485:
+/***/ 343:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1389,9 +1356,9 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 const React = __webpack_require__(1);
-const Loading_1 = __webpack_require__(482);
-const mobx_react_1 = __webpack_require__(5);
-const workspace_1 = __webpack_require__(517);
+const Loading_1 = __webpack_require__(340);
+const mobx_react_1 = __webpack_require__(2);
+const workspace_1 = __webpack_require__(375);
 let Workspace = class Workspace extends React.Component {
     constructor() {
         super();
@@ -1438,7 +1405,7 @@ exports.Workspace = Workspace;
 
 /***/ }),
 
-/***/ 486:
+/***/ 344:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1449,7 +1416,7 @@ exports.Workspace = Workspace;
  */
 
 const React = __webpack_require__(1);
-const DatePickerDropdown_1 = __webpack_require__(493);
+const DatePickerDropdown_1 = __webpack_require__(351);
 exports.DateFieldEditor = (props) => {
     return (React.createElement("div", { className: 'date-selector' },
         React.createElement(DatePickerDropdown_1.DatePickerDropdown, { value: props.value, setValue: props.onChange })));
@@ -1458,7 +1425,7 @@ exports.DateFieldEditor = (props) => {
 
 /***/ }),
 
-/***/ 487:
+/***/ 345:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1469,8 +1436,8 @@ exports.DateFieldEditor = (props) => {
  */
 
 const React = __webpack_require__(1);
-const ComboDropdown_1 = __webpack_require__(16);
-const lodash_1 = __webpack_require__(10);
+const ComboDropdown_1 = __webpack_require__(10);
+const lodash_1 = __webpack_require__(6);
 exports.EntityFieldEditor = (props) => {
     // build the options list
     const options = props.entities.map((entity) => ({ key: entity.label, value: entity.uid !== null ? entity.uid : null }));
@@ -1485,7 +1452,7 @@ exports.EntityFieldEditor = (props) => {
 
 /***/ }),
 
-/***/ 488:
+/***/ 346:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1504,7 +1471,7 @@ exports.IntegerFieldEditor = (props) => {
 
 /***/ }),
 
-/***/ 489:
+/***/ 347:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1515,11 +1482,11 @@ exports.IntegerFieldEditor = (props) => {
  */
 
 const React = __webpack_require__(1);
-const ApiService_1 = __webpack_require__(7);
-const falcon_core_1 = __webpack_require__(8);
-const EditableFieldComponent_1 = __webpack_require__(29);
-const RecordRow_1 = __webpack_require__(490);
-const AddTabButton_1 = __webpack_require__(11);
+const ApiService_1 = __webpack_require__(4);
+const falcon_core_1 = __webpack_require__(5);
+const EditableFieldComponent_1 = __webpack_require__(17);
+const RecordRow_1 = __webpack_require__(348);
+const AddTabButton_1 = __webpack_require__(7);
 const RecordEditableFieldComponent = EditableFieldComponent_1.EditableFieldHOC(RecordRow_1.RecordRow);
 class RecordPredicate extends React.Component {
     constructor() {
@@ -1582,7 +1549,7 @@ exports.RecordPredicate = RecordPredicate;
 
 /***/ }),
 
-/***/ 490:
+/***/ 348:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1593,15 +1560,15 @@ exports.RecordPredicate = RecordPredicate;
  */
 
 const React = __webpack_require__(1);
-const ScorePicker_1 = __webpack_require__(494);
-const ComboDropdown_1 = __webpack_require__(16);
-const StringFieldEditor_1 = __webpack_require__(492);
-const EntityFieldEditor_1 = __webpack_require__(487);
-const DateFieldEditor_1 = __webpack_require__(486);
-const IntegerFieldEditor_1 = __webpack_require__(488);
-const AddTabButton_1 = __webpack_require__(11);
-const formatDate_1 = __webpack_require__(92);
-const mobx_react_1 = __webpack_require__(5);
+const ScorePicker_1 = __webpack_require__(352);
+const ComboDropdown_1 = __webpack_require__(10);
+const StringFieldEditor_1 = __webpack_require__(350);
+const EntityFieldEditor_1 = __webpack_require__(345);
+const DateFieldEditor_1 = __webpack_require__(344);
+const IntegerFieldEditor_1 = __webpack_require__(346);
+const AddTabButton_1 = __webpack_require__(7);
+const formatDate_1 = __webpack_require__(56);
+const mobx_react_1 = __webpack_require__(2);
 const recordEditor = (props, record) => {
     switch (record.valueType) {
         case 'string':
@@ -1702,7 +1669,7 @@ exports.RecordRow = mobx_react_1.inject('dataStore', 'modalStore')(mobx_react_1.
 
 /***/ }),
 
-/***/ 491:
+/***/ 349:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1722,12 +1689,12 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 const React = __webpack_require__(1);
-const ApiService_1 = __webpack_require__(7);
-const falcon_core_1 = __webpack_require__(8);
-const SearchBar_1 = __webpack_require__(65);
-const RecordPredicate_1 = __webpack_require__(489);
-const findParentTree_1 = __webpack_require__(91);
-const mobx_react_1 = __webpack_require__(5);
+const ApiService_1 = __webpack_require__(4);
+const falcon_core_1 = __webpack_require__(5);
+const SearchBar_1 = __webpack_require__(38);
+const RecordPredicate_1 = __webpack_require__(347);
+const findParentTree_1 = __webpack_require__(55);
+const mobx_react_1 = __webpack_require__(2);
 let RecordsEditor = class RecordsEditor extends React.Component {
     constructor() {
         super();
@@ -1805,7 +1772,7 @@ exports.RecordsEditor = RecordsEditor;
 
 /***/ }),
 
-/***/ 492:
+/***/ 350:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1823,7 +1790,7 @@ exports.StringFieldEditor = (props) => {
 
 /***/ }),
 
-/***/ 493:
+/***/ 351:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1835,8 +1802,8 @@ exports.StringFieldEditor = (props) => {
 
 const React = __webpack_require__(1);
 const moment = __webpack_require__(0);
-const lodash_1 = __webpack_require__(10);
-const formatDate_1 = __webpack_require__(92);
+const lodash_1 = __webpack_require__(6);
+const formatDate_1 = __webpack_require__(56);
 class DatePickerDropdown extends React.Component {
     constructor() {
         super();
@@ -1997,7 +1964,7 @@ exports.DatePickerDropdown = DatePickerDropdown;
 
 /***/ }),
 
-/***/ 494:
+/***/ 352:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2008,7 +1975,7 @@ exports.DatePickerDropdown = DatePickerDropdown;
  */
 
 const React = __webpack_require__(1);
-const lodash_1 = __webpack_require__(10);
+const lodash_1 = __webpack_require__(6);
 exports.ScorePicker = (props) => {
     const values = [1, 2, 3, 4, 5];
     if (props.readOnly) {
@@ -2027,7 +1994,7 @@ exports.ScorePicker = (props) => {
 
 /***/ }),
 
-/***/ 495:
+/***/ 353:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2047,8 +2014,8 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 const React = __webpack_require__(1);
-const Overlay_1 = __webpack_require__(23);
-const mobx_react_1 = __webpack_require__(5);
+const Overlay_1 = __webpack_require__(15);
+const mobx_react_1 = __webpack_require__(2);
 let ConflictResolution = class ConflictResolution extends React.Component {
     constructor() {
         super();
@@ -2133,7 +2100,7 @@ exports.ConflictResolution = ConflictResolution;
 
 /***/ }),
 
-/***/ 496:
+/***/ 354:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2153,12 +2120,12 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 const React = __webpack_require__(1);
-const Overlay_1 = __webpack_require__(23);
-const falcon_core_1 = __webpack_require__(8);
-const ApiService_1 = __webpack_require__(7);
-const ComboDropdown_1 = __webpack_require__(16);
-const lodash_1 = __webpack_require__(10);
-const mobx_react_1 = __webpack_require__(5);
+const Overlay_1 = __webpack_require__(15);
+const falcon_core_1 = __webpack_require__(5);
+const ApiService_1 = __webpack_require__(4);
+const ComboDropdown_1 = __webpack_require__(10);
+const lodash_1 = __webpack_require__(6);
+const mobx_react_1 = __webpack_require__(2);
 let CreateEntity = class CreateEntity extends React.Component {
     constructor() {
         super();
@@ -2219,7 +2186,7 @@ exports.CreateEntity = CreateEntity;
 
 /***/ }),
 
-/***/ 497:
+/***/ 355:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2239,11 +2206,11 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 const React = __webpack_require__(1);
-const Overlay_1 = __webpack_require__(23);
-const falcon_core_1 = __webpack_require__(8);
-const ApiService_1 = __webpack_require__(7);
-const mobx_react_1 = __webpack_require__(5);
-const mousetrap = __webpack_require__(42);
+const Overlay_1 = __webpack_require__(15);
+const falcon_core_1 = __webpack_require__(5);
+const ApiService_1 = __webpack_require__(4);
+const mobx_react_1 = __webpack_require__(2);
+const mousetrap = __webpack_require__(25);
 let CreateEntityType = class CreateEntityType extends React.Component {
     constructor() {
         super();
@@ -2288,7 +2255,7 @@ exports.CreateEntityType = CreateEntityType;
 
 /***/ }),
 
-/***/ 498:
+/***/ 356:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2308,12 +2275,12 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 const React = __webpack_require__(1);
-const Overlay_1 = __webpack_require__(23);
-const PredicateDescription_1 = __webpack_require__(253);
-const falcon_core_1 = __webpack_require__(8);
-const literalTypes_1 = __webpack_require__(255);
-const ApiService_1 = __webpack_require__(7);
-const mobx_react_1 = __webpack_require__(5);
+const Overlay_1 = __webpack_require__(15);
+const PredicateDescription_1 = __webpack_require__(187);
+const falcon_core_1 = __webpack_require__(5);
+const literalTypes_1 = __webpack_require__(189);
+const ApiService_1 = __webpack_require__(4);
+const mobx_react_1 = __webpack_require__(2);
 let CreatePredicate = class CreatePredicate extends React.Component {
     constructor() {
         super();
@@ -2406,7 +2373,7 @@ exports.CreatePredicate = CreatePredicate;
 
 /***/ }),
 
-/***/ 499:
+/***/ 357:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2426,9 +2393,9 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 const React = __webpack_require__(1);
-const falcon_core_1 = __webpack_require__(8);
-const ApiService_1 = __webpack_require__(7);
-const mobx_react_1 = __webpack_require__(5);
+const falcon_core_1 = __webpack_require__(5);
+const ApiService_1 = __webpack_require__(4);
+const mobx_react_1 = __webpack_require__(2);
 let CreatePresetRecord = CreatePresetRecord_1 = class CreatePresetRecord extends React.Component {
     constructor() {
         super();
@@ -2486,7 +2453,7 @@ var CreatePresetRecord_1;
 
 /***/ }),
 
-/***/ 500:
+/***/ 358:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2506,11 +2473,11 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 const React = __webpack_require__(1);
-const Overlay_1 = __webpack_require__(23);
-const falcon_core_1 = __webpack_require__(8);
-const ApiService_1 = __webpack_require__(7);
-const ComboDropdown_1 = __webpack_require__(16);
-const mobx_react_1 = __webpack_require__(5);
+const Overlay_1 = __webpack_require__(15);
+const falcon_core_1 = __webpack_require__(5);
+const ApiService_1 = __webpack_require__(4);
+const ComboDropdown_1 = __webpack_require__(10);
+const mobx_react_1 = __webpack_require__(2);
 class PredicateComboDropdown extends ComboDropdown_1.ComboDropdown {
 }
 let CreateRecord = class CreateRecord extends React.Component {
@@ -2572,7 +2539,7 @@ exports.CreateRecord = CreateRecord;
 
 /***/ }),
 
-/***/ 501:
+/***/ 359:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2592,11 +2559,11 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 const React = __webpack_require__(1);
-const Overlay_1 = __webpack_require__(23);
-const falcon_core_1 = __webpack_require__(8);
-const ApiService_1 = __webpack_require__(7);
-const mobx_react_1 = __webpack_require__(5);
-const mousetrap = __webpack_require__(42);
+const Overlay_1 = __webpack_require__(15);
+const falcon_core_1 = __webpack_require__(5);
+const ApiService_1 = __webpack_require__(4);
+const mobx_react_1 = __webpack_require__(2);
+const mousetrap = __webpack_require__(25);
 let CreateSource = class CreateSource extends React.Component {
     constructor() {
         super();
@@ -2647,7 +2614,7 @@ exports.CreateSource = CreateSource;
 
 /***/ }),
 
-/***/ 502:
+/***/ 360:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2667,9 +2634,9 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 const React = __webpack_require__(1);
-const Overlay_1 = __webpack_require__(23);
-const mobx_react_1 = __webpack_require__(5);
-const mousetrap = __webpack_require__(42);
+const Overlay_1 = __webpack_require__(15);
+const mobx_react_1 = __webpack_require__(2);
+const mousetrap = __webpack_require__(25);
 let CreateTabSet = class CreateTabSet extends React.Component {
     constructor() {
         super();
@@ -2678,7 +2645,7 @@ let CreateTabSet = class CreateTabSet extends React.Component {
         };
     }
     createTabSet() {
-        return fetch('/admin/tabset', {
+        return fetch('/tabset', {
             method: 'POST',
             body: JSON.stringify({
                 name: this.state.internalValue,
@@ -2725,7 +2692,7 @@ exports.CreateTabSet = CreateTabSet;
 
 /***/ }),
 
-/***/ 503:
+/***/ 361:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2745,12 +2712,12 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 const React = __webpack_require__(1);
-const lev = __webpack_require__(325);
-const ComboDropdown_1 = __webpack_require__(16);
-const lodash_1 = __webpack_require__(10);
-const AddTabButton_1 = __webpack_require__(11);
-const formatDate_1 = __webpack_require__(92);
-const mobx_react_1 = __webpack_require__(5);
+const lev = __webpack_require__(206);
+const ComboDropdown_1 = __webpack_require__(10);
+const lodash_1 = __webpack_require__(6);
+const AddTabButton_1 = __webpack_require__(7);
+const formatDate_1 = __webpack_require__(56);
+const mobx_react_1 = __webpack_require__(2);
 const sortIcons = {
     'none': 'fa fa-sort',
     'asc': 'fa fa-sort-asc',
@@ -2998,7 +2965,7 @@ exports.EntityList = EntityList;
 
 /***/ }),
 
-/***/ 504:
+/***/ 362:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3018,10 +2985,10 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 const React = __webpack_require__(1);
-const AddTabButton_1 = __webpack_require__(11);
-const SearchBar_1 = __webpack_require__(65);
-const RecursiveTree_1 = __webpack_require__(252);
-const mobx_react_1 = __webpack_require__(5);
+const AddTabButton_1 = __webpack_require__(7);
+const SearchBar_1 = __webpack_require__(38);
+const RecursiveTree_1 = __webpack_require__(186);
+const mobx_react_1 = __webpack_require__(2);
 class EntityRecursiveTree extends RecursiveTree_1.RecursiveTree {
 }
 let EntityTypeList = class EntityTypeList extends React.Component {
@@ -3089,7 +3056,7 @@ exports.EntityTypeList = EntityTypeList;
 
 /***/ }),
 
-/***/ 505:
+/***/ 363:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3109,9 +3076,9 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 const React = __webpack_require__(1);
-const AddTabButton_1 = __webpack_require__(11);
-const mobx_react_1 = __webpack_require__(5);
-const SearchBar_1 = __webpack_require__(65);
+const AddTabButton_1 = __webpack_require__(7);
+const mobx_react_1 = __webpack_require__(2);
+const SearchBar_1 = __webpack_require__(38);
 let PredicateList = class PredicateList extends React.Component {
     constructor() {
         super();
@@ -3182,7 +3149,7 @@ exports.PredicateList = PredicateList;
 
 /***/ }),
 
-/***/ 506:
+/***/ 364:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3202,10 +3169,10 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 const React = __webpack_require__(1);
-const AddTabButton_1 = __webpack_require__(11);
-const mobx_react_1 = __webpack_require__(5);
-const SearchBar_1 = __webpack_require__(65);
-const RecursiveTree_1 = __webpack_require__(252);
+const AddTabButton_1 = __webpack_require__(7);
+const mobx_react_1 = __webpack_require__(2);
+const SearchBar_1 = __webpack_require__(38);
+const RecursiveTree_1 = __webpack_require__(186);
 class SourceRecursiveTree extends RecursiveTree_1.RecursiveTree {
 }
 let SourceList = class SourceList extends React.Component {
@@ -3271,7 +3238,7 @@ exports.SourceList = SourceList;
 
 /***/ }),
 
-/***/ 507:
+/***/ 365:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3282,8 +3249,8 @@ exports.SourceList = SourceList;
  */
 
 const React = __webpack_require__(1);
-const ComboDropdown_1 = __webpack_require__(16);
-const ApiService_1 = __webpack_require__(7);
+const ComboDropdown_1 = __webpack_require__(10);
+const ApiService_1 = __webpack_require__(4);
 exports.SearchBox = (props, context) => {
     const entities = props.dataStore.dataStore.all.entity.value.map((entity) => ({ key: entity.label, value: `${ApiService_1.AppUrls.entity}/${entity.uid}` }));
     const entityTypes = props.dataStore.dataStore.all.entity_type.value.map((entityType) => ({ key: entityType.label, value: `${ApiService_1.AppUrls.entity_type}/${entityType.uid}` }));
@@ -3305,7 +3272,7 @@ exports.SearchBox.contextTypes = { router: React.PropTypes.object.isRequired };
 
 /***/ }),
 
-/***/ 508:
+/***/ 366:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3322,7 +3289,7 @@ exports.AdvancedSearchWorkspace = (props) => (React.createElement("div", { class
 
 /***/ }),
 
-/***/ 509:
+/***/ 367:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3339,7 +3306,7 @@ exports.EmptyWorkspace = () => (React.createElement("div", { className: 'workspa
 
 /***/ }),
 
-/***/ 510:
+/***/ 368:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3359,14 +3326,14 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 const React = __webpack_require__(1);
-const ApiService_1 = __webpack_require__(7);
-const falcon_core_1 = __webpack_require__(8);
-const findParentTree_1 = __webpack_require__(91);
-const EditableHeader_1 = __webpack_require__(66);
-const EditableFieldComponent_1 = __webpack_require__(29);
-const EntityWorkspaceCoreView_1 = __webpack_require__(515);
-const EntityWorkspaceReferenceView_1 = __webpack_require__(516);
-const mobx_react_1 = __webpack_require__(5);
+const ApiService_1 = __webpack_require__(4);
+const falcon_core_1 = __webpack_require__(5);
+const findParentTree_1 = __webpack_require__(55);
+const EditableHeader_1 = __webpack_require__(39);
+const EditableFieldComponent_1 = __webpack_require__(17);
+const EntityWorkspaceCoreView_1 = __webpack_require__(373);
+const EntityWorkspaceReferenceView_1 = __webpack_require__(374);
+const mobx_react_1 = __webpack_require__(2);
 const HeaderEditableFieldComponent = EditableFieldComponent_1.EditableFieldHOC(EditableHeader_1.EditableHeader);
 // What can I do?
 // Entity Operations
@@ -3508,7 +3475,7 @@ exports.EntityEditorWorkspace = EntityEditorWorkspace;
 
 /***/ }),
 
-/***/ 511:
+/***/ 369:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3528,15 +3495,15 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 const React = __webpack_require__(1);
-const SameAsEditor_1 = __webpack_require__(90);
-const ApiService_1 = __webpack_require__(7);
-const falcon_core_1 = __webpack_require__(8);
-const AddTabButton_1 = __webpack_require__(11);
-const EditableHeader_1 = __webpack_require__(66);
-const EditableFieldComponent_1 = __webpack_require__(29);
-const EditableParagraph_1 = __webpack_require__(89);
-const EditableComboDropdown_1 = __webpack_require__(88);
-const mobx_react_1 = __webpack_require__(5);
+const SameAsEditor_1 = __webpack_require__(54);
+const ApiService_1 = __webpack_require__(4);
+const falcon_core_1 = __webpack_require__(5);
+const AddTabButton_1 = __webpack_require__(7);
+const EditableHeader_1 = __webpack_require__(39);
+const EditableFieldComponent_1 = __webpack_require__(17);
+const EditableParagraph_1 = __webpack_require__(53);
+const EditableComboDropdown_1 = __webpack_require__(52);
+const mobx_react_1 = __webpack_require__(2);
 const HeaderEditableFieldComponent = EditableFieldComponent_1.EditableFieldHOC(EditableHeader_1.EditableHeader);
 const ParagraphEditableFieldComponent = EditableFieldComponent_1.EditableFieldHOC(EditableParagraph_1.EditableParagraph);
 const SameAsEditableFieldComponent = EditableFieldComponent_1.EditableFieldHOC(SameAsEditor_1.SameAsEditor);
@@ -3685,7 +3652,7 @@ exports.EntityTypeWorkspace = EntityTypeWorkspace;
 
 /***/ }),
 
-/***/ 512:
+/***/ 370:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3696,10 +3663,10 @@ exports.EntityTypeWorkspace = EntityTypeWorkspace;
  */
 
 const React = __webpack_require__(1);
-const EntityList_1 = __webpack_require__(503);
-const PredicateList_1 = __webpack_require__(505);
-const SourceList_1 = __webpack_require__(506);
-const EntityTypeList_1 = __webpack_require__(504);
+const EntityList_1 = __webpack_require__(361);
+const PredicateList_1 = __webpack_require__(363);
+const SourceList_1 = __webpack_require__(364);
+const EntityTypeList_1 = __webpack_require__(362);
 exports.ObjectListWorkspace = (props) => (React.createElement("div", { className: 'workspace-editor object-list' }, (() => {
     switch (props.listType) {
         case 'entity':
@@ -3716,7 +3683,7 @@ exports.ObjectListWorkspace = (props) => (React.createElement("div", { className
 
 /***/ }),
 
-/***/ 513:
+/***/ 371:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3736,16 +3703,16 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 const React = __webpack_require__(1);
-const react_router_1 = __webpack_require__(17);
-const SameAsEditor_1 = __webpack_require__(90);
-const ApiService_1 = __webpack_require__(7);
-const falcon_core_1 = __webpack_require__(8);
-const EditableHeader_1 = __webpack_require__(66);
-const EditableFieldComponent_1 = __webpack_require__(29);
-const EditableParagraph_1 = __webpack_require__(89);
-const PredicateDescription_1 = __webpack_require__(253);
-const literalTypes_1 = __webpack_require__(255);
-const mobx_react_1 = __webpack_require__(5);
+const react_router_1 = __webpack_require__(11);
+const SameAsEditor_1 = __webpack_require__(54);
+const ApiService_1 = __webpack_require__(4);
+const falcon_core_1 = __webpack_require__(5);
+const EditableHeader_1 = __webpack_require__(39);
+const EditableFieldComponent_1 = __webpack_require__(17);
+const EditableParagraph_1 = __webpack_require__(53);
+const PredicateDescription_1 = __webpack_require__(187);
+const literalTypes_1 = __webpack_require__(189);
+const mobx_react_1 = __webpack_require__(2);
 const HeaderEditableFieldComponent = EditableFieldComponent_1.EditableFieldHOC(EditableHeader_1.EditableHeader);
 const ParagraphEditableFieldComponent = EditableFieldComponent_1.EditableFieldHOC(EditableParagraph_1.EditableParagraph);
 const SameAsEditableFieldComponent = EditableFieldComponent_1.EditableFieldHOC(SameAsEditor_1.SameAsEditor);
@@ -3893,7 +3860,7 @@ exports.PredicateEditorWorkspace = PredicateEditorWorkspace;
 
 /***/ }),
 
-/***/ 514:
+/***/ 372:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3913,16 +3880,16 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 const React = __webpack_require__(1);
-const SameAsEditor_1 = __webpack_require__(90);
-const ApiService_1 = __webpack_require__(7);
-const falcon_core_1 = __webpack_require__(8);
-const EditableHeader_1 = __webpack_require__(66);
-const EditableFieldComponent_1 = __webpack_require__(29);
-const EditableParagraph_1 = __webpack_require__(89);
-const EditableComboDropdown_1 = __webpack_require__(88);
-const lodash_1 = __webpack_require__(10);
-const mobx_react_1 = __webpack_require__(5);
-const AddTabButton_1 = __webpack_require__(11);
+const SameAsEditor_1 = __webpack_require__(54);
+const ApiService_1 = __webpack_require__(4);
+const falcon_core_1 = __webpack_require__(5);
+const EditableHeader_1 = __webpack_require__(39);
+const EditableFieldComponent_1 = __webpack_require__(17);
+const EditableParagraph_1 = __webpack_require__(53);
+const EditableComboDropdown_1 = __webpack_require__(52);
+const lodash_1 = __webpack_require__(6);
+const mobx_react_1 = __webpack_require__(2);
+const AddTabButton_1 = __webpack_require__(7);
 const HeaderEditableFieldComponent = EditableFieldComponent_1.EditableFieldHOC(EditableHeader_1.EditableHeader);
 const ParagraphEditableFieldComponent = EditableFieldComponent_1.EditableFieldHOC(EditableParagraph_1.EditableParagraph);
 const SameAsEditableFieldComponent = EditableFieldComponent_1.EditableFieldHOC(SameAsEditor_1.SameAsEditor);
@@ -4140,7 +4107,7 @@ exports.SourceEditorWorkspace = SourceEditorWorkspace;
 
 /***/ }),
 
-/***/ 515:
+/***/ 373:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4151,14 +4118,14 @@ exports.SourceEditorWorkspace = SourceEditorWorkspace;
  */
 
 const React = __webpack_require__(1);
-const RecordsEditor_1 = __webpack_require__(491);
-const ApiService_1 = __webpack_require__(7);
-const falcon_core_1 = __webpack_require__(8);
-const lodash_1 = __webpack_require__(10);
-const AddTabButton_1 = __webpack_require__(11);
-const findParentTree_1 = __webpack_require__(91);
-const EditableFieldComponent_1 = __webpack_require__(29);
-const EditableComboDropdown_1 = __webpack_require__(88);
+const RecordsEditor_1 = __webpack_require__(349);
+const ApiService_1 = __webpack_require__(4);
+const falcon_core_1 = __webpack_require__(5);
+const lodash_1 = __webpack_require__(6);
+const AddTabButton_1 = __webpack_require__(7);
+const findParentTree_1 = __webpack_require__(55);
+const EditableFieldComponent_1 = __webpack_require__(17);
+const EditableComboDropdown_1 = __webpack_require__(52);
 const ComboEditableFieldComponent = EditableFieldComponent_1.EditableFieldHOC(EditableComboDropdown_1.EditableComboDropdown);
 // What can I do?
 // Entity Operations
@@ -4234,7 +4201,7 @@ exports.EntityWorkspaceCoreView = EntityWorkspaceCoreView;
 
 /***/ }),
 
-/***/ 516:
+/***/ 374:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4245,9 +4212,9 @@ exports.EntityWorkspaceCoreView = EntityWorkspaceCoreView;
  */
 
 const React = __webpack_require__(1);
-const ApiService_1 = __webpack_require__(7);
-const falcon_core_1 = __webpack_require__(8);
-const AddTabButton_1 = __webpack_require__(11);
+const ApiService_1 = __webpack_require__(4);
+const falcon_core_1 = __webpack_require__(5);
+const AddTabButton_1 = __webpack_require__(7);
 // What can I do?
 // Entity Operations
 // - Delete the entity
@@ -4304,7 +4271,7 @@ exports.EntityWorkspaceReferenceView = EntityWorkspaceReferenceView;
 
 /***/ }),
 
-/***/ 517:
+/***/ 375:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4314,25 +4281,25 @@ exports.EntityWorkspaceReferenceView = EntityWorkspaceReferenceView;
  * @version 0.2.0
  */
 
-var EmptyWorkspace_1 = __webpack_require__(509);
+var EmptyWorkspace_1 = __webpack_require__(367);
 exports.EmptyWorkspace = EmptyWorkspace_1.EmptyWorkspace;
-var EntityEditorWorkspace_1 = __webpack_require__(510);
+var EntityEditorWorkspace_1 = __webpack_require__(368);
 exports.EntityEditorWorkspace = EntityEditorWorkspace_1.EntityEditorWorkspace;
-var EntityTypeWorkspace_1 = __webpack_require__(511);
+var EntityTypeWorkspace_1 = __webpack_require__(369);
 exports.EntityTypeWorkspace = EntityTypeWorkspace_1.EntityTypeWorkspace;
-var SourceEditorWorkspace_1 = __webpack_require__(514);
+var SourceEditorWorkspace_1 = __webpack_require__(372);
 exports.SourceEditorWorkspace = SourceEditorWorkspace_1.SourceEditorWorkspace;
-var PredicateEditorWorkspace_1 = __webpack_require__(513);
+var PredicateEditorWorkspace_1 = __webpack_require__(371);
 exports.PredicateEditorWorkspace = PredicateEditorWorkspace_1.PredicateEditorWorkspace;
-var AdvancedSearchWorkspace_1 = __webpack_require__(508);
+var AdvancedSearchWorkspace_1 = __webpack_require__(366);
 exports.AdvancedSearchWorkspace = AdvancedSearchWorkspace_1.AdvancedSearchWorkspace;
-var ObjectListWorkspace_1 = __webpack_require__(512);
+var ObjectListWorkspace_1 = __webpack_require__(370);
 exports.ObjectListWorkspace = ObjectListWorkspace_1.ObjectListWorkspace;
 
 
 /***/ }),
 
-/***/ 518:
+/***/ 376:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4359,12 +4326,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-const falcon_core_1 = __webpack_require__(8);
-const ApiService_1 = __webpack_require__(7);
-const DataStore_1 = __webpack_require__(519);
-const react_sortable_hoc_1 = __webpack_require__(85);
-const mobx_1 = __webpack_require__(60);
-const lodash_1 = __webpack_require__(10);
+const falcon_core_1 = __webpack_require__(5);
+const ApiService_1 = __webpack_require__(4);
+const DataStore_1 = __webpack_require__(377);
+const react_sortable_hoc_1 = __webpack_require__(51);
+const mobx_1 = __webpack_require__(35);
+const lodash_1 = __webpack_require__(6);
 const moment = __webpack_require__(0);
 class DataController {
     constructor(api) {
@@ -4619,7 +4586,7 @@ exports.DataController = DataController;
 
 /***/ }),
 
-/***/ 519:
+/***/ 377:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4629,7 +4596,7 @@ exports.DataController = DataController;
  * @version 0.2.0
  */
 
-const falcon_core_1 = __webpack_require__(8);
+const falcon_core_1 = __webpack_require__(5);
 exports.emptyDataStore = {
     all: {
         entity: { value: [], lastUpdate: null },
@@ -4651,7 +4618,7 @@ exports.emptyDataStore = {
 
 /***/ }),
 
-/***/ 520:
+/***/ 378:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4679,16 +4646,16 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 const React = __webpack_require__(1);
-const lodash_1 = __webpack_require__(10);
-const CreatePredicate_1 = __webpack_require__(498);
-const CreateRecord_1 = __webpack_require__(500);
-const CreatePresetRecord_1 = __webpack_require__(499);
-const CreateSource_1 = __webpack_require__(501);
-const CreateEntity_1 = __webpack_require__(496);
-const CreateEntityType_1 = __webpack_require__(497);
-const ConflictResolution_1 = __webpack_require__(495);
-const CreateTabSet_1 = __webpack_require__(502);
-const mobx_1 = __webpack_require__(60);
+const lodash_1 = __webpack_require__(6);
+const CreatePredicate_1 = __webpack_require__(356);
+const CreateRecord_1 = __webpack_require__(358);
+const CreatePresetRecord_1 = __webpack_require__(357);
+const CreateSource_1 = __webpack_require__(359);
+const CreateEntity_1 = __webpack_require__(354);
+const CreateEntityType_1 = __webpack_require__(355);
+const ConflictResolution_1 = __webpack_require__(353);
+const CreateTabSet_1 = __webpack_require__(360);
+const mobx_1 = __webpack_require__(35);
 class ModalStore {
     constructor() {
         this.modalQueue = [];
@@ -4774,7 +4741,7 @@ exports.ModalStore = ModalStore;
 
 /***/ }),
 
-/***/ 521:
+/***/ 379:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4785,14 +4752,14 @@ exports.ModalStore = ModalStore;
  */
 
 const React = __webpack_require__(1);
-const react_router_1 = __webpack_require__(17);
-const StatsGrid_1 = __webpack_require__(256);
+const react_router_1 = __webpack_require__(11);
+const StatsGrid_1 = __webpack_require__(190);
 const setTabList = (data, router) => {
     window.localStorage.setItem('open_tabs', JSON.stringify(data));
     router.transitionTo('/edit/empty');
 };
 const deleteTabSet = (id) => {
-    fetch('/admin/tabset/' + id, {
+    fetch('/tabset/' + id, {
         method: 'DELETE',
         credentials: 'same-origin'
     });
@@ -4810,7 +4777,7 @@ exports.Admin = (props, context) => (React.createElement("div", { className: 'pa
                     React.createElement("i", { className: 'fa fa-download' }),
                     " Download app")),
             React.createElement("li", null,
-                React.createElement("a", { href: '/admin/snapshot' },
+                React.createElement("a", { href: '/snapshot' },
                     React.createElement("i", { className: 'fa fa-cloud-download' }),
                     " Download database snapshot")),
             React.createElement("li", null,
@@ -4834,7 +4801,37 @@ exports.Admin.contextTypes = {
 
 /***/ }),
 
-/***/ 522:
+/***/ 38:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview Sidebar for editor
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.2.0
+ */
+
+const React = __webpack_require__(1);
+exports.SearchBar = (props) => {
+    const filterFunc = (s) => {
+        return (a) => {
+            if (s.length === 0) {
+                return true;
+            }
+            return props.getValue(a).toLowerCase().indexOf(s.toLowerCase()) !== -1;
+        };
+    };
+    return (React.createElement("div", null,
+        React.createElement("div", { className: 'input-addon-formgroup' },
+            React.createElement("span", { className: 'input-addon-icon' },
+                React.createElement("i", { className: 'fa fa-search fa-fw' })),
+            React.createElement("input", { type: 'text', className: 'form-control with-addon', onChange: (e) => props.setFilterFunc(filterFunc(e.target.value)) }))));
+};
+
+
+/***/ }),
+
+/***/ 380:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4866,7 +4863,7 @@ exports.AppDownload = (props) => (React.createElement("div", { className: 'page'
 
 /***/ }),
 
-/***/ 523:
+/***/ 381:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4886,7 +4883,7 @@ exports.DatabaseUpload = (props) => (React.createElement("div", { className: 'pa
 
 /***/ }),
 
-/***/ 524:
+/***/ 382:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4897,14 +4894,14 @@ exports.DatabaseUpload = (props) => (React.createElement("div", { className: 'pa
  */
 
 const React = __webpack_require__(1);
-const Sidebar_1 = __webpack_require__(483);
-const Workspace_1 = __webpack_require__(485);
-const Toast_1 = __webpack_require__(484);
-const DataController_1 = __webpack_require__(518);
-const ModalStore_1 = __webpack_require__(520);
-const react_sortable_hoc_1 = __webpack_require__(85);
-const mobx_react_devtools_1 = __webpack_require__(431);
-const mobx_react_1 = __webpack_require__(5);
+const Sidebar_1 = __webpack_require__(341);
+const Workspace_1 = __webpack_require__(343);
+const Toast_1 = __webpack_require__(342);
+const DataController_1 = __webpack_require__(376);
+const ModalStore_1 = __webpack_require__(378);
+const react_sortable_hoc_1 = __webpack_require__(51);
+const mobx_react_devtools_1 = __webpack_require__(312);
+const mobx_react_1 = __webpack_require__(2);
 const ObjectEditorCore = react_sortable_hoc_1.SortableContainer((props) => {
     return (React.createElement("span", { className: 'flex-fill' },
         React.createElement(Sidebar_1.Sidebar, { list: props.list, id: props.id, workspace: props.workspace }),
@@ -4990,11 +4987,11 @@ ObjectEditor.contextTypes = {
 };
 exports.ObjectEditor = ObjectEditor;
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ }),
 
-/***/ 525:
+/***/ 383:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5014,7 +5011,7 @@ exports.RouteNotFound = (props) => (React.createElement("section", null,
 
 /***/ }),
 
-/***/ 526:
+/***/ 384:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5032,7 +5029,7 @@ exports.User = (props) => (React.createElement("div", { className: 'page' },
 
 /***/ }),
 
-/***/ 527:
+/***/ 385:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5050,7 +5047,7 @@ exports.UserManagement = (props) => (React.createElement("div", { className: 'pa
 
 /***/ }),
 
-/***/ 553:
+/***/ 387:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5060,11 +5057,11 @@ exports.UserManagement = (props) => (React.createElement("div", { className: 'pa
  * @version 0.2.0
  */
 
-const react_dom_1 = __webpack_require__(31);
+const react_dom_1 = __webpack_require__(18);
 const react_1 = __webpack_require__(1);
-const FalconApp_1 = __webpack_require__(260);
-const ClientApiService_1 = __webpack_require__(259);
-const react_router_1 = __webpack_require__(17);
+const FalconApp_1 = __webpack_require__(193);
+const ClientApiService_1 = __webpack_require__(192);
+const react_router_1 = __webpack_require__(11);
 document.addEventListener('DOMContentLoaded', (event) => {
     react_dom_1.render(react_1.createElement(FalconApp_1.FalconApp, {
         api: new ClientApiService_1.ClientApiService(),
@@ -5078,37 +5075,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
 /***/ }),
 
-/***/ 65:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * @fileOverview Sidebar for editor
- * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.2.0
- */
-
-const React = __webpack_require__(1);
-exports.SearchBar = (props) => {
-    const filterFunc = (s) => {
-        return (a) => {
-            if (s.length === 0) {
-                return true;
-            }
-            return props.getValue(a).toLowerCase().indexOf(s.toLowerCase()) !== -1;
-        };
-    };
-    return (React.createElement("div", null,
-        React.createElement("div", { className: 'input-addon-formgroup' },
-            React.createElement("span", { className: 'input-addon-icon' },
-                React.createElement("i", { className: 'fa fa-search fa-fw' })),
-            React.createElement("input", { type: 'text', className: 'form-control with-addon', onChange: (e) => props.setFilterFunc(filterFunc(e.target.value)) }))));
-};
-
-
-/***/ }),
-
-/***/ 66:
+/***/ 39:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5139,7 +5106,7 @@ exports.EditableHeader = (props) => {
 
 /***/ }),
 
-/***/ 7:
+/***/ 4:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5149,7 +5116,7 @@ exports.EditableHeader = (props) => {
  * @version 0.2.0
  */
 
-const itemTypes_1 = __webpack_require__(254);
+const itemTypes_1 = __webpack_require__(188);
 exports.AppUrls = {
     element_set: itemTypes_1.itemTypes.element_set.machineName,
     record: itemTypes_1.itemTypes.record.machineName,
@@ -5164,7 +5131,7 @@ exports.AppUrls = {
 
 /***/ }),
 
-/***/ 88:
+/***/ 52:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5183,7 +5150,7 @@ var __assign = (this && this.__assign) || Object.assign || function(t) {
     return t;
 };
 const React = __webpack_require__(1);
-const ComboDropdown_1 = __webpack_require__(16);
+const ComboDropdown_1 = __webpack_require__(10);
 function EditableComboDropdown(props) {
     if (props.edit) {
         return (React.createElement("div", null,
@@ -5207,7 +5174,7 @@ exports.EditableComboDropdown = EditableComboDropdown;
 
 /***/ }),
 
-/***/ 89:
+/***/ 53:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5218,7 +5185,7 @@ exports.EditableComboDropdown = EditableComboDropdown;
  */
 
 const React = __webpack_require__(1);
-const mousetrap = __webpack_require__(42);
+const mousetrap = __webpack_require__(25);
 exports.EditableParagraph = (props) => {
     let keyBoardShortcuts;
     const bindKeyboard = (val) => {
@@ -5253,7 +5220,7 @@ exports.EditableParagraph = (props) => {
 
 /***/ }),
 
-/***/ 90:
+/***/ 54:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5264,7 +5231,7 @@ exports.EditableParagraph = (props) => {
  */
 
 const React = __webpack_require__(1);
-const mousetrap = __webpack_require__(42);
+const mousetrap = __webpack_require__(25);
 class SameAsEditor extends React.Component {
     constructor(props) {
         super();
@@ -5339,7 +5306,7 @@ exports.SameAsEditor = SameAsEditor;
 
 /***/ }),
 
-/***/ 91:
+/***/ 55:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5374,7 +5341,7 @@ exports.findParentTree = (uid, data, ancestors = []) => {
 
 /***/ }),
 
-/***/ 92:
+/***/ 56:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5403,7 +5370,40 @@ exports.formatDate = (str) => {
 };
 
 
+/***/ }),
+
+/***/ 6:
+/***/ (function(module, exports) {
+
+module.exports = _;
+
+/***/ }),
+
+/***/ 7:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * @fileOverview Sidebar for editor
+ * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
+ * @version 0.2.0
+ */
+
+const React = __webpack_require__(1);
+const mobx_react_1 = __webpack_require__(2);
+exports.AddTabButton = mobx_react_1.inject('dataStore')(mobx_react_1.observer((props, context) => {
+    if (props.dataStore.dataStore.tabs[props.tabType] !== undefined
+        && props.uid in props.dataStore.dataStore.tabs[props.tabType]) {
+        return (React.createElement("i", { className: 'fa fa-folder-open-o add button', title: 'Open item', onClick: () => context.router.transitionTo(`/edit/${props.tabType}/${props.uid}`) }, " "));
+    }
+    return (React.createElement("i", { className: 'icon-list-add add button', title: 'Add to list', onClick: () => props.dataStore.createTab(props.tabType, props.uid, 'item', props.data) }));
+}));
+exports.AddTabButton.wrappedComponent.contextTypes = {
+    router: React.PropTypes.object.isRequired
+};
+
+
 /***/ })
 
-},[553]);
+},[387]);
 //# sourceMappingURL=main.dist.js.map

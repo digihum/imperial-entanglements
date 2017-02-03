@@ -55,11 +55,11 @@ export class FalconApp extends React.Component<FalconAppProps, FalconAppState> {
 
     public componentDidMount() {
         if (this.props.environment === 'website' && window !== undefined) {
-            fetch('/admin/currentuser', { credentials: 'same-origin' })
+            fetch('/currentuser', { credentials: 'same-origin' })
                 .then((response) => response.json())
                 .then((userData) => this.setState({ user: userData.username }));
 
-            fetch('/admin/tabset', { credentials: 'same-origin' })
+            fetch('/tabset', { credentials: 'same-origin' })
                 .then((response) => response.json())
                 .then((tabsets) => this.setState({ tabsets }));
         }
@@ -73,7 +73,7 @@ export class FalconApp extends React.Component<FalconAppProps, FalconAppState> {
     public render() {
         return (
         <div id='main' className='flex-fill'>
-            <this.props.router {...this.props.routerSettings} className='flex-fill' basename='/admin'>
+            <this.props.router {...this.props.routerSettings} className='flex-fill' basename='http://localhost:8080'>
                 <div className='flex-fill' style={{ flexDirection: 'column' }}>
                     <div className='header'>
                         <Link to='/' className='logo-link'><div className='logo'>VRE</div></Link>
@@ -88,7 +88,7 @@ export class FalconApp extends React.Component<FalconAppProps, FalconAppState> {
                         { this.props.environment === 'website' ? (
                             <div className='right-header'>
                                 <Link to='/user' className='header-link'><span className='current-user'>{this.state.user}</span></Link>
-                                <a href='/admin/logout' className='header-link'>Logout</a>
+                                <a href='/logout' className='header-link'>Logout</a>
                                 <a href='/' className='header-link'><i className='fa fa-external-link'></i></a>
                             </div>
                         ) : null}

@@ -38,7 +38,7 @@ export class CreateTabSet extends React.Component<CreateTabSetProps, CreateEntit
     }
 
     public createTabSet() {
-      return fetch('/admin/tabset', {
+      return fetch('/tabset', {
           method: 'POST',
           body: JSON.stringify({
             name: this.state.internalValue,

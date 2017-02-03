@@ -62,19 +62,16 @@ export const Server = (databaseConfig: KnexConfig) : Koa => {
 
     app.use(koaMount('/api/v1', api(db)));
 
-    const admin = new Koa();
 
-    admin.use(koaMount('/', user(db)));
+    app.use(koaMount('/', user(db)));
 
-    admin.use(koaMount('/snapshot', snapshot(snapshotter)));
-    admin.use(koaMount('/stats', stats(db)));
-    admin.use(koaMount('/', adminApp(skeleton, db)));
-
-    app.use(koaMount('/admin', admin));
+    app.use(koaMount('/snapshot', snapshot(snapshotter)));
+    app.use(koaMount('/stats', stats(db)));
+    app.use(koaMount('/', adminApp(skeleton, db)));
 
     app.use(async (ctx: Koa.Context) => {
       ctx.body = '404';
     });
 
     return app;
-}
+};

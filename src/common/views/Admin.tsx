@@ -20,7 +20,7 @@ const setTabList = (data: any, router: any) => {
 };
 
 const deleteTabSet = (id: number) => {
-  fetch('/admin/tabset/' + id, {
+  fetch('/tabset/' + id, {
     method: 'DELETE',
     credentials: 'same-origin'
   });
@@ -33,7 +33,7 @@ export const Admin : React.StatelessComponent<AdminProps> = (props : AdminProps,
             <ul className='links-list'>
                 <li><Link to='/users'><i className='fa fa-users'></i> Manage Users</Link></li>
                 <li><Link to='/app'><i className='fa fa-download'></i> Download app</Link></li>
-                <li><a href='/admin/snapshot'><i className='fa fa-cloud-download'></i> Download database snapshot</a></li>
+                <li><a href='/snapshot'><i className='fa fa-cloud-download'></i> Download database snapshot</a></li>
                 <li><Link to='/upload'><i className='fa fa-cloud-upload'></i> Upload database file</Link></li>
             </ul>
         </section>

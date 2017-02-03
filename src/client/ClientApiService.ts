@@ -129,7 +129,7 @@ export class ClientApiService implements ApiService {
     }
 
     public getStats() : Promise<any> {
-      return fetch('/admin/stats', { credentials: 'same-origin' })
+      return fetch('/stats', { credentials: 'same-origin' })
         .then(handleErrors)
         .then((response) => response.json());
     }

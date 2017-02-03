@@ -3,7 +3,7 @@ const url = 'http://localhost:8080';
 module.exports = function () {
   this.Given(/^I open the admin pages and log in$/, function (browser) {
     browser
-      .url(url + '/admin')
+      .url(url)
       .waitForElementVisible('body', 1000)
       .setValue('input[name="username"]', 'thollies')
       .setValue('input[name="password"]', 'password')

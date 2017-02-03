@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 109);
+/******/ 	return __webpack_require__(__webpack_require__.s = 108);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -1860,10 +1860,10 @@ class FalconApp extends React.Component {
     }
     componentDidMount() {
         if (this.props.environment === 'website' && window !== undefined) {
-            fetch('/admin/currentuser', { credentials: 'same-origin' })
+            fetch('/currentuser', { credentials: 'same-origin' })
                 .then((response) => response.json())
                 .then((userData) => this.setState({ user: userData.username }));
-            fetch('/admin/tabset', { credentials: 'same-origin' })
+            fetch('/tabset', { credentials: 'same-origin' })
                 .then((response) => response.json())
                 .then((tabsets) => this.setState({ tabsets }));
         }
@@ -1874,7 +1874,7 @@ class FalconApp extends React.Component {
     }
     render() {
         return (React.createElement("div", { id: 'main', className: 'flex-fill' },
-            React.createElement(this.props.router, __assign({}, this.props.routerSettings, { className: 'flex-fill', basename: '/admin' }),
+            React.createElement(this.props.router, __assign({}, this.props.routerSettings, { className: 'flex-fill', basename: 'http://localhost:8080' }),
                 React.createElement("div", { className: 'flex-fill', style: { flexDirection: 'column' } },
                     React.createElement("div", { className: 'header' },
                         React.createElement(react_router_2.Link, { to: '/', className: 'logo-link' },
@@ -1887,7 +1887,7 @@ class FalconApp extends React.Component {
                         this.props.environment === 'website' ? (React.createElement("div", { className: 'right-header' },
                             React.createElement(react_router_2.Link, { to: '/user', className: 'header-link' },
                                 React.createElement("span", { className: 'current-user' }, this.state.user)),
-                            React.createElement("a", { href: '/admin/logout', className: 'header-link' }, "Logout"),
+                            React.createElement("a", { href: '/logout', className: 'header-link' }, "Logout"),
                             React.createElement("a", { href: '/', className: 'header-link' },
                                 React.createElement("i", { className: 'fa fa-external-link' })))) : null),
                     this.props.environment === 'website' ? (React.createElement(react_router_1.Match, { exactly: true, pattern: '/', render: (matchprops) => (React.createElement(Admin_1.Admin, __assign({}, matchprops, { stats: this.state.stats, tabsets: this.state.tabsets }))) })) : (React.createElement(react_router_1.Match, { exactly: true, pattern: '/', render: (matchprops) => (React.createElement(AdminApp_1.AdminApp, __assign({}, matchprops, { stats: this.state.stats }))) })),
@@ -4289,7 +4289,7 @@ let CreateTabSet = class CreateTabSet extends React.Component {
         };
     }
     createTabSet() {
-        return fetch('/admin/tabset', {
+        return fetch('/tabset', {
             method: 'POST',
             body: JSON.stringify({
                 name: this.state.internalValue,
@@ -6384,7 +6384,7 @@ const setTabList = (data, router) => {
     router.transitionTo('/edit/empty');
 };
 const deleteTabSet = (id) => {
-    fetch('/admin/tabset/' + id, {
+    fetch('/tabset/' + id, {
         method: 'DELETE',
         credentials: 'same-origin'
     });
@@ -6402,7 +6402,7 @@ exports.Admin = (props, context) => (React.createElement("div", { className: 'pa
                     React.createElement("i", { className: 'fa fa-download' }),
                     " Download app")),
             React.createElement("li", null,
-                React.createElement("a", { href: '/admin/snapshot' },
+                React.createElement("a", { href: '/snapshot' },
                     React.createElement("i", { className: 'fa fa-cloud-download' }),
                     " Download database snapshot")),
             React.createElement("li", null,
@@ -6658,8 +6658,7 @@ module.exports = require("lunr");
 module.exports = require("mobx-react-devtools");
 
 /***/ }),
-/* 108 */,
-/* 109 */
+/* 108 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
