@@ -1,7 +1,7 @@
 /**
  * @fileOverview Generic controller interface
  * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.2.0
+ ** @version 0.2.3
  */
 
 import { FalconItem, CompositeKey } from '@digihum/falcon-core';

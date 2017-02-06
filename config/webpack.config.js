@@ -1,6 +1,6 @@
-var webpack = require('webpack');
-var path = require('path');
-var fs = require('fs');
+const webpack = require('webpack');
+const path = require('path');
+const fs = require('fs');
 const Dotenv = require('dotenv-webpack');
 
 function isVendor(module, count) {

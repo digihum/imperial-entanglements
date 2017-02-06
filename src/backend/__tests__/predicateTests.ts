@@ -1,7 +1,7 @@
 /**
  * @fileOverview Dummy test to see if tests work
  * @author <a href="mailto:tim.hollies@warwick.ac.uk">Tim Hollies</a>
- * @version 0.2.0
+ ** @version 0.2.3
  */
 
 
