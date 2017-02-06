@@ -73,7 +73,7 @@ export class FalconApp extends React.Component<FalconAppProps, FalconAppState> {
     public render() {
         return (
         <div id='main' className='flex-fill'>
-            <this.props.router {...this.props.routerSettings} className='flex-fill' basename='http://localhost:8080'>
+            <this.props.router {...this.props.routerSettings} className='flex-fill' basename={process.env.APP_URL}>
                 <div className='flex-fill' style={{ flexDirection: 'column' }}>
                     <div className='header'>
                         <Link to='/' className='logo-link'><div className='logo'>VRE</div></Link>

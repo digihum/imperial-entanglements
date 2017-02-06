@@ -60,7 +60,7 @@ class FalconApp extends React.Component {
     }
     render() {
         return (React.createElement("div", { id: 'main', className: 'flex-fill' },
-            React.createElement(this.props.router, __assign({}, this.props.routerSettings, { className: 'flex-fill', basename: 'http://localhost:8080' }),
+            React.createElement(this.props.router, __assign({}, this.props.routerSettings, { className: 'flex-fill', basename: process.env.APP_URL }),
                 React.createElement("div", { className: 'flex-fill', style: { flexDirection: 'column' } },
                     React.createElement("div", { className: 'header' },
                         React.createElement(react_router_2.Link, { to: '/', className: 'logo-link' },
