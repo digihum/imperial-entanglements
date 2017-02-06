@@ -1,6 +1,6 @@
 os: linux
 dist: trusty
-sudo: false
+sudo: true
 group: beta
 
 matrix:
@@ -17,6 +17,8 @@ env:
     secure: "mxjzojYjbTF1/sCg2E9Iy7AswP9+K0DAyE3imJ87Gm+Law13IzDkV/9zSKp/7YgXcTpUc48pzNO6ofLEDr7/DPfCdL7TO5umJ/Elpr5OCs/uDqA7TJ/TSUCEfcCh+WoOWKK5Wr6mwR1IpXTksX5tDSqc/+Jp6+szp6qgbjDQguQfpYoXBk6/MWzd8MhdtTh642OPhRTkylBpMfcPyieMZNHvtI+PKSIvPcArDVXuTv4VopvGTcadVORRuBkk8YWMR+S69jDrpw6x3TD/WfhAZaPfv2AXZGKTl+8NG3qmT8AxoUUz9vQY9L9UUDBB4Ol13roAYbOWSfZJWrvfh5TSxavJkn8yOD+3M9PpHjLIDgs2iu5CHjecrKF6ac8psH+tRK9TqKZ+Tj+rwhhHkcJ/Yp5/3iJfkDJ4REhbR8YQFUc51DOAUNA/TCvXXKzORIFc8/WmE7LF6hQdE+dnkcNhexYFeC/LUR0V1+9fvmQqZKkZ3lSyf5fGXlCD2adisAmUt8FtwapkIoE4niMH6sbPghLZdYo2GTqyaMNKLDn9pxQJ41chPr+MX/tbxIv4eBio5/JjYZoCEhCGVxC9S6W/IEVUo9wjb2lMbizNcZceEgClrNvZpMwtFSIQZXcuEAajgKqFWKnP9HAaDmUzGOvW6VHs4VgAzdLTC3evsJrP3r0="
 
 script: 
+
+  - sudo apt-get install --no-install-recommends -y icnsutils graphicsmagick xz-utils
 
   - rm -rf .git
   - rm README.md
