@@ -20,7 +20,7 @@ script:
 
   - sudo apt-get install --no-install-recommends -y icnsutils graphicsmagick xz-utils
 
-  - rvm get stable
+  - rvm get stable 
 
   - rm -rf .git
   - rm README.md
