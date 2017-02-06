@@ -32,6 +32,9 @@
     },
     "win": {
       "iconUrl": "http://www.iconarchive.com/download/i43620/treetog/junior/folder-documents.ico"
+    },
+    "linux": {
+      "icon": "32x32.png"
     }
   },
   "directories": {

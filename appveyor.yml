@@ -1,6 +1,6 @@
 # Test against this version of Node.js
 environment:
-  nodejs_version: "6.9.1"
+  nodejs_version: "7.5.0"
   access_token:
     secure: POyM5dzrb6H86XZqJCEp2ky3P3A6vQghzxMwWxP3rZTE1oSaxYbRgBgCVy+bkIso
 
@@ -29,11 +29,8 @@ install:
   # build typescript
   - npm run tsc || true
   
-  # copy test db
-  - cp blank.sqlite mydb.sqlite
-
   # copy .env file
-  - cp .env.example .env
+  - cp .env.sqlite .env
 
   - npm run gulp
   - npm run webpack
