@@ -4,6 +4,18 @@
         {
             "type": "node",
             "request": "launch",
+            "name": "Launch Program",
+            "program": "${workspaceRoot}/node_modules/electron-builder/out/build-cli.js",
+            "cwd": "${workspaceRoot}",
+            "runtimeArgs": [
+                "--debug=5858",
+                "--debug-brk"
+            ],
+            "port": 5858
+        },
+        {
+            "type": "node",
+            "request": "launch",
             "name": "nodemon",
             "cwd": "${workspaceRoot}",
             "runtimeExecutable": "nodemon",
@@ -89,24 +101,7 @@
                 "webpack:///*":     "*"
             }
         },
-        {
-            "name": "Electron Rebuild",
-            "type": "node",
-            "request": "launch",
-            "stopOnEntry": false,
-            "program": "${workspaceRoot}/scripts/electronRebuild.js",
-            "args": [],
-            "cwd": "${workspaceRoot}",
-            "preLaunchTask": null,
-            "runtimeExecutable": null,
-            "runtimeArgs": [
-                "--nolazy"
-            ],
-            "env": {
-                "NODE_ENV": "development"
-            },
-            "console": "integratedTerminal"
-        },  
+
         {
             "name": "Attach",
             "type": "node",
