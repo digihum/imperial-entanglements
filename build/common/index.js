@@ -1,6 +1,6 @@
 "use strict";
-var React = require("react");
-exports.Index = function (props) { return (React.createElement("html", null,
+const React = require("react");
+exports.Index = (props) => (React.createElement("html", null,
     React.createElement("head", null,
         React.createElement("title", null, "Imperial Entanglements"),
         React.createElement("script", { src: 'https://unpkg.com/react@15.3.2/dist/react.js' }),
@@ -15,5 +15,5 @@ exports.Index = function (props) { return (React.createElement("html", null,
         React.createElement("script", { src: '/ui.bundle.js' }),
         React.createElement("script", { src: '/react.bundle.js' }),
         React.createElement("script", { src: '/vendor.dist.js' }),
-        React.createElement("script", { src: '/main.dist.js' })))); };
+        React.createElement("script", { src: '/main.dist.js' }))));
 //# sourceMappingURL=Index.js.map

@@ -4,10 +4,10 @@
  * @version 0.2.0
  */
 "use strict";
-var React = require("react");
-exports.RouteNotFound = function (props) { return (React.createElement("section", null,
+const React = require("react");
+exports.RouteNotFound = (props) => (React.createElement("section", null,
     React.createElement("h1", null,
         "The page at ",
         props.url,
-        " does not exist :("))); };
+        " does not exist :(")));
 //# sourceMappingURL=RouteNotFound.js.map

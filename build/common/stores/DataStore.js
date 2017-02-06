@@ -4,7 +4,7 @@
  * @version 0.2.0
  */
 "use strict";
-var falcon_core_1 = require("@digihum/falcon-core");
+const falcon_core_1 = require("@digihum/falcon-core");
 exports.emptyDataStore = {
     all: {
         entity: { value: [], lastUpdate: null },

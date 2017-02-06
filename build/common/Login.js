@@ -1,6 +1,6 @@
 "use strict";
-var React = require("react");
-exports.Login = function (props) { return (React.createElement("html", null,
+const React = require("react");
+exports.Login = (props) => (React.createElement("html", null,
     React.createElement("head", null,
         React.createElement("link", { href: '/app.css', rel: 'stylesheet' }),
         React.createElement("link", { href: 'https://fonts.googleapis.com/css?family=Roboto', rel: 'stylesheet' })),
@@ -16,5 +16,5 @@ exports.Login = function (props) { return (React.createElement("html", null,
                         React.createElement("label", { htmlFor: 'password' }, "Password"),
                         React.createElement("input", { type: 'password', name: 'password', placeholder: 'password', required: true })),
                     React.createElement("li", null,
-                        React.createElement("input", { type: 'submit', value: 'Login' })))))))); };
+                        React.createElement("input", { type: 'submit', value: 'Login' }))))))));
 //# sourceMappingURL=Login.js.map

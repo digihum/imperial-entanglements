@@ -4,33 +4,33 @@
  * @version 0.2.0
  */
 "use strict";
-var React = require("react");
-var ScorePicker_1 = require("../fields/ScorePicker");
-var ComboDropdown_1 = require("../ComboDropdown");
-var StringFieldEditor_1 = require("./StringFieldEditor");
-var EntityFieldEditor_1 = require("./EntityFieldEditor");
-var DateFieldEditor_1 = require("./DateFieldEditor");
-var IntegerFieldEditor_1 = require("./IntegerFieldEditor");
-var AddTabButton_1 = require("../AddTabButton");
-var formatDate_1 = require("../../helper/formatDate");
-var mobx_react_1 = require("mobx-react");
-var recordEditor = function (props, record) {
+const React = require("react");
+const ScorePicker_1 = require("../fields/ScorePicker");
+const ComboDropdown_1 = require("../ComboDropdown");
+const StringFieldEditor_1 = require("./StringFieldEditor");
+const EntityFieldEditor_1 = require("./EntityFieldEditor");
+const DateFieldEditor_1 = require("./DateFieldEditor");
+const IntegerFieldEditor_1 = require("./IntegerFieldEditor");
+const AddTabButton_1 = require("../AddTabButton");
+const formatDate_1 = require("../../helper/formatDate");
+const mobx_react_1 = require("mobx-react");
+const recordEditor = (props, record) => {
     switch (record.valueType) {
         case 'string':
-            return (React.createElement(StringFieldEditor_1.StringFieldEditor, { value: record.value || '', onChange: function (value) { return props.onChange(Object.assign(record, { value: value })); } }));
+            return (React.createElement(StringFieldEditor_1.StringFieldEditor, { value: record.value || '', onChange: (value) => props.onChange(Object.assign(record, { value })) }));
         case 'date':
-            return (React.createElement(DateFieldEditor_1.DateFieldEditor, { value: record.value || '', onChange: function (value) { return props.onChange(Object.assign(record, { value: value })); } }));
+            return (React.createElement(DateFieldEditor_1.DateFieldEditor, { value: record.value || '', onChange: (value) => props.onChange(Object.assign(record, { value })) }));
         case 'integer':
-            return (React.createElement(IntegerFieldEditor_1.IntegerFieldEditor, { value: record.value || '', onChange: function (value) { return props.onChange(Object.assign(record, { value: value })); } }));
+            return (React.createElement(IntegerFieldEditor_1.IntegerFieldEditor, { value: record.value || '', onChange: (value) => props.onChange(Object.assign(record, { value })) }));
         case 'entity':
-            return (React.createElement(EntityFieldEditor_1.EntityFieldEditor, { value: record.value === null ? 0 : parseInt(record.value), onChange: function (value) { return props.onChange(Object.assign(record, { value: value })); }, entities: props.entities }));
+            return (React.createElement(EntityFieldEditor_1.EntityFieldEditor, { value: record.value === null ? 0 : parseInt(record.value), onChange: (value) => props.onChange(Object.assign(record, { value })), entities: props.entities }));
         default:
             return (React.createElement("div", null, "Missing editor"));
     }
 };
-var formatValue = function (props, record) {
+const formatValue = (props, record) => {
     if (record.valueType === 'entity') {
-        var entity = props.entities.find(function (entity) { return entity.uid == record.value; });
+        const entity = props.entities.find((entity) => entity.uid == record.value);
         if (entity !== undefined) {
             if (entity.uid === null) {
                 throw Error('Unexpected null ID on entity');
@@ -49,27 +49,27 @@ var formatValue = function (props, record) {
     }
     return (React.createElement("span", null, record.value));
 };
-exports.RecordRow = mobx_react_1.inject('dataStore', 'modalStore')(mobx_react_1.observer(function (props) {
-    var createNewSource = function (initialValue) {
-        var a = {
+exports.RecordRow = mobx_react_1.inject('dataStore', 'modalStore')(mobx_react_1.observer((props) => {
+    const createNewSource = (initialValue) => {
+        const a = {
             name: 'source',
-            complete: function () {
+            complete: () => {
                 // TODO : Automatically reload sources
             },
-            cancel: function () { console.log('cancel'); },
+            cancel: () => { console.log('cancel'); },
             settings: {
-                initialValue: initialValue
+                initialValue
             }
         };
         props.modalStore.addModal(a);
     };
-    var recordValue = props.value;
+    const recordValue = props.value;
     if (recordValue === null) {
         throw new Error('Should not be null!!');
     }
-    var currentSource = recordValue.source === null ? undefined :
-        props.sources.find(function (source) { return source.uid === recordValue.source; });
-    var dropDownValue = {
+    const currentSource = recordValue.source === null ? undefined :
+        props.sources.find((source) => source.uid === recordValue.source);
+    const dropDownValue = {
         key: '', value: recordValue.source === null ? null : recordValue.source
     };
     if (currentSource !== undefined) {
@@ -80,13 +80,11 @@ exports.RecordRow = mobx_react_1.inject('dataStore', 'modalStore')(mobx_react_1.
             React.createElement("td", { className: 'record-row-item uid' }, recordValue.uid),
             recordValue.valueType !== 'source' ? (React.createElement("td", { className: 'record-row-item' }, recordEditor(props, recordValue))) : null,
             React.createElement("td", { className: 'record-row-item' },
-                React.createElement(ComboDropdown_1.NumberComboDropdown, { options: props.sources.map(function (source) {
-                        return ({ key: source.label, value: source.uid !== null ? source.uid : null });
-                    }), typeName: 'source', value: dropDownValue, setValue: function (combo) { return props.onChange(Object.assign(recordValue, { source: combo === null ? combo : combo.value })); }, createNewValue: function () { return createNewSource(''); } })),
+                React.createElement(ComboDropdown_1.NumberComboDropdown, { options: props.sources.map((source) => ({ key: source.label, value: source.uid !== null ? source.uid : null })), typeName: 'source', value: dropDownValue, setValue: (combo) => props.onChange(Object.assign(recordValue, { source: combo === null ? combo : combo.value })), createNewValue: () => createNewSource('') })),
             React.createElement("td", { className: 'record-row-item score' },
-                React.createElement(ScorePicker_1.ScorePicker, { value: recordValue.score, readOnly: false, onChange: function (score) { return props.onChange(Object.assign(recordValue, { score: score })); } })),
+                React.createElement(ScorePicker_1.ScorePicker, { value: recordValue.score, readOnly: false, onChange: (score) => props.onChange(Object.assign(recordValue, { score })) })),
             React.createElement("td", { className: 'record-row-item period' },
-                React.createElement(DateFieldEditor_1.DateFieldEditor, { value: recordValue.period || '', onChange: function (period) { return props.onChange(Object.assign(recordValue, { period: period })); } })),
+                React.createElement(DateFieldEditor_1.DateFieldEditor, { value: recordValue.period || '', onChange: (period) => props.onChange(Object.assign(recordValue, { period })) })),
             React.createElement("td", { className: 'record-row-item buttons' },
                 React.createElement("button", { onClick: props.acceptChanges },
                     React.createElement("i", { className: 'fa fa-check', "aria-hidden": 'true' })),
@@ -108,7 +106,7 @@ exports.RecordRow = mobx_react_1.inject('dataStore', 'modalStore')(mobx_react_1.
             React.createElement("td", { className: 'record-row-item buttons' },
                 React.createElement("button", { onClick: props.setEdit },
                     React.createElement("i", { className: 'fa fa-pencil-square-o', title: 'Edit', "aria-hidden": 'true' })),
-                React.createElement("button", { onClick: function () { return props.onDelete(props.value); } },
+                React.createElement("button", { onClick: () => props.onDelete(props.value) },
                     React.createElement("i", { className: 'fa fa-trash', "aria-hidden": 'true' })))));
     }
 }));

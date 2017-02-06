@@ -4,9 +4,9 @@
  * @version 0.2.0
  */
 "use strict";
-var React = require("react");
-var react_router_1 = require("react-router");
-exports.StatsGrid = function (props) {
+const React = require("react");
+const react_router_1 = require("react-router");
+exports.StatsGrid = (props) => {
     return (React.createElement("section", { className: 'stats-grid' },
         React.createElement(react_router_1.Link, { to: '/edit/entity' },
             React.createElement("div", { className: 'entity' },

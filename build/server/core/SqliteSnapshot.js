@@ -4,21 +4,21 @@
  * @version 0.2.0
  */
 "use strict";
-var Knex = require("knex");
-var fs = require("fs");
-var path = require("path");
-var SqliteSnapshot = (function () {
-    function SqliteSnapshot(config) {
+const Knex = require("knex");
+const fs = require("fs");
+const path = require("path");
+class SqliteSnapshot {
+    constructor(config) {
         this.knex = Knex(config);
     }
     //TODO: use some kind of tempory file tracking package
-    SqliteSnapshot.prototype.getSnapshotStream = function () {
-        var filename = path.join(process.cwd(), 'data', 'test.sqlite');
+    getSnapshotStream() {
+        const filename = path.join(process.cwd(), 'data', 'test.sqlite');
         // fs.unlinkSync(filename);
         // const db = new sqlite.Database(filename);
-        var tempKnex = Knex({
+        const tempKnex = Knex({
             client: 'sqlite3',
-            connection: { filename: filename },
+            connection: { filename },
             migrations: {
                 directory: path.join(process.cwd(), 'data', 'migrations')
             },
@@ -28,20 +28,19 @@ var SqliteSnapshot = (function () {
             useNullAsDefault: true
         });
         return tempKnex.migrate.latest()
-            .then(function () { return tempKnex.seed.run(); })
-            .then(function () {
-            return new Promise(function (res) {
-                tempKnex.destroy(function () {
-                    var stream = fs.createReadStream(filename);
-                    stream.on('close', function () {
+            .then(() => tempKnex.seed.run())
+            .then(() => {
+            return new Promise((res) => {
+                tempKnex.destroy(() => {
+                    const stream = fs.createReadStream(filename);
+                    stream.on('close', () => {
                         fs.unlinkSync(filename);
                     });
                     res(stream);
                 });
             });
         });
-    };
-    return SqliteSnapshot;
-}());
+    }
+}
 exports.SqliteSnapshot = SqliteSnapshot;
 //# sourceMappingURL=SqliteSnapshot.js.map

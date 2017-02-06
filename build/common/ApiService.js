@@ -4,7 +4,7 @@
  * @version 0.2.0
  */
 "use strict";
-var itemTypes_1 = require("./itemTypes");
+const itemTypes_1 = require("./itemTypes");
 exports.AppUrls = {
     element_set: itemTypes_1.itemTypes.element_set.machineName,
     record: itemTypes_1.itemTypes.record.machineName,

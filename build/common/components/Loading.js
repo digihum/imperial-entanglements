@@ -4,8 +4,8 @@
  * @version 0.2.0
  */
 "use strict";
-var React = require("react");
-exports.Loading = function (props) {
+const React = require("react");
+exports.Loading = (props) => {
     return (React.createElement("div", { className: 'loader-wrapper' },
         React.createElement("div", { className: 'loader' })));
 };

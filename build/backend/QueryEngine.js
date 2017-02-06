@@ -4,14 +4,14 @@
  * @version 0.2.0
  */
 "use strict";
-var graphql_1 = require("graphql");
-var entityQLType_1 = require("./graphql/entityQLType");
-var predicateQLType_1 = require("./graphql/predicateQLType");
-var QueryEngine = (function () {
-    function QueryEngine(db) {
-        var entityType = entityQLType_1.entityQLType(db, predicateQLType_1.predicateQLType(db));
+const graphql_1 = require("graphql");
+const entityQLType_1 = require("./graphql/entityQLType");
+const predicateQLType_1 = require("./graphql/predicateQLType");
+class QueryEngine {
+    constructor(db) {
+        const entityType = entityQLType_1.entityQLType(db, predicateQLType_1.predicateQLType(db));
         // Define the Query type
-        var queryType = new graphql_1.GraphQLObjectType({
+        const queryType = new graphql_1.GraphQLObjectType({
             name: 'Query',
             fields: {
                 entity: {
@@ -20,12 +20,11 @@ var QueryEngine = (function () {
                     args: {
                         uid: { type: graphql_1.GraphQLString }
                     },
-                    resolve: function (_, _a) {
-                        var uid = _a.uid;
+                    resolve: (_, { uid }) => {
                         if (uid === undefined) {
                             return db.query()('entities');
                         }
-                        return db.query()('entities').where({ uid: uid });
+                        return db.query()('entities').where({ uid });
                     }
                 }
             }
@@ -34,10 +33,9 @@ var QueryEngine = (function () {
             query: queryType
         });
     }
-    QueryEngine.prototype.runQuery = function (query) {
+    runQuery(query) {
         return graphql_1.graphql(this.schema, query);
-    };
-    return QueryEngine;
-}());
+    }
+}
 exports.QueryEngine = QueryEngine;
 //# sourceMappingURL=QueryEngine.js.map

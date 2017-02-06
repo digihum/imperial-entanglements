@@ -4,8 +4,8 @@
  * @version 0.2.0
  */
 "use strict";
-var falcon_core_1 = require("@digihum/falcon-core");
-var simpleKey = function (raw) {
+const falcon_core_1 = require("@digihum/falcon-core");
+const simpleKey = (raw) => {
     return parseInt(raw[0]);
 };
 exports.itemTypes = {
@@ -70,13 +70,13 @@ exports.itemTypes = {
         name: 'Source Element',
         plural: 'Source Elements',
         workspace: '',
-        buildKey: function (raw) { return ({
+        buildKey: (raw) => ({
             order: ['source', 'element'],
             values: {
                 source: parseInt(raw[0]),
                 element: parseInt(raw[1])
             }
-        }); },
+        }),
         item: falcon_core_1.SourceElement
     }
 };

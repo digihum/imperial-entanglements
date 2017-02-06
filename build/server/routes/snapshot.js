@@ -5,17 +5,16 @@
  */
 "use strict";
 // Vendor
-var Koa = require("koa");
-var moment = require("moment");
-exports.snapshot = function (snapshot) {
-    var server = new Koa();
+const Koa = require("koa");
+const moment = require("moment");
+exports.snapshot = (snapshot) => {
+    const server = new Koa();
     server.use(function* () {
-        var _this = this;
         this.set('Content-disposition', 'attachment; filename=' + 'snapshot_' + moment().toISOString() + '.sqlite');
         this.set('Content-type', 'application/x-sqlite3');
         yield snapshot.getSnapshotStream()
-            .then(function (snapshotStream) {
-            _this.body = snapshotStream;
+            .then((snapshotStream) => {
+            this.body = snapshotStream;
         });
     });
     return server;

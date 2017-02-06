@@ -4,10 +4,7 @@
  * @version 0.2.0
  */
 "use strict";
-var ToastStore = (function () {
-    function ToastStore() {
-    }
-    return ToastStore;
-}());
+class ToastStore {
+}
 exports.ToastStore = ToastStore;
 //# sourceMappingURL=ToastStore.js.map

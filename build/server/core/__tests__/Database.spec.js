@@ -4,9 +4,9 @@
  * @version 0.2.0
  */
 "use strict";
-var chai_1 = require("chai");
-describe('Example database test', function () {
-    it('tester', function () {
+const chai_1 = require("chai");
+describe('Example database test', () => {
+    it('tester', () => {
         chai_1.expect(1).to.equal(1);
     });
 });

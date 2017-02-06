@@ -4,27 +4,27 @@
  * @version 0.2.0
  */
 "use strict";
-var graphql_1 = require("graphql");
-exports.entityQLType = function (db, predicateType) {
+const graphql_1 = require("graphql");
+exports.entityQLType = (db, predicateType) => {
     return new graphql_1.GraphQLObjectType({
         name: 'Entity',
         fields: {
             uid: {
                 type: graphql_1.GraphQLString,
-                resolve: function (parent, _a) {
+                resolve: (parent, {}) => {
                     return parent.uid;
                 }
             },
             label: {
                 type: graphql_1.GraphQLString,
-                resolve: function (parent, _a) {
+                resolve: (parent, {}) => {
                     return parent.label;
                 }
             },
             type: {
                 type: graphql_1.GraphQLString,
-                resolve: function (parent, _a) {
-                    return db.query()('entity_types').where({ uid: parent.type }).first().then(function (data) { return data.label; });
+                resolve: (parent, {}) => {
+                    return db.query()('entity_types').where({ uid: parent.type }).first().then((data) => data.label);
                 }
             },
             predicate: {
@@ -33,13 +33,12 @@ exports.entityQLType = function (db, predicateType) {
                     name: { type: graphql_1.GraphQLString },
                     uid: { type: graphql_1.GraphQLString }
                 },
-                resolve: function (entity, _a) {
-                    var name = _a.name, uid = _a.uid;
+                resolve: (entity, { name, uid }) => {
                     if (name !== undefined) {
-                        return db.query()('predicates').where({ name: name }).first().then(function (predicate) { return ({ predicate: predicate, entity: entity }); });
+                        return db.query()('predicates').where({ name }).first().then((predicate) => ({ predicate, entity }));
                     }
                     if (uid !== undefined) {
-                        return db.query()('predicates').where({ uid: uid }).first().then(function (predicate) { return ({ predicate: predicate, entity: entity }); });
+                        return db.query()('predicates').where({ uid }).first().then((predicate) => ({ predicate, entity }));
                     }
                 }
             },
@@ -49,17 +48,16 @@ exports.entityQLType = function (db, predicateType) {
                     names: { type: new graphql_1.GraphQLList(graphql_1.GraphQLString) },
                     uids: { type: new graphql_1.GraphQLList(graphql_1.GraphQLString) }
                 },
-                resolve: function (entity, _a) {
-                    var names = _a.names, uids = _a.uids;
+                resolve: (entity, { names, uids }) => {
                     if (names !== undefined) {
                         return db.query()('predicates')
                             .whereIn('name', names)
-                            .then(function (predicates) { return predicates.map(function (predicate) { return ({ predicate: predicate, entity: entity }); }); });
+                            .then((predicates) => predicates.map((predicate) => ({ predicate, entity })));
                     }
                     if (uids !== undefined) {
                         return db.query()('predicates')
                             .whereIn('uid', uids)
-                            .then(function (predicates) { return predicates.map(function (predicate) { return ({ predicate: predicate, entity: entity }); }); });
+                            .then((predicates) => predicates.map((predicate) => ({ predicate, entity })));
                     }
                 }
             }

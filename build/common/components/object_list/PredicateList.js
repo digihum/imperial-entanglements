@@ -4,11 +4,6 @@
  * @version 0.2.0
  */
 "use strict";
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -18,33 +13,30 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var React = require("react");
-var AddTabButton_1 = require("../AddTabButton");
-var mobx_react_1 = require("mobx-react");
-var SearchBar_1 = require("../SearchBar");
-var PredicateList = (function (_super) {
-    __extends(PredicateList, _super);
-    function PredicateList() {
-        var _this = _super.call(this) || this;
-        _this.state = {
-            filterFunc: function () { return true; }
+const React = require("react");
+const AddTabButton_1 = require("../AddTabButton");
+const mobx_react_1 = require("mobx-react");
+const SearchBar_1 = require("../SearchBar");
+let PredicateList = class PredicateList extends React.Component {
+    constructor() {
+        super();
+        this.state = {
+            filterFunc: () => true
         };
-        return _this;
     }
-    PredicateList.prototype.addNew = function () {
-        var a = {
+    addNew() {
+        const a = {
             name: 'predicate',
-            complete: function () {
+            complete: () => {
             },
-            cancel: function () { console.log('cancel'); },
+            cancel: () => { console.log('cancel'); },
             settings: {
                 initialName: ''
             }
         };
         this.props.modalStore.addModal(a);
-    };
-    PredicateList.prototype.render = function () {
-        var _this = this;
+    }
+    render() {
         return (React.createElement("div", { className: 'workspace-editor' },
             React.createElement("header", { className: 'editor-header predicate' },
                 React.createElement("div", { className: 'primary-toolbar' },
@@ -56,7 +48,7 @@ var PredicateList = (function (_super) {
                     React.createElement("div", { className: 'tab-bar' },
                         React.createElement("div", { className: 'predicate selected' }, "LIST")))),
             React.createElement("section", { className: 'editor-body' },
-                React.createElement(SearchBar_1.SearchBar, { getValue: function (a) { return a.label; }, setFilterFunc: function (f) { return _this.setState({ filterFunc: f }); } }),
+                React.createElement(SearchBar_1.SearchBar, { getValue: (a) => a.label, setFilterFunc: (f) => this.setState({ filterFunc: f }) }),
                 React.createElement("table", { className: 'table gap' },
                     React.createElement("thead", null,
                         React.createElement("tr", null,
@@ -65,15 +57,15 @@ var PredicateList = (function (_super) {
                             React.createElement("td", null, "Domain"),
                             React.createElement("td", null, "Range"),
                             React.createElement("td", null, "Uses"))),
-                    React.createElement("tbody", null, this.props.dataStore.dataStore.all.predicate.value.filter(this.state.filterFunc).map(function (predicate) {
-                        var entityType = _this.props.dataStore.dataStore.all.entity_type.value.find(function (t) { return t.uid === predicate.domain; });
-                        var rangeType = predicate.rangeIsReference ?
-                            _this.props.dataStore.dataStore.all.entity_type.value.find(function (t) { return t.uid === predicate.range; }) :
+                    React.createElement("tbody", null, this.props.dataStore.dataStore.all.predicate.value.filter(this.state.filterFunc).map((predicate) => {
+                        const entityType = this.props.dataStore.dataStore.all.entity_type.value.find((t) => t.uid === predicate.domain);
+                        const rangeType = predicate.rangeIsReference ?
+                            this.props.dataStore.dataStore.all.entity_type.value.find((t) => t.uid === predicate.range) :
                             predicate.range;
                         if (predicate.uid === null) {
                             throw new Error('Found predicate with null uid');
                         }
-                        return (React.createElement("tr", { key: "predicate-" + predicate.uid },
+                        return (React.createElement("tr", { key: `predicate-${predicate.uid}` },
                             React.createElement("td", null,
                                 predicate.uid,
                                 " ",
@@ -83,9 +75,8 @@ var PredicateList = (function (_super) {
                             React.createElement("td", null, predicate.rangeIsReference ? rangeType ? rangeType.label : '' : rangeType),
                             React.createElement("td", null, predicate.uses)));
                     }))))));
-    };
-    return PredicateList;
-}(React.Component));
+    }
+};
 PredicateList = __decorate([
     mobx_react_1.inject('dataStore', 'modalStore'),
     mobx_react_1.observer,

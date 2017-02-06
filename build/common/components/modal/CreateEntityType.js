@@ -4,11 +4,6 @@
  * @version 0.2.0
  */
 "use strict";
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -18,28 +13,26 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var React = require("react");
-var Overlay_1 = require("../Overlay");
-var falcon_core_1 = require("@digihum/falcon-core");
-var ApiService_1 = require("../../ApiService");
-var mobx_react_1 = require("mobx-react");
-var mousetrap = require("mousetrap");
-var CreateEntityType = (function (_super) {
-    __extends(CreateEntityType, _super);
-    function CreateEntityType() {
-        var _this = _super.call(this) || this;
-        _this.state = {
+const React = require("react");
+const Overlay_1 = require("../Overlay");
+const falcon_core_1 = require("@digihum/falcon-core");
+const ApiService_1 = require("../../ApiService");
+const mobx_react_1 = require("mobx-react");
+const mousetrap = require("mousetrap");
+let CreateEntityType = class CreateEntityType extends React.Component {
+    constructor() {
+        super();
+        this.state = {
             internalValue: ''
         };
-        return _this;
     }
-    CreateEntityType.prototype.createEntityType = function () {
+    createEntityType() {
         this.props.dataStore.postItem(falcon_core_1.EntityType, ApiService_1.AppUrls.entity_type, falcon_core_1.Serializer.fromJson(falcon_core_1.EntityType, {
             label: this.state.internalValue
         }), {})
             .then(this.props.complete);
-    };
-    CreateEntityType.prototype.inputRef = function (val) {
+    }
+    inputRef(val) {
         if (val !== null) {
             val.focus();
             this.keyboardShortcuts = new mousetrap(val);
@@ -49,18 +42,16 @@ var CreateEntityType = (function (_super) {
         else {
             this.keyboardShortcuts.unbind('return');
         }
-    };
-    CreateEntityType.prototype.render = function () {
-        var _this = this;
+    }
+    render() {
         return (React.createElement(Overlay_1.Overlay, null,
             React.createElement("h2", null, "Create Entity Type"),
             React.createElement("label", { className: 'small' }, "Name"),
-            React.createElement("input", { type: 'text', value: this.state.internalValue, ref: this.inputRef.bind(this), onChange: function (e) { return _this.setState({ internalValue: e.target.value }); } }),
-            React.createElement("button", { onClick: function () { return _this.props.cancel(); }, className: 'pull-left' }, "Cancel"),
+            React.createElement("input", { type: 'text', value: this.state.internalValue, ref: this.inputRef.bind(this), onChange: (e) => this.setState({ internalValue: e.target.value }) }),
+            React.createElement("button", { onClick: () => this.props.cancel(), className: 'pull-left' }, "Cancel"),
             React.createElement("button", { onClick: this.createEntityType.bind(this), className: 'pull-right' }, "Create Entity Type")));
-    };
-    return CreateEntityType;
-}(React.Component));
+    }
+};
 CreateEntityType = __decorate([
     mobx_react_1.inject('dataStore'),
     mobx_react_1.observer,

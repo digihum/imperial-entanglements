@@ -21,58 +21,54 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var React = require("react");
-var lodash_1 = require("lodash");
-var CreatePredicate_1 = require("../components/modal/CreatePredicate");
-var CreateRecord_1 = require("../components/modal/CreateRecord");
-var CreatePresetRecord_1 = require("../components/modal/CreatePresetRecord");
-var CreateSource_1 = require("../components/modal/CreateSource");
-var CreateEntity_1 = require("../components/modal/CreateEntity");
-var CreateEntityType_1 = require("../components/modal/CreateEntityType");
-var ConflictResolution_1 = require("../components/modal/ConflictResolution");
-var CreateTabSet_1 = require("../components/modal/CreateTabSet");
-var mobx_1 = require("mobx");
-var ModalStore = (function () {
-    function ModalStore() {
+const React = require("react");
+const lodash_1 = require("lodash");
+const CreatePredicate_1 = require("../components/modal/CreatePredicate");
+const CreateRecord_1 = require("../components/modal/CreateRecord");
+const CreatePresetRecord_1 = require("../components/modal/CreatePresetRecord");
+const CreateSource_1 = require("../components/modal/CreateSource");
+const CreateEntity_1 = require("../components/modal/CreateEntity");
+const CreateEntityType_1 = require("../components/modal/CreateEntityType");
+const ConflictResolution_1 = require("../components/modal/ConflictResolution");
+const CreateTabSet_1 = require("../components/modal/CreateTabSet");
+const mobx_1 = require("mobx");
+class ModalStore {
+    constructor() {
         this.modalQueue = [];
     }
-    Object.defineProperty(ModalStore.prototype, "currentModal", {
-        // might be @computed?
-        get: function () {
-            if (this.modalQueue.length === 0) {
-                return null;
-            }
-            var sharedProps = {
-                complete: this.modalComplete.bind(this),
-                cancel: this.modalCancel.bind(this)
-            };
-            switch (this.modalQueue[0].name) {
-                case 'predicate':
-                    return (React.createElement(CreatePredicate_1.CreatePredicate, __assign({}, sharedProps, { initialName: this.modalQueue[0].settings['initialName'], initialDomain: this.modalQueue[0].settings['initialDomain'] })));
-                case 'record':
-                    return (React.createElement(CreateRecord_1.CreateRecord, __assign({}, sharedProps, { entityType: this.modalQueue[0].settings['entityType'], entityUid: this.modalQueue[0].settings['entityUid'], options: this.modalQueue[0].settings['options'] })));
-                case 'preset_record':
-                    return (React.createElement(CreatePresetRecord_1.CreatePresetRecord, __assign({}, sharedProps, { source: this.modalQueue[0].settings['source'] })));
-                case 'source':
-                    return (React.createElement(CreateSource_1.CreateSource, __assign({}, sharedProps, { initialValue: this.modalQueue[0].settings['initialName'] })));
-                case 'entity':
-                    return (React.createElement(CreateEntity_1.CreateEntity, __assign({}, sharedProps, this.modalQueue[0].settings)));
-                case 'entity_type':
-                    return (React.createElement(CreateEntityType_1.CreateEntityType, __assign({}, sharedProps, this.modalQueue[0].settings)));
-                case 'conflict_resolution':
-                    return (React.createElement(ConflictResolution_1.ConflictResolution, __assign({}, sharedProps, { conflictingItems: this.modalQueue[0].settings['conflictingItems'], message: this.modalQueue[0].settings['message'] })));
-                case 'createTabSet':
-                    return (React.createElement(CreateTabSet_1.CreateTabSet, __assign({}, sharedProps)));
-            }
+    // might be @computed?
+    get currentModal() {
+        if (this.modalQueue.length === 0) {
             return null;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    ModalStore.prototype.addModal = function (def) {
+        }
+        const sharedProps = {
+            complete: this.modalComplete.bind(this),
+            cancel: this.modalCancel.bind(this)
+        };
+        switch (this.modalQueue[0].name) {
+            case 'predicate':
+                return (React.createElement(CreatePredicate_1.CreatePredicate, __assign({}, sharedProps, { initialName: this.modalQueue[0].settings['initialName'], initialDomain: this.modalQueue[0].settings['initialDomain'] })));
+            case 'record':
+                return (React.createElement(CreateRecord_1.CreateRecord, __assign({}, sharedProps, { entityType: this.modalQueue[0].settings['entityType'], entityUid: this.modalQueue[0].settings['entityUid'], options: this.modalQueue[0].settings['options'] })));
+            case 'preset_record':
+                return (React.createElement(CreatePresetRecord_1.CreatePresetRecord, __assign({}, sharedProps, { source: this.modalQueue[0].settings['source'] })));
+            case 'source':
+                return (React.createElement(CreateSource_1.CreateSource, __assign({}, sharedProps, { initialValue: this.modalQueue[0].settings['initialName'] })));
+            case 'entity':
+                return (React.createElement(CreateEntity_1.CreateEntity, __assign({}, sharedProps, this.modalQueue[0].settings)));
+            case 'entity_type':
+                return (React.createElement(CreateEntityType_1.CreateEntityType, __assign({}, sharedProps, this.modalQueue[0].settings)));
+            case 'conflict_resolution':
+                return (React.createElement(ConflictResolution_1.ConflictResolution, __assign({}, sharedProps, { conflictingItems: this.modalQueue[0].settings['conflictingItems'], message: this.modalQueue[0].settings['message'] })));
+            case 'createTabSet':
+                return (React.createElement(CreateTabSet_1.CreateTabSet, __assign({}, sharedProps)));
+        }
+        return null;
+    }
+    addModal(def) {
         this.modalQueue.unshift(def);
-    };
-    ModalStore.prototype.modalComplete = function (data) {
+    }
+    modalComplete(data) {
         if (this.modalQueue.length === 0) {
             throw new Error('Attempted to complete non-existent modal');
         }
@@ -80,16 +76,15 @@ var ModalStore = (function () {
         if (this.modalQueue.length > 0) {
             this.modalQueue = lodash_1.tail(this.modalQueue);
         }
-    };
-    ModalStore.prototype.modalCancel = function () {
+    }
+    modalCancel() {
         if (this.modalQueue.length === 0) {
             throw new Error('Attempted to cancel non-existent modal');
         }
         this.modalQueue[0].cancel();
         this.modalQueue = [];
-    };
-    return ModalStore;
-}());
+    }
+}
 __decorate([
     mobx_1.observable,
     __metadata("design:type", Array)

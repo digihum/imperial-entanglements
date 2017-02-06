@@ -4,9 +4,8 @@
  * @version 0.2.0
  */
 "use strict";
-exports.findParentTree = function (uid, data, ancestors) {
-    if (ancestors === void 0) { ancestors = []; }
-    var current = data.find(function (datum) { return datum.uid === uid; });
+exports.findParentTree = (uid, data, ancestors = []) => {
+    const current = data.find((datum) => datum.uid === uid);
     if (current === undefined) {
         console.warn('Couldn\'t find parent');
         return ancestors;

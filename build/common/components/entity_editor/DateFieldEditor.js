@@ -4,9 +4,9 @@
  * @version 0.2.0
  */
 "use strict";
-var React = require("react");
-var DatePickerDropdown_1 = require("../fields/DatePickerDropdown");
-exports.DateFieldEditor = function (props) {
+const React = require("react");
+const DatePickerDropdown_1 = require("../fields/DatePickerDropdown");
+exports.DateFieldEditor = (props) => {
     return (React.createElement("div", { className: 'date-selector' },
         React.createElement(DatePickerDropdown_1.DatePickerDropdown, { value: props.value, setValue: props.onChange })));
 };

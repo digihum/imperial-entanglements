@@ -4,11 +4,6 @@
  * @version 0.2.0
  */
 "use strict";
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -18,16 +13,16 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var React = require("react");
-var ApiService_1 = require("../../ApiService");
-var falcon_core_1 = require("@digihum/falcon-core");
-var findParentTree_1 = require("../../helper/findParentTree");
-var EditableHeader_1 = require("../fields/EditableHeader");
-var EditableFieldComponent_1 = require("../fields/EditableFieldComponent");
-var EntityWorkspaceCoreView_1 = require("./entity/EntityWorkspaceCoreView");
-var EntityWorkspaceReferenceView_1 = require("./entity/EntityWorkspaceReferenceView");
-var mobx_react_1 = require("mobx-react");
-var HeaderEditableFieldComponent = EditableFieldComponent_1.EditableFieldHOC(EditableHeader_1.EditableHeader);
+const React = require("react");
+const ApiService_1 = require("../../ApiService");
+const falcon_core_1 = require("@digihum/falcon-core");
+const findParentTree_1 = require("../../helper/findParentTree");
+const EditableHeader_1 = require("../fields/EditableHeader");
+const EditableFieldComponent_1 = require("../fields/EditableFieldComponent");
+const EntityWorkspaceCoreView_1 = require("./entity/EntityWorkspaceCoreView");
+const EntityWorkspaceReferenceView_1 = require("./entity/EntityWorkspaceReferenceView");
+const mobx_react_1 = require("mobx-react");
+const HeaderEditableFieldComponent = EditableFieldComponent_1.EditableFieldHOC(EditableHeader_1.EditableHeader);
 // What can I do?
 // Entity Operations
 // - Delete the entity
@@ -44,44 +39,41 @@ var HeaderEditableFieldComponent = EditableFieldComponent_1.EditableFieldHOC(Edi
 //   to one of its parents. The range MUST be set.
 // Visualisations:
 // - Network graph of entity relationships
-var EntityEditorWorkspace = (function (_super) {
-    __extends(EntityEditorWorkspace, _super);
-    function EntityEditorWorkspace(props, context) {
-        var _this = _super.call(this) || this;
-        _this.state = {
+let EntityEditorWorkspace = class EntityEditorWorkspace extends React.Component {
+    constructor(props, context) {
+        super();
+        this.state = {
             tab: 0
         };
-        return _this;
     }
-    EntityEditorWorkspace.prototype.del = function () {
-        var _this = this;
+    del() {
         this.props.dataStore.delItem(falcon_core_1.Entity, ApiService_1.AppUrls.entity, this.props.id)
-            .then(function () {
-            _this.props.dataStore.closeTab('entity', _this.props.id);
-            _this.context.router.transitionTo('/edit/notfound');
+            .then(() => {
+            this.props.dataStore.closeTab('entity', this.props.id);
+            this.context.router.transitionTo('/edit/notfound');
         })
-            .catch(function (e) {
+            .catch((e) => {
             if (e.code === 404) {
-                _this.context.router.transitionTo('/edit/notfound');
+                this.context.router.transitionTo('/edit/notfound');
             }
             if (e.code === 422) {
-                e.data.then(function (data) {
-                    var conflictResolutionModal = {
+                e.data.then((data) => {
+                    const conflictResolutionModal = {
                         name: 'conflict_resolution',
-                        cancel: function () { },
-                        complete: function (result) {
+                        cancel: () => { },
+                        complete: (result) => {
                             if (result === 'addToWorkspace') {
-                                data.record.forEach(function (datum) {
-                                    _this.props.dataStore.createTab('entity', datum.entity, 'item');
+                                data.record.forEach((datum) => {
+                                    this.props.dataStore.createTab('entity', datum.entity, 'item');
                                 });
-                                data.entity.forEach(function (datum) {
-                                    _this.props.dataStore.createTab('entity', datum.uid, 'item');
+                                data.entity.forEach((datum) => {
+                                    this.props.dataStore.createTab('entity', datum.uid, 'item');
                                 });
                             }
                             if (result === 'deleteAll') {
-                                Promise.all(data.record.map(function (datum) { return _this.props.dataStore.delItem(falcon_core_1.Record, ApiService_1.AppUrls.record, datum.uid); }))
-                                    .then(function () {
-                                    _this.del();
+                                Promise.all(data.record.map((datum) => this.props.dataStore.delItem(falcon_core_1.Record, ApiService_1.AppUrls.record, datum.uid)))
+                                    .then(() => {
+                                    this.del();
                                 });
                             }
                         },
@@ -90,58 +82,53 @@ var EntityEditorWorkspace = (function (_super) {
                             message: 'Deleting Entity'
                         }
                     };
-                    _this.props.modalStore.addModal(conflictResolutionModal);
+                    this.props.modalStore.addModal(conflictResolutionModal);
                 });
             }
         });
-    };
-    EntityEditorWorkspace.prototype.createNewRecord = function () {
-        var entity = this.props.dataStore.dataStore.tabs.entity[this.props.id].value.entity;
-        var entityType = this.props.dataStore.dataStore.all.entity_type.value.find(function (t) { return t.uid === entity.entityType; });
-        var entityTypeParents = findParentTree_1.findParentTree(entity.entityType, this.props.dataStore.dataStore.all.entity_type.value);
-        var predicates = this.props.dataStore.dataStore.all.predicate
-            .value.filter(function (pred) { return entityTypeParents.indexOf(pred.domain) !== -1; });
+    }
+    createNewRecord() {
+        const entity = this.props.dataStore.dataStore.tabs.entity[this.props.id].value.entity;
+        const entityType = this.props.dataStore.dataStore.all.entity_type.value.find((t) => t.uid === entity.entityType);
+        const entityTypeParents = findParentTree_1.findParentTree(entity.entityType, this.props.dataStore.dataStore.all.entity_type.value);
+        const predicates = this.props.dataStore.dataStore.all.predicate
+            .value.filter((pred) => entityTypeParents.indexOf(pred.domain) !== -1);
         if (entityType === undefined) {
             throw new Error('Encountered undefined entity type!');
         }
-        var modalDef = {
+        const modalDef = {
             name: 'record',
-            complete: function (data) {
+            complete: (data) => {
                 console.log('Records editor called complete');
                 //this.loadData(this.props);
             },
-            cancel: function () {
+            cancel: () => {
                 console.log('Records editor called cancel');
             },
             settings: {
-                options: predicates.map(function (pred) { return ({ key: pred.label, value: pred }); }),
+                options: predicates.map((pred) => ({ key: pred.label, value: pred })),
                 entityUid: this.props.id,
                 entityType: entityType.uid
             }
         };
         this.props.modalStore.addModal(modalDef);
-    };
-    EntityEditorWorkspace.prototype.update = function (data) {
+    }
+    update(data) {
         this.props.dataStore.patchItem(falcon_core_1.Entity, ApiService_1.AppUrls.entity, this.props.id, data);
-    };
-    EntityEditorWorkspace.prototype.clone = function () {
-        var _this = this;
-        var entity = this.props.dataStore.dataStore.tabs.entity[this.props.id].value.entity;
+    }
+    clone() {
+        const entity = this.props.dataStore.dataStore.tabs.entity[this.props.id].value.entity;
         this.props.dataStore.postItem(falcon_core_1.Entity, ApiService_1.AppUrls.entity, falcon_core_1.Serializer.fromJson(falcon_core_1.Entity, {
             label: 'Copy of ' + entity.label,
             entityType: entity.entityType
-        }), { clone: this.props.id }).then(function (_a) {
-            var id = _a[0];
-            return _this.props.dataStore.createTab('entity', id, 'item');
-        });
-    };
-    EntityEditorWorkspace.prototype.render = function () {
-        var _this = this;
-        var entity = this.props.dataStore.dataStore.tabs.entity[this.props.id].value.entity;
-        var potentialParents = this.props.dataStore.dataStore.all.entity.value;
-        var parentName = '';
+        }), { clone: this.props.id }).then(([id]) => this.props.dataStore.createTab('entity', id, 'item'));
+    }
+    render() {
+        const entity = this.props.dataStore.dataStore.tabs.entity[this.props.id].value.entity;
+        const potentialParents = this.props.dataStore.dataStore.all.entity.value;
+        let parentName = '';
         if (potentialParents !== null && entity.parent !== undefined) {
-            var found = potentialParents.find(function (par) { return par.uid === entity.parent; });
+            const found = potentialParents.find((par) => par.uid === entity.parent);
             if (found !== undefined) {
                 parentName = found.label;
             }
@@ -151,18 +138,17 @@ var EntityEditorWorkspace = (function (_super) {
                 React.createElement("div", { className: 'primary-toolbar' },
                     React.createElement("div", { className: 'main-toolbar' },
                         React.createElement("i", { className: 'fa fa-cube item-icon' }),
-                        React.createElement(HeaderEditableFieldComponent, { value: entity.label, onChange: function (value) { return _this.update({ 'label': value }); } })),
+                        React.createElement(HeaderEditableFieldComponent, { value: entity.label, onChange: (value) => this.update({ 'label': value }) })),
                     React.createElement("div", { className: 'sub-toolbar' },
                         React.createElement("i", { className: 'fa fa-trash delete button', "aria-hidden": 'true', onClick: this.del.bind(this) }),
                         React.createElement("i", { className: 'fa fa-clone button', "aria-hidden": 'true', onClick: this.clone.bind(this) }))),
                 React.createElement("div", { className: 'secondary-toolbar' },
                     React.createElement("div", { className: 'tab-bar' },
-                        React.createElement("div", { className: 'entity ' + (this.state.tab === 0 ? 'selected' : ''), onClick: function () { return _this.setState({ tab: 0 }); } }, "CORE"),
-                        React.createElement("div", { className: 'entity ' + (this.state.tab === 1 ? 'selected' : ''), onClick: function () { return _this.setState({ tab: 1 }); } }, "REFERENCED BY")))),
+                        React.createElement("div", { className: 'entity ' + (this.state.tab === 0 ? 'selected' : ''), onClick: () => this.setState({ tab: 0 }) }, "CORE"),
+                        React.createElement("div", { className: 'entity ' + (this.state.tab === 1 ? 'selected' : ''), onClick: () => this.setState({ tab: 1 }) }, "REFERENCED BY")))),
             this.state.tab === 0 ? (React.createElement(EntityWorkspaceCoreView_1.EntityWorkspaceCoreView, { dataStore: this.props.dataStore, id: this.props.id })) : (React.createElement(EntityWorkspaceReferenceView_1.EntityWorkspaceReferenceView, { dataStore: this.props.dataStore, id: this.props.id }))));
-    };
-    return EntityEditorWorkspace;
-}(React.Component));
+    }
+};
 EntityEditorWorkspace.contextTypes = {
     router: React.PropTypes.object.isRequired,
     manager: React.PropTypes.object.isRequired
