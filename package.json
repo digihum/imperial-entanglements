@@ -18,7 +18,8 @@
     "gulp": "gulp",
     "precompile": "npm run clean",
     "compile": "npm-run-all -c webpack gulp",
-    "gen-docs": "typedoc --out ./documentation/technical/ --ignoreCompilerErrors"
+    "gen-docs": "typedoc --out ./documentation/technical/ --ignoreCompilerErrors",
+    "app-deps": "install-app-deps"
   },
   "repository": {
     "type": "git",
@@ -26,6 +27,7 @@
   },
   "build": {
     "appId": "Imperial Entanglements",
+    "nodeGypRebuild": true,
     "mac": {
       "category": "public.app-category.education"
     },

@@ -4,8 +4,8 @@
  * @version 0.2.0
  */
 "use strict";
-const React = require("react");
-exports.StringFieldEditor = (props) => {
-    return (React.createElement("input", { type: 'text', value: props.value, onChange: (e) => props.onChange(e.target.value) }));
+var React = require("react");
+exports.StringFieldEditor = function (props) {
+    return (React.createElement("input", { type: 'text', value: props.value, onChange: function (e) { return props.onChange(e.target.value); } }));
 };
 //# sourceMappingURL=StringFieldEditor.js.map

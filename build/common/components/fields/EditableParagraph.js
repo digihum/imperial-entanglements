@@ -4,11 +4,11 @@
  * @version 0.2.0
  */
 "use strict";
-const React = require("react");
-const mousetrap = require("mousetrap");
-exports.EditableParagraph = (props) => {
-    let keyBoardShortcuts;
-    const bindKeyboard = (val) => {
+var React = require("react");
+var mousetrap = require("mousetrap");
+exports.EditableParagraph = function (props) {
+    var keyBoardShortcuts;
+    var bindKeyboard = function (val) {
         if (val !== null) {
             val.focus();
             keyBoardShortcuts = new mousetrap(val);
@@ -29,7 +29,7 @@ exports.EditableParagraph = (props) => {
     }
     else {
         return (React.createElement("div", null,
-            React.createElement("textarea", { value: props.value === null ? '' : props.value, ref: bindKeyboard, onChange: (e) => props.onChange(e.target.value), style: { width: '100%', height: '6em' } }),
+            React.createElement("textarea", { value: props.value === null ? '' : props.value, ref: bindKeyboard, onChange: function (e) { return props.onChange(e.target.value); }, style: { width: '100%', height: '6em' } }),
             React.createElement("button", { onClick: props.acceptChanges },
                 React.createElement("i", { className: 'fa fa-check', "aria-hidden": 'true' })),
             React.createElement("button", { onClick: props.cancelChanges },

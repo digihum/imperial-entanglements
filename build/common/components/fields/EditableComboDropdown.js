@@ -12,12 +12,12 @@ var __assign = (this && this.__assign) || Object.assign || function(t) {
     }
     return t;
 };
-const React = require("react");
-const ComboDropdown_1 = require("../ComboDropdown");
+var React = require("react");
+var ComboDropdown_1 = require("../ComboDropdown");
 function EditableComboDropdown(props) {
     if (props.edit) {
         return (React.createElement("div", null,
-            React.createElement(ComboDropdown_1.NumberComboDropdown, __assign({}, props.comboSettings, { value: props.value, setValue: props.onChange, allowNew: false, createNewValue: () => { } })),
+            React.createElement(ComboDropdown_1.NumberComboDropdown, __assign({}, props.comboSettings, { value: props.value, setValue: props.onChange, allowNew: false, createNewValue: function () { } })),
             React.createElement("button", { onClick: props.acceptChanges },
                 React.createElement("i", { className: 'fa fa-check', "aria-hidden": 'true' })),
             React.createElement("button", { onClick: props.cancelChanges },

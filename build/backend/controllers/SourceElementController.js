@@ -4,15 +4,21 @@
  * @version 0.2.0
  */
 "use strict";
-const falcon_core_1 = require("@digihum/falcon-core");
-const GenericController_1 = require("./GenericController");
-const Exceptions_1 = require("../../common/Exceptions");
-const lodash_1 = require("lodash");
-class SourceElementController extends GenericController_1.GenericController {
-    constructor(db) {
-        super(db, 'source_elements');
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
+var falcon_core_1 = require("@digihum/falcon-core");
+var GenericController_1 = require("./GenericController");
+var Exceptions_1 = require("../../common/Exceptions");
+var lodash_1 = require("lodash");
+var SourceElementController = (function (_super) {
+    __extends(SourceElementController, _super);
+    function SourceElementController(db) {
+        return _super.call(this, db, 'source_elements') || this;
     }
-    toSchema(data) {
+    SourceElementController.prototype.toSchema = function (data) {
         return Object.assign(lodash_1.omit(falcon_core_1.Serializer.toJson(data), 'creationTimestamp', 'lastmodifiedTimestamp', 'uid', 'label'), {
             creation_timestamp: data.creationTimestamp,
             lastmodified_timestamp: data.lastmodifiedTimestamp,
@@ -20,8 +26,8 @@ class SourceElementController extends GenericController_1.GenericController {
             source: data.uid.values['source'],
             element: data.uid.values['element']
         });
-    }
-    fromSchema(data) {
+    };
+    SourceElementController.prototype.fromSchema = function (data) {
         return Object.assign(Object.create(falcon_core_1.SourceElement.prototype), Object.assign(data, {
             uid: {
                 order: ['source', 'element'],
@@ -31,25 +37,26 @@ class SourceElementController extends GenericController_1.GenericController {
                 }
             }
         }));
-    }
-    getItemJson(obj, uid) {
+    };
+    SourceElementController.prototype.getItemJson = function (obj, uid) {
+        var _this = this;
         return this.db.query().select()
             .from(this.tableName)
             .where(uid.values)
             .first()
-            .then((result) => result === undefined ? Promise.reject(new Exceptions_1.KeyNotFoundException()) : result)
-            .then((data) => this.fromSchema(data));
-    }
-    putItem(obj, uid, data) {
+            .then(function (result) { return result === undefined ? Promise.reject(new Exceptions_1.KeyNotFoundException()) : result; })
+            .then(function (data) { return _this.fromSchema(data); });
+    };
+    SourceElementController.prototype.putItem = function (obj, uid, data) {
         return this.db.query()(this.tableName)
             .where(uid.values)
             .update(this.toSchema(data));
-    }
-    patchItem(obj, uid, data) {
-        const schemaData = this.toSchema(data);
-        const keys = Object.keys(schemaData);
-        const updateObject = {};
-        for (let i = 0; i < keys.length; i += 1) {
+    };
+    SourceElementController.prototype.patchItem = function (obj, uid, data) {
+        var schemaData = this.toSchema(data);
+        var keys = Object.keys(schemaData);
+        var updateObject = {};
+        for (var i = 0; i < keys.length; i += 1) {
             if (schemaData[keys[i]] !== undefined) {
                 updateObject[keys[i]] = schemaData[keys[i]];
             }
@@ -57,14 +64,15 @@ class SourceElementController extends GenericController_1.GenericController {
         return this.db.query()(this.tableName)
             .where(uid.values)
             .update(updateObject)
-            .then(() => true)
-            .catch((err) => { throw new Error(err); });
-    }
-    deleteItem(obj, uid) {
+            .then(function () { return true; })
+            .catch(function (err) { throw new Error(err); });
+    };
+    SourceElementController.prototype.deleteItem = function (obj, uid) {
         return this.db.query()(this.tableName)
             .where(uid.values)
             .del();
-    }
-}
+    };
+    return SourceElementController;
+}(GenericController_1.GenericController));
 exports.SourceElementController = SourceElementController;
 //# sourceMappingURL=SourceElementController.js.map

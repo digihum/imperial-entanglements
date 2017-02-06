@@ -4,34 +4,34 @@
  * @version 0.2.0
  */
 "use strict";
-const Exceptions_1 = require("../common/Exceptions");
-const moment = require("moment");
+var Exceptions_1 = require("../common/Exceptions");
+var moment = require("moment");
 var ApiService_1 = require("../common/ApiService");
 exports.AppUrls = ApiService_1.AppUrls;
-const GeneralStatisticsController_1 = require("./stats/GeneralStatisticsController");
-class ServerApiService {
-    constructor(db, routesMap, queryEngine, fakeCreator) {
+var GeneralStatisticsController_1 = require("./stats/GeneralStatisticsController");
+var ServerApiService = (function () {
+    function ServerApiService(db, routesMap, queryEngine, fakeCreator) {
         this.controllerMap = routesMap;
         this.queryEngine = queryEngine;
         this.fakeCreator = fakeCreator;
         this.db = db;
     }
-    getItem(obj, baseUrl, uid) {
-        const controller = this.controllerMap.get(baseUrl);
+    ServerApiService.prototype.getItem = function (obj, baseUrl, uid) {
+        var controller = this.controllerMap.get(baseUrl);
         if (controller === undefined) {
             return Promise.reject(new Exceptions_1.CollectionNotFoundException('Controller not found'));
         }
         return controller.getItemJson(obj, uid);
-    }
-    getCollection(obj, baseUrl, params) {
-        const controller = this.controllerMap.get(baseUrl);
+    };
+    ServerApiService.prototype.getCollection = function (obj, baseUrl, params) {
+        var controller = this.controllerMap.get(baseUrl);
         if (controller === undefined) {
             return Promise.reject(new Exceptions_1.CollectionNotFoundException('Controller not found'));
         }
         return controller.getCollectionJson(obj, params);
-    }
-    postItem(obj, baseUrl, data, params) {
-        const controller = this.controllerMap.get(baseUrl);
+    };
+    ServerApiService.prototype.postItem = function (obj, baseUrl, data, params) {
+        var controller = this.controllerMap.get(baseUrl);
         if (controller === undefined) {
             return Promise.reject(new Exceptions_1.CollectionNotFoundException('Controller not found'));
         }
@@ -40,38 +40,39 @@ class ServerApiService {
             lastmodifiedTimestamp: moment().toISOString(),
             creator: this.fakeCreator ? 0 : data.creator
         }), params);
-    }
-    putItem(obj, baseUrl, uid, data) {
-        const controller = this.controllerMap.get(baseUrl);
+    };
+    ServerApiService.prototype.putItem = function (obj, baseUrl, uid, data) {
+        var controller = this.controllerMap.get(baseUrl);
         if (controller === undefined) {
             return Promise.reject(new Exceptions_1.CollectionNotFoundException('Controller not found'));
         }
         return controller.putItem(obj, uid, Object.assign(data, {
             lastmodifiedTimestamp: moment().toISOString()
         }));
-    }
-    patchItem(obj, baseUrl, uid, data) {
-        const controller = this.controllerMap.get(baseUrl);
+    };
+    ServerApiService.prototype.patchItem = function (obj, baseUrl, uid, data) {
+        var controller = this.controllerMap.get(baseUrl);
         if (controller === undefined) {
             return Promise.reject(new Exceptions_1.CollectionNotFoundException('Controller not found'));
         }
         return controller.patchItem(obj, uid, Object.assign(data, {
             lastmodifiedTimestamp: moment().toISOString()
         }));
-    }
-    delItem(obj, baseUrl, uid) {
-        const controller = this.controllerMap.get(baseUrl);
+    };
+    ServerApiService.prototype.delItem = function (obj, baseUrl, uid) {
+        var controller = this.controllerMap.get(baseUrl);
         if (controller === undefined) {
             return Promise.reject(new Exceptions_1.CollectionNotFoundException('Controller not found'));
         }
         return controller.deleteItem(obj, uid);
-    }
-    query(graphQLQuery) {
+    };
+    ServerApiService.prototype.query = function (graphQLQuery) {
         return Promise.resolve({});
-    }
-    getStats() {
+    };
+    ServerApiService.prototype.getStats = function () {
         return GeneralStatisticsController_1.GeneralStatisticsController(this.db.query());
-    }
-}
+    };
+    return ServerApiService;
+}());
 exports.ServerApiService = ServerApiService;
 //# sourceMappingURL=ServerApiService.js.map

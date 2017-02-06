@@ -4,8 +4,8 @@
  * @version 0.2.0
  */
 "use strict";
-const React = require("react");
-exports.EditableHeader = (props) => {
+var React = require("react");
+exports.EditableHeader = function (props) {
     if (!props.edit || props.value == null) {
         return (React.createElement("h2", null,
             props.value,
@@ -14,7 +14,7 @@ exports.EditableHeader = (props) => {
     }
     else {
         return (React.createElement("span", null,
-            React.createElement("input", { type: 'text', value: props.value, className: 'text-edit-header', onChange: (e) => props.onChange(e.target.value) }),
+            React.createElement("input", { type: 'text', value: props.value, className: 'text-edit-header', onChange: function (e) { return props.onChange(e.target.value); } }),
             React.createElement("button", { onClick: props.acceptChanges },
                 React.createElement("i", { className: 'fa fa-check', "aria-hidden": 'true' })),
             React.createElement("button", { onClick: props.cancelChanges },

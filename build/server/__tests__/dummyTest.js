@@ -4,9 +4,9 @@
  * @version 0.2.0
  */
 "use strict";
-let knex;
-let apiService;
-const knexConfig = {
+var knex;
+var apiService;
+var knexConfig = {
     client: 'sqlite3',
     connection: {
         filename: './data/mydb.sqlite'

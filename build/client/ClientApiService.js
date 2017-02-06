@@ -4,16 +4,16 @@
  * @version 0.2.0
  */
 "use strict";
-const falcon_core_1 = require("@digihum/falcon-core");
-const queryString = require("querystring");
-const lodash_1 = require("lodash");
-const Exceptions_1 = require("../common/Exceptions");
+var falcon_core_1 = require("@digihum/falcon-core");
+var queryString = require("querystring");
+var lodash_1 = require("lodash");
+var Exceptions_1 = require("../common/Exceptions");
 var ApiService_1 = require("../common/ApiService");
 exports.AppUrls = ApiService_1.AppUrls;
 function handleErrors(response) {
     if (!response.ok) {
         if (response.status === 422) {
-            throw new Exceptions_1.UnprocessableEntity(response.statusText, response.json().then((result) => result.data));
+            throw new Exceptions_1.UnprocessableEntity(response.statusText, response.json().then(function (result) { return result.data; }));
         }
         // showToast.dispatch('Something went wrong ;(', response.statusText);
         if (response.status === 404) {
@@ -25,24 +25,26 @@ function handleErrors(response) {
     }
     return response;
 }
-class ClientApiService {
-    getItem(obj, baseUrl, uid) {
-        const endURL = lodash_1.isObject(uid) ?
-            uid.order.map((key) => uid.values[key]).join('/')
+var ClientApiService = (function () {
+    function ClientApiService() {
+    }
+    ClientApiService.prototype.getItem = function (obj, baseUrl, uid) {
+        var endURL = lodash_1.isObject(uid) ?
+            uid.order.map(function (key) { return uid.values[key]; }).join('/')
             : uid.toString();
-        return fetch(`/api/v1/${baseUrl}/${endURL}`)
+        return fetch("/api/v1/" + baseUrl + "/" + endURL)
             .then(handleErrors)
-            .then((response) => response.json())
-            .then((data) => falcon_core_1.Serializer.fromJson(obj, data));
-    }
-    getCollection(obj, baseUrl, params) {
-        return fetch(`/api/v1/${baseUrl}?` + queryString.stringify(params))
+            .then(function (response) { return response.json(); })
+            .then(function (data) { return falcon_core_1.Serializer.fromJson(obj, data); });
+    };
+    ClientApiService.prototype.getCollection = function (obj, baseUrl, params) {
+        return fetch("/api/v1/" + baseUrl + "?" + queryString.stringify(params))
             .then(handleErrors)
-            .then((response) => response.json())
-            .then((data) => data.map((datum) => falcon_core_1.Serializer.fromJson(obj, datum)));
-    }
-    postItem(obj, baseUrl, data, params) {
-        return fetch(`/api/v1/${baseUrl}?` + queryString.stringify(params), {
+            .then(function (response) { return response.json(); })
+            .then(function (data) { return data.map(function (datum) { return falcon_core_1.Serializer.fromJson(obj, datum); }); });
+    };
+    ClientApiService.prototype.postItem = function (obj, baseUrl, data, params) {
+        return fetch("/api/v1/" + baseUrl + "?" + queryString.stringify(params), {
             method: 'POST',
             body: JSON.stringify(data),
             headers: {
@@ -52,17 +54,17 @@ class ClientApiService {
             credentials: 'same-origin'
         })
             .then(handleErrors)
-            .then((response) => {
+            .then(function (response) {
             return response.json();
-        }).then((data) => {
+        }).then(function (data) {
             return Promise.resolve(data);
         });
-    }
-    putItem(obj, baseUrl, uid, data) {
-        const endURL = lodash_1.isObject(uid) ?
-            uid.order.map((key) => uid.values[key]).join('/')
+    };
+    ClientApiService.prototype.putItem = function (obj, baseUrl, uid, data) {
+        var endURL = lodash_1.isObject(uid) ?
+            uid.order.map(function (key) { return uid.values[key]; }).join('/')
             : uid.toString();
-        return fetch(`/api/v1/${baseUrl}/${endURL}`, {
+        return fetch("/api/v1/" + baseUrl + "/" + endURL, {
             method: 'PUT',
             body: JSON.stringify(data),
             headers: {
@@ -72,12 +74,12 @@ class ClientApiService {
             credentials: 'same-origin'
         })
             .then(handleErrors);
-    }
-    patchItem(obj, baseUrl, uid, data) {
-        const endURL = lodash_1.isObject(uid) ?
-            uid.order.map((key) => uid.values[key]).join('/')
+    };
+    ClientApiService.prototype.patchItem = function (obj, baseUrl, uid, data) {
+        var endURL = lodash_1.isObject(uid) ?
+            uid.order.map(function (key) { return uid.values[key]; }).join('/')
             : uid.toString();
-        return fetch(`/api/v1/${baseUrl}/${endURL}`, {
+        return fetch("/api/v1/" + baseUrl + "/" + endURL, {
             method: 'PATCH',
             body: JSON.stringify(data),
             headers: {
@@ -87,27 +89,28 @@ class ClientApiService {
             credentials: 'same-origin'
         })
             .then(handleErrors);
-    }
-    delItem(obj, baseUrl, uid) {
-        const endURL = lodash_1.isObject(uid) ?
-            uid.order.map((key) => uid.values[key]).join('/')
+    };
+    ClientApiService.prototype.delItem = function (obj, baseUrl, uid) {
+        var endURL = lodash_1.isObject(uid) ?
+            uid.order.map(function (key) { return uid.values[key]; }).join('/')
             : uid.toString();
-        return fetch(`/api/v1/${baseUrl}/${endURL}`, {
+        return fetch("/api/v1/" + baseUrl + "/" + endURL, {
             method: 'DELETE',
             credentials: 'same-origin'
         })
             .then(handleErrors);
-    }
-    query(graphQLQueryString) {
+    };
+    ClientApiService.prototype.query = function (graphQLQueryString) {
         return fetch('/api/v1/query?query=' + graphQLQueryString)
             .then(handleErrors)
-            .then((response) => response.json());
-    }
-    getStats() {
+            .then(function (response) { return response.json(); });
+    };
+    ClientApiService.prototype.getStats = function () {
         return fetch('/stats', { credentials: 'same-origin' })
             .then(handleErrors)
-            .then((response) => response.json());
-    }
-}
+            .then(function (response) { return response.json(); });
+    };
+    return ClientApiService;
+}());
 exports.ClientApiService = ClientApiService;
 //# sourceMappingURL=ClientApiService.js.map

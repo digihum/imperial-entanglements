@@ -24,3 +24,31 @@ run_tests:
 
   # ready to test!
   - npm test
+
+try_electron:
+  script:
+
+  # print versions
+  - node --version
+  - npm --version
+
+  # install dependencies
+  - npm install
+
+  - npm run tsc || true
+
+  # build typescript
+  - npm run webpack
+
+  - npm run gulp
+  
+  # copy .env file
+  - cp .env.sqlite .env
+
+  # run sql migrations
+  - npm run migrate
+  - npm run seed
+
+  # ready to test!
+  - npm run app-deps
+  - npm run dist

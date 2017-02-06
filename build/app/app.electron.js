@@ -4,33 +4,33 @@
  * @version 0.2.0
  */
 "use strict";
-const react_dom_1 = require("react-dom");
-const react_1 = require("react");
-const FalconApp_1 = require("../common/FalconApp");
-const Database_1 = require("../backend/data/Database");
-const wrapDatabase_1 = require("../backend/data/wrapDatabase");
-const react_router_1 = require("react-router");
-const electron = require("electron");
-const databaseFile = electron.remote.dialog.showOpenDialog({ properties: ['openFile'], filters: [
+var react_dom_1 = require("react-dom");
+var react_1 = require("react");
+var FalconApp_1 = require("../common/FalconApp");
+var Database_1 = require("../backend/data/Database");
+var wrapDatabase_1 = require("../backend/data/wrapDatabase");
+var react_router_1 = require("react-router");
+var electron = require("electron");
+var databaseFile = electron.remote.dialog.showOpenDialog({ properties: ['openFile'], filters: [
         { name: 'Database Files', extensions: ['sqlite'] }
     ] });
 if (databaseFile !== undefined) {
-    electron.remote.getCurrentWindow().setTitle(`Imperial Entanglements (${databaseFile[0]})`);
-    const db = new Database_1.Database({
+    electron.remote.getCurrentWindow().setTitle("Imperial Entanglements (" + databaseFile[0] + ")");
+    var db_1 = new Database_1.Database({
         client: 'sqlite3',
         useNullAsDefault: true,
         connection: {
             filename: databaseFile[0]
         },
         pool: {
-            afterCreate: (conn, cb) => {
+            afterCreate: function (conn, cb) {
                 conn.run('PRAGMA foreign_keys = ON', cb);
             }
         }
     });
-    document.addEventListener('DOMContentLoaded', (event) => {
+    document.addEventListener('DOMContentLoaded', function (event) {
         react_dom_1.render(react_1.createElement(FalconApp_1.FalconApp, {
-            api: wrapDatabase_1.wrapDatabase(db, true),
+            api: wrapDatabase_1.wrapDatabase(db_1, true),
             environment: 'app',
             connected: false,
             router: react_router_1.MemoryRouter,

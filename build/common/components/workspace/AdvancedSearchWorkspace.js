@@ -4,7 +4,7 @@
  * @version 0.2.0
  */
 "use strict";
-const React = require("react");
-exports.AdvancedSearchWorkspace = (props) => (React.createElement("div", { className: 'workspace-editor' },
-    React.createElement("h2", null, "Advanced Search")));
+var React = require("react");
+exports.AdvancedSearchWorkspace = function (props) { return (React.createElement("div", { className: 'workspace-editor' },
+    React.createElement("h2", null, "Advanced Search"))); };
 //# sourceMappingURL=AdvancedSearchWorkspace.js.map

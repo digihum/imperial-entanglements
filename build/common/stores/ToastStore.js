@@ -4,7 +4,10 @@
  * @version 0.2.0
  */
 "use strict";
-class ToastStore {
-}
+var ToastStore = (function () {
+    function ToastStore() {
+    }
+    return ToastStore;
+}());
 exports.ToastStore = ToastStore;
 //# sourceMappingURL=ToastStore.js.map

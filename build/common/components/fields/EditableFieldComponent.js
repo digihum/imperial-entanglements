@@ -4,6 +4,11 @@
  * @version 0.2.0
  */
 "use strict";
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
 var __assign = (this && this.__assign) || Object.assign || function(t) {
     for (var s, i = 1, n = arguments.length; i < n; i++) {
         s = arguments[i];
@@ -12,39 +17,43 @@ var __assign = (this && this.__assign) || Object.assign || function(t) {
     }
     return t;
 };
-const React = require("react");
+var React = require("react");
 function EditableFieldHOC(WrappedComponent) {
-    return class EditableFieldComponent extends React.Component {
-        constructor() {
-            super();
-            this.state = {
+    return (function (_super) {
+        __extends(EditableFieldComponent, _super);
+        function EditableFieldComponent() {
+            var _this = _super.call(this) || this;
+            _this.state = {
                 edit: false,
                 internalValue: null
             };
+            return _this;
         }
-        componentWillMount() {
+        EditableFieldComponent.prototype.componentWillMount = function () {
             this.setState({ internalValue: this.props.value === undefined ? null : this.props.value });
-        }
-        componentWillReceiveProps(newProps) {
+        };
+        EditableFieldComponent.prototype.componentWillReceiveProps = function (newProps) {
             this.setState({ internalValue: newProps.value });
-        }
-        switchToEditState() {
+        };
+        EditableFieldComponent.prototype.switchToEditState = function () {
             this.setState({ edit: true, internalValue: this.props.value });
-        }
-        setInternalValue(internalValue) {
-            this.setState({ internalValue });
-        }
-        acceptChanges() {
+        };
+        EditableFieldComponent.prototype.setInternalValue = function (internalValue) {
+            this.setState({ internalValue: internalValue });
+        };
+        EditableFieldComponent.prototype.acceptChanges = function () {
             this.props.onChange(this.state.internalValue);
             this.setState({ edit: false });
-        }
-        cancelChanges() {
+        };
+        EditableFieldComponent.prototype.cancelChanges = function () {
             this.setState({ edit: false, internalValue: this.props.value });
-        }
-        render() {
-            return (React.createElement(WrappedComponent, __assign({}, this.props, { edit: this.state.edit, value: this.state.internalValue, onChange: this.setInternalValue.bind(this), setEdit: this.switchToEditState.bind(this), acceptChanges: this.acceptChanges.bind(this), cancelChanges: this.cancelChanges.bind(this), onDelete: (e) => this.props.onDelete !== undefined ? this.props.onDelete(this.props.value) : null })));
-        }
-    };
+        };
+        EditableFieldComponent.prototype.render = function () {
+            var _this = this;
+            return (React.createElement(WrappedComponent, __assign({}, this.props, { edit: this.state.edit, value: this.state.internalValue, onChange: this.setInternalValue.bind(this), setEdit: this.switchToEditState.bind(this), acceptChanges: this.acceptChanges.bind(this), cancelChanges: this.cancelChanges.bind(this), onDelete: function (e) { return _this.props.onDelete !== undefined ? _this.props.onDelete(_this.props.value) : null; } })));
+        };
+        return EditableFieldComponent;
+    }(React.Component));
 }
 exports.EditableFieldHOC = EditableFieldHOC;
 //# sourceMappingURL=EditableFieldComponent.js.map

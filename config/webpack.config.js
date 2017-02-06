@@ -1,6 +1,7 @@
 var webpack = require('webpack');
 var path = require('path');
 var fs = require('fs');
+const ClosureCompiler = require('google-closure-compiler-js').webpack;
 
 function isVendor(module, count) {
   const userRequest = module.userRequest;
@@ -78,6 +79,14 @@ var frontendConfig = {
         new webpack.DllReferencePlugin({
             context: process.cwd(),
             manifest: require(path.join(dllPath, 'react-manifest.json'))
+        }),
+        new ClosureCompiler({
+            options: {
+                languageIn: 'ECMASCRIPT6',
+                languageOut: 'ECMASCRIPT5',
+                compilationLevel: 'ADVANCED',
+                warningLevel: 'VERBOSE',
+            }
         })
     ]
 }
